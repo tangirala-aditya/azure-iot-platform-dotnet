@@ -17,17 +17,18 @@ stages:
     dependsOn: []
     jobs:
      - job: checkParameters
-        displayName: Check parameters
-        steps:
-          - checkout: none
-          - script: |-
-              set -Eeuxo pipefail
-              echo "testPipelineRunId : '$(testPipelineRunId)'"
-              if [ -z "$(testPipelineRunId)" ]
-              then
+       displayName: Check parameters
+       steps:
+         - checkout: none
+
+         - script: |-
+                set -Eeuxo pipefail
+                echo "testPipelineRunId : '$(testPipelineRunId)'"
+                if [ -z "$(testPipelineRunId)" ]
+                then
                 echo "A value for the 'testPipelineRunId' variable must be provided" > /dev/stderr
                 exit 1
-              fi
+                fi
 
   - stage: crslDev
     displayName: CRSL dev

@@ -118,40 +118,40 @@ steps:
       force: true
       install: true
 
-  - task: HelmDeploy@0
-    inputs:
-      connectionType: Azure Resource Manager
-      azureSubscription: ${{parameters.subscriptionName}}
-      azureResourceGroup: ${{parameters.resourceGroupName}}
-      kubernetesCluster: ${{parameters.aksName}}
-      useClusterAdmin: false
-      namespace: default
-      command: upgrade
-      type: $(type)
-      chartType: FilePath
-      chartPath: charts/mmm-iot-service
-      releaseName: ${{parameters.serviceName}}
-      overrideValues: nameOverride=${{parameters.serviceName}},service.port=${{parameters.servicePort}},type="$(type)",deployment.enabled=false,service.enabled=true
-      force: true
-      arguments: --cleanup-on-fail --set-string gitSha=$(Build.SourceVersion)
-      waitForExecution: true
-      install: true
-  # - task: AzureCLI@2
-  #   displayName: Patch the AKS Service
-  #   name: patchAKSService
+  # - task: HelmDeploy@0
   #   inputs:
+  #     connectionType: Azure Resource Manager
   #     azureSubscription: ${{parameters.subscriptionName}}
-  #     scriptType: bash
-  #     scriptLocation: inlineScript
-  #     inlineScript: |-
-  #       set -Eeuxo pipefail
-  #       az aks get-credentials --name ${{parameters.aksName}} --resource-group ${{parameters.resourceGroupName}} --overwrite-existing
-  #       kubectl get pods 
-  #       echo "$(type)"
-  #       status=`kubectl get pods -l type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l`
-  #       while [ $status -lt 1 ]
-  #       do 
-  #         sleep 10
-  #         status=`kubectl get pods -l type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l`
-  #       done
-  #       kubectl patch svc ${{parameters.serviceName}} -p '{"spec": {"selector": {"app.kubernetes.io/name":"${{parameters.serviceName}}", "type": "$(type)"}}}'
+  #     azureResourceGroup: ${{parameters.resourceGroupName}}
+  #     kubernetesCluster: ${{parameters.aksName}}
+  #     useClusterAdmin: false
+  #     namespace: default
+  #     command: upgrade
+  #     type: $(type)
+  #     chartType: FilePath
+  #     chartPath: charts/mmm-iot-service
+  #     releaseName: ${{parameters.serviceName}}
+  #     overrideValues: nameOverride=${{parameters.serviceName}},service.port=${{parameters.servicePort}},type="$(type)",deployment.enabled=false,service.enabled=true
+  #     force: true
+  #     arguments: --cleanup-on-fail --set-string gitSha=$(Build.SourceVersion)
+  #     waitForExecution: true
+  #     install: true
+  - task: AzureCLI@2
+    displayName: Patch the AKS Service
+    name: patchAKSService
+    inputs:
+      azureSubscription: ${{parameters.subscriptionName}}
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |-
+        set -Eeuxo pipefail
+        az aks get-credentials --name ${{parameters.aksName}} --resource-group ${{parameters.resourceGroupName}} --overwrite-existing
+        kubectl get pods 
+        echo "$(type)"
+        status=`kubectl get pods -l type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l`
+        while [ $status -lt 1 ]
+        do 
+          sleep 10
+          status=`kubectl get pods -l type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l`
+        done
+        kubectl patch svc ${{parameters.serviceName}} -p '{"spec": {"selector": {"app.kubernetes.io/name":"${{parameters.serviceName}}", "type": "$(type)"}}}'

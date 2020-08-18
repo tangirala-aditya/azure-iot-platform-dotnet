@@ -140,7 +140,7 @@ namespace Mmm.Iot.IdentityGateway.WebService.Controllers
         [HttpGet("LatestDeploymentDate")]
         public UserSettingsModel GetLatestDeploymentDate()
         {
-            return new UserSettingsModel() { Value = this.config.Global.BuildNumber };
+            return new UserSettingsModel() { Value = this.config.Global.LatestDeploymentDate.ToString() };
         }
 
         private string GetUserActiveDeviceGroupKey()

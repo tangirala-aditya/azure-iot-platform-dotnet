@@ -118,24 +118,24 @@ steps:
       force: true
       install: true
 
-  - task: HelmDeploy@0
-    inputs:
-      connectionType: Azure Resource Manager
-      azureSubscription: ${{parameters.subscriptionName}}
-      azureResourceGroup: ${{parameters.resourceGroupName}}
-      kubernetesCluster: ${{parameters.aksName}}
-      useClusterAdmin: false
-      namespace: default
-      command: upgrade
-      type: $(type)
-      chartType: FilePath
-      chartPath: charts/mmm-iot-service
-      releaseName: ${{parameters.serviceName}}
-      overrideValues: nameOverride=${{parameters.serviceName}},service.port=${{parameters.servicePort}},type="$(type)",deployment.enabled=false,service.enabled=true
-      force: true
-      arguments: --cleanup-on-fail --set-string gitSha=$(Build.SourceVersion)
-      waitForExecution: true
-      install: true
+  # - task: HelmDeploy@0
+  #   inputs:
+  #     connectionType: Azure Resource Manager
+  #     azureSubscription: ${{parameters.subscriptionName}}
+  #     azureResourceGroup: ${{parameters.resourceGroupName}}
+  #     kubernetesCluster: ${{parameters.aksName}}
+  #     useClusterAdmin: false
+  #     namespace: default
+  #     command: upgrade
+  #     type: $(type)
+  #     chartType: FilePath
+  #     chartPath: charts/mmm-iot-service
+  #     releaseName: ${{parameters.serviceName}}
+  #     overrideValues: nameOverride=${{parameters.serviceName}},service.port=${{parameters.servicePort}},type="$(type)",deployment.enabled=false,service.enabled=true
+  #     force: true
+  #     arguments: --cleanup-on-fail --set-string gitSha=$(Build.SourceVersion)
+  #     waitForExecution: true
+  #     install: true
   # - task: AzureCLI@2
   #   displayName: Patch the AKS Service
   #   name: patchAKSService

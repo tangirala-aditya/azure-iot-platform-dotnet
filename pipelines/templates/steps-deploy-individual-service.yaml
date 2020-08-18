@@ -151,6 +151,7 @@ steps:
         status=`kubectl get pods -l type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l`
         while [ $status -lt 1 ]
         do 
+          sleep 10
           status=`kubectl get pods -l type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l`
         done
         kubectl patch svc ${{parameters.serviceName}} -p '{"spec": {"selector": {"app.kubernetes.io/name":"${{parameters.serviceName}}", "type": "$(type)"}}}'

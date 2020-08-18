@@ -1022,6 +1022,9 @@ jobs:
           includeRootFolder: false
           archiveFile: $(Build.SourcesDirectory)/$(functionName).zip
 
+      - publish: FunctionZip
+            artifact: $(Build.SourcesDirectory)/$(functionName).zip
+            displayName: Publish Azure Functions artifacts
 
       - task: AzureFunctionApp@1
         displayName: Deploy Functions

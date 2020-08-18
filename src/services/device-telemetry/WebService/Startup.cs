@@ -71,6 +71,8 @@ namespace Mmm.Iot.DeviceTelemetry.WebService
         private static void SetupTelemetry(IApplicationBuilder app, AppConfig config)
         {
             var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
+            configuration.TelemetryProcessorChainBuilder.Use(next => new HealthProbeTelemetryProcessor(next));
+            configuration.TelemetryProcessorChainBuilder.Build();
             var builder = configuration.DefaultTelemetrySink.TelemetryProcessorChainBuilder;
 
             // Using fixed rate sampling

@@ -210,6 +210,7 @@ stages:
               --no-restore
               --no-dependencies
               --configuration $(dotnetBuildConfiguration)
+              --runtime $(dotnetProductionRuntimeId)
               /p:TargetLatestRuntimePatch=true
             displayName: Build assemblies
 

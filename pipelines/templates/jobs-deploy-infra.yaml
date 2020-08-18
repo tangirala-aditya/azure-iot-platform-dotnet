@@ -1018,13 +1018,9 @@ jobs:
       - task: ArchiveFiles@2
         displayName: Archive files
         inputs:
-          rootFolderOrFile: $(Build.SourcesDirectory)/$(functionsArtifactName)/src/functions/$(functionName)/bin/Release/netcoreapp3.1/linux-musl-x64/publish/
+          rootFolderOrFile: $(Build.SourcesDirectory)/$(functionsArtifactName)/src/functions/$(functionName)/bin/Release/netcoreapp3.1/publish/
           includeRootFolder: false
           archiveFile: $(Build.SourcesDirectory)/$(functionName).zip
-
-      - publish: FunctionZip
-        artifact: $(Build.SourcesDirectory)/$(functionName).zip
-        displayName: Publish Azure Functions artifacts
 
       - task: AzureFunctionApp@1
         displayName: Deploy Functions

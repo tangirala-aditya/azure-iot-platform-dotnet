@@ -46,6 +46,7 @@ steps:
         else
           echo "##vso[task.setvariable variable=type]green"
         fi 
+        echo "$(type)"
 
 
   - task: HelmInstaller@1
@@ -83,7 +84,7 @@ steps:
 
   - task: HelmDeploy@0
     displayName: Creation Blue application deployment
-    condition: eq(variables.type,'blue')
+    condition: eq("$(type)",'blue')
     inputs:
       connectionType: Azure Resource Manager
       azureSubscription: 3M-CRSLAD16-BBIoTP-Dev
@@ -101,7 +102,7 @@ steps:
 
   - task: HelmDeploy@0
     displayName: Creation of Green Deployment
-    condition: eq(variables.type,'green')
+    condition: eq("$(type)",'green')
     inputs:
       connectionType: Azure Resource Manager
       azureSubscription: 3M-CRSLAD16-BBIoTP-Dev
@@ -146,9 +147,9 @@ steps:
         az aks get-credentials --name ${{parameters.aksName}} --resource-group ${{parameters.resourceGroupName}} --overwrite-existing
         kubectl get pods 
         echo "$(type)"
-        status=`kubectl get pods -l type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase`
+        status=`kubectl get pods -l type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l`
         while [ $status -lt 1 ]
         do 
-          status=`kubectl get pods -l type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase`
+          status=`kubectl get pods -l type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l`
         done
         kubectl patch svc ${{parameters.serviceName}} -p '{"spec": {"selector": {"app.kubernetes.io/name":"${{parameters.serviceName}}", "type": "$(type)"}}}'

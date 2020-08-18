@@ -47,7 +47,7 @@ steps:
           echo "##vso[task.setvariable variable=type]green"
         fi 
         echo "Here is the type value"
-        echo "$(type)"
+        echo "$type"
 
 
   - task: HelmInstaller@1

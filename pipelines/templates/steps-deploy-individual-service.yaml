@@ -81,7 +81,7 @@ steps:
       releaseName: ${{parameters.serviceName}}
       force: true
       install: true
-      overrideValues: nameOverride=${{parameters.serviceName}},service.port=${{parameters.servicePort}},type="$(type)",deployment.enabled=false,service.enabled=true
+      overrideValues: nameOverride=${{parameters.serviceName}},service.port=${{parameters.servicePort}},type=${{parameters.type}},deployment.enabled=false,service.enabled=true
 
   - task: HelmDeploy@0
     displayName: Creation Blue application deployment

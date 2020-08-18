@@ -5,7 +5,7 @@ parameters:
   subscriptionId:
   applicationCode:
   applicationShortCode:
-  appInsightsLocation:
+  appInsightsLocation: 
   environmentCategory:
   kubernetesVersion:
   sendgridEmail:
@@ -667,6 +667,7 @@ jobs:
           scriptType: bash
           inlineScript: |-
             set -Eeuxo pipefail
+            az pipelines runs list --pipeline-ids 453 --status completed --result succeeded --top 3 --output table
             az appconfig kv import --yes --name $(appConfigurationName) --format json --source file --path "$(System.DefaultWorkingDirectory)/pipelines/cd/app-config-template.json" --separator ":"
             echo "Checking for $(System.DefaultWorkingDirectory)/pipelines/cd/permissions-config/permissions-${{parameters.environmentName}}.json"
             if [ ! -f $(System.DefaultWorkingDirectory)/pipelines/cd/permissions-config/permissions-${{parameters.environmentName}}.json ];
@@ -839,10 +840,11 @@ jobs:
           scriptType: bash
           inlineScript: |-
             devicetwinPropfn=$(functionApp1Name)
-            cosmosDbConn=$(az keyvault secret show --name "Global--CosmosDb--DocumentDbConnectionString" --vault-name $(keyVaultName) | grep value | awk -F '\"' '{print $4}')
-            lifecycleEvConn=$(az keyvault secret show --name "TenantManagerService--LifecycleEventHubConnectionString" --vault-name $(keyVaultName) | grep value | awk -F '\"' '{print $4}')
-            telemetryEvConn=$(az keyvault secret show --name "TenantManagerService--TelemetryEventHubConnectionString" --vault-name $(keyVaultName) | grep value | awk -F '\"' '{print $4}')
-            twinchangeEvConn=$(az keyvault secret show --name "TenantManagerService--TwinChangeEventHubConnectionString" --vault-name $(keyVaultName) | grep value | awk -F '\"' '{print $4}')
+            cosmosDbConn=$(az keyvault secret show --name "Global--CosmosDb--DocumentDbConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            lifecycleEvConn=$(az keyvault secret show --name "TenantManagerService--LifecycleEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            telemetryEvConn=$(az keyvault secret show --name "TenantManagerService--TelemetryEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            twinchangeEvConn=$(az keyvault secret show --name "TenantManagerService--TwinChangeEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            storageAccountConn=$(az keyvault secret show --name "Global--StorageAccountConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
             az functionapp config appsettings set --name $devicetwinPropfn \
               --settings \
                 "CosmosDbConnectionString"="$cosmosDbConn" \
@@ -958,8 +960,8 @@ jobs:
             functionName=${{parameters.applicationCode}}-alertingactionsfuncapp-${{parameters.environmentCategory}}
             actionsEvConn=$(az keyvault secret show --name "AlertingActionsFunction--ActionsEventHubConnectionString" --vault-name $(keyVaultName) --query [value] --output tsv)
             sendGridApiKey=$(az keyvault secret show --name "IdentityGatewayService--SendGridApiKey" --vault-name $(keyVaultName) --query [value] --output tsv)
-            az functionapp config appsettings set \
-              --name $functionName \
+            storageAccountConn=$(az keyvault secret show --name "Global--StorageAccountConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            az functionapp config appsettings set --name $functionName \
               --settings \
                 "ActionsEventHubConnectionString"="$actionsEvConn" \
                 "SendGridApiKey"="$sendGridApiKey" \
@@ -1028,3 +1030,222 @@ jobs:
           azureSubscription: ${{parameters.subscriptionName}}
           appName: $(appName)
           package: $(Build.SourcesDirectory)/$(functionName).zip
+
+  - job: automationAccount
+    displayName: Provision Azure Automation and Sendgrid accounts
+    dependsOn:
+      - aks
+      - keyVault
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    pool:
+      vmImage: windows-latest
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+
+      - template: apply-arm-tags.yaml
+        parameters:
+          environment: ${{parameters.environmentName}}
+
+      - task: AzureResourceGroupDeployment@2
+        displayName: Provision Azure Automation account
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          action: Create Or Update Resource Group
+          resourceGroupName: $(resourceGroupName)
+          location: ${{parameters.locationName}}
+          templateLocation: Linked artifact
+          csmFile: $(armTemplatesDirectory)/automationacct.json
+          csmParametersFile: $(armParametersDirectory)/automationacct.json
+          overrideParameters: -automationAccountName $(automationName) -location ${{parameters.locationName}}
+          deploymentMode: Incremental
+          addSpnToEnvironment: true
+
+      - template: steps-delete-oldest-deployment.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          deploymentPartialName: $(automationPartialName)
+          resourceGroupName: $(resourceGroupName)
+
+      - task: AzurePowerShell@3
+        displayName: Create certificate and connections on Azure Automation Account
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          ScriptType: FilePath
+          ScriptPath: pipelines/cd/automationAcctCert.ps1
+          ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}} -tenantId $(tenantId) -keyvaultName $(keyVaultName)
+          azurePowerShellVersion: LatestVersion
+
+      - task: AzurePowerShell@3
+        displayName: Import runbook code and create webhook
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          ScriptType: FilePath
+          ScriptPath: pipelines/cd/automationAcct.ps1
+          ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -scriptFolder $(System.DefaultWorkingDirectory)/src/services/tenant-manager/RunBookCode -keyvaultName $(keyVaultName)
+          azurePowerShellVersion: LatestVersion
+
+      - task: AzurePowerShell@3
+        displayName: Create SendGrid Acct and API Key
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          ScriptType: FilePath
+          ScriptPath: pipelines/cd/sendgridAcct.ps1
+          ScriptArguments: -location ${{parameters.locationName}} -resourceGroup $(resourceGroupName) -resourceName $(sendgridAccountName) -keyvaultName $(keyVaultName) -email ${{parameters.sendgridEmail}}
+          azurePowerShellVersion: LatestVersion
+
+  - job: ingress
+    displayName: Create K8s ingress
+    dependsOn:
+      - aks
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+
+      - task: HelmInstaller@1
+        displayName: Install Helm
+        inputs:
+          helmVersionToInstall: $(helmVersion)
+
+      - task: HelmDeploy@0
+        displayName: Initialize Helm
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscription: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          namespace: default
+          command: init
+          arguments: --force-upgrade
+
+      - task: AzureCLI@2
+        displayName: Install K8s Ingress Controller
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            helm version
+            helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+            helm repo update
+            n=0
+            until [ $n -ge 5 ]
+            do
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+              # Use Helm to deploy an NGINX ingress controller
+              helm upgrade ingress-controller stable/nginx-ingress \
+                  --install \
+                  --force \
+                  --namespace ingress-basic \
+                  --set controller.replicaCount=2 \
+                  --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
+                  --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
+                  --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"="$(aksName)" \
+                  --wait \
+                2>&1 && break
+              n=$[$n+1]
+              sleep 1m
+            done
+            if [ $n -ge 5 ]
+            then
+              echo "Error Deploying ingress controller" 1>&2
+              exit 64
+            fi
+
+      # - task: AzureCLI@2
+      #   displayName: Add DNS record
+      #   inputs:
+      #     azureSubscription: ${{parameters.subscriptionName}}
+      #     scriptLocation: scriptPath
+      #     scriptType: bash
+      #     scriptPath: charts/ingress/ip.sh
+      #     arguments: $(aksName) $(resourceGroupName)
+
+      - task: Bash@3
+        displayName: Install jetstack Helm repository
+        inputs:
+          targetType: inline
+          script: |-
+            # Add the Jetstack Helm repository
+            helm repo add jetstack https://charts.jetstack.io
+            # Update your local Helm chart repository cache
+            helm repo update
+
+      - task: HelmDeploy@0
+        displayName: Deploy cert-manager
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscription: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          namespace: cert-manager
+          command: upgrade
+          chartType: Name
+          releaseName: cert-manager
+          chartName: jetstack/cert-manager
+          arguments: --version v$(certManagerVersion) --install --force
+
+      - task: Kubernetes@1
+        displayName: Create Cluster Issuer
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          useConfigurationFile: true
+          configuration: charts/ingress/cluster-issuer-prod.yaml
+
+      - task: Kubernetes@1
+        displayName: Create Ingress
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          useConfigurationFile: true
+          configurationType: inline
+          inline: |
+            apiVersion: networking.k8s.io/v1beta1
+            kind: Ingress
+            metadata:
+              name: $(aksName)
+              namespace: default
+              annotations:
+                kubernetes.io/ingress.class: nginx
+                cert-manager.io/cluster-issuer: letsencrypt-prod
+                nginx.ingress.kubernetes.io/rewrite-target: /$1
+                nginx.ingress.kubernetes.io/proxy-body-size: 200m
+            spec:
+              tls:
+              - hosts:
+                - $(aksName).$(locationName).cloudapp.azure.com
+                secretName: tls-prod
+              rules:
+              - host: $(aksName).$(locationName).cloudapp.azure.com
+                http:
+                  paths:
+                  - backend:
+                      serviceName: reverse-proxy
+                      servicePort: 10080
+                    path: /(.*)

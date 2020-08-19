@@ -153,7 +153,7 @@ steps:
         kubectl get pods 
         status=$(kubectl get pods -l iot.cld.3mcloud.com/type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l)
         echo "$status"
-        while [ $status -lt 1 ]
+        while [ $status -lt 2 ]
         do 
           sleep 10
           echo "In loop"

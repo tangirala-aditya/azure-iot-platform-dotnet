@@ -42,11 +42,11 @@ steps:
         echo "$type is the type"
         if [ $type == 'green' ]
         then
-          echo "##vso[task.setvariable variable=type]blue"
+          echo "##vso[task.setvariable variable=globaltype]blue"
         else
-          echo "##vso[task.setvariable variable=type]green"
+          echo "##vso[task.setvariable variable=globaltype]green"
         fi 
-        echo "_ $(variable.type) _ Here is the type value"
+        echo "_ $(globaltype) _ Here is the type value"
 
 
   - task: HelmInstaller@1
@@ -84,7 +84,7 @@ steps:
 
   - task: HelmDeploy@0
     displayName: Creation Blue application deployment
-    condition: eq(variables.type,'blue')
+    condition: eq(variables.globaltype,'blue')
     inputs:
       connectionType: Azure Resource Manager
       azureSubscription: 3M-CRSLAD16-BBIoTP-Dev
@@ -102,7 +102,7 @@ steps:
 
   - task: HelmDeploy@0
     displayName: Creation of Green Deployment
-    condition: eq(variables.type,'green')
+    condition: eq(variables.globaltype,'green')
     #condition: eq($variables[type], 'green')
     inputs:
       connectionType: Azure Resource Manager
@@ -148,10 +148,10 @@ steps:
         az aks get-credentials --name ${{parameters.aksName}} --resource-group ${{parameters.resourceGroupName}} --overwrite-existing
         kubectl get pods 
         echo " Hello $(variables['type']) Bye"
-        status=`kubectl get pods -l iot.cld.3mcloud.com/type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l`
+        status=`kubectl get pods -l iot.cld.3mcloud.com/type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(globaltype)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l`
         while [ $status -lt 1 ]
         do 
           sleep 10
-          status=`kubectl get pods -l iot.cld.3mcloud.com/type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l`
+          status=`kubectl get pods -l iot.cld.3mcloud.com/type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(globaltype)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l`
         done
-        kubectl patch svc ${{parameters.serviceName}} -p '{"spec": {"selector": {"app.kubernetes.io/name":"${{parameters.serviceName}}", "type": "$(type)"}}}'
+        kubectl patch svc ${{parameters.serviceName}} -p '{"spec": {"selector": {"app.kubernetes.io/name":"${{parameters.serviceName}}", "type": "$(globaltype)"}}}'

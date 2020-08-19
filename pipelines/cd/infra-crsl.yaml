@@ -56,7 +56,7 @@ stages:
 
   - stage: ggkDev
     displayName: GGK dev
-    dependsOn: []
+    dependsOn: checkParameters
     jobs:
       - template: ../templates/jobs-deploy-infra.yaml
         parameters:

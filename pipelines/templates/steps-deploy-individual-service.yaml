@@ -46,7 +46,7 @@ steps:
         else
           echo "##vso[task.setvariable variable=globaltype]green"
         fi 
-        echo "_ $(globaltype) _ Here is the type value"
+        echo "_ $env:globaltype _ Here is the type value"
 
 
   - task: HelmInstaller@1

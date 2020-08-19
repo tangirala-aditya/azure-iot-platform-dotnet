@@ -40,7 +40,7 @@ steps:
         kubectl get svc
         type=`kubectl get svc ${{parameters.serviceName}} -o=jsonpath='{.spec.selector.type}'`
         echo "$type"
-        if [ $type == 'green' ]
+        if [ $type -eq 'green' ]
         then
           echo "##vso[task.setvariable variable=type]blue"
         else
@@ -85,7 +85,7 @@ steps:
 
   - task: HelmDeploy@0
     displayName: Creation Blue application deployment
-    condition: eq(variables.type,'blue')
+    condition: eq('${{ variables.type }}', 'blue')
     inputs:
       connectionType: Azure Resource Manager
       azureSubscription: 3M-CRSLAD16-BBIoTP-Dev
@@ -103,7 +103,8 @@ steps:
 
   - task: HelmDeploy@0
     displayName: Creation of Green Deployment
-    condition: eq(variables.type,'green')
+    #condition: eq(variables.type,'green')
+    condition: eq('${{ variables.type }}', 'green')
     inputs:
       connectionType: Azure Resource Manager
       azureSubscription: 3M-CRSLAD16-BBIoTP-Dev

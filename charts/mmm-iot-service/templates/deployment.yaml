@@ -28,13 +28,6 @@ spec:
         - name: {{ include "service.name" . }}
           image: {{ cat (include "service.deployment.image.repository" .) ":" (required "Error: missing required value .Values.deployment.image.tag" .Values.deployment.image.tag) | nospace }}
           imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
-          resources:
-            limits:
-              cpu: "0.5"
-              memory: 500M
-            requests:
-              cpu: "0.25"
-              memory: 300M
           ports:
             - name: http
               containerPort: {{ .Values.deployment.port.http }}

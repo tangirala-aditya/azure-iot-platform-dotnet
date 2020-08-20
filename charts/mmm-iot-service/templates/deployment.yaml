@@ -8,9 +8,6 @@ spec:
   replicas: {{ .Values.deployment.replicaCount }}
   strategy:
   type: RollingUpdate
-  rollingUpdate:
-    maxSurge: 0
-    maxUnavailable: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "service.name" . }}

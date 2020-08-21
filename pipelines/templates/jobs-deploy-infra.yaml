@@ -667,7 +667,6 @@ jobs:
           scriptType: bash
           inlineScript: |-
             set -Eeuxo pipefail
-            az pipelines runs list --pipeline-ids 453 --status completed --result succeeded --top 3 --output table
             az appconfig kv import --yes --name $(appConfigurationName) --format json --source file --path "$(System.DefaultWorkingDirectory)/pipelines/cd/app-config-template.json" --separator ":"
             echo "Checking for $(System.DefaultWorkingDirectory)/pipelines/cd/permissions-config/permissions-${{parameters.environmentName}}.json"
             if [ ! -f $(System.DefaultWorkingDirectory)/pipelines/cd/permissions-config/permissions-${{parameters.environmentName}}.json ];
@@ -1001,7 +1000,7 @@ jobs:
           templateLocation: Linked artifact
           csmFile: $(armTemplatesDirectory)/functions.json
           csmParametersFile: $(armParametersDirectory)/functions.json
-          overrideParameters: -functionAppName $(functionApp4Name) -appInsightsLocation ${{parameters.appInsightsLocation}} -appInsightsName $(appInsightsName) -storageAccountName $(storageAccountName) -runtime dotnet -funcVersion ~2
+          overrideParameters: -functionAppName $(functionApp4Name) -appInsightsLocation ${{parameters.appInsightsLocation}} -appInsightsName $(appInsightsName) -storageAccountName $(storageAccountName) -runtime dotnet -funcVersion ~3
           deploymentMode: Incremental
           deploymentName: $(functionApp4PartialName)-$(Build.BuildId)
           addSpnToEnvironment: true
@@ -1039,6 +1038,7 @@ jobs:
       - function1
       - function2
       - function3
+      - function4     
     pool:
       vmImage: windows-latest
     variables:
@@ -1056,6 +1056,10 @@ jobs:
         rule-actions:
           functionName: rule-actions
           appNamePartial: alertingactionsfuncapp
+          appName: ${{parameters.applicationCode}}-$(appNamePartial)-${{parameters.environmentCategory}}
+        deployment-sync:
+          functionName: deployment-sync
+          appNamePartial: iotdeploymentfuncapp
           appName: ${{parameters.applicationCode}}-$(appNamePartial)-${{parameters.environmentCategory}}
 
     steps:

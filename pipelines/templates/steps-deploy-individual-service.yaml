@@ -151,12 +151,12 @@ steps:
         set -Eeuxo pipefail
         az aks get-credentials --name ${{parameters.aksName}} --resource-group ${{parameters.resourceGroupName}} --overwrite-existing
         kubectl get pods 
-        status=$(kubectl get pods -l iot.cld.3mcloud.com/type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l)
-        echo "$status This is the status value"
-        while [ $status -lt 1 ]
-        do 
-          sleep 10
-          echo "In loop"
-          status=$(kubectl get pods -l iot.cld.3mcloud.com/type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l)
-        done
-#        kubectl patch svc ${{parameters.serviceName}} -p '{"spec": {"selector": {"app.kubernetes.io/name":"${{parameters.serviceName}}", "type": "$(type)"}}}'
+#         status=$(kubectl get pods -l iot.cld.3mcloud.com/type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l)
+#         echo "$status This is the status value"
+#         while [ $status -lt 1 ]
+#         do 
+#           sleep 10
+#           echo "In loop"
+#           status=$(kubectl get pods -l iot.cld.3mcloud.com/type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l)
+#         done
+        kubectl patch svc ${{parameters.serviceName}} -p '{"spec": {"selector": {"app.kubernetes.io/name":"${{parameters.serviceName}}", "type": "$(type)"}}}'

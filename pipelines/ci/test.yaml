@@ -689,7 +689,7 @@ stages:
                 az appconfig kv set --key TestUserCredentials:SystemAdmin:UserEmail --value ${parameters.testSystemAdminEmail} --name $(appConfigurationName)  --yes          
           
                
-        - task: AzurePowerShell@5
+          - task: AzurePowerShell@5
             displayName: Verify and add Test Account in the User Table
             inputs:
               azureSubscription: $(subscriptionName)
@@ -698,13 +698,13 @@ stages:
               Inline: |
                 $table = Get-AzTableTable -resourceGroup $(resourceGroupName) -tableName $(usersTableName) -storageAccountName $(storageAccountName)
                 $saTable = Get-AzTableTable -resourceGroup $(resourceGroupName) -tableName $(sysAdminTableName) -storageAccountName $(storageAccountName)
- 
+
                 $datetimevariable = Get-Date -Format "yyyy-MM-ddTHH:mm:ss:fffffffZ"
- 
+
                 $testUser = Get-AzTableRowByPartitionKeyRowKey -Table $table -PartitionKey $(testAccountUser) -RowKey $(SerenityTenantId)
                 $testAdmin =Get-AzTableRowByPartitionKeyRowKey -Table $table -PartitionKey $(testAccountAdmin) -RowKey $(SerenityTenantId)
                 $testSystemAdmin = Get-AzTableRowByPartitionKeyRowKey -Table $table -PartitionKey $(testAccountSysAdmin) -RowKey $(SerenityTenantId)
- 
+
                 $saTestSystemAdmin = Get-AzTableRowByPartitionKey -Table $saTable -PartitionKey $(testAccountSysAdmin)
               
                 if(($testUser -eq $Null) -or ($testUser.Roles -ne '["readonly"]')){
@@ -725,7 +725,7 @@ stages:
                     -partitionKey $(testAccountSysAdmin) `
                     -rowKey $(SerenityTenantId) -property @{"Timestamp"=$(datetimevariable);"Roles"="["admin"]";"Name"="TestAccount - SystemAdmin";"Type"="Member"}
                 }
- 
+
                 if($saTestSystemAdmin -eq $Null){
                     Add-AzTableRow `
                     -table $saTable `

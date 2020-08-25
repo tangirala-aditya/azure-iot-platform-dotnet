@@ -623,13 +623,7 @@ stages:
       - deployIngress
       - deployServices
       - addAuthenticationCallbackUrl
-    parameters:
-      testSystemAdminPasskey
-      testSystemAdminEmail
-      testUserPasskey
-      testUserEmail
-      testAdminEmail
-      testAdminPasskey
+    
     jobs:
       - job: getPipelineVariables
         displayName: Get pipeline variables
@@ -637,6 +631,12 @@ stages:
         steps:
           - checkout: none
 
+          - script: |
+              echo %testUserPasskey%
+            env:
+              testSystemAdminPasskey: $(testSystemAdminPasskey)
+              testUserPasskey: $(testUserPasskey)
+              testAdminPasskey: $(testUserPasskey)
           - task: AzureCLI@2
             displayName: Get pipeline variables
             name: getPipelineVariables
@@ -681,12 +681,12 @@ stages:
               scriptType: bash
               inlineScript: |-
                 set -Eeuxo pipefail
-                az appconfig kv set --key TestUserCredentials:Admin:Password --value ${parameters.testSystemAdminPasskey} --name $(appConfigurationName)  --yes
-                az appconfig kv set --key TestUserCredentials:Admin:UserEmail --value ${parameters.testUserEmail} --name $(appConfigurationName)  --yes
-                az appconfig kv set --key TestUserCredentials:Readonly:Password --value ${parameters.testUserPasskey} --name $(appConfigurationName)  --yes
-                az appconfig kv set --key TestUserCredentials:Readonly:UserEmail --value ${parameters.testUserPasskey} --name $(appConfigurationName)  --yes
-                az appconfig kv set --key TestUserCredentials:SystemAdmin:Password --value ${parameters.testSystemAdminPasskey} --name $(appConfigurationName)  --yes
-                az appconfig kv set --key TestUserCredentials:SystemAdmin:UserEmail --value ${parameters.testSystemAdminEmail} --name $(appConfigurationName)  --yes          
+                az appconfig kv set --key TestUserCredentials:Admin:Password --value $(testSystemAdminPasskey) --name $(appConfigurationName)  --yes
+                az appconfig kv set --key TestUserCredentials:Admin:UserEmail --value $(testUserEmail) --name $(appConfigurationName)  --yes
+                az appconfig kv set --key TestUserCredentials:Readonly:Password --value $(testUserPasskey) --name $(appConfigurationName)  --yes
+                az appconfig kv set --key TestUserCredentials:Readonly:UserEmail --value $(testUserPasskey) --name $(appConfigurationName)  --yes
+                az appconfig kv set --key TestUserCredentials:SystemAdmin:Password --value $(testSystemAdminPasskey) --name $(appConfigurationName)  --yes
+                az appconfig kv set --key TestUserCredentials:SystemAdmin:UserEmail --value $(testSystemAdminEmail) --name $(appConfigurationName)  --yes          
           
                
           - task: AzurePowerShell@5

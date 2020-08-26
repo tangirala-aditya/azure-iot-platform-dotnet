@@ -41,8 +41,8 @@ spec:
               path: {{ .Values.deployment.probes.livenessPath }}
               port: http
             initialDelaySeconds: 5
-            timeoutSeconds: 10
-            periodSeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 1
             successThreshold: 1
             failureThreshold: 3
           readinessProbe:
@@ -50,8 +50,8 @@ spec:
               path: {{ .Values.deployment.probes.readinessPath }}
               port: http
             initialDelaySeconds: 5
-            timeoutSeconds: 10
-            periodSeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 1
             successThreshold: 1
             failureThreshold: 3
           lifecycle:
@@ -64,8 +64,8 @@ spec:
               path: /
               port: 10080
             initialDelaySeconds: 250
-            timeoutSeconds: 10
-            periodSeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 1
             successThreshold: 1
             failureThreshold: 3
           readinessProbe:
@@ -73,8 +73,8 @@ spec:
               path: /
               port: 10080
             initialDelaySeconds: 250
-            timeoutSeconds: 10
-            periodSeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 1
             successThreshold: 1
             failureThreshold: 3
           {{- end }}

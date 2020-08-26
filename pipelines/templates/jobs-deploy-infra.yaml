@@ -1098,6 +1098,7 @@ jobs:
           azureSubscription: ${{parameters.subscriptionName}}
           appName: $(appName)
           package: $(Build.SourcesDirectory)/$(functionName).zip
+          deploymentMethod: zipDeploy
 
   - job: automationAccount
     displayName: Provision Azure Automation and Sendgrid accounts

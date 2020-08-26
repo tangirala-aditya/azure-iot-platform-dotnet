@@ -1045,6 +1045,18 @@ jobs:
       functionsArtifactName: functionsFiles
     strategy:
       matrix:
+        app-configuration:
+          functionName: app-configuration
+          appNamePartial: appconfigfuncapp
+          appName: ${{parameters.applicationCode}}-$(appNamePartial)-${{parameters.environmentCategory}}
+        messaging:
+          functionName: messaging
+          appNamePartial: devicetwinfuncapp
+          appName: ${{parameters.applicationCode}}-$(appNamePartial)-${{parameters.environmentCategory}}
+        rule-actions:
+          functionName: rule-actions
+          appNamePartial: alertingactionsfuncapp
+          appName: ${{parameters.applicationCode}}-$(appNamePartial)-${{parameters.environmentCategory}}
         deployment-sync:
           functionName: deployment-sync
           appNamePartial: iotdeploymentfuncapp

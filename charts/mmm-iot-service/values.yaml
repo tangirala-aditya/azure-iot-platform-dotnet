@@ -16,7 +16,7 @@ deployment:
     http: 80
     https: 443
   imagePullSecrets: []
-  replicaCount: 1
+  replicaCount: 2
   image:
     repository:
     tag:

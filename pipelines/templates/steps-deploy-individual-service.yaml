@@ -159,8 +159,8 @@ steps:
         fi 
         echo "_ $(type) _ Here is the type value"
 
-        kubectl get service ${{parameters.serviceName}} -o=yaml | sed -e "s/$var/$(type)/g" | kubectl apply -f -
-#        kubectl patch svc ${{parameters.serviceName}} -p '{"spec": {"selector": {"app.kubernetes.io/name":"${{parameters.serviceName}}", "type": "$(type)"},"unschedulable":true}}'
+#        kubectl get service ${{parameters.serviceName}} -o=yaml | sed -e "s/$var/$(type)/g" | kubectl apply -f -
+        kubectl patch svc ${{parameters.serviceName}} -p '{"spec": {"selector": {"app.kubernetes.io/name":"${{parameters.serviceName}}", "type": "$(type)"},"unschedulable":true}}'
 #         status=$(kubectl get pods -l iot.cld.3mcloud.com/type="$(type)" -l app.kubernetes.io/instance=${{parameters.serviceName}}-"$(type)" -o json | jq -r .items[0].status.phase | grep "Running" | wc -l)
 #         echo "$status This is the status value"
 #         while [ $status -lt 1 ]

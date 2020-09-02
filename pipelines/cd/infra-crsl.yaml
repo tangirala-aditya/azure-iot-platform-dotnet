@@ -25,7 +25,7 @@ stages:
                   $projectID='150135ff-890c-41c0-8f52-1cfcd5f891df'
                   #Getting the PAT from the pipeline variables
                   $azPAT = ConvertTo-SecureString -String '$(azurePAT)' -AsPlainText -Force
-                  echo "PAT : '$azPAT'"
+                  echo "PAT : $env:token"
                   $definitionID='453'
                   $numberOfRecords='&$top=1'
               
@@ -33,7 +33,7 @@ stages:
                   $response = ""
                   #creating the headers object so that the Personal Access Token can be added to the query
                   $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-                  $headers.Add("Authorization", "Basic $azPAT")
+                  $headers.Add("Authorization", "Basic $env:token")
                   #building the url with the appropriate filters and parameters
                   $url = "https://dev.azure.com/$organizationName/$projectID/_apis/build/builds?api-version=5.1&definitions=$definitionID&queryorder=descending&resultFilter=partiallySucceeded,succeeded&branchName=refs/heads/UserStory_17659_AzFunctions_Migration$numberOfRecords"
                   #converting the response into readble object
@@ -47,6 +47,8 @@ stages:
                       exit 1
                   }
               }
+            env:
+              token: $(azurePAT)
             azurePowerShellVersion: LatestVersion
 
   - stage: crslDev

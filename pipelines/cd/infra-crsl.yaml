@@ -25,6 +25,7 @@ stages:
                   $projectID='150135ff-890c-41c0-8f52-1cfcd5f891df'
                   #Getting the PAT from the pipeline variables
                   $azPAT = ConvertTo-SecureString -String '$(azurePAT)' -AsPlainText -Force
+                  echo "PAT : '$(azPAT)'"
                   $definitionID='453'
                   $numberOfRecords='&$top=1'
               
@@ -34,11 +35,11 @@ stages:
                   $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
                   $headers.Add("Authorization", "Basic $azPAT")
                   #building the url with the appropriate filters and parameters
-                  $url = "https://dev.azure.com/$organizationName/$projectID/_apis/build/builds?api-version=5.1&definitions=$definitionID&queryorder=descending&resultFilter=partiallySucceeded&branchName=refs/heads/UserStory_17659_AzFunctions_Migration$numberOfRecords"
+                  $url = "https://dev.azure.com/$organizationName/$projectID/_apis/build/builds?api-version=5.1&definitions=$definitionID&queryorder=descending&resultFilter=partiallySucceeded,succeeded&branchName=refs/heads/UserStory_17659_AzFunctions_Migration$numberOfRecords"
                   #converting the response into readble object
                   $response = Invoke-RestMethod $url -Method 'GET' -Headers $headers -Body $body | ConvertTo-Json | ConvertFrom-Json
                   #setting the build ID as Global Variable
-                  $testPipelineRunId=$response.value.id 
+                  $testPipelineRunId=$response.value[0].id 
                   #throw an error here of the variable is still empty
                   if($testPipelineRunId -eq $null -or $testPipelineRunId -eq ""){
                       $ErrorMessage = "testPipelineRunId has no value."

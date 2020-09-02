@@ -47,9 +47,10 @@ stages:
                       exit 1
                   }
               }
-            env:
-              token: $(azurePAT)
             azurePowerShellVersion: LatestVersion
+        env:
+            token: $(azurePAT)
+            
 
   - stage: crslDev
     displayName: CRSL dev

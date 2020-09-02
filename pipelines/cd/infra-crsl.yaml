@@ -34,7 +34,7 @@ stages:
                 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
                 $headers.Add("Authorization", "Basic $azPAT")
                 #building the url with the appropriate filters and parameters
-                $url = "https://dev.azure.com/$organizationName/$projectID/_apis/build/builds?api-version=5.1&definitions=$definitionID&queryorder=descending&resultFilter=partiallySucceeded&branchName=refs/heads/master$numberOfRecords"
+                $url = "https://dev.azure.com/$organizationName/$projectID/_apis/build/builds?api-version=5.1&definitions=$definitionID&queryorder=descending&resultFilter=partiallySucceeded&branchName=refs/heads/UserStory_17659_AzFunctions_Migration$numberOfRecords"
                 #converting the response into readble object
                 $response = Invoke-RestMethod $url -Method 'GET' -Headers $headers -Body $body | ConvertTo-Json | ConvertFrom-Json
                 #setting the build ID as Global Variable

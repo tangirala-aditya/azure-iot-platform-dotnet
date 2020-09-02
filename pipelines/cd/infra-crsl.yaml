@@ -25,7 +25,7 @@ stages:
                   $projectID='150135ff-890c-41c0-8f52-1cfcd5f891df'
                   #Getting the PAT from the pipeline variables
                   $azPAT = ConvertTo-SecureString -String '$(azurePAT)' -AsPlainText -Force
-                  echo "PAT : '$(azPAT)'"
+                  echo "PAT : '$azPAT'"
                   $definitionID='453'
                   $numberOfRecords='&$top=1'
               

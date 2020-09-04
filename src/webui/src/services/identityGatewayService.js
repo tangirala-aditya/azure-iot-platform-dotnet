@@ -68,13 +68,27 @@ export class IdentityGatewayService {
 
     static getUserActiveDeviceGroup() {
         return HttpClient.get(`${ENDPOINT}settings/ActiveDeviceGroup`).map(
-            (setting) => setting.value
+            (setting) => setting && setting.value
         );
     }
 
     static updateUserActiveDeviceGroup(value) {
         return HttpClient.put(
             `${ENDPOINT}settings/ActiveDeviceGroup/${value}`
-        ).map((setting) => setting.value);
+        ).map((setting) => setting && setting.value);
+    }
+
+    static VerifyAndRefreshCache() {
+        HttpClient.get(`${ENDPOINT}settings/LatestBuildNumber`)
+            .map((setting) => setting && setting.value)
+            .subscribe((value) => {
+                if (
+                    HttpClient.getLocalStorageValue("latestBuildNumber") !==
+                    value
+                ) {
+                    window.location.reload(true);
+                    HttpClient.setLocalStorageValue("latestBuildNumber", value);
+                }
+            });
     }
 }

@@ -18,11 +18,17 @@ import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from "components/
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from "components/shell/manageDeviceGroupsBtn";
 import { ResetActiveDeviceQueryBtnContainer as ResetActiveDeviceQueryBtn } from "components/shell/resetActiveDeviceQueryBtn";
 import { DeploymentsGrid } from "./deploymentsGrid";
-import { DeploymentNewContainer } from "./flyouts";
-import { svgs } from "utilities";
+import { DeploymentNewContainer, DeploymentStatusContainer } from "./flyouts";
+import { svgs, getDeviceGroupParam } from "utilities";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
+import {
+    Balloon,
+    BalloonPosition,
+    BalloonAlignment,
+} from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Balloon/Balloon";
 
 import "./deployments.scss";
+import { IdentityGatewayService } from "services";
 
 const closedFlyoutState = { openFlyoutName: undefined };
 
@@ -32,6 +38,7 @@ export class Deployments extends Component {
         this.state = {
             ...closedFlyoutState,
             contextBtns: null,
+            selectedDeviceGroupId: undefined,
         };
 
         this.props.updateCurrentWindow("Deployments");
@@ -41,6 +48,17 @@ export class Deployments extends Component {
         }
     }
 
+    componentWillMount() {
+        if (this.props.location.search) {
+            this.setState({
+                selectedDeviceGroupId: getDeviceGroupParam(
+                    this.props.location.search
+                ),
+            });
+        }
+        IdentityGatewayService.VerifyAndRefreshCache();
+    }
+
     componentWillReceiveProps(nextProps) {
         if (
             nextProps.isPending &&
@@ -48,6 +66,16 @@ export class Deployments extends Component {
         ) {
             // If the grid data refreshes, hide the flyout
             this.setState(closedFlyoutState);
+        }
+    }
+
+    componentDidMount() {
+        if (this.state.selectedDeviceGroupId) {
+            window.history.replaceState(
+                {},
+                document.title,
+                this.props.location.pathname
+            );
         }
     }
 
@@ -76,7 +104,24 @@ export class Deployments extends Component {
                 displayName: rowData.name,
             })
         );
-        this.props.history.push(`/deployments/${deploymentId}`);
+        this.props.history.push(
+            `/deployments/${deploymentId}/${rowData.isLatest}`
+        );
+    };
+
+    onCellClicked = (selectedDeployment) => {
+        if (selectedDeployment.colDef.field === "isActive") {
+            this.setState({
+                openFlyoutName: "deployment-status",
+                deployment: selectedDeployment.data,
+                relatedDeployments: selectedDeployment.node.gridOptionsWrapper.gridOptions.rowData.filter(
+                    (x) =>
+                        x.deviceGroupId ===
+                            selectedDeployment.data.deviceGroupId &&
+                        x.id !== selectedDeployment.data.id
+                ),
+            });
+        }
     };
 
     render() {
@@ -87,6 +132,7 @@ export class Deployments extends Component {
                 isPending,
                 fetchDeployments,
                 lastUpdated,
+                allActiveDeployments,
             } = this.props,
             gridProps = {
                 rowData: isPending ? undefined : deployments || [],
@@ -95,13 +141,18 @@ export class Deployments extends Component {
                 t: t,
                 getSoftSelectId: this.getSoftSelectId,
                 onSoftSelectChange: this.onSoftSelectChange,
+                onCellClicked: this.onCellClicked,
             };
 
         return (
             <ComponentArray>
                 <ContextMenu>
                     <ContextMenuAlign left={true}>
-                        <DeviceGroupDropdown />
+                        <DeviceGroupDropdown
+                            deviceGroupIdFromUrl={
+                                this.state.selectedDeviceGroupId
+                            }
+                        />
                         <Protected permission={permissions.updateDeviceGroups}>
                             <ManageDeviceGroupsBtn />
                         </Protected>
@@ -135,10 +186,63 @@ export class Deployments extends Component {
                         className="deployments-title"
                         titleValue={t("deployments.title")}
                     />
+                    <h1 className="right-corner">
+                        <Balloon
+                            position={BalloonPosition.Bottom}
+                            align={BalloonAlignment.Center}
+                            tooltip={
+                                <div>
+                                    Number of Active deployments associated with
+                                    the current device group
+                                </div>
+                            }
+                        >
+                            {deployments.filter((x) => x.isActive).length}
+                        </Balloon>
+                        /
+                        <Balloon
+                            position={BalloonPosition.Bottom}
+                            align={BalloonAlignment.Center}
+                            tooltip={
+                                <div>
+                                    Number of Active deployments associated with
+                                    all device group
+                                </div>
+                            }
+                        >
+                            {
+                                allActiveDeployments.filter((x) => x.isActive)
+                                    .length
+                            }
+                        </Balloon>
+                        /
+                        <Balloon
+                            position={BalloonPosition.Bottom}
+                            align={BalloonAlignment.Center}
+                            tooltip={
+                                <div>
+                                    Total number of deployments available in IOT
+                                    Hub
+                                </div>
+                            }
+                        >
+                            {100 -
+                                allActiveDeployments.filter((x) => x.isActive)
+                                    .length}
+                        </Balloon>
+                    </h1>
                     {!!error && <AjaxError t={t} error={error} />}
                     {!error && <DeploymentsGrid {...gridProps} />}
                     {this.state.openFlyoutName === "newDeployment" && (
                         <DeploymentNewContainer
+                            t={t}
+                            onClose={this.closeFlyout}
+                        />
+                    )}
+                    {this.state.openFlyoutName === "deployment-status" && (
+                        <DeploymentStatusContainer
+                            selectedDeployment={this.state.deployment}
+                            relatedDeployments={this.state.relatedDeployments}
                             t={t}
                             onClose={this.closeFlyout}
                         />

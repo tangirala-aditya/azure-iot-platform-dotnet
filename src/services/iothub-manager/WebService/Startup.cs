@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Mmm.Iot.Common.Services.AIPreprocessors;
 using Mmm.Iot.Common.Services.Auth;
 using Mmm.Iot.Common.Services.Config;
 
@@ -40,6 +41,7 @@ namespace Mmm.Iot.IoTHubManager.WebService
             applicationInsightsOptions.EnableAdaptiveSampling = false;
             services.AddApplicationInsightsTelemetry(applicationInsightsOptions);
             services.AddSingleton(typeof(ITelemetryChannel), new InMemoryChannel() { MaxTelemetryBufferCapacity = 19898 });
+            services.AddApplicationInsightsTelemetryProcessor<HealthProbeTelemetryProcessor>();
             services.AddMvc().AddControllersAsServices().AddNewtonsoftJson();
             services.AddHttpContextAccessor();
             this.ApplicationContainer = new DependencyResolution().Setup(services, this.Configuration);
@@ -75,6 +77,7 @@ namespace Mmm.Iot.IoTHubManager.WebService
             // Using fixed rate sampling
             double fixedSamplingPercentage = config.Global.FixedSamplingPercentage == 0 ? 10 : config.Global.FixedSamplingPercentage;
             builder.UseSampling(fixedSamplingPercentage);
+            builder.Use(next => new HealthProbeTelemetryProcessor(next));
             builder.Build();
         }
     }

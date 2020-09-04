@@ -24,12 +24,17 @@ import {
     PackagesContainer,
     DeploymentsRouter,
 } from "./pages";
+import { IdentityGatewayService } from "services";
 
 class App extends Component {
     constructor(props) {
         super(props);
 
         this.state = { openFlyout: "" };
+    }
+
+    componentWillMount() {
+        IdentityGatewayService.VerifyAndRefreshCache();
     }
 
     closeFlyout = () => this.setState({ openFlyout: "" });
@@ -116,10 +121,14 @@ class App extends Component {
                     ],
                 },
                 {
-                    path: "/deployments/:id",
+                    path: "/deployments/:id/:isLatest",
                     crumbs: [
                         { to: "/deployments", labelId: "tabs.deployments" },
                         { to: "/deployments/:id", matchParam: "id" },
+                        {
+                            to: "/deployments/:id/:isLatest",
+                            matchParam: "isLatest",
+                        },
                     ],
                 },
                 {

@@ -52,7 +52,7 @@ export class AlertsPanel extends Component {
     };
 
     render() {
-        const { t, alerts, isPending, error, isAlertingActive } = this.props,
+        const { t, alerts, isPending, error } = this.props,
             gridProps = {
                 columnDefs: translateColumnDefs(t, this.columnDefs),
                 rowData: alerts,
@@ -71,14 +71,9 @@ export class AlertsPanel extends Component {
                 </PanelHeader>
                 <PanelContent>
                     <RulesGrid {...gridProps} />
-                    {!isAlertingActive && (
-                        <PanelMsg>{t("dashboard.alertingTurnedOff")}</PanelMsg>
+                    {!showOverlay && alerts.length === 0 && (
+                        <PanelMsg>{t("dashboard.noData")}</PanelMsg>
                     )}
-                    {isAlertingActive &&
-                        !showOverlay &&
-                        alerts.length === 0 && (
-                            <PanelMsg>{t("dashboard.noData")}</PanelMsg>
-                        )}
                 </PanelContent>
                 {showOverlay && (
                     <PanelOverlay>

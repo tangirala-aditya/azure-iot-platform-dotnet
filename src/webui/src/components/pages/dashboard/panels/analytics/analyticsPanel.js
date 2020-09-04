@@ -139,7 +139,6 @@ export class AnalyticsPanel extends Component {
                 topAlerts,
                 timeSeriesExplorerUrl,
                 error,
-                isAlertingActive,
             } = this.props,
             showOverlay = isPending && !criticalAlertsChange;
         return (
@@ -181,11 +180,7 @@ export class AnalyticsPanel extends Component {
                             )}
                         </div>
                     </div>
-                    {!isAlertingActive && (
-                        <PanelMsg>{t("dashboard.alertingTurnedOff")}</PanelMsg>
-                    )}
-                    {isAlertingActive &&
-                        !showOverlay &&
+                    {!showOverlay &&
                         !topAlerts.length &&
                         !Object.keys(alertsPerDeviceId).length && (
                             <PanelMsg>{t("dashboard.noData")}</PanelMsg>

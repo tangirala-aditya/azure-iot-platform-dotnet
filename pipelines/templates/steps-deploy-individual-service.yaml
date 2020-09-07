@@ -74,9 +74,9 @@ steps:
     displayName: Upgrading the service for first time
     inputs:
       connectionType: Azure Resource Manager
-      azureSubscription: 3M-CRSLAD16-BBIoTP-Dev
-      azureResourceGroup: rg-iot-ggk-dev
-      kubernetesCluster: ggktech-aks-dev
+      azureSubscription: ${{parameters.subscriptionName}}
+      azureResourceGroup: ${{parameters.resourceGroupName}}
+      kubernetesCluster: ${{parameters.aksName}}
       namespace: default
       command: upgrade
       chartType: FilePath
@@ -91,9 +91,9 @@ steps:
     condition: eq(variables.type,'blue')
     inputs:
       connectionType: Azure Resource Manager
-      azureSubscription: 3M-CRSLAD16-BBIoTP-Dev
-      azureResourceGroup: rg-iot-ggk-dev
-      kubernetesCluster: ggktech-aks-dev
+      azureSubscription: ${{parameters.subscriptionName}}
+      azureResourceGroup: ${{parameters.resourceGroupName}}
+      kubernetesCluster: ${{parameters.aksName}}
       namespace: default
       command: upgrade
       chartType: FilePath
@@ -110,9 +110,9 @@ steps:
     #condition: eq($variables[type], 'green')
     inputs:
       connectionType: Azure Resource Manager
-      azureSubscription: 3M-CRSLAD16-BBIoTP-Dev
-      azureResourceGroup: rg-iot-ggk-dev
-      kubernetesCluster: ggktech-aks-dev
+      azureSubscription: ${{parameters.subscriptionName}}
+      azureResourceGroup: ${{parameters.resourceGroupName}}
+      kubernetesCluster: ${{parameters.aksName}}
       namespace: default
       command: upgrade
       chartType: FilePath

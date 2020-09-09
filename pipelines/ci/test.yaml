@@ -595,7 +595,7 @@ stages:
               kubernetesCluster: $(aksName)
               useClusterAdmin: true
               namespace: $(kubernetesNamespace)
-              command: install
+              command: upgrade
               chartName: charts/$(mmmIotPlatformServicesHelmChartName)
               releaseName: $(mmmIotPlatformServicesHelmChartReleaseName)
               updatedependency: true
@@ -607,6 +607,7 @@ stages:
                 --timeout $(helmInstallTimeoutInSeconds)
                 --wait
                 --debug
+              install: true
 
           - task: AzureCLI@2
             displayName: Note services Helm chart was installed

@@ -24,8 +24,6 @@ spec:
       containers:
         - name: {{ include "service.name" . }}
           image: {{ cat (include "service.deployment.image.repository" .) ":" (required "Error: missing required value .Values.deployment.image.tag" .Values.deployment.image.tag) | nospace }}
-          #image: {{ .Values.deployment.image.repository }}
-          #command: ["/bin/sh","-c","/app/run.sh", "while true; do echo hello; sleep 10;done"]
           imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
           resources:
             limits:

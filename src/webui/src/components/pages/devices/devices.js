@@ -151,6 +151,7 @@ export class Devices extends Component {
                 isPending,
                 lastUpdated,
                 fetchDevices,
+                routeProps,
             } = this.props,
             gridProps = {
                 onGridReady: this.onGridReady,
@@ -181,12 +182,7 @@ export class Devices extends Component {
                     </ContextMenuAlign>
                     <ContextMenuAlign>
                         <CreateDeviceQueryBtn />
-                        <SearchInput
-                            onChange={this.searchOnChange}
-                            onClick={this.onSearchClick}
-                            aria-label={t("devices.ariaLabel")}
-                            placeholder={t("devices.searchPlaceholder")}
-                        />
+
                         {this.state.contextBtns}
                         <Protected permission={permissions.updateSIMManagement}>
                             <Btn
@@ -209,15 +205,23 @@ export class Devices extends Component {
                             time={lastUpdated}
                             isPending={isPending}
                             t={t}
+                            isShowIconOnly={true}
                         />
                     </ContextMenuAlign>
                 </ContextMenu>
                 <PageContent className="devices-container">
                     <PageTitle titleValue={t("devices.title")} />
                     {!!error && <AjaxError t={t} error={error} />}
+                    <SearchInput
+                        onChange={this.searchOnChange}
+                        onClick={this.onSearchClick}
+                        aria-label={t("devices.ariaLabel")}
+                        placeholder={t("devices.searchPlaceholder")}
+                    />
                     {!error && (
                         <DevicesGridContainer
                             {...gridProps}
+                            {...routeProps}
                             openPropertyEditorModal={this.openModal}
                         />
                     )}

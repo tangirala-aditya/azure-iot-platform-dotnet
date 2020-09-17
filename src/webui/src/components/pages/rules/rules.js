@@ -172,11 +172,6 @@ export class Rules extends Component {
                             ) : null}
                         </ContextMenuAlign>
                         <ContextMenuAlign>
-                            <SearchInput
-                                onChange={this.searchOnChange}
-                                placeholder={t("rules.searchPlaceholder")}
-                                aria-label={t("rules.ariaLabel")}
-                            />
                             {this.state.contextBtns}
                             <Protected permission={permissions.createRules}>
                                 <Btn
@@ -191,6 +186,7 @@ export class Rules extends Component {
                                 time={lastUpdated}
                                 isPending={isPending}
                                 t={t}
+                                isShowIconOnly={true}
                             />
                         </ContextMenuAlign>
                     </ContextMenu>
@@ -199,6 +195,11 @@ export class Rules extends Component {
                     <PageContent className="rules-container">
                         <PageTitle titleValue={t("rules.title")} />
                         {!!error && <AjaxError t={t} error={error} />}
+                        <SearchInput
+                            onChange={this.searchOnChange}
+                            placeholder={t("rules.searchPlaceholder")}
+                            aria-label={t("rules.ariaLabel")}
+                        />
                         {!error && <RulesGrid {...gridProps} />}
                         {this.state.openFlyoutName === "newRule" && (
                             <NewRuleFlyout

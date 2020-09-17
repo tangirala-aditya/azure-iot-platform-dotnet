@@ -283,14 +283,14 @@ Function Get-SerenityService {
 
                 if ($Null -ne $serenityService.PipelineRunId) {
                     Write-Verbose 'Getting Azure Pipeline run info'
-                    Write-Verbose 'serenityService.PipelineRunId : ' $serenityService.PipelineRunId
+                    Write-Verbose "serenityService.PipelineRunId : $serenityService.PipelineRunId"
                     $pipelineRun = Get-AzurePipelineRun -Id $serenityService.PipelineRunId
-                    Write-Verbose 'pipelineRunID : ' $pipelineRun
+                    Write-Verbose "pipelineRunID :  $pipelineRun"
                     if ($pipelineRun) {
                         $serenityService.PipelineRunUrl = $pipelineRun.url
                         Push-Location (Join-Path $mmmSourceDirectory $serenityRepositoryName)
                         Write-Verbose 'Inspecting Git repository'
-                        Write-Verbose 'pipelineRun.sourceVersion : ' $($pipelineRun.sourceVersion)^{commit}
+                        Write-Verbose "pipelineRun.sourceVersion : $($pipelineRun.sourceVersion)^{commit}"
                         $Null = git cat-file -e "$($pipelineRun.sourceVersion)^{commit}" 2>&1
                         if ($?) {
                             $serenityService.CommitDate = git show -s --format=%ci $pipelineRun.sourceVersion

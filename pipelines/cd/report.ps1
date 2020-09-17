@@ -294,7 +294,9 @@ Function Get-SerenityService {
                         $Null = git cat-file -e "$($pipelineRun.sourceVersion)^{commit}" 2>&1
                         if ($?) {
                             $serenityService.CommitDate = git show -s --format=%ci $pipelineRun.sourceVersion
+                            Write-Verbose "serenityService.CommitDate $serenityService.CommitDate"
                             $serenityService.GitRepository = git config --get remote.origin.url
+                            Write-Verbose "serenityService.GitRepository $serenityService.GitRepository"
                             $serenityService.GitSha = git rev-parse --short=4 $pipelineRun.sourceVersion
                             $serenityService.SemanticVersion = git tag --points-at $pipelineRun.sourceVersion |
                                 Select-String '^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?<metadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$' -Raw

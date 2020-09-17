@@ -296,6 +296,8 @@ Function Get-SerenityService {
                         Write-Verbose $($pipelineRun.sourceVersion)^{commit}
                         $Null = git cat-file -e "$($pipelineRun.sourceVersion)^{commit}" 2>&1
                         if ($?) {
+                            $des = git cat-file -e "$($pipelineRun.sourceVersion)^{commit}" 2>&1
+                            Write-Verbose $des
                             $serenityService.CommitDate = git show -s --format=%ci $pipelineRun.sourceVersion
                             Write-Verbose "serenityService.CommitDate $serenityService.CommitDate" 
                             Write-Verbose $serenityService.CommitDate
@@ -311,6 +313,8 @@ Function Get-SerenityService {
                             Write-Verbose 'Inspecting old Git repository'
                             $Null = git cat-file -e "$($pipelineRun.sourceVersion)^{commit}" 2>&1
                             if (!$?) {
+                                $desr = git cat-file -e "$($pipelineRun.sourceVersion)^{commit}" 2>&1
+                                Write-Verbose $desr
                                 throw 'Could not find commit in either old or new repository'
                             }
 

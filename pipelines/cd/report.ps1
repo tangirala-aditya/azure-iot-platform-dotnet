@@ -102,6 +102,7 @@ Function Get-SerenityServices {
             $serenityService.Environment = $serenityEnvironment
             $serenityServices += $serenityService
         }
+        throw 'manually stopping execution'
     }
     else {
         $serenityServices = @()
@@ -287,23 +288,15 @@ Function Get-SerenityService {
                     Write-Verbose $serenityService.PipelineRunId
                     $pipelineRun = Get-AzurePipelineRun -Id $serenityService.PipelineRunId
                     Write-Verbose "pipelineRunID :  $pipelineRun"
-                    Write-Verbose $pipelineRun
                     if ($pipelineRun) {
                         $serenityService.PipelineRunUrl = $pipelineRun.url
                         Push-Location (Join-Path $mmmSourceDirectory $serenityRepositoryName)
                         Write-Verbose 'Inspecting Git repository'
                         Write-Verbose "pipelineRun.sourceVersion : $($pipelineRun.sourceVersion)^{commit}"
-                        Write-Verbose $($pipelineRun.sourceVersion)^{commit}
                         $Null = git cat-file -e "$($pipelineRun.sourceVersion)^{commit}" 2>&1
                         if ($?) {
-                            $des = git cat-file -e "$($pipelineRun.sourceVersion)^{commit}" 2>&1
-                            Write-Verbose $des
                             $serenityService.CommitDate = git show -s --format=%ci $pipelineRun.sourceVersion
-                            Write-Verbose "serenityService.CommitDate $serenityService.CommitDate" 
-                            Write-Verbose $serenityService.CommitDate
                             $serenityService.GitRepository = git config --get remote.origin.url
-                            Write-Verbose "serenityService.GitRepository $serenityService.GitRepository" 
-                            Write-Verbose $serenityService.GitRepository
                             $serenityService.GitSha = git rev-parse --short=4 $pipelineRun.sourceVersion
                             $serenityService.SemanticVersion = git tag --points-at $pipelineRun.sourceVersion |
                                 Select-String '^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?<metadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$' -Raw
@@ -313,9 +306,8 @@ Function Get-SerenityService {
                             Write-Verbose 'Inspecting old Git repository'
                             $Null = git cat-file -e "$($pipelineRun.sourceVersion)^{commit}" 2>&1
                             if (!$?) {
-                                $desr = git cat-file -e "$($pipelineRun.sourceVersion)^{commit}" 2>&1
-                                Write-Verbose $desr
-                                throw 'Could not find commit in either old or new repository'
+                                # throw 'Could not find commit in either old or new repository'
+                                Write-Verbose 'Could not find commit in either old or new repository'
                             }
 
                             $serenityService.CommitDate = git show -s --format=%ci $pipelineRun.sourceVersion

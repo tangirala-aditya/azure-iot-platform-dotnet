@@ -18,6 +18,7 @@ namespace Mmm.Iot.IdentityGateway.WebService
             builder.RegisterType<UserSettingsContainer>().SingleInstance();
             builder.RegisterType<UserTenantContainer>().SingleInstance();
             builder.RegisterType<SystemAdminContainer>().SingleInstance();
+            builder.RegisterType<TenantDataCollectorService>().SingleInstance();
         }
     }
 }

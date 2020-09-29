@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.Management.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
@@ -77,23 +78,58 @@ namespace TenantDataManagement
             return resourceGroups;
         }
 
-        public async Task<object> GetResourcesByResourceGroups(string resourceGroupName)
+        public async Task<object> GetAzureReourcesData()
+        {
+            return await this.GetResourcesByResourceGroups("rg-iot-ggk-dev");
+        }
+
+        private async Task<object> GetResourcesByResourceGroups(string resourceGroupName)
         {
             var x = (await this.rmClient.Resources.ListByResourceGroupAsync(resourceGroupName)).ToList();
             string storageAccountName = x.Where(y => y.Kind == "Storage").ToList()[0].Name;
             string storageAccConnectionString = this.GetStorageAccountConnectionString(resourceGroupName, storageAccountName);
+            this.FetchTenantDetailsFromTableStorage(storageAccConnectionString, resourceGroupName);
             return x;
         }
 
-        public string GetStorageAccountConnectionString(string resourceGroupName, string storageAccountName)
+        private string GetStorageAccountConnectionString(string resourceGroupName, string storageAccountName)
         {
             IList<StorageAccountKey> acctKeys = this.storageClient.StorageAccounts.ListKeysAsync(resourceGroupName, storageAccountName).Result.Keys;
             return $"DefaultEndpointsProtocol=https;AccountName={storageAccountName};AccountKey={acctKeys.FirstOrDefault()?.Value};EndpointSuffix=core.windows.net";
         }
 
-        public async Task<object> GetAzureReourcesData()
+        private async void FetchTenantDetailsFromTableStorage(string storageAccConnectionString, string resourceGroupName)
         {
-            return await this.GetResourcesByResourceGroups("rg-iot-ggk-dev");
+            List<AzureTenantData> azureTenantDataList = new List<AzureTenantData>();
+            TableStorageOperations cloudTableClient = await TableStorageOperations.GetClientAsync(storageAccConnectionString);
+            TableQuery<TenantModel> query = new TableQuery<TenantModel>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.NotEqual, string.Empty));
+            List<TenantModel> tenants = await cloudTableClient.QueryAsync<TenantModel>("tenant", query);
+
+            foreach (TenantModel tenant in tenants)
+            {
+                AzureTenantData azureTenantData = new AzureTenantData();
+                this.FillAzureTenantMetaData(azureTenantData, tenant, resourceGroupName);
+                TableQuery<UserTenantModel> userQuery = new TableQuery<UserTenantModel>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, tenant.TenantId));
+                List<UserTenantModel> users = await cloudTableClient.QueryAsync<UserTenantModel>("user", userQuery);
+
+                TableQuery<UserSettingsModel> userSettingsQuery = new TableQuery<UserSettingsModel>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, "LastusedTenant"));
+                List<UserSettingsModel> userSettings = await cloudTableClient.QueryAsync<UserSettingsModel>("userSettings", userSettingsQuery);
+                UserSettingsModel userSettingsModelForSelectedTenant = userSettings.OrderByDescending(z => z.Timestamp).FirstOrDefault(x => x.Value == tenant.TenantId);
+
+                azureTenantData.UserCount = users.Count;
+                azureTenantData.LastAccessed = userSettingsModelForSelectedTenant.Timestamp;
+                azureTenantDataList.Add(azureTenantData);
+            }
+        }
+
+        private void FillAzureTenantMetaData(AzureTenantData azureTenantData, TenantModel tenant, string resourceGroupName)
+        {
+            azureTenantData.ResourceGroup = resourceGroupName;
+            azureTenantData.TenantName = tenant.TenantName;
+            azureTenantData.TenantId = tenant.TenantId;
+            azureTenantData.SAJob = tenant.SAJobName;
+            azureTenantData.IoTHubIsDeployed = tenant.IsIotHubDeployed;
+            azureTenantData.IoTHubName = tenant.IotHubName;
         }
     }
 }

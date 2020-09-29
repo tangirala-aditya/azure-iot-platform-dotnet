@@ -10,9 +10,9 @@ namespace TenantDataManagement
     {
         public string Region { get; set; }
 
-        public int DeviceCount { get; set; }
+        public long DeviceCount { get; set; }
 
-        public DateTimeOffset LastAccessed { get; set; }
+        public DateTimeOffset? LastAccessed { get; set; }
 
         public string TenantId { get; set; }
 

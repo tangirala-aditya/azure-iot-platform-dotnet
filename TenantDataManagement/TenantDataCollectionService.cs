@@ -5,23 +5,30 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Azure.Devices;
 using Microsoft.Azure.Management.Fluent;
+using Microsoft.Azure.Management.IotHub;
+using Microsoft.Azure.Management.IotHub.Models;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
 using Microsoft.Azure.Management.Storage.Fluent;
 using Microsoft.Azure.Management.Storage.Fluent.Models;
+using Microsoft.Rest.Azure;
 
 namespace TenantDataManagement
 {
-    public class TenantDataCollectionService
+    public class TenantDataCollectionService : IDisposable
     {
+        private const int MaxDeployments = 100;
         private readonly IAzure client;
         private DateTime cacheExpiration;
         private AzureCredentials azureCredentials;
         private ResourceManagementClient rmClient;
         private StorageManagementClient storageClient;
+        private IotHubClient iotHubClient;
 
         public TenantDataCollectionService()
         {
@@ -30,6 +37,7 @@ namespace TenantDataManagement
             this.rmClient = (ResourceManagementClient)this.client.ManagementClients.FirstOrDefault(t =>
             t.GetType() == typeof(ResourceManagementClient));
             this.storageClient = (StorageManagementClient)this.client.ManagementClients.FirstOrDefault(t => t.GetType() == typeof(StorageManagementClient));
+            this.iotHubClient = new IotHubClient(this.AzureCredentials);
         }
 
         private AzureCredentials AzureCredentials
@@ -83,6 +91,27 @@ namespace TenantDataManagement
             return await this.GetResourcesByResourceGroups("rg-iot-ggk-dev");
         }
 
+        public void Dispose()
+        {
+            if (this.iotHubClient != null)
+            {
+                this.iotHubClient.Dispose();
+                this.iotHubClient = null;
+            }
+
+            if (this.storageClient != null)
+            {
+                this.storageClient.Dispose();
+                this.storageClient = null;
+            }
+
+            if (this.rmClient != null)
+            {
+                this.rmClient.Dispose();
+                this.rmClient = null;
+            }
+        }
+
         private async Task<object> GetResourcesByResourceGroups(string resourceGroupName)
         {
             var x = (await this.rmClient.Resources.ListByResourceGroupAsync(resourceGroupName)).ToList();
@@ -108,21 +137,43 @@ namespace TenantDataManagement
             foreach (TenantModel tenant in tenants)
             {
                 AzureTenantData azureTenantData = new AzureTenantData();
-                this.FillAzureTenantMetaData(azureTenantData, tenant, resourceGroupName);
-                TableQuery<UserTenantModel> userQuery = new TableQuery<UserTenantModel>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, tenant.TenantId));
-                List<UserTenantModel> users = await cloudTableClient.QueryAsync<UserTenantModel>("user", userQuery);
 
-                TableQuery<UserSettingsModel> userSettingsQuery = new TableQuery<UserSettingsModel>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, "LastusedTenant"));
-                List<UserSettingsModel> userSettings = await cloudTableClient.QueryAsync<UserSettingsModel>("userSettings", userSettingsQuery);
-                UserSettingsModel userSettingsModelForSelectedTenant = userSettings.OrderByDescending(z => z.Timestamp).FirstOrDefault(x => x.Value == tenant.TenantId);
+                this.HydrateTenantMetaData(azureTenantData, tenant, resourceGroupName);
 
-                azureTenantData.UserCount = users.Count;
-                azureTenantData.LastAccessed = userSettingsModelForSelectedTenant.Timestamp;
+                await this.HydrateUserData(cloudTableClient, tenant, azureTenantData);
+
+                await this.HydrateUserAccessData(cloudTableClient, tenant, azureTenantData);
+
+                await this.HydrateLocationInformationFromIoTHub(azureTenantData);
+
+                await this.HydrateContentInformationFromIoTHub(azureTenantData);
+
                 azureTenantDataList.Add(azureTenantData);
             }
         }
 
-        private void FillAzureTenantMetaData(AzureTenantData azureTenantData, TenantModel tenant, string resourceGroupName)
+        private async Task HydrateUserAccessData(TableStorageOperations cloudTableClient, TenantModel tenant, AzureTenantData azureTenantData)
+        {
+            TableQuery<UserSettingsModel> userSettingsQuery = new TableQuery<UserSettingsModel>().Where(
+                TableQuery.CombineFilters(
+                TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, "LastusedTenant"),
+                TableOperators.And,
+                TableQuery.GenerateFilterCondition("Value", QueryComparisons.Equal, tenant.TenantId)));
+
+            List<UserSettingsModel> userSettings = await cloudTableClient.QueryAsync<UserSettingsModel>("userSettings", userSettingsQuery);
+            UserSettingsModel userSettingsModelForSelectedTenant = userSettings.OrderByDescending(z => z.Timestamp).FirstOrDefault();
+
+            azureTenantData.LastAccessed = userSettingsModelForSelectedTenant?.Timestamp;
+        }
+
+        private async Task HydrateUserData(TableStorageOperations cloudTableClient, TenantModel tenant, AzureTenantData azureTenantData)
+        {
+            TableQuery<UserTenantModel> userQuery = new TableQuery<UserTenantModel>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, tenant.TenantId));
+            List<UserTenantModel> users = await cloudTableClient.QueryAsync<UserTenantModel>("user", userQuery);
+            azureTenantData.UserCount = users.Count;
+        }
+
+        private void HydrateTenantMetaData(AzureTenantData azureTenantData, TenantModel tenant, string resourceGroupName)
         {
             azureTenantData.ResourceGroup = resourceGroupName;
             azureTenantData.TenantName = tenant.TenantName;
@@ -130,6 +181,49 @@ namespace TenantDataManagement
             azureTenantData.SAJob = tenant.SAJobName;
             azureTenantData.IoTHubIsDeployed = tenant.IsIotHubDeployed;
             azureTenantData.IoTHubName = tenant.IotHubName;
+        }
+
+        private async Task<IotHubDescription> RetrieveAsync(string resourceGroupName, string iotHubName)
+        {
+            return await this.iotHubClient.IotHubResource.GetAsync(resourceGroupName, iotHubName, CancellationToken.None);
+        }
+
+        private async Task HydrateLocationInformationFromIoTHub(AzureTenantData azureTenantData)
+        {
+            var iotHubInfo = await this.RetrieveAsync(azureTenantData.ResourceGroup, azureTenantData.IoTHubName);
+
+            if (iotHubInfo != null)
+            {
+                azureTenantData.Region = iotHubInfo.Location;
+            }
+        }
+
+        private async Task HydrateContentInformationFromIoTHub(AzureTenantData azureTenantData)
+        {
+            string connString = this.GetIoTHubConnectionString(azureTenantData.ResourceGroup, azureTenantData.IoTHubName);
+            RegistryManager registry = RegistryManager.CreateFromConnectionString(connString);
+
+            Microsoft.Azure.Devices.RegistryStatistics stats = await registry.GetRegistryStatisticsAsync();
+            azureTenantData.DeviceCount = stats.TotalDeviceCount;
+
+            var deployments = await registry.GetConfigurationsAsync(MaxDeployments);
+            azureTenantData.DeploymentCount = deployments != null ? deployments.Count() : 0;
+        }
+
+        private IPage<SharedAccessSignatureAuthorizationRule> ListKeysAsync(string resourceGroupName, string iotHubName)
+        {
+            return this.iotHubClient.IotHubResource.ListKeys(resourceGroupName, iotHubName);
+        }
+
+        private string GetAccessKey(string resourceGroupName, string iotHubName)
+        {
+            var keys = this.ListKeysAsync(resourceGroupName, iotHubName);
+            return keys.Where(t => t.KeyName == "iothubowner").FirstOrDefault().PrimaryKey;
+        }
+
+        private string GetIoTHubConnectionString(string resourceGroupName, string iotHubName)
+        {
+            return $"HostName={iotHubName}.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey={this.GetAccessKey(resourceGroupName, iotHubName)}";
         }
     }
 }

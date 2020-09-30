@@ -45,27 +45,6 @@
                 "description": "The size of the Virtual Machine."
             }
         },
-        "aksServiceCIDR": {
-            "defaultValue": "10.2.0.0/16",
-            "type": "string",
-            "metadata": {
-                "description": "A CIDR notation IP range from which to assign service cluster IPs."
-            }
-        },
-        "aksDnsServiceIP": {
-            "defaultValue": "10.2.0.10",
-            "type": "string",
-            "metadata": {
-                "description": "Containers DNS server IP address."
-            }
-        },
-        "aksDockerBridgeCIDR": {
-            "defaultValue": "172.17.0.1/16",
-            "type": "string",
-            "metadata": {
-                "description": "A CIDR notation IP for Docker bridge."
-            }
-        },
         "servicePrincipalClientId": {
             "metadata": {
                 "description": "Client ID (used by cloudprovider)."
@@ -77,20 +56,6 @@
                 "description": "The Service Principal Client Secret."
             },
             "type": "securestring"
-        },
-        "virtualNetworkAddressPrefix": {
-            "defaultValue": "10.0.0.0/8",
-            "type": "string",
-            "metadata": {
-                "description": "Containers DNS server IP address."
-            }
-        },
-        "aksSubnetAddressPrefix": {
-            "defaultValue": "10.0.0.0/16",
-            "type": "string",
-            "metadata": {
-                "description": "Containers DNS server IP address."
-            }
         },
         "osType": {
             "type": "string",
@@ -170,27 +135,6 @@
     },
     "resources": [
         {
-            "type": "Microsoft.Network/virtualNetworks",
-            "name": "vnet-agic",
-            "apiVersion": "2018-08-01",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "[parameters('virtualNetworkAddressPrefix')]"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "subnet-agic",
-                        "properties": {
-                            "addressPrefix": "[parameters('aksSubnetAddressPrefix')]"
-                        }
-                    }
-                ]
-            }
-        },
-        {
             "apiVersion": "2019-06-01",
             "dependsOn": [],
             "type": "Microsoft.ContainerService/managedClusters",
@@ -207,8 +151,7 @@
                         "count": "[parameters('agentCount')]",
                         "vmSize": "[parameters('agentVMSize')]",
                         "osType": "[parameters('osType')]",
-                        "storageProfile": "ManagedDisks",
-                        "vnetSubnetID": "subnet-agic"
+                        "storageProfile": "ManagedDisks"
                     }
                 ],
                 "servicePrincipalProfile": {
@@ -216,10 +159,7 @@
                     "secret": "[parameters('servicePrincipalClientSecret')]"
                 },
                 "networkProfile": {
-                    "networkPlugin": "[parameters('networkPlugin')]",
-                    "serviceCidr": "[parameters('aksServiceCIDR')]",
-                    "dnsServiceIP": "[parameters('aksDnsServiceIP')]",
-                    "dockerBridgeCidr": "[parameters('aksDockerBridgeCIDR')]"
+                    "networkPlugin": "[parameters('networkPlugin')]"
                 },
                 "addonProfiles": {
                     "httpApplicationRouting": {

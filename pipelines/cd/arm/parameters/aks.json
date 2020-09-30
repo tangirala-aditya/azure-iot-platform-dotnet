@@ -10,7 +10,7 @@
         "servicePrincipalClientId": {  "value": "" },
         "servicePrincipalClientSecret": { "value": "" },
         "kubernetesVersion": { "value": "1.16.7" },
-        "networkPlugin": { "value": "azure" },
+        "networkPlugin": { "value": "kubenet" },
         "omsWorkspaceName": { "value": "" },
         "enableRBAC": { "value": false },
         "enableOmsAgent": { "value": false },

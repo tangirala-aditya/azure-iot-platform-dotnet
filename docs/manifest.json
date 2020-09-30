@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/index.html",
-          "hash": "rV/3M5P7QzRMliuKeDXTjg=="
+          "hash": "wF1v6n+tR2THd/DNjzoZhg=="
         }
       },
       "is_incremental": false,
@@ -26,11 +26,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Concepts/Architecture/costs.md",
+      "source_relative_path": "GettingStarted/Contribute/index.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Concepts/Architecture/costs.html",
-          "hash": "yH/RVrBaqFRC9RhKOQzTYQ=="
+          "relative_path": "GettingStarted/Contribute/index.html",
+          "hash": "8OPwjq1YvwmNx4bsJ/WAlQ=="
         }
       },
       "is_incremental": false,
@@ -38,10 +38,22 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Concepts/Architecture/index.md",
+      "source_relative_path": "GettingStarted/Overview/Architecture/costs.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Concepts/Architecture/index.html",
+          "relative_path": "GettingStarted/Overview/Architecture/costs.html",
+          "hash": "KpU2EOKRktCZrYHtMhNxdw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Overview/Architecture/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Overview/Architecture/index.html",
           "hash": "KojSWeU4lwkyz9nsVqoefg=="
         }
       },
@@ -50,11 +62,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Concepts/architecture.md",
+      "source_relative_path": "GettingStarted/Overview/architecture.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Concepts/architecture.html",
-          "hash": "Flkyqq5WRakr82ToXtQhTg=="
+          "relative_path": "GettingStarted/Overview/architecture.html",
+          "hash": "WX78RTERmvqWAyniJ43KLw=="
         }
       },
       "is_incremental": false,
@@ -62,10 +74,34 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Concepts/integration.md",
+      "source_relative_path": "GettingStarted/Overview/devices.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Concepts/integration.html",
+          "relative_path": "GettingStarted/Overview/devices.html",
+          "hash": "vuMh5K4BF54PIEYixc69tA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Overview/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Overview/index.html",
+          "hash": "jcJr8anh79h2nwUUYpGTOg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Overview/integration.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Overview/integration.html",
           "hash": "0s8meiFJKTj1GfGXoKldpQ=="
         }
       },
@@ -74,11 +110,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Concepts/purpose.md",
+      "source_relative_path": "GettingStarted/Overview/purpose.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Concepts/purpose.html",
-          "hash": "pj3Zjd/dRxuyMfXucAluLg=="
+          "relative_path": "GettingStarted/Overview/purpose.html",
+          "hash": "tR4mLcUI0N2N1dwrjDJ9hA=="
         }
       },
       "is_incremental": false,
@@ -86,10 +122,10 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Concepts/technology.md",
+      "source_relative_path": "GettingStarted/Overview/technology.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Concepts/technology.html",
+          "relative_path": "GettingStarted/Overview/technology.html",
           "hash": "0s8meiFJKTj1GfGXoKldpQ=="
         }
       },
@@ -98,11 +134,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/API-Developer-Setup.md",
+      "source_relative_path": "GettingStarted/Setup/ByRole/API-Developer-Setup.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Setup/API-Developer-Setup.html",
-          "hash": "Vw0FOZD/TWayItcC7SU7XQ=="
+          "relative_path": "GettingStarted/Setup/ByRole/API-Developer-Setup.html",
+          "hash": "0RiSk1eT03w5fiSBVUv/lA=="
         }
       },
       "is_incremental": false,
@@ -110,11 +146,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Azure-Developer-Setup.md",
+      "source_relative_path": "GettingStarted/Setup/ByRole/Azure-Developer-Setup.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Setup/Azure-Developer-Setup.html",
-          "hash": "NNNEjIz4tocigbN7yBkrKw=="
+          "relative_path": "GettingStarted/Setup/ByRole/Azure-Developer-Setup.html",
+          "hash": "1rR1jvw8/pNIoKBti4NITQ=="
         }
       },
       "is_incremental": false,
@@ -122,11 +158,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/DevOps-Setup.md",
+      "source_relative_path": "GettingStarted/Setup/ByRole/DevOps-Setup.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Setup/DevOps-Setup.html",
-          "hash": "6CvRafLwuPQqYhNuhq5TOA=="
+          "relative_path": "GettingStarted/Setup/ByRole/DevOps-Setup.html",
+          "hash": "GzirJn6tVoXb7U55POVjbA=="
         }
       },
       "is_incremental": false,
@@ -134,59 +170,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Doc-Contributor-Setup.md",
+      "source_relative_path": "GettingStarted/Setup/ByRole/Doc-Contributor-Setup.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Setup/Doc-Contributor-Setup.html",
-          "hash": "03mWZqOhLbFjXKvOdcjp7w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/All.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/All.html",
-          "hash": "YaCC6KI4YE30aHaMepkfCw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/azure-cli.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/azure-cli.html",
-          "hash": "iC8okFWzmvhhwC9VhEmD/w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/azure-data-studio.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/azure-data-studio.html",
-          "hash": "lV6T0wc10xbqvB12HTp+WA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/azure-iot-explorer.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/azure-iot-explorer.html",
-          "hash": "WgahkHvylEpH71nAtOAcmA=="
+          "relative_path": "GettingStarted/Setup/ByRole/Doc-Contributor-Setup.html",
+          "hash": "MTQJZbi2qRQvgDa4yzm5qg=="
         }
       },
       "is_incremental": false,
@@ -197,11 +185,11 @@
         "InvalidFileLink"
       ],
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/bash.md",
+      "source_relative_path": "GettingStarted/Setup/ByRole/Web-Developer-Setup.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/bash.html",
-          "hash": "RambvNfFYinN+v7gmYTSEQ=="
+          "relative_path": "GettingStarted/Setup/ByRole/Web-Developer-Setup.html",
+          "hash": "+y2+ubD1nY6qEEc0yCbP7A=="
         }
       },
       "is_incremental": false,
@@ -209,11 +197,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/dev-spaces.md",
+      "source_relative_path": "GettingStarted/Setup/ByTool/All.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/dev-spaces.html",
-          "hash": "WsGZu6rPbeIfQAgCoP1olg=="
+          "relative_path": "GettingStarted/Setup/ByTool/All.html",
+          "hash": "P/YIh/N03RAnfEa91gIwOw=="
         }
       },
       "is_incremental": false,
@@ -221,11 +209,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/docker.md",
+      "source_relative_path": "GettingStarted/Setup/ByTool/azure-cli.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/docker.html",
-          "hash": "DPVccLpsTS8LqqeB0Ax3Dw=="
+          "relative_path": "GettingStarted/Setup/ByTool/azure-cli.html",
+          "hash": "ATdhofX5qcbrAG9ONS08cA=="
         }
       },
       "is_incremental": false,
@@ -233,26 +221,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/dotnet-core.md",
+      "source_relative_path": "GettingStarted/Setup/ByTool/azure-data-studio.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/dotnet-core.html",
-          "hash": "4V76XS02UtqFfmpzgoctmw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/git.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/git.html",
-          "hash": "2Jhcdp7O/ha8xAtbgRbieg=="
+          "relative_path": "GettingStarted/Setup/ByTool/azure-data-studio.html",
+          "hash": "O9Vhk9ySWOKyWkV3ueLrog=="
         }
       },
       "is_incremental": false,
@@ -260,167 +233,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/helm.md",
+      "source_relative_path": "GettingStarted/Setup/ByTool/azure-iot-explorer.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/helm.html",
-          "hash": "PsbrFJQj0Lc8bJOSvZmXqA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/kubernetes.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/kubernetes.html",
-          "hash": "GiecO4wIIs1xaeT0vMk77Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/nodejs.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/nodejs.html",
-          "hash": "B1rZyR8e45bYtUIxivW8Eg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/npm.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/npm.html",
-          "hash": "virbCHxUm4eLCb04QF2nFQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/postman.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/postman.html",
-          "hash": "vvsLDJ2HJmbZN4RXTTuwSA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/powershell.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/powershell.html",
-          "hash": "qerE9jZbCHXivDlg++pH9g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/redux.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/redux.html",
-          "hash": "V9bnGmAtNVyKzmP09U12zA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/source-code.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/source-code.html",
-          "hash": "JBK7iXm7+oJnPZLH9H2Paw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/storage-explorer.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/storage-explorer.html",
-          "hash": "nYQoTYs1l/druAGTe/eWPw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/terraform.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/terraform.html",
-          "hash": "fyCJqO4YnGFpv9nXNFqMSw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/virtualization.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/virtualization.html",
-          "hash": "S3kjXI4I5Re+H3WvnBRClg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/visual-studio-code.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/visual-studio-code.html",
-          "hash": "F7t6V/09gSsHRuuX0bc/vg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/vs-2019.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/vs-2019.html",
-          "hash": "BHfDKzPrnCS2yYyx3A3kVg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/xunit.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/xunit.html",
-          "hash": "4Tv5kciKa7yEsfqgueN/Pw=="
+          "relative_path": "GettingStarted/Setup/ByTool/azure-iot-explorer.html",
+          "hash": "lmxUXGM/YcVKaMkZNIiaew=="
         }
       },
       "is_incremental": false,
@@ -431,11 +248,230 @@
         "InvalidFileLink"
       ],
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Web-Developer-Setup.md",
+      "source_relative_path": "GettingStarted/Setup/ByTool/bash.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Setup/Web-Developer-Setup.html",
-          "hash": "/25lgZdjCbcGeapQIiV6bw=="
+          "relative_path": "GettingStarted/Setup/ByTool/bash.html",
+          "hash": "kZ5Sg25XFQt/7nn6zfgsQA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/dev-spaces.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/dev-spaces.html",
+          "hash": "FP2IKHx4gSlZOtaoGlZJiw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/docker.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/docker.html",
+          "hash": "PCxibCB77DXsbmyJKbr6bg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/dotnet-core.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/dotnet-core.html",
+          "hash": "d/RyEtJoOMneWdzYxWNh0Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/git.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/git.html",
+          "hash": "Y01T9HXoOOsKRm7la4VpHA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/helm.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/helm.html",
+          "hash": "adjMZYGQaqeGtlWiOVf7Kw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/kubernetes.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/kubernetes.html",
+          "hash": "llW3ABaRRPmC/bGjHE1+BQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/nodejs.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/nodejs.html",
+          "hash": "QvfbN7+R+n/CyOgohlEAHw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/npm.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/npm.html",
+          "hash": "k9FzKMHSUyFSUwCG8JRVqQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/postman.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/postman.html",
+          "hash": "0APHUGzrTTWGs/R29voeUw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/powershell.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/powershell.html",
+          "hash": "NddxKl/QRH1NquACUtLnwg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/redux.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/redux.html",
+          "hash": "NrLoFxOsPSc+Vs9NfycXhQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/source-code.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/source-code.html",
+          "hash": "PmEvV41UZSxrTZZHpBrlLQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/storage-explorer.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/storage-explorer.html",
+          "hash": "gLwPDib9pNTLwdWBe91OyQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/terraform.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/terraform.html",
+          "hash": "8KSEzQcXubMkEG0mJwmteA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/virtualization.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/virtualization.html",
+          "hash": "fjN1hiOJO2Ump7+aB7iOJQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/visual-studio-code.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/visual-studio-code.html",
+          "hash": "VMDcnS6RDqpbPUCbxsnGZg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/vs-2019.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/vs-2019.html",
+          "hash": "/lW071Q+XGxCeOMh3MoZTg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/ByTool/xunit.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/ByTool/xunit.html",
+          "hash": "HEgCjIwkaHTO3/0qtHcInw=="
         }
       },
       "is_incremental": false,
@@ -470,23 +506,26 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/index.md",
+      "source_relative_path": "GettingStarted/foundation.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/index.html",
-          "hash": "AcJ+rKze61qPpbpuhyfiPQ=="
+          "relative_path": "GettingStarted/foundation.html",
+          "hash": "bMVzfScvibOOQR0eNIQnIQ=="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/purpose.md",
+      "source_relative_path": "GettingStarted/index.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/purpose.html",
-          "hash": "moMbPYkA1HP0Jca9F2q86w=="
+          "relative_path": "GettingStarted/index.html",
+          "hash": "vz+pghLaGlStseLk0DjvPQ=="
         }
       },
       "is_incremental": false,
@@ -501,7 +540,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/toc.html",
-          "hash": "myRxHTI/b1wyp3fcp77VgQ=="
+          "hash": "MdCrYJas/cGsPBmyT3dDGQ=="
         }
       },
       "is_incremental": false,
@@ -509,11 +548,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "How-To/Connect-Device/index.md",
+      "source_relative_path": "Guides/Devices/How-To-Connect.md",
       "output": {
         ".html": {
-          "relative_path": "How-To/Connect-Device/index.html",
-          "hash": "Ob/txZBNZUGM4BQllQWlBw=="
+          "relative_path": "Guides/Devices/How-To-Connect.html",
+          "hash": "0s8meiFJKTj1GfGXoKldpQ=="
         }
       },
       "is_incremental": false,
@@ -521,239 +560,50 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "How-To/index.md",
+      "source_relative_path": "Guides/Devices/Simulating-Data.md",
       "output": {
         ".html": {
-          "relative_path": "How-To/index.html",
-          "hash": "9gXTkp0dRCpQHXYlYgvTsA=="
+          "relative_path": "Guides/Devices/Simulating-Data.html",
+          "hash": "PCe+GAa7YiIsTXE3GRXmdA=="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/ConfigService.yml",
+      "type": "Conceptual",
+      "source_relative_path": "Guides/Devices/index.md",
       "output": {
         ".html": {
-          "relative_path": "_todelete/_x_yml/ConfigService.html",
-          "hash": "dj179XMEG9mxF5w1SgB5dA=="
+          "relative_path": "Guides/Devices/index.html",
+          "hash": "Boo7MAddServbSmvrN6wOg=="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/DeviceSimulationService.yml",
+      "type": "Conceptual",
+      "source_relative_path": "Guides/index.md",
       "output": {
         ".html": {
-          "relative_path": "_todelete/_x_yml/DeviceSimulationService.html",
-          "hash": "X3qSZ7qUq0fiRO4HNFfXlQ=="
+          "relative_path": "Guides/index.html",
+          "hash": "yx+2/8eeFNJzhZHflnft5A=="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/DevicesGrid.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/DevicesGrid.html",
-          "hash": "cs4TJEIHWX6HY7wB5MBU2Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/DiagnosticsService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/DiagnosticsService.html",
-          "hash": "XBQ2mPBqKucZ0CRePuoC1A=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/ExampleGrid.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/ExampleGrid.html",
-          "hash": "9NsQl7s97IbHnEX/r6OzCQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/ExampleService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/ExampleService.html",
-          "hash": "oDHe0pWPIZikM5CkZxe+MA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/HttpClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/HttpClient.html",
-          "hash": "QTW09RpA3LsSpyrNvsezjg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/IdentityGatewayService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/IdentityGatewayService.html",
-          "hash": "Xa8BmtFG24sPzCe1QZfGcQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/IoTHubManagerService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/IoTHubManagerService.html",
-          "hash": "X4HM7rcLU18jfu3TGg/HPQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/Link#Link.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/Link#Link.html",
-          "hash": "spM1PHhlzIJM+oZQQ9416g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/Link.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/Link.html",
-          "hash": "uwukwNzzr6NjDzk+R1rtzg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/LinkedComponent.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/LinkedComponent.html",
-          "hash": "7j6tPRC9Rqsj4GheHL6tsQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/PcsGrid.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/PcsGrid.html",
-          "hash": "WE0L++0+CHtH0sr4xi2ULA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/Shell.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/Shell.html",
-          "hash": "HPWPA/b/VnJ6yj8rSvjwmg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/TelemetryService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/TelemetryService.html",
-          "hash": "0ktQdbCPlqPxxd8Wo+22rQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/UsersGrid.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/UsersGrid.html",
-          "hash": "GjPBDKuclJpPu31aXya4Qw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/Validator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/Validator.html",
-          "hash": "0dh90Ta37CU9BUBki5QZJA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "_todelete/_x_yml/index.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/_x_yml/index.html",
-          "hash": "FCmeWkSNAy3SmMk32gYhIA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Toc",
-      "source_relative_path": "_todelete/_x_yml/toc.yml",
+      "source_relative_path": "Guides/toc.yml",
       "output": {
         ".html": {
-          "relative_path": "_todelete/_x_yml/toc.html",
-          "hash": "D11Rx6XZaQzefzQJQe8Dig=="
+          "relative_path": "Guides/toc.html",
+          "hash": "mJBbfRsDhHS6tUpydgFNGQ=="
         }
       },
       "is_incremental": false,
@@ -761,83 +611,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "_todelete/src/crsl-documentation/functional-tests/intro.md",
+      "source_relative_path": "UseCases/index.md",
       "output": {
         ".html": {
-          "relative_path": "_todelete/src/crsl-documentation/functional-tests/intro.html",
-          "hash": "OA57dZRn1swfqOJBeZfzqA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "_todelete/src/crsl-documentation/functional-tests/ui-tests/change-logo.md",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/src/crsl-documentation/functional-tests/ui-tests/change-logo.html",
-          "hash": "+/n18swPRHt8Ww0SesoHVQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "_todelete/src/crsl-documentation/functional-tests/ui-tests/change-solution-name.md",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/src/crsl-documentation/functional-tests/ui-tests/change-solution-name.html",
-          "hash": "KgMB3FyxlGBap7A3OnoIkQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "_todelete/src/crsl-documentation/functional-tests/ui-tests/create-new-device.md",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/src/crsl-documentation/functional-tests/ui-tests/create-new-device.html",
-          "hash": "griQkEVjVtHbHKJoLRqsag=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "_todelete/src/crsl-documentation/functional-tests/ui-tests/intro.md",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/src/crsl-documentation/functional-tests/ui-tests/intro.html",
-          "hash": "QIFORgCj5mh+hkpvAywbxA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "_todelete/src/crsl-documentation/intro.md",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/src/crsl-documentation/intro.html",
-          "hash": "znXfLSmyRRquafky2rIs4Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "_todelete/src/crsl-documentation/toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "_todelete/src/crsl-documentation/toc.html",
-          "hash": "aszqyoZAWjUHU1+7EXFFvw=="
+          "relative_path": "UseCases/index.html",
+          "hash": "Iy9ql9mrYgTcXn+BAgIOHQ=="
         }
       },
       "is_incremental": false,
@@ -877,12 +655,11 @@
       "version": ""
     },
     {
-      "type": "Conceptual",
-      "source_relative_path": "index.md",
+      "type": "Resource",
+      "source_relative_path": "images/logical-architecture.png",
       "output": {
-        ".html": {
-          "relative_path": "index.html",
-          "hash": "JXr2Qo6vwY9NLvdyqE7qwQ=="
+        "resource": {
+          "relative_path": "images/logical-architecture.png"
         }
       },
       "is_incremental": false,
@@ -890,11 +667,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "overview.md",
+      "source_relative_path": "index.md",
       "output": {
         ".html": {
-          "relative_path": "overview.html",
-          "hash": "UH105lf+8Uvr0Ruo0ld+Aw=="
+          "relative_path": "index.html",
+          "hash": "oerLRZz1i2l5jpi3UpgWWQ=="
         }
       },
       "is_incremental": false,
@@ -928,7 +705,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 49,
+          "total_file_count": 48,
           "skipped_file_count": 48
         },
         "ResourceDocumentProcessor": {
@@ -941,13 +718,6 @@
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "UniversalReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor UniversalReferenceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0

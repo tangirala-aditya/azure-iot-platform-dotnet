@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.Devices;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Management.Fluent;
 using Microsoft.Azure.Management.IotHub;
 using Microsoft.Azure.Management.IotHub.Models;
@@ -30,6 +31,7 @@ namespace TenantDataManagement
         private StorageManagementClient storageClient;
         private IotHubClient iotHubClient;
         private string subscriptionId;
+        private CosmosOperations cosmosOperations;
 
         public TenantDataCollectionService()
         {
@@ -40,6 +42,7 @@ namespace TenantDataManagement
             t.GetType() == typeof(ResourceManagementClient));
             this.storageClient = (StorageManagementClient)this.client.ManagementClients.FirstOrDefault(t => t.GetType() == typeof(StorageManagementClient));
             this.iotHubClient = this.CreateIoTHubClient();
+            this.cosmosOperations = new CosmosOperations();
         }
 
         private AzureCredentials AzureCredentials
@@ -160,6 +163,12 @@ namespace TenantDataManagement
                     await this.HydrateContentInformationFromIoTHub(azureTenantData);
                 }
 
+                await this.HydratePackageInformationFromCosmos(azureTenantData);
+
+                await this.HydrateTelemetryInformationFromCosmos(azureTenantData);
+
+                await this.HydrateLifeCycleInformationFromCosmos(azureTenantData);
+
                 azureTenantDataList.Add(azureTenantData);
             }
 
@@ -196,6 +205,27 @@ namespace TenantDataManagement
             azureTenantData.IoTHubIsDeployed = tenant.IsIotHubDeployed;
             azureTenantData.IoTHubName = tenant.IotHubName;
             azureTenantData.Subscription = this.subscriptionId;
+        }
+
+        private async Task HydratePackageInformationFromCosmos(AzureTenantData azureTenantData)
+        {
+            var packageCount = await this.GetDocumentsCount(@"SELECT VALUE COUNT(1) FROM c WHERE c.CollectionId=""packages"" AND c.Key!=""config-types""", azureTenantData.TenantId, "pcs-storage", $"pcs-{azureTenantData.TenantId}");
+            azureTenantData.PackageCount = packageCount;
+        }
+
+        private async Task HydrateTelemetryInformationFromCosmos(AzureTenantData azureTenantData)
+        {
+            string latestDeviceDataReceived = await this.GetDocumentData(@"SELECT VALUE c._dateTimeReceived FROM c ORDER BY c._ts DESC", azureTenantData.TenantId, "iot", $"telemetry-{azureTenantData.TenantId}");
+            azureTenantData.LastDeviceDataReceived = latestDeviceDataReceived;
+        }
+
+        private async Task HydrateLifeCycleInformationFromCosmos(AzureTenantData azureTenantData)
+        {
+            var latestDeviceDataReceived = await this.GetDocumentData(@"SELECT VALUE c._ts FROM c ORDER BY c._ts DESC", azureTenantData.TenantId, "iot", $"lifecycle-{azureTenantData.TenantId}");
+            if (!string.IsNullOrWhiteSpace(latestDeviceDataReceived))
+            {
+                azureTenantData.LastDeviceUpdate = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(latestDeviceDataReceived));
+            }
         }
 
         private async Task<IotHubDescription> RetrieveAsync(string resourceGroupName, string iotHubName)
@@ -267,6 +297,72 @@ namespace TenantDataManagement
             {
                 return string.Empty;
             }
+        }
+
+        private async Task<string> GetDocumentData(string sqlQuery, string tenantId, string dbName, string collectionName)
+        {
+            CosmosOperations storageClient = await CosmosOperations.GetClientAsync();
+            bool ifDBExists = await storageClient.CheckCollectionIfExistsAsync(dbName, collectionName, 400);
+            if (ifDBExists)
+            {
+                var sql = CosmosOperations.GetDocumentsByCollectionId(sqlQuery);
+                FeedOptions queryOptions = new FeedOptions
+                {
+                    EnableCrossPartitionQuery = true,
+                    EnableScanInQuery = true,
+                };
+
+                List<string> docs = new List<string>();
+
+                try
+                {
+                    var result = storageClient.QueryValueAsync(
+                       dbName,
+                       collectionName,
+                       queryOptions,
+                       sql);
+
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+
+            return null;
+        }
+
+        private async Task<int> GetDocumentsCount(string sqlQuery, string tenantId, string dbName, string collectionName)
+        {
+            CosmosOperations storageClient = await CosmosOperations.GetClientAsync();
+            bool ifDBExists = await storageClient.CheckCollectionIfExistsAsync("pcs-storage", $"pcs-{tenantId}", 400);
+            if (ifDBExists)
+            {
+                var sql = CosmosOperations.GetDocumentsByCollectionId(sqlQuery);
+                FeedOptions queryOptions = new FeedOptions
+                {
+                    EnableCrossPartitionQuery = true,
+                    EnableScanInQuery = true,
+                };
+
+                try
+                {
+                    var result = storageClient.QueryCountAsync(
+                       dbName,
+                       collectionName,
+                       queryOptions,
+                       sql);
+
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+
+            return 0;
         }
     }
 }

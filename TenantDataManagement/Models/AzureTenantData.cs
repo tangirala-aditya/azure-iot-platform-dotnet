@@ -28,7 +28,7 @@ namespace TenantDataManagement
 
         public bool IoTHubIsDeployed { get; set; }
 
-        public string LastDeviceUpdate { get; set; }
+        public DateTimeOffset LastDeviceUpdate { get; set; }
 
         public string LastDeviceDataReceived { get; set; }
 

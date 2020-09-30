@@ -22,8 +22,8 @@ namespace TenantDataManagement
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
             TenantDataCollectionService tenantDataCollectionService = new TenantDataCollectionService();
-            await tenantDataCollectionService.GetAzureReourcesData();
-            return new OkObjectResult(string.Empty);
+            var result = await tenantDataCollectionService.GetAzureReourcesData();
+            return new OkObjectResult(result);
         }
     }
 }

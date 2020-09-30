@@ -29,15 +29,17 @@ namespace TenantDataManagement
         private ResourceManagementClient rmClient;
         private StorageManagementClient storageClient;
         private IotHubClient iotHubClient;
+        private string subscriptionId;
 
         public TenantDataCollectionService()
         {
             this.cacheExpiration = DateTime.UnixEpoch;
+            this.subscriptionId = Environment.GetEnvironmentVariable("SubscriptionId", EnvironmentVariableTarget.Process);
             this.client = this.Create();
             this.rmClient = (ResourceManagementClient)this.client.ManagementClients.FirstOrDefault(t =>
             t.GetType() == typeof(ResourceManagementClient));
             this.storageClient = (StorageManagementClient)this.client.ManagementClients.FirstOrDefault(t => t.GetType() == typeof(StorageManagementClient));
-            this.iotHubClient = new IotHubClient(this.AzureCredentials);
+            this.iotHubClient = this.CreateIoTHubClient();
         }
 
         private AzureCredentials AzureCredentials
@@ -51,7 +53,8 @@ namespace TenantDataManagement
                     var servicePrincipal = new ServicePrincipalLoginInformation();
                     servicePrincipal.ClientId = Environment.GetEnvironmentVariable("AppId", EnvironmentVariableTarget.Process);
                     servicePrincipal.ClientSecret = Environment.GetEnvironmentVariable("AppSecret", EnvironmentVariableTarget.Process);
-                    this.azureCredentials = new AzureCredentials(servicePrincipal, string.Empty, AzureEnvironment.AzureGlobalCloud);
+                    string tenantId = Environment.GetEnvironmentVariable("TenantId", EnvironmentVariableTarget.Process);
+                    this.azureCredentials = new AzureCredentials(servicePrincipal, tenantId, AzureEnvironment.AzureGlobalCloud);
                 }
 
                 return this.azureCredentials;
@@ -65,13 +68,19 @@ namespace TenantDataManagement
 
         public Microsoft.Azure.Management.Fluent.IAzure Create()
         {
-            string subscriptionId = Environment.GetEnvironmentVariable("SubscriptionId", EnvironmentVariableTarget.Process);
-
             var azure = Microsoft.Azure.Management.Fluent.Azure
                 .Configure()
                 .Authenticate(this.AzureCredentials)
-                .WithSubscription(subscriptionId);
+                .WithSubscription(this.subscriptionId);
             return azure;
+        }
+
+        public IotHubClient CreateIoTHubClient()
+        {
+            var iotHubClient = new IotHubClient(this.AzureCredentials);
+            iotHubClient.SubscriptionId = this.subscriptionId;
+
+            return iotHubClient;
         }
 
         public async Task<object> GetResourceGroups()
@@ -112,13 +121,13 @@ namespace TenantDataManagement
             }
         }
 
-        private async Task<object> GetResourcesByResourceGroups(string resourceGroupName)
+        private async Task<List<AzureTenantData>> GetResourcesByResourceGroups(string resourceGroupName)
         {
-            var x = (await this.rmClient.Resources.ListByResourceGroupAsync(resourceGroupName)).ToList();
-            string storageAccountName = x.Where(y => y.Kind == "Storage").ToList()[0].Name;
+            var resources = (await this.rmClient.Resources.ListByResourceGroupAsync(resourceGroupName)).ToList();
+            string storageAccountName = resources.Where(y => y.Kind == "Storage").ToList()[0].Name;
             string storageAccConnectionString = this.GetStorageAccountConnectionString(resourceGroupName, storageAccountName);
-            this.FetchTenantDetailsFromTableStorage(storageAccConnectionString, resourceGroupName);
-            return x;
+            var result = await this.FetchTenantDetailsFromTableStorage(storageAccConnectionString, resourceGroupName);
+            return result;
         }
 
         private string GetStorageAccountConnectionString(string resourceGroupName, string storageAccountName)
@@ -127,7 +136,7 @@ namespace TenantDataManagement
             return $"DefaultEndpointsProtocol=https;AccountName={storageAccountName};AccountKey={acctKeys.FirstOrDefault()?.Value};EndpointSuffix=core.windows.net";
         }
 
-        private async void FetchTenantDetailsFromTableStorage(string storageAccConnectionString, string resourceGroupName)
+        private async Task<List<AzureTenantData>> FetchTenantDetailsFromTableStorage(string storageAccConnectionString, string resourceGroupName)
         {
             List<AzureTenantData> azureTenantDataList = new List<AzureTenantData>();
             TableStorageOperations cloudTableClient = await TableStorageOperations.GetClientAsync(storageAccConnectionString);
@@ -144,12 +153,17 @@ namespace TenantDataManagement
 
                 await this.HydrateUserAccessData(cloudTableClient, tenant, azureTenantData);
 
-                await this.HydrateLocationInformationFromIoTHub(azureTenantData);
+                if (tenant.IsIotHubDeployed)
+                {
+                    await this.HydrateLocationInformationFromIoTHub(azureTenantData);
 
-                await this.HydrateContentInformationFromIoTHub(azureTenantData);
+                    await this.HydrateContentInformationFromIoTHub(azureTenantData);
+                }
 
                 azureTenantDataList.Add(azureTenantData);
             }
+
+            return azureTenantDataList;
         }
 
         private async Task HydrateUserAccessData(TableStorageOperations cloudTableClient, TenantModel tenant, AzureTenantData azureTenantData)
@@ -181,11 +195,22 @@ namespace TenantDataManagement
             azureTenantData.SAJob = tenant.SAJobName;
             azureTenantData.IoTHubIsDeployed = tenant.IsIotHubDeployed;
             azureTenantData.IoTHubName = tenant.IotHubName;
+            azureTenantData.Subscription = this.subscriptionId;
         }
 
         private async Task<IotHubDescription> RetrieveAsync(string resourceGroupName, string iotHubName)
         {
-            return await this.iotHubClient.IotHubResource.GetAsync(resourceGroupName, iotHubName, CancellationToken.None);
+            IotHubDescription iotHubDetails = null;
+
+            try
+            {
+                iotHubDetails = await this.iotHubClient.IotHubResource.GetAsync(resourceGroupName, iotHubName, CancellationToken.None);
+            }
+            catch (Exception)
+            {
+            }
+
+            return iotHubDetails;
         }
 
         private async Task HydrateLocationInformationFromIoTHub(AzureTenantData azureTenantData)
@@ -201,13 +226,16 @@ namespace TenantDataManagement
         private async Task HydrateContentInformationFromIoTHub(AzureTenantData azureTenantData)
         {
             string connString = this.GetIoTHubConnectionString(azureTenantData.ResourceGroup, azureTenantData.IoTHubName);
-            RegistryManager registry = RegistryManager.CreateFromConnectionString(connString);
+            if (!string.IsNullOrEmpty(connString))
+            {
+                RegistryManager registry = RegistryManager.CreateFromConnectionString(connString);
 
-            Microsoft.Azure.Devices.RegistryStatistics stats = await registry.GetRegistryStatisticsAsync();
-            azureTenantData.DeviceCount = stats.TotalDeviceCount;
+                Microsoft.Azure.Devices.RegistryStatistics stats = await registry.GetRegistryStatisticsAsync();
+                azureTenantData.DeviceCount = stats.TotalDeviceCount;
 
-            var deployments = await registry.GetConfigurationsAsync(MaxDeployments);
-            azureTenantData.DeploymentCount = deployments != null ? deployments.Count() : 0;
+                var deployments = await registry.GetConfigurationsAsync(MaxDeployments);
+                azureTenantData.DeploymentCount = deployments != null ? deployments.Count() : 0;
+            }
         }
 
         private IPage<SharedAccessSignatureAuthorizationRule> ListKeysAsync(string resourceGroupName, string iotHubName)
@@ -217,13 +245,28 @@ namespace TenantDataManagement
 
         private string GetAccessKey(string resourceGroupName, string iotHubName)
         {
-            var keys = this.ListKeysAsync(resourceGroupName, iotHubName);
-            return keys.Where(t => t.KeyName == "iothubowner").FirstOrDefault().PrimaryKey;
+            try
+            {
+                var keys = this.ListKeysAsync(resourceGroupName, iotHubName);
+                return keys.Where(t => t.KeyName == "iothubowner").FirstOrDefault().PrimaryKey;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
         }
 
         private string GetIoTHubConnectionString(string resourceGroupName, string iotHubName)
         {
-            return $"HostName={iotHubName}.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey={this.GetAccessKey(resourceGroupName, iotHubName)}";
+            string accessKey = this.GetAccessKey(resourceGroupName, iotHubName);
+            if (!string.IsNullOrEmpty(accessKey))
+            {
+                return $"HostName={iotHubName}.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey={this.GetAccessKey(resourceGroupName, iotHubName)}";
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
     }
 }

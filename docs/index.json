@@ -126,8 +126,8 @@
   },
   "GettingStarted/Concepts/architecture.html": {
     "href": "GettingStarted/Concepts/architecture.html",
-    "title": "| 3M Serenity Documentation",
-    "keywords": "Resources used: https://azure.microsoft.com/en-us/features/iot-accelerators/#iot-accelerators-features"
+    "title": "Resources | 3M Serenity Documentation",
+    "keywords": "Resources used: https://azure.microsoft.com/en-us/features/iot-accelerators/#iot-accelerators-features TODO: Move to appropriate location: Resources Column1 Column2 IotT Solution - Source Code: https://github.mmm.com/MMM/bluebird - Docs: https://github.mmm.com/pages/MMM/bluebird/ Citrix VM http://3mcitrix.mmm.com Base URL for Solution: https://crsliot-aks-dev.centralus.cloudapp.azure.com Odin Repos for Azure IoT - https://github.mmm.com/pages/MMM/bluebird/ - https://github.mmm.com/orgs/mmm/teams/valkyrie/members - Public: 3M-Company/azure-iot-platform-dotnet Azure DevOps https://dev.azure.com/3m-bluebird/azureplatform Microsoft Team Channels: - 3M: Azure Platforms, Azure Platform Development - ACS: 3M Digital (GGK + Analyst Channel) Project Team 3M Docker Hub https://hub.docker.com/azureiot3m Repositories GitHub Enterprise Code and Infrastructure ( https://github.mmm.com/MMM/azure-iot-services-dotnet ) Azure Functions ( https://github.mmm.com/MMM/azure-iot-messaging-functions ) App Config ( https://github.mmm.com/MMM/azure-iot-appconfig-function ) Device Migration ( https://github.mmm.com/MMM/azure-iot-device-migration ) Functional Testing ( https://github.mmm.com/MMM/azure-iot-functional-tests )"
   },
   "GettingStarted/Concepts/Architecture/costs.html": {
     "href": "GettingStarted/Concepts/Architecture/costs.html",
@@ -167,12 +167,12 @@
   "GettingStarted/Setup/API-Developer-Setup.html": {
     "href": "GettingStarted/Setup/API-Developer-Setup.html",
     "title": "Getting Started for API Developers | 3M Serenity Documentation",
-    "keywords": "Getting Started for API Developers This document provides setup instructions for contributing to the 3M IoT Platform as a API Developer . In addition, it outlines relevant skills and helpful links to learn about or brush up on related topics. Useful Skills Helpful Resources Tools"
+    "keywords": "Getting Started for API Developers This document provides setup instructions for contributing to the 3M IoT Platform as a API Developer . In addition, it outlines relevant skills and helpful links to learn about or brush up on related topics. Useful Skills Helpful Resources IoT School Microsoft IoT Tools"
   },
   "GettingStarted/Setup/Azure-Developer-Setup.html": {
     "href": "GettingStarted/Setup/Azure-Developer-Setup.html",
     "title": "Getting Started for Azure Developers | 3M Serenity Documentation",
-    "keywords": "Getting Started for Azure Developers This document provides setup instructions for contributing to the 3M IoT Platform as a Azure Developer . In addition, it outlines relevant skills and helpful links to learn about or brush up on related topics. Useful Skills Helpful Resources Tools"
+    "keywords": "Getting Started for Azure Developers This document provides setup instructions for contributing to the 3M IoT Platform as a Azure Developer . In addition, it outlines relevant skills and helpful links to learn about or brush up on related topics. Useful Skills Helpful Resources IoT School Microsoft IoT Tools"
   },
   "GettingStarted/Setup/DevOps-Setup.html": {
     "href": "GettingStarted/Setup/DevOps-Setup.html",
@@ -182,7 +182,7 @@
   "GettingStarted/Setup/Doc-Contributor-Setup.html": {
     "href": "GettingStarted/Setup/Doc-Contributor-Setup.html",
     "title": "Getting Started for Document Contributors | 3M Serenity Documentation",
-    "keywords": "Getting Started for Document Contributors This document provides setup instructions for contributing to the 3M IoT Platform as a Document Contributor . In addition, it outlines relevant skills and helpful links to learn about or brush up on related topics. Useful Skills Helpful Resources Tools"
+    "keywords": "Getting Started for Document Contributors This document provides setup instructions for contributing to the 3M IoT Platform as a Document Contributor . In addition, it outlines relevant skills and helpful links to learn about or brush up on related topics. Useful Skills Helpful Resources IoT School Microsoft IoT Tools"
   },
   "GettingStarted/Setup/index.html": {
     "href": "GettingStarted/Setup/index.html",
@@ -197,7 +197,7 @@
   "GettingStarted/Setup/Tools/All.html": {
     "href": "GettingStarted/Setup/Tools/All.html",
     "title": "3M IoT Development Environment Setup Instructions | 3M Serenity Documentation",
-    "keywords": "3M IoT Development Environment Setup Instructions This document provides detailed documentation on setting up a development environment to contribute to 3M's IoT Azure Platform, called Bluebird. Note: If you're using a 3M Virtual Machine, it's possible some of the products to install may exist already. Products to Install Please install the following products in the order listed below. Click the project name to open the specific steps for each product below. Wherever relevant, OS specific steps will be provided for both Mac and PC. I would like to also point out that we are not allowed to be admins on our 3M machines, we use elevated access. This is accomplished by right clicking and selecting the elevated access option. Note: Install Issues not specifically addressed in the specific product install guides below should be recorded here. Since we have moved into an open source environment for Odin it is not unreasonable to use our own machines for dev. Sometimes this proves less restrictive and has better up-time. Product Install Guides (by install order) Virtualization (only necessary if developing on Windows) .NET Core 3.1 PowerShell Azure CLI (plus extensions) Visual Studio Code Git / Bash NodeJS / npm Visual Studio 2019 Azure Data Studio Storage Explorer Azure IoT Explorer Docker Terraform Kubernetes Helm Redux Postman Source Code Resources Column1 Column2 IotT Solution - Source Code: https://github.mmm.com/MMM/bluebird - Docs: https://github.mmm.com/pages/MMM/bluebird/ Citrix VM http://3mcitrix.mmm.com Base URL for Solution: https://crsliot-aks-dev.centralus.cloudapp.azure.com Odin Repos for Azure IoT - https://github.mmm.com/pages/MMM/bluebird/ - https://github.mmm.com/orgs/mmm/teams/valkyrie/members - Public: 3M-Company/azure-iot-platform-dotnet Azure DevOps https://dev.azure.com/3m-bluebird/azureplatform Microsoft Team Channels: - 3M: Azure Platforms, Azure Platform Development - ACS: 3M Digital (GGK + Analyst Channel) Project Team 3M Docker Hub https://hub.docker.com/azureiot3m Repositories GitHub Enterprise Code and Infrastructure ( https://github.mmm.com/MMM/azure-iot-services-dotnet ) Azure Functions ( https://github.mmm.com/MMM/azure-iot-messaging-functions ) App Config ( https://github.mmm.com/MMM/azure-iot-appconfig-function ) Device Migration ( https://github.mmm.com/MMM/azure-iot-device-migration ) Functional Testing ( https://github.mmm.com/MMM/azure-iot-functional-tests )"
+    "keywords": "3M IoT Development Environment Setup Instructions This document provides detailed documentation on setting up a development environment to contribute to 3M's IoT Azure Platform, called Bluebird. Note: If you're using a 3M Virtual Machine, it's possible some of the products to install may exist already. Products to Install Please install the following products in the order listed below. Click the project name to open the specific steps for each product below. Wherever relevant, OS specific steps will be provided for both Mac and PC. I would like to also point out that we are not allowed to be admins on our 3M machines, we use elevated access. This is accomplished by right clicking and selecting the elevated access option. Note: Install Issues not specifically addressed in the specific product install guides below should be recorded here. Since we have moved into an open source environment for Odin it is not unreasonable to use our own machines for dev. Sometimes this proves less restrictive and has better up-time. Product Install Guides (by install order) Virtualization (only necessary if developing on Windows) .NET Core 3.1 PowerShell Azure CLI (plus extensions) Visual Studio Code Git / Bash NodeJS / npm Visual Studio 2019 Azure Data Studio Storage Explorer Azure IoT Explorer Docker Terraform Kubernetes Helm Redux Postman Source Code"
   },
   "GettingStarted/Setup/Tools/azure-cli.html": {
     "href": "GettingStarted/Setup/Tools/azure-cli.html",
@@ -299,20 +299,10 @@
     "title": "Overview | 3M Serenity Documentation",
     "keywords": "Overview VS Code is a editor developed by Microsoft for Windows, Linux and macOS. It can be downloaded here: https://code.visualstudio.com/download Recommended install settings: Windows: Add to Windows Explorer Shortcut Extensions: Required C# for Visual Studios Code - Microsoft PowerShell - Microsoft XUnit Chrome Debugger ReactJS Debugger For additional React Sugar: https://medium.com/productivity-freak/the-ultimate-vscode-setup-for-js-react-6a4f7bd51a2 Extension: Recommended YAML - RedHat Docker - Microsoft Cloud Code - Google Cloud NXunit Test Explorer for Visual Studio Code"
   },
-  "GettingStarted/Setup/Tools/Visual-Studios.html": {
-    "href": "GettingStarted/Setup/Tools/Visual-Studios.html",
-    "title": "Developers | 3M Serenity Documentation",
-    "keywords": "Developers Technologies"
-  },
   "GettingStarted/Setup/Tools/vs-2019.html": {
     "href": "GettingStarted/Setup/Tools/vs-2019.html",
     "title": "Whats new in VS 2019 | 3M Serenity Documentation",
     "keywords": "Whats new in VS 2019 Check the details here Use the community edition if you don't have a licensed version: https://visualstudio.microsoft.com/downloads/ Download Download Visual Studio 2019 from here"
-  },
-  "GettingStarted/Setup/Tools/VS-Code.html": {
-    "href": "GettingStarted/Setup/Tools/VS-Code.html",
-    "title": "Developers | 3M Serenity Documentation",
-    "keywords": "Developers Technologies"
   },
   "GettingStarted/Setup/Tools/xunit.html": {
     "href": "GettingStarted/Setup/Tools/xunit.html",
@@ -322,7 +312,7 @@
   "GettingStarted/Setup/Web-Developer-Setup.html": {
     "href": "GettingStarted/Setup/Web-Developer-Setup.html",
     "title": "Getting Started for Web Developers | 3M Serenity Documentation",
-    "keywords": "Getting Started for Web Developers This document provides setup instructions for contributing to the 3M IoT Platform as a Web Contributor . In addition, it outlines relevant skills and helpful links to learn about or brush up on related topics. Useful Skills Helpful Resources Tools"
+    "keywords": "Getting Started for Web Developers This document provides setup instructions for contributing to the 3M IoT Platform as a Web Contributor . In addition, it outlines relevant skills and helpful links to learn about or brush up on related topics. Skills Be familiar with the following: JavaScript CSS ReactJS IoT VS Code Helpful Resources IoT School Microsoft IoT ReactJS Redux (a ReactJS event management tool) Fluent UI: IoT Controls | Base Controls | Tools to Install"
   },
   "How-To/Connect-Device/index.html": {
     "href": "How-To/Connect-Device/index.html",
@@ -337,7 +327,7 @@
   "index.html": {
     "href": "index.html",
     "title": "3M IoT Platform Documentation | 3M Serenity Documentation",
-    "keywords": "3M IoT Platform Documentation The 3M IoT Platform on Azure offers core services for managing IoT devices at scale. To learn about these services see 3M IoT Platform Services . Organizations can integrate 3M IoT Platform into their own solutions to avoid building their own device management capabilities, saving time and prioritizing value-adding activites related to their product offerings. To learn more, check out the Use Cases for additional insight on how the platform is currently being used. 3M extended Microsoft's Remote Monitoring Accelerator to support CI/CD, multi-tenancy, contineous vunerability assessment, and many other features to address comon enterprise requirements. To learn more, check out IoT Platform Features . Quick Links Add relevant sections like this Architecture Go here"
+    "keywords": "3M IoT Platform Documentation The 3M IoT Platform on Azure offers core services for managing IoT devices at scale. To learn about these services see 3M IoT Platform Services . Organizations can integrate 3M IoT Platform into their own solutions to avoid building their own device management capabilities, saving time and prioritizing value-adding activities related to their product offerings. To learn more, check out the Use Cases for additional insight on how the platform is currently being used. 3M extended Microsoft's Remote Monitoring Accelerator to support CI/CD, multi-tenancy, continuous vulnerability assessment, and many other features to address common enterprise requirements. To learn more, check out IoT Platform Features . Platform User Interface <<<<<<< HEAD Architecture Overview"
   },
   "overview.html": {
     "href": "overview.html",

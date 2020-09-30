@@ -1,6 +1,6 @@
 {
   "homepages": [],
-  "source_base_path": "D:/DevOps/3M-Docs/Documentation/public",
+  "source_base_path": "D:/DevOps/docs-serenity/Documentation/public",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -54,7 +54,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Concepts/architecture.html",
-          "hash": "E16WIO28zvL6XzOy1MfCJA=="
+          "hash": "Flkyqq5WRakr82ToXtQhTg=="
         }
       },
       "is_incremental": false,
@@ -102,7 +102,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/API-Developer-Setup.html",
-          "hash": "JMex6GoirXC2VtM99Xc0HQ=="
+          "hash": "Vw0FOZD/TWayItcC7SU7XQ=="
         }
       },
       "is_incremental": false,
@@ -114,7 +114,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/Azure-Developer-Setup.html",
-          "hash": "+buXPpDPCRgZFOkYwaofRg=="
+          "hash": "NNNEjIz4tocigbN7yBkrKw=="
         }
       },
       "is_incremental": false,
@@ -138,7 +138,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/Doc-Contributor-Setup.html",
-          "hash": "D5zhNvNA4V7csAqvZKeAlQ=="
+          "hash": "03mWZqOhLbFjXKvOdcjp7w=="
         }
       },
       "is_incremental": false,
@@ -150,31 +150,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/Tools/All.html",
-          "hash": "rqx1KNdjwIAkk2mjpKv8SQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/VS-Code.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/VS-Code.html",
-          "hash": "k383bbqYLbMS6q5hnt/qwg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/Tools/Visual-Studios.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Setup/Tools/Visual-Studios.html",
-          "hash": "CEo68FF/OBOVAQZ+BL8S2Q=="
+          "hash": "YaCC6KI4YE30aHaMepkfCw=="
         }
       },
       "is_incremental": false,
@@ -451,12 +427,15 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "GettingStarted/Setup/Web-Developer-Setup.md",
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/Web-Developer-Setup.html",
-          "hash": "w3TJXP21SPzAojVw/dkIHw=="
+          "hash": "/25lgZdjCbcGeapQIiV6bw=="
         }
       },
       "is_incremental": false,
@@ -522,7 +501,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/toc.html",
-          "hash": "dq8JwruQpLHoI65ihpoHnA=="
+          "hash": "myRxHTI/b1wyp3fcp77VgQ=="
         }
       },
       "is_incremental": false,
@@ -898,15 +877,12 @@
       "version": ""
     },
     {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
       "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "u656iZKRc1r8renIuF09bw=="
+          "hash": "JXr2Qo6vwY9NLvdyqE7qwQ=="
         }
       },
       "is_incremental": false,
@@ -952,8 +928,8 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 51,
-          "skipped_file_count": 50
+          "total_file_count": 49,
+          "skipped_file_count": 48
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

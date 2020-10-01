@@ -16,7 +16,7 @@ jobs:
     variables:
       - template: variables-all.yaml
       - name: aksName
-        value: aks-agnic
+        value: ${{parameters.applicationCode}}-$(aksPartialName)-${{parameters.environmentCategory}}
       - name: resourceGroupName
         value: $(resourceGroupPartialName)-iot-${{parameters.applicationShortCode}}-${{parameters.environmentCategory}}
     strategy:

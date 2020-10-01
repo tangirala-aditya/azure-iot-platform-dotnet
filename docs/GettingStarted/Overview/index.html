@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>3M IoT Platform Overview | 3M Serenity Documentation </title>
+    <title>TODO | 3M Serenity Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="3M IoT Platform Overview | 3M Serenity Documentation ">
+    <meta name="title" content="TODO | 3M Serenity Documentation ">
     <meta name="generator" content="docfx 2.56.2.0">
     
     <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
@@ -77,64 +77,16 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="3m-iot-platform-overview">3M IoT Platform Overview</h1>
+<h1 id="todo">TODO</h1>
 
-<p>3M's IoT Platform on Azure offers an end-to-end solution for acceleration innovation and time-to-market by offering core sources that can be integrated into custom IoT Solutions. Device Management, Security, and cloud resource provisioning and other core requirements of any IoT solution can use the platform's user interface to manage devices. In addition, platform APIs offer direct integration to allow development to focus on their unique business objectives instead of common requirements.  The platform combines Azure and custom services to pride a generic implementation ready for any IoT business scenario.</p>
-<p>The platform code is available on <a href="https://github.com/3mcloud/azure-iot-platform-dotnet">GitHub</a> where new features can be tracked and requested using the issues list.  Currently requests are restricted to 3M. To learn how to request features or report issues, see the documentation <a href="#">TODO</a>.</p>
-<h2 id="logical-architecture">Logical Architecture</h2>
-<p>The following diagram outlines the logical components of the platform overlaid on the IoT architecture:</p>
-<center>
-<img src="../../images/logical-architecture.png" style="padding-top:20px;width:80%;height:80%;">
-</center>
-<h2 id="iot-hub">IoT Hub</h2>
-<p>The <a href="https://azure.microsoft.com/en-us/services/iot-hub/">IoT Hub</a> is a Microsoft Azure Resource used to ingest telemetry sent from both real and siulated devices into the cloud.  The hub makes the teletry available to the services in the IoT solution for processing.</p>
-<p>The IoT Hub also provides the following:</p>
 <ul>
-<li>Maintains an identity registry that stores the IDs and authentication keys of all the devices permitted to connect to the portal.</li>
-<li>Invokes methods on your devices on behalf of the solution accelerator.</li>
-<li>Maintains device twins for all registered devices. A device twin stores the property values reported by a device. A device twin also stores desired properties, set in the solution portal, for the device to retrieve when it next connects.</li>
-<li>Schedules jobs to set properties for multiple devices or invoke methods on multiple devices.</li>
+<li>Serenity Is</li>
+<li>Serenity Is Not</li>
+<li>Architecture Summary -&gt; More Info (Architecture.md)</li>
+<li>Microsoft Accelerator plus How it differs from</li>
+<li></li>
 </ul>
-<h2 id="presentation">Presentation</h2>
-<p>A web user interface is available for device management. It offers a user friendly way to register and configure devices, deploy firmware, and manage alerts, and provides a dashboard for generally observing device telemetry.</p>
-<p>The web user interface is a <a href="https://reactjs.org/">React Javascript</a> application that:</p>
-<ul>
-<li>Is served to the browser via backend services</li>
-<li>Is styled with Css and SaSS</li>
-<li>Interacts with other backend services like the authentication and authorization service to protect user data and communicate with Azure resources</li>
-</ul>
-<h2 id="backend-services">Backend Services</h2>
-<p>The platform is made up several services running in <a href="https://azure.microsoft.com/en-us/services/kubernetes-service/">Azure Kubernetes Service (AKS)</a>. The platform containerizes services to offer enterprise-grade security and scalability. The services - often called <em>microservices</em>- are written in .NET (C#) and provide RESTful endpoints that can be used for direct integration in business specific solutions.</p>
-<h2 id="data-processing-and-analytics">Data processing and analytics</h2>
-<p>The solution includes the following components in the data processing and analytics part of the logical architecture:</p>
-<h3 id="iot-hub-manager">IoT Hub manager</h3>
-<p>The solution includes the IoT Hub manager microservice to handle interactions with your IoT hub such as:</p>
-<p>Creating and managing IoT devices.
-Managing device twins.
-Invoking methods on devices.
-Managing IoT credentials.
-This service also runs IoT Hub queries to retrieve devices belonging to user-defined groups.</p>
-<p>The microservice provides a RESTful endpoint to manage devices and device twins, invoke methods, and run IoT Hub queries.</p>
-<h3 id="device-telemetry">Device telemetry</h3>
-<p>The device telemetry microservice provides a RESTful endpoint for read access to device telemetry stored in Time Series Insights. The RESTful endpoint also enables CRUD operations on rules and read/write access for alarm definitions from storage.</p>
-<h3 id="storage-adapter">Storage adapter</h3>
-<p>The storage adapter microservice manages key-value pairs, abstracting the storage service semantics, and presenting a simple interface to store data of any format using Azure Cosmos DB.</p>
-<p>Values are organized in collections. You can work on individual values or fetch entire collections. Complex data structures are serialized by the clients and managed as simple text payload.</p>
-<p>The service provides a RESTful endpoint for CRUD operations on key-value pairs. values</p>
-<h3 id="azure-cosmos-db">Azure Cosmos DB</h3>
-<p>Deployments use Azure Cosmos DB to store rules, alerts, configuration settings, and all other cold storage.</p>
-<h3 id="azure-stream-analytics">Azure Stream Analytics</h3>
-<p>The Azure Stream Analytics manager microservice manages Azure Stream Analytics (ASA) jobs, including setting their configuration,starting and stopping them, and monitoring their status.</p>
-<p>The ASA job is supported by two reference data sets. One data set defines rules and one defines device groups. The rules reference data is generated from the information managed by the device telemetry microservice. The Azure Stream Analytics manager microservice transforms telemetry rules into stream processing logic.</p>
-<p>The device groups reference data is used to identify which group of rules to apply to an incoming telemetry message. The device groups are managed by the configuration microservice and use Azure IoT Hub device twin queries.</p>
-<p>The ASA jobs deliver the telemetry from the connected devices to Time Series Insights for storage and analysis.</p>
-<p>Azure Stream Analytics is an event-processing engine that allows you to examine high volumes of data streaming from devices.</p>
-<h3 id="azure-time-series-insights">Azure Time Series Insights</h3>
-<p>Azure Time Series Insights stores the telemetry from the devices connected to the solution accelerator. It also enables visualizing and querying device telemetry in the solution web UI.</p>
-<h3 id="configuration-microservice">Configuration microservice</h3>
-<p>The configuration microservice provides a RESTful endpoint for CRUD operations on device groups, solution settings, and user-settings in the solution accelerator. It works with the storage adapter microservice to persist the configuration data.</p>
-<h3 id="authentication-and-authorization-microservice">Authentication and authorization microservice</h3>
-<p>The authentication and authorization microservice manages the users authorized to access the solution accelerator. User management supports a variety of identity service provides that support OpenId Connect, including Azure B2C.</p>
+<p><a href="https://docs.microsoft.com/en-us/azure/iot-accelerators/">https://docs.microsoft.com/en-us/azure/iot-accelerators/</a></p>
 </article>
           </div>
           

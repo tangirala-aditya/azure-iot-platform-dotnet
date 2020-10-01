@@ -209,15 +209,20 @@
     "title": "Developer Tools | 3M Serenity Documentation",
     "keywords": "Developer Tools Types of Development"
   },
-  "Guides/Devices/How-To-Connect.html": {
-    "href": "Guides/Devices/How-To-Connect.html",
-    "title": "| 3M Serenity Documentation",
-    "keywords": ""
-  },
   "Guides/Devices/index.html": {
     "href": "Guides/Devices/index.html",
-    "title": "| 3M Serenity Documentation",
-    "keywords": "https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-monitor"
+    "title": "Overview of IoT Devices on Azure | 3M Serenity Documentation",
+    "keywords": "Overview of IoT Devices on Azure Conceptually, there are two types of devices that can be used in Azure: 1) Simulated and 2) Real. Simulated devices are used to test connectivity and offer a quick way to evaluate functionality without needing to procure any hardware. There are two types of real devices: IoT Edge device and IoT device. If you'd like to learn more about the types of devices that can work with Azure check out Microsoft's Device Catalog Device Registration Before you can use a real or simulated device, you must first register it. Use the following links to get started: Register a device Register a simulated device"
+  },
+  "Guides/Devices/Register-A-Device.html": {
+    "href": "Guides/Devices/Register-A-Device.html",
+    "title": "How to Register a Device | 3M Serenity Documentation",
+    "keywords": "How to Register a Device For a device to connect to the solution accelerator, it must identify itself to IoT Hub using valid credentials. You have the opportunity to save the device connection string that contains these credentials when you add the device to the solution. You include the device connection string in your client application later in this tutorial. To add a device to your Remote Monitoring solution, complete the following steps on the Device Explorer page in the solution: Choose + New device , and then choose Real as the Device type : Enter a Device ID you wish to use to reference this device or allow the system to generate one for you. The value must be unique and connect include spaces. Select the desired authentication type and either have the system generate authentication keys for you or provide your own. CRSL generally uses a Symmetric Key but your organization might prefer x509. Chose whichever is the most approriate. Select the preferred option for how to define keys. You have the choice between: Providing your own Auto Generating"
+  },
+  "Guides/Devices/Register-A-Simulated-Device.html": {
+    "href": "Guides/Devices/Register-A-Simulated-Device.html",
+    "title": "How to Register a Simulated Device | 3M Serenity Documentation",
+    "keywords": "How to Register a Simulated Device"
   },
   "Guides/Devices/Simulating-Data.html": {
     "href": "Guides/Devices/Simulating-Data.html",
@@ -232,7 +237,7 @@
   "index.html": {
     "href": "index.html",
     "title": "3M IoT Platform Documentation | 3M Serenity Documentation",
-    "keywords": "3M IoT Platform Documentation The 3M IoT Platform on Azure offers core services for managing IoT devices at scale. To learn about these services see 3M IoT Platform Services . Organizations can integrate 3M IoT Platform into their own solutions to avoid building their own device management capabilities, saving time and prioritizing value-adding activities related to their product offerings. To learn more, check out the Use Cases for additional insight on how the platform is currently being used. 3M extended Microsoft's Remote Monitoring Accelerator to support CI/CD, multi-tenancy, continuous vulnerability assessment, and many other features to address common enterprise requirements. To learn more, check out IoT Platform Features . Platform User Interface Architecture Overview"
+    "keywords": "3M IoT Platform Documentation Updated now 10/1 at 4:07. The 3M IoT Platform on Azure offers core services for managing IoT devices at scale. To learn about these services see 3M IoT Platform Services . Organizations can integrate 3M IoT Platform into their own solutions to avoid building their own device management capabilities, saving time and prioritizing value-adding activities related to their product offerings. To learn more, check out the Use Cases for additional insight on how the platform is currently being used. This is really cool because I can improve it directly in teh repo. 3M extended Microsoft's Remote Monitoring Accelerator to support CI/CD, multi-tenancy, continuous vulnerability assessment, and many other features to address common enterprise requirements. To learn more, check out IoT Platform Features . Platform User Interface Architecture Overview TEST IS A TEST"
   },
   "UseCases/index.html": {
     "href": "UseCases/index.html",

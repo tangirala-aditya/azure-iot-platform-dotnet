@@ -1,6 +1,6 @@
 {
   "homepages": [],
-  "source_base_path": "D:/DevOps/docs-serenity/Documentation/public",
+  "source_base_path": "D:/a/1/s/Documentation/Public",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/index.html",
-          "hash": "wF1v6n+tR2THd/DNjzoZhg=="
+          "hash": "vyHUBTpOk56+x+a1Y7YSag=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Contribute/index.html",
-          "hash": "8OPwjq1YvwmNx4bsJ/WAlQ=="
+          "hash": "ePahnRV6dH6tfE7GcF0nVA=="
         }
       },
       "is_incremental": false,
@@ -42,7 +42,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/Architecture/costs.html",
-          "hash": "KpU2EOKRktCZrYHtMhNxdw=="
+          "hash": "mJ4amPdoqdyun0rq2NDwGQ=="
         }
       },
       "is_incremental": false,
@@ -54,7 +54,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/Architecture/index.html",
-          "hash": "KojSWeU4lwkyz9nsVqoefg=="
+          "hash": "+Xa2lpTLWL+b2iL4ciUDJg=="
         }
       },
       "is_incremental": false,
@@ -66,7 +66,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/architecture.html",
-          "hash": "WX78RTERmvqWAyniJ43KLw=="
+          "hash": "O1HvsgRxo6Lvla/oUqx5Mw=="
         }
       },
       "is_incremental": false,
@@ -78,7 +78,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/devices.html",
-          "hash": "vuMh5K4BF54PIEYixc69tA=="
+          "hash": "3iOPLUJGWoa7ieLzlcU6VA=="
         }
       },
       "is_incremental": false,
@@ -90,7 +90,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/index.html",
-          "hash": "jcJr8anh79h2nwUUYpGTOg=="
+          "hash": "Iv0o5ueo7U053MwGhzMNBQ=="
         }
       },
       "is_incremental": false,
@@ -102,7 +102,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/integration.html",
-          "hash": "0s8meiFJKTj1GfGXoKldpQ=="
+          "hash": "IKFNPbV4Qf0cFeTVaNGs0Q=="
         }
       },
       "is_incremental": false,
@@ -114,7 +114,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/purpose.html",
-          "hash": "tR4mLcUI0N2N1dwrjDJ9hA=="
+          "hash": "Jfitbxx2D5zGNel13Qt50Q=="
         }
       },
       "is_incremental": false,
@@ -126,7 +126,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/technology.html",
-          "hash": "0s8meiFJKTj1GfGXoKldpQ=="
+          "hash": "D6t7lbHRCw/aDFy5gYYPvg=="
         }
       },
       "is_incremental": false,
@@ -138,7 +138,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByRole/API-Developer-Setup.html",
-          "hash": "0RiSk1eT03w5fiSBVUv/lA=="
+          "hash": "STOEc8nHqcz8Rouia5J5ww=="
         }
       },
       "is_incremental": false,
@@ -150,7 +150,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByRole/Azure-Developer-Setup.html",
-          "hash": "1rR1jvw8/pNIoKBti4NITQ=="
+          "hash": "lRm2Shz2fMtv54FySdgnDQ=="
         }
       },
       "is_incremental": false,
@@ -162,7 +162,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByRole/DevOps-Setup.html",
-          "hash": "GzirJn6tVoXb7U55POVjbA=="
+          "hash": "+cBrAEHIYO7DZpv8pduVHw=="
         }
       },
       "is_incremental": false,
@@ -174,7 +174,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByRole/Doc-Contributor-Setup.html",
-          "hash": "MTQJZbi2qRQvgDa4yzm5qg=="
+          "hash": "p+Ljaq9gVUjJMgyH9QEiiw=="
         }
       },
       "is_incremental": false,
@@ -189,7 +189,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByRole/Web-Developer-Setup.html",
-          "hash": "+y2+ubD1nY6qEEc0yCbP7A=="
+          "hash": "esB4JHZ1EFjYLiWwkGYgOQ=="
         }
       },
       "is_incremental": false,
@@ -201,7 +201,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/All.html",
-          "hash": "P/YIh/N03RAnfEa91gIwOw=="
+          "hash": "YSZjc8aKHuXfMXmhDdr6RQ=="
         }
       },
       "is_incremental": false,
@@ -213,7 +213,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/azure-cli.html",
-          "hash": "ATdhofX5qcbrAG9ONS08cA=="
+          "hash": "d7BOHOKros4KbYTbVo6Kpg=="
         }
       },
       "is_incremental": false,
@@ -225,7 +225,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/azure-data-studio.html",
-          "hash": "O9Vhk9ySWOKyWkV3ueLrog=="
+          "hash": "jSPvVlH6bndLdtpBVsOM+g=="
         }
       },
       "is_incremental": false,
@@ -237,7 +237,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/azure-iot-explorer.html",
-          "hash": "lmxUXGM/YcVKaMkZNIiaew=="
+          "hash": "2H4aKRGeurxw9L7Kqk8MnQ=="
         }
       },
       "is_incremental": false,
@@ -252,7 +252,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/bash.html",
-          "hash": "kZ5Sg25XFQt/7nn6zfgsQA=="
+          "hash": "3jlcwgE+0HhtCy3dAZILlA=="
         }
       },
       "is_incremental": false,
@@ -264,7 +264,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/dev-spaces.html",
-          "hash": "FP2IKHx4gSlZOtaoGlZJiw=="
+          "hash": "C1wQGsqM56ISuvjMaKZW1w=="
         }
       },
       "is_incremental": false,
@@ -276,7 +276,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/docker.html",
-          "hash": "PCxibCB77DXsbmyJKbr6bg=="
+          "hash": "EW34+wEBmEBnle1/DwzrlQ=="
         }
       },
       "is_incremental": false,
@@ -288,7 +288,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/dotnet-core.html",
-          "hash": "d/RyEtJoOMneWdzYxWNh0Q=="
+          "hash": "u/+ZGrxdjA5b1AtOpsnNTQ=="
         }
       },
       "is_incremental": false,
@@ -303,7 +303,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/git.html",
-          "hash": "Y01T9HXoOOsKRm7la4VpHA=="
+          "hash": "vK46vzg3d2lFIGdgCmULVw=="
         }
       },
       "is_incremental": false,
@@ -315,7 +315,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/helm.html",
-          "hash": "adjMZYGQaqeGtlWiOVf7Kw=="
+          "hash": "vJzkMVPaDGzXToL/5XWjBA=="
         }
       },
       "is_incremental": false,
@@ -327,7 +327,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/kubernetes.html",
-          "hash": "llW3ABaRRPmC/bGjHE1+BQ=="
+          "hash": "Vb7PmtOsy10w+S2VU0Y5GA=="
         }
       },
       "is_incremental": false,
@@ -339,7 +339,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/nodejs.html",
-          "hash": "QvfbN7+R+n/CyOgohlEAHw=="
+          "hash": "afMyDzqodisbHed0GmOryA=="
         }
       },
       "is_incremental": false,
@@ -351,7 +351,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/npm.html",
-          "hash": "k9FzKMHSUyFSUwCG8JRVqQ=="
+          "hash": "FwQKk7fmY3QdlYqdd2F8Aw=="
         }
       },
       "is_incremental": false,
@@ -363,7 +363,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/postman.html",
-          "hash": "0APHUGzrTTWGs/R29voeUw=="
+          "hash": "sAPLcjt9ttSA3oinM+dYzg=="
         }
       },
       "is_incremental": false,
@@ -375,7 +375,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/powershell.html",
-          "hash": "NddxKl/QRH1NquACUtLnwg=="
+          "hash": "W7On2kcg5ss57Wilrz016Q=="
         }
       },
       "is_incremental": false,
@@ -387,7 +387,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/redux.html",
-          "hash": "NrLoFxOsPSc+Vs9NfycXhQ=="
+          "hash": "tZyRZ7Kj27EFIGstI1smmg=="
         }
       },
       "is_incremental": false,
@@ -399,7 +399,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/source-code.html",
-          "hash": "PmEvV41UZSxrTZZHpBrlLQ=="
+          "hash": "KKI+XcEuUswOTqOtHIQVWw=="
         }
       },
       "is_incremental": false,
@@ -411,7 +411,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/storage-explorer.html",
-          "hash": "gLwPDib9pNTLwdWBe91OyQ=="
+          "hash": "c9HA+xedoqH/q81oknSfXg=="
         }
       },
       "is_incremental": false,
@@ -423,7 +423,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/terraform.html",
-          "hash": "8KSEzQcXubMkEG0mJwmteA=="
+          "hash": "UeRoLt8D1Qqd+cRxHkmHBA=="
         }
       },
       "is_incremental": false,
@@ -435,7 +435,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/virtualization.html",
-          "hash": "fjN1hiOJO2Ump7+aB7iOJQ=="
+          "hash": "IySf4QbPHbTct5CODtY8IQ=="
         }
       },
       "is_incremental": false,
@@ -447,7 +447,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/visual-studio-code.html",
-          "hash": "VMDcnS6RDqpbPUCbxsnGZg=="
+          "hash": "de7U1si7uKyBe/o2XQughQ=="
         }
       },
       "is_incremental": false,
@@ -459,7 +459,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/vs-2019.html",
-          "hash": "/lW071Q+XGxCeOMh3MoZTg=="
+          "hash": "BRf5OWNPhPL9yJ/h912FEQ=="
         }
       },
       "is_incremental": false,
@@ -471,7 +471,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/xunit.html",
-          "hash": "HEgCjIwkaHTO3/0qtHcInw=="
+          "hash": "UFHa+octQJHb2EAygHJoiw=="
         }
       },
       "is_incremental": false,
@@ -486,7 +486,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/index.html",
-          "hash": "e79Jd51oWiZiaNBFGhC8/A=="
+          "hash": "cCX3u5GAf+mM6HinSxoeOA=="
         }
       },
       "is_incremental": false,
@@ -498,7 +498,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/tools.html",
-          "hash": "AJ8wMak+AdKDvAuOszRKCA=="
+          "hash": "vPThDBGbCKaEvwD5gzEorw=="
         }
       },
       "is_incremental": false,
@@ -510,7 +510,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/foundation.html",
-          "hash": "bMVzfScvibOOQR0eNIQnIQ=="
+          "hash": "0ZLLQO0zPPte5RRcL9xfMw=="
         }
       },
       "is_incremental": false,
@@ -525,7 +525,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/index.html",
-          "hash": "vz+pghLaGlStseLk0DjvPQ=="
+          "hash": "TTOCqy3SquXm/EEc1uQA0g=="
         }
       },
       "is_incremental": false,
@@ -540,7 +540,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/toc.html",
-          "hash": "MdCrYJas/cGsPBmyT3dDGQ=="
+          "hash": "A53Wa40jBprCmue8rE6XnA=="
         }
       },
       "is_incremental": false,
@@ -548,11 +548,23 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Guides/Devices/How-To-Connect.md",
+      "source_relative_path": "Guides/Devices/Register-A-Device.md",
       "output": {
         ".html": {
-          "relative_path": "Guides/Devices/How-To-Connect.html",
-          "hash": "0s8meiFJKTj1GfGXoKldpQ=="
+          "relative_path": "Guides/Devices/Register-A-Device.html",
+          "hash": "anC5cMdYeSCLjh9mCcsT4Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/Devices/Register-A-Simulated-Device.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/Devices/Register-A-Simulated-Device.html",
+          "hash": "masZW1WB5W8kOiRwtT7xfQ=="
         }
       },
       "is_incremental": false,
@@ -564,7 +576,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/Devices/Simulating-Data.html",
-          "hash": "PCe+GAa7YiIsTXE3GRXmdA=="
+          "hash": "vSG5ZqsavDbF+buFUrt9xA=="
         }
       },
       "is_incremental": false,
@@ -576,7 +588,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/Devices/index.html",
-          "hash": "Boo7MAddServbSmvrN6wOg=="
+          "hash": "lUstSGwD41D4wEt/3ylnlg=="
         }
       },
       "is_incremental": false,
@@ -588,7 +600,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/index.html",
-          "hash": "yx+2/8eeFNJzhZHflnft5A=="
+          "hash": "iRYTUJO0xx8omFKG1fbA/g=="
         }
       },
       "is_incremental": false,
@@ -603,7 +615,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "mJBbfRsDhHS6tUpydgFNGQ=="
+          "hash": "WMLpOtSRmvKh8CLew86SJw=="
         }
       },
       "is_incremental": false,
@@ -615,7 +627,7 @@
       "output": {
         ".html": {
           "relative_path": "UseCases/index.html",
-          "hash": "Iy9ql9mrYgTcXn+BAgIOHQ=="
+          "hash": "O1t2OcW0w+kkaI1ZwCqSwQ=="
         }
       },
       "is_incremental": false,
@@ -627,6 +639,17 @@
       "output": {
         "resource": {
           "relative_path": "images/3M_wordmark.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/IoT-Device-Add.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/IoT-Device-Add.png"
         }
       },
       "is_incremental": false,
@@ -671,7 +694,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "oerLRZz1i2l5jpi3UpgWWQ=="
+          "hash": "Zcj2fVqaSUVS4IL3dQvnPQ=="
         }
       },
       "is_incremental": false,
@@ -696,17 +719,19 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": true,
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
         "incrementalPhase": "build",
         "total_file_count": 0,
-        "skipped_file_count": 0
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
         "ConceptualDocumentProcessor": {
-          "can_incremental": true,
+          "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 48,
-          "skipped_file_count": 48
+          "total_file_count": 49,
+          "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

@@ -5,19 +5,19 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>TODO | 3M Serenity Documentation </title>
+    <title>How to Register a Device | 3M Serenity Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="TODO | 3M Serenity Documentation ">
+    <meta name="title" content="How to Register a Device | 3M Serenity Documentation ">
     <meta name="generator" content="docfx 2.56.2.0">
     
-    <link rel="shortcut icon" href="../images/3M_wordmark.svg">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
     
-    <meta property="docfx:rel" content="../">
+    <meta property="docfx:rel" content="../../">
     
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
@@ -34,8 +34,8 @@
                 <span class="icon-bar"></span>
               </button>
               
-              <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../images/3M_wordmark.svg" alt="">
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../images/3M_wordmark.svg" alt="">
               </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
@@ -77,16 +77,29 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="todo">TODO</h1>
+<h1 id="how-to-register-a-device">How to Register a Device</h1>
 
+<p>For a device to connect to the solution accelerator, it must identify itself to IoT Hub using valid credentials. You have the opportunity to save the device connection string that contains these credentials when you add the device to the solution. You include the device connection string in your client application later in this tutorial.</p>
+<p>To add a device to your Remote Monitoring solution, complete the following steps on the Device Explorer page in the solution:</p>
+<ol>
+<li>Choose + <strong>New device</strong>, and then choose <strong>Real</strong> as the <strong>Device type</strong>:</li>
+</ol>
+<center>
+<img src="../../images/IoT-Device-Add.png" style="padding-top:5px;padding-bottom:20px;width:80%;height:80%;border:.5;border-color:light-gray;">
+</center>
+<ol start="2">
+<li><p>Enter a Device ID you wish to use to reference this device or allow the system to generate one for you. The value must be unique and connect include spaces.</p>
+</li>
+<li><p>Select the desired authentication type and either have the system generate authentication keys for you or provide your own.<br>
+CRSL generally uses a Symmetric Key but your organization might prefer x509. Chose whichever is the most approriate.</p>
+</li>
+<li><p>Select the preferred option for how to define keys.  You have the choice between:</p>
 <ul>
-<li>Serenity Is</li>
-<li>Serenity Is Not</li>
-<li>Architecture Summary -&gt; More Info (Architecture.md)</li>
-<li>Microsoft Accelerator plus How it differs from</li>
-<li></li>
+<li>Providing your own</li>
+<li>Auto Generating</li>
 </ul>
-<p><a href="https://docs.microsoft.com/en-us/azure/iot-accelerators/">https://docs.microsoft.com/en-us/azure/iot-accelerators/</a></p>
+</li>
+</ol>
 </article>
           </div>
           
@@ -95,7 +108,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/foundation.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/Guides/Devices/Register-A-Device.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
@@ -121,8 +134,8 @@
       </footer>
     </div>
     
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
-    <script type="text/javascript" src="../styles/docfx.js"></script>
-    <script type="text/javascript" src="../styles/main.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
   </body>
 </html>

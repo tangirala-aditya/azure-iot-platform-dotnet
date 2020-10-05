@@ -4,10 +4,50 @@
     "title": "TODO | 3M Serenity Documentation",
     "keywords": "TODO List APIs with description and path Reference SWAGGER Files Add .NET projects to the src folder and run docfx to generate REAL API Documentation !"
   },
+  "GettingStarted/Contribute/Community-Involvement.html": {
+    "href": "GettingStarted/Contribute/Community-Involvement.html",
+    "title": "IoT Platform Community | 3M Serenity Documentation",
+    "keywords": "IoT Platform Community Get involved in the 3M IoT Platform Community. Details coming soon. Emails will go out announcing the first event that is scheduled to start between October 15th and the 23rd."
+  },
+  "GettingStarted/Contribute/How-To-Improve-Documentation.html": {
+    "href": "GettingStarted/Contribute/How-To-Improve-Documentation.html",
+    "title": "How to Improve Documentation | 3M Serenity Documentation",
+    "keywords": "How to Improve Documentation"
+  },
+  "GettingStarted/Contribute/How-To-Influence-Priorities.html": {
+    "href": "GettingStarted/Contribute/How-To-Influence-Priorities.html",
+    "title": "How to Influence Priorities | 3M Serenity Documentation",
+    "keywords": "How to Influence Priorities This article describes how you can influence platform improvements by voting on issue prioritization."
+  },
+  "GettingStarted/Contribute/How-To-Make-Development-Contributions.html": {
+    "href": "GettingStarted/Contribute/How-To-Make-Development-Contributions.html",
+    "title": "How to Contribute Code | 3M Serenity Documentation",
+    "keywords": "How to Contribute Code TODO: Describe how to make direct platform contributions by making technical enhancements to the platform's code."
+  },
+  "GettingStarted/Contribute/How-To-Report-A-Bug.html": {
+    "href": "GettingStarted/Contribute/How-To-Report-A-Bug.html",
+    "title": "How to Report a Bug | 3M Serenity Documentation",
+    "keywords": "How to Report a Bug To report a bug related to the 3M Iot Platform on Azure, follow the steps below: Open the Issues List Navigate to the Issues List Click New issue Click Get started on the Bug report row Populate the report (See section: How to Complete Bug Report) Submit Issue Track Progress (See How to Track Progress ) Add Tag Name for the group requesting: e.g. CHIM How to Complete Bug Report A Bug Report consists of the following sections: Title Description Steps to Reproduce Expected Behavior Screenshots Desktop Additional context Attachments The remaining sections will describe how to complete each section. Title TODO Description Steps to Reproduce Expected Behavior Screenshots Desktop Additional context Attachments"
+  },
+  "GettingStarted/Contribute/How-To-Request-A-Feature.html": {
+    "href": "GettingStarted/Contribute/How-To-Request-A-Feature.html",
+    "title": "How to Request a Feature | 3M Serenity Documentation",
+    "keywords": "How to Request a Feature To request a feature to improve the 3M Iot Platform on Azure, follow the steps below: Open the Issues List Navigate to the Issues List Click New issue Click Get started on the Feature request row Populate the request (See section: How to Complete Feature Request ) Submit Issue Track Progress (See How to Track Progress ) Add Tag Name for the group requesting: e.g. CHIM How to Complete Feature Request Title Describe Need Describe Improvement Describe Alternatives Attachments"
+  },
+  "GettingStarted/Contribute/How-To-Track-Progress.html": {
+    "href": "GettingStarted/Contribute/How-To-Track-Progress.html",
+    "title": "How to Track Progress | 3M Serenity Documentation",
+    "keywords": "How to Track Progress"
+  },
+  "GettingStarted/Contribute/How-To-Track-Releases.html": {
+    "href": "GettingStarted/Contribute/How-To-Track-Releases.html",
+    "title": "How to Track Releases | 3M Serenity Documentation",
+    "keywords": "How to Track Releases Versions record what improvements are associated with a given release."
+  },
   "GettingStarted/Contribute/index.html": {
     "href": "GettingStarted/Contribute/index.html",
-    "title": "TODO | 3M Serenity Documentation",
-    "keywords": "TODO Bridget's content will be located here on how to raise Issues and Request features This content should likely move to InnerSource"
+    "title": "How to Make Platform Improvements | 3M Serenity Documentation",
+    "keywords": "How to Make Platform Improvements The 3M IoT Platform on Azure has a robust CI/CD process to accommodate feedback and contributes from the community. The IoT Platform source code is stored in a public GitHub repo and developed under an open-source model. The following table describes the common ways to initialize improvements to the platform: RESOURCE DESCRIPTION Issues List Offers the following: Report Bugs Request Features Influence Priorities Track Progress Documentation All documentation offers community contributions. Development You can make direct contributions to the code. Community Involvement Join the 3M IoT Platform Community. Use the links below to get more information on each topic. Issues List How to Report a Bug How to Request a Feature How to Influence Priorities How to Track Development How to Track Releases Documentation How to Improve Documentation Development How to Make Code Contributions Community Involvement [How to Make Code Contributions] Note! Bridget's content will be located here on how to raise Issues and Request features"
   },
   "GettingStarted/foundation.html": {
     "href": "GettingStarted/foundation.html",
@@ -234,10 +274,15 @@
     "title": "3M IoT Platform Guides | 3M Serenity Documentation",
     "keywords": "3M IoT Platform Guides The following guides offer insight into how to do day-to-day operations on the platform. Devices TODO: Describe this section. Telementry TODO: Describe this section."
   },
+  "Guides/Issues/index.html": {
+    "href": "Guides/Issues/index.html",
+    "title": "How to Make Platform Improvements | 3M Serenity Documentation",
+    "keywords": "How to Make Platform Improvements The 3M IoT Platform on Azure has a robust CI/CD process to accommodate feedback and contributes from the community. The IoT Platform source code is stored in a public GitHub repo and developed under an open-source model. The following table describes the common ways to initialize improvements to the platform: RESOURCE DESCRIPTION Issues List Offers the following: Report Bugs Request Features Influence Priorities Track Progress Documentation All documentation offers community contributions. Development You can make direct contributions to the code. Use the links below to get more information on each topic. Issues List How to Report a Bug How to Request a Feature How to Influence Priorities How to Track Progress Documentation How to Improve Documentation Development How to Make Development Contributions"
+  },
   "index.html": {
     "href": "index.html",
     "title": "3M IoT Platform Documentation | 3M Serenity Documentation",
-    "keywords": "3M IoT Platform Documentation The 3M IoT Platform on Azure offers core services for managing IoT devices at scale. To learn about these services see 3M IoT Platform Services . Organizations can integrate 3M IoT Platform into their own solutions to avoid building their own device management capabilities, saving time and prioritizing value-adding activities related to their product offerings. To learn more, check out the Use Cases for additional insight on how the platform is currently being used. This is really cool because I can improve it directly in teh repo. 3M extended Microsoft's Remote Monitoring Accelerator to support CI/CD, multi-tenancy, continuous vulnerability assessment, and many other features to address common enterprise requirements. To learn more, check out IoT Platform Features . Platform User Interface Architecture Overview One more test...this time using a branch."
+    "keywords": "3M IoT Platform Documentation The 3M IoT Platform on Azure offers core services for managing IoT devices at scale. To learn about these services see 3M IoT Platform Services . Organizations can integrate 3M IoT Platform into their own solutions to avoid building their own device management capabilities, saving time and prioritizing value-adding activities related to their product offerings. To learn more, check out the Use Cases for additional insight on how the platform is currently being used. This is really cool because I can improve it directly in teh repo. 3M extended Microsoft's Remote Monitoring Accelerator to support CI/CD, multi-tenancy, continuous vulnerability assessment, and many other features to address common enterprise requirements. To learn more, check out IoT Platform Features . Platform User Interface Architecture Overview"
   },
   "UseCases/index.html": {
     "href": "UseCases/index.html",

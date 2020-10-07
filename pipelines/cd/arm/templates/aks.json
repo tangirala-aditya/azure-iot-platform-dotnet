@@ -216,7 +216,7 @@
         "vnetName": "[concat(parameters('applicationCode'), '-', 'vnet')]",
         "applicationGatewayName": "[concat(parameters('applicationCode'), '-', 'applicationgateway')]",
         "identityName": "[concat(parameters('applicationCode'), '-', 'appgwContrIdentity')]",
-        "applicationGatewayPublicIpName": "[concat(parameters('applicationCode'), '-', 'public-ip']",
+        "applicationGatewayPublicIpName": "[concat(parameters('applicationCode'), '-', 'public-ip')]",
         "kubernetesSubnetName": "[concat(parameters('applicationCode'), '-', 'kubesubnet')]",
         "applicationGatewaySubnetName": "[concat(parameters('applicationCode'), '-', 'appgwsubnet')]",
         "aksClusterName": "[parameters('resourceName')]",

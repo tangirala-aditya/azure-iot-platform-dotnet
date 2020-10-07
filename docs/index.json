@@ -107,7 +107,7 @@
   "GettingStarted/Setup/ByRole/Azure-Developer-Setup.html": {
     "href": "GettingStarted/Setup/ByRole/Azure-Developer-Setup.html",
     "title": "Getting Started for Azure Developers | 3M Serenity Documentation",
-    "keywords": "Getting Started for Azure Developers This document provides setup instructions for contributing to the 3M IoT Platform as a Azure Developer . In addition, it outlines relevant skills and helpful links to learn about or brush up on related topics. Useful Skills Be familiar with the following list of Azure services AKS Storage Account DPS (Device Provisioning Service) Function App App Configuration Cosomos DB Event Hub Key Vault Send Grid IOT Hub Stream Analytics Job Azure Maps Common Contributions Azure Developer typically contribute to the platform in the following ways: Should have knowledge on Azure Services and how to deploy code to these services. Enhancing the Azure Services and integration between the services. Tools Az cli Azure Storage Explorer Azure Devspaces cli and extension Azure IOT Explorer VS Code Docker Helpful Resources IoT School Microsoft IoT Azure Storage Explorer Az Cli Devspaces"
+    "keywords": "Getting Started for Azure Developers This document provides setup instructions for contributing to the 3M IoT Platform as a Azure Developer . In addition, it outlines relevant skills and helpful links to learn about or brush up on related topics. Useful Skills Helpful Resources IoT School Microsoft IoT Tools"
   },
   "GettingStarted/Setup/ByRole/DevOps-Setup.html": {
     "href": "GettingStarted/Setup/ByRole/DevOps-Setup.html",

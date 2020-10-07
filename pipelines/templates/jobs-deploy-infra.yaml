@@ -142,7 +142,7 @@ jobs:
     dependsOn:
       - resourceGroup
     variables:
-        servicePrincipalObjectId: $[dependencies.keyvault.outputs['getServicePrincipalObjectId.objectId']]
+        # servicePrincipalObjectId: $[dependencies.keyvault.outputs['getServicePrincipalObjectId.objectId']]
       - template: variables-deploy-infra.yaml
         parameters:
           subscriptionName: ${{parameters.subscriptionName}}
@@ -194,6 +194,19 @@ jobs:
               az aks update-credentials --resource-group $(resourceGroupName) --name $(aksName) --reset-service-principal --service-principal $servicePrincipalId --client-secret $servicePrincipalKey
             fi
           addSpnToEnvironment: true
+      
+      - task: AzureCLI@2
+        displayName: Get object ID of Azure service principal
+        name: getServicePrincipalObjectId
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            objectId=$(az ad sp show --id $servicePrincipalId | jq -r .objectId)
+            echo $objectId
+            echo "##vso[task.setvariable variable=servicePrincipalObjectId;isOutput=true]$objectId"
+          addSpnToEnvironment: true
 
       - task: AzureResourceGroupDeployment@2
         displayName: Provision Azure Kubernetes Service
@@ -213,7 +226,7 @@ jobs:
             -dnsPrefix $(aksName)-dns
             -servicePrincipalClientId $servicePrincipalId
             -servicePrincipalClientSecret $servicePrincipalKey
-            -aksServicePrincipalObjectId $servicePrincipalObjectId
+            -aksServicePrincipalObjectId $(servicePrincipalObjectId)
             -omsWorkspaceName $(omsWorkspaceName)
             -kubernetesVersion ${{parameters.kubernetesVersion}}
             -agentVMSize ${{parameters.aksAgentVmSize}}

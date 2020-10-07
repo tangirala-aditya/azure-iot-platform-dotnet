@@ -120,7 +120,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Contribute/How-To-Track-Releases.html",
-          "hash": "7x8ICibFrQbinlqSQ5KjVw=="
+          "hash": "VWpViPOzezoFb6q6ThyFhw=="
         }
       },
       "is_incremental": false,
@@ -135,7 +135,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Contribute/index.html",
-          "hash": "n3AwBycZn77qK70jWl/pBg=="
+          "hash": "IbFmHQSQRYiADtI7M9xxcg=="
         }
       },
       "is_incremental": false,
@@ -766,10 +766,32 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/ChangeLog.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/ChangeLog.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/IoT-Device-Add.png",
       "output": {
         "resource": {
           "relative_path": "images/IoT-Device-Add.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UI-Version-Indicator.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/UI-Version-Indicator.png"
         }
       },
       "is_incremental": false,

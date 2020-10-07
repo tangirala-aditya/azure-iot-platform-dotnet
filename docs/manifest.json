@@ -13,12 +13,588 @@
       "is_incremental": false
     },
     {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html",
+          "hash": "ldhhM3Ckt8pGDyPrydoEhA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html",
+          "hash": "SYcKiFwX5G9BUSPtcO9uSA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html",
+          "hash": "bhxcpE2U4c1nJtwHsfJ7Cw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.html",
+          "hash": "crr8wTY143xZx61D/SsnTw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.ConfigTypesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.ConfigTypesController.html",
+          "hash": "yl+PuFvml/4Cq+rpT6wWMQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.DeviceGroupController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.DeviceGroupController.html",
+          "hash": "ngpZZYLMdapupgxQwToVuA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.PackagesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.PackagesController.html",
+          "hash": "/jiCwHKgwl7OHiuHwmo47w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.SeedController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.SeedController.html",
+          "hash": "xbh8MpiLGn51qLitBPZXug=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.SolutionSettingsController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.SolutionSettingsController.html",
+          "hash": "l1EUJIvLJiS0pQ8O6boBiQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.StatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.StatusController.html",
+          "hash": "9poJVBDA7oiO6KiK9LiIlw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.UserSettingsController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.UserSettingsController.html",
+          "hash": "aM9Q468Q1qj7MJc+OK8+nQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.html",
+          "hash": "BsTlM8Q8npbiJ7PswmlUvg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html",
+          "hash": "gn+P5VYk4Tdmmwd6YlAbqQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html",
+          "hash": "15E676/rxaRuZWqs1jUIRA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html",
+          "hash": "AFW+9Bn9I7Y/uVSCmiVBVg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html",
+          "hash": "c+zsfL7CahDwbgyReS2vGg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html",
+          "hash": "ZjOe1F+edqwNpxvBc3zO4Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html",
+          "hash": "Vb9P4piqKYVhQS9mS6joIg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.html",
+          "hash": "O5dWuZEhivrZ/qryXo/PZg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.DiagnosticsEventsController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.DiagnosticsEventsController.html",
+          "hash": "DxLZMZx8AjPr4RhKFHLsfQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.StatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.StatusController.html",
+          "hash": "si+Al5XhG/LUDnml2dff9Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.html",
+          "hash": "qP/NgvJbHZcI3rbN4EDmIg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html",
+          "hash": "yeM5VzUpukVYrgkf1Fym1g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.html",
+          "hash": "GwlmLh940DbkAegoz5C06Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html",
+          "hash": "Qvp/ov1A4+w8z+dKNc/Csg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html",
+          "hash": "kb+or6NdKVsXd9AWlzgdCA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html",
+          "hash": "3+yTBBMP2IdJm1bHATfDJA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html",
+          "hash": "5vFP796xa6/mk82kH+OmRw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html",
+          "hash": "7LTI8TzaCmFMpq+ytVor1Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html",
+          "hash": "P7yot4hxyqta8itB0UzEkA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html",
+          "hash": "VvHh+nGTzeE6u3zNKby5mw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.html",
+          "hash": "WKSiC7ngAfdB2zuvg81iQg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "APIs/index.md",
       "output": {
         ".html": {
           "relative_path": "APIs/index.html",
-          "hash": "vyHUBTpOk56+x+a1Y7YSag=="
+          "hash": "q5X7Id2nEJm1dBK/9RPJbg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html",
+          "hash": "vCNgrbCl6WWNsJ/pCdT/UQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.html",
+          "hash": "QaOrkdLj/XmF/KzXpdBfSQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html",
+          "hash": "u5KFYJI9kTZyZAgoSHjibw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html",
+          "hash": "ldMSsY5OxPSV84Leai/IsQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html",
+          "hash": "uf6dqGar/xvkB52Fj+TJYg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html",
+          "hash": "J1Gmem+5u3u/6ktdER+iow=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.html",
+          "hash": "I1dcrlR5ycDKf8cVIPaCiw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html",
+          "hash": "I6CJipSyqQf9QfNHhr2GeQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html",
+          "hash": "AeTcCprsFfWOZXnW6XMfVg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.html",
+          "hash": "q+YtrtL+jyMmvmY+k0Uw8Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html",
+          "hash": "q6X0YkwAWB+hiK/zNNa5jg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html",
+          "hash": "RpLAr78bC5lwCELuR++Jig=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html",
+          "hash": "S7WpYaAgOvXb7dkNRUsshw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.html",
+          "hash": "gXX8rAlEJ5AGxkkMIqtWOA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.html",
+          "hash": "BYMBBB5JFCMmTWHD9QBprw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "APIs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/toc.html",
+          "hash": "pAJPvf4V5x53k2Wzt9aagg=="
         }
       },
       "is_incremental": false,
@@ -255,7 +831,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByRole/Azure-Developer-Setup.html",
-          "hash": "lRm2Shz2fMtv54FySdgnDQ=="
+          "hash": "YA59LBZGmWe1sG5FnREFMQ=="
         }
       },
       "is_incremental": false,
@@ -851,7 +1427,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "MvOIxuIAiCfGL1XUJS/9Cg=="
+          "hash": "KMKMG+IL7F4bMYIAy+f0uw=="
         }
       },
       "is_incremental": false,
@@ -873,6 +1449,12 @@
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 58,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 47,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

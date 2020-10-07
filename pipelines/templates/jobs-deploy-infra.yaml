@@ -206,6 +206,8 @@ jobs:
           csmParametersFile: $(armParametersDirectory)/$(aksPartialName).json
           overrideParameters: >-
             -resourceName $(aksName)
+            -applicationCode ${{parameters.applicationCode}}
+            -environmentCategory ${{parameters.environmentCategory}}
             -location ${{parameters.locationName}}
             -dnsPrefix $(aksName)-dns
             -servicePrincipalClientId $servicePrincipalId

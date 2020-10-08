@@ -1221,7 +1221,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/toc.html",
-          "hash": "xaOYcZDUs20nXOuJ2pG6pg=="
+          "hash": "Kw/y8yIwfRCrIjpBi/bJmg=="
         }
       },
       "is_incremental": false,
@@ -1324,17 +1324,6 @@
         ".html": {
           "relative_path": "UseCases/index.html",
           "hash": "O1t2OcW0w+kkaI1ZwCqSwQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "_site_pdf/IoT Platform Public_pdf.pdf",
-      "output": {
-        "resource": {
-          "relative_path": "_site_pdf/IoT Platform Public_pdf.pdf"
         }
       },
       "is_incremental": false,

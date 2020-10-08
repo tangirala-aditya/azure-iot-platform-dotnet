@@ -1221,7 +1221,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/toc.html",
-          "hash": "Kw/y8yIwfRCrIjpBi/bJmg=="
+          "hash": "38/VYNqhCBQbLVoApoXgMg=="
         }
       },
       "is_incremental": false,
@@ -1311,7 +1311,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "/+ChhU86/OGoCtqcCT9zdQ=="
+          "hash": "KFd+xkU9MW7c0+BYvlZZ1A=="
         }
       },
       "is_incremental": false,
@@ -1413,21 +1413,6 @@
         ".html": {
           "relative_path": "index.html",
           "hash": "SEXc6g1IEdl4x7OQQGb8dQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
-      "type": "Toc",
-      "source_relative_path": "pdf/toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "pdf/toc.html",
-          "hash": "C7e9yqXej9Pris7qfAeXlw=="
         }
       },
       "is_incremental": false,

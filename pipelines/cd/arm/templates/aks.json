@@ -227,10 +227,6 @@
         "applicationGatewayId": "[resourceId('Microsoft.Network/applicationGateways', variables('applicationGatewayName'))]",
         "identityId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName'))]",
         "aksClusterId": "[resourceId('Microsoft.ContainerService/managedClusters', variables('aksClusterName'))]",
-        "networkContributorRole": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
-        "contributorRole": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-        "managedIdentityOperatorRole": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'f1a07417-d97a-45cb-824c-7a7467783830')]",
-        "readerRole": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
         "webApplicationFirewallConfiguration": {
           "enabled": "true",
           "firewallMode": "Detection"
@@ -385,92 +381,6 @@
                 "[concat('Microsoft.Network/publicIPAddresses/', variables('applicationGatewayPublicIpName'))]"
             ]
         },
-        {
-            "type": "Microsoft.Resources/deployments",
-            "name": "RoleAssignmentDeploymentForKubenetesSp",
-            "apiVersion": "2017-05-10",
-            "subscriptionId": "[subscription().subscriptionId]",
-            "resourceGroup": "[resourceGroup().name]",
-            "properties": {
-                "mode": "Incremental",
-                "template": {
-                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                    "contentVersion": "1.0.0.0",
-                    "parameters": {},
-                    "variables": {},
-                    "resources": [
-                        {
-                            "type": "Microsoft.Network/virtualNetworks/subnets/providers/roleAssignments",
-                            "apiVersion": "2017-05-01",
-                            "name": "[concat(variables('vnetName'), '/', variables('kubernetesSubnetName'),'/Microsoft.Authorization/', guid(resourceGroup().id, 'aksvnetaccess'))]",
-                            "properties": {
-                              "roleDefinitionId": "[variables('networkContributorRole')]",
-                              "principalId": "[parameters('aksServicePrincipalObjectId')]",
-                              "scope": "[variables('kubernetesSubnetId')]"
-                            }
-                        },
-                        {
-                            "type": "Microsoft.ManagedIdentity/userAssignedIdentities/providers/roleAssignments",
-                            "apiVersion": "2017-05-01",
-                            "name": "[concat(variables('identityName'), '/Microsoft.Authorization/', guid(resourceGroup().id, 'aksidentityaccess'))]",
-                            "properties": {
-                                "roleDefinitionId": "[variables('managedIdentityOperatorRole')]",
-                                "principalId": "[parameters('aksServicePrincipalObjectId')]",
-                                "scope": "[variables('identityId')]",
-                                "principalType": "ServicePrincipal"
-                            }
-                        }
-                    ]
-                }
-            },
-            "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
-                "[concat('Microsoft.ManagedIdentity/userAssignedIdentities/', variables('identityName'))]"
-            ]
-        },
-        {
-            "type": "Microsoft.Resources/deployments",
-            "name": "RoleAssignmentDeploymentForUserAssignedIdentity",
-            "apiVersion": "2017-05-10",
-            "subscriptionId": "[subscription().subscriptionId]",
-            "resourceGroup": "[resourceGroup().name]",
-            "properties": {
-                "mode": "Incremental",
-                "template": {
-                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                    "contentVersion": "1.0.0.0",
-                    "parameters": {},
-                    "variables": {},
-                    "resources": [
-                        {
-                            "type": "Microsoft.Network/applicationgateways/providers/roleAssignments",
-                            "apiVersion": "2017-05-01",
-                            "name": "[concat(variables('applicationGatewayName'), '/Microsoft.Authorization/', guid(resourceGroup().id, 'identityappgwaccess'))]",
-                            "properties": {
-                                "roleDefinitionId": "[variables('contributorRole')]",
-                                "principalId": "[reference(variables('identityId'), '2015-08-31-PREVIEW').principalId]",
-                                "scope": "[variables('applicationGatewayId')]"
-                            }
-                        },
-                        {
-                            "type": "Microsoft.Authorization/roleAssignments",
-                            "apiVersion": "2017-05-01",
-                            "name": "[guid(resourceGroup().id, 'identityrgaccess')]",
-                            "properties": {
-                                "roleDefinitionId": "[variables('readerRole')]",
-                                "principalId": "[reference(variables('identityId'), '2015-08-31-PREVIEW').principalId]",
-                                "scope": "[resourceGroup().id]"
-                            }
-                        }
-                    ]
-                }
-            },
-            "dependsOn": [
-                "[concat('Microsoft.Network/applicationgateways/', variables('applicationGatewayName'))]",
-                "[concat('Microsoft.ManagedIdentity/userAssignedIdentities/', variables('identityName'))]"
-            ]
-        },
-
         {
             "apiVersion": "2019-06-01",
             "dependsOn": [],

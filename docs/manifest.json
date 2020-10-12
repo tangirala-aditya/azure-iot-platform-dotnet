@@ -1331,6 +1331,72 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "_site_pdf/IoT_Platform_Public.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "_site_pdf/IoT_Platform_Public.pdf"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "_site_pdf/IoT_Platform_Public_APIs.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "_site_pdf/IoT_Platform_Public_APIs.pdf"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "_site_pdf/IoT_Platform_Public_GettingStarted.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "_site_pdf/IoT_Platform_Public_GettingStarted.pdf"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "_site_pdf/IoT_Platform_Public_Guides.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "_site_pdf/IoT_Platform_Public_Guides.pdf"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "_site_pdf/Public_Guides.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "_site_pdf/Public_Guides.pdf"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "_site_pdf/Public_pdf.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "_site_pdf/Public_pdf.pdf"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/3M_wordmark.svg",
       "output": {
         "resource": {

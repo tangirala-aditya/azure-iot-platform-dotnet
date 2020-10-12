@@ -450,7 +450,7 @@ jobs:
           templateLocation: Linked artifact
           csmFile: $(armTemplatesDirectory)/$(keyVaultPartialName).json
           csmParametersFile: $(armParametersDirectory)/$(keyVaultPartialName).json
-          overrideParameters: -resourceName $(keyVaultName) -applicationObjId $(servicePrincipalObjectId) -userObjId $(userObjId)
+          overrideParameters: -resourceName $(keyVaultName) -applicationObjId "9ee76822-0c45-43c4-a7fe-067adf5fe441" -userObjId $(userObjId)
           deploymentMode: Incremental
 
       - template: steps-delete-oldest-deployment.yaml

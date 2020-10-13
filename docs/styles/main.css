@@ -1,6 +1,6 @@
 /* COLOR VARIABLES*/
 :root {
-  --header-bg-color: #0d47a1;
+  --header-bg-color: #000000;
   --header-ft-color: #fff;
   --highlight-light: #5e92f3;
   --highlight-dark: #003c8f;
@@ -39,7 +39,8 @@ a:focus {
 }
 
 .toc .nav > li.active > a {
-  color: var(--highlight-dark);
+  color: var(--header-bg-color);
+  font-weight: 600;
 }
 
 .toc .nav > li.active > a:hover,
@@ -191,19 +192,19 @@ article h4 {
   background-color: #fff;
   border-left: none;
   border-right: none;
+  top: 60px;
 }
 
-.sidefilter {
-  background-color: #fff;
-  border-left: none;
-  border-right: none;
-}
 
 .toc-filter {
-  display: none;
   padding: 5px;
   margin: 0;
-  box-shadow: var(--card-box-shadow);
+  /*box-shadow: var(--card-box-shadow);*/
+  border-radius: 0 0 0 0;
+  box-shadow: none;
+  border: none;
+  border-bottom-style: solid;
+  border-bottom-width: .5px;
   transition:var(--transition);
 }
 
@@ -229,6 +230,19 @@ article h4 {
 .sidetoc {
   background-color: #fff;
   border: none;
+}
+
+.toc-filter ::placeholder {
+  color: lightgray;
+  opacity: 1; /* Firefox */
+}
+
+.toc-filter   :-ms-input-placeholder { /* Internet Explorer 10-11 */
+ color: lightgray;
+}
+
+.toc-filter  ::-ms-input-placeholder { /* Microsoft Edge */
+ color: lightgray;
 }
 
 /* ALERTS */
@@ -291,6 +305,9 @@ pre {
 }
 
 /* STYLE FOR IMAGES */
+.article {
+  margin-top: 90px;
+}
 
 .article .small-image {
   margin-top: 15px;
@@ -309,3 +326,7 @@ pre {
   box-shadow: var(--card-box-shadow);
   max-width: 700px;
 }
+.sidetoc {
+  top: 120px;
+}
+

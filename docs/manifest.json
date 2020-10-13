@@ -1221,7 +1221,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/toc.html",
-          "hash": "38/VYNqhCBQbLVoApoXgMg=="
+          "hash": "xeTTQSySSS21rPFW1d79lg=="
         }
       },
       "is_incremental": false,
@@ -1331,50 +1331,6 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "_site_pdf/IoT_Platform_Public.pdf",
-      "output": {
-        "resource": {
-          "relative_path": "_site_pdf/IoT_Platform_Public.pdf"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "_site_pdf/IoT_Platform_Public_APIs.pdf",
-      "output": {
-        "resource": {
-          "relative_path": "_site_pdf/IoT_Platform_Public_APIs.pdf"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "_site_pdf/IoT_Platform_Public_GettingStarted.pdf",
-      "output": {
-        "resource": {
-          "relative_path": "_site_pdf/IoT_Platform_Public_GettingStarted.pdf"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "_site_pdf/IoT_Platform_Public_Guides.pdf",
-      "output": {
-        "resource": {
-          "relative_path": "_site_pdf/IoT_Platform_Public_Guides.pdf"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
       "source_relative_path": "_site_pdf/Public_Guides.pdf",
       "output": {
         "resource": {
@@ -1452,10 +1408,21 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "images/demo_shot.png",
+      "source_relative_path": "images/homepage.png",
       "output": {
         "resource": {
-          "relative_path": "images/demo_shot.png"
+          "relative_path": "images/homepage.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/homepage_dark.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/homepage_dark.png"
         }
       },
       "is_incremental": false,
@@ -1473,12 +1440,15 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "7MCbPEa+QtinXQyuNT0Mtg=="
+          "hash": "tF1WPJhU7MEgP5eJOp++Ew=="
         }
       },
       "is_incremental": false,
@@ -1504,11 +1474,11 @@
     {
       "status": {
         "can_incremental": false,
-        "details": "Cannot build incrementally because config changed.",
+        "details": "Cannot build incrementally because last build info is missing.",
         "incrementalPhase": "build",
         "total_file_count": 0,
         "skipped_file_count": 0,
-        "full_build_reason_code": "ConfigChanged"
+        "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
         "ConceptualDocumentProcessor": {

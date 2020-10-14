@@ -65,14 +65,14 @@ a:focus {
 
 /* Level 3 Nav */
 .toc .nav li li li  a {
-  margin-left: 15px; 
+  margin-left: 15px;
   font-size: 13px;
   line-height: 20px;
  }
 
  /* Level 4 Nav */
  .toc .nav li li li li a {
-  margin-left: 30px;   
+  margin-left: 30px;
   font-size: 10px;
   line-height: 16px;
  }
@@ -370,7 +370,6 @@ pre {
   content: '\F72F';
 }
 
-
 /* STYLE FOR CARDS */
 .card {
   display: block;
@@ -380,6 +379,7 @@ pre {
   box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%),0 .6px 1.8px 0 rgb(0 0 0 / 11%);
   line-height: 160%;
   font-size: 16px;
+  white-space: normal;
 }
 
 .card-header {
@@ -407,14 +407,7 @@ pre {
   font-size: 14px;
 }
 
-
-@media only screen and (max-width: 768px) {
-  .card {
-    width: 100px;
-  }
-}
-
-@media (min-width: 768px) {
+@media (min-width: 1088px) {
   .card {
     width: 200px;
   }

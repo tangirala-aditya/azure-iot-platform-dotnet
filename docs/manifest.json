@@ -1382,6 +1382,50 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "_site_pdf/IoT_Platform_Public.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "_site_pdf/IoT_Platform_Public.pdf"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "_site_pdf/IoT_Platform_Public_APIs.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "_site_pdf/IoT_Platform_Public_APIs.pdf"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "_site_pdf/IoT_Platform_Public_GettingStarted.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "_site_pdf/IoT_Platform_Public_GettingStarted.pdf"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "_site_pdf/IoT_Platform_Public_Guides.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "_site_pdf/IoT_Platform_Public_Guides.pdf"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "_site_pdf/Public_Guides.pdf",
       "output": {
         "resource": {
@@ -1614,11 +1658,11 @@
     {
       "status": {
         "can_incremental": false,
-        "details": "Cannot build incrementally because last build info is missing.",
+        "details": "Cannot build incrementally because config changed.",
         "incrementalPhase": "build",
         "total_file_count": 0,
         "skipped_file_count": 0,
-        "full_build_reason_code": "NoAvailableBuildCache"
+        "full_build_reason_code": "ConfigChanged"
       },
       "processors": {
         "ConceptualDocumentProcessor": {

@@ -426,10 +426,12 @@ pre {
   }
 }
 
-.table {background-color: #e0e0e0;}
-.table-bordered { border: 0px solid white !important; }
+/* STYLE FOR TABLES */
+.table {background-color: white;}
+.table-bordered { border: 0px solid white; }
 
 .table-bordered,.table-bordered>tbody>tr>td,.table-bordered>tbody>tr>th,.table-bordered>tfoot>tr>td,.table-bordered>tfoot>tr>th,.table-bordered>thead>tr>td,.table-bordered>thead>tr>th{
-  border: 0px solid white !important;
+  border: 0px solid white;
 }
 .table-bordered>thead>tr>td,.table-bordered>thead>tr>th{border-bottom-width:0px}
+.table-striped>tbody>tr:nth-of-type(odd){ background-color: white;}

@@ -1359,7 +1359,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/index.html",
-          "hash": "a9Sj6pDV2IJN+/jldgtaCQ=="
+          "hash": "E+XtfeNRGKSggXCXKXsleA=="
         }
       },
       "is_incremental": false,
@@ -1387,6 +1387,117 @@
         ".html": {
           "relative_path": "UseCases/index.html",
           "hash": "reQwDN39W8M2OkOrDIhomA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "UserManual/Dashboard.md",
+      "output": {
+        ".html": {
+          "relative_path": "UserManual/Dashboard.html",
+          "hash": "j1E8xcgKTBjrDqTg2lpZUw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "UserManual/Deployments.md",
+      "output": {
+        ".html": {
+          "relative_path": "UserManual/Deployments.html",
+          "hash": "NvFMnTZUKPwNRB/CpEV5wQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "UserManual/Device-Explorer.md",
+      "output": {
+        ".html": {
+          "relative_path": "UserManual/Device-Explorer.html",
+          "hash": "vZHOLBIqXCLHs3pcKDO8Iw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "UserManual/Maintenance.md",
+      "output": {
+        ".html": {
+          "relative_path": "UserManual/Maintenance.html",
+          "hash": "0yo7ltspOISDOlOoe1i9qQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "UserManual/Packages.md",
+      "output": {
+        ".html": {
+          "relative_path": "UserManual/Packages.html",
+          "hash": "rCZRDpo+LNv/1I2FIBmuog=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "UserManual/Rules.md",
+      "output": {
+        ".html": {
+          "relative_path": "UserManual/Rules.html",
+          "hash": "q9o2MnOnbbAVfpsgg9mj/w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "UserManual/User-Management.md",
+      "output": {
+        ".html": {
+          "relative_path": "UserManual/User-Management.html",
+          "hash": "TX+GyTw32e+RanSBOX+QeQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "UserManual/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "UserManual/index.html",
+          "hash": "U/gqXYRkrT6e7myDrjKqhA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Toc",
+      "source_relative_path": "UserManual/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "UserManual/toc.html",
+          "hash": "S0Xq1hVDXO/TIBSoHG8xdA=="
         }
       },
       "is_incremental": false,
@@ -1548,6 +1659,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/icons/information-line.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/icons/information-line.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/icons/repeat-one-line.png",
       "output": {
         "resource": {
@@ -1626,7 +1748,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "w+D/USwr6wBaqCNVLUKR/g=="
+          "hash": "i6QzVmpOX51wwApLNGMSvw=="
         }
       },
       "is_incremental": false,
@@ -1647,7 +1769,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 64,
+          "total_file_count": 72,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

@@ -532,7 +532,7 @@
   "Guides/index.html": {
     "href": "Guides/index.html",
     "title": "3M IoT Platform Guides | 3M Serenity Documentation",
-    "keywords": "3M IoT Platform Guides Welcome to the public documentation on guides that cover common activities of working with the platform. Managing Devices First section This is what a card might look like. User Manual First section This is what a card might look like."
+    "keywords": "3M IoT Platform Guides Welcome to the public documentation on guides that cover common activities of working with the platform. Managing Devices Overview This is what a card might look like. User Manual First section This is what a card might look like."
   },
   "Guides/Issues/index.html": {
     "href": "Guides/Issues/index.html",
@@ -553,5 +553,45 @@
     "href": "UseCases/index.html",
     "title": "TODO | 3M Serenity Documentation",
     "keywords": "TODO Provide a high-level overview of how 3M is using the IoT Platform Note: This is public content. InnerSource will have more specifics"
+  },
+  "UserManual/Dashboard.html": {
+    "href": "UserManual/Dashboard.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
+  "UserManual/Deployments.html": {
+    "href": "UserManual/Deployments.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
+  "UserManual/Device-Explorer.html": {
+    "href": "UserManual/Device-Explorer.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
+  "UserManual/index.html": {
+    "href": "UserManual/index.html",
+    "title": "3M IoT Platform User Manual | 3M Serenity Documentation",
+    "keywords": "3M IoT Platform User Manual"
+  },
+  "UserManual/Maintenance.html": {
+    "href": "UserManual/Maintenance.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
+  "UserManual/Packages.html": {
+    "href": "UserManual/Packages.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
+  "UserManual/Rules.html": {
+    "href": "UserManual/Rules.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
+  "UserManual/User-Management.html": {
+    "href": "UserManual/User-Management.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
   }
 }

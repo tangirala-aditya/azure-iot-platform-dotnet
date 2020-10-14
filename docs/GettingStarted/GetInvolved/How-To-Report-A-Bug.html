@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Architecture | 3M Serenity Documentation </title>
+    <title>How to Report a Bug | 3M Serenity Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Architecture | 3M Serenity Documentation ">
+    <meta name="title" content="How to Report a Bug | 3M Serenity Documentation ">
     <meta name="generator" content="docfx 2.56.2.0">
     
     <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
@@ -69,19 +69,41 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="architecture">Architecture</h1>
+<h1 id="how-to-report-a-bug">How to Report a Bug</h1>
 
-<p>The 3M IoT Platform on Azure consists of the following subsystems: 1) devices (and/or on premise edge gateways) that have the ability to securely register with the cloud, and connectivity options for sending and receiving data with the cloud, 2) a cloud gateway service, or hub, to securely accept that data and provide device management capabilities, 3) stream processors that consume that data, integrate with business processes, and place the data into storage, and 4) a user interface to visualize telemetry data and facilitate device management.</p>
-<p><img src="../../images/core-subsystem1.png" alt="logical architecture"></p>
-<p>Security is a critical consideration in each of the subsystems. The platform protects IoT devices, data, and communication by securely provisioning devices, secure connectivity between devices, edge devices, and the cloud, secure access to the backend solutions, and secure data protection in the cloud during processing and storage (encryption at rest).</p>
-<p>The platform's use of Azure IoT Hub offers a fully-managed service that enables reliable and secure bi-directional communication between IoT devices and Azure services such as Azure Machine Learning and Azure Stream Analytics by using per-device security credentials and access control. Both Azure Cosmos
-DB for warm path storage and Azure Blob Storage for cold storage both are available and support encryption at rest.</p>
-<p>All data access and permissions are governed by Azure Active Directory. External access is available via OpenID Connectivity as needed.</p>
-<!--
-Consider adding information about:
-https://azure.microsoft.com/en-us/blog/application-gateway-ingress-controller-for-azure-kubernetes-service/
-
--->
+<p>To report a bug related to the 3M Iot Platform on Azure, follow the steps below:</p>
+<ol>
+<li>Open the <a href="https://github.com/3mcloud/azure-iot-platform-dotnet">Issues List</a></li>
+<li>Navigate to the Issues List</li>
+<li>Click <strong>New issue</strong></li>
+<li>Click <strong>Get started</strong> on the Bug report row</li>
+<li>Populate the report (See section: How to Complete Bug Report)</li>
+<li>Submit Issue</li>
+<li>Track Progress (See <a href="./How-To-Track-Process.md">How to Track Progress</a>)</li>
+<li>Add Tag Name for the group requesting: e.g. CHIM</li>
+</ol>
+<h3 id="how-to-complete-bug-report">How to Complete Bug Report</h3>
+<p>A Bug Report consists of the following sections:</p>
+<ul>
+<li>Title</li>
+<li>Description</li>
+<li>Steps to Reproduce</li>
+<li>Expected Behavior</li>
+<li>Screenshots</li>
+<li>Desktop</li>
+<li>Additional context</li>
+<li>Attachments</li>
+</ul>
+<p>The remaining sections will describe how to complete each section.</p>
+<h4 id="title">Title</h4>
+<p>TODO</p>
+<h4 id="description">Description</h4>
+<h4 id="steps-to-reproduce">Steps to Reproduce</h4>
+<h4 id="expected-behavior">Expected Behavior</h4>
+<h4 id="screenshots">Screenshots</h4>
+<h4 id="desktop">Desktop</h4>
+<h4 id="additional-context">Additional context</h4>
+<h4 id="attachments">Attachments</h4>
 </article>
           </div>
           
@@ -90,7 +112,7 @@ https://azure.microsoft.com/en-us/blog/application-gateway-ingress-controller-fo
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/Overview/architecture.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/GetInvolved/How-To-Report-A-Bug.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

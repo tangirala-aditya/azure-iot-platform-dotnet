@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Architecture | 3M Serenity Documentation </title>
+    <title>How to Track Releases | 3M Serenity Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Architecture | 3M Serenity Documentation ">
+    <meta name="title" content="How to Track Releases | 3M Serenity Documentation ">
     <meta name="generator" content="docfx 2.56.2.0">
     
     <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
@@ -69,19 +69,22 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="architecture">Architecture</h1>
+<h1 id="how-to-track-releases">How to Track Releases</h1>
 
-<p>The 3M IoT Platform on Azure consists of the following subsystems: 1) devices (and/or on premise edge gateways) that have the ability to securely register with the cloud, and connectivity options for sending and receiving data with the cloud, 2) a cloud gateway service, or hub, to securely accept that data and provide device management capabilities, 3) stream processors that consume that data, integrate with business processes, and place the data into storage, and 4) a user interface to visualize telemetry data and facilitate device management.</p>
-<p><img src="../../images/core-subsystem1.png" alt="logical architecture"></p>
-<p>Security is a critical consideration in each of the subsystems. The platform protects IoT devices, data, and communication by securely provisioning devices, secure connectivity between devices, edge devices, and the cloud, secure access to the backend solutions, and secure data protection in the cloud during processing and storage (encryption at rest).</p>
-<p>The platform's use of Azure IoT Hub offers a fully-managed service that enables reliable and secure bi-directional communication between IoT devices and Azure services such as Azure Machine Learning and Azure Stream Analytics by using per-device security credentials and access control. Both Azure Cosmos
-DB for warm path storage and Azure Blob Storage for cold storage both are available and support encryption at rest.</p>
-<p>All data access and permissions are governed by Azure Active Directory. External access is available via OpenID Connectivity as needed.</p>
-<!--
-Consider adding information about:
-https://azure.microsoft.com/en-us/blog/application-gateway-ingress-controller-for-azure-kubernetes-service/
-
--->
+<p>Versions record what improvements are associated with a given release.  When a new release is deployed to your environment, the version number is reflected in the UI.  Versions organize platform improvements into identifiable releases. What's include in each version is recorded in the ChangeLog which is publicly available on <a href="https://github.com/3mcloud/azure-iot-platform-dotnet/releases">GitHub</a>.  A new version must be deployed to each environment.  As such, environments typically run on different releases.</p>
+<h3 id="how-to-check-the-current-version">How to check the current version</h3>
+<p>To see the list of improvements by version, open the <a href="https://github.com/3mcloud/azure-iot-platform-dotnet/releases">Change Log</a>.</p>
+<h3 id="how-to-check-the-improvements-per-version">How to check the improvements per version</h3>
+<p>From the releases page, click the link to the changelog for the version you're interested in or simply click the first link. Improvements for all other version will also be listed.  Here's what it looks like:</p>
+<center>
+<img src="../../images/ChangeLog.png" style="margin-bottom:20px;height:60%;width:60%;border: lightgray solid .5px">
+</center>
+<h3 id="how-to-check-which-version-youre-runing">How to check which version you're runing</h3>
+<p>The easiest way to identify which version an environment has deployed is through the user interface.  By click on the gear icon in the upper right, the current version is easily identified as depicted below:</p>
+<center>
+<img src="../../images/UI-Version-Indicator.png" style="margin-bottom:20px;height:60%;width:60%;border: lightgray solid .5px">
+</center>
+<p>The link <em><strong>View release notes</strong></em> offers a quick way to open the ChangeLog on the public repo.</p>
 </article>
           </div>
           
@@ -90,7 +93,7 @@ https://azure.microsoft.com/en-us/blog/application-gateway-ingress-controller-fo
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/Overview/architecture.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/GetInvolved/How-To-Track-Releases.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

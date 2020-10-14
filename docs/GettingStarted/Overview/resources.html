@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Architecture | 3M Serenity Documentation </title>
+    <title>Resources | 3M Serenity Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Architecture | 3M Serenity Documentation ">
+    <meta name="title" content="Resources | 3M Serenity Documentation ">
     <meta name="generator" content="docfx 2.56.2.0">
     
     <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
@@ -69,19 +69,62 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="architecture">Architecture</h1>
 
-<p>The 3M IoT Platform on Azure consists of the following subsystems: 1) devices (and/or on premise edge gateways) that have the ability to securely register with the cloud, and connectivity options for sending and receiving data with the cloud, 2) a cloud gateway service, or hub, to securely accept that data and provide device management capabilities, 3) stream processors that consume that data, integrate with business processes, and place the data into storage, and 4) a user interface to visualize telemetry data and facilitate device management.</p>
-<p><img src="../../images/core-subsystem1.png" alt="logical architecture"></p>
-<p>Security is a critical consideration in each of the subsystems. The platform protects IoT devices, data, and communication by securely provisioning devices, secure connectivity between devices, edge devices, and the cloud, secure access to the backend solutions, and secure data protection in the cloud during processing and storage (encryption at rest).</p>
-<p>The platform's use of Azure IoT Hub offers a fully-managed service that enables reliable and secure bi-directional communication between IoT devices and Azure services such as Azure Machine Learning and Azure Stream Analytics by using per-device security credentials and access control. Both Azure Cosmos
-DB for warm path storage and Azure Blob Storage for cold storage both are available and support encryption at rest.</p>
-<p>All data access and permissions are governed by Azure Active Directory. External access is available via OpenID Connectivity as needed.</p>
-<!--
-Consider adding information about:
-https://azure.microsoft.com/en-us/blog/application-gateway-ingress-controller-for-azure-kubernetes-service/
-
--->
+<p>Reference content from the following:</p>
+<p><a href="https://azure.microsoft.com/en-us/features/iot-accelerators/#iot-accelerators-features">https://azure.microsoft.com/en-us/features/iot-accelerators/#iot-accelerators-features</a>
+file:///C:/Users/jonat/Desktop/3M%20Temp/Microsoft_Azure_IoT_Reference_Architecture.pdf
+<a href="https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-connecting-devices">https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-connecting-devices</a>
+<a href="https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-monitor">https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-monitor</a></p>
+<p><a href="https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-architectural-choices">https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-architectural-choices</a></p>
+<p>TODO: Move to appropriate location:</p>
+<h2 id="resources">Resources</h2>
+<table>
+<thead>
+<tr>
+<th>Column1</th>
+<th>Column2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IotT Solution</td>
+<td>- Source Code: <a href="https://github.mmm.com/MMM/bluebird">https://github.mmm.com/MMM/bluebird</a>   - Docs: <a href="https://github.mmm.com/pages/MMM/bluebird/">https://github.mmm.com/pages/MMM/bluebird/</a></td>
+</tr>
+<tr>
+<td>Citrix VM</td>
+<td><a href="http://3mcitrix.mmm.com">http://3mcitrix.mmm.com</a></td>
+</tr>
+<tr>
+<td>Base URL for Solution:</td>
+<td><a href="https://crsliot-aks-dev.centralus.cloudapp.azure.com">https://crsliot-aks-dev.centralus.cloudapp.azure.com</a></td>
+</tr>
+<tr>
+<td>Odin Repos for Azure IoT</td>
+<td>- <a href="https://github.mmm.com/pages/MMM/bluebird/">https://github.mmm.com/pages/MMM/bluebird/</a>    - <a href="https://github.mmm.com/orgs/mmm/teams/valkyrie/members">https://github.mmm.com/orgs/mmm/teams/valkyrie/members</a>    - <strong>Public:</strong> 3M-Company/azure-iot-platform-dotnet</td>
+</tr>
+<tr>
+<td>Azure DevOps</td>
+<td><a href="https://dev.azure.com/3m-bluebird/azureplatform">https://dev.azure.com/3m-bluebird/azureplatform</a></td>
+</tr>
+<tr>
+<td>Microsoft Team Channels:</td>
+<td>- <strong>3M:</strong>  Azure Platforms, Azure Platform Development    - <strong>ACS:</strong> 3M Digital (GGK + Analyst Channel) Project Team</td>
+</tr>
+<tr>
+<td>3M Docker Hub</td>
+<td><a href="https://hub.docker.com/azureiot3m">https://hub.docker.com/azureiot3m</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="repositories">Repositories</h2>
+<h3 id="github-enterprise">GitHub Enterprise</h3>
+<ul>
+<li>Code and Infrastructure (<a href="https://github.mmm.com/MMM/azure-iot-services-dotnet">https://github.mmm.com/MMM/azure-iot-services-dotnet</a>)</li>
+<li>Azure Functions (<a href="https://github.mmm.com/MMM/azure-iot-messaging-functions">https://github.mmm.com/MMM/azure-iot-messaging-functions</a>)</li>
+<li>App Config (<a href="https://github.mmm.com/MMM/azure-iot-appconfig-function">https://github.mmm.com/MMM/azure-iot-appconfig-function</a>)</li>
+<li>Device Migration (<a href="https://github.mmm.com/MMM/azure-iot-device-migration">https://github.mmm.com/MMM/azure-iot-device-migration</a>)</li>
+<li>Functional Testing (<a href="https://github.mmm.com/MMM/azure-iot-functional-tests">https://github.mmm.com/MMM/azure-iot-functional-tests</a>)</li>
+</ul>
 </article>
           </div>
           
@@ -90,7 +133,7 @@ https://azure.microsoft.com/en-us/blog/application-gateway-ingress-controller-fo
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/Overview/architecture.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/Overview/resources.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

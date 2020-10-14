@@ -5,20 +5,20 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Architecture | 3M Serenity Documentation </title>
+    <title>Naming Branches and Pull requests | 3M Serenity Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Architecture | 3M Serenity Documentation ">
+    <meta name="title" content="Naming Branches and Pull requests | 3M Serenity Documentation ">
     <meta name="generator" content="docfx 2.56.2.0">
     
-    <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
-    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../../styles/docfx.css">
-    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
-    <meta property="docfx:navrel" content="../../toc.html">
-    <meta property="docfx:tocrel" content="../toc.html">
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
     
-    <meta property="docfx:rel" content="../../">
+    <meta property="docfx:rel" content="../../../">
     
   </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
@@ -34,8 +34,8 @@
                 <span class="icon-bar"></span>
               </button>
               
-              <a class="navbar-brand" href="../../index.html">
-                <img id="logo" class="svg" src="../../images/3M_wordmark.svg" alt="">
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
               </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
@@ -69,19 +69,26 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="architecture">Architecture</h1>
+<h1 id="naming-branches-and-pull-requests">Naming Branches and Pull requests</h1>
 
-<p>The 3M IoT Platform on Azure consists of the following subsystems: 1) devices (and/or on premise edge gateways) that have the ability to securely register with the cloud, and connectivity options for sending and receiving data with the cloud, 2) a cloud gateway service, or hub, to securely accept that data and provide device management capabilities, 3) stream processors that consume that data, integrate with business processes, and place the data into storage, and 4) a user interface to visualize telemetry data and facilitate device management.</p>
-<p><img src="../../images/core-subsystem1.png" alt="logical architecture"></p>
-<p>Security is a critical consideration in each of the subsystems. The platform protects IoT devices, data, and communication by securely provisioning devices, secure connectivity between devices, edge devices, and the cloud, secure access to the backend solutions, and secure data protection in the cloud during processing and storage (encryption at rest).</p>
-<p>The platform's use of Azure IoT Hub offers a fully-managed service that enables reliable and secure bi-directional communication between IoT devices and Azure services such as Azure Machine Learning and Azure Stream Analytics by using per-device security credentials and access control. Both Azure Cosmos
-DB for warm path storage and Azure Blob Storage for cold storage both are available and support encryption at rest.</p>
-<p>All data access and permissions are governed by Azure Active Directory. External access is available via OpenID Connectivity as needed.</p>
-<!--
-Consider adding information about:
-https://azure.microsoft.com/en-us/blog/application-gateway-ingress-controller-for-azure-kubernetes-service/
-
--->
+<p>Branch and Pull Request naming conventions are used to keep track of different builds and now, as part of our move to open source, for change log documentation.  This guide documents how to format the names (or “Titles”) so we all standardize on the same convention.</p>
+<h2 id="title-format">Title Format</h2>
+<p>The title of a Branch and PR format should conform to the conventions defined by <a href="https://www.conventionalcommits.org/en/v1.0.0/">Conventional Commits v.1.0.0</a>.  The convention describes key flags that are picked up by the build process and recommends how to frame the body of the title, a human friendly description of the changes.</p>
+<p>In summary, conventional syntax looks like this:</p>
+<pre><code>&lt;type&gt;[optional scope] &lt;description&gt;
+</code></pre>
+<p>In addition to following the conventions, all branches should be prefixed with the Work Item ID.  Do not include the story type (Bug, User Story, etc.) or any separators between the id and the body, such as hyphens or colons.  The next section summaries these differences.</p>
+<h3 id="stage-on-create-branch">Stage: On Create Branch</h3>
+<p>When creating a branch, prefix the title with the work item ID and then follow the conventional format.<br>
+For example:</p>
+<pre><code>15983 fix(webui) correct minor typos in code
+</code></pre>
+<h3 id="stage-on-merge">Stage: On Merge</h3>
+<p>When merging a branch, remove the prefixed work item id.  Then Squash and Merge to commit the changes into master.<br>
+For example:</p>
+<pre><code>fix(webui) correct minor typos in code
+``
+</code></pre>
 </article>
           </div>
           
@@ -90,7 +97,7 @@ https://azure.microsoft.com/en-us/blog/application-gateway-ingress-controller-fo
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/Overview/architecture.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/Setup/SourceCode/naming-conventions.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
@@ -116,8 +123,8 @@ https://azure.microsoft.com/en-us/blog/application-gateway-ingress-controller-fo
       </footer>
     </div>
     
-    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
-    <script type="text/javascript" src="../../styles/docfx.js"></script>
-    <script type="text/javascript" src="../../styles/main.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
   </body>
 </html>

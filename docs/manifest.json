@@ -602,11 +602,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Contribute/Community-Involvement.md",
+      "source_relative_path": "GettingStarted/GetInvolved/Community-Involvement.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Contribute/Community-Involvement.html",
-          "hash": "/YlxdJ/DL95DAYDekNDW8w=="
+          "relative_path": "GettingStarted/GetInvolved/Community-Involvement.html",
+          "hash": "kTZ5StBhv5uVe9YNqFGDhA=="
         }
       },
       "is_incremental": false,
@@ -614,11 +614,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Contribute/How-To-Improve-Documentation.md",
+      "source_relative_path": "GettingStarted/GetInvolved/How-To-Improve-Documentation.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Contribute/How-To-Improve-Documentation.html",
-          "hash": "yYM62baQRqrPAMQ5xPK3lg=="
+          "relative_path": "GettingStarted/GetInvolved/How-To-Improve-Documentation.html",
+          "hash": "PtN9+wz+hn7jQmDN6yP0/Q=="
         }
       },
       "is_incremental": false,
@@ -626,11 +626,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Contribute/How-To-Influence-Priorities.md",
+      "source_relative_path": "GettingStarted/GetInvolved/How-To-Influence-Priorities.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Contribute/How-To-Influence-Priorities.html",
-          "hash": "6WCo0ti/5BJ0EmvwqUpWaA=="
+          "relative_path": "GettingStarted/GetInvolved/How-To-Influence-Priorities.html",
+          "hash": "q17Am+LJokHzPEXXHJpS1w=="
         }
       },
       "is_incremental": false,
@@ -638,26 +638,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Contribute/How-To-Make-Development-Contributions.md",
+      "source_relative_path": "GettingStarted/GetInvolved/How-To-Make-Development-Contributions.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Contribute/How-To-Make-Development-Contributions.html",
-          "hash": "EbjH0RCUsoe1eptEWUEu5A=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Contribute/How-To-Report-A-Bug.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Contribute/How-To-Report-A-Bug.html",
-          "hash": "K64DsdOP6/B7DzeIxbg0Hw=="
+          "relative_path": "GettingStarted/GetInvolved/How-To-Make-Development-Contributions.html",
+          "hash": "GDfMt0Z5k//ormtVIdtGXg=="
         }
       },
       "is_incremental": false,
@@ -668,35 +653,11 @@
         "InvalidFileLink"
       ],
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Contribute/How-To-Request-A-Feature.md",
+      "source_relative_path": "GettingStarted/GetInvolved/How-To-Report-A-Bug.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Contribute/How-To-Request-A-Feature.html",
-          "hash": "vl7H5sHRK5XWGoRP3dyqJA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Contribute/How-To-Track-Progress.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Contribute/How-To-Track-Progress.html",
-          "hash": "VTp7CoTJSzCzdvOokYicOg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Contribute/How-To-Track-Releases.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/Contribute/How-To-Track-Releases.html",
-          "hash": "nWOfE5s8/3kPcLnuu7udXg=="
+          "relative_path": "GettingStarted/GetInvolved/How-To-Report-A-Bug.html",
+          "hash": "XCuRPXk+o7bEedAXVFtr5g=="
         }
       },
       "is_incremental": false,
@@ -707,11 +668,50 @@
         "InvalidFileLink"
       ],
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Contribute/index.md",
+      "source_relative_path": "GettingStarted/GetInvolved/How-To-Request-A-Feature.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Contribute/index.html",
-          "hash": "58TqQZYZuHtNKvvJ5KImeg=="
+          "relative_path": "GettingStarted/GetInvolved/How-To-Request-A-Feature.html",
+          "hash": "gkcI/mlmw364qZHRlBhWKA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/GetInvolved/How-To-Track-Progress.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/GetInvolved/How-To-Track-Progress.html",
+          "hash": "ufW4AN0sJgiCIKljzVyDIA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/GetInvolved/How-To-Track-Releases.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/GetInvolved/How-To-Track-Releases.html",
+          "hash": "zWFWa8txtv5xFDXBgNSWnw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/GetInvolved/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/GetInvolved/index.html",
+          "hash": "mTJY7aKVhnKmXpukEEmWBA=="
         }
       },
       "is_incremental": false,
@@ -747,19 +747,22 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/architecture.html",
-          "hash": "L0HNs9/uluZAB40DpbkTcw=="
+          "hash": "Z+AC4LCcdHmvfLSJWMh3pw=="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "GettingStarted/Overview/devices.md",
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/devices.html",
-          "hash": "VP5CfuEKGfPZQfQKCREdNA=="
+          "hash": "LILnG06TjlHMY7slKVJ1hQ=="
         }
       },
       "is_incremental": false,
@@ -771,7 +774,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/index.html",
-          "hash": "d7SX/eI7/tditZLmN+r4qg=="
+          "hash": "oHGefw9MTEJyYoZOU3j3lw=="
         }
       },
       "is_incremental": false,
@@ -796,6 +799,18 @@
         ".html": {
           "relative_path": "GettingStarted/Overview/purpose.html",
           "hash": "knxYn/UXPuDxsvHqmUmsgw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Overview/resources.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Overview/resources.html",
+          "hash": "PE7yGpNBhbCH4tqVHVbFqg=="
         }
       },
       "is_incremental": false,
@@ -1159,6 +1174,42 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/One-Time-Setup.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/One-Time-Setup.html",
+          "hash": "+yhl9ds9rLqEZsozUoEF2w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/SourceCode/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/SourceCode/index.html",
+          "hash": "MBHVy9mBT8PEGv7I46Rg9w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/Setup/SourceCode/naming-conventions.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/Setup/SourceCode/naming-conventions.html",
+          "hash": "XIvWzg7m68NGO2X6uJEauQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "log_codes": [
         "InvalidFileLink"
       ],
@@ -1167,7 +1218,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/index.html",
-          "hash": "WLr23FC1kRNdFR5ul1Zhug=="
+          "hash": "/m4AclxWWa9DF5J9nsQqMQ=="
         }
       },
       "is_incremental": false,
@@ -1206,7 +1257,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/index.html",
-          "hash": "Eb9EQt0vdBOM8IMk8zLg/Q=="
+          "hash": "Jz/OZajjNTSDmayIGwsv8A=="
         }
       },
       "is_incremental": false,
@@ -1221,7 +1272,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/toc.html",
-          "hash": "xeTTQSySSS21rPFW1d79lg=="
+          "hash": "thkstkkDqxJTsTTX07l6Zg=="
         }
       },
       "is_incremental": false,
@@ -1397,10 +1448,65 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/addlink-workitem.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/addlink-workitem.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/architecture.png",
       "output": {
         "resource": {
           "relative_path": "images/architecture.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/commit-vscode.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/commit-vscode.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/core-subsystem1.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/core-subsystem1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/creating-branch-vscode.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/creating-branch-vscode.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/github-clone.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/github-clone.PNG"
         }
       },
       "is_incremental": false,
@@ -1440,6 +1546,28 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "images/push-branch-vscode.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/push-branch-vscode.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tests-build-pipeline.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tests-build-pipeline.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "log_codes": [
         "InvalidFileLink"
       ],
@@ -1448,7 +1576,19 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "tF1WPJhU7MEgP5eJOp++Ew=="
+          "hash": "63atcg+dogvPiNZ6TzsYWA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "linked-demo.md",
+      "output": {
+        ".html": {
+          "relative_path": "linked-demo.html",
+          "hash": "YKtTXzcNabwGc3AZtG0rAA=="
         }
       },
       "is_incremental": false,
@@ -1484,7 +1624,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 58,
+          "total_file_count": 63,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

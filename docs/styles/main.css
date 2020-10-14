@@ -43,11 +43,39 @@ a:focus {
   font-weight: 600;
 }
 
+.toc .nav > li > li.active > a {
+  color: var(--header-bg-color);
+  font-weight: 600;
+}
+
 .toc .nav > li.active > a:hover,
 .toc .nav > li.active > a:focus {
   color: var(--highlight-light);
 }
 
+/* Level 1 Nav */
+.toc .nav li  a {
+  line-height: 17px;
+ }
+
+/* Level 2 Nav */
+.toc .nav li li a {
+  line-height: 24px;
+ }
+
+/* Level 3 Nav */
+.toc .nav li li li  a {
+  margin-left: 15px; 
+  font-size: 13px;
+  line-height: 20px;
+ }
+
+ /* Level 4 Nav */
+ .toc .nav li li li li a {
+  margin-left: 30px;   
+  font-size: 10px;
+  line-height: 16px;
+ }
 .pagination > .active > a {
   background-color: var(--header-bg-color);
   border-color: var(--header-bg-color);
@@ -188,11 +216,12 @@ article h4 {
   color: var(--font-color);
 }
 
+
 .sidefilter {
   background-color: #fff;
   border-left: none;
   border-right: none;
-  top: 60px;
+  top: 82px;
 }
 
 
@@ -225,12 +254,15 @@ article h4 {
 .sidetoc > .toc {
   background-color: #fff;
   overflow-x: hidden;
+  height:95%;
 }
 
 .sidetoc {
   background-color: #fff;
   border: none;
+  top: 145px;
 }
+
 
 .toc-filter ::placeholder {
   color: lightgray;
@@ -244,6 +276,8 @@ article h4 {
 .toc-filter  ::-ms-input-placeholder { /* Microsoft Edge */
  color: lightgray;
 }
+
+
 
 /* ALERTS */
 
@@ -326,7 +360,12 @@ pre {
   box-shadow: var(--card-box-shadow);
   max-width: 700px;
 }
-.sidetoc {
-  top: 120px;
+
+.docon-like-solid:before {
+  content: '\F3BF';
 }
 
+
+.docon-dictionary-download:before {
+  content: '\F72F';
+}

@@ -73,7 +73,7 @@
 
 <p>3M's IoT Platform on Azure offers an end-to-end solution for acceleration innovation and time-to-market by offering core sources that can be integrated into custom IoT Solutions. Device Management, Security, and cloud resource provisioning and other core requirements of any IoT solution can use the platform's user interface to manage devices. In addition, platform APIs offer direct integration to allow development to focus on their unique business objectives instead of common requirements.  The platform combines Azure and custom services to pride a generic implementation ready for any IoT business scenario.</p>
 <p>The platform code is available on <a href="https://github.com/3mcloud/azure-iot-platform-dotnet">GitHub</a> where new features can be tracked and requested using the issues list.  Currently requests are restricted to 3M. To learn how to request features or report issues, see the documentation <a href="#">TODO</a>.</p>
-<h2 id="logical-architecture">Logical Architecture</h2>
+<h2 id="logical-components">Logical Components</h2>
 <p>The following diagram outlines the logical components of the platform overlaid on the IoT architecture:</p>
 <p><img src="../../images/logical-architecture.png" alt="logical architecture"></p>
 <h2 id="iot-hub">IoT Hub</h2>
@@ -85,8 +85,8 @@
 <li>Maintains device twins for all registered devices. A device twin stores the property values reported by a device. A device twin also stores desired properties, set in the solution portal, for the device to retrieve when it next connects.</li>
 <li>Schedules jobs to set properties for multiple devices or invoke methods on multiple devices.</li>
 </ul>
-<h2 id="presentation">Presentation</h2>
-<p>A web user interface is available for device management. It offers a user friendly way to register and configure devices, deploy firmware, and manage alerts, and provides a dashboard for generally observing device telemetry.</p>
+<h2 id="web-ui">Web UI</h2>
+<p>A web user interface is available for device management. This presentation offers a user friendly way to register and configure devices, deploy firmware, and manage alerts, and provides a dashboard for generally observing device telemetry.</p>
 <p>The web user interface is a <a href="https://reactjs.org/">React Javascript</a> application that:</p>
 <ul>
 <li>Is served to the browser via backend services</li>
@@ -121,10 +121,41 @@ This service also runs IoT Hub queries to retrieve devices belonging to user-def
 <p>Azure Stream Analytics is an event-processing engine that allows you to examine high volumes of data streaming from devices.</p>
 <h3 id="azure-time-series-insights">Azure Time Series Insights</h3>
 <p>Azure Time Series Insights stores the telemetry from the devices connected to the solution accelerator. It also enables visualizing and querying device telemetry in the solution web UI.</p>
-<h3 id="configuration-microservice">Configuration microservice</h3>
-<p>The configuration microservice provides a RESTful endpoint for CRUD operations on device groups, solution settings, and user-settings in the solution accelerator. It works with the storage adapter microservice to persist the configuration data.</p>
 <h3 id="authentication-and-authorization-microservice">Authentication and authorization microservice</h3>
 <p>The authentication and authorization microservice manages the users authorized to access the solution accelerator. User management supports a variety of identity service provides that support OpenId Connect, including Azure B2C.</p>
+<!--
+
+Azure IoT Hub
+Azure IoT Edge
+Azure Storage
+Azure Data Lake
+Azure Cosmos DB
+Azure SQL Database
+Azure HDInsight
+Azure Stream Analytics
+Azure Service Bus
+Azure Event Hubs
+Azure Web Apps
+Azure Mobile Apps
+Azure Logic Apps
+Azure Notification Hubs
+Azure Machine Learning
+Azure Machine Learning Studio
+Power BI
+Azure Active Directory
+Azure Key Vault
+AMQP
+AMQP Core
+MQTT 
+Azure VPN 
+VPN Gateways and Secure CrossPremises Connectivity
+Azure API applications
+Azure Search 
+Azure Maps 
+Service Fabric
+Azure Batch
+
+-->
 </article>
           </div>
           

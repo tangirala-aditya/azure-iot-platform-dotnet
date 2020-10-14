@@ -1359,7 +1359,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/index.html",
-          "hash": "4JnVmYxJGIz8GmUUgFwqMw=="
+          "hash": "a9Sj6pDV2IJN+/jldgtaCQ=="
         }
       },
       "is_incremental": false,
@@ -1541,6 +1541,17 @@
       "output": {
         "resource": {
           "relative_path": "images/homepage_dark.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/icons/repeat-one-line.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/icons/repeat-one-line.png"
         }
       },
       "is_incremental": false,

@@ -369,3 +369,67 @@ pre {
 .docon-dictionary-download:before {
   content: '\F72F';
 }
+
+
+/* STYLE FOR CARDS */
+.card {
+  display: block;
+  padding: 1.25rem;
+  border: 1px solid lightgray;
+  margin: .5rem;
+  box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%),0 .6px 1.8px 0 rgb(0 0 0 / 11%);
+  line-height: 160%;
+  font-size: 16px;
+}
+
+.card-header {
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 1px solid lightgray;
+  margin-top: 10px;
+  padding-bottom: 16px;
+}
+
+.card img {
+  display: inline-block;
+}
+
+.card-subheader {
+  display: inline-block;
+  margin: 16px 0 16px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(94,94,94);
+  text-transform: uppercase;
+}
+
+.card-content {
+  font-size: 14px;
+}
+
+
+@media only screen and (max-width: 768px) {
+  .card {
+    width: 100px;
+  }
+}
+
+@media (min-width: 768px) {
+  .card {
+    width: 200px;
+  }
+}
+
+@media screen and (min-width: 1088px) {
+  .card {
+    width: 300px
+  }
+}
+
+.table {background-color: #e0e0e0;}
+.table-bordered { border: 0px solid white !important; }
+
+.table-bordered,.table-bordered>tbody>tr>td,.table-bordered>tbody>tr>th,.table-bordered>tfoot>tr>td,.table-bordered>tfoot>tr>th,.table-bordered>thead>tr>td,.table-bordered>thead>tr>th{
+  border: 0px solid white !important;
+}
+.table-bordered>thead>tr>td,.table-bordered>thead>tr>th{border-bottom-width:0px}

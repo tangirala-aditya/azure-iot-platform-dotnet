@@ -407,13 +407,13 @@ pre {
   font-size: 14px;
 }
 
-@media (min-width: 1088px) {
+@media (max-width: 1200px) {
   .card {
     width: 200px;
   }
 }
 
-@media screen and (min-width: 1088px) {
+@media screen and (min-width: 1200px) {
   .card {
     width: 300px
   }

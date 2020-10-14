@@ -594,7 +594,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/toc.html",
-          "hash": "pAJPvf4V5x53k2Wzt9aagg=="
+          "hash": "cBfEN7wXmoivmmx4S/pbwA=="
         }
       },
       "is_incremental": false,
@@ -1272,7 +1272,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/toc.html",
-          "hash": "thkstkkDqxJTsTTX07l6Zg=="
+          "hash": "3uBcQTAkiKPTEaxhxSa8KA=="
         }
       },
       "is_incremental": false,
@@ -1362,7 +1362,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "KFd+xkU9MW7c0+BYvlZZ1A=="
+          "hash": "QlsRKBLLzYe1c5qyiWmrJA=="
         }
       },
       "is_incremental": false,
@@ -1375,50 +1375,6 @@
         ".html": {
           "relative_path": "UseCases/index.html",
           "hash": "PINA4G5cUd0tfIblwQBPOg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "_site_pdf/IoT_Platform_Public.pdf",
-      "output": {
-        "resource": {
-          "relative_path": "_site_pdf/IoT_Platform_Public.pdf"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "_site_pdf/IoT_Platform_Public_APIs.pdf",
-      "output": {
-        "resource": {
-          "relative_path": "_site_pdf/IoT_Platform_Public_APIs.pdf"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "_site_pdf/IoT_Platform_Public_GettingStarted.pdf",
-      "output": {
-        "resource": {
-          "relative_path": "_site_pdf/IoT_Platform_Public_GettingStarted.pdf"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "_site_pdf/IoT_Platform_Public_Guides.pdf",
-      "output": {
-        "resource": {
-          "relative_path": "_site_pdf/IoT_Platform_Public_Guides.pdf"
         }
       },
       "is_incremental": false,
@@ -1647,7 +1603,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "KMKMG+IL7F4bMYIAy+f0uw=="
+          "hash": "w+D/USwr6wBaqCNVLUKR/g=="
         }
       },
       "is_incremental": false,
@@ -1658,11 +1614,11 @@
     {
       "status": {
         "can_incremental": false,
-        "details": "Cannot build incrementally because config changed.",
+        "details": "Cannot build incrementally because last build info is missing.",
         "incrementalPhase": "build",
         "total_file_count": 0,
         "skipped_file_count": 0,
-        "full_build_reason_code": "ConfigChanged"
+        "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
         "ConceptualDocumentProcessor": {

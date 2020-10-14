@@ -334,6 +334,11 @@
     "title": "Resources | 3M Serenity Documentation",
     "keywords": "Reference content from the following: https://azure.microsoft.com/en-us/features/iot-accelerators/#iot-accelerators-features file:///C:/Users/jonat/Desktop/3M%20Temp/Microsoft_Azure_IoT_Reference_Architecture.pdf https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-connecting-devices https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-monitor https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-architectural-choices TODO: Move to appropriate location: Resources Column1 Column2 IotT Solution - Source Code: https://github.mmm.com/MMM/bluebird - Docs: https://github.mmm.com/pages/MMM/bluebird/ Citrix VM http://3mcitrix.mmm.com Base URL for Solution: https://crsliot-aks-dev.centralus.cloudapp.azure.com Odin Repos for Azure IoT - https://github.mmm.com/pages/MMM/bluebird/ - https://github.mmm.com/orgs/mmm/teams/valkyrie/members - Public: 3M-Company/azure-iot-platform-dotnet Azure DevOps https://dev.azure.com/3m-bluebird/azureplatform Microsoft Team Channels: - 3M: Azure Platforms, Azure Platform Development - ACS: 3M Digital (GGK + Analyst Channel) Project Team 3M Docker Hub https://hub.docker.com/azureiot3m Repositories GitHub Enterprise Code and Infrastructure ( https://github.mmm.com/MMM/azure-iot-services-dotnet ) Azure Functions ( https://github.mmm.com/MMM/azure-iot-messaging-functions ) App Config ( https://github.mmm.com/MMM/azure-iot-appconfig-function ) Device Migration ( https://github.mmm.com/MMM/azure-iot-device-migration ) Functional Testing ( https://github.mmm.com/MMM/azure-iot-functional-tests )"
   },
+  "GettingStarted/Overview/services.html": {
+    "href": "GettingStarted/Overview/services.html",
+    "title": "Overview of Platform Services | 3M Serenity Documentation",
+    "keywords": "Overview of Platform Services The 3M IoT Platform on Azure has several scalable services for addressing core Device Management capabilities. The platform provides the following services: NAME DESCRIPTION Identity Gateway Config Device Telemetry IoT Hub Manager Storage Tenant Manager Device Twin Device Properties Cache"
+  },
   "GettingStarted/Overview/technology.html": {
     "href": "GettingStarted/Overview/technology.html",
     "title": "| 3M Serenity Documentation",

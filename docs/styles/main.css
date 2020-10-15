@@ -53,6 +53,11 @@ a:focus {
   color: var(--highlight-light);
 }
 
+.toc .nav li:last-of-type {
+  position: absolute;
+  bottom: 0;
+}
+
 /* Level 1 Nav */
 .toc .nav li  a {
   font-size: 18px;
@@ -252,6 +257,7 @@ article h4 {
 }
 
 .sidetoc > .toc {
+  position: relative;
   background-color: #fff;
   overflow-x: hidden;
   height:95%;

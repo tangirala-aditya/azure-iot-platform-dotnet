@@ -534,6 +534,11 @@
     "title": "3M IoT Platform Guides | 3M Serenity Documentation",
     "keywords": "3M IoT Platform Guides Welcome to the public documentation on guides that cover common activities of working with the platform. Managing Devices Overview This is what a card might look like. User Manual First section This is what a card might look like."
   },
+  "Guides/IoTPlatform/dashboard.html": {
+    "href": "Guides/IoTPlatform/dashboard.html",
+    "title": "Dashboard | 3M Serenity Documentation",
+    "keywords": "Dashboard The dashboard is the homepage where the user can visualize and monitor real-time Device status. Below are the panels dashboard offers: Device Statistics Device locations Alerts Telemetry Analytics 1. Device Statistics Device Statistics provides collective data on IoT Devices' state and health. Device Statistics provides the following information Device Group name. Number of critical alerts record in a device group. Number of warning alerts record in a device group. Total number of IoT Devices present in the device group. Number of IoT Devices are online or connected to the internet. Number of IoT devices is offline. 2. Device locations 🗺️ Device locations provide the location of IoT Device in the world map, it only plots those devices configured with coordinates. Upon clicking pin 📍 on the map, it reveals the device type and device name. 3. Alerts ⚠️ Alerts list down the anomalies in telemetry based on rules. Below are the details as follows: Rule Name Severity Count - Number of alerts observed. Explore - A link that routes to more details on alert. 4. Telemetry 📈 Telemetry shows a real-time chart based on data sent by the devices. 5. Analytics Analytics provide the visual representation of alerts data in the forms of charts 📈 as follows: Top rules with active alerts It is visualized in the form of a Bar Graph 📊. Graph is represented for number of alerts recorded per rule. Alert by device group It is visualized in the form of a Pie Graph 🥧📈. Graph is represented for number of alerts recorded per device type. Critical alerts Percentage of Critical alerts in the open state."
+  },
   "Guides/IoTPlatform/index.html": {
     "href": "Guides/IoTPlatform/index.html",
     "title": "| 3M Serenity Documentation",

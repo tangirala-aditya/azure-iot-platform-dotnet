@@ -53,10 +53,12 @@ a:focus {
   color: var(--highlight-light);
 }
 
+/* PDF Formatting
 .toc .nav li:last-of-type {
   position: absolute;
   bottom: 0;
 }
+*/
 
 /* Level 1 Nav */
 .toc .nav li  a {

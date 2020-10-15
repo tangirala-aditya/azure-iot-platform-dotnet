@@ -897,19 +897,22 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByRole/Web-Developer-Setup.html",
-          "hash": "t5Vyfzh5c3HoODK4tUDEog=="
+          "hash": "G2n9jnArEz8a/TEm56oVsQ=="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "GettingStarted/Setup/ByTool/All.md",
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/All.html",
-          "hash": "kIdFlNaeD+Nrx1G0KP+qeg=="
+          "hash": "F9sN1+AqyQJfy13utj7F0g=="
         }
       },
       "is_incremental": false,
@@ -1151,23 +1154,26 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/ByTool/visual-studio-code.md",
+      "source_relative_path": "GettingStarted/Setup/ByTool/vs-2019.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Setup/ByTool/visual-studio-code.html",
-          "hash": "BYV3TE555i0/WJfiQMsUQQ=="
+          "relative_path": "GettingStarted/Setup/ByTool/vs-2019.html",
+          "hash": "tsTdng8e0Vz12AQ/yMWCtg=="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/Setup/ByTool/vs-2019.md",
+      "source_relative_path": "GettingStarted/Setup/ByTool/vs-code.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/Setup/ByTool/vs-2019.html",
-          "hash": "tsTdng8e0Vz12AQ/yMWCtg=="
+          "relative_path": "GettingStarted/Setup/ByTool/vs-code.html",
+          "hash": "W6fN+JJVW0dP5DPvKyyMzQ=="
         }
       },
       "is_incremental": false,
@@ -1230,7 +1236,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/index.html",
-          "hash": "a3XIGgAOXY8qQ2MLQ7wuQg=="
+          "hash": "GiTdEvqpbRdO/Kwrrua7GA=="
         }
       },
       "is_incremental": false,
@@ -1269,7 +1275,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/index.html",
-          "hash": "S3AL/daXmKtuPVFINlSIlw=="
+          "hash": "9bw0rINsqUHKA/ouCzfOSQ=="
         }
       },
       "is_incremental": false,
@@ -1284,7 +1290,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/toc.html",
-          "hash": "y+MEdW4zZv1CboMqNoHysw=="
+          "hash": "fXPlnLH6iPWtu9UzxBPfqQ=="
         }
       },
       "is_incremental": false,
@@ -2330,7 +2336,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "25i2OEH/fw8GI7+4pukxCQ=="
+          "hash": "djsk0VMW9M28nY5xPRPQcQ=="
         }
       },
       "is_incremental": false,

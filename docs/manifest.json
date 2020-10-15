@@ -1363,6 +1363,18 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/IoTPlatform/packages.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/IoTPlatform/packages.html",
+          "hash": "BH4BfwUnEaJbEz+LWuF6yw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "log_codes": [
         "InvalidFileLink"
       ],
@@ -1398,7 +1410,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "ZASTHOL/xb3RO4MXFcq9cg=="
+          "hash": "Uqun6CLXaOrnh3EyV1rhBQ=="
         }
       },
       "is_incremental": false,
@@ -1771,6 +1783,303 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/package/IOT-Package-ConfigFile.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IOT-Package-ConfigFile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IOT-Package-ConfigType.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IOT-Package-ConfigType.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IOT-Package-Created.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IOT-Package-Created.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IOT-Package-JSON.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IOT-Package-JSON.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IOT-Package-Name-Version.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IOT-Package-Name-Version.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IOT-Package-PackageType.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IOT-Package-PackageType.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IOT-Package-Preview.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IOT-Package-Preview.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IOT-Package_Upload.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IOT-Package_Upload.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IoT-Custom-Package-Confirmation.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IoT-Custom-Package-Confirmation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IoT-Custom-Package-FileSelection.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IoT-Custom-Package-FileSelection.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IoT-Custom-Package-Name.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IoT-Custom-Package-Name.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IoT-Custom-Package-Upload.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IoT-Custom-Package-Upload.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IoT-Edge-Package-Confirmation.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IoT-Edge-Package-Confirmation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IoT-Edge-Package-FileSelection.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IoT-Edge-Package-FileSelection.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IoT-Edge-Package-Name.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IoT-Edge-Package-Name.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IoT-Edge-Package-Upload.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IoT-Edge-Package-Upload.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IoT-Edge-Package-UploadClick.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IoT-Edge-Package-UploadClick.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/IoT-Package-Add.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/IoT-Package-Add.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/Package-Post-Selection.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/Package-Post-Selection.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/Package-Selection-Delete.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/Package-Selection-Delete.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/Packages-Activate.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/Packages-Activate.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/Packages-Delete-Popup.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/Packages-Delete-Popup.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/Packages-Grid-After-Activation.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/Packages-Grid-After-Activation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/Packages-Grid-After-Deactivate.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/Packages-Grid-After-Deactivate.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/Packages-Grid-After-Delete.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/Packages-Grid-After-Delete.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/Packages-Grid.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/Packages-Grid.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/package/Packages-Selection.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/package/Packages-Selection.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/push-branch-vscode.png",
       "output": {
         "resource": {
@@ -1848,7 +2157,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 74,
+          "total_file_count": 75,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

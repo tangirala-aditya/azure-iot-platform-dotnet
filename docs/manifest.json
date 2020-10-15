@@ -1368,7 +1368,19 @@
       "output": {
         ".html": {
           "relative_path": "Guides/IoTPlatform/packages.html",
-          "hash": "BH4BfwUnEaJbEz+LWuF6yw=="
+          "hash": "ygj+fiDYcG1VY12cBVGpcQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/IoTPlatform/tool-bar.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/IoTPlatform/tool-bar.html",
+          "hash": "eT93QhokhJNHVmKPff/9Pg=="
         }
       },
       "is_incremental": false,
@@ -1410,7 +1422,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "Uqun6CLXaOrnh3EyV1rhBQ=="
+          "hash": "00zjGSvmTS/kFSyC6tMKYQ=="
         }
       },
       "is_incremental": false,
@@ -2101,6 +2113,215 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/create-device-group.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/create-device-group.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/delete-device-group.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/delete-device-group.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/device-group-add-condition.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/device-group-add-condition.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/device-group-delete-condition.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/device-group-delete-condition.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/device-group-delete.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/device-group-delete.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/device-group-dropdown-list.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/device-group-dropdown-list.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/device-group-dropdown.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/device-group-dropdown.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/device-group-edit.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/device-group-edit.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/device-group-list.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/device-group-list.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/device-group-name.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/device-group-name.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/device-group-pin.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/device-group-pin.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/device-group-save-reset.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/device-group-save-reset.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/device-group-telemetry-format.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/device-group-telemetry-format.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/device-group-unpin.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/device-group-unpin.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/edit-device-group.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/edit-device-group.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/get-link.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/get-link.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/last-refreshed.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/last-refreshed.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/telemetry-format-example.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/telemetry-format-example.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/time-period-dropdown.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/time-period-dropdown.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "log_codes": [
         "InvalidFileLink"
       ],
@@ -2157,7 +2378,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 75,
+          "total_file_count": 76,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

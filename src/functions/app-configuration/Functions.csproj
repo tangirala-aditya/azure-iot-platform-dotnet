@@ -8,6 +8,7 @@
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.5" />
     <PackageReference Include="Azure.ApplicationModel.Configuration" Version="1.0.0-preview.2" />
   </ItemGroup>

@@ -8,10 +8,11 @@
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EventHubs" Version="4.1.1"/>
-    <PackageReference Include="SendGrid" Version="9.15.1"/>
-    <PackageReference Include="Mustachio" Version="2.1.0"/>
-    <PackageReference Include="Microsoft.Azure.WebJobs.Host.Storage" Version="3.0.13"/>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EventHubs" Version="4.1.1" />
+    <PackageReference Include="SendGrid" Version="9.15.1" />
+    <PackageReference Include="Mustachio" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Host.Storage" Version="3.0.13" />
     <EmbeddedResource Include="Files/AlertEmail.html" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.5" />
     <PackageReference Include="Azure.ApplicationModel.Configuration" Version="1.0.0-preview.2" />

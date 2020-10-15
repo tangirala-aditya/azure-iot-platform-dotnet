@@ -534,6 +534,11 @@
     "title": "3M IoT Platform Guides | 3M Serenity Documentation",
     "keywords": "3M IoT Platform Guides Welcome to the public documentation on guides that cover common activities of working with the platform. Managing Devices Overview This is what a card might look like. User Manual First section This is what a card might look like."
   },
+  "Guides/IoTPlatform/index.html": {
+    "href": "Guides/IoTPlatform/index.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
   "Guides/Issues/index.html": {
     "href": "Guides/Issues/index.html",
     "title": "How to Make Platform Improvements | 3M Serenity Documentation",

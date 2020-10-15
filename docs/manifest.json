@@ -1339,6 +1339,18 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/IoTPlatform/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/IoTPlatform/index.html",
+          "hash": "YSq5iqjT8BFWXvx8wuie3A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "log_codes": [
         "InvalidFileLink"
       ],
@@ -1374,7 +1386,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "QlsRKBLLzYe1c5qyiWmrJA=="
+          "hash": "WeNV6sWwElL53f01vbryyw=="
         }
       },
       "is_incremental": false,
@@ -1748,7 +1760,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "i6QzVmpOX51wwApLNGMSvw=="
+          "hash": "w+D/USwr6wBaqCNVLUKR/g=="
         }
       },
       "is_incremental": false,
@@ -1769,7 +1781,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 72,
+          "total_file_count": 73,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

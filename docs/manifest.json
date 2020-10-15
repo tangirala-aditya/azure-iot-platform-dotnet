@@ -594,7 +594,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/toc.html",
-          "hash": "cBfEN7wXmoivmmx4S/pbwA=="
+          "hash": "r7PN7RFemshBhohCuFOQUA=="
         }
       },
       "is_incremental": false,
@@ -1290,7 +1290,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/toc.html",
-          "hash": "fXPlnLH6iPWtu9UzxBPfqQ=="
+          "hash": "Xd3RphMaIuX/mhZbJdaPpQ=="
         }
       },
       "is_incremental": false,
@@ -1428,7 +1428,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "00zjGSvmTS/kFSyC6tMKYQ=="
+          "hash": "1RF0ZYfcCoQL+zVa63soaQ=="
         }
       },
       "is_incremental": false,
@@ -1551,7 +1551,7 @@
       "output": {
         ".html": {
           "relative_path": "UserManual/toc.html",
-          "hash": "S0Xq1hVDXO/TIBSoHG8xdA=="
+          "hash": "v9KFGR8JNya+LqfPgIZqag=="
         }
       },
       "is_incremental": false,
@@ -1761,6 +1761,17 @@
       "output": {
         "resource": {
           "relative_path": "images/homepage_dark.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/icons/file-download-line.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/icons/file-download-line.png"
         }
       },
       "is_incremental": false,
@@ -2363,7 +2374,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "w+D/USwr6wBaqCNVLUKR/g=="
+          "hash": "ZiMypjoiJExfMp3wPWlBWA=="
         }
       },
       "is_incremental": false,

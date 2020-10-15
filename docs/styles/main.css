@@ -53,12 +53,27 @@ a:focus {
   color: var(--highlight-light);
 }
 
-/* PDF Formatting
-.toc .nav li:last-of-type {
+/* Download PDF Formatting */
+.toc .nav li.download-pdf {
+  font-size: 14px;
+  display: inline-block;
   position: absolute;
   bottom: 0;
+  border-top: 1px solid #e3e3e3;
+  border-bottom: 1px solid #e3e3e3;
 }
-*/
+
+.toc .nav li.download-pdf a {
+  display: inline-block;
+}
+
+.toc .nav li.download-pdf::before {
+  display: inline-block;
+  position: relative;
+  top: 3px;
+  transform: scale(.8);
+  content: url(../images/icons/file-download-line.png);
+}
 
 /* Level 1 Nav */
 .toc .nav li  a {

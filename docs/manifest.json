@@ -1393,6 +1393,18 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/IoTPlatform/userManagement.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/IoTPlatform/userManagement.html",
+          "hash": "idRFT7KwN2V+ZiPi7cjUpg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "log_codes": [
         "InvalidFileLink"
       ],
@@ -1428,7 +1440,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "1RF0ZYfcCoQL+zVa63soaQ=="
+          "hash": "bPpGqIogOxvVvRFP8QxDYg=="
         }
       },
       "is_incremental": false,
@@ -1618,6 +1630,237 @@
       "output": {
         "resource": {
           "relative_path": "images/UI-Version-Indicator.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/AddServicePrincipalEnabled.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/AddServicePrincipalEnabled.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/AddServicePrincipalSuccessfullyPNG.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/AddServicePrincipalSuccessfullyPNG.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/AddServicePrincipal_1.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/AddServicePrincipal_1.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/AddServicePrincipal_2.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/AddServicePrincipal_2.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/AddSystemAdmin.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/AddSystemAdmin.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/AddSystemAdminUserSelected.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/AddSystemAdminUserSelected.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/AddedSystemAdminSuccessfully.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/AddedSystemAdminSuccessfully.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/DeleteSystemAdminSuccessfully.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/DeleteSystemAdminSuccessfully.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/DeleteSystemAdminUserEnabled.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/DeleteSystemAdminUserEnabled.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/DeleteSystemAdmin_1.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/DeleteSystemAdmin_1.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/DeleteSystemAdmin_2.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/DeleteSystemAdmin_2.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/DeleteUser.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/DeleteUser.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/DeleteUserEnabled.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/DeleteUserEnabled.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/DeletedUserSuccessfully.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/DeletedUserSuccessfully.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/NewUser.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/NewUser.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/NewUserInvited.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/NewUserInvited.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/UserAddedSuccessfullyWithServicePrincipal.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/UserAddedSuccessfullyWithServicePrincipal.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/UserCreatedSuccessFully.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/UserCreatedSuccessFully.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/UserGrid.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/UserGrid.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/UserGridWithSearch.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/UserGridWithSearch.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/UserManagement/UserInvitedSuccessFully.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/UserManagement/UserInvitedSuccessFully.PNG"
         }
       },
       "is_incremental": false,
@@ -2395,7 +2638,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 76,
+          "total_file_count": 77,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

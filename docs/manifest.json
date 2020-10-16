@@ -1394,11 +1394,23 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Guides/IoTPlatform/user-profile.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/IoTPlatform/user-profile.html",
+          "hash": "T/4VK3lrEJq3MrZVvqRuJw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Guides/IoTPlatform/userManagement.md",
       "output": {
         ".html": {
           "relative_path": "Guides/IoTPlatform/userManagement.html",
-          "hash": "idRFT7KwN2V+ZiPi7cjUpg=="
+          "hash": "RNFYzNwe1YAyH/k+ZI1l9w=="
         }
       },
       "is_incremental": false,
@@ -1440,7 +1452,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "bPpGqIogOxvVvRFP8QxDYg=="
+          "hash": "WWGb6+niaaPDuh1sB1d2Wg=="
         }
       },
       "is_incremental": false,
@@ -2582,6 +2594,160 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/create-tenant-button.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/create-tenant-button.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/current-tenant.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/current-tenant.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/delete-tenant.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/delete-tenant.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/edit-tenant-button.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/edit-tenant-button.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/edit-tenant.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/edit-tenant.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/logout.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/logout.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/new-tenant.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/new-tenant.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/switch-tenant.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/switch-tenant.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/tenant-not-deployed.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/tenant-not-deployed.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/tenants-list.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/tenants-list.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/user-permissions.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/user-permissions.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/user-profile-button.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/user-profile-button.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/user-profile-flyout.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/user-profile-flyout.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-profile/user-role.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-profile/user-role.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "log_codes": [
         "InvalidFileLink"
       ],
@@ -2638,7 +2804,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 77,
+          "total_file_count": 78,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

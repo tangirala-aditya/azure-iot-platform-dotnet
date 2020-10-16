@@ -1,0 +1,247 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>User Profile | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="User Profile | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="user-profile">User Profile</h1>
+
+<p>The User Profile is to view and manage User related information.</p>
+<p>Below are the details and functionalities available in User Profile flyout in different sections:</p>
+<ol>
+<li>Tenants
+<ul>
+<li><a href="#current-tenant">Current Tenant</a></li>
+<li><a href="#view-tenants">View Tenants</a></li>
+<li><a href="#switch-tenant">Switch Tenant</a></li>
+<li><a href="#edit-tenant-name">Edit Tenant Name</a></li>
+<li><a href="#delete-tenant">Delete Tenant</a></li>
+<li><a href="#create-new-tenant">Create New Tenant</a></li>
+</ul>
+</li>
+<li><a href="#roles">Roles</a></li>
+<li><a href="#permissions">Permissions</a></li>
+<li><a href="#development-variables">Development Variables</a></li>
+<li><a href="#logout">Logout</a></li>
+</ol>
+<p><strong>Steps to access User Profile:</strong></p>
+<ol>
+<li>Login to the application</li>
+<li>Click on the top most icon(User Profile) on the right<br>
+<img src="../../images/user-profile/user-profile-button.png" alt="User Profile"></li>
+<li>User Profile flyout opens
+<img src="../../images/user-profile/user-profile-flyout.PNG" alt="User Profile Flyout"></li>
+</ol>
+<h2 id="tenants">Tenants</h2>
+<p>This sections shows the list of Tenants to which user is assigned along with other options to manage tenants.</p>
+<h3 id="current-tenant">Current Tenant</h3>
+<p>To view the current Tenant,</p>
+<ol>
+<li>Click on User Profile button, User Profile flyout opens</li>
+<li>Under Tenants section, there is a label that shows current Tenant
+<img src="../../images/user-profile/current-tenant.png" alt="Current Tenant"></li>
+</ol>
+<h3 id="view-tenants">View Tenants</h3>
+<p>To view the list of Tenants assigned,</p>
+<ol>
+<li>Click on User Profile button, User Profile flyout opens</li>
+<li>Under Tenants section, a table shows the list of Tenants</li>
+</ol>
+<p>Following lists the columns of Tenants grid:</p>
+<table>
+<thead>
+<tr>
+<th>Column Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tenant</td>
+<td>Name of the Tenant</td>
+</tr>
+<tr>
+<td>Role</td>
+<td>The role assigned to the user for this tenant</td>
+</tr>
+<tr>
+<td>Action</td>
+<td>Shows the actions available like Edit and Delete</td>
+</tr>
+</tbody>
+</table>
+<p><img src="../../images/user-profile/tenants-list.png" alt="Tenants List"></p>
+<h3 id="switch-tenant">Switch Tenant</h3>
+<p>A user can switch tenant if there are more than one tenant assigned. To switch the tenant:</p>
+<ol>
+<li>Click on User Profile button, User Profile flyout opens</li>
+<li>Under Tenants section, a table with tenant list is displayed</li>
+<li>For tenants in the list other than current, there will be a link on Tenant name that can be used to switch current tenant</li>
+<li>Click on tenant name link to switch<br>
+<strong>Ex:</strong> From the screenshot below, current tenant is <strong>tenant#233a1</strong>. Click on <strong>tenant#209d7</strong> in order to switch to this tenant.<br>
+<img src="../../images/user-profile/switch-tenant.png" alt="Switch tenant"></li>
+<li>The application refreshes with switched current tenant</li>
+</ol>
+<h3 id="edit-tenant-name">Edit Tenant Name</h3>
+<p>A user can edit the tenant name by following the below steps:</p>
+<ol>
+<li>Click on User Profile button, User Profile flyout opens</li>
+<li>Under Tenants section, a table with tenant list is displayed</li>
+<li>Against the tenant row click on Edit Action
+<img src="../../images/user-profile/edit-tenant-button.png" alt="Edit tenant button"></li>
+<li>Tenant Name becomes editable, update the name and click Save
+<img src="../../images/user-profile/edit-tenant.png" alt="Edit tenant"></li>
+</ol>
+<h3 id="delete-tenant">Delete Tenant</h3>
+<p>A user can delete a tenant by following the below steps:</p>
+<ol>
+<li>Click on User Profile button, User Profile flyout opens</li>
+<li>Under Tenants section, a table with tenant list is displayed</li>
+<li>Against the tenant row to delete click on Delete Action
+<img src="../../images/user-profile/delete-tenant.png" alt="Delete tenant button"></li>
+<li>The tenant is deleted</li>
+</ol>
+<p><strong>Note</strong> ❌: A tenant once deleted cannot be reversed. A user needs to be extra cautious while deleting a tenant.</p>
+<h3 id="create-new-tenant">Create New Tenant</h3>
+<p>A user can create a new tenant by follwing the below steps:</p>
+<ol>
+<li>Click on User Profile button, User Profile flyout opens</li>
+<li>Under Tenants section, click button <strong>Create New Tenant</strong> below tenants list
+<img src="../../images/user-profile/create-tenant-button.png" alt="Create tenant button"></li>
+<li>A new tenant with a unique Tenant Name is created and is added as a new row in the tenant list<br>
+<img src="../../images/user-profile/new-tenant.png" alt="New tenant"></li>
+<li>This tenant will be available to access only after it is fully deployed. This might take a few minutes and below message pops up while trying to access it.
+<img src="../../images/user-profile/tenant-not-deployed.PNG" alt="Tenant not deployed"></li>
+<li>User should be able to <a href="#switch-tenant">Switch</a> to the newly created tenant after few minutes, once it is fully deployed.</li>
+</ol>
+<p><strong>Note</strong> ❌: Avoid creating unnecessary tenants as they may result in increasing cost.</p>
+<h2 id="roles">Roles</h2>
+<p>This sections shows the logged in user's Role for current tenant. These roles are assigned while <a href="userManagement.html#new-user">creating a new user</a>.<br>
+There are two roles for a remote monitoring solution by default:</p>
+<ul>
+<li>Admin</li>
+<li>Read Only</li>
+</ul>
+<p><img src="../../images/user-profile/user-role.png" alt="User role"></p>
+<p><strong>Note:</strong> Custom roles can also be added, refer <a href="https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac">this</a> for more information</p>
+<h2 id="permissions">Permissions</h2>
+<p>This section shows the permissions of a user based on the user's role. Any user in the <strong>Admin</strong> role has full access to the solution, including the following permissions below. A user in the <strong>Read Only</strong> role will only have access to view the solution.
+<img src="../../images/user-profile/user-permissions.PNG" alt="User permissions"></p>
+<p><strong>Note:</strong> For more information on this, refer <a href="https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac">role-based access control</a></p>
+<h2 id="development-variables">Development Variables</h2>
+<p>This section has user development variables like</p>
+<ul>
+<li>User Token</li>
+<li>Payload information with Username, TenantId, UserRole, available tenants, IsSystemAdmin etc.,</li>
+</ul>
+<h2 id="logout">Logout</h2>
+<p>To logout from the application</p>
+<ol>
+<li>Click on User Profile button, User Profile flyout opens</li>
+<li>Click Logout button
+<img src="../../images/user-profile/logout.png" alt="Logout"></li>
+</ol>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/Guides/IoTPlatform/user-profile.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Public Documentation | © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

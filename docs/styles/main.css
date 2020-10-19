@@ -226,10 +226,6 @@ article h4 {
 
 /* SIDEBAR */
 
-.expand-stub {
-  display: none;
-}
-
 .toc .level1 > li {
   font-weight: 400;
 }

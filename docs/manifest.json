@@ -1381,6 +1381,21 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "Guides/IoTPlatform/system-settings.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/IoTPlatform/system-settings.html",
+          "hash": "M1aUnvyDWV7zj0+oFcr9vg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "Guides/IoTPlatform/tool-bar.md",
       "output": {
@@ -1452,7 +1467,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "WWGb6+niaaPDuh1sB1d2Wg=="
+          "hash": "X2V1PF7qGlwM2x+Mp6qWyw=="
         }
       },
       "is_incremental": false,
@@ -2375,6 +2390,171 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/system-settings/alerting.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/alerting.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/dark-theme.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/dark-theme.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/edit-name-and-logo.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/edit-name-and-logo.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/firmware-json-template-editor.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/firmware-json-template-editor.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/firmware-json-template.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/firmware-json-template.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/light-theme.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/light-theme.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/mmm-theme.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/mmm-theme.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/name-and-logo.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/name-and-logo.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/save-name-and-logo.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/save-name-and-logo.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/simulation-data.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/simulation-data.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/switch-theme.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/switch-theme.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/system-settings-flyout.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/system-settings-flyout.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/system-settings.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/system-settings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/template-variables.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/template-variables.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/system-settings/version.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/system-settings/version.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/tests-build-pipeline.png",
       "output": {
         "resource": {
@@ -2804,7 +2984,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 78,
+          "total_file_count": 79,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

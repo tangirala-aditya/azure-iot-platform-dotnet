@@ -438,7 +438,7 @@ pre {
   }
 }
 
-/* STYLE FOR TABLES */
+/* STYLE FOR TABLES 
 .table {background-color: white;}
 .table-bordered { border: 0px solid white; }
 
@@ -447,3 +447,4 @@ pre {
 }
 .table-bordered>thead>tr>td,.table-bordered>thead>tr>th{border-bottom-width:0px}
 .table-striped>tbody>tr:nth-of-type(odd){ background-color: white;}
+*/

@@ -5,7 +5,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Azure.ApplicationModel.Configuration;
+using Azure.Data.AppConfiguration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -38,7 +38,7 @@ namespace Mmm.Iot.Functions.AppConfiguration
                 {
                     var client = new ConfigurationClient(connectionstring);
                     var setting = new ConfigurationSetting(name, value);
-                    res = client.Set(setting);
+                    res = await client.SetConfigurationSettingAsync(name, value);
                 }
                 catch (NullReferenceException ex)
                 {
@@ -62,7 +62,7 @@ namespace Mmm.Iot.Functions.AppConfiguration
                 try
                 {
                     var client = new ConfigurationClient(connectionstring);
-                    res = client.Delete(name);
+                    res = await client.DeleteConfigurationSettingAsync(name);
                 }
                 catch (NullReferenceException ex)
                 {

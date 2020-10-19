@@ -1382,6 +1382,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Guides/IoTPlatform/maintenance.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/IoTPlatform/maintenance.html",
+          "hash": "NL18s2VBtQqK2dMRP+g7xg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Guides/IoTPlatform/packages.md",
       "output": {
         ".html": {
@@ -1494,7 +1506,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "uc8NLkVcVOD5mIuq4KLPVg=="
+          "hash": "sDvka7t1GxC0fa78mi13gw=="
         }
       },
       "is_incremental": false,
@@ -2212,6 +2224,105 @@
       "output": {
         "resource": {
           "relative_path": "images/logical-architecture.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/maintenance/acknowledge-alert.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/maintenance/acknowledge-alert.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/maintenance/alerts-details.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/maintenance/alerts-details.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/maintenance/alerts-grid.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/maintenance/alerts-grid.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/maintenance/close-alert.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/maintenance/close-alert.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/maintenance/delete-alert.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/maintenance/delete-alert.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/maintenance/jobs-details.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/maintenance/jobs-details.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/maintenance/jobs-grid.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/maintenance/jobs-grid.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/maintenance/summary-alerts.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/maintenance/summary-alerts.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/maintenance/summary-jobs.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/maintenance/summary-jobs.png"
         }
       },
       "is_incremental": false,
@@ -3517,7 +3628,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 81,
+          "total_file_count": 82,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

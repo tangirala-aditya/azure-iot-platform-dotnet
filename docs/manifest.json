@@ -1381,6 +1381,18 @@
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/IoTPlatform/rules.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/IoTPlatform/rules.html",
+          "hash": "i53S5jJnngqZiHikILozwA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "log_codes": [
         "InvalidFileLink"
       ],
@@ -1409,23 +1421,26 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Guides/IoTPlatform/user-profile.md",
+      "source_relative_path": "Guides/IoTPlatform/user-management.md",
       "output": {
         ".html": {
-          "relative_path": "Guides/IoTPlatform/user-profile.html",
-          "hash": "T/4VK3lrEJq3MrZVvqRuJw=="
+          "relative_path": "Guides/IoTPlatform/user-management.html",
+          "hash": "+eXPwhIiNlTFYxsfd3OBFQ=="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
-      "source_relative_path": "Guides/IoTPlatform/userManagement.md",
+      "source_relative_path": "Guides/IoTPlatform/user-profile.md",
       "output": {
         ".html": {
-          "relative_path": "Guides/IoTPlatform/userManagement.html",
-          "hash": "RNFYzNwe1YAyH/k+ZI1l9w=="
+          "relative_path": "Guides/IoTPlatform/user-profile.html",
+          "hash": "n0+ZVZo7FBnVlO9aB3HU5g=="
         }
       },
       "is_incremental": false,
@@ -1467,7 +1482,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "X2V1PF7qGlwM2x+Mp6qWyw=="
+          "hash": "ZKPW9jPKgzeUxeEY1VhXow=="
         }
       },
       "is_incremental": false,
@@ -1657,237 +1672,6 @@
       "output": {
         "resource": {
           "relative_path": "images/UI-Version-Indicator.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/AddServicePrincipalEnabled.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/AddServicePrincipalEnabled.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/AddServicePrincipalSuccessfullyPNG.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/AddServicePrincipalSuccessfullyPNG.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/AddServicePrincipal_1.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/AddServicePrincipal_1.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/AddServicePrincipal_2.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/AddServicePrincipal_2.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/AddSystemAdmin.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/AddSystemAdmin.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/AddSystemAdminUserSelected.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/AddSystemAdminUserSelected.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/AddedSystemAdminSuccessfully.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/AddedSystemAdminSuccessfully.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/DeleteSystemAdminSuccessfully.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/DeleteSystemAdminSuccessfully.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/DeleteSystemAdminUserEnabled.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/DeleteSystemAdminUserEnabled.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/DeleteSystemAdmin_1.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/DeleteSystemAdmin_1.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/DeleteSystemAdmin_2.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/DeleteSystemAdmin_2.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/DeleteUser.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/DeleteUser.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/DeleteUserEnabled.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/DeleteUserEnabled.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/DeletedUserSuccessfully.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/DeletedUserSuccessfully.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/NewUser.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/NewUser.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/NewUserInvited.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/NewUserInvited.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/UserAddedSuccessfullyWithServicePrincipal.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/UserAddedSuccessfullyWithServicePrincipal.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/UserCreatedSuccessFully.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/UserCreatedSuccessFully.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/UserGrid.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/UserGrid.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/UserGridWithSearch.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/UserGridWithSearch.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "images/UserManagement/UserInvitedSuccessFully.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "images/UserManagement/UserInvitedSuccessFully.PNG"
         }
       },
       "is_incremental": false,
@@ -2390,6 +2174,171 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/rules/delete-rule-enabled.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/delete-rule-enabled.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/delete-rule-success.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/delete-rule-success.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/delete-rule_1.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/delete-rule_1.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/edit-rule-flyout-enabled.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/edit-rule-flyout-enabled.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/edit-rule-flyout_1.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/edit-rule-flyout_1.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/edit-rule-flyout_2.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/edit-rule-flyout_2.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/new-rule-added-successfully.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/new-rule-added-successfully.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/new-rule-enabled.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/new-rule-enabled.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/new-rule_1.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/new-rule_1.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/rule-details.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/rule-details.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/rule-status-enabled.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/rule-status-enabled.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/rule-status-updated-success.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/rule-status-updated-success.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/rule-status_1.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/rule-status_1.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/rules-grid-with-search.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/rules-grid-with-search.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/rules/rules-grid.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/rules/rules-grid.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/system-settings/alerting.png",
       "output": {
         "resource": {
@@ -2775,6 +2724,237 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/user-management/add-service-principal-enabled.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/add-service-principal-enabled.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/add-service-principal-successfully.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/add-service-principal-successfully.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/add-service-principal_1.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/add-service-principal_1.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/add-service-principal_2.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/add-service-principal_2.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/add-system-admin-user-selected.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/add-system-admin-user-selected.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/add-system-admin.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/add-system-admin.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/added-system-admin-successfully.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/added-system-admin-successfully.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/delete-system-admin-successfully.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/delete-system-admin-successfully.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/delete-system-admin-user-enabled.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/delete-system-admin-user-enabled.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/delete-system-admin_1.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/delete-system-admin_1.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/delete-system-admin_2.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/delete-system-admin_2.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/delete-user-enabled.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/delete-user-enabled.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/delete-user.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/delete-user.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/deleted-user-successfully.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/deleted-user-successfully.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/new-user-invited.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/new-user-invited.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/new-user.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/new-user.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/user-added-successfully-with-service-principal.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/user-added-successfully-with-service-principal.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/user-created-successfully.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/user-created-successfully.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/user-grid-with-search.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/user-grid-with-search.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/user-grid.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/user-grid.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/user-invited-successfully.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/user-invited-successfully.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/user-profile/create-tenant-button.png",
       "output": {
         "resource": {
@@ -2984,7 +3164,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 79,
+          "total_file_count": 80,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

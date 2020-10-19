@@ -1,0 +1,466 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Deployments | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Deployments | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="deployments">Deployments</h1>
+
+<p>Deployments are used to manage the configuration of connected devices in bulk.</p>
+<p>Document covers the following aspects of the Deployments</p>
+<ol>
+<li><a href="#deployments-grid">Deployments Grid</a></li>
+<li><a href="#deployment-creation">Deployment Creation</a></li>
+<li><a href="#deployment-details">Deployment Details</a></li>
+<li><a href="#deactivate-deployment">Deactivate Deployment</a></li>
+<li><a href="#reactivate-deployment">Reactivate Deployment</a></li>
+<li><a href="#delete-deployment">Delete Deployment</a></li>
+</ol>
+<h2 id="deployments-grid">Deployments Grid</h2>
+<p>Deployments Grid lists all the deployments which are either active or deactivated.</p>
+<p>Following lists the columns and usage in Deployments Grid</p>
+<table>
+<thead>
+<tr>
+<th>Column Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Name of the Deployment</td>
+</tr>
+<tr>
+<td>Package</td>
+<td>Name of the Package that is used for configuration.</td>
+</tr>
+<tr>
+<td>Device Group</td>
+<td>Device Group that is targetted by Deployment.</td>
+</tr>
+<tr>
+<td>Priority</td>
+<td>Priority specifies which deployment will impact the devices, Higher priority deployments take precedence over lower priority.</td>
+</tr>
+<tr>
+<td>Configuration Type</td>
+<td>Indicates whether the Configuration is updating Device Firmware or any other custom properties. Empty for Edge Deployments</td>
+</tr>
+<tr>
+<td>Targeted</td>
+<td>No of Devices configuration is targetted for.</td>
+</tr>
+<tr>
+<td>Applied</td>
+<td>No of Devices where the configuration is currently applied for the latest deployments and previously applied if the deployment is not the latest for the device group</td>
+</tr>
+<tr>
+<td>Success</td>
+<td>No of Devices where configuration update is successful as reported by devices.</td>
+</tr>
+<tr>
+<td>Failed</td>
+<td>No of Devices where configuration update is failed as reported by devices.</td>
+</tr>
+<tr>
+<td>Date Created</td>
+<td>Date the package is created</td>
+</tr>
+<tr>
+<td>Created On</td>
+<td>Date the Deployment is created</td>
+</tr>
+<tr>
+<td>Created By</td>
+<td>User who created the Deployment.</td>
+</tr>
+<tr>
+<td>Modifed On</td>
+<td>Date the Deployment is is modifed lastly</td>
+</tr>
+<tr>
+<td>Modified By</td>
+<td>User who modifed Deployment lastly.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="deployment-creation">Deployment Creation</h2>
+<ul>
+<li><p>Navigate to Deployments Page and Click on <strong>+ New Deployment</strong></p>
+<p><img src="../../images/deployment/deploymentgrid-empty.png" alt="Initial State for Device Group"></p>
+</li>
+<li><p>In the Flyout that is presented, Enter the Name for the deployment</p>
+<p><img src="../../images/deployment/newdeployment-flyout.png" alt="New Deployment Flyout"></p>
+</li>
+<li><p>Select Package Type based on the targetted device types.</p>
+<p><img src="../../images/deployment/newdeployment-flyout-packagetype.png" alt="Select Package Type"></p>
+</li>
+<li><p>Select Configuration Type</p>
+<blockquote>
+<p>Note:</p>
+<p><strong>Configuration Type</strong> is needed if <strong>Package Type</strong> is <strong>Device Configuration</strong>.</p>
+</blockquote>
+<p><img src="../../images/deployment/newdeployment-flyout-configtype.png" alt="Select Configuration Type"></p>
+</li>
+<li><p>Select the Package based on the Configuration Type</p>
+<p><img src="../../images/deployment/newdeployment-flyout-package.png" alt="Select Package"></p>
+</li>
+<li><p>Provide Priority for Deployment, Higher the Priority higher the precedence.</p>
+</li>
+<li><p>Click on Apply.</p>
+<p><img src="../../images/deployment/newdeployment-flyout-priority.png" alt="Enter Priority"></p>
+</li>
+<li><p>Post Successful creation of Deployment, User will be presented with the confirmation details.</p>
+<p><img src="../../images/deployment/newdeployment-confirmation.png" alt="Deployment Confirmation"></p>
+</li>
+</ul>
+<h2 id="deployment-details">Deployment Details</h2>
+<ul>
+<li><p>Deployment Details screen provides data about the Metrics of Deployment such as No of Devices Targetted, Applied, Succedded, Pending and Failed.</p>
+<p><img src="../../images/deployment/deploymentdetails-standardmetrics.png" alt="Deployment Details"></p>
+<p>Following table depicts how the Metrics are defined.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Targetted</td>
+<td>No of Devices which will be impacted by Deployment</td>
+</tr>
+<tr>
+<td>Applied</td>
+<td>No of Devices which are impacted by Deployment</td>
+</tr>
+<tr>
+<td>Failed</td>
+<td>No of Devices which reported failure of Firmware update.</td>
+</tr>
+<tr>
+<td>Succedded</td>
+<td>No of Devices which reported Success of Firmware update to the Current Version.</td>
+</tr>
+<tr>
+<td>Pending</td>
+<td>No of Devices which are still to update the Firmware.</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>Deployment Details screen also provides following details of a Deployment.</p>
+<p><img src="../../images/deployment/deploymentdetails-additionaldetails.png" alt="Deployment Details Additional Info"></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Device Group</td>
+<td>Provides the information about the List of Devices that are targeted</td>
+</tr>
+<tr>
+<td>Package Type</td>
+<td>Provides information about the type of package</td>
+</tr>
+<tr>
+<td>Package</td>
+<td>Name of the Package that is used for configuration with Version.</td>
+</tr>
+<tr>
+<td>Priority</td>
+<td>Priority specifies which deployment will impact the devices, Higher priority deployments take precedence over lower priority.</td>
+</tr>
+<tr>
+<td>Configuration Type</td>
+<td>Indicates whether the Configuration is updating Device Firmware or any other custom properties. Empty for Edge Deployments</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>Deployment Details also provides information about the Custom Metrics configured for the configuration as depicted.
+<img src="../../images/deployment/deploymentdetails-custommetrics.png" alt="Deployment Details Custom Metrics"></p>
+</li>
+<li><p>Following depicts the various stages how the Deployment is affecting the devices.</p>
+<ul>
+<li><p>Device Status as Pending when the Firmware update is pending from the Device.</p>
+<p><img src="../../images/deployment/deploymentdetails-pending.png" alt="Deployment Details Pending"></p>
+</li>
+<li><p>Device Status as Completed, when the Device successfully updated the firmware as per the configuration.</p>
+<p><img src="../../images/deployment/deploymentdetails-success.png" alt="Deployment Details Success"></p>
+</li>
+</ul>
+</li>
+<li><p>Deployment Details screen also lists the Devices which are impacted by the deployment.</p>
+<p><img src="../../images/deployment/deploymentdetails-grid.png" alt="Deployment Details Grid"></p>
+<p>Grid displays the following columns</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Name of the Device.</td>
+</tr>
+<tr>
+<td>Deployment Status</td>
+<td>Status depicts the status of Firmware update by Device.</td>
+</tr>
+<tr>
+<td>Firmware</td>
+<td>Firmware Version.</td>
+</tr>
+<tr>
+<td>Start</td>
+<td>Date and time which depicts the start time when Device starts Configuration update.</td>
+</tr>
+<tr>
+<td>End</td>
+<td>Date and time which depicts the End time when Device completes Configuration update.</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>Deployment Details screen also provides option to Download the Devices Affected Grid Details to an Excel.</p>
+<p><img src="../../images/deployment/deploymentdetails-download.png" alt="Deployment Details Download"></p>
+</li>
+<li><p>Deployment Activation and Deactivation can also be performed from Deployment Details.</p>
+<p><img src="../../images/deployment/deploymentdetails-status.png" alt="Deployment Status"></p>
+<ul>
+<li><p>On Status Toggle User will be presented with confirmation popup.</p>
+<p><img src="../../images/deployment/deploymentdetails-statustoggle.png" alt="Deployment Status"></p>
+</li>
+</ul>
+</li>
+<li><p>Deployment Details screen also provide option to Delete the Deployment.</p>
+<p><img src="../../images/deployment/deploymentdetails-delete.png" alt="Deployment Delete"></p>
+<ul>
+<li>On Delete button click, user will be presented with popup for confirmation.</li>
+</ul>
+<p><img src="../../images/deployment/deploymentdetails-delete-popup.png" alt="Deployment Delete Confirmation"></p>
+</li>
+</ul>
+<h2 id="deactivate-deployment">Deactivate Deployment</h2>
+<p>User can deactivate a Deployment to free up the Configurations in IoT Hub and still have a reference of the deployment for future.</p>
+<blockquote>
+<p>Note:</p>
+<p>IoT Hub currently have limit of 100 configurations.</p>
+</blockquote>
+<p>Steps to Deactivate a Deployment.</p>
+<ul>
+<li><p>Click on the Circle adjacent to any Active Deployment</p>
+<blockquote>
+<p><strong>Reference:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Circle Color</th>
+<th>Status of Deployment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Green</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>Black</td>
+<td>Inactive</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p><img src="../../images/deployment/deploymentgrid-active-deployment.png" alt="Deployment Confirmation"></p>
+</li>
+<li><p>User will be presented with Deployment Status Flyout, reprsenting the current status of the Deployment.</p>
+<p><img src="../../images/deployment/deployment-inactivate-flyout.png" alt="Deployment Confirmation"></p>
+</li>
+<li><p>Toggle the Button to change the Status of Deployment</p>
+<p><img src="../../images/deployment/deployment-inactivateflyout-toggle.png" alt="Toggle Status"></p>
+</li>
+<li><p>Click on Apply.</p>
+<p><img src="../../images/deployment/deployment-inactivateflyout-apply.png" alt="Apply Status Change"></p>
+</li>
+<li><p>On Successful status change, User can verify the status of Deployment will be Inactive</p>
+<p><img src="../../images/deployment/deploymentgrid-inactive-deployment.png" alt="Deployment Confirmation"></p>
+</li>
+</ul>
+<h2 id="reactivate-deployment">Reactivate Deployment</h2>
+<p>User can Reactivate a Deployment based on the need, so that Devices can have the configuration.</p>
+<blockquote>
+<p>Note:</p>
+<p>IoT Hub currently have limit of 100 configurations.</p>
+</blockquote>
+<p>Steps to Reactivate a Deployment.</p>
+<ul>
+<li><p>Click on the Circle adjacent to any Inactive Deployment</p>
+<blockquote>
+<p><strong>Reference:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Circle Color</th>
+<th>Status of Deployment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Green</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>Black</td>
+<td>Inactive</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p><img src="../../images/deployment/deploymentgrid-inactive-deployment.png" alt="Deployment Confirmation"></p>
+</li>
+<li><p>User will be presented with Deployment Status Flyout, reprsenting the current status of the Deployment.</p>
+<p><img src="../../images/deployment/deployment-activateflyout.png" alt="Deployment Confirmation"></p>
+</li>
+<li><p>Toggle the Button to change the Status of Deployment</p>
+<p><img src="../../images/deployment/deployment-activateflyout-togglestatus.png" alt="Toggle Status"></p>
+</li>
+<li><p>Click on Apply.</p>
+<p><img src="../../images/deployment/deployment-activateflyout-apply.png" alt="Apply Status Change"></p>
+</li>
+<li><p>On Successful status change, User can verify the status of Deployment will be Inactive</p>
+<p><img src="../../images/deployment/deploymentgrid-active-deployment.png" alt="Deployment Confirmation"></p>
+</li>
+</ul>
+<h2 id="delete-deployment">Delete Deployment</h2>
+<p>User can delete any Deployment when they are considered not needed.</p>
+<p>Steps to Delete a Deployment.</p>
+<ul>
+<li><p>Select any Deployment by Clicking on the Selection CheckBox.</p>
+<p><img src="../../images/deployment/deploymentgrid.png" alt="Deployment Confirmation"></p>
+</li>
+<li><p>Once User selects a Deployment, Delete option will be available in the ToolBar</p>
+<p><img src="../../images/deployment/deploymentgrid-selection.png" alt="Deployment Confirmation"></p>
+</li>
+<li><p>On Click of the Delete Button, Delete Confirmation popup will be presented for final confirmation.</p>
+<p><img src="../../images/deployment/deployment-delete-popup.png" alt="Deployment Confirmation"></p>
+</li>
+<li><p>Click on the Delete button on the popup to confirm deletion.
+<img src="../../images/deployment/deployment-delete-popup-confirmation.png" alt="Deployment Confirmation"></p>
+</li>
+<li><p>On Successful Deletion, User will not be able to find the Deployment anylonger in the Deployment Grid.
+<img src="../../images/deployment/deploymentgrid-empty.png" alt="Deployment Confirmation"></p>
+</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/Guides/IoTPlatform/deployments.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Public Documentation | © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -1358,6 +1358,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Guides/IoTPlatform/deployments.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/IoTPlatform/deployments.html",
+          "hash": "u9uQRZO4qM4PqAwZ+NCGkA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Guides/IoTPlatform/index.md",
       "output": {
         ".html": {
@@ -1482,7 +1494,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "ZKPW9jPKgzeUxeEY1VhXow=="
+          "hash": "uc8NLkVcVOD5mIuq4KLPVg=="
         }
       },
       "is_incremental": false,
@@ -1782,6 +1794,347 @@
       "output": {
         "resource": {
           "relative_path": "images/dashboard/dashboard-telemetry.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deployment-activateflyout-apply.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deployment-activateflyout-apply.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deployment-activateflyout-togglestatus.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deployment-activateflyout-togglestatus.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deployment-activateflyout.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deployment-activateflyout.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deployment-delete-popup-confirmation.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deployment-delete-popup-confirmation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deployment-delete-popup.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deployment-delete-popup.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deployment-inactivate-flyout.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deployment-inactivate-flyout.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deployment-inactivateflyout-apply.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deployment-inactivateflyout-apply.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deployment-inactivateflyout-toggle.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deployment-inactivateflyout-toggle.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentdetails-additionaldetails.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentdetails-additionaldetails.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentdetails-custommetrics.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentdetails-custommetrics.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentdetails-delete-popup.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentdetails-delete-popup.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentdetails-delete.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentdetails-delete.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentdetails-download.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentdetails-download.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentdetails-grid.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentdetails-grid.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentdetails-pending.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentdetails-pending.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentdetails-standardmetrics.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentdetails-standardmetrics.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentdetails-status.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentdetails-status.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentdetails-statustoggle.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentdetails-statustoggle.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentdetails-success.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentdetails-success.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentgrid-active-deployment.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentgrid-active-deployment.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentgrid-empty.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentgrid-empty.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentgrid-inactive-deployment.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentgrid-inactive-deployment.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentgrid-selection.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentgrid-selection.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/deploymentgrid.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/deploymentgrid.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/newdeployment-confirmation.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/newdeployment-confirmation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/newdeployment-flyout-configtype.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/newdeployment-flyout-configtype.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/newdeployment-flyout-name.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/newdeployment-flyout-name.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/newdeployment-flyout-package.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/newdeployment-flyout-package.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/newdeployment-flyout-packagetype.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/newdeployment-flyout-packagetype.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/newdeployment-flyout-priority.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/newdeployment-flyout-priority.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/deployment/newdeployment-flyout.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/deployment/newdeployment-flyout.png"
         }
       },
       "is_incremental": false,
@@ -3164,7 +3517,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 80,
+          "total_file_count": 81,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

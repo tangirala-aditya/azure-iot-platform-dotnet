@@ -231,12 +231,6 @@
 
     "resources": [
         {
-            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
-            "name": "[variables('identityName')]",
-            "apiVersion": "2018-11-30",
-            "location": "[resourceGroup().location]"
-        },
-        {
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[variables('vnetName')]",
             "apiVersion": "2018-08-01",

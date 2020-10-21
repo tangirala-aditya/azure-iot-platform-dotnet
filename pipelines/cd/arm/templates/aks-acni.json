@@ -180,6 +180,12 @@
                 "description": "Boolean flag to turn on and off of http application routing."
             }
         },
+        "applicationGatewayName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Application Gateway"
+            }
+        },
         "applicationGatewaySku": {
             "defaultValue": "WAF_v2",
             "allowedValues": [
@@ -207,7 +213,6 @@
 
     "variables": {
         "vnetName": "[concat(parameters('applicationCode'), '-', 'vnet', parameters('environmentCategory'))]",
-        "applicationGatewayName": "[concat(parameters('applicationCode'), '-', 'applicationgateway', parameters('environmentCategory'))]",
         "applicationGatewayPublicIpName": "[concat(parameters('applicationCode'), '-', 'public-ip',parameters('environmentCategory'))]",
         "kubernetesSubnetName": "[concat(parameters('applicationCode'), '-', 'kubesubnet',parameters('environmentCategory'))]",
         "applicationGatewaySubnetName": "[concat(parameters('applicationCode'), '-', 'appgwsubnet',parameters('environmentCategory'))]",
@@ -216,7 +221,7 @@
         "kubernetesSubnetId": "[concat(variables('vnetID'),'/subnets/', variables('kubernetesSubnetName'))]",
         "applicationGatewaySubnetId": "[concat(variables('vnetID'),'/subnets/', variables('applicationGatewaySubnetName'))]",
         "applicationGatewayPublicIpId": "[resourceId('Microsoft.Network/publicIPAddresses',variables('applicationGatewayPublicIpName'))]",
-        "applicationGatewayId": "[resourceId('Microsoft.Network/applicationGateways', variables('applicationGatewayName'))]",
+        "applicationGatewayId": "[resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName'))]",
         "aksClusterId": "[resourceId('Microsoft.ContainerService/managedClusters', variables('aksClusterName'))]",
         "webApplicationFirewallConfiguration": {
           "enabled": "true",
@@ -272,7 +277,7 @@
         },
         {
             "type": "Microsoft.Network/applicationGateways",
-            "name": "[variables('applicationGatewayName')]",
+            "name": "[parameters('applicationGatewayName')]",
             "apiVersion": "2018-08-01",
             "location": "[resourceGroup().location]",
             "tags": {
@@ -434,7 +439,7 @@
         },
         "applicationGatewayName": {
             "type": "string",
-            "value": "[variables('applicationGatewayName')]"
+            "value": "[parameters('applicationGatewayName')]"
         },
         "aksClusterName": {
             "type": "string",

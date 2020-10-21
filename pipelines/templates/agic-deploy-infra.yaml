@@ -107,9 +107,6 @@ jobs:
       - checkout: self
         displayName: Checkout repository
 
-      - template: apply-arm-tags.yaml
-        parameters:
-          environment: ${{parameters.environmentName}}
 
 
   - job: aks
@@ -155,6 +152,7 @@ jobs:
             -aksServicePrincipalObjectId $(servicePrincipalObjectId)
             -omsWorkspaceName $(omsWorkspaceName)
             -kubernetesVersion ${{parameters.kubernetesVersion}}
+            -applicationGatewayName $(appGatewayName)
             -agentVMSize ${{parameters.aksAgentVmSize}}
           deploymentMode: Incremental
           addSpnToEnvironment: true
@@ -264,85 +262,10 @@ jobs:
             kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
 
 
-
-  - job: populateAppConfiguration
-    displayName: Populate App Configuration
-    dependsOn:
-      - appConfiguration
-      - function1
-      - function2
-      - appInsights
-
-    variables:
-      - template: variables-deploy-infra.yaml
-        parameters:
-          subscriptionName: ${{parameters.subscriptionName}}
-          locationName: ${{parameters.locationName}}
-          environmentName: ${{parameters.environmentName}}
-          subscriptionId: ${{parameters.subscriptionId}}
-          applicationCode: ${{parameters.applicationCode}}
-          applicationShortCode: ${{parameters.applicationShortCode}}
-          environmentCategory: ${{parameters.environmentCategory}}
-    steps:
-      - checkout: self
-        displayName: Checkout repository
-
-      - task: AzureCLI@2
-        displayName: Populate Azure App Configuration
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          addSpnToEnvironment: true
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-            set -Eeuxo pipefail
-            az appconfig kv import --yes --name $(appConfigurationName) --format json --source file --path "$(System.DefaultWorkingDirectory)/pipelines/cd/app-config-template.json" --separator ":"
-            echo "Checking for $(System.DefaultWorkingDirectory)/pipelines/cd/permissions-config/permissions-${{parameters.environmentName}}.json"
-            if [ ! -f $(System.DefaultWorkingDirectory)/pipelines/cd/permissions-config/permissions-${{parameters.environmentName}}.json ];
-            then
-              az appconfig kv import --yes --name $(appConfigurationName) --format json --source file --path "$(System.DefaultWorkingDirectory)/pipelines/cd/permissions-config/permissions-Default.json"
-              echo "Using default permissions file"
-            else
-              az appconfig kv import --yes --name $(appConfigurationName) --format json --source file --path "$(System.DefaultWorkingDirectory)/pipelines/cd/permissions-config/permissions-${{parameters.environmentName}}.json"
-              echo "Using permissions-${{parameters.environmentName}}.json file"
-            fi
-
-            az appconfig kv set --key Global:KeyVault:Name                        --value $(keyVaultName) --name $(appConfigurationName) --yes
-            az appconfig kv set --key Global:ClientAuth:Jwt:AadAppId              --value $servicePrincipalId --name $(appConfigurationName) --yes
-            az appconfig kv set --key Global:AzureActiveDirectory:AppId           --value $servicePrincipalId --name $(appConfigurationName) --yes
-            az appconfig kv set --key Global:AzureActiveDirectory:AppSecret       --value $servicePrincipalKey --name $(appConfigurationName) --yes
-            az appconfig kv set --key Global:ResourceGroup                        --value $(resourceGroupName) --name $(appConfigurationName) --yes
-            az appconfig kv set --key Global:SubscriptionId                       --value ${{parameters.subscriptionId}} --name $(appConfigurationName) --yes
-            az appconfig kv set --key Global:StorageAccount:Name                  --value $(storageAccountName) --name $(appConfigurationName) --yes
-            az appconfig kv set --key Global:CosmosDb:AccountName                 --value $(cosmosDbAccountName) --name $(appConfigurationName) --yes
-            az appconfig kv set --key Global:EventHub:Name                        --value $(eventHubName) --name $(appConfigurationName) --yes
-            az appconfig kv set --key Global:EventHub:RootKey                     --value $(az eventhubs namespace authorization-rule keys list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --name RootManageSharedAccessKey --query primaryKey --output tsv) --name $(appConfigurationName) --yes
-            az appconfig kv set --key TenantManagerService:EventHubNamespaceName  --value $(eventHubName) --name $(appConfigurationName) --yes
-            az appconfig kv set --key TenantManagerService:AutomationAccountName  --value $(automationName) --name $(appConfigurationName) --yes
-
-            appInsightKey=$(az resource show -g $(resourceGroupName) -n $(appInsightsName) --resource-type "Microsoft.Insights/components" --query properties.InstrumentationKey --output tsv)
-            az appconfig kv set --key Global:InstrumentationKey --value $appInsightKey --name $(appConfigurationName) --yes
-
-            jwtIssuer="https://$(aksName).${{parameters.locationName}}.cloudapp.azure.com/auth"
-            az appconfig kv set --key Global:ClientAuth:Jwt:AuthIssuer --value $jwtIssuer --name $(appConfigurationName) --yes
-
-            appConfig=$(az functionapp list --resource-group $(resourceGroupName) --query "[?contains(name, 'appconfig')]".hostNames --output tsv)
-            appConfigEndpoint="https://$appConfig/api/SetAppConfigKey"
-            az appconfig kv set --key TenantManagerService:SetAppConfigEndpoint --value $appConfigEndpoint --name $(appConfigurationName) --yes
-            az appconfig kv set --key TenantManagerService:SetAppConfigFunction --value $appConfigEndpoint --name $(appConfigurationName) --yes
-
-            deviceTwin=$(az functionapp list --resource-group $(resourceGroupName) --query "[?contains(name, 'devicetwin')]".name --output tsv)
-            deviceTwinFuncUri="https://$deviceTwin.scm.azurewebsites.net"
-            az appconfig kv set --key TenantManagerService:TwinChangeFunctionUri --value $deviceTwinFuncUri --name $(appConfigurationName) --yes
-            az appconfig kv set --key TenantManagerService:TelemetryFunctionUri --value $deviceTwinFuncUri --name $(appConfigurationName) --yes
-            az appconfig kv set --key TenantManagerService:LifecycleFunctionUri --value $deviceTwinFuncUri --name $(appConfigurationName) --yes
-
-
   - job: automationAccount
     displayName: Provision Azure Automation and Sendgrid accounts
     dependsOn:
       - aks
-      - keyVault
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -414,6 +337,7 @@ jobs:
     displayName: Integrate AGIC 
     dependsOn:
       - aks
+      - globalsecrets
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -556,7 +480,7 @@ jobs:
           install: true
           releaseName: ingress-azure
           chartName: application-gateway-kubernetes-ingress/ingress-azure
-          overrideValues: appgw.name=$(appgateway),appgw.resourceGroup=$(resourceGroupName),appgw.subscriptionId=${{parameters.subscriptionId}},appgw.shared=false, armAuth.type=servicePrincipal, armAuth.secretJSON=($encodedsecret), kubernetes.watchNamespace=default
+          overrideValues: appgw.name=$(appGatewayName),appgw.resourceGroup=$(resourceGroupName),appgw.subscriptionId=${{parameters.subscriptionId}},appgw.shared=false, armAuth.type=servicePrincipal, armAuth.secretJSON=($encodedsecret), kubernetes.watchNamespace=default
           arguments: --debug 
             
       - task: Kubernetes@1

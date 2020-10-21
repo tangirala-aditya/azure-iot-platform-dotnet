@@ -1350,7 +1350,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/IoTPlatform/dashboard.html",
-          "hash": "tBcq47ydgFOj2ixsCOFS/g=="
+          "hash": "Wu0Z77/2zPMfAfEY1CvD5g=="
         }
       },
       "is_incremental": false,
@@ -1363,6 +1363,18 @@
         ".html": {
           "relative_path": "Guides/IoTPlatform/deployments.html",
           "hash": "u9uQRZO4qM4PqAwZ+NCGkA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/IoTPlatform/device-explorer.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/IoTPlatform/device-explorer.html",
+          "hash": "XOUWf3XVgMsWGzAO4sBjXg=="
         }
       },
       "is_incremental": false,
@@ -1506,7 +1518,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "sDvka7t1GxC0fa78mi13gw=="
+          "hash": "SXU/KpLAl1jOJc7ykNqIrg=="
         }
       },
       "is_incremental": false,
@@ -2147,6 +2159,325 @@
       "output": {
         "resource": {
           "relative_path": "images/deployment/newdeployment-flyout.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-delete-successfully.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-delete-successfully.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-delete-toggle.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-delete-toggle.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-delete.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-delete.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-device-details-alert.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-device-details-alert.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-device-details-deployment.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-device-details-deployment.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-device-details-properties.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-device-details-properties.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-device-details-telemetry.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-device-details-telemetry.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-device-group-default.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-device-group-default.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-grid.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-grid.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-job.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-job.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-new-device-apply.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-new-device-apply.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-new-device-auth.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-new-device-auth.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-new-device-flyout.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-new-device-flyout.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-new-device-successfully.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-new-device-successfully.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-new-device.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-new-device.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-properties-apply.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-properties-apply.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-properties-job-status.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-properties-job-status.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-properties-select.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-properties-select.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-properties-successfully.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-properties-successfully.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-query-devices-condition.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-query-devices-condition.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-query-devices-device-group.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-query-devices-device-group.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-query-devices-reset-query.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-query-devices-reset-query.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-query-devices.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-query-devices.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-show-telemetry-page.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-show-telemetry-page.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-show-telemetry.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-show-telemetry.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-tag-device-details.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-tag-device-details.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-tag-status.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-tag-status.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-tag-successfully.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-tag-successfully.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-tag.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-tag.png"
         }
       },
       "is_incremental": false,
@@ -3628,7 +3959,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 82,
+          "total_file_count": 83,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

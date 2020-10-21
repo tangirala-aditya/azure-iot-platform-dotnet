@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>3M IoT Platform Overview | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="3M IoT Platform Overview | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="3m-iot-platform-overview">3M IoT Platform Overview</h1>
+
+<p>The 3M IoT Platform on Azure, called Serenity, provides essential services for managing devices at scale. It can be used directly via it's web UI or programmatically via APIs. Product teams across 3M are using Serenity to accelerate innovation. The platform standardizes aspects of each innovation by providing core capabilities needed in any IoT scenarios, including device management services, security monitoring, and CI/CD. The platform allows adopters to focus on unique IoT objectives rather than having to build, validate, and independently maintain common services.</p>
+<p>The code for the 3M IoT Platform is open source, available on <a href="https://github.com/3mcloud/azure-iot-platform-dotnet">GitHub</a>.  Use it to request features, track improvements, and even make contribution to platform enhancements.</p>
+<h2 id="logical-components">Logical Components</h2>
+<p>The following diagram outlines the logical components of the platform and highlights the primary Azure Resources that it uses.</p>
+<p><img src="../../images/logical-architecture.png" alt="logical architecture"></p>
+<h2 id="iot-hub">IoT Hub</h2>
+<p>The <a href="https://azure.microsoft.com/en-us/services/iot-hub/">IoT Hub</a> is a Microsoft Azure Resource used to ingest telemetry sent from both real and siulated devices into the cloud.  The hub makes the teletry available to the services in the IoT solution for processing.</p>
+<p>The IoT Hub also provides the following:</p>
+<ul>
+<li>Maintains an identity registry that stores the IDs and authentication keys of all the devices permitted to connect to the portal.</li>
+<li>Invokes methods on your devices on behalf of the solution accelerator.</li>
+<li>Maintains device twins for all registered devices. A device twin stores the property values reported by a device. A device twin also stores desired properties, set in the solution portal, for the device to retrieve when it next connects.</li>
+<li>Schedules jobs to set properties for multiple devices or invoke methods on multiple devices.</li>
+</ul>
+<h2 id="web-ui">Web UI</h2>
+<p>A web user interface is available for device management. This presentation offers a user friendly way to register and configure devices, deploy firmware, and manage alerts, and provides a dashboard for generally observing device telemetry.</p>
+<p>The web user interface is a <a href="https://reactjs.org/">React Javascript</a> application that:</p>
+<ul>
+<li>Is served to the browser via backend services</li>
+<li>Is styled with Css and SaSS</li>
+<li>Interacts with other backend services like the authentication and authorization service to protect user data and communicate with Azure resources</li>
+</ul>
+<h2 id="backend-services">Backend Services</h2>
+<p>The platform is made up several services running in <a href="https://azure.microsoft.com/en-us/services/kubernetes-service/">Azure Kubernetes Service (AKS)</a>. The platform containerizes services to offer enterprise-grade security and scalability. The services - often called <em>microservices</em>- are written in .NET (C#) and provide RESTful endpoints that can be used for direct integration in business specific solutions.</p>
+<h2 id="data-processing-and-analytics">Data processing and analytics</h2>
+<p>The solution includes the following components in the data processing and analytics part of the logical architecture:</p>
+<h3 id="iot-hub-manager">IoT Hub manager</h3>
+<p>The solution includes the IoT Hub manager microservice to handle interactions with your IoT hub such as:</p>
+<p>Creating and managing IoT devices.
+Managing device twins.
+Invoking methods on devices.
+Managing IoT credentials.
+This service also runs IoT Hub queries to retrieve devices belonging to user-defined groups.</p>
+<p>The microservice provides a RESTful endpoint to manage devices and device twins, invoke methods, and run IoT Hub queries.</p>
+<h3 id="device-telemetry">Device telemetry</h3>
+<p>The device telemetry microservice provides a RESTful endpoint for read access to device telemetry stored in Time Series Insights. The RESTful endpoint also enables CRUD operations on rules and read/write access for alarm definitions from storage.</p>
+<h3 id="storage-adapter">Storage adapter</h3>
+<p>The storage adapter microservice manages key-value pairs, abstracting the storage service semantics, and presenting a simple interface to store data of any format using Azure Cosmos DB.</p>
+<p>Values are organized in collections. You can work on individual values or fetch entire collections. Complex data structures are serialized by the clients and managed as simple text payload.</p>
+<p>The service provides a RESTful endpoint for CRUD operations on key-value pairs. values</p>
+<h3 id="azure-cosmos-db">Azure Cosmos DB</h3>
+<p>Deployments use Azure Cosmos DB to store rules, alerts, configuration settings, and all other cold storage.</p>
+<h3 id="azure-stream-analytics">Azure Stream Analytics</h3>
+<p>The Azure Stream Analytics manager microservice manages Azure Stream Analytics (ASA) jobs, including setting their configuration,starting and stopping them, and monitoring their status.</p>
+<p>The ASA job is supported by two reference data sets. One data set defines rules and one defines device groups. The rules reference data is generated from the information managed by the device telemetry microservice. The Azure Stream Analytics manager microservice transforms telemetry rules into stream processing logic.</p>
+<p>The device groups reference data is used to identify which group of rules to apply to an incoming telemetry message. The device groups are managed by the configuration microservice and use Azure IoT Hub device twin queries.</p>
+<p>The ASA jobs deliver the telemetry from the connected devices to Time Series Insights for storage and analysis.</p>
+<p>Azure Stream Analytics is an event-processing engine that allows you to examine high volumes of data streaming from devices.</p>
+<h3 id="azure-time-series-insights">Azure Time Series Insights</h3>
+<p>Azure Time Series Insights stores the telemetry from the devices connected to the solution accelerator. It also enables visualizing and querying device telemetry in the solution web UI.</p>
+<h3 id="authentication-and-authorization-microservice">Authentication and authorization microservice</h3>
+<p>The authentication and authorization microservice manages the users authorized to access the solution accelerator. User management supports a variety of identity service provides that support OpenId Connect, including Azure B2C.</p>
+<!--
+
+Azure IoT Hub
+Azure IoT Edge
+Azure Storage
+Azure Data Lake
+Azure Cosmos DB
+Azure SQL Database
+Azure HDInsight
+Azure Stream Analytics
+Azure Service Bus
+Azure Event Hubs
+Azure Web Apps
+Azure Mobile Apps
+Azure Logic Apps
+Azure Notification Hubs
+Azure Machine Learning
+Azure Machine Learning Studio
+Power BI
+Azure Active Directory
+Azure Key Vault
+AMQP
+AMQP Core
+MQTT 
+Azure VPN 
+VPN Gateways and Secure CrossPremises Connectivity
+Azure API applications
+Azure Search 
+Azure Maps 
+Service Fabric
+Azure Batch
+
+-->
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/Overview/platform.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Public Documentation | © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

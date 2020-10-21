@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Working with 3M Cloud Repository | 3M Serenity Documentation </title>
+    <title>Source Code Overview | 3M Serenity Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Working with 3M Cloud Repository | 3M Serenity Documentation ">
+    <meta name="title" content="Source Code Overview | 3M Serenity Documentation ">
     <meta name="generator" content="docfx 2.56.2.0">
     
     <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
@@ -69,125 +69,11 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="working-with-3m-cloud-repository">Working with 3M Cloud Repository</h1>
+<h1 id="source-code-overview">Source Code Overview</h1>
 
-<p>This documentation is about understanding the process of cloning the 3M cloud repository outside the 3M network to local machines and working with it.</p>
-<ol>
-<li>Connect to Github with SSH</li>
-<li>Clone solution</li>
-<li>Creating new working branch</li>
-<li>Commit and push the branch</li>
-<li>Raise a pull request</li>
-<li>PR Approval</li>
-</ol>
-<h2 id="connect-to-github-with-ssh">Connect to Github with SSH</h2>
-<p>Using the SSH protocol, you can connect and authenticate to remote servers and services. Use the steps below for connecting to github with SSH</p>
-<h3 id="check-for-existing-keys-generate-new-key">Check for existing keys/ Generate new key</h3>
-<p>Check for existing keys: Before generating a new SSH key, you can check if you have any existing keys from <a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/checking-for-existing-ssh-keys">here</a>. Generate a new key if you don't have an existing public and private key pair, or don't wish to use any that are available to connect to GitHub.</p>
-<h3 id="generate-a-new-ssh-key">Generate a new SSH key</h3>
-<p>Generate a new SSH key: If there is any existing SSH key, this step can be skipped. Follow the <a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">steps</a> to generate a new key.</p>
-<h3 id="add-ssh-key-to-ssh-agent">Add SSH key to ssh-agent</h3>
-<p>Add SSH key to the ssh-agent: Once you have the key ready, follow the steps <a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#adding-your-ssh-key-to-the-ssh-agent">here</a> to add your SSH key to the ssh-agent.</p>
-<h3 id="add-ssh-key-to-github-account">Add SSH key to Github account</h3>
-<p>Add SSH key to Github account: Once the key is added to the ssh-agent, login to Github and follow the steps <a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account">here</a> in order to add your SSH key to Gitub account.</p>
-<h3 id="testing-the-ssh-connection">Testing the SSH connection</h3>
-<p>Testing the SSH connection: After you've set up your SSH key and added it to your GitHub account, you can test your connection by following the steps <a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/testing-your-ssh-connection">here</a></p>
-<h2 id="clone-solution">Clone Solution</h2>
-<p>To clone the solution, do the following:</p>
-<ol>
-<li><p>Login to Github</p>
-</li>
-<li><p>Navigate to 3M cloud <a href="https://github.com/3mcloud/azure-iot-platform-dotnet">azure-iot-platform-dotnet</a> repository</p>
-</li>
-<li><p>Click on Code button as shown below, switch to SSH and copy the path to clone
-<img src="../../../images/github-clone.PNG" alt="github clone"></p>
-</li>
-<li><p>Clone the repository with this path from VS code/Visual Studio/Git bash or any other command liner</p>
-</li>
-</ol>
-<h2 id="creating-new-working-branch">Creating new working branch</h2>
-<ol>
-<li><p>Create a new branch from master branch either from terminal or from Source Control window/palette<br>
-Ex: Creating a new branch in VS Code:<br>
-1. Go to Source Control(Ctrl+Shift+G)<br>
-2. Click on Views and More Actions<br>
-3. Go to Branch =&gt; Create Branch From<br>
-<img src="../../../images/creating-branch-vscode.png" alt="VScode creating branch"></p>
-</li>
-<li><p>The naming convention should be followed based on team guidelines for different work item types(user story/bug)</p>
-<pre><code>Ex: Branch name for a user story: userstory-&lt;userstorynumber&gt;-&lt;title/shortdescription&gt;
-</code></pre>
-</li>
-<li><p>The new branch is setup and always make sure to keep your branch upto date before raising a pull request</p>
-</li>
-</ol>
-<h2 id="commit-and-push-the-branch">Commit and push the branch</h2>
-<ol>
-<li><p>Once the changes are done, go to pending changes and stage the changes to check-in<br>
-Note: Make sure to get latest/keep the branch in sync with master before committing in order to prevent any conflicts due to changes from the upstream</p>
-</li>
-<li><p>Enter the commit message with information about your changes and commit your changes<br>
-Ex: Committing staged changes in VS Code:
-<img src="../../../images/commit-vscode.png" alt="VScode commit"></p>
-</li>
-<li><p>Once the changes are committed push the branch to origin<br>
-Ex: Push branch in VS Code:
-<img src="../../../images/push-branch-vscode.png" alt="VScode push branch"></p>
-</li>
-</ol>
-<h2 id="raise-a-pull-request">Raise a pull request</h2>
-<ol>
-<li>Login to VM</li>
-<li>Open the browser and navigate to <a href="https://github.com/3mcloud/azure-iot-platform-dotnet/pulls">pull requests tab</a></li>
-<li>Click &quot;New pull request&quot;</li>
-<li>Select <strong>base:master</strong> and <strong>compare:&lt;your_branch_name&gt;</strong></li>
-<li>If required, review the commits and files changed</li>
-<li>Give a brief description about the changes under Conversation tab</li>
-<li>Add the revieweres if required and create the pull request</li>
-</ol>
-<h3 id="note">Note:</h3>
-<p>For more information on Naming branches and Pull requests, <a href="naming-conventions.html">check this</a></p>
-<h2 id="pr-approval">PR Approval</h2>
-<ol>
-<li>Notify others for review: Either post on Wiki or in a team's Communication channel regarding the Pull request</li>
-<li>Address the changes requested or any merge conflicts</li>
-<li>If a build runs with your PR, make sure that the checks are 100% passed. This can be viewed under &quot;Checks&quot; section.</li>
-<li>Make sure that the tests are 100% passed(if there are any). Troubleshoot the errors if there are any. You can verify these under Tests tab in the build.
-<img src="../../../images/tests-build-pipeline.png" alt="Pipeline build tests"></li>
-<li>If the build fails, go through the log and address the issue/inform the team</li>
-<li>If all the checks are passed, the PR is ready for approval.</li>
-<li>Update the work item
-<ul>
-<li>Set the status as Review</li>
-<li>Add discussion notes and attach any files if required for reference</li>
-<li>Link the Pull request. For this,
-<ol>
-<li>Go to the respective work item</li>
-<li>Under Development section, select Add link</li>
-<li>Add link pop-up opens up</li>
-<li>Select the link type as &quot;GitHub Pull request&quot;</li>
-<li>Enter the Pull request url under &quot;Github pull request url&quot; field</li>
-<li>Add a comment if required and click &quot;Ok&quot;
-<img src="../../../images/addlink-workitem.png" alt="Add link"></li>
-</ol>
-</li>
-<li>Save the work item</li>
-</ul>
-</li>
-<li>Once the deployment to Development environment is completed:
-<ul>
-<li>Test your changes</li>
-<li>Add appropriate notes</li>
-<li>Mark the work item as resolved</li>
-</ul>
-</li>
-</ol>
-<h2 id="useful-references">Useful References</h2>
-<ol>
-<li><a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/connecting-to-github-with-ssh">Connecting to Github with SSH</a></li>
-<li><a href="https://code.visualstudio.com/docs/editor/versioncontrol">Working with repositories in VS Code</a></li>
-<li><a href="https://git-extensions-documentation.readthedocs.io/en/latest/getting_started.html">Working with repositories in Git Extensions</a></li>
-</ol>
+<p>The 3M Iot Platform Source Code is open-source and located on GitHub.com here: <a href="https://github.com/3mcloud/azure-iot-platform-dotnet/">https://github.com/3mcloud/azure-iot-platform-dotnet/</a>
+You can work with the source code locally to better understand how the solution work or make improvements to the platform.</p>
+<p>To get started, you</p>
 </article>
           </div>
           

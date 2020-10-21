@@ -512,12 +512,12 @@ body .toc{
 .toc .nav > li.active > .expand-stub::before,
 .toc .nav > li.in > .expand-stub::before,
 .toc .nav > li.in.active > .expand-stub::before,
-.toc .nav > li.filtered > .expand-stub::before {
+.toc .nav > li.filtered > .expand-stub::before {   
     content: "-";
 }
 
 .toc .nav > li > .expand-stub::before,
-.toc .nav > li.active > .expand-stub::before {
+.toc .nav > li.active > .expand-stub::before {    
     content: "+";
 }
 

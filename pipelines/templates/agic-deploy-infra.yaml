@@ -335,9 +335,9 @@ jobs:
 
   - job: agic
     displayName: Integrate AGIC 
-    dependsOn:
-      - aks
-      - globalsecrets
+    # dependsOn:
+    #   - aks
+    #   - globalsecrets
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -447,7 +447,7 @@ jobs:
           inlineScript: |-
 
                 #Use the existing service principle
-                cat sp.json
+                cat <<EOF > sp.json
                 {
                   "clientId": $servicePrincipalId,
                   "clientSecret":$servicePrincipalKey ,
@@ -460,6 +460,7 @@ jobs:
                   "galleryEndpointUrl": "https://gallery.azure.com/",
                   "managementEndpointUrl": "https://management.core.windows.net/"
                 }
+                EOF
                 # convert to base64 to use with AGIC
                 encodedJson=$(cat sp.json | base64 -w0)            
                 echo "##vso[task.setvariable variable=encodedsecret]$encodedJson"
@@ -480,8 +481,8 @@ jobs:
           install: true
           releaseName: ingress-azure
           chartName: application-gateway-kubernetes-ingress/ingress-azure
-          overrideValues: appgw.name=$(appGatewayName),appgw.resourceGroup=$(resourceGroupName),appgw.subscriptionId=${{parameters.subscriptionId}},appgw.shared=false, armAuth.type=servicePrincipal, armAuth.secretJSON=($encodedsecret), kubernetes.watchNamespace=default
-          arguments: --debug 
+          overrideValues: appgw.name=$(appGatewayName),appgw.resourceGroup=$(resourceGroupName),appgw.subscriptionId=${{parameters.subscriptionId}},appgw.shared=false, armAuth.type=servicePrincipal, armAuth.secretJSON=$(encodedsecret), kubernetes.watchNamespace=default
+          arguments: --debug --generate-name
             
       - task: Kubernetes@1
         displayName: Create Ingress

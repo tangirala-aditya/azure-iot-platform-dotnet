@@ -550,7 +550,7 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
 
@@ -1221,7 +1221,7 @@ jobs:
             n=0
             until [ $n -ge 5 ]
             do
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
               # Use Helm to deploy an NGINX ingress controller
               helm upgrade ingress-controller stable/nginx-ingress \
                   --install \

@@ -335,9 +335,9 @@ jobs:
 
   - job: agic
     displayName: Integrate AGIC 
-    # dependsOn:
-    #   - aks
-    #   - globalsecrets
+    dependsOn:
+      - aks
+      - globalsecrets
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -478,11 +478,10 @@ jobs:
           command: upgrade
           chartType: Name
           waitForExecution: true
-          install: true
           releaseName: ingress-azure
           chartName: application-gateway-kubernetes-ingress/ingress-azure
           overrideValues: appgw.name=$(appGatewayName),appgw.resourceGroup=$(resourceGroupName),appgw.subscriptionId=${{parameters.subscriptionId}},appgw.shared=false, armAuth.type=servicePrincipal, armAuth.secretJSON=$(encodedsecret), kubernetes.watchNamespace=default
-          arguments: --debug --generate-name
+          arguments: --debug --install
             
       - task: Kubernetes@1
         displayName: Create Ingress

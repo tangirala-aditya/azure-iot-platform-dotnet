@@ -59,3 +59,7 @@ variables:
     value: ${{parameters.applicationCode}}$(sendgridAccountPartialName)${{parameters.environmentCategory}}
   - name: tableStorageName
     value: SystemAdmin
+  - name: acniPartialName
+    value: acni  
+  - name: aksAcniPartialName
+    value: $(aksPartialName)-$(acniPartialName)

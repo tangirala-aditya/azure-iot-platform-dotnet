@@ -491,16 +491,21 @@ jobs:
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName)
               wget https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/docs/examples/sample-helm-config.yaml -O helm-config.yaml 
-              helm install ./helm/ingress-azure \
-              --name ingress-azure \
-              --debug \
-              --set appgw.name=$(appGatewayName) \
-              --set appgw.resourceGroup=$(resourceGroupName) \
-              --set appgw.subscriptionId=${{parameters.subscriptionId}} \
-              --set appgw.shared=false \ 
-              --set armAuth.type=servicePrincipal \
-              --set armAuth.secretJSON=$(encodedsecret) \
-              --set kubernetes.watchNamespace=default 
+              helm install ingress-azure application-gateway-kubernetes-ingress/ingress-azure \
+                --namespace default \
+                --debug \
+                --set appgw.name=$(appGatewayName) \
+                --set appgw.resourceGroup=$(resourceGroupName) \
+                --set appgw.subscriptionId=${{parameters.subscriptionId}} \
+                --set appgw.shared=false \ 
+                --set armAuth.type=servicePrincipal \
+                --set armAuth.secretJSON=$(encodedsecret) \
+                --set kubernetes.watchNamespace=default   \
+                --set verbosityLevel=3 \
+                --set kubernetes.watchNamespace=default \
+                --version 1.2.0-rc3
+
+
 
       - task: Kubernetes@1
         displayName: Create Ingress

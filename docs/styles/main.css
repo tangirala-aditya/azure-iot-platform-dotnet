@@ -57,14 +57,16 @@ a:focus {
 .toc .nav li.download-pdf {
   font-size: 14px;
   display: inline-block;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   border-top: 1px solid #e3e3e3;
   border-bottom: 1px solid #e3e3e3;
+  margin-bottom: 100px;
 }
 
 .toc .nav li.download-pdf a {
   display: inline-block;
+  target: "_blank";
 }
 
 .toc .nav li.download-pdf::before {
@@ -72,8 +74,13 @@ a:focus {
   position: relative;
   top: 3px;
   transform: scale(.8);
-  content: url(../images/icons/file-download-line.png);
+  content: url(../images/icons/PDF_24.png);
 }
+
+.toc .nav li.download-pdf a {
+  top: -3px;
+}
+
 
 /* Level 1 Nav */
 .toc .nav li  a {
@@ -279,7 +286,7 @@ article h4 {
   position: relative;
   background-color: #fff;
   overflow-x: hidden;
-  height:95%;
+  height:90%;
 }
 
 .sidetoc {

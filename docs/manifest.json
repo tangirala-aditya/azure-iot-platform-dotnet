@@ -1316,11 +1316,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/UserGuide/Dashboard.md",
+      "source_relative_path": "GettingStarted/UserManual/Dashboard.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/UserGuide/Dashboard.html",
-          "hash": "hq9Bb30QOcvnGwKK6lMCGg=="
+          "relative_path": "GettingStarted/UserManual/Dashboard.html",
+          "hash": "qtfObvQoM3jqtUa22pEPCw=="
         }
       },
       "is_incremental": false,
@@ -1328,86 +1328,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/UserGuide/Deployments.md",
+      "source_relative_path": "GettingStarted/UserManual/Deployments.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/UserGuide/Deployments.html",
-          "hash": "mw0ba+ZxTq+ywnKrH01qWg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/UserGuide/Device-Explorer.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/UserGuide/Device-Explorer.html",
-          "hash": "5ZkAHIczZ/z4yvfHvQKS5Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/UserGuide/Maintenance.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/UserGuide/Maintenance.html",
-          "hash": "QtBLaFZI6eQv3PMV3mpdbg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/UserGuide/Packages.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/UserGuide/Packages.html",
-          "hash": "rHJqBRzEHJztrmZjYEbk+Q=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/UserGuide/Rules.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/UserGuide/Rules.html",
-          "hash": "ge5frhK1QSaOSBGpxAw7Ng=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/UserGuide/User-Management.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/UserGuide/User-Management.html",
-          "hash": "ovY5VAIllcy785g3/PlDAg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "GettingStarted/UserGuide/index.md",
-      "output": {
-        ".html": {
-          "relative_path": "GettingStarted/UserGuide/index.html",
-          "hash": "+CTWsJiRsoY1nVdFUmyccw=="
+          "relative_path": "GettingStarted/UserManual/Deployments.html",
+          "hash": "TSbCeOHN8OEaPnc5XDpDqg=="
         }
       },
       "is_incremental": false,
@@ -1418,11 +1343,86 @@
         "InvalidFileLink"
       ],
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/UserGuide/system-settings.md",
+      "source_relative_path": "GettingStarted/UserManual/Device-Explorer.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/UserGuide/system-settings.html",
-          "hash": "gxDakLlPIvb0bttYmpX2fA=="
+          "relative_path": "GettingStarted/UserManual/Device-Explorer.html",
+          "hash": "OstdsLrMpPQnFtsjQS1aOA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/UserManual/Maintenance.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/UserManual/Maintenance.html",
+          "hash": "bRqCDZSOuuaLYpw5dwBmtw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/UserManual/Packages.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/UserManual/Packages.html",
+          "hash": "pS+jGKsKxoSSoNeO5KBWUw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/UserManual/Rules.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/UserManual/Rules.html",
+          "hash": "6r14YFs+Hx7HVhAeQE5C5Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/UserManual/User-Management.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/UserManual/User-Management.html",
+          "hash": "WZITvbGVyi2QkvCC4+AiTw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/UserManual/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/UserManual/index.html",
+          "hash": "+8Wwz4nC2vMKvuf+N+gHfg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "GettingStarted/UserManual/system-settings.md",
+      "output": {
+        ".html": {
+          "relative_path": "GettingStarted/UserManual/system-settings.html",
+          "hash": "482FjjLVpVY/tI4ChYuRLA=="
         }
       },
       "is_incremental": false,
@@ -1433,11 +1433,11 @@
         "InvalidFileLink"
       ],
       "type": "Toc",
-      "source_relative_path": "GettingStarted/UserGuide/toc.yml",
+      "source_relative_path": "GettingStarted/UserManual/toc.yml",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/UserGuide/toc.html",
-          "hash": "rATmO6Rwg3Hh0oJoHHXQfQ=="
+          "relative_path": "GettingStarted/UserManual/toc.html",
+          "hash": "YZX/rS9g+LpXa1UsxPN3Hw=="
         }
       },
       "is_incremental": false,
@@ -1445,11 +1445,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/UserGuide/toolbar.md",
+      "source_relative_path": "GettingStarted/UserManual/toolbar.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/UserGuide/toolbar.html",
-          "hash": "zxwcvGsxPpulqgunchIWcA=="
+          "relative_path": "GettingStarted/UserManual/toolbar.html",
+          "hash": "YzzVEE8d0DwKaGTrXWlsSA=="
         }
       },
       "is_incremental": false,
@@ -1460,11 +1460,11 @@
         "InvalidFileLink"
       ],
       "type": "Conceptual",
-      "source_relative_path": "GettingStarted/UserGuide/user-profile.md",
+      "source_relative_path": "GettingStarted/UserManual/user-profile.md",
       "output": {
         ".html": {
-          "relative_path": "GettingStarted/UserGuide/user-profile.html",
-          "hash": "9GiIp7Ed5uIU4ibEme6hQA=="
+          "relative_path": "GettingStarted/UserManual/user-profile.html",
+          "hash": "WIwSgTdrT7zrWGlm/NOfHQ=="
         }
       },
       "is_incremental": false,
@@ -1506,7 +1506,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/toc.html",
-          "hash": "/XnQ4t0aDCIsoAnY0tEnpQ=="
+          "hash": "yXkXLnLTgxl3zgBBoDpmnA=="
         }
       },
       "is_incremental": false,
@@ -2507,6 +2507,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/icons/PDF_24.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/icons/PDF_24.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/icons/PDF_Icon-download-300x300.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/icons/PDF_Icon-download-300x300.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/icons/arrow-go-back-fill.png",
       "output": {
         "resource": {
@@ -2533,6 +2555,39 @@
       "output": {
         "resource": {
           "relative_path": "images/icons/information-line.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/icons/pdf-icon.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/icons/pdf-icon.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/icons/pdf_download.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/icons/pdf_download.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/icons/pdf_download2.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/icons/pdf_download2.png"
         }
       },
       "is_incremental": false,
@@ -3911,7 +3966,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "QHE6jubKnO3NV0pj5U7ftA=="
+          "hash": "6GWjwrXfBMc1PSiSZLynrA=="
         }
       },
       "is_incremental": false,

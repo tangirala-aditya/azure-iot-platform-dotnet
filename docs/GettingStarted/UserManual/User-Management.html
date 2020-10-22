@@ -1,0 +1,299 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>User Management | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="User Management | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="user-management">User Management</h1>
+
+<p>User Management is used to manage all the available users of the tenant.</p>
+<p>Document covers the the following aspects of the User Management</p>
+<ol>
+<li><a href="#users-grid">User Grid</a></li>
+<li><a href="#new-user">New User Creation</a></li>
+<li><a href="#delete-user">Delete User</a></li>
+<li><a href="#add-system-admin">Add System Admin</a></li>
+<li><a href="#delete-system-admin">Delete System Admin </a></li>
+<li><a href="#add-service-principal">Add Service principal</a></li>
+</ol>
+<h2 id="users-grid">Users Grid</h2>
+<p>Users Grid lists all the active users, which are available for particular tenant to access.</p>
+<p>Following lists the columns and usage in Users Grid</p>
+<table>
+<thead>
+<tr>
+<th>Column Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Name of the user</td>
+</tr>
+<tr>
+<td>Role</td>
+<td>Describes the role assigned to that particular user</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Indicates the current status of the user such as invited, Member etc .</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><img src="../../images/user-management/user-grid.PNG" alt="User Grid data"></p>
+</li>
+<li><p>We have a search bar associated with the grid where we can search the grid data.</p>
+<ul>
+<li><img src="../../images/user-management/user-grid-with-search.PNG" alt="User Grid With Search"></li>
+</ul>
+</li>
+</ul>
+<h2 id="new-user">New User</h2>
+<p>This is used to add new user for the tenant.</p>
+<ul>
+<li><p>Navigate to <strong>User Management</strong> page from Left menu</p>
+</li>
+<li><p>Click on  +<strong>New User</strong></p>
+<ul>
+<li><p>Enter email address of user to be created</p>
+</li>
+<li><p>Select <strong>UserRole</strong> you wanted to assign.</p>
+<ul>
+<li><img src="../../images/user-management/new-user.PNG" alt="Create New User"></li>
+</ul>
+</li>
+<li><p>Click on <strong>Send Invite</strong> button sends an email to the user.</p>
+<ul>
+<li><p><img src="../../images/user-management/new-user-invited.PNG" alt="New User Invited"></p>
+</li>
+<li><p><img src="../../images/user-management/user-invited-successfully.PNG" alt="New User Invited Grid"></p>
+</li>
+</ul>
+</li>
+<li><p>User then accepting the invite through the email received, will be added as member to the tenant and will be able to access the application.</p>
+<ul>
+<li><img src="../../images/user-management/user-created-successfully.PNG" alt="New User Created Successfully"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="delete-user">Delete User</h2>
+<p>This is used to delete the user for the tenant.</p>
+<ul>
+<li><p>Navigate to <strong>User Management</strong> page from Left menu</p>
+</li>
+<li><p>Select the user needs to be deleted.</p>
+</li>
+<li><p>Click on  <strong>Delete</strong> button</p>
+<ul>
+<li><img src="../../images/user-management/delete-user.PNG" alt="Delete user"></li>
+</ul>
+</li>
+<li><p>Activate the toggle button to delete the user and the <strong>Delete</strong> button will be activated.</p>
+<ul>
+<li><img src="../../images/user-management/delete-user-enabled.PNG" alt="Delete user"></li>
+</ul>
+</li>
+<li><p>After deleting the user we see a message <strong>User Deleted Successfully</strong></p>
+<ul>
+<li><img src="../../images/user-management/deleted-user-successfully.PNG" alt="Delete user"></li>
+</ul>
+</li>
+</ul>
+<h2 id="add-system-admin">Add System Admin</h2>
+<p>This feature is used to add existing user in the system as system admin.</p>
+<p>System admin is the user who has access across all the tenants.</p>
+<p>When we are adding user as system admin, then the selected user will be added as user for all the tenants.</p>
+<ul>
+<li><p>Navigate to <strong>User Management</strong> page from Left menu</p>
+</li>
+<li><p>Click on  +<strong>Add System Admin</strong></p>
+<ul>
+<li><p>A flyout opens with a dropdown where we can see the list of existing users who are non-system admins.</p>
+<ul>
+<li><img src="../../images/user-management/add-system-admin.PNG" alt="Add System Admin"></li>
+</ul>
+</li>
+<li><p>Select the user from the dropdown. After selecting <strong>Add</strong> button will be enabled.</p>
+<ul>
+<li><img src="../../images/user-management/add-system-admin-user-selected.PNG" alt="Add System Admin User Selected"></li>
+</ul>
+</li>
+<li><p>On clicking on add button, User will be added as system admin.</p>
+<ul>
+<li><img src="../../images/user-management/added-system-admin-successfully.PNG" alt="Added System Admin Successfully"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="delete-system-admin">Delete System Admin</h2>
+<p>This feature is used to delete system admin from the system.</p>
+<ul>
+<li><p>Navigate to <strong>User Management</strong> page from Left menu</p>
+</li>
+<li><p>Click on  <strong>Delete System Admin</strong></p>
+<ul>
+<li><p>A flyout opens with a dropdown where we can see the list of existing system admins.</p>
+<ul>
+<li><img src="../../images/user-management/delete-system-admin_1.PNG" alt="Delete System Admin"></li>
+</ul>
+</li>
+<li><p>This is how flyout looks like.</p>
+<ul>
+<li><img src="../../images/user-management/delete-system-admin_2.PNG" alt="Delete System Admin"></li>
+</ul>
+</li>
+<li><p>Select the user from the dropdown. After selecting <strong>Delete</strong> button will be enabled.</p>
+<ul>
+<li><img src="../../images/user-management/delete-system-admin-user-enabled.PNG" alt="Delete System Admin User Selected"></li>
+</ul>
+</li>
+<li><p>On clicking on Delete button, User will be deleted as system admin.</p>
+<ul>
+<li><img src="../../images/user-management/delete-system-admin-successfully.PNG" alt="Deleted System Admin Successfully"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="add-service-principal">Add Service Principal</h2>
+<p>This feature is used to add user in the system using service principal Id.</p>
+<ul>
+<li><p>Navigate to <strong>User Management</strong> page from Left menu</p>
+</li>
+<li><p>Click on  +<strong>Add Service principal</strong></p>
+<ul>
+<li><p>A flyout opens to enter the service principal Id and select the user role.</p>
+<ul>
+<li><p><img src="../../images/user-management/add-service-principal_1.PNG" alt="Add Service Principal"></p>
+</li>
+<li><p><img src="../../images/user-management/add-service-principal_2.PNG" alt="Add Service Principal"></p>
+</li>
+</ul>
+</li>
+<li><p>Enter the Service Principal Id and Select the user role from the dropdown. After selecting <strong>Add</strong> button will be enabled.</p>
+<ul>
+<li><img src="../../images/user-management/add-service-principal-enabled.PNG" alt="Add System Admin User Selected"></li>
+</ul>
+</li>
+<li><p>On clicking on add button, User will be added as system admin.</p>
+<ul>
+<li><img src="../../images/user-management/add-service-principal-successfully.PNG" alt="Added System Admin Successfully"></li>
+</ul>
+</li>
+<li><p>After adding the service princiapl user will be added with the type <strong>Client Credentials</strong></p>
+<ul>
+<li><img src="../../images/user-management/user-added-successfully-with-service-principal.PNG" alt="Added System Admin Successfully"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/UserManual/User-Management.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Public Documentation | © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

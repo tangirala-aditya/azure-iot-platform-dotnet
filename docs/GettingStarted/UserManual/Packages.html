@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Packages | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Packages | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="packages">Packages</h1>
+
+<p>Packages are the device configuration files which are used in the deployment process to configure the desired properties of devices.</p>
+<p>Document covers the following aspects of the Packages</p>
+<ol>
+<li><a href="#packages-grid">Packages Grid</a></li>
+<li><a href="#package-creation">Packages Creation</a></li>
+<li><a href="#deactivate-package">Deactivate Package</a></li>
+<li><a href="#activate-package-">Activate Package</a></li>
+<li><a href="#delete-package">Delete Package </a></li>
+</ol>
+<h2 id="packages-grid">Packages Grid</h2>
+<p>Packages Grid lists all the packages which are either active or deactivated, which are available for Deployments.</p>
+<p>Following lists the columns and usage in Package Grid</p>
+<table>
+<thead>
+<tr>
+<th>Column Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Name of the Package</td>
+</tr>
+<tr>
+<td>Package Type</td>
+<td>Describes the Device category the Package is targetting</td>
+</tr>
+<tr>
+<td>Configuration Type</td>
+<td>Indicates whether the package is targetting firmware updates or custom updates.</td>
+</tr>
+<tr>
+<td>Date Created</td>
+<td>Date the package is created</td>
+</tr>
+<tr>
+<td>Active</td>
+<td>Indicates whetheer the package is Active/Deactive</td>
+</tr>
+<tr>
+<td>Version</td>
+<td>Indicates version of the Package for differentiation purposes.</td>
+</tr>
+<tr>
+<td>Last Modified Date</td>
+<td>Date the package is created or date the package is modifed lastly</td>
+</tr>
+<tr>
+<td>Last Modified By</td>
+<td>User who created the package or the user who modifed package lastly.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="package-creation">Package Creation</h2>
+<p>Package creation for Device Firmware update</p>
+<ul>
+<li><p>Navigate to <strong>Packages</strong> page from Left menu</p>
+</li>
+<li><p>Click on  +<strong>New Package</strong></p>
+</li>
+<li><p>Select <strong>Package Type</strong> based on the targetted device types</p>
+<ol>
+<li><strong>Device Configuration</strong> for IoT Devices</li>
+<li><strong>Edge Manifest</strong> for Edge Devices</li>
+</ol>
+<p><img src="../../images/package/IOT-Package-PackageType.png" alt="Select Package Type"></p>
+<ul>
+<li><p><strong>Package Type - Edge Manifest</strong>
+For Edge Devices, User should upload the Edge Device Package content file for Package creation.</p>
+<ul>
+<li><p>After selecting <strong>Package Type</strong>, User should upload the Edge Devices Configuration file by clicking <strong>Browse</strong>.</p>
+<p><img src="../../images/package/IoT-Edge-Package-Upload.png" alt="Select Device Configuration"></p>
+</li>
+<li><p>Select the Device Configuration File.</p>
+<p><img src="../../images/package/IoT-Edge-Package-FileSelection.png" alt="Select Device Configuration"></p>
+</li>
+<li><p>Once the file is selected, uppdate the <strong>Package Name</strong>, which is prepopulated with FileName.</p>
+<p><img src="../../images/package/IoT-Edge-Package-Name.png" alt="Update Package Name"></p>
+</li>
+<li><p>Click on Upload to create the package.</p>
+<p><img src="../../images/package/IoT-Edge-Package-UploadClick.png" alt="Click Upload"></p>
+</li>
+<li><p>Once Package is created, user will be presented with created package information and will be reflected in Packages Grid.
+<img src="../../images/package/IoT-Edge-Package-Confirmation.png" alt="Package Confirmation"></p>
+</li>
+</ul>
+</li>
+<li><p><strong>Package Type - Device Configuration</strong></p>
+<ul>
+<li><p>Select the <strong>Configuration type</strong></p>
+<ol>
+<li><strong>Firmware</strong></li>
+<li><strong>Custom</strong></li>
+</ol>
+<p><img src="../../images/package/IOT-Package-ConfigType.png" alt="Select Config Type"></p>
+</li>
+<li><p><strong>Configuration Type - Firmware</strong> -
+Here user will be able to build package content based on the Firmware package file which can be uploaded.</p>
+<p>After selection of Configuration Type, user should <strong>upload the package content file</strong> which consists of the desired updates to the devices.</p>
+<p><img src="../../images/package/IOT-Package-ConfigFile.png" alt="Browse Config File"></p>
+<ul>
+<li><p>Once the file is selected, Provide Name and Version for Package.</p>
+<p><img src="../../images/package/IOT-Package-Name-Version.png" alt="Update Name and Version"></p>
+</li>
+<li><p>Then Click on Upload, once uploading of the file is done, User will be provided with the preview of the Package File contents, which can modified as per the need.</p>
+<p><img src="../../images/package/IOT-Package-Preview.png" alt="Package Preview"></p>
+</li>
+<li><p>Once the JSON is verified, Click on Upload for package creation.</p>
+<p><img src="../../images/package/IOT-Package_Upload.png" alt="Upload"></p>
+</li>
+<li><p>Once Package is created, user can find the package in the package grid.</p>
+<p><img src="../../images/package/IOT-Package-Created.png" alt="Update Name and Version"></p>
+</li>
+</ul>
+</li>
+<li><p><strong>Configuration Type - Custom</strong>
+Here user should provide the package content file for package creation.</p>
+<ul>
+<li><p>After selection of Configuration Type, user should provide  name for <strong>Custom Configuration</strong> and <strong>Configuration File</strong> which should contain details which are required for the deployment process.</p>
+<p><img src="../../images/package/IoT-Custom-Package-FileSelection.png" alt="Browse Config File"></p>
+</li>
+<li><p>Once the file is selected, Provide <strong>Package Name</strong>, which will be prepopulated with <strong>FileName</strong> selected.</p>
+<p><img src="../../images/package/IoT-Custom-Package-Name.png" alt="Update Name"></p>
+</li>
+<li><p>Click on Upload for package creation.</p>
+<p><img src="../../images/package/IoT-Custom-Package-Upload.png" alt="Click on Upload"></p>
+</li>
+<li><p>Once Package is created, user will be presented with created package information and will be reflected in Packages Grid.</p>
+<p><img src="../../images/package/IoT-Custom-Package-Confirmation.png" alt="Package Created Information"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="deactivate-package">Deactivate Package</h2>
+<p>Available Package which are Active,can be deactivated, so that they are not available for Deployment process.</p>
+<p>Steps to Deactivate a Package.</p>
+<ul>
+<li><p>Select a Active Package(which is marked <strong>✔</strong> mark in the Active Column) by clicking on the check box adjacent to Package Name in grid.</p>
+<p><img src="../../images/package/Packages-Selection.png" alt="Package Selection"></p>
+</li>
+<li><p>User Will be presented with two options in the toolbar</p>
+<ul>
+<li>Deactivate</li>
+<li>Delete</li>
+</ul>
+<p><img src="../../images/package/Package-Post-Selection.png" alt="Package Selection"></p>
+</li>
+<li><p>Click on Deactivate</p>
+</li>
+<li><p>Package is deactivated and is presented in the grid with <strong>X</strong> mark in the Active Column</p>
+<p><img src="../../images/package/Packages-Grid-After-Deactivate.png" alt="Package Selection"></p>
+</li>
+</ul>
+<h2 id="activate-package">Activate Package</h2>
+<p>Deactivated Packages can be Activated, so that they are available again for Deployment process.</p>
+<p>Steps to Activate a Package.</p>
+<ul>
+<li><p>Select a Deactivated Package(which is marked by <strong>X</strong> mark in Active Column) by clicking on the Check box adjacent to Package Name in grid.</p>
+<p><img src="../../images/package/Packages-Grid-After-Deactivate.png" alt="Package Selection"></p>
+</li>
+<li><p>User Will be presented with two options in the toolbar</p>
+<ul>
+<li>Activate</li>
+<li>Delete</li>
+</ul>
+<p><img src="../../images/package/Packages-Activate.png" alt="Package Grid"></p>
+</li>
+<li><p>Click on Activate</p>
+</li>
+<li><p>Package is Activated and is presented in the grid with <strong>✔</strong> mark in the Active Column</p>
+<p><img src="../../images/package/Packages-Grid-After-Activation.png" alt="Package Grid"></p>
+</li>
+</ul>
+<h2 id="delete-package">Delete Package</h2>
+<p>Packages which are no longer needed or those whose Package content is expired can be deleted.</p>
+<p>Steps to Delete a Package.</p>
+<ul>
+<li><p>Select a Package by clicking on the Check box adjacent to Package Name in grid.
+<img src="../../images/package/Packages-Selection.png" alt="Package Selection"></p>
+</li>
+<li><p>User Will be presented with Delete in the toolbar</p>
+<p><img src="../../images/package/Package-Selection-Delete.png" alt="Package Selection"></p>
+</li>
+<li><p>Click on Delete</p>
+<ul>
+<li>User will be provided with Confirmation popup for Delete.</li>
+</ul>
+<p><img src="../../images/package/Packages-Delete-Popup.png" alt="Package Selection"></p>
+</li>
+<li><p>Click on Delete/Cancel to Delete or Cancel the operation.</p>
+</li>
+<li><p>On Click of Delete Package is Deleted and is Grid will be refreshed with Active and Deactivated packages.</p>
+<p><img src="../../images/package/Packages-Grid-After-Delete.png" alt="Package Grid"></p>
+</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/UserManual/Packages.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Public Documentation | © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

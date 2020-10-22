@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>System Settings | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="System Settings | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="system-settings">System Settings</h1>
+
+<p>The System Settings flyout is used to manage settings for the solution.</p>
+<ol>
+<li><a href="#log-diagnostics-information">Log Diagnostics Information</a></li>
+<li><a href="#version">Version</a></li>
+<li><a href="#advanced-alerting">Advanced Alerting</a></li>
+<li><a href="#firmware-json-template">Firmware JSON Template</a></li>
+<li><a href="#simulation-data">Simulation Data</a></li>
+<li><a href="#theme">Theme</a></li>
+<li><a href="#name-and-logo">Name and Logo</a></li>
+</ol>
+<p><strong>Steps to access System Settings:</strong></p>
+<ol>
+<li>Login to the application</li>
+<li>Click on the setting icon(System Settings) on the right<br>
+<img src="../../images/system-settings/system-settings.png" alt="System Settings"></li>
+<li>System Settings flyout opens
+<img src="../../images/system-settings/system-settings-flyout.png" alt="System Settings Flyout"></li>
+</ol>
+<h2 id="log-diagnostics-information">Log Diagnostics Information</h2>
+<p>This is a toggle which is used to enable/disable logging of diagnostics information</p>
+<h2 id="version">Version</h2>
+<p>This section displays the deployed version number of current environement
+<img src="../../images/system-settings/version.PNG" alt="Version"></p>
+<h2 id="advanced-alerting">Advanced Alerting</h2>
+<p>This section is used to Start/Stop alerting. Rules and Alerts will be deactivated if alerting is turned off.
+<img src="../../images/system-settings/alerting.png" alt="Alerting"></p>
+<p><strong>Note:</strong> ❌: Avoid turning on the alerts in order to minimize the cost of the solution</p>
+<h2 id="firmware-json-template">Firmware JSON Template</h2>
+<p>This section consists of a Firmware JSON template that can be used as a reference while uploading firmware package in <a href="./package.md">Packages</a> page.
+<img src="../../images/system-settings/firmware-json-template.PNG" alt="Firmware JSON Template"></p>
+<ol>
+<li>Click on <strong>Edit</strong> button. A list of template variables that can be used in the template is displayed, along with the JSON editor for editing the template
+<img src="../../images/system-settings/template-variables.PNG" alt="Template Variables">
+<img src="../../images/system-settings/firmware-json-template-editor.PNG" alt="Firmware JSON Template editor"></li>
+<li>Edit the Firmware JSON template in the JSON editor and make sure that the JSON entered is Valid. Click on <strong>Save</strong></li>
+</ol>
+<h2 id="simulation-data">Simulation Data</h2>
+<p>This is a toggle which is used to start/stop simulation of devices. If disabled/stopped, no simulated telemetry will be sent to your IoT Hub and alerts will not be generated for simulated devices.<br>
+<img src="../../images/system-settings/simulation-data.PNG" alt="Simulation Data"></p>
+<p><strong>Note:</strong> ❌: Avoid turning on the simulation of device data in order to minimize the cost of the solution</p>
+<h2 id="theme">Theme</h2>
+<p>A user can change the application color from here by switching from the themes available.<br>
+<img src="../../images/system-settings/switch-theme.PNG" alt="Switch theme"></p>
+<p>Below is the list of themes available:</p>
+<ol>
+<li>Light theme
+<img src="../../images/system-settings/light-theme.PNG" alt="Light theme"></li>
+<li>Dark theme
+<img src="../../images/system-settings/dark-theme.PNG" alt="Dark theme"></li>
+<li>MMM theme
+<img src="../../images/system-settings/mmm-theme.PNG" alt="MMM theme"></li>
+</ol>
+<h2 id="name-and-logo">Name and Logo</h2>
+<p>The Name and Logo section lets a user to edit the name of the solution and logo(specific to each tenant). The Name and Logo are displayed in the header section of the application on the top.</p>
+<p><strong>Ex:</strong><br>
+<img src="../../images/system-settings/name-and-logo.png" alt="Name and Logo"></p>
+<p>To edit Name and Logo</p>
+<ol>
+<li>Open System Settings flyout</li>
+<li>Scroll to Name and Logo section</li>
+<li>Click <strong>Edit</strong> button
+<img src="../../images/system-settings/edit-name-and-logo.png" alt="Edit Name and Logo"></li>
+<li>Upload new Logo or Update Application Name or both</li>
+<li>Click <strong>Apply</strong> button to save changes
+<img src="../../images/system-settings/save-name-and-logo.PNG" alt="Save Name and Logo"></li>
+<li>The application refreshes with updated Name and Logo</li>
+</ol>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/UserManual/system-settings.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Public Documentation | © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

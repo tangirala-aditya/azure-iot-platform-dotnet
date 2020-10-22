@@ -481,30 +481,28 @@ jobs:
       #     overrideValues: appgw.name=$(appGatewayName),appgw.resourceGroup=$(resourceGroupName),appgw.subscriptionId=${{parameters.subscriptionId}},appgw.shared=false, armAuth.type=servicePrincipal, armAuth.secretJSON=$(encodedsecret), kubernetes.watchNamespace=default
       #     arguments: --debug --install 
 
-      - task: Kubernetes@1
-        displayName: Create Ingress
+      - task: AzureCLI@2
+        displayName: AGIC Helm Chart
         inputs:
-          connectionType: Azure Resource Manager
-          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
-          azureResourceGroup: $(resourceGroupName)
-          kubernetesCluster: $(aksName)
-          command: apply
-          useConfigurationFile: true
-          configurationType: inline
-          inline: |
-                        helm install ingress-azure \
-                        -f helm-config.yaml \
-                        application-gateway-kubernetes-ingress/ingress-azure \
-                        --version 1.2.0-rc1 \
-                        --debug \
-                        --set appgw.name=$(appGatewayName) \
-                        --set appgw.resourceGroup=$(resourceGroupName) \
-                        --set appgw.subscriptionId=${{parameters.subscriptionId}} \
-                        --set appgw.shared=false \ 
-                        --set armAuth.type=servicePrincipal \
-                        --set armAuth.secretJSON=$(encodedsecret) \
-                        --set kubernetes.watchNamespace=default 
-             
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+              set -Eeuxo pipefail
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+              
+              helm install ingress-azure \
+              -f helm-config.yaml \
+              application-gateway-kubernetes-ingress/ingress-azure \
+              --version 1.2.0-rc1 \
+              --debug \
+              --set appgw.name=$(appGatewayName) \
+              --set appgw.resourceGroup=$(resourceGroupName) \
+              --set appgw.subscriptionId=${{parameters.subscriptionId}} \
+              --set appgw.shared=false \ 
+              --set armAuth.type=servicePrincipal \
+              --set armAuth.secretJSON=$(encodedsecret) \
+              --set kubernetes.watchNamespace=default 
 
       - task: Kubernetes@1
         displayName: Create Ingress

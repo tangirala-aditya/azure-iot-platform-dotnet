@@ -491,7 +491,7 @@ jobs:
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName)
               wget https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/docs/examples/sample-helm-config.yaml -O helm-config.yaml 
-              helm install \
+              helm install --name ingress-azure \
               -f helm-config.yaml \
               application-gateway-kubernetes-ingress/ingress-azure \
               --debug \

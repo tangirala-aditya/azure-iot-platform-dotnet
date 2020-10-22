@@ -77,7 +77,7 @@
 <p>The following diagram outlines the logical components of the platform and highlights the primary Azure Resources that it uses.</p>
 <p><img src="../../images/logical-architecture.png" alt="logical architecture"></p>
 <h2 id="iot-hub">IoT Hub</h2>
-<p>The <a href="https://azure.microsoft.com/en-us/services/iot-hub/">IoT Hub</a> is a Microsoft Azure Resource used to ingest telemetry sent from both real and siulated devices into the cloud.  The hub makes the teletry available to the services in the IoT solution for processing.</p>
+<p>The <a href="https://azure.microsoft.com/en-us/services/iot-hub/">IoT Hub</a> is a Microsoft Azure Resource used to ingest telemetry sent from both real and simulated devices into the cloud.  The hub makes the telemetry available to the services in the IoT solution for processing.</p>
 <p>The IoT Hub also provides the following:</p>
 <ul>
 <li>Maintains an identity registry that stores the IDs and authentication keys of all the devices permitted to connect to the portal.</li>
@@ -94,7 +94,7 @@
 <li>Interacts with other backend services like the authentication and authorization service to protect user data and communicate with Azure resources</li>
 </ul>
 <h2 id="backend-services">Backend Services</h2>
-<p>The platform is made up several services running in <a href="https://azure.microsoft.com/en-us/services/kubernetes-service/">Azure Kubernetes Service (AKS)</a>. The platform containerizes services to offer enterprise-grade security and scalability. The services - often called <em>microservices</em>- are written in .NET (C#) and provide RESTful endpoints that can be used for direct integration in business specific solutions.</p>
+<p>The platform is made up of several services running in <a href="https://azure.microsoft.com/en-us/services/kubernetes-service/">Azure Kubernetes Service (AKS)</a>. The platform containerizes services to offer enterprise-grade security and scalability. The services - often called <em>microservices</em>- are written in .NET (C#) and provide RESTful endpoints that can be used for direct integration in business specific solutions.</p>
 <h2 id="data-processing-and-analytics">Data processing and analytics</h2>
 <p>The solution includes the following components in the data processing and analytics part of the logical architecture:</p>
 <h3 id="iot-hub-manager">IoT Hub manager</h3>
@@ -110,11 +110,11 @@ This service also runs IoT Hub queries to retrieve devices belonging to user-def
 <h3 id="storage-adapter">Storage adapter</h3>
 <p>The storage adapter microservice manages key-value pairs, abstracting the storage service semantics, and presenting a simple interface to store data of any format using Azure Cosmos DB.</p>
 <p>Values are organized in collections. You can work on individual values or fetch entire collections. Complex data structures are serialized by the clients and managed as simple text payload.</p>
-<p>The service provides a RESTful endpoint for CRUD operations on key-value pairs. values</p>
+<p>The service provides a RESTful endpoint for CRUD operations on key-value pairs.</p>
 <h3 id="azure-cosmos-db">Azure Cosmos DB</h3>
 <p>Deployments use Azure Cosmos DB to store rules, alerts, configuration settings, and all other cold storage.</p>
 <h3 id="azure-stream-analytics">Azure Stream Analytics</h3>
-<p>The Azure Stream Analytics manager microservice manages Azure Stream Analytics (ASA) jobs, including setting their configuration,starting and stopping them, and monitoring their status.</p>
+<p>The Azure Stream Analytics manager microservice manages Azure Stream Analytics (ASA) jobs, including setting their configuration, starting and stopping them, and monitoring their status.</p>
 <p>The ASA job is supported by two reference data sets. One data set defines rules and one defines device groups. The rules reference data is generated from the information managed by the device telemetry microservice. The Azure Stream Analytics manager microservice transforms telemetry rules into stream processing logic.</p>
 <p>The device groups reference data is used to identify which group of rules to apply to an incoming telemetry message. The device groups are managed by the configuration microservice and use Azure IoT Hub device twin queries.</p>
 <p>The ASA jobs deliver the telemetry from the connected devices to Time Series Insights for storage and analysis.</p>
@@ -146,12 +146,12 @@ Azure Active Directory
 Azure Key Vault
 AMQP
 AMQP Core
-MQTT 
-Azure VPN 
+MQTT
+Azure VPN
 VPN Gateways and Secure CrossPremises Connectivity
 Azure API applications
-Azure Search 
-Azure Maps 
+Azure Search
+Azure Maps
 Service Fabric
 Azure Batch
 

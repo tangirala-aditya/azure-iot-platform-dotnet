@@ -71,7 +71,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="tool-bar">Tool Bar</h1>
 
-<p>The tool bar has various options to access different functionalities. This section covers the tool bar funtionalities that are common across the application. Below are some of them:</p>
+<p>The tool bar has various options to access different functionalities. This section covers the tool bar functionalities that are common across the application. Below are some of them:</p>
 <ol>
 <li><a href="#device-group">Device Group</a></li>
 <li><a href="#get-link">Get Link</a></li>
@@ -80,25 +80,25 @@
 <li><a href="#last-refreshed">Last Refreshed</a></li>
 </ol>
 <h2 id="device-group">Device Group</h2>
-<p><strong>Device Group dropdown</strong> in the tool bar is used to select a device group to filter the data in any given page. The selected device group remains same across all the pages for a user. And the data shown in most of the pages is filtered based the selected device group.
+<p>The <strong>Device Group dropdown</strong> in the tool bar is used to select a device group to filter the data in any given page. The selected device group remains same across all the pages for a user. And the data shown in most of the pages is filtered based on the selected device group.
 <img src="../../images/tool-bar/device-group-dropdown-list.png" alt="Device group dropdown"></p>
-<p><strong>Ex:</strong> Dashboard- Device statistics, Device Explorer, Packages etc.,<br>
+<p><strong>Ex:</strong> Dashboard- Device statistics, Device Explorer, Packages, etc.
 <img src="../../images/tool-bar/device-group-dropdown.png" alt="Device group"></p>
 <h3 id="note">Note:</h3>
 <p>By default, the device group <strong>Default</strong> is selected for any user for the first login.</p>
 <h2 id="get-link">Get Link</h2>
-<p>Get link is a button which lets the user to copy the link for that page appended with Selected Device Group Id. This helps sharing of links to pages to other users that target a specific Device Group Id.</p>
+<p><strong>Get Link</strong> is a button which lets the user copy the link for that page appended with the Selected Device Group ID. This helps share links with other users that target a specific Device Group ID.</p>
 <h3 id="steps-to-copy-link">Steps to copy link</h3>
 <ol>
-<li>Navigate to the page for which the link(with devicegroupid) needs to be copied<br>
+<li>Navigate to the page for which the link (with Device Group ID) needs to be copied
 <strong>Ex:</strong> Device Explorer</li>
-<li>Click <strong>Get Link</strong> button</li>
+<li>Click the <strong>Get Link</strong> button</li>
 <li>The Copy Link pop-up opens with the link that can be used to share</li>
-<li>Click Copy : This copies the link to the clipboard<br>
+<li>Click Copy : This copies the link to the clipboard
 <img src="../../images/tool-bar/get-link.png" alt="Get Link"></li>
 </ol>
 <h2 id="manage-device-groups">Manage Device Groups</h2>
-<p>Manage Device Groups functionality lets a user to</p>
+<p>The <strong>Manage Device Groups</strong> button allows a user to:</p>
 <ol>
 <li><a href="#view-device-group-list">View Device group list</a></li>
 <li><a href="#create-device-group">Create Device Group</a></li>
@@ -109,9 +109,9 @@
 <h3 id="view-device-group-list">View Device group list</h3>
 <p>To view list of device groups present:</p>
 <ol>
-<li>Click <strong>Manage device groups</strong> button from the toolbar</li>
-<li>Manage device groups flyout opens</li>
-<li>List of device groups is displayed under &quot;Create new device group&quot; button
+<li>Click the <strong>Manage device groups</strong> button from the toolbar</li>
+<li>The <strong>Manage device groups</strong> flyout opens</li>
+<li>The list of device groups is displayed under &quot;Create new device group&quot; button
 <img src="../../images/tool-bar/device-group-list.png" alt="Device group list"></li>
 </ol>
 <h3 id="create-device-group">Create Device Group</h3>
@@ -132,16 +132,16 @@
 <li>For adding a condition:
 <ul>
 <li>Click <strong>Add Condition</strong> or a new condition already appears while creating a new device group. Populate the fields to add the condition</li>
-<li>Field(required): Lets the user to select the field on using which the filter needs to be created on devices(Ex: tags, properties etc.,)</li>
-<li>Operator(required): Lets the user to select logical operator like Equals, Greater than etc.,</li>
-<li>Value(required): Lets the user to enter the value to compare against the data for the selected field using selected operator</li>
-<li>Type(required): Allows user to select the type of value: Number/Text '
+<li>Field(required): Lets the user select the field on which the filter needs to be created on devices (Ex: tags, properties, etc.)</li>
+<li>Operator(required): Lets the user select a logical operator like Equals, Greater than, etc.</li>
+<li>Value(required): Lets the user enter the value to compare against the data for the selected field using the selected operator</li>
+<li>Type(required): Allows the user to select the type of value: Number/Text
 <img src="../../images/tool-bar/device-group-add-condition.png" alt="Device group add condition"></li>
 </ul>
 </li>
 <li>For removing a condition:
 <ul>
-<li><strong>Remove condition</strong> button is present below each condition
+<li>A <strong>Remove condition</strong> button is present below each condition
 <img src="../../images/tool-bar/device-group-delete-condition.png" alt="Device group delete condition"></li>
 </ul>
 </li>
@@ -153,19 +153,19 @@
 <ul>
 <li>Click on <strong>Add</strong></li>
 <li>Enter Key: This key is used in sending the telemetry data</li>
-<li>Enter Display name: It is used display name
+<li>Enter Display Name
 <img src="../../images/tool-bar/device-group-telemetry-format.png" alt="Device group telemetry format"></li>
 </ul>
 </li>
 <li>To verify the telemetry format
 <ul>
-<li>Add an entry under telemetry format (Ex: Key=temp and DisplayName=Temperature)</li>
+<li>Add an entry under telemetry format (Ex: Key=temp and Display Name=Temperature)</li>
 <li>Create a device</li>
-<li>Simulate device telemetry by sending a message with different properties along with value for temp(Key from above) and any value<br>
-<strong>Ex:</strong> { humidity: 60, temp: 20 }<br>
-<strong>Note:</strong> <a href="https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-raspberry-pi-web-simulator-get-started">Refer this</a> to simulate device telemetry using Azure online simulator</li>
+<li>Simulate device telemetry by sending a message with different properties along with value for temp (Key from above) and any value
+<strong>Ex:</strong> { humidity: 60, temp: 20 }
+<strong>Note:</strong> <a href="https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-raspberry-pi-web-simulator-get-started">Refer to this</a> to simulate device telemetry using Azure online simulator</li>
 <li>Select the device and click &quot;Show telemetry&quot;</li>
-<li>Should be able to see only telemetry for temp(Temperature)
+<li>You should be able to see only telemetry for temp(Temperature)
 <img src="../../images/tool-bar/telemetry-format-example.png" alt="Telemetry format"></li>
 </ul>
 </li>
@@ -180,11 +180,11 @@
 <p>A user can edit an existing device group using this option. Steps to edit a device group:</p>
 <ol>
 <li>Click <strong>Manage device groups</strong> button from the toolbar</li>
-<li>Manage device groups flyout opens</li>
-<li>List of device groups is displayed under &quot;Create new device group&quot; button</li>
+<li>The <strong>Manage device groups</strong> flyout opens</li>
+<li>The list of device groups is displayed under &quot;Create new device group&quot; button</li>
 <li>Click on the name of the device group to edit
 <img src="../../images/tool-bar/device-group-edit.png" alt="Device group edit button"></li>
-<li>Display changes to &quot;Edit device group&quot; form where the existing device group details can be modified. Edit the details</li>
+<li>The <strong>Manage device groups</strong> flyout display changes to show the &quot;Edit device group&quot; form where the existing device group details can be modified. Edit the details</li>
 <li>Click <strong>Save</strong> to save the updates</li>
 <li>Click <strong>Cancel</strong> in order to cancel and navigate back to Manage device groups
 <img src="../../images/tool-bar/edit-device-group.png" alt="Edit device group"></li>
@@ -192,13 +192,13 @@
 <h3 id="delete-device-group">Delete Device Group</h3>
 <p>A user can delete an existing device group using this option. Steps to delete a device group:</p>
 <ol>
-<li>Click <strong>Manage device groups</strong> button from the toolbar</li>
-<li>Manage device groups flyout opens</li>
-<li>List of device groups is displayed under &quot;Create new device group&quot; button</li>
+<li>Click the <strong>Manage device groups</strong> button from the toolbar</li>
+<li>The <strong>Manage device groups</strong> flyout opens</li>
+<li>The list of device groups is displayed under the &quot;Create new device group&quot; button</li>
 <li>Click on the name of the device group to delete</li>
-<li>Display changes to &quot;Edit device group&quot;. Scroll down the flyout to find the buttons like Save, Cancel, Delete
+<li>The display changes to &quot;Edit device group&quot;. Scroll down the flyout to find the buttons Save, Cancel and Delete
 <img src="../../images/tool-bar/device-group-delete.png" alt="Delete device group button"></li>
-<li>Click <strong>Delete</strong> button. A confirmation section appears</li>
+<li>Click the <strong>Delete</strong> button. A confirmation section appears</li>
 <li>Change the toggle to &quot;Yes&quot; and click <strong>Delete</strong>
 <img src="../../images/tool-bar/delete-device-group.png" alt="Delete device group"></li>
 </ol>
@@ -206,38 +206,38 @@
 <p>A user can pin one/multiple device groups using this option. Pinned device groups always show on top of the Device group list.</p>
 <p>Steps to pin/unpin device groups:</p>
 <ol>
-<li>Click <strong>Manage device groups</strong> button from the toolbar</li>
-<li>Manage device groups flyout opens</li>
-<li>List of device groups is displayed under &quot;Create new device group&quot; button</li>
-<li>Hover on the name of the device group to delete</li>
-<li>Pin Device groups: Click on pin button that appears before the names of the Device groups
+<li>Click the <strong>Manage device groups</strong> button from the toolbar</li>
+<li>The <strong>Manage device groups</strong> flyout opens</li>
+<li>The list of device groups is displayed under the &quot;Create new device group&quot; button</li>
+<li>Hover on the name of the device group to pin or unpin</li>
+<li>Pin Device groups: Click on the pin button that appears before the names of the Device groups
 <img src="../../images/tool-bar/device-group-pin.png" alt="Pin device group"></li>
-<li>Unpin Device groups: Pinned devices can be unpinned. Pinned devices appear on the top of the list. Click on pin(unpin) button that appears before the names of the Device groups
+<li>Unpin Device groups: Pinned devices can be unpinned. Pinned devices appear on the top of the list. Click on pin(unpin) button that appears before the name of the Device group
 <img src="../../images/tool-bar/device-group-unpin.png" alt="Unpin device group"></li>
-<li>Click on <strong>Save</strong> button to update the changes</li>
-<li>Click on <strong>Reset</strong> button to reset the changes
+<li>Click the <strong>Save</strong> button to update the changes</li>
+<li>Click the <strong>Reset</strong> button to reset the changes
 <img src="../../images/tool-bar/device-group-save-reset.png" alt="Device group pin"></li>
 </ol>
 <h2 id="time-period">Time Period</h2>
-<p>Time period dropdown is used in different pages to filter the data based on selected time interval.</p>
-<p>Below are the available time period options:<br>
+<p>The <strong>Time period</strong> dropdown is used in different pages to filter the data based on selected time interval.</p>
+<p>Below are the available time period options:
 <img src="../../images/tool-bar/time-period-dropdown.png" alt="Time period dropdown"></p>
-<p><strong>Note</strong></p>
+<p><strong>Note:</strong></p>
 <ul>
-<li>Time period dropdown can be found in pages like dashboard, maintenance and some other places in the application like Device Telemetry etc.,</li>
-<li>Default selected value for time period dropdown is <strong>Last hour</strong></li>
+<li>The <strong>Time period</strong> dropdown can be found on pages like dashboard, maintenance and some other places in the application like Device Telemetry, etc.</li>
+<li>The default selected value for the Time period dropdown is <strong>Last hour</strong></li>
 </ul>
 <h2 id="last-refreshed">Last Refreshed</h2>
-<p>Last refreshed is a label and button combination which can be used to:</p>
+<p><strong>Last refreshed</strong> is a label and button combination which can be used to:</p>
 <ol>
-<li>Display the last-refreshed datetime of data in a given page when data is automatically refreshed
+<li>Display the last-refreshed datetime of data on a given page when data is automatically refreshed
 <ul>
-<li>Hover on refresh button to view the last refreshed datetime</li>
+<li>Hover on the refresh button to view the last-refreshed datetime</li>
 </ul>
 </li>
-<li>Used to manually refresh the data in a given page.
+<li>Manually refresh the data in a given page.
 <ul>
-<li>Click on refresh button to manually refresh the data in the page</li>
+<li>Click the refresh button to manually refresh the data in the page</li>
 </ul>
 </li>
 </ol>

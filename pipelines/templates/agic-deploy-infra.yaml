@@ -112,7 +112,8 @@ jobs:
   - job: aks
     displayName: Provision Azure Kubernetes Service
     dependsOn:
-      - deleteAksCluster 
+      - deleteAksCluster
+    condition: eq('yes','no')   
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -194,6 +195,7 @@ jobs:
 
   - job: appConfiguration
     displayName: Update App Configuration
+    condition: eq('yes','no')
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -237,6 +239,7 @@ jobs:
     dependsOn:
       - appConfiguration
       - aks
+    condition: eq('yes','no')      
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -265,7 +268,8 @@ jobs:
   - job: automationAccount
     displayName: Provision Azure Automation and Sendgrid accounts
     dependsOn:
-      - aks
+      - aks      
+    condition: eq('yes','no')
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -335,9 +339,9 @@ jobs:
 
   - job: agic
     displayName: Integrate AGIC 
-    dependsOn:
-      - aks
-      - globalsecrets
+    # dependsOn:
+       # - aks
+       # - globalsecrets
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

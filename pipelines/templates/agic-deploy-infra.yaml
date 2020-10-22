@@ -491,11 +491,12 @@ jobs:
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName)
               
-              helm install ingress-azure \
+              helm install \
               -f helm-config.yaml \
               application-gateway-kubernetes-ingress/ingress-azure \
               --version 1.2.0-rc1 \
               --debug \
+              --generate-name \
               --set appgw.name=$(appGatewayName) \
               --set appgw.resourceGroup=$(resourceGroupName) \
               --set appgw.subscriptionId=${{parameters.subscriptionId}} \

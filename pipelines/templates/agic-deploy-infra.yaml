@@ -467,22 +467,45 @@ jobs:
           addSpnToEnvironment: true
 
         
-      - task: HelmDeploy@0
-        displayName: Deploy AGIC Helm Chart
+      # - task: HelmDeploy@0
+      #   displayName: Deploy AGIC Helm Chart
+      #   inputs:
+      #     connectionType: Azure Resource Manager
+      #     azureSubscription: ${{parameters.subscriptionName}}
+      #     azureResourceGroup: $(resourceGroupName)
+      #     kubernetesCluster: $(aksName)
+      #     namespace: default
+      #     command: install
+      #     ChartType: ./helm-config      
+      #     chartName: application-gateway-kubernetes-ingress/ingress-azure
+      #     overrideValues: appgw.name=$(appGatewayName),appgw.resourceGroup=$(resourceGroupName),appgw.subscriptionId=${{parameters.subscriptionId}},appgw.shared=false, armAuth.type=servicePrincipal, armAuth.secretJSON=$(encodedsecret), kubernetes.watchNamespace=default
+      #     arguments: --debug --install 
+
+      - task: Kubernetes@1
+        displayName: Create Ingress
         inputs:
           connectionType: Azure Resource Manager
-          azureSubscription: ${{parameters.subscriptionName}}
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
           azureResourceGroup: $(resourceGroupName)
           kubernetesCluster: $(aksName)
-          namespace: default
-          command: upgrade
-          chartType: Name
-          waitForExecution: true
-          releaseName: ingress-azure
-          chartName: application-gateway-kubernetes-ingress/ingress-azure
-          overrideValues: appgw.name=$(appGatewayName),appgw.resourceGroup=$(resourceGroupName),appgw.subscriptionId=${{parameters.subscriptionId}},appgw.shared=false, armAuth.type=servicePrincipal, armAuth.secretJSON=$(encodedsecret), kubernetes.watchNamespace=default
-          arguments: --debug --install
-            
+          command: apply
+          useConfigurationFile: true
+          configurationType: inline
+          inline: |
+                        helm install ingress-azure \
+                        -f helm-config.yaml \
+                        application-gateway-kubernetes-ingress/ingress-azure \
+                        --version 1.2.0-rc1 \
+                        --debug \
+                        --set appgw.name=$(appGatewayName) \
+                        --set appgw.resourceGroup=$(resourceGroupName) \
+                        --set appgw.subscriptionId=${{parameters.subscriptionId}} \
+                        --set appgw.shared=false \ 
+                        --set armAuth.type=servicePrincipal \
+                        --set armAuth.secretJSON=$(encodedsecret) \
+                        --set kubernetes.watchNamespace=default 
+             
+
       - task: Kubernetes@1
         displayName: Create Ingress
         inputs:

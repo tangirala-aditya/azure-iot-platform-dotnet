@@ -490,49 +490,49 @@ jobs:
       #     overrideValues: appgw.name=$(appGatewayName),appgw.resourceGroup=$(resourceGroupName),appgw.subscriptionId=${{parameters.subscriptionId}},appgw.shared=false, armAuth.type=servicePrincipal, armAuth.secretJSON=$(encodedsecret), kubernetes.watchNamespace=default
       #     arguments: --debug --install 
 
-      - task: AzureCLI@2
-        displayName: AGIC Helm Chart
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-              set -Eeuxo pipefail
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName)
-              wget https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/docs/examples/sample-helm-config.yaml -O helm-config.yaml 
-              helm install --name ingress-azure -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure --namespace default --set appgw.name=$(appGatewayName) --set appgw.resourceGroup=$(resourceGroupName) --set appgw.subscriptionId=${{parameters.subscriptionId}} --set appgw.shared=false --set armAuth.type=servicePrincipal --set armAuth.secretJSON=$(encodedsecret) --set kubernetes.watchNamespace=default            
-              helm list           
-      - task: Kubernetes@1
-        displayName: Create Ingress
-        inputs:
-          connectionType: Azure Resource Manager
-          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
-          azureResourceGroup: $(resourceGroupName)
-          kubernetesCluster: $(aksName)
-          command: apply
-          useConfigurationFile: true
-          configurationType: inline
-          inline: |
-            apiVersion: networking.k8s.io/v1beta1
-            kind: Ingress
-            metadata:
-              name: $(aksName)
-              namespace: default
-              annotations:
-                kubernetes.io/ingress.class: azure/application-gateway
-                cert-manager.io/cluster-issuer: letsencrypt-prod
-                nginx.ingress.kubernetes.io/rewrite-target: /$1
-                nginx.ingress.kubernetes.io/proxy-body-size: 200m
-            spec:
-              tls:
-              - hosts:
-                - $(aksName).$(locationName).cloudapp.azure.com
-                secretName: tls-prod
-              rules:
-              - host: $(aksName).$(locationName).cloudapp.azure.com
-                http:
-                  paths:
-                  - backend:
-                      serviceName: reverse-proxy
-                      servicePort: 10080
-                    path: /(.*)
+      # - task: AzureCLI@2
+      #   displayName: AGIC Helm Chart
+      #   inputs:
+      #     azureSubscription: ${{parameters.subscriptionName}}
+      #     scriptLocation: inlineScript
+      #     scriptType: bash
+      #     inlineScript: |-
+      #         set -Eeuxo pipefail
+      #         az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+      #         wget https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/docs/examples/sample-helm-config.yaml -O helm-config.yaml 
+      #         helm install --name ingress-azure -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure --namespace default --set appgw.name=$(appGatewayName) --set appgw.resourceGroup=$(resourceGroupName) --set appgw.subscriptionId=${{parameters.subscriptionId}} --set appgw.shared=false --set armAuth.type=servicePrincipal --set armAuth.secretJSON=$(encodedsecret) --set kubernetes.watchNamespace=default            
+      #         helm list           
+      # - task: Kubernetes@1
+      #   displayName: Create Ingress
+      #   inputs:
+      #     connectionType: Azure Resource Manager
+      #     azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+      #     azureResourceGroup: $(resourceGroupName)
+      #     kubernetesCluster: $(aksName)
+      #     command: apply
+      #     useConfigurationFile: true
+      #     configurationType: inline
+      #     inline: |
+      #       apiVersion: networking.k8s.io/v1beta1
+      #       kind: Ingress
+      #       metadata:
+      #         name: $(aksName)
+      #         namespace: default
+      #         annotations:
+      #           kubernetes.io/ingress.class: azure/application-gateway
+      #           cert-manager.io/cluster-issuer: letsencrypt-prod
+      #           nginx.ingress.kubernetes.io/rewrite-target: /$1
+      #           nginx.ingress.kubernetes.io/proxy-body-size: 200m
+      #       spec:
+      #         tls:
+      #         - hosts:
+      #           - $(aksName).$(locationName).cloudapp.azure.com
+      #           secretName: tls-prod
+      #         rules:
+      #         - host: $(aksName).$(locationName).cloudapp.azure.com
+      #           http:
+      #             paths:
+      #             - backend:
+      #                 serviceName: reverse-proxy
+      #                 servicePort: 10080
+      #               path: /(.*)

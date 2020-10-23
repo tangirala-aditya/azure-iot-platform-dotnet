@@ -433,7 +433,7 @@ jobs:
           kubernetesCluster: $(aksName)
           command: apply
           useConfigurationFile: true
-          configuration: charts/ingress/cluster-issuer-prod.yaml
+          configuration: charts/ingress/cluster-issuer-agic-prod.yaml
 
       - task: Bash@3
         displayName: Install AGIC Helm repository

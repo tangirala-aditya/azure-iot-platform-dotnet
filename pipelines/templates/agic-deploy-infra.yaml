@@ -106,14 +106,21 @@ jobs:
     steps:
       - checkout: self
         displayName: Checkout repository
-
-
+      
+      - task: AzureCLI@2
+        displayName: Delete Existin AKS
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+           az aks delete --name $(aksName) --resource-group $(resourceGroupName) --subscription ${{parameters.subscriptionId}} --yes
+          
 
   - job: aks
     displayName: Provision Azure Kubernetes Service
     dependsOn:
       - deleteAksCluster
-     
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -193,50 +200,49 @@ jobs:
               labels:
                 cert-manager.io/disable-validation: "true"
 
-  - job: appConfiguration
-    displayName: Update App Configuration
-    variables:
-      - template: variables-deploy-infra.yaml
-        parameters:
-          subscriptionName: ${{parameters.subscriptionName}}
-          locationName: ${{parameters.locationName}}
-          environmentName: ${{parameters.environmentName}}
-          subscriptionId: ${{parameters.subscriptionId}}
-          applicationCode: ${{parameters.applicationCode}}
-          applicationShortCode: ${{parameters.applicationShortCode}}
-          environmentCategory: ${{parameters.environmentCategory}}
-    steps:
-      - checkout: self
-        displayName: Checkout repository
+  # - job: appConfiguration
+  #   displayName: Update App Configuration
+  #   variables:
+  #     - template: variables-deploy-infra.yaml
+  #       parameters:
+  #         subscriptionName: ${{parameters.subscriptionName}}
+  #         locationName: ${{parameters.locationName}}
+  #         environmentName: ${{parameters.environmentName}}
+  #         subscriptionId: ${{parameters.subscriptionId}}
+  #         applicationCode: ${{parameters.applicationCode}}
+  #         applicationShortCode: ${{parameters.applicationShortCode}}
+  #         environmentCategory: ${{parameters.environmentCategory}}
+  #   steps:
+  #     - checkout: self
+  #       displayName: Checkout repository
 
-      - template: apply-arm-tags.yaml
-        parameters:
-          environment: ${{parameters.environmentName}}
+  #     - template: apply-arm-tags.yaml
+  #       parameters:
+  #         environment: ${{parameters.environmentName}}
 
-      - task: AzureResourceGroupDeployment@2
-        displayName: Provision Azure App Configuration
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          action: Create Or Update Resource Group
-          resourceGroupName: $(resourceGroupName)
-          location: ${{parameters.locationName}}
-          templateLocation: Linked artifact
-          csmFile: $(armTemplatesDirectory)/$(appConfigurationPartialName).json
-          csmParametersFile: $(armParametersDirectory)/$(appConfigurationPartialName).json
-          overrideParameters: -appConfigName $(appConfigurationName) -location ${{parameters.locationName}}
-          deploymentMode: Incremental
-          addSpnToEnvironment: true
+  #     - task: AzureResourceGroupDeployment@2
+  #       displayName: Provision Azure App Configuration
+  #       inputs:
+  #         azureSubscription: ${{parameters.subscriptionName}}
+  #         action: Create Or Update Resource Group
+  #         resourceGroupName: $(resourceGroupName)
+  #         location: ${{parameters.locationName}}
+  #         templateLocation: Linked artifact
+  #         csmFile: $(armTemplatesDirectory)/$(appConfigurationPartialName).json
+  #         csmParametersFile: $(armParametersDirectory)/$(appConfigurationPartialName).json
+  #         overrideParameters: -appConfigName $(appConfigurationName) -location ${{parameters.locationName}}
+  #         deploymentMode: Incremental
+  #         addSpnToEnvironment: true
 
-      - template: steps-delete-oldest-deployment.yaml
-        parameters:
-          subscriptionName: ${{parameters.subscriptionName}}
-          deploymentPartialName: $(appConfigurationPartialName)
-          resourceGroupName: $(resourceGroupName)
+  #     - template: steps-delete-oldest-deployment.yaml
+  #       parameters:
+  #         subscriptionName: ${{parameters.subscriptionName}}
+  #         deploymentPartialName: $(appConfigurationPartialName)
+  #         resourceGroupName: $(resourceGroupName)
 
   - job: globalsecrets
     displayName: Create K8s secrets
     dependsOn:
-      - appConfiguration
       - aks    
     variables:
       - template: variables-deploy-infra.yaml
@@ -263,76 +269,76 @@ jobs:
             kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
 
 
-  - job: automationAccount
-    displayName: Provision Azure Automation and Sendgrid accounts
-    dependsOn:
-      - aks      
-    variables:
-      - template: variables-deploy-infra.yaml
-        parameters:
-          subscriptionName: ${{parameters.subscriptionName}}
-          locationName: ${{parameters.locationName}}
-          environmentName: ${{parameters.environmentName}}
-          subscriptionId: ${{parameters.subscriptionId}}
-          applicationCode: ${{parameters.applicationCode}}
-          applicationShortCode: ${{parameters.applicationShortCode}}
-          environmentCategory: ${{parameters.environmentCategory}}
-    pool:
-      vmImage: windows-latest
-    steps:
-      - checkout: self
-        displayName: Checkout repository
+  # - job: automationAccount
+  #   displayName: Provision Azure Automation and Sendgrid accounts
+  #   dependsOn:
+  #     - aks      
+  #   variables:
+  #     - template: variables-deploy-infra.yaml
+  #       parameters:
+  #         subscriptionName: ${{parameters.subscriptionName}}
+  #         locationName: ${{parameters.locationName}}
+  #         environmentName: ${{parameters.environmentName}}
+  #         subscriptionId: ${{parameters.subscriptionId}}
+  #         applicationCode: ${{parameters.applicationCode}}
+  #         applicationShortCode: ${{parameters.applicationShortCode}}
+  #         environmentCategory: ${{parameters.environmentCategory}}
+  #   pool:
+  #     vmImage: windows-latest
+  #   steps:
+  #     - checkout: self
+  #       displayName: Checkout repository
 
-      - template: apply-arm-tags.yaml
-        parameters:
-          environment: ${{parameters.environmentName}}
+  #     - template: apply-arm-tags.yaml
+  #       parameters:
+  #         environment: ${{parameters.environmentName}}
 
-      - task: AzureResourceGroupDeployment@2
-        displayName: Provision Azure Automation account
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          action: Create Or Update Resource Group
-          resourceGroupName: $(resourceGroupName)
-          location: ${{parameters.locationName}}
-          templateLocation: Linked artifact
-          csmFile: $(armTemplatesDirectory)/automationacct.json
-          csmParametersFile: $(armParametersDirectory)/automationacct.json
-          overrideParameters: -automationAccountName $(automationName) -location ${{parameters.locationName}}
-          deploymentMode: Incremental
-          addSpnToEnvironment: true
+  #     - task: AzureResourceGroupDeployment@2
+  #       displayName: Provision Azure Automation account
+  #       inputs:
+  #         azureSubscription: ${{parameters.subscriptionName}}
+  #         action: Create Or Update Resource Group
+  #         resourceGroupName: $(resourceGroupName)
+  #         location: ${{parameters.locationName}}
+  #         templateLocation: Linked artifact
+  #         csmFile: $(armTemplatesDirectory)/automationacct.json
+  #         csmParametersFile: $(armParametersDirectory)/automationacct.json
+  #         overrideParameters: -automationAccountName $(automationName) -location ${{parameters.locationName}}
+  #         deploymentMode: Incremental
+  #         addSpnToEnvironment: true
 
-      - template: steps-delete-oldest-deployment.yaml
-        parameters:
-          subscriptionName: ${{parameters.subscriptionName}}
-          deploymentPartialName: $(automationPartialName)
-          resourceGroupName: $(resourceGroupName)
+  #     - template: steps-delete-oldest-deployment.yaml
+  #       parameters:
+  #         subscriptionName: ${{parameters.subscriptionName}}
+  #         deploymentPartialName: $(automationPartialName)
+  #         resourceGroupName: $(resourceGroupName)
 
-      - task: AzurePowerShell@3
-        displayName: Create certificate and connections on Azure Automation Account
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/automationAcctCert.ps1
-          ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}} -tenantId $(tenantId) -keyvaultName $(keyVaultName)
-          azurePowerShellVersion: LatestVersion
+  #     - task: AzurePowerShell@3
+  #       displayName: Create certificate and connections on Azure Automation Account
+  #       inputs:
+  #         azureSubscription: ${{parameters.subscriptionName}}
+  #         ScriptType: FilePath
+  #         ScriptPath: pipelines/cd/automationAcctCert.ps1
+  #         ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}} -tenantId $(tenantId) -keyvaultName $(keyVaultName)
+  #         azurePowerShellVersion: LatestVersion
 
-      - task: AzurePowerShell@3
-        displayName: Import runbook code and create webhook
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/automationAcct.ps1
-          ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -scriptFolder $(System.DefaultWorkingDirectory)/src/services/tenant-manager/RunBookCode -keyvaultName $(keyVaultName)
-          azurePowerShellVersion: LatestVersion
+  #     - task: AzurePowerShell@3
+  #       displayName: Import runbook code and create webhook
+  #       inputs:
+  #         azureSubscription: ${{parameters.subscriptionName}}
+  #         ScriptType: FilePath
+  #         ScriptPath: pipelines/cd/automationAcct.ps1
+  #         ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -scriptFolder $(System.DefaultWorkingDirectory)/src/services/tenant-manager/RunBookCode -keyvaultName $(keyVaultName)
+  #         azurePowerShellVersion: LatestVersion
 
-      - task: AzurePowerShell@3
-        displayName: Create SendGrid Acct and API Key
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/sendgridAcct.ps1
-          ScriptArguments: -location ${{parameters.locationName}} -resourceGroup $(resourceGroupName) -resourceName $(sendgridAccountName) -keyvaultName $(keyVaultName) -email ${{parameters.sendgridEmail}}
-          azurePowerShellVersion: LatestVersion
+  #     - task: AzurePowerShell@3
+  #       displayName: Create SendGrid Acct and API Key
+  #       inputs:
+  #         azureSubscription: ${{parameters.subscriptionName}}
+  #         ScriptType: FilePath
+  #         ScriptPath: pipelines/cd/sendgridAcct.ps1
+  #         ScriptArguments: -location ${{parameters.locationName}} -resourceGroup $(resourceGroupName) -resourceName $(sendgridAccountName) -keyvaultName $(keyVaultName) -email ${{parameters.sendgridEmail}}
+  #         azurePowerShellVersion: LatestVersion
 
   - job: agic
     displayName: Integrate AGIC 
@@ -492,7 +498,7 @@ jobs:
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName)
               wget https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/docs/examples/sample-helm-config.yaml -O helm-config.yaml 
-              helm upgrade ingress-azure application-gateway-kubernetes-ingress/ingress-azure -f helm-config.yaml --install --force --debug --namespace default  --set appgw.name=$(appGatewayName)  --set appgw.resourceGroup=$(resourceGroupName) --set appgw.subscriptionId=${{parameters.subscriptionId}} --set appgw.shared=false --set armAuth.type=servicePrincipal --set armAuth.secretJSON=$(encodedsecret) --set kubernetes.watchNamespace=default --set verbosityLevel=3 --set kubernetes.watchNamespace=default --version 1.2.0-rc3
+              # helm upgrade ingress-azure application-gateway-kubernetes-ingress/ingress-azure -f helm-config.yaml --install --force --debug --namespace default  --set appgw.name=$(appGatewayName)  --set appgw.resourceGroup=$(resourceGroupName) --set appgw.subscriptionId=${{parameters.subscriptionId}} --set appgw.shared=false --set armAuth.type=servicePrincipal --set armAuth.secretJSON=$(encodedsecret) --set kubernetes.watchNamespace=default --set verbosityLevel=3
 
       - task: Kubernetes@1
         displayName: Create Ingress

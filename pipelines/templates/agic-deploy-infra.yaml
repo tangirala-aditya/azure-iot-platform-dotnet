@@ -505,7 +505,7 @@ jobs:
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
               wget https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/docs/examples/sample-helm-config.yaml -O helm-config.yaml 
-              helm  upgrade --install --name ingress-azure -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure --namespace default --set appgw.name=$(appGatewayName) --set appgw.resourceGroup=$(resourceGroupName) --set appgw.subscriptionId=${{parameters.subscriptionId}} --set appgw.shared=false --set armAuth.type=servicePrincipal --set armAuth.secretJSON=$encodedJson --set kubernetes.watchNamespace=default            
+              helm  upgrade --install --name ingress-azure -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure --namespace default --set appgw.name=$(appGatewayName) --set appgw.resourceGroup=$(resourceGroupName) --set appgw.subscriptionId=${{parameters.subscriptionId}} --set appgw.shared=false --set armAuth.type=servicePrincipal --set armAuth.secretJSON=$(encodedsecret) --set kubernetes.watchNamespace=default            
               helm list           
       # - task: Kubernetes@1
       #   displayName: Create Ingress

@@ -490,7 +490,8 @@ jobs:
           command: upgrade
           install: true
           releaseName: ingress-azure
-          chartPath: $(Build.ArtifactStagingDirectory)/helm/cache/archive/ingress-azure-1.2.1.tgz
+          chartType: Name
+          chartName: application-gateway-kubernetes-ingress/ingress-azure
           overrideValues: appgw.name=$(appgateway),appgw.resourceGroup=$(resourceGroupName),appgw.subscriptionId=${{parameters.subscriptionId}},appgw.shared=false, armAuth.type=servicePrincipal, armAuth.secretJSON=$(encodedsecret), kubernetes.watchNamespace=default --set verbosityLevel=5
           arguments: -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure  
 

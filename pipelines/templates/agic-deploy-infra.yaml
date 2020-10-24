@@ -448,39 +448,39 @@ jobs:
       #       # Update your local Helm chart repository cache
       #       helm repo update
 
-      # - task: AzureCLI@2
-      #   displayName: Get encoded secret of Azure service principal
-      #   inputs:
-      #     azureSubscription: ${{parameters.subscriptionName}}
-      #     scriptLocation: inlineScript
-      #     scriptType: bash
-      #     inlineScript: |-
+      - task: AzureCLI@2
+        displayName: Get encoded secret of Azure service principal
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
 
-      #           #Use the existing service principle
-      #           cat <<EOF > sp.json
-      #           {
-      #             "clientId": $(servicePrincipalId),
-      #             "clientSecret": $(servicePrincipalKey) ,
-      #             "subscriptionId": ${{parameters.subscriptionId}} ,
-      #             "tenantId": $(tenantId),
-      #             "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
-      #             "resourceManagerEndpointUrl": "https://management.azure.com/",
-      #             "activeDirectoryGraphResourceId": "https://graph.windows.net/",
-      #             "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
-      #             "galleryEndpointUrl": "https://gallery.azure.com/",
-      #             "managementEndpointUrl": "https://management.core.windows.net/"
-      #           }
-      #           EOF
-      #           cat sp.json
-      #           # convert to base64 to use with AGIC
-      #           encodedJson=$(cat sp.json | base64 -w0)
-      #           echo $servicePrincipalId
-      #           echo $servicePrincipalKey
-      #           echo $(servicePrincipalId)
-      #           echo $(servicePrincipalKey)
-      #           echo $encodedJson            
-      #           echo "##vso[task.setvariable variable=encodedsecret]$encodedJson"
-      #     addSpnToEnvironment: true
+                #Use the existing service principle
+                cat <<EOF > sp.json
+                {
+                  "clientId": $(servicePrincipalId),
+                  "clientSecret": $(servicePrincipalKey) ,
+                  "subscriptionId": ${{parameters.subscriptionId}} ,
+                  "tenantId": $(tenantId),
+                  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+                  "resourceManagerEndpointUrl": "https://management.azure.com/",
+                  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+                  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+                  "galleryEndpointUrl": "https://gallery.azure.com/",
+                  "managementEndpointUrl": "https://management.core.windows.net/"
+                }
+                EOF
+                cat sp.json
+                # convert to base64 to use with AGIC
+                encodedJson=$(cat sp.json | base64 -w0)
+                echo $servicePrincipalId
+                echo $servicePrincipalKey
+                echo $(servicePrincipalId)
+                echo $(servicePrincipalKey)
+                echo $encodedJson            
+                echo "##vso[task.setvariable variable=encodedsecret]$encodedJson"
+          addSpnToEnvironment: true
 
         
       # - task: HelmDeploy@0

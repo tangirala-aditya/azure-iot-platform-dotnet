@@ -93,7 +93,6 @@ jobs:
 
   - job: deleteAksCluster
     displayName: Delete Existing AKS Cluster
-    condition: false
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -120,7 +119,6 @@ jobs:
 
   - job: aks
     displayName: Provision Azure Kubernetes Service
-    condition: false
     dependsOn:
       - deleteAksCluster
     variables:
@@ -243,7 +241,6 @@ jobs:
   #         resourceGroupName: $(resourceGroupName)
 
   - job: globalsecrets
-    condition: false  
     displayName: Create K8s secrets
     dependsOn:
       - aks    
@@ -345,9 +342,9 @@ jobs:
 
   - job: agic
     displayName: Integrate AGIC 
-    # dependsOn:
-    #    - aks
-    #    - globalsecrets
+    dependsOn:
+       - aks
+       - globalsecrets
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

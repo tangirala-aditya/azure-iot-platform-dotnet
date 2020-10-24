@@ -459,8 +459,8 @@ jobs:
                 #Use the existing service principle
                 cat <<EOF > sp.json
                 {
-                  "clientId": $(servicePrincipalId),
-                  "clientSecret": $(servicePrincipalKey) ,
+                  "clientId": $servicePrincipalId,
+                  "clientSecret": $servicePrincipalKey ,
                   "subscriptionId": ${{parameters.subscriptionId}} ,
                   "tenantId": $(tenantId),
                   "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",

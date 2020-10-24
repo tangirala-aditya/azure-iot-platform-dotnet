@@ -433,7 +433,7 @@ jobs:
           kubernetesCluster: $(aksName)
           command: apply
           useConfigurationFile: true
-          configuration: charts/ingress/cluster-issuer-agic-prod.yaml
+          configuration: charts/ingress/cluster-issuer-prod.yaml
 
       - task: Bash@3
         displayName: Install AGIC Helm repository
@@ -476,19 +476,21 @@ jobs:
           addSpnToEnvironment: true
 
         
-      # - task: HelmDeploy@0
-      #   displayName: Deploy AGIC Helm Chart
-      #   inputs:
-      #     connectionType: Azure Resource Manager
-      #     azureSubscription: ${{parameters.subscriptionName}}
-      #     azureResourceGroup: $(resourceGroupName)
-      #     kubernetesCluster: $(aksName)
-      #     namespace: default
-      #     command: install
-      #     ChartType: ./helm-config      
-      #     chartName: application-gateway-kubernetes-ingress/ingress-azure
-      #     overrideValues: appgw.name=$(appGatewayName),appgw.resourceGroup=$(resourceGroupName),appgw.subscriptionId=${{parameters.subscriptionId}},appgw.shared=false, armAuth.type=servicePrincipal, armAuth.secretJSON=$(encodedsecret), kubernetes.watchNamespace=default
-      #     arguments: --debug --install 
+      - task: HelmDeploy@0
+        displayName: Deploy AGIC Helm Chart
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscription: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          namespace: default
+          command: upgrade
+          chartType: filepath
+          install: true
+          releaseName: ingress-azure
+          chartPath: $(Build.ArtifactStagingDirectory)/helm/cache/archive/ingress-azure-1.2.1.tgz
+          overrideValues: appgw.name=$(appgateway),appgw.resourceGroup=$(resourceGroupName),appgw.subscriptionId=${{parameters.subscriptionId}},appgw.shared=false, armAuth.type=servicePrincipal, armAuth.secretJSON=$(encodedsecret), kubernetes.watchNamespace=default --set verbosityLevel=5
+          arguments: --debug 
 
       # - task: AzureCLI@2
       #   displayName: AGIC Helm Chart
@@ -498,9 +500,9 @@ jobs:
       #     scriptType: bash
       #     inlineScript: |-
       #         set -Eeuxo pipefail
-      #         az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+      #         az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
       #         wget https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/docs/examples/sample-helm-config.yaml -O helm-config.yaml 
-      #         helm install --name ingress-azure -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure --namespace default --set appgw.name=$(appGatewayName) --set appgw.resourceGroup=$(resourceGroupName) --set appgw.subscriptionId=${{parameters.subscriptionId}} --set appgw.shared=false --set armAuth.type=servicePrincipal --set armAuth.secretJSON=$(encodedsecret) --set kubernetes.watchNamespace=default            
+      #         helm install --name ingress-azure -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure --namespace default --set appgw.name=$(appGatewayName) --set appgw.resourceGroup=$(resourceGroupName) --set appgw.subscriptionId=${{parameters.subscriptionId}} --set appgw.shared=false --set armAuth.type=servicePrincipal --set armAuth.secretJSON=$encodedJson --set kubernetes.watchNamespace=default            
       #         helm list           
       # - task: Kubernetes@1
       #   displayName: Create Ingress

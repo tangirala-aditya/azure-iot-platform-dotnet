@@ -455,12 +455,14 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
+                
+          applicationId=(az keyvault secret show --name Global--ServicePrincipalId --subscription {{parameters.subscriptionId}} --vault-name $(keyVaultName) --query value --output tsv)
+          applicationKey=(az keyvault secret show --name Global--ServicePrincipalKey --subscription {{parameters.subscriptionId}} --vault-name $(keyVaultName) --query value --output tsv)
 
-                #Use the existing service principle
                 cat <<EOF > sp.json
                 {
-                  "clientId": $servicePrincipalId,
-                  "clientSecret": $servicePrincipalKey ,
+                  "clientId": $applicationId,
+                  "clientSecret": $applicationKey ,
                   "subscriptionId": ${{parameters.subscriptionId}} ,
                   "tenantId": $(tenantId),
                   "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",

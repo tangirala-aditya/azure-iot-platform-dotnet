@@ -455,9 +455,9 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-                
-                applicationId=$(az keyvault secret show --name Global--ServicePrincipalId --subscription {{parameters.subscriptionId}} --vault-name $(keyVaultName) --query value --output tsv)
-                applicationKey=$(az keyvault secret show --name Global--ServicePrincipalKey --subscription {{parameters.subscriptionId}} --vault-name $(keyVaultName) --query value --output tsv)
+                set -Eeuxo pipefail
+                applicationId=$(az keyvault secret show --name Global--ServicePrincipalId  --vault-name $(keyVaultName) --query value --output tsv)
+                applicationKey=$(az keyvault secret show --name Global--ServicePrincipalKey  --vault-name $(keyVaultName) --query value --output tsv)
                 cat <<EOF > sp.json
                 {
                   "clientId": $applicationId,
@@ -475,7 +475,9 @@ jobs:
                 cat sp.json
                 # convert to base64 to use with AGIC
                 encodedJson=$(cat sp.json | base64 -w0)
-                echo $encodedJson            
+                echo $encodedJson
+                echo $applicationId
+                echo $applicationKey            
                 echo "##vso[task.setvariable variable=encodedsecret]$encodedJson"
           addSpnToEnvironment: true
 

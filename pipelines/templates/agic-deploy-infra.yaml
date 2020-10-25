@@ -456,7 +456,7 @@ jobs:
           scriptType: bash
           inlineScript: |-
                 set -Eeuxo pipefail
-                cat <<EOF > var.json
+                cat <<EOF > sp.json
                 {
                   "clientId": "${servicePrincipalId}",
                   "clientSecret": "${servicePrincipalKey}" ,

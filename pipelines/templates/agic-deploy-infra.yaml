@@ -458,16 +458,16 @@ jobs:
                 set -Eeuxo pipefail
                 cat <<EOF > sp.json
                 {
-                  "clientId": "${servicePrincipalId}",
-                  "clientSecret": "${servicePrincipalKey}" ,
-                  "subscriptionId": "${parameters.subscriptionId}" ,
-                  "tenantId": "${tenantId}",
-                  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
-                  "resourceManagerEndpointUrl": "https://management.azure.com/",
-                  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
-                  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
-                  "galleryEndpointUrl": "https://gallery.azure.com/",
-                  "managementEndpointUrl": "https://management.core.windows.net/"
+                "clientId": "${servicePrincipalId}",
+                       "clientSecret": "${servicePrincipalKey}" ,
+                        "subscriptionId": ${{parameters.subscriptionId}} ,
+                        "tenantId": "${tenantId}",
+                        "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+                "resourceManagerEndpointUrl": "https://management.azure.com/",
+                "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+                "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+                "galleryEndpointUrl": "https://gallery.azure.com/",
+                "managementEndpointUrl": "https://management.core.windows.net/"
                 }
                 EOF
 

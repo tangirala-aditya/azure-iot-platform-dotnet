@@ -456,11 +456,12 @@ jobs:
           scriptType: bash
           inlineScript: |-
                 set -Eeuxo pipefail
+                subscriptionId=${{parameters.subscriptionId}}
                 cat <<EOF > sp.json
                 {
                 "clientId": "${servicePrincipalId}",
                        "clientSecret": "${servicePrincipalKey}" ,
-                        "subscriptionId": "c36fb2f8-f98d-40d0-90a9-d65e93acb428" ,
+                        "subscriptionId": "${subscriptionId}" ,
                         "tenantId": "${tenantId}",
                         "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
                 "resourceManagerEndpointUrl": "https://management.azure.com/",

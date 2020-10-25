@@ -93,7 +93,6 @@ jobs:
 
   - job: deleteAksCluster
     displayName: Delete Existing AKS Cluster
-    condition: false
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -120,7 +119,6 @@ jobs:
 
   - job: aks
     displayName: Provision Azure Kubernetes Service
-    condition: false
     dependsOn:
       - deleteAksCluster
     variables:
@@ -244,7 +242,6 @@ jobs:
 
   - job: globalsecrets
     displayName: Create K8s secrets
-    condition: false
     dependsOn:
       - aks    
     variables:
@@ -345,9 +342,9 @@ jobs:
 
   - job: agic
     displayName: Integrate AGIC 
-    #dependsOn:
-      #  - aks
-      #  - globalsecrets
+    dependsOn:
+       - aks
+       - globalsecrets
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -403,50 +400,50 @@ jobs:
               
       #         helm uninstall ingress-controller nginx-ingress 
 
-      # - task: Bash@3
-      #   displayName: Install jetstack Helm repository
-      #   inputs:
-      #     targetType: inline
-      #     script: |-
-      #       # Add the Jetstack Helm repository
-      #       helm repo add jetstack https://charts.jetstack.io
-      #       # Update your local Helm chart repository cache
-      #       helm repo update
+      - task: Bash@3
+        displayName: Install jetstack Helm repository
+        inputs:
+          targetType: inline
+          script: |-
+            # Add the Jetstack Helm repository
+            helm repo add jetstack https://charts.jetstack.io
+            # Update your local Helm chart repository cache
+            helm repo update
 
-      # - task: HelmDeploy@0
-      #   displayName: Deploy cert-manager
-      #   inputs:
-      #     connectionType: Azure Resource Manager
-      #     azureSubscription: ${{parameters.subscriptionName}}
-      #     azureResourceGroup: $(resourceGroupName)
-      #     kubernetesCluster: $(aksName)
-      #     namespace: cert-manager
-      #     command: upgrade
-      #     chartType: Name
-      #     releaseName: cert-manager
-      #     chartName: jetstack/cert-manager
-      #     arguments: --version v$(certManagerVersion) --install --force
+      - task: HelmDeploy@0
+        displayName: Deploy cert-manager
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscription: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          namespace: cert-manager
+          command: upgrade
+          chartType: Name
+          releaseName: cert-manager
+          chartName: jetstack/cert-manager
+          arguments: --version v$(certManagerVersion) --install --force
 
-      # - task: Kubernetes@1
-      #   displayName: Create Cluster Issuer
-      #   inputs:
-      #     connectionType: Azure Resource Manager
-      #     azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
-      #     azureResourceGroup: $(resourceGroupName)
-      #     kubernetesCluster: $(aksName)
-      #     command: apply
-      #     useConfigurationFile: true
-      #     configuration: charts/ingress/cluster-issuer-prod.yaml
+      - task: Kubernetes@1
+        displayName: Create Cluster Issuer
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          useConfigurationFile: true
+          configuration: charts/ingress/cluster-issuer-prod.yaml
 
-      # - task: Bash@3
-      #   displayName: Install AGIC Helm repository
-      #   inputs:
-      #     targetType: inline
-      #     script: |-
-      #       # Add the AGIC Helm repository
-      #       helm repo add application-gateway-kubernetes-ingress https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/
-      #       # Update your local Helm chart repository cache
-      #       helm repo update
+      - task: Bash@3
+        displayName: Install AGIC Helm repository
+        inputs:
+          targetType: inline
+          script: |-
+            # Add the AGIC Helm repository
+            helm repo add application-gateway-kubernetes-ingress https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/
+            # Update your local Helm chart repository cache
+            helm repo update
 
       - task: AzureCLI@2
         displayName: Get encoded secret of Azure service principal

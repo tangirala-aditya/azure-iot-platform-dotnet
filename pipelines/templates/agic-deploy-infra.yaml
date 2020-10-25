@@ -456,11 +456,10 @@ jobs:
           scriptType: bash
           inlineScript: |-
                 set -Eeuxo pipefail
-
                 cat <<EOF > var.json
                 {
                   "clientId": "${servicePrincipalId}",
-                  "clientSecret": "${{servicePrincipalKey}}" ,
+                  "clientSecret": "${servicePrincipalKey}" ,
                   "subscriptionId": ${{parameters.subscriptionId}} ,
                   "tenantId": "${tenantId}",
                   "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",

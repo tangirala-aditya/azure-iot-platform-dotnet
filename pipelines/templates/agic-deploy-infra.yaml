@@ -456,9 +456,8 @@ jobs:
           scriptType: bash
           inlineScript: |-
                 
-          applicationId=(az keyvault secret show --name Global--ServicePrincipalId --subscription {{parameters.subscriptionId}} --vault-name $(keyVaultName) --query value --output tsv)
-          applicationKey=(az keyvault secret show --name Global--ServicePrincipalKey --subscription {{parameters.subscriptionId}} --vault-name $(keyVaultName) --query value --output tsv)
-
+                applicationId=$(az keyvault secret show --name Global--ServicePrincipalId --subscription {{parameters.subscriptionId}} --vault-name $(keyVaultName) --query value --output tsv)
+                applicationKey=$(az keyvault secret show --name Global--ServicePrincipalKey --subscription {{parameters.subscriptionId}} --vault-name $(keyVaultName) --query value --output tsv)
                 cat <<EOF > sp.json
                 {
                   "clientId": $applicationId,

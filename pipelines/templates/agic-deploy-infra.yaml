@@ -458,7 +458,10 @@ jobs:
                 set -Eeuxo pipefail
                 applicationId=$(az keyvault secret show --name Global--ServicePrincipalId  --vault-name $(keyVaultName) --query value --output tsv)
                 applicationKey=$(az keyvault secret show --name Global--ServicePrincipalKey  --vault-name $(keyVaultName) --query value --output tsv)
-                cat <<EOF > sp.json
+
+                echo "all variables"
+
+                cat <<EOF > var.json
                 {
                   "clientId": $applicationId,
                   "clientSecret": $applicationKey ,
@@ -472,13 +475,79 @@ jobs:
                   "managementEndpointUrl": "https://management.core.windows.net/"
                 }
                 EOF
-                cat sp.json
+
+                cat <<EOF > novar.json
+                {
+                  "clientId": "95d3c662-23ea-4e2d-8d3d-ea2448706934" ,
+                  "clientSecret": "SH901gTQ-MTOVGLbO/u[7qIc-MP0vGAs" ,
+                  "subscriptionId": ${{parameters.subscriptionId}} ,
+                  "tenantId": "facac3c4-e2a5-4257-af76-205c8a821ddb",
+                  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+                  "resourceManagerEndpointUrl": "https://management.azure.com/",
+                  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+                  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+                  "galleryEndpointUrl": "https://gallery.azure.com/",
+                  "managementEndpointUrl": "https://management.core.windows.net/"
+                }
+                EOF
+
+                cat <<EOF > tenantvar.json
+                {
+                  "clientId": $applicationId,
+                  "clientSecret": $applicationKey ,
+                  "subscriptionId": ${{parameters.subscriptionId}} ,
+                  "tenantId": "facac3c4-e2a5-4257-af76-205c8a821ddb",
+                  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+                  "resourceManagerEndpointUrl": "https://management.azure.com/",
+                  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+                  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+                  "galleryEndpointUrl": "https://gallery.azure.com/",
+                  "managementEndpointUrl": "https://management.core.windows.net/"
+                }
+                EOF
+
+                cat <<EOF > tenantvar.json
+                {
+                  "clientId": $applicationId,
+                  "clientSecret": $applicationKey ,
+                  "subscriptionId": ${{parameters.subscriptionId}} ,
+                  "tenantId": "facac3c4-e2a5-4257-af76-205c8a821ddb",
+                  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+                  "resourceManagerEndpointUrl": "https://management.azure.com/",
+                  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+                  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+                  "galleryEndpointUrl": "https://gallery.azure.com/",
+                  "managementEndpointUrl": "https://management.core.windows.net/"
+                }
+                EOF                
+
+                cat <<EOF > servicevar.json
+                {
+                  "clientId": $servicePrincipalId,
+                  "clientSecret": $servicePrincipalKey ,
+                  "subscriptionId": ${{parameters.subscriptionId}} ,
+                  "tenantId": "facac3c4-e2a5-4257-af76-205c8a821ddb",
+                  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+                  "resourceManagerEndpointUrl": "https://management.azure.com/",
+                  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+                  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+                  "galleryEndpointUrl": "https://gallery.azure.com/",
+                  "managementEndpointUrl": "https://management.core.windows.net/"
+                }
+                EOF
+
+                #cat sp.json
                 # convert to base64 to use with AGIC
-                encodedJson=$(cat sp.json | base64 -w0)
-                echo $encodedJson
-                echo $applicationId
-                echo $applicationKey            
-                echo "##vso[task.setvariable variable=encodedsecret]$encodedJson"
+                encodedvar=$(cat var.json | base64 -w0)
+                encodednovar=$(cat novar.json | base64 -w0)
+                encodedtenantvar=$(cat tenantvar.json | base64 -w0)
+                encodedservicevar=$(cat servicevar.json | base64 -w0)
+
+                echo $encodedvar
+                echo $encodednovar  
+                echo $encodedtenantvar
+                echo encodedservicevar          
+                echo "##vso[task.setvariable variable=encodedsecret]$encodednovar"
           addSpnToEnvironment: true
 
         

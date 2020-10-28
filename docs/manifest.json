@@ -1596,7 +1596,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "71RWfuHjwVpHbUH9lW6l2w=="
+          "hash": "ZH6bPfLne6SmHHP8oM9BeQ=="
         }
       },
       "is_incremental": false,
@@ -1608,7 +1608,7 @@
       "output": {
         ".html": {
           "relative_path": "UseCases/index.html",
-          "hash": "reQwDN39W8M2OkOrDIhomA=="
+          "hash": "Pgt1arwUMKR3VUH9MpbIwA=="
         }
       },
       "is_incremental": false,
@@ -1719,6 +1719,17 @@
       "output": {
         "resource": {
           "relative_path": "images/architecture.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/case-studies.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/case-studies.png"
         }
       },
       "is_incremental": false,

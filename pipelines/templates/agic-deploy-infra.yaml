@@ -457,39 +457,6 @@ jobs:
       #     arguments: -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure  
 
       - task: AzureCLI@2
-        displayName: Install K8s Ingress Controller
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-            helm version
-            helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-            helm repo update
-            n=0
-            until [ $n -ge 5 ]
-            do
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName)
-              # Use Helm to deploy an NGINX ingress controller
-              helm upgrade ingress-controller stable/nginx-ingress \
-                  --install \
-                  --force \
-                  --namespace ingress-basic \
-                  --set controller.replicaCount=2 \
-                  --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
-                  --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
-                  --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"="ggk-aks-dev" \
-                  --wait \
-                2>&1 && break
-              n=$[$n+1]
-              sleep 1m
-            done
-            if [ $n -ge 5 ]
-            then
-              echo "Error Deploying ingress controller" 1>&2
-              exit 64
-            fi
-      - task: AzureCLI@2
         displayName: AGIC Helm Chart
         inputs:
           azureSubscription: ${{parameters.subscriptionName}}
@@ -556,8 +523,9 @@ jobs:
               annotations:
                 kubernetes.io/ingress.class: azure/application-gateway
                 cert-manager.io/cluster-issuer: letsencrypt-prod
-                nginx.ingress.kubernetes.io/rewrite-target: /$1
-                nginx.ingress.kubernetes.io/proxy-body-size: 200m  
+                cert-manager.io/acme-challenge-type: http01
+                appgw.ingress.kubernetes.io/backend-path-prefix: /$1
+                appgw.ingress.kubernetes.io/appgw-ssl-certificate: "tls-prod"
             spec:
               tls:
               - hosts:

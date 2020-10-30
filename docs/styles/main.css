@@ -466,9 +466,9 @@ pre {
 .toc .nav > li.active > .expand-stub::before,
 .toc .nav > li.in > .expand-stub::before,
 .toc .nav > li.in.active > .expand-stub::before,
-.toc .nav > li.filtered > .expand-stub::before {   
+.toc .nav > li.filtered > .expand-stub::before {
   font-family: monospace;
-    font-size: 10px;    
+    font-size: 10px;
     content: "\2bc6";
 }
 
@@ -477,7 +477,7 @@ pre {
     font-family: Arial;
     font-size: 10px;
     line-height: 20px;
-    content: "\2bc8";
+    content: "\002b";
 }
 
 .nav-return::after {

@@ -3936,7 +3936,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "h2QF2HoOtBusRrvhzeyS8Q=="
+          "hash": "MViuUiYqmUdS+p+lIxRzCA=="
         }
       },
       "is_incremental": false,
@@ -3949,6 +3949,50 @@
         ".html": {
           "relative_path": "linked-demo.html",
           "hash": "U5smhvc63zlnTAKnEcn4HA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "pdfdocs/3M_IoT_Platform.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "pdfdocs/3M_IoT_Platform.pdf"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "pdfdocs/3M_IoT_Platform_APIs.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "pdfdocs/3M_IoT_Platform_APIs.pdf"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "pdfdocs/3M_IoT_Platform_GettingStarted.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "pdfdocs/3M_IoT_Platform_GettingStarted.pdf"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "pdfdocs/3M_IoT_Platform_Guides.pdf",
+      "output": {
+        "resource": {
+          "relative_path": "pdfdocs/3M_IoT_Platform_Guides.pdf"
         }
       },
       "is_incremental": false,

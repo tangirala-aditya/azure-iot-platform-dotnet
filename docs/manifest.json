@@ -589,6 +589,9 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Toc",
       "source_relative_path": "APIs/toc.yml",
       "output": {
@@ -1581,7 +1584,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/index.html",
-          "hash": "E+XtfeNRGKSggXCXKXsleA=="
+          "hash": "5DrAq+bymQY4R+2g5+f4Dw=="
         }
       },
       "is_incremental": false,
@@ -1609,50 +1612,6 @@
         ".html": {
           "relative_path": "UseCases/index.html",
           "hash": "Pgt1arwUMKR3VUH9MpbIwA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "_site_pdf/3M_IoT_Platform.pdf",
-      "output": {
-        "resource": {
-          "relative_path": "_site_pdf/3M_IoT_Platform.pdf"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "_site_pdf/3M_IoT_Platform_APIs.pdf",
-      "output": {
-        "resource": {
-          "relative_path": "_site_pdf/3M_IoT_Platform_APIs.pdf"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "_site_pdf/3M_IoT_Platform_GettingStarted.pdf",
-      "output": {
-        "resource": {
-          "relative_path": "_site_pdf/3M_IoT_Platform_GettingStarted.pdf"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "_site_pdf/3M_IoT_Platform_Guides.pdf",
-      "output": {
-        "resource": {
-          "relative_path": "_site_pdf/3M_IoT_Platform_Guides.pdf"
         }
       },
       "is_incremental": false,
@@ -3977,7 +3936,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "6GWjwrXfBMc1PSiSZLynrA=="
+          "hash": "uoYHLS5VuZGx6bVrII/VFg=="
         }
       },
       "is_incremental": false,
@@ -4015,11 +3974,11 @@
     {
       "status": {
         "can_incremental": false,
-        "details": "Cannot build incrementally because config changed.",
+        "details": "Cannot build incrementally because last build info is missing.",
         "incrementalPhase": "build",
         "total_file_count": 0,
         "skipped_file_count": 0,
-        "full_build_reason_code": "ConfigChanged"
+        "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
         "ConceptualDocumentProcessor": {

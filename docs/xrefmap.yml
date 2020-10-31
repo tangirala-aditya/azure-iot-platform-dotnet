@@ -2676,6 +2676,3 @@ references:
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.GetAsync
   nameWithType: TenantReadyController.GetAsync
-- uid: SolutionFullName
-  name: 3M IoT Platform on Azure
-  href: linked-demo.html

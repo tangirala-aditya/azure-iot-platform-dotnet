@@ -12,9 +12,12 @@
   --transition: 350ms;
 }
 
+
+
 body {
   color: var(--font-color);
   font-family: "Roboto", sans-serif;
+  font-family: "Segoe UI","SegoeUI","Helvetica Neue","Helvetica","Arial","sans-serif";
   line-height: 1.5;
   font-size: 16px;
   -ms-text-size-adjust: 100%;
@@ -487,3 +490,22 @@ pre {
   transform: scale(.5);
   content: url(../images/icons/arrow-go-back-fill.png);
 }
+
+.bs-docs-sidenav li.active ul  {
+  margin-left: 8px;
+}
+.Xlevel1.nav.bs-docs-sidenav {
+  font-size: 14px;
+}
+
+.article h3 {
+  padding-top:14px;
+  border-bottom: 1px solid #ddd;
+}
+
+.article h4 {
+  padding-top:14px;
+  border-bottom: none;
+}
+
+

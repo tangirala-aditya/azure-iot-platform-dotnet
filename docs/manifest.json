@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html",
-          "hash": "a/HVKzMLl5MnV0sOWfaPwg=="
+          "hash": "M+01j45MuIuKOO6D745AcA=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html",
-          "hash": "vXqSE6kn0NzskE2BvNSHqw=="
+          "hash": "PhTT36np2f9xpy0Is9DJDg=="
         }
       },
       "is_incremental": false,
@@ -42,7 +42,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html",
-          "hash": "7MGJo1lPzSzjlOYXwJ07UQ=="
+          "hash": "sLVbpkFSorILBDJUEfu+1g=="
         }
       },
       "is_incremental": false,
@@ -54,7 +54,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.html",
-          "hash": "7+sUU5m9ejkbS1g91AQDBw=="
+          "hash": "ijvRcvS8rLN5cWRoA6WEEA=="
         }
       },
       "is_incremental": false,
@@ -66,7 +66,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.ConfigTypesController.html",
-          "hash": "5BJemq+buVqGHe+G0HVC8g=="
+          "hash": "OqccOuBAMR48hGU7C81BGA=="
         }
       },
       "is_incremental": false,
@@ -78,7 +78,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.DeviceGroupController.html",
-          "hash": "HkvTkFV6GKg7p+oHkjPIDA=="
+          "hash": "tDPp/SheQZmhdOCJ1ncODQ=="
         }
       },
       "is_incremental": false,
@@ -90,7 +90,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.PackagesController.html",
-          "hash": "ud0/YMc/qmqhzj5LiQGZUA=="
+          "hash": "ssodCPVw/fUvxYqUoXW5ZQ=="
         }
       },
       "is_incremental": false,
@@ -102,7 +102,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.SeedController.html",
-          "hash": "DDKnw1U/JCS/SzTJu8uULg=="
+          "hash": "qvfoHsEoZ6AY7bc/S/Cv+g=="
         }
       },
       "is_incremental": false,
@@ -114,7 +114,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.SolutionSettingsController.html",
-          "hash": "a+PF4tOzu/lXT4xV3FybYQ=="
+          "hash": "+bcw/Soh0pqM4G4dlamvJw=="
         }
       },
       "is_incremental": false,
@@ -126,7 +126,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.StatusController.html",
-          "hash": "Gx9zCxI/x4WFWNo32dlf5w=="
+          "hash": "uQMKbltIdNgEwimDURQh1g=="
         }
       },
       "is_incremental": false,
@@ -138,7 +138,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.UserSettingsController.html",
-          "hash": "Z3xORbI/kApahSo38ebntw=="
+          "hash": "RDOXzPehJvCZ2TCWpGZEHg=="
         }
       },
       "is_incremental": false,
@@ -150,7 +150,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.html",
-          "hash": "SVhZnhMh5KDUNkwjDHoIEg=="
+          "hash": "ggUBcDi6t2Tp8EjvLnBUpA=="
         }
       },
       "is_incremental": false,
@@ -162,7 +162,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html",
-          "hash": "2ZXZ/6qQZ3gMs1tzCg2crA=="
+          "hash": "URMppS4yw35ZJ+uonA4HdA=="
         }
       },
       "is_incremental": false,
@@ -174,7 +174,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html",
-          "hash": "oE/wF32WmJklLa+BqIl0oA=="
+          "hash": "+8CnkJ+evLF07mp8wfpppg=="
         }
       },
       "is_incremental": false,
@@ -186,7 +186,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html",
-          "hash": "UEza2pz+fd0dTwVSdl+Nzg=="
+          "hash": "3oAAKSc8UOQfnAC2ETg66w=="
         }
       },
       "is_incremental": false,
@@ -198,7 +198,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html",
-          "hash": "K7Ha3MDvqhfGs1YIPPoomw=="
+          "hash": "h80HokVDMzdXsE7eYoWLrw=="
         }
       },
       "is_incremental": false,
@@ -210,7 +210,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html",
-          "hash": "oRnOi40fH90wer4KPetEwQ=="
+          "hash": "825R3VIX/zGvDFxGFBZXQw=="
         }
       },
       "is_incremental": false,
@@ -222,7 +222,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html",
-          "hash": "v4iP87TG4AEGeNsJureYcw=="
+          "hash": "o3pIO1Ht1rY8lxW+hrXFHA=="
         }
       },
       "is_incremental": false,
@@ -234,7 +234,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.html",
-          "hash": "HX3Biai04PYMTwqVxyedfA=="
+          "hash": "ZYjXIbi4Bw+PNrCxWQWMvQ=="
         }
       },
       "is_incremental": false,
@@ -246,7 +246,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.DiagnosticsEventsController.html",
-          "hash": "odo4z0nzIpQRaqxkweg7Ow=="
+          "hash": "2EL+JVILD/XVovBinykuRQ=="
         }
       },
       "is_incremental": false,
@@ -258,7 +258,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.StatusController.html",
-          "hash": "otSEjFbLVhyRIVCmpDgo4A=="
+          "hash": "dSn05p5vRmYcfvq7/YiezA=="
         }
       },
       "is_incremental": false,
@@ -270,7 +270,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.html",
-          "hash": "jIcLhh8TBtUrMhzwLUQTbw=="
+          "hash": "BUx0RszvGV/ofiI4qn+Khw=="
         }
       },
       "is_incremental": false,
@@ -282,7 +282,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html",
-          "hash": "1VyorXyE7pwURUnVY8u4/A=="
+          "hash": "VqM180OodSu78QtN1ITbwA=="
         }
       },
       "is_incremental": false,
@@ -294,7 +294,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.html",
-          "hash": "5CQq5HIhxlisplmureCU7Q=="
+          "hash": "5S3tet8r5POHBuPszFOe8A=="
         }
       },
       "is_incremental": false,
@@ -306,7 +306,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html",
-          "hash": "9QUIio6gVSV8dl0S+JjrVQ=="
+          "hash": "KBX5Wb1ZaOMDGe+DwPQw4w=="
         }
       },
       "is_incremental": false,
@@ -318,7 +318,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html",
-          "hash": "KTQoZ49/cpyNmqAtj0sQgw=="
+          "hash": "8MkMfa/OTH5M9Ft35GZh8Q=="
         }
       },
       "is_incremental": false,
@@ -330,7 +330,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html",
-          "hash": "yZX87nE9EdisV7wv6Bw9yg=="
+          "hash": "9ZL+6cFsWGlqxylLltAYsQ=="
         }
       },
       "is_incremental": false,
@@ -342,7 +342,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html",
-          "hash": "hTvIGbw+zV5uCS+As03k3w=="
+          "hash": "bIVSHv7NRFj8YpNKYmV7EA=="
         }
       },
       "is_incremental": false,
@@ -354,7 +354,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html",
-          "hash": "ZPrEC8MNwkp9rRniS1fQ4w=="
+          "hash": "huzoEpWgXSutHjmLmYzpqw=="
         }
       },
       "is_incremental": false,
@@ -366,7 +366,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html",
-          "hash": "ChcqCUaLnJpVfXsUHym/HQ=="
+          "hash": "mOY1YGpRpAynl2aY/OB44Q=="
         }
       },
       "is_incremental": false,
@@ -378,7 +378,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html",
-          "hash": "6C3dST1o+0W2mM54HEiDgw=="
+          "hash": "mGoa+Ph6VtWuIDLGPXNXXA=="
         }
       },
       "is_incremental": false,
@@ -390,7 +390,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.html",
-          "hash": "zxyemJHlc+1euxeq7T4bZQ=="
+          "hash": "sMojegD/DoBLkag5faLf1w=="
         }
       },
       "is_incremental": false,
@@ -402,7 +402,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/index.html",
-          "hash": "8pwLNOHjtdIQ8UAPwvw4jw=="
+          "hash": "4QarH3MVesGHR11PEyrBKQ=="
         }
       },
       "is_incremental": false,
@@ -414,7 +414,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html",
-          "hash": "kPaa1xkXLd1ejHn/57epYg=="
+          "hash": "AQxTJ0ihmkz9PuDIkfxRvA=="
         }
       },
       "is_incremental": false,
@@ -426,7 +426,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.html",
-          "hash": "Uyfq82rOEwhFpwzmp/8K3Q=="
+          "hash": "VeiZ7l80Kn3/cKTds8p34Q=="
         }
       },
       "is_incremental": false,
@@ -438,7 +438,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html",
-          "hash": "gtmyIHC6sBFr1x6z+hxxGw=="
+          "hash": "t5wCvY5uMRmmPZNkildMRw=="
         }
       },
       "is_incremental": false,
@@ -450,7 +450,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html",
-          "hash": "jgW3uaJs1tjMAtTdPOCTuA=="
+          "hash": "fROYLBoCaFM9OdvMQbmsgg=="
         }
       },
       "is_incremental": false,
@@ -462,7 +462,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html",
-          "hash": "phFsZ6NqCVcqILUo5tI1hg=="
+          "hash": "uZIu3iD1MVEjaai+GRXTyw=="
         }
       },
       "is_incremental": false,
@@ -474,7 +474,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html",
-          "hash": "HiaMD45i/2FSvRaTaBmY5A=="
+          "hash": "pXmZCslqxbnp/oBw2d6ycw=="
         }
       },
       "is_incremental": false,
@@ -486,7 +486,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.html",
-          "hash": "J90CnKqoPnQ5Ckbeg2pM3g=="
+          "hash": "xxcv4PUDioNXuL0f3RZ1bw=="
         }
       },
       "is_incremental": false,
@@ -498,7 +498,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html",
-          "hash": "5xUOA6owXuabVKUKfk8oLA=="
+          "hash": "rtgVR9PtSW9EsxcqeLMY7g=="
         }
       },
       "is_incremental": false,
@@ -510,7 +510,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html",
-          "hash": "j5H3gui2la1SGlFDbKjuaA=="
+          "hash": "lB8rQjtgApGVFZE4y91klw=="
         }
       },
       "is_incremental": false,
@@ -522,7 +522,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.html",
-          "hash": "nkpwzEJT0MPMtb/Z7FuUvg=="
+          "hash": "FDkujGNaGkY1IHw8p2eSVA=="
         }
       },
       "is_incremental": false,
@@ -534,7 +534,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html",
-          "hash": "pCgyE7Qd/7iJSiR89bvOnw=="
+          "hash": "wcx25XzyI1zo9swiS3RRZw=="
         }
       },
       "is_incremental": false,
@@ -546,7 +546,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html",
-          "hash": "ly908j+gJxCEzomCBjzs1w=="
+          "hash": "17zdzLpY3i5oAzP58ufL+Q=="
         }
       },
       "is_incremental": false,
@@ -558,7 +558,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html",
-          "hash": "kFRek4FU92FSC7OMvX7H3g=="
+          "hash": "RM1X1/ngRa6z/B95l5vaaw=="
         }
       },
       "is_incremental": false,
@@ -570,7 +570,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.html",
-          "hash": "FX2prZGHjYHE55PvLtDhZg=="
+          "hash": "2a7g3zfD+UA7iD80ru/XKw=="
         }
       },
       "is_incremental": false,
@@ -582,22 +582,19 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.html",
-          "hash": "9zwTG1W3Y/hQdZQEs9jQLg=="
+          "hash": "CSpEafVSgrMpOXdw1E42CA=="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
       "type": "Toc",
       "source_relative_path": "APIs/toc.yml",
       "output": {
         ".html": {
           "relative_path": "APIs/toc.html",
-          "hash": "QE0gUs5Wb2AEF3WEN5Lzwg=="
+          "hash": "6xhsQWU1ywTvjD1D+d7Dcg=="
         }
       },
       "is_incremental": false,
@@ -609,7 +606,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Contribute/Community.html",
-          "hash": "DmW8SwFJzwJo26UFoHUhDw=="
+          "hash": "CK19ugDBvXdRryPn/2ZmIA=="
         }
       },
       "is_incremental": false,
@@ -621,7 +618,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Contribute/How-To-Improve-Documentation.html",
-          "hash": "EzGXyYppTKWPIpKoMPoSmg=="
+          "hash": "4IeMB9rKhX4fkfyTNjXEJQ=="
         }
       },
       "is_incremental": false,
@@ -633,7 +630,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Contribute/How-To-Influence-Priorities.html",
-          "hash": "QqKHQ43aCA6DwG4fLIdfMw=="
+          "hash": "A1ehuYt5ijXukD+SYKtrtg=="
         }
       },
       "is_incremental": false,
@@ -645,7 +642,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Contribute/How-To-Make-Development-Contributions.html",
-          "hash": "ki5S6GKecahxrnsd0g5kEg=="
+          "hash": "uo5c7KTDCvUryBHiVWuyAw=="
         }
       },
       "is_incremental": false,
@@ -660,7 +657,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Contribute/How-To-Report-A-Bug.html",
-          "hash": "6FbWXByPntg1VHMdqfW0Eg=="
+          "hash": "nW9MHYhr451OyA0i4f0rxg=="
         }
       },
       "is_incremental": false,
@@ -675,7 +672,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Contribute/How-To-Request-A-Feature.html",
-          "hash": "KibUeLNX/rkEPy/RjbpXiA=="
+          "hash": "a6Srz1NPCXrt9l50JxENpg=="
         }
       },
       "is_incremental": false,
@@ -687,7 +684,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Contribute/How-To-Track-Progress.html",
-          "hash": "xNXWyQbMuiRL+Vakdd3jYQ=="
+          "hash": "uFVoP8g6Z1ZMJKWbBiqLHw=="
         }
       },
       "is_incremental": false,
@@ -699,7 +696,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Contribute/How-To-Track-Releases.html",
-          "hash": "RJMSdNUtLygadWbNlrGhFw=="
+          "hash": "GkSvnWt09IGdXUBebGr2+Q=="
         }
       },
       "is_incremental": false,
@@ -711,7 +708,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Contribute/Platform.html",
-          "hash": "uvUoswGPcf3FVc8rybaWZA=="
+          "hash": "xas4h8xF1N5t0CYYl2O8mQ=="
         }
       },
       "is_incremental": false,
@@ -726,7 +723,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Contribute/index.html",
-          "hash": "PgQAyQIMxCfLgM+FmYucFA=="
+          "hash": "EY8kDAcKKPOJmY6eGJGJaQ=="
         }
       },
       "is_incremental": false,
@@ -738,7 +735,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/GetAccess/deploy-new.html",
-          "hash": "Yidk5Tvx0vZY7U9QV12umw=="
+          "hash": "bJHbM8qMLIK4YXPe/7Pp+Q=="
         }
       },
       "is_incremental": false,
@@ -750,7 +747,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/GetAccess/get-access.html",
-          "hash": "rb43RCKcHZKt9ghvlTUuzg=="
+          "hash": "HppV3o5Hd+vsQsF8SW9g1g=="
         }
       },
       "is_incremental": false,
@@ -762,7 +759,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/GetAccess/index.html",
-          "hash": "V7iDF7gr8uZhsdGrWXRrUw=="
+          "hash": "u8Rw60G+gVWj9OSYBWJSgQ=="
         }
       },
       "is_incremental": false,
@@ -774,7 +771,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/Architecture/costs.html",
-          "hash": "sCycOcUTvyuoVa3IVxABDw=="
+          "hash": "xpEc2fUSVxTDYXCabtUzxA=="
         }
       },
       "is_incremental": false,
@@ -786,7 +783,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/Architecture/index.html",
-          "hash": "cHJ41KmAITVLbIqWmXK8tw=="
+          "hash": "jCfVBu5iI9clMnIcedx9XA=="
         }
       },
       "is_incremental": false,
@@ -798,7 +795,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/architecture.html",
-          "hash": "MLxy8NWBiWqzp889HJW80g=="
+          "hash": "DRXfULe1M1F2CMOrnt40nA=="
         }
       },
       "is_incremental": false,
@@ -813,7 +810,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/devices.html",
-          "hash": "lJSg/LAvDPTlAqIP0OfAeg=="
+          "hash": "c4RrmRL4gi35hW4xxAXLvw=="
         }
       },
       "is_incremental": false,
@@ -825,7 +822,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/integration.html",
-          "hash": "yp5gvtsps1+4vG/ste0Rng=="
+          "hash": "PbsHLr4iTJ4/ay2sFcA6WA=="
         }
       },
       "is_incremental": false,
@@ -837,7 +834,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/platform.html",
-          "hash": "wzkJ1Fcjkl4i69FQrIRbAg=="
+          "hash": "lua8WmALs4CNgaRXLxTMcA=="
         }
       },
       "is_incremental": false,
@@ -849,7 +846,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/purpose.html",
-          "hash": "J3FG8LSgvmwVpNCYuWZQOQ=="
+          "hash": "RDc8oM/y5WeJ/2ZdeGQ+9A=="
         }
       },
       "is_incremental": false,
@@ -861,7 +858,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/resources.html",
-          "hash": "dYDTSN2FDPNe7yIG8kjRQw=="
+          "hash": "O8jEDpc7Zvq60T4k5EKexw=="
         }
       },
       "is_incremental": false,
@@ -873,7 +870,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/services.html",
-          "hash": "ry8Q6fxkFg65jIl9aoOoeQ=="
+          "hash": "p7BV/pXwCLe6szVPsA9VXg=="
         }
       },
       "is_incremental": false,
@@ -885,7 +882,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/technology.html",
-          "hash": "Cto/XqW0XhPoswe47UeTfQ=="
+          "hash": "zXXIqhwjz4xIeHB87L631Q=="
         }
       },
       "is_incremental": false,
@@ -897,7 +894,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByRole/API-Developer-Setup.html",
-          "hash": "qS4oKuEOdYR3MYvGet09fA=="
+          "hash": "+WY0CBUSe+g1T9HTttAekg=="
         }
       },
       "is_incremental": false,
@@ -909,7 +906,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByRole/Azure-Developer-Setup.html",
-          "hash": "3onG4w+F6JxImmGRWs637w=="
+          "hash": "wKfQmR4bTtx15xLA84Ee4g=="
         }
       },
       "is_incremental": false,
@@ -921,7 +918,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByRole/DevOps-Setup.html",
-          "hash": "QeuzxRvNSjwbSEYVhpL93A=="
+          "hash": "B4+jJV+qlsds9mR+cWzXXw=="
         }
       },
       "is_incremental": false,
@@ -933,7 +930,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByRole/Doc-Contributor-Setup.html",
-          "hash": "mw5IlHdCBVJxrKXeei2XVg=="
+          "hash": "qIrEboBdXn1ed20YiLOjTQ=="
         }
       },
       "is_incremental": false,
@@ -948,7 +945,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByRole/Web-Developer-Setup.html",
-          "hash": "lvo/dP1rm7xBrlRMjT9SEw=="
+          "hash": "fD2xs2peDqVDNVcZTDLRew=="
         }
       },
       "is_incremental": false,
@@ -963,7 +960,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/All.html",
-          "hash": "xYI2ux+PdKhqCIF3mQ0gBQ=="
+          "hash": "GDZvrkhh/f1E3IMXg4p6OA=="
         }
       },
       "is_incremental": false,
@@ -975,7 +972,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/azure-cli.html",
-          "hash": "uWLAP+ojylCcISNpHl7AUA=="
+          "hash": "YhkXty8rD7XJ7OCLNR2J9Q=="
         }
       },
       "is_incremental": false,
@@ -987,7 +984,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/azure-data-studio.html",
-          "hash": "BJGbhku1Iy66Wu7SrX2mVA=="
+          "hash": "wqDpWTB607zUJPfWxSX6iA=="
         }
       },
       "is_incremental": false,
@@ -999,7 +996,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/azure-iot-explorer.html",
-          "hash": "YB5sezlQ02elR0KSd+hEKw=="
+          "hash": "8fq86pfMztZCXT61pKDgJg=="
         }
       },
       "is_incremental": false,
@@ -1014,7 +1011,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/bash.html",
-          "hash": "L/FMBonWvjoKB2Gp4UcauA=="
+          "hash": "f4d4FlOvMATzJWnpKR3w4A=="
         }
       },
       "is_incremental": false,
@@ -1026,7 +1023,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/dev-spaces.html",
-          "hash": "QCd+gqtxz7yDaZ/KUPD4xw=="
+          "hash": "jISBUG1+hj40gBcRuG7l7A=="
         }
       },
       "is_incremental": false,
@@ -1038,7 +1035,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/docker.html",
-          "hash": "rOOy2M0n2N8zA/1U/ubK4g=="
+          "hash": "ps3juiXnK8EuDPl9QKiNrw=="
         }
       },
       "is_incremental": false,
@@ -1050,7 +1047,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/dotnet-core.html",
-          "hash": "Ew615C2/dtaNdTXvRxISTg=="
+          "hash": "AQcNF3Wdf3Ct8eFeYNwf7g=="
         }
       },
       "is_incremental": false,
@@ -1065,7 +1062,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/git.html",
-          "hash": "3TaNiTb9VZjUw/ZM9bJVUg=="
+          "hash": "c8M7nD4fsOH5sE1Jq0/ZdQ=="
         }
       },
       "is_incremental": false,
@@ -1077,7 +1074,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/helm.html",
-          "hash": "kcI9HNN127uTjNMDyfPv8A=="
+          "hash": "eQJIoF2CdLbOPl1jcGom0A=="
         }
       },
       "is_incremental": false,
@@ -1089,7 +1086,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/kubernetes.html",
-          "hash": "FmD87rPv040evVKcNEgBVg=="
+          "hash": "/3YQ9y2HQf63cV+3h8GTiw=="
         }
       },
       "is_incremental": false,
@@ -1101,7 +1098,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/nodejs.html",
-          "hash": "tkDAGrmM3yJEO3/5WSURyg=="
+          "hash": "mnkEkf3pgqYJVXG6FJ6WYQ=="
         }
       },
       "is_incremental": false,
@@ -1113,7 +1110,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/npm.html",
-          "hash": "CVpQL6fWqytq5rc9eLz9Eg=="
+          "hash": "EKGi9oJEpRmK8T1Zg1794g=="
         }
       },
       "is_incremental": false,
@@ -1125,7 +1122,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/postman.html",
-          "hash": "Xf3+NjEcLkgtTgJkMUVTHA=="
+          "hash": "IXCUG7N3gKYTaTbk/VFzKg=="
         }
       },
       "is_incremental": false,
@@ -1137,7 +1134,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/powershell.html",
-          "hash": "h1lfml+DUlKUuPpMCxLPuw=="
+          "hash": "3j+tHtSw6Rqa8Hs/7WWOxw=="
         }
       },
       "is_incremental": false,
@@ -1149,7 +1146,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/redux.html",
-          "hash": "zM2TIDiluiu3ZId+QQMv3A=="
+          "hash": "RMQHVpHrLGlgkfqoSdO9ng=="
         }
       },
       "is_incremental": false,
@@ -1161,7 +1158,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/storage-explorer.html",
-          "hash": "2GBEJwjLnIhR7MvFboOkew=="
+          "hash": "pWYvf8bjCNEUJOiLNuVKEg=="
         }
       },
       "is_incremental": false,
@@ -1173,7 +1170,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/terraform.html",
-          "hash": "WMgOFjbe2eA/xdwUFLoOvg=="
+          "hash": "nPJk2aKjI2BKvVqadA5lkQ=="
         }
       },
       "is_incremental": false,
@@ -1185,7 +1182,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/virtualization.html",
-          "hash": "OQG87eIzNS9B7nN0XR71Wg=="
+          "hash": "Wox8C1bWTa47Sr1YsWuJVQ=="
         }
       },
       "is_incremental": false,
@@ -1197,7 +1194,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/vs-2019.html",
-          "hash": "CcL1oJnZGBp/BkzT4v+9vA=="
+          "hash": "ux5BNu2iUsIg4+ZAjngRSQ=="
         }
       },
       "is_incremental": false,
@@ -1212,7 +1209,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/vs-code.html",
-          "hash": "YtzeI2+hyXNrtVQH5thTrA=="
+          "hash": "EhBncuGw5Zkb7+WKlBFGLQ=="
         }
       },
       "is_incremental": false,
@@ -1224,7 +1221,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/ByTool/xunit.html",
-          "hash": "ICqCBJfmhjSDaEbzo6zxmg=="
+          "hash": "MRMspxo0esPwT3w4iQc40w=="
         }
       },
       "is_incremental": false,
@@ -1236,7 +1233,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/SourceCode/One-Time-Setup.html",
-          "hash": "2nCi5MNYVMht7hP4/1mMZA=="
+          "hash": "QkaGFOzwB/ZChcb6EVyecA=="
         }
       },
       "is_incremental": false,
@@ -1248,7 +1245,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/SourceCode/guide1.html",
-          "hash": "HgkUJtR+/ZSdYHlpQnvQhw=="
+          "hash": "I7F1TC817B+4Fa06DnPzxA=="
         }
       },
       "is_incremental": false,
@@ -1260,7 +1257,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/SourceCode/guide2.html",
-          "hash": "jM774GEAxwdJc8uCxoce1w=="
+          "hash": "1OHZTeOFRXpOQOctQssupg=="
         }
       },
       "is_incremental": false,
@@ -1272,7 +1269,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/SourceCode/index.html",
-          "hash": "7Si3LgNb+KRLxmrx7Eaq3A=="
+          "hash": "1c84OeC2p8D6upWT5G7Jzg=="
         }
       },
       "is_incremental": false,
@@ -1284,7 +1281,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/SourceCode/naming-conventions.html",
-          "hash": "u6Hmo3Siefe+1QZvdR8Hvw=="
+          "hash": "ZNLUqxOhqtGL6PfgbfOjHA=="
         }
       },
       "is_incremental": false,
@@ -1299,7 +1296,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/index.html",
-          "hash": "fUMbqcKX8kioHpE20xlazg=="
+          "hash": "1xk6RONWxMrdID/aE4vNPQ=="
         }
       },
       "is_incremental": false,
@@ -1311,7 +1308,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Setup/tools.html",
-          "hash": "uQhPXCCA5UL2hm3q9Ei4dg=="
+          "hash": "WOYeng2exu+SRxp9Zgo0PA=="
         }
       },
       "is_incremental": false,
@@ -1323,7 +1320,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/Dashboard.html",
-          "hash": "YriPvW1XiV6aRpmG3+8U2g=="
+          "hash": "4g3zdrrqREQyr0LRc9HaJA=="
         }
       },
       "is_incremental": false,
@@ -1335,7 +1332,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/Deployments.html",
-          "hash": "FZ+RDDdw11Grvcc1o+Forw=="
+          "hash": "C5di/wtVZEp2IQE65TxYcw=="
         }
       },
       "is_incremental": false,
@@ -1350,7 +1347,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/Device-Explorer.html",
-          "hash": "9hGcwh4+x2Q1G3EeC6YzBQ=="
+          "hash": "6/gRukH/yv6rB7aATCo5MQ=="
         }
       },
       "is_incremental": false,
@@ -1362,7 +1359,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/Maintenance.html",
-          "hash": "l9bL8HkI5THItycn4wnj8Q=="
+          "hash": "Fs7k6GS6jzW/gI5lkYrZpg=="
         }
       },
       "is_incremental": false,
@@ -1374,7 +1371,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/Packages.html",
-          "hash": "ObPFrYmqo06KvmiDc52jug=="
+          "hash": "P5ss1RvDB3Tm3tG73o5i/g=="
         }
       },
       "is_incremental": false,
@@ -1386,7 +1383,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/Rules.html",
-          "hash": "IWiGWM9uFgE7Zw0GYSg6Kg=="
+          "hash": "IFFlKNQbIklgZV33VtVIVQ=="
         }
       },
       "is_incremental": false,
@@ -1398,7 +1395,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/User-Management.html",
-          "hash": "yySQicfHn43gIh6X3NwHzA=="
+          "hash": "0Jb6LBzH3cRtvHBE+qYPoA=="
         }
       },
       "is_incremental": false,
@@ -1410,7 +1407,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/index.html",
-          "hash": "f9kpNX4zep/C6tZEfP4R1Q=="
+          "hash": "avq0gx5hSMTAWhaj5BQBKQ=="
         }
       },
       "is_incremental": false,
@@ -1425,7 +1422,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/system-settings.html",
-          "hash": "ZnfZaHrh3gYluaoqOCKvaA=="
+          "hash": "Srs0zZp/bx/ujaqhXfX3gw=="
         }
       },
       "is_incremental": false,
@@ -1440,7 +1437,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/toc.html",
-          "hash": "YZX/rS9g+LpXa1UsxPN3Hw=="
+          "hash": "HAxSFPjRuC4RcrQf3/4u+Q=="
         }
       },
       "is_incremental": false,
@@ -1452,7 +1449,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/toolbar.html",
-          "hash": "u2+aLRSaA/qenQMC5xHHZA=="
+          "hash": "ZCyoEqYIVplHUvK8ILdFxg=="
         }
       },
       "is_incremental": false,
@@ -1467,7 +1464,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/user-profile.html",
-          "hash": "qChky/QBznZIdsWhNYPPWg=="
+          "hash": "f+RHNq8XN2irRIWbzwIyRQ=="
         }
       },
       "is_incremental": false,
@@ -1479,7 +1476,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/foundation.html",
-          "hash": "grSUPYHKomQ+mzYJS74WrQ=="
+          "hash": "u7bfFMZwIhzIk3VHUMI1/g=="
         }
       },
       "is_incremental": false,
@@ -1494,7 +1491,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/index.html",
-          "hash": "kynXnTl7cNYDqF1jxpsrYQ=="
+          "hash": "NzdyUgjE2osx7HiDdeZysw=="
         }
       },
       "is_incremental": false,
@@ -1509,7 +1506,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/toc.html",
-          "hash": "yXkXLnLTgxl3zgBBoDpmnA=="
+          "hash": "p1sZoDwacPsGJR399Nio/w=="
         }
       },
       "is_incremental": false,
@@ -1521,7 +1518,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/Devices/Register-A-Device.html",
-          "hash": "Gk9Unyv/+ofEulU6gsuBEg=="
+          "hash": "oIhvm30wRxqQiROJDSkSWQ=="
         }
       },
       "is_incremental": false,
@@ -1533,7 +1530,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/Devices/Register-A-Simulated-Device.html",
-          "hash": "8SD7Hi24ekgVxI/hXvJDcw=="
+          "hash": "WWRG2gEUjZSxDbH0reA78g=="
         }
       },
       "is_incremental": false,
@@ -1545,7 +1542,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/Devices/Simulating-Data.html",
-          "hash": "lLUZ1qEiDjhgNIThTt4ONQ=="
+          "hash": "lPphf03G0/XRwYDEMjZ3Jg=="
         }
       },
       "is_incremental": false,
@@ -1557,7 +1554,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/Devices/index.html",
-          "hash": "DiBIclylWo0Do6kBe0E2mg=="
+          "hash": "DvdgAcx7YXBBTU2oiVZ78Q=="
         }
       },
       "is_incremental": false,
@@ -1572,7 +1569,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/Issues/index.html",
-          "hash": "9CPX+zGmJygVJ8S76h/7oQ=="
+          "hash": "YzjTyVnmJIiENA5sYlWdQA=="
         }
       },
       "is_incremental": false,
@@ -1584,7 +1581,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/index.html",
-          "hash": "3I0SIPqFMzegCF8NGZ+FBw=="
+          "hash": "rodVbQrT2f5d0fK8mL4fdw=="
         }
       },
       "is_incremental": false,
@@ -1599,7 +1596,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "LIISwpg4emtBFwU2KqIawA=="
+          "hash": "eWQZFDvFGCc2tE8c7Higxw=="
         }
       },
       "is_incremental": false,
@@ -1611,7 +1608,7 @@
       "output": {
         ".html": {
           "relative_path": "UseCases/index.html",
-          "hash": "uq4BOqvUb3h6rM0dDRboAA=="
+          "hash": "WSw79lZyS3oM/sVDX9xkzw=="
         }
       },
       "is_incremental": false,
@@ -3936,19 +3933,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "/r35Ct0UgkB1aMtrshc3RQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "linked-demo.md",
-      "output": {
-        ".html": {
-          "relative_path": "linked-demo.html",
-          "hash": "UjHz/pvBZbQaV24KQByu9A=="
+          "hash": "tAx2oi9ZYCpR5mYU5lC+Cw=="
         }
       },
       "is_incremental": false,
@@ -3956,10 +3941,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "pdfdocs/3M_IoT_Platform.pdf",
+      "source_relative_path": "pdf/3M_IoT_Platform.pdf",
       "output": {
         "resource": {
-          "relative_path": "pdfdocs/3M_IoT_Platform.pdf"
+          "relative_path": "pdf/3M_IoT_Platform.pdf"
         }
       },
       "is_incremental": false,
@@ -3967,10 +3952,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "pdfdocs/3M_IoT_Platform_APIs.pdf",
+      "source_relative_path": "pdf/3M_IoT_Platform_APIs.pdf",
       "output": {
         "resource": {
-          "relative_path": "pdfdocs/3M_IoT_Platform_APIs.pdf"
+          "relative_path": "pdf/3M_IoT_Platform_APIs.pdf"
         }
       },
       "is_incremental": false,
@@ -3978,10 +3963,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "pdfdocs/3M_IoT_Platform_GettingStarted.pdf",
+      "source_relative_path": "pdf/3M_IoT_Platform_GettingStarted.pdf",
       "output": {
         "resource": {
-          "relative_path": "pdfdocs/3M_IoT_Platform_GettingStarted.pdf"
+          "relative_path": "pdf/3M_IoT_Platform_GettingStarted.pdf"
         }
       },
       "is_incremental": false,
@@ -3989,10 +3974,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "pdfdocs/3M_IoT_Platform_Guides.pdf",
+      "source_relative_path": "pdf/3M_IoT_Platform_Guides.pdf",
       "output": {
         "resource": {
-          "relative_path": "pdfdocs/3M_IoT_Platform_Guides.pdf"
+          "relative_path": "pdf/3M_IoT_Platform_Guides.pdf"
         }
       },
       "is_incremental": false,
@@ -4028,7 +4013,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 80,
+          "total_file_count": 79,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

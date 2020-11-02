@@ -71,7 +71,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="device-explorer">Device Explorer</h1>
 
-<p>Device Explorer is used for maintaining the IoT devices. This section explores the creation, maintenance of devices.</p>
+<p>The <strong>Device Explorer</strong> is used for maintaining the IoT devices. This section explores the creation and maintenance of devices.</p>
 <p>Below are the features it offers:</p>
 <ol>
 <li><a href="#device-explorer-grid">Device Explorer Grid</a></li>
@@ -82,10 +82,10 @@
 <li><a href="#organize-devices">Organize devices</a></li>
 <li><a href="#more">More</a></li>
 </ol>
-<h2 id="device-explorer-grid">Device Explorer Grid</h2>
-<p>Device Explorer Grid lists all the devices which are registered to Azure IoT Hub.</p>
+<h2 id="device-explorer-grid">Device Explorer grid</h2>
+<p>The <strong>Device Explorer</strong> grid lists all the devices which are registered to the Azure IoT Hub.</p>
 <ul>
-<li><p>Following lists the columns and usage in Device Explorer Grid</p>
+<li><p>The following lists the columns and their usage in the <strong>Device Explorer</strong> grid</p>
 <table>
 <thead>
 <tr>
@@ -96,31 +96,31 @@
 <tbody>
 <tr>
 <td>Device Name</td>
-<td>Name of the Device.</td>
+<td>Name of the Device</td>
 </tr>
 <tr>
 <td>Simulated</td>
-<td>Indicates whether device simulation is on or off.</td>
+<td>Indicates whether device simulation is on or off</td>
 </tr>
 <tr>
 <td>Device Type</td>
-<td>Describes the type of device.</td>
+<td>Describes the type of device</td>
 </tr>
 <tr>
 <td>Firmware</td>
-<td>Latest device firmware version.</td>
+<td>Latest device firmware version</td>
 </tr>
 <tr>
-<td>Telemerty</td>
-<td>Schema of the telemetry.</td>
+<td>Telemetry</td>
+<td>Schema of the telemetry</td>
 </tr>
 <tr>
 <td>Status</td>
-<td>Indicates whether device either connected or disconnected to Azure IoT hub.</td>
+<td>Indicates whether the device is connected to the Azure IoT hub</td>
 </tr>
 <tr>
 <td>Last Connection</td>
-<td>Last date when a device connected to Azure IoT hub.</td>
+<td>Last date when a device connected to Azure IoT hub</td>
 </tr>
 </tbody>
 </table>
@@ -130,27 +130,27 @@
 </li>
 </ul>
 <h2 id="add-a-device">Add a Device</h2>
-<p>Step for adding a device.</p>
+<p>Steps for adding a device:</p>
 <ul>
-<li><p>Navigate to <strong>Device Explorer</strong> page from the Left menu. Click on ➕<strong>New device</strong></p>
+<li><p>Navigate to the <strong>Device Explorer</strong> page from the left menu. Click on ➕<strong>New device</strong></p>
 <p><img src="../../images/device-explorer/device-explorer-new-device.png" alt="Device Grid"></p>
 </li>
-<li><p>Choose between below device managed service</p>
+<li><p>Choose between the below device management services</p>
 <ul>
 <li><strong>IoT Edge device</strong></li>
 <li><strong>IoT device</strong></li>
 </ul>
 </li>
-<li><p>Enter <strong>Device ID</strong> or choose <strong>System generated device IDs</strong> to generated random device ID.</p>
+<li><p>Enter a device ID or choose <strong>System generated device IDs</strong> to generate a random device ID.</p>
 </li>
-<li><p>Choose below authentication types</p>
+<li><p>Choose one of the below authentication types</p>
 <ul>
 <li><strong>Symmetric key</strong></li>
 <li><strong>X.509</strong></li>
 </ul>
 <p><img src="../../images/device-explorer/device-explorer-new-device-flyout.png" alt="Device Grid"></p>
 </li>
-<li><p>Choose below authentication key options</p>
+<li><p>Choose one of the below authentication key options</p>
 <ul>
 <li><strong>Auto generate keys</strong>
 <ul>
@@ -158,9 +158,9 @@
 <li>This option is only available when authentication type <strong>Symmetric key</strong> is selected.</li>
 </ul>
 </li>
-<li><strong>Enter Keys manually</strong>
+<li><strong>Enter keys manually</strong>
 <ul>
-<li>if selected, the user should provide Primary and Secondary Keys</li>
+<li>If selected, the user should provide Primary and Secondary Keys.</li>
 </ul>
 </li>
 </ul>
@@ -169,84 +169,78 @@
 <li><p>Now verify the details provided and click <strong>Apply</strong>.</p>
 <p><img src="../../images/device-explorer/device-explorer-new-device-apply.png" alt="Device Grid"></p>
 </li>
-<li><p>Once Device successfully is created, the user will be presented with created device information and will be reflected in Device Explorer Grid.</p>
+<li><p>Once the device is successfully created, you will be presented with the created device information andthe device will be reflected in Device Explorer Grid.</p>
 <p><img src="../../images/device-explorer/device-explorer-new-device-successfully.png" alt="Device Grid"></p>
 </li>
 </ul>
 <h2 id="device-details">Device Details</h2>
-<p>The Device Details panel displays information about the device such as telemetry, tag values, the methods it supports, and the properties reported by the device.</p>
-<p>Click on the device name in the grid. It will open the device details panel.</p>
-<p>Below are the details the device details panel provides.</p>
+<p>The <strong>Device Details</strong> panel displays information about a device such as telemetry, tag values, the methods it supports, and the properties reported by the device.</p>
+<p>Click on the device name in the grid. It will open the <strong>Device Details</strong> panel.</p>
+<p>Below are the details the <strong>Device Details</strong> panel provides.</p>
 <ol>
-<li><p>Alert Grid</p>
+<li><p><strong>Alert Grid</strong></p>
 <ul>
-<li>Grid will be avaiable when alerts are observed for a device</li>
+<li>The grid will be displayed when alerts are observed for a device.</li>
 </ul>
 <p><img src="../../images/device-explorer/device-explorer-device-details-alert.png" alt="Device Grid"></p>
 </li>
-<li><p>Telemetry</p>
+<li><p><strong>Telemetry</strong></p>
 </li>
-<li><p>Tags</p>
+<li><p><strong>Tags</strong></p>
 </li>
-<li><p>Methods</p>
+<li><p><strong>Methods</strong></p>
 <p><img src="../../images/device-explorer/device-explorer-device-details-telemetry.png" alt="Device Grid"></p>
 </li>
-<li><p>Properties</p>
-<ul>
-<li>Properties reported by the device.</li>
-</ul>
+<li><p><strong>Properties</strong></p>
 </li>
-<li><p>Diagnostics</p>
-<ul>
-<li>Diagnostic information from the device.</li>
-</ul>
+<li><p><strong>Diagnostics</strong></p>
 <p><img src="../../images/device-explorer/device-explorer-device-details-properties.png" alt="Device Grid"></p>
 </li>
-<li><p>Deployment messages</p>
+<li><p><strong>Deployment messages</strong></p>
 <ul>
 <li>Edge module messages on the device.</li>
 </ul>
 </li>
-<li><p>Device Uploads</p>
+<li><p><strong>Device Uploads</strong></p>
 <ul>
-<li>File Uploads from Device.</li>
+<li>File Uploads from the device.</li>
 </ul>
 </li>
-<li><p>Device Deployments</p>
+<li><p><strong>Device Deployments</strong></p>
 <ul>
-<li>Deployment History of device.</li>
+<li>Deployment history of the device.</li>
 </ul>
 <p><img src="../../images/device-explorer/device-explorer-device-details-deployment.png" alt="Device Grid"></p>
 </li>
 </ol>
 <h2 id="delete-device">Delete Device</h2>
 <p>Devices that are no longer needed or in use can be deleted.</p>
-<p>Steps to Delete a device</p>
+<p>Steps to delete a device:</p>
 <ul>
-<li><p>Select one or more devices by clicking on the Check box left side of the device Name in the grid.</p>
+<li><p>Select one or more devices by clicking on the checkbox to the left of the device name in the grid.</p>
 </li>
-<li><p>After selecting devices <strong>🗑️Delete</strong> button visible in the toolbar and click on the delete button.</p>
+<li><p>After selecting devices the <strong>🗑️Delete</strong> button will be visible in the toolbar; click <strong>Delete</strong>.</p>
 <p><img src="../../images/device-explorer/device-explorer-delete.png" alt="Device Grid"></p>
 </li>
-<li><p>Click on the toggle button to delete the device and the <strong>Delete</strong> button will be activated.</p>
+<li><p>Click on the toggle button to delete the device(s) and the <strong>Delete</strong> button will be activated.</p>
 <p><img src="../../images/device-explorer/device-explorer-delete-toggle.png" alt="Device Grid"></p>
 </li>
-<li><p>After deleting the device user sees a message <strong>Device Deleted Successfully</strong> and device details removed from the device explorer grid.</p>
+<li><p>After deleting the device(s) you will see a message that the device(s) have been deleted and the device details removed from the <strong>Device Explorer</strong> grid.</p>
 <p><img src="../../images/device-explorer/device-explorer-delete-successfully.png" alt="Device Grid"></p>
 </li>
 </ul>
 <h2 id="configure-a-device">Configure a Device</h2>
-<p>In device explorer new device properties can also update, below are the steps:</p>
+<p>The <strong>Device Explorer</strong> grid also allows updating device properties, below are the steps:</p>
 <ul>
-<li><p>Select a device by clicking on the check box left side of device name in the grid.</p>
+<li><p>Select a device by clicking on the check box to the left side of the device name in the grid.</p>
 <p><img src="../../images/device-explorer/device-explorer-job.png" alt="Device Grid"></p>
 </li>
-<li><p>Then click <strong>Jobs</strong> button in the toolbar and then choose <strong>Properties</strong>.</p>
+<li><p>Then click the <strong>Jobs</strong> button in the toolbar and then choose <strong>Properties</strong>.</p>
 <p><img src="../../images/device-explorer/device-explorer-properties-select.png" alt="Device Grid"></p>
 </li>
 <li><p>The <strong>Jobs</strong> panel shows the updateable property values for the selected device.</p>
 </li>
-<li><p>To update the device properties, set the job name in <strong>Enter job name</strong> text box, update the properties value, and click <strong>Apply</strong>.</p>
+<li><p>To update the device properties, set the <strong>Job Name</strong> in the text box, update the properties value(s), and click <strong>Apply</strong>.</p>
 </li>
 </ul>
 <p><img src="../../images/device-explorer/device-explorer-properties-apply.png" alt="Device Grid"></p>
@@ -255,36 +249,36 @@
 </ul>
 <p><img src="../../images/device-explorer/device-explorer-properties-successfully.png" alt="Device Grid"></p>
 <ul>
-<li><p>After the job completes, navigate to device explorer and verify the updated properties details in the device details panel under the properties section.</p>
+<li><p>After the job completes, navigate to the <strong>Device Explorer</strong> and verify the updated properties details in the device details panel under the <strong>Properties</strong> section.</p>
 <blockquote>
 <p><strong>Note:</strong></p>
-<p>Job status does not show live status, to refresh status click <strong>refresh</strong> button.</p>
+<p>The job status does not show live status, to refresh the status click the <strong>refresh</strong> button.</p>
 </blockquote>
 <p><img src="../../images/device-explorer/device-explorer-properties-job-status.png" alt="Device Grid"></p>
 </li>
 </ul>
 <h2 id="organize-devices">Organize devices</h2>
-<p>To make it easier as a user to organize and manage your devices, we can tag them with a team name.</p>
-<p>To display all your devices, navigate to the <strong>Device Explorer</strong> page and choose the All <strong>Default</strong> device group:</p>
+<p>To make it easier as a user to organize and manage your devices, you can tag them with a team name.</p>
+<p>To display all your devices, navigate to the <strong>Device Explorer</strong> page and choose the <strong>Default</strong> device group:</p>
 <p><img src="../../images/device-explorer/device-explorer-device-group-default.png" alt="Device Grid"></p>
 <h3 id="add-tags">Add tags</h3>
 <ol>
-<li><p>Select the devices in the grid for which you want to add a tag and click <strong>Jobs</strong> button.</p>
+<li><p>Select the devices in the grid for which you want to add a tag and click the <strong>Jobs</strong> button.</p>
 <p><img src="../../images/device-explorer/device-explorer-job.png" alt="Device Grid"></p>
 </li>
-<li><p>In the <strong>Jobs</strong> panel, select <strong>Tag</strong>, provide a name to the job, and then add a text tag for example <strong>TestKey</strong> as key and <strong>TestValue</strong> as value. Then click <strong>Apply</strong>.</p>
+<li><p>In the <strong>Jobs</strong> panel, select <strong>Tag</strong>, provide a name to the job, and then add a text tag (for example <strong>TestKey</strong> as the key and <strong>TestValue</strong> as the value). Then click <strong>Apply</strong>.</p>
 <p><img src="../../images/device-explorer/device-explorer-tag.png" alt="Device Grid"></p>
 </li>
 <li><p>To track the status of the job, click <strong>View job status</strong>.</p>
 <p><img src="../../images/device-explorer/device-explorer-tag-successfully.png" alt="Device Grid"></p>
 </li>
-<li><p>After the job completes, verify the tags in devices by using device details panel.</p>
+<li><p>After the job completes, verify the tags on the device by using the <strong>Device Details</strong> panel.</p>
 <p><img src="../../images/device-explorer/device-explorer-tag-status.png" alt="Device Grid">
 <img src="../../images/device-explorer/device-explorer-tag-device-details.png" alt="Device Grid"></p>
 </li>
 </ol>
 <h3 id="create-filters">Create filters</h3>
-<p>Now you can use the tag values to create filters. You can do it in two way:</p>
+<p>You can use tag values to create filters. You can do this two ways:</p>
 <ol>
 <li><strong>Query Devices</strong> panel.</li>
 <li><strong>Manage device groups</strong> panel.</li>
@@ -304,22 +298,22 @@
 <p><img src="../../images/device-explorer/device-explorer-query-devices-device-group.png" alt="Device Grid"></p>
 </li>
 </ul>
-<p><strong>Manage device groups</strong> is useful for creating new device group and managing them, for more info <a href="./tool-bar.md#manage-device-groups">click here</a></p>
+<p>The <strong>Manage device groups</strong> panel is useful for creating new device groups and managing them, for more info <a href="./tool-bar.md#manage-device-groups">click here</a></p>
 <h2 id="more">More</h2>
-<p>Device Explorer also provides few more features, below as follows</p>
+<p>Device Explorer also provides a few more features, listed below:</p>
 <ol>
 <li>Show telemetry</li>
 <li>Send Message</li>
 <li>SIM Management</li>
 </ol>
-<h3 id="show-telemerty">Show telemerty</h3>
-<p><strong>Show telemetry</strong> page is useful to show one or more devices telemetry on a separate page.</p>
-<p>Select one or more devices in the grid and click <strong>Show telemetry</strong> button.</p>
+<h3 id="show-telemetry">Show telemetry</h3>
+<p>The <strong>Show telemetry</strong> page is useful to show one or more devices' telemetry on a separate page.</p>
+<p>Select one or more devices in the grid and click the <strong>Show telemetry</strong> button.</p>
 <p><img src="../../images/device-explorer/device-explorer-show-telemetry.png" alt="Device Grid">
 <img src="../../images/device-explorer/device-explorer-show-telemetry-page.png" alt="Device Grid"></p>
 <h3 id="send-message">Send Message</h3>
 <p><strong>TODO</strong></p>
-<h3 id="sim-menagement">SIM Menagement</h3>
+<h3 id="sim-management">SIM Management</h3>
 <p><strong>TODO</strong></p>
 </article>
           </div>

@@ -327,7 +327,7 @@ jobs:
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
               wget https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/docs/examples/sample-helm-config.yaml -O helm-config.yaml 
-              helm upgrade ingress-azure  -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure --namespace default --install --set appgw.name=ggkagic-appgw-dev --set appgw.resourceGroup=rg-iot-ggkagic-dev --set appgw.subscriptionId=c36fb2f8-f98d-40d0-90a9-d65e93acb428 --set appgw.shared=false --set armAuth.type=servicePrincipal --set armAuth.secretJSON=$(encodedsecret) --set kubernetes.watchNamespace=default
+              helm upgrade ingress-azure  -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure --namespace default --install --set appgw.name=$(appgatewayName) --set appgw.resourceGroup=$(resourceGroupName) --set appgw.subscriptionId=${{parameters.subscriptionId}} --set appgw.shared=false --set armAuth.type=servicePrincipal --set armAuth.secretJSON=$(encodedsecret) --set kubernetes.watchNamespace=default
               helm list           
 
       - task: Bash@3

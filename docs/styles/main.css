@@ -436,7 +436,52 @@ pre {
 .card .link {
   display: inline-block;
 }
+/* Original Card Styles
 
+/* STYLE FOR CARDS */
+/*
+.card {
+  display: block;
+  padding: 1.25rem;
+  border: 0px none lightgray;
+  margin: .5rem;
+  box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%),0 .6px 1.8px 0 rgb(0 0 0 / 11%);
+  line-height: 160%;
+  font-size: 16px;
+  white-space: normal;
+}
+
+.card-header {
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 1px solid lightgray;
+  margin-top: 10px;
+  padding-bottom: 16px;
+}
+
+
+
+.card-subheader {
+  display: inline-block;
+  margin: 16px 0 16px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(94,94,94);
+  text-transform: uppercase;
+}
+
+
+
+.cards.table-striped>tbody,.cards.table-striped>tbody>tr:nth-of-type(odd) {
+  background-color: transparent !important;
+  border: none !important;
+}  
+.cards.table-bordered,.table-bordered>tbody>tr>td,.cards.table-bordered>tbody>tr>th,.cards.table-bordered>tfoot>tr>td,.cards.table-bordered>tfoot>tr>th,.cards.table-bordered>thead>tr>td,.cards.table-bordered>thead>tr>th
+{border:0px solid transparent}
+
+.cards.table-striped>tbody>tr:nth-of-type(odd){background-color:white !important;}
+
+*/
 
 /* Add some padding inside the card container */
 

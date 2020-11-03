@@ -71,12 +71,10 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="user-profile">User Profile</h1>
 
-<p>The User Profile is to view and manage User related information.</p>
-<p>Below are the details and functionalities available in User Profile flyout in different sections:</p>
+<p>Below are the details and available actions in the <strong>User Profile</strong> flyout:</p>
 <ol>
 <li>Tenants
 <ul>
-<li><a href="#current-tenant">Current Tenant</a></li>
 <li><a href="#view-tenants">View Tenants</a></li>
 <li><a href="#switch-tenant">Switch Tenant</a></li>
 <li><a href="#edit-tenant-name">Edit Tenant Name</a></li>
@@ -89,30 +87,19 @@
 <li><a href="#development-variables">Development Variables</a></li>
 <li><a href="#logout">Logout</a></li>
 </ol>
-<p><strong>Steps to access User Profile:</strong></p>
+<p>Steps to access the <strong>User Profile</strong>:</p>
 <ol>
-<li>Login to the application</li>
-<li>Click on the top most icon(User Profile) on the right<br>
+<li>Login to the application.</li>
+<li>Click on the <strong>Person icon</strong> in the upper right.
 <img src="../../images/user-profile/user-profile-button.png" alt="User Profile"></li>
-<li>User Profile flyout opens
+<li>The <strong>User Profile</strong> flyout opens
 <img src="../../images/user-profile/user-profile-flyout.PNG" alt="User Profile Flyout"></li>
 </ol>
 <h2 id="tenants">Tenants</h2>
-<p>This sections shows the list of Tenants to which user is assigned along with other options to manage tenants.</p>
-<h3 id="current-tenant">Current Tenant</h3>
-<p>To view the current Tenant,</p>
-<ol>
-<li>Click on User Profile button, User Profile flyout opens</li>
-<li>Under Tenants section, there is a label that shows current Tenant
-<img src="../../images/user-profile/current-tenant.png" alt="Current Tenant"></li>
-</ol>
+<p>This sections shows the list of tenants to which you are assigned along with other options to manage tenants.</p>
 <h3 id="view-tenants">View Tenants</h3>
-<p>To view the list of Tenants assigned,</p>
-<ol>
-<li>Click on User Profile button, User Profile flyout opens</li>
-<li>Under Tenants section, a table shows the list of Tenants</li>
-</ol>
-<p>Following lists the columns of Tenants grid:</p>
+<p>In the <strong>Tenants</strong> section, a table shows the list of assigned tenants.</p>
+<p>The following columns appear in the <strong>Tenants</strong> grid:</p>
 <table>
 <thead>
 <tr>
@@ -123,7 +110,7 @@
 <tbody>
 <tr>
 <td>Tenant</td>
-<td>Name of the Tenant</td>
+<td>Name of the tenant</td>
 </tr>
 <tr>
 <td>Role</td>
@@ -131,81 +118,76 @@
 </tr>
 <tr>
 <td>Action</td>
-<td>Shows the actions available like Edit and Delete</td>
+<td>Shows the actions available, like Edit and Delete</td>
 </tr>
 </tbody>
 </table>
 <p><img src="../../images/user-profile/tenants-list.png" alt="Tenants List"></p>
 <h3 id="switch-tenant">Switch Tenant</h3>
-<p>A user can switch tenant if there are more than one tenant assigned. To switch the tenant:</p>
+<p>You can switch tenants if more than one tenant is assigned. To switch the tenant:</p>
 <ol>
-<li>Click on User Profile button, User Profile flyout opens</li>
-<li>Under Tenants section, a table with tenant list is displayed</li>
-<li>For tenants in the list other than current, there will be a link on Tenant name that can be used to switch current tenant</li>
-<li>Click on tenant name link to switch<br>
-<strong>Ex:</strong> From the screenshot below, current tenant is <strong>tenant#233a1</strong>. Click on <strong>tenant#209d7</strong> in order to switch to this tenant.<br>
-<img src="../../images/user-profile/switch-tenant.png" alt="Switch tenant"></li>
-<li>The application refreshes with switched current tenant</li>
+<li>If there are tenants in the list other than the current one, there will be a link on the tenant name that can be used to switch the current tenant.</li>
+<li>Click the tenant name link to switch.</li>
+</ol>
+<p><strong>Ex:</strong> From the screenshot below, the current tenant is <strong>tenant#233a1</strong>. Clicking on <strong>tenant#209d7</strong> would switch to this tenant.
+<img src="../../images/user-profile/switch-tenant.png" alt="Switch tenant"></p>
+<ol start="3">
+<li>The application refreshes with the current tenant updated.</li>
 </ol>
 <h3 id="edit-tenant-name">Edit Tenant Name</h3>
-<p>A user can edit the tenant name by following the below steps:</p>
+<p>You can edit the tenant name by following the below steps:</p>
 <ol>
-<li>Click on User Profile button, User Profile flyout opens</li>
-<li>Under Tenants section, a table with tenant list is displayed</li>
-<li>Against the tenant row click on Edit Action
-<img src="../../images/user-profile/edit-tenant-button.png" alt="Edit tenant button"></li>
-<li>Tenant Name becomes editable, update the name and click Save
-<img src="../../images/user-profile/edit-tenant.png" alt="Edit tenant"></li>
+<li>In the tenant row, click <strong>Edit</strong>.</li>
 </ol>
+<p><img src="../../images/user-profile/edit-tenant-button.png" alt="Edit tenant button"></p>
+<ol start="2">
+<li>The tenant name becomes editable; update the name and click <strong>Save</strong>.</li>
+</ol>
+<p><img src="../../images/user-profile/edit-tenant.png" alt="Edit tenant"></p>
 <h3 id="delete-tenant">Delete Tenant</h3>
-<p>A user can delete a tenant by following the below steps:</p>
+<p>You can delete a tenant by following the below steps:</p>
 <ol>
-<li>Click on User Profile button, User Profile flyout opens</li>
-<li>Under Tenants section, a table with tenant list is displayed</li>
-<li>Against the tenant row to delete click on Delete Action
-<img src="../../images/user-profile/delete-tenant.png" alt="Delete tenant button"></li>
-<li>The tenant is deleted</li>
+<li>In the tenant row click <strong>Delete</strong>.</li>
 </ol>
-<p><strong>Note</strong> ❌: A tenant once deleted cannot be reversed. A user needs to be extra cautious while deleting a tenant.</p>
-<h3 id="create-new-tenant">Create New Tenant</h3>
-<p>A user can create a new tenant by follwing the below steps:</p>
+<p><img src="../../images/user-profile/delete-tenant.png" alt="Delete tenant button"></p>
+<ol start="2">
+<li>The tenant is deleted.</li>
+</ol>
+<p><strong>Note</strong> ❌: Once a tenant is deleted, the action cannot be reversed. You need to be extra cautious when deleting a tenant.</p>
+<h3 id="create-a-new-tenant">Create a New Tenant</h3>
+<p>You can create a new tenant by following the below steps:</p>
 <ol>
-<li>Click on User Profile button, User Profile flyout opens</li>
-<li>Under Tenants section, click button <strong>Create New Tenant</strong> below tenants list
+<li>Under the tenants section, click the button <strong>Create New Tenant</strong>.
 <img src="../../images/user-profile/create-tenant-button.png" alt="Create tenant button"></li>
-<li>A new tenant with a unique Tenant Name is created and is added as a new row in the tenant list<br>
+<li>A new tenant with a unique tenant name is created and is added as a new row in the tenant list.
 <img src="../../images/user-profile/new-tenant.png" alt="New tenant"></li>
-<li>This tenant will be available to access only after it is fully deployed. This might take a few minutes and below message pops up while trying to access it.
+<li>This tenant will be available to access only after it is fully deployed. This might take a few minutes. Meanwhile, a message will pop up while trying to access it.
 <img src="../../images/user-profile/tenant-not-deployed.PNG" alt="Tenant not deployed"></li>
-<li>User should be able to <a href="#switch-tenant">Switch</a> to the newly created tenant after few minutes, once it is fully deployed.</li>
+<li>You should be able to <a href="#switch-tenant">Switch</a> to the newly created tenant after a few minutes, once it is fully deployed.</li>
 </ol>
-<p><strong>Note</strong> ❌: Avoid creating unnecessary tenants as they may result in increasing cost.</p>
+<p><strong>Note</strong> ❌: Avoid creating unnecessary tenants as they may result in increased cost.</p>
 <h2 id="roles">Roles</h2>
-<p>This sections shows the logged in user's Role for current tenant. These roles are assigned while <a href="./userManagement.md#new-user">creating a new user</a>.<br>
-There are two roles for a remote monitoring solution by default:</p>
+<p>This sections shows the logged in user's role for current tenant. These roles are assigned while <a href="./userManagement.md#new-user">creating a new user</a>.
+By default, there are just two possible roles for a remote monitoring solution:</p>
 <ul>
 <li>Admin</li>
 <li>Read Only</li>
 </ul>
 <p><img src="../../images/user-profile/user-role.png" alt="User role"></p>
-<p><strong>Note:</strong> Custom roles can also be added, refer <a href="https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac">this</a> for more information</p>
+<p><strong>Note:</strong> Custom roles can also be added, refer to <a href="https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac">this</a> for more information</p>
 <h2 id="permissions">Permissions</h2>
-<p>This section shows the permissions of a user based on the user's role. Any user in the <strong>Admin</strong> role has full access to the solution, including the following permissions below. A user in the <strong>Read Only</strong> role will only have access to view the solution.
+<p>This section shows the permissions of a user based on the user's role. Any user in the <strong>Admin</strong> role has full access to the solution, including the below permissions. A user in the <strong>Read Only</strong> role will only have access to view the solution.
 <img src="../../images/user-profile/user-permissions.PNG" alt="User permissions"></p>
-<p><strong>Note:</strong> For more information on this, refer <a href="https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac">role-based access control</a></p>
+<p><strong>Note:</strong> For more information on this, refer to <a href="https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac">role-based access control</a>.</p>
 <h2 id="development-variables">Development Variables</h2>
-<p>This section has user development variables like</p>
+<p>This section has user development variables like:</p>
 <ul>
 <li>User Token</li>
-<li>Payload information with Username, TenantId, UserRole, available tenants, IsSystemAdmin etc.,</li>
+<li>Payload information with Username, TenantId, UserRole, available tenants, IsSystemAdmin etc.</li>
 </ul>
 <h2 id="logout">Logout</h2>
-<p>To logout from the application</p>
-<ol>
-<li>Click on User Profile button, User Profile flyout opens</li>
-<li>Click Logout button
-<img src="../../images/user-profile/logout.png" alt="Logout"></li>
-</ol>
+<p>To logout from the application, click the <strong>Logout</strong> button.
+<img src="../../images/user-profile/logout.png" alt="Logout"></p>
 </article>
           </div>
           

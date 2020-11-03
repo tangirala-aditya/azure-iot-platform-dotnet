@@ -200,46 +200,6 @@ jobs:
               labels:
                 cert-manager.io/disable-validation: "true"
 
-  # - job: appConfiguration
-  #   displayName: Update App Configuration
-  #   variables:
-  #     - template: variables-deploy-infra.yaml
-  #       parameters:
-  #         subscriptionName: ${{parameters.subscriptionName}}
-  #         locationName: ${{parameters.locationName}}
-  #         environmentName: ${{parameters.environmentName}}
-  #         subscriptionId: ${{parameters.subscriptionId}}
-  #         applicationCode: ${{parameters.applicationCode}}
-  #         applicationShortCode: ${{parameters.applicationShortCode}}
-  #         environmentCategory: ${{parameters.environmentCategory}}
-  #   steps:
-  #     - checkout: self
-  #       displayName: Checkout repository
-
-  #     - template: apply-arm-tags.yaml
-  #       parameters:
-  #         environment: ${{parameters.environmentName}}
-
-  #     - task: AzureResourceGroupDeployment@2
-  #       displayName: Provision Azure App Configuration
-  #       inputs:
-  #         azureSubscription: ${{parameters.subscriptionName}}
-  #         action: Create Or Update Resource Group
-  #         resourceGroupName: $(resourceGroupName)
-  #         location: ${{parameters.locationName}}
-  #         templateLocation: Linked artifact
-  #         csmFile: $(armTemplatesDirectory)/$(appConfigurationPartialName).json
-  #         csmParametersFile: $(armParametersDirectory)/$(appConfigurationPartialName).json
-  #         overrideParameters: -appConfigName $(appConfigurationName) -location ${{parameters.locationName}}
-  #         deploymentMode: Incremental
-  #         addSpnToEnvironment: true
-
-  #     - template: steps-delete-oldest-deployment.yaml
-  #       parameters:
-  #         subscriptionName: ${{parameters.subscriptionName}}
-  #         deploymentPartialName: $(appConfigurationPartialName)
-  #         resourceGroupName: $(resourceGroupName)
-
   - job: globalsecrets
     displayName: Create K8s secrets
     dependsOn:
@@ -267,78 +227,6 @@ jobs:
             az aks get-credentials -n $(aksName) -g $(resourceGroupName)
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
-
-
-  # - job: automationAccount
-  #   displayName: Provision Azure Automation and Sendgrid accounts
-  #   dependsOn:
-  #     - aks      
-  #   variables:
-  #     - template: variables-deploy-infra.yaml
-  #       parameters:
-  #         subscriptionName: ${{parameters.subscriptionName}}
-  #         locationName: ${{parameters.locationName}}
-  #         environmentName: ${{parameters.environmentName}}
-  #         subscriptionId: ${{parameters.subscriptionId}}
-  #         applicationCode: ${{parameters.applicationCode}}
-  #         applicationShortCode: ${{parameters.applicationShortCode}}
-  #         environmentCategory: ${{parameters.environmentCategory}}
-  #   pool:
-  #     vmImage: windows-latest
-  #   steps:
-  #     - checkout: self
-  #       displayName: Checkout repository
-
-  #     - template: apply-arm-tags.yaml
-  #       parameters:
-  #         environment: ${{parameters.environmentName}}
-
-  #     - task: AzureResourceGroupDeployment@2
-  #       displayName: Provision Azure Automation account
-  #       inputs:
-  #         azureSubscription: ${{parameters.subscriptionName}}
-  #         action: Create Or Update Resource Group
-  #         resourceGroupName: $(resourceGroupName)
-  #         location: ${{parameters.locationName}}
-  #         templateLocation: Linked artifact
-  #         csmFile: $(armTemplatesDirectory)/automationacct.json
-  #         csmParametersFile: $(armParametersDirectory)/automationacct.json
-  #         overrideParameters: -automationAccountName $(automationName) -location ${{parameters.locationName}}
-  #         deploymentMode: Incremental
-  #         addSpnToEnvironment: true
-
-  #     - template: steps-delete-oldest-deployment.yaml
-  #       parameters:
-  #         subscriptionName: ${{parameters.subscriptionName}}
-  #         deploymentPartialName: $(automationPartialName)
-  #         resourceGroupName: $(resourceGroupName)
-
-  #     - task: AzurePowerShell@3
-  #       displayName: Create certificate and connections on Azure Automation Account
-  #       inputs:
-  #         azureSubscription: ${{parameters.subscriptionName}}
-  #         ScriptType: FilePath
-  #         ScriptPath: pipelines/cd/automationAcctCert.ps1
-  #         ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}} -tenantId $(tenantId) -keyvaultName $(keyVaultName)
-  #         azurePowerShellVersion: LatestVersion
-
-  #     - task: AzurePowerShell@3
-  #       displayName: Import runbook code and create webhook
-  #       inputs:
-  #         azureSubscription: ${{parameters.subscriptionName}}
-  #         ScriptType: FilePath
-  #         ScriptPath: pipelines/cd/automationAcct.ps1
-  #         ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -scriptFolder $(System.DefaultWorkingDirectory)/src/services/tenant-manager/RunBookCode -keyvaultName $(keyVaultName)
-  #         azurePowerShellVersion: LatestVersion
-
-  #     - task: AzurePowerShell@3
-  #       displayName: Create SendGrid Acct and API Key
-  #       inputs:
-  #         azureSubscription: ${{parameters.subscriptionName}}
-  #         ScriptType: FilePath
-  #         ScriptPath: pipelines/cd/sendgridAcct.ps1
-  #         ScriptArguments: -location ${{parameters.locationName}} -resourceGroup $(resourceGroupName) -resourceName $(sendgridAccountName) -keyvaultName $(keyVaultName) -email ${{parameters.sendgridEmail}}
-  #         azurePowerShellVersion: LatestVersion
 
   - job: agic
     displayName: Integrate AGIC 
@@ -387,19 +275,6 @@ jobs:
       #       kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller-sa
       #       helm init --tiller-namespace kube-system --service-account tiller-sa
 
-      # - task: AzureCLI@2
-      #   displayName: Uninstall K8s Ingress Controller
-      #   inputs:
-      #     azureSubscription: ${{parameters.subscriptionName}}
-      #     scriptLocation: inlineScript
-      #     scriptType: bash
-      #     inlineScript: |-            
-      #         az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-
-      #         # Use Helm to uninstall an NGINX ingress controller
-              
-      #         helm uninstall ingress-controller nginx-ingress 
-
       - task: Bash@3
         displayName: Install AGIC Helm repository
         inputs:
@@ -439,23 +314,6 @@ jobs:
                 echo "##vso[task.setvariable variable=encodedsecret]$encodedJson"
           addSpnToEnvironment: true
 
-        
-      # - task: HelmDeploy@0
-      #   displayName: Deploy AGIC Helm Chart
-      #   inputs:
-      #     connectionType: Azure Resource Manager
-      #     azureSubscription: ${{parameters.subscriptionName}}
-      #     azureResourceGroup: $(resourceGroupName)
-      #     kubernetesCluster: $(aksName)
-      #     namespace: default
-      #     command: upgrade
-      #     install: true
-      #     releaseName: ingress-azure
-      #     chartType: Name
-      #     chartName: application-gateway-kubernetes-ingress/ingress-azure
-      #     overrideValues: appgw.name=$(appgateway),appgw.resourceGroup=$(resourceGroupName),appgw.subscriptionId=${{parameters.subscriptionId}},appgw.shared=false, armAuth.type=servicePrincipal, armAuth.secretJSON=$(encodedsecret), kubernetes.watchNamespace=default --set verbosityLevel=5
-      #     arguments: -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure  
-
       - task: AzureCLI@2
         displayName: AGIC Helm Chart
         inputs:
@@ -468,6 +326,15 @@ jobs:
               wget https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/docs/examples/sample-helm-config.yaml -O helm-config.yaml 
               helm upgrade ingress-azure  -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure --namespace default --install --set appgw.name=ggkagic-appgw-dev --set appgw.resourceGroup=rg-iot-ggkagic-dev --set appgw.subscriptionId=c36fb2f8-f98d-40d0-90a9-d65e93acb428 --set appgw.shared=false --set armAuth.type=servicePrincipal --set armAuth.secretJSON=$(encodedsecret) --set kubernetes.watchNamespace=default
               helm list           
+
+      - task: AzureCLI@2
+        displayName: Add DNS record
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: scriptPath
+          scriptType: bash
+          scriptPath: charts/ingress/ip.sh
+          arguments: $(aksName) $(resourceGroupName)
 
       - task: Bash@3
         displayName: Install jetstack Helm repository
@@ -503,6 +370,14 @@ jobs:
           command: apply
           useConfigurationFile: true
           configuration: charts/ingress/cluster-issuer-agic-prod.yaml
+    
+      - task: Bash@3
+        displayName: Create DNS Record
+        inputs:
+          targetType: inline
+          script: |-
+            publicIp=$( az network public-ip show --resource-group $(resourceGroupName) --name $(appGatewayPublicIpName) --query ipAddress --output tsv)
+            az network public-ip update -g $(resourceGroupName) -n publicIp --dns-name $(aksName) --allocation-method Static
 
       - task: Kubernetes@1
         displayName: Create Ingress
@@ -522,6 +397,8 @@ jobs:
               namespace: default
               annotations:
                 kubernetes.io/ingress.class: azure/application-gateway
+                nginx.ingress.kubernetes.io/rewrite-target: /$1
+                nginx.ingress.kubernetes.io/proxy-body-size: 200m
                 cert-manager.io/cluster-issuer: letsencrypt-prod
                 cert-manager.io/acme-challenge-type: http01
             spec:

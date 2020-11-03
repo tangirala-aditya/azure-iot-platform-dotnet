@@ -186,6 +186,12 @@
                 "description": "Name of the Application Gateway"
             }
         },
+        // "applicationGatewayPublicName" : {
+        //    "type" : "string" ,
+        //    "metadata": {
+        //        "description" : "Name of the Application Gateway FrontEndIpAddress"
+        //    }
+        // },
         "applicationGatewaySku": {
             "defaultValue": "WAF_v2",
             "allowedValues": [
@@ -213,7 +219,7 @@
 
     "variables": {
         "vnetName": "[concat(parameters('applicationCode'), '-', 'vnet', parameters('environmentCategory'))]",
-        "applicationGatewayPublicIpName": "[concat(parameters('applicationCode'), '-', 'public-ip',parameters('environmentCategory'))]",
+        "applicationGatewayPublicIpName": "[concat(parameters('applicationCode'), '-', 'publicIp','-',parameters('environmentCategory'))]",
         "kubernetesSubnetName": "[concat(parameters('applicationCode'), '-', 'kubesubnet',parameters('environmentCategory'))]",
         "applicationGatewaySubnetName": "[concat(parameters('applicationCode'), '-', 'appgwsubnet',parameters('environmentCategory'))]",
         "aksClusterName": "[parameters('resourceName')]",

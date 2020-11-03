@@ -327,15 +327,6 @@ jobs:
               helm upgrade ingress-azure  -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure --namespace default --install --set appgw.name=ggkagic-appgw-dev --set appgw.resourceGroup=rg-iot-ggkagic-dev --set appgw.subscriptionId=c36fb2f8-f98d-40d0-90a9-d65e93acb428 --set appgw.shared=false --set armAuth.type=servicePrincipal --set armAuth.secretJSON=$(encodedsecret) --set kubernetes.watchNamespace=default
               helm list           
 
-      - task: AzureCLI@2
-        displayName: Add DNS record
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: scriptPath
-          scriptType: bash
-          scriptPath: charts/ingress/ip.sh
-          arguments: $(aksName) $(resourceGroupName)
-
       - task: Bash@3
         displayName: Install jetstack Helm repository
         inputs:

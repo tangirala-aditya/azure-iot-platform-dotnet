@@ -186,12 +186,12 @@
                 "description": "Name of the Application Gateway"
             }
         },
-        // "applicationGatewayPublicName" : {
-        //    "type" : "string" ,
-        //    "metadata": {
-        //        "description" : "Name of the Application Gateway FrontEndIpAddress"
-        //    }
-        // },
+        "applicationGatewayPublicIpName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Application Gateway PublicIp"
+            }
+        },
         "applicationGatewaySku": {
             "defaultValue": "WAF_v2",
             "allowedValues": [
@@ -219,14 +219,13 @@
 
     "variables": {
         "vnetName": "[concat(parameters('applicationCode'), '-', 'vnet', parameters('environmentCategory'))]",
-        "applicationGatewayPublicIpName": "[concat(parameters('applicationCode'), '-', 'publicIp','-',parameters('environmentCategory'))]",
         "kubernetesSubnetName": "[concat(parameters('applicationCode'), '-', 'kubesubnet',parameters('environmentCategory'))]",
         "applicationGatewaySubnetName": "[concat(parameters('applicationCode'), '-', 'appgwsubnet',parameters('environmentCategory'))]",
         "aksClusterName": "[parameters('resourceName')]",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]",
         "kubernetesSubnetId": "[concat(variables('vnetID'),'/subnets/', variables('kubernetesSubnetName'))]",
         "applicationGatewaySubnetId": "[concat(variables('vnetID'),'/subnets/', variables('applicationGatewaySubnetName'))]",
-        "applicationGatewayPublicIpId": "[resourceId('Microsoft.Network/publicIPAddresses',variables('applicationGatewayPublicIpName'))]",
+        "applicationGatewayPublicIpId": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('applicationGatewayPublicIpName'))]",
         "applicationGatewayId": "[resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName'))]",
         "aksClusterId": "[resourceId('Microsoft.ContainerService/managedClusters', variables('aksClusterName'))]",
         "webApplicationFirewallConfiguration": {
@@ -265,7 +264,7 @@
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[variables('applicationGatewayPublicIpName')]",
+            "name": "[parameters('applicationGatewayPublicIpName')]",
             "apiVersion": "2018-08-01",
             "location": "[resourceGroup().location]",
             "sku": {
@@ -374,7 +373,7 @@
             },
             "dependsOn": [
                 "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
-                "[concat('Microsoft.Network/publicIPAddresses/', variables('applicationGatewayPublicIpName'))]"
+                "[concat('Microsoft.Network/publicIPAddresses/', parameters('applicationGatewayPublicIpName'))]"
             ]
         },
         {

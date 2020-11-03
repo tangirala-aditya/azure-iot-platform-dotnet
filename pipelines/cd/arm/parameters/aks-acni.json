@@ -14,6 +14,7 @@
         "omsWorkspaceName": { "value": "" },
         "enableRBAC": { "value": false },
         "enableOmsAgent": { "value": false },
-        "enableHttpApplicationRouting": { "value": false }
+        "enableHttpApplicationRouting": { "value": false },
+        "applicationGatewayPublicIpName":{"value": ""}
     }
 }

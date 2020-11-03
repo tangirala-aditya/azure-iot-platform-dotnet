@@ -63,7 +63,11 @@ variables:
     value: acni  
   - name: aksAcniPartialName
     value: $(aksPartialName)-$(acniPartialName)
+  - name: appgwPublicIpPartialName
+    value: publicIp
   - name: appGwPartialName
     value: appgw
   - name: appGatewayName
     value: ${{parameters.applicationCode}}-$(appGwPartialName)-${{parameters.environmentCategory}}
+  - name: appGatewayPublicIpName
+    value: ${{parameters.applicationCode}}-$(appgwPublicIpPartialName)-${{parameters.environmentCategory}}

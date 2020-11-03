@@ -161,6 +161,7 @@ jobs:
             -omsWorkspaceName $(omsWorkspaceName)
             -kubernetesVersion ${{parameters.kubernetesVersion}}
             -applicationGatewayName $(appGatewayName)
+            -applicationGatewayPublicIpName $(appGatewayPublicIpName)
             -agentVMSize ${{parameters.aksAgentVmSize}}
           deploymentMode: Incremental
           addSpnToEnvironment: true
@@ -230,9 +231,9 @@ jobs:
 
   - job: agic
     displayName: Integrate AGIC 
-    # dependsOn:
-    #    - aks
-    #    - globalsecrets
+    dependsOn:
+       - aks
+       - globalsecrets
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

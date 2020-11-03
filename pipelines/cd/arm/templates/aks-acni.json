@@ -219,13 +219,13 @@
 
     "variables": {
         "vnetName": "[concat(parameters('applicationCode'), '-', 'vnet', parameters('environmentCategory'))]",
-        "kubernetesSubnetName": "[concat(parameters('applicationCode'), '-', 'kubesubnet',parameters('environmentCategory'))]",
-        "applicationGatewaySubnetName": "[concat(parameters('applicationCode'), '-', 'appgwsubnet',parameters('environmentCategory'))]",
+        "kubernetesSubnetName": "[concat(parameters('applicationCode'), '-', 'kubesubnet', parameters('environmentCategory'))]",
+        "applicationGatewaySubnetName": "[concat(parameters('applicationCode'), '-', 'appgwsubnet', parameters('environmentCategory'))]",
         "aksClusterName": "[parameters('resourceName')]",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]",
         "kubernetesSubnetId": "[concat(variables('vnetID'),'/subnets/', variables('kubernetesSubnetName'))]",
         "applicationGatewaySubnetId": "[concat(variables('vnetID'),'/subnets/', variables('applicationGatewaySubnetName'))]",
-        "applicationGatewayPublicIpId": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('applicationGatewayPublicIpName'))]",
+        "applicationGatewayPublicIpId": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('applicationGatewayPublicIpName'))]",
         "applicationGatewayId": "[resourceId('Microsoft.Network/applicationGateways', parameters('applicationGatewayName'))]",
         "aksClusterId": "[resourceId('Microsoft.ContainerService/managedClusters', variables('aksClusterName'))]",
         "webApplicationFirewallConfiguration": {

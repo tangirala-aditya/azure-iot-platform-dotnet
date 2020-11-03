@@ -364,15 +364,18 @@ jobs:
           command: apply
           useConfigurationFile: true
           configuration: charts/ingress/cluster-issuer-agic-prod.yaml
-    
-      - task: Bash@3
-        displayName: Create DNS Record
+
+      - task: AzureCLI@2
+        displayName: AGIC Helm Chart
         inputs:
-          targetType: inline
-          script: |-
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            set -Eeuxo pipefail
             publicIp=$( az network public-ip show --resource-group $(resourceGroupName) --name $(appGatewayPublicIpName) --query ipAddress --output tsv)
             az network public-ip update -g $(resourceGroupName) -n publicIp --dns-name $(aksName) --allocation-method Static
-
+ 
       - task: Kubernetes@1
         displayName: Create Ingress
         inputs:

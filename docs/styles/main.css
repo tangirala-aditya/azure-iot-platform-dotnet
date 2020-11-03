@@ -405,65 +405,89 @@ pre {
   content: '\F72F';
 }
 
-/* STYLE FOR CARDS */
+/* Card Styles */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  margin: 20px 0px;  
+  grid-auto-columns: auto;
+  grid-auto-rows: minmax(100px, auto);
+}
+
 .card {
-  display: block;
+  box-shadow: 0 1.6px 3.6px 0 grey, 0 0.3px 0.9px 0 grey;
   padding: 1.25rem;
-  border: 1px solid lightgray;
-  margin: .5rem;
-  box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%),0 .6px 1.8px 0 rgb(0 0 0 / 11%);
-  line-height: 160%;
-  font-size: 16px;
-  white-space: normal;
+  min-width: 300px;
 }
 
-.card-header {
+.card .header {
+  padding-top:8px;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
   border-bottom: 1px solid lightgray;
-  margin-top: 10px;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
 }
 
-.card img {
+.card .content {
+  padding-top:8px;
+}
+
+.card .link {
   display: inline-block;
 }
 
-.card-subheader {
-  display: inline-block;
-  margin: 16px 0 16px 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: rgb(94,94,94);
-  text-transform: uppercase;
+
+/* Add some padding inside the card container */
+
+/*
+@media (min-width: 30em) {
+  grid-template-columns: 1fr 1fr;
 }
 
-.card-content {
-  font-size: 14px;
+@media (min-width: 60em) {
+  grid-template-columns: repeat(4, 1fr);
 }
 
-@media (max-width: 1200px) {
+
+.cards  {
+  width: 80%;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-gap: 20px;
+}
+
+.card {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    background: white;
+    text-decoration: none;
+    color: #444;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    min-height: 100%;
+    position: relative;
+    top: 0;
+    transition: all .1s ease-in;
+    
+}
+
+
+
+@media (min-width: 30em) {
   .card {
-    width: 200px;
+    grid-template-columns: 1fr 1fr;
   }
 }
 
-@media screen and (min-width: 1200px) {
-  .card {
-    width: 300px
-  }
-}
-
-/* STYLE FOR TABLES IN CARDS
-.table {background-color: white;}
-.table-bordered { border: 0px solid white; }
-
-.table-bordered,.table-bordered>tbody>tr>td,.table-bordered>tbody>tr>th,.table-bordered>tfoot>tr>td,.table-bordered>tfoot>tr>th,.table-bordered>thead>tr>td,.table-bordered>thead>tr>th{
-  border: 0px solid white;
-}
-.table-bordered>thead>tr>td,.table-bordered>thead>tr>th{border-bottom-width:0px}
-.table-striped>tbody>tr:nth-of-type(odd){ background-color: white;}
 */
+
 
 /* Change nav expander to chevron */
 .toc .nav > li.active > .expand-stub::before,

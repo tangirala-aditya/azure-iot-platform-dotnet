@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Authorize - Token | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Authorize - Token | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="authorize---token">Authorize - Token</h1>
+
+<p>Service: Identity Gateway</p>
+<p>{TODO: Add Description}</p>
+<pre><code class="lang-HTTP"> POST https://{platform-url}/connect/token 
+</code></pre>
+<h2 id="request-headers">Request headers</h2>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table>
+<h2 id="request-body">Request Body</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Name</th>
+<th style="text-align: center;">In</th>
+<th style="text-align: center;">Required</th>
+<th style="text-align: center;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>client_id</strong></td>
+<td style="text-align: center;">true</td>
+<td style="text-align: center;">true</td>
+<td style="text-align: center;">string</td>
+<td style="text-align: left;">?</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>client_secret</strong></td>
+<td style="text-align: center;">true</td>
+<td style="text-align: center;">true</td>
+<td style="text-align: center;">string</td>
+<td style="text-align: left;">?</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>scope</strong></td>
+<td style="text-align: center;">true</td>
+<td style="text-align: center;">true</td>
+<td style="text-align: center;">string</td>
+<td style="text-align: left;">?</td>
+</tr>
+</tbody>
+</table>
+<h2 id="responses">Responses</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">200 OK</td>
+<td style="text-align: left;">TODO: Response Object</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="security">Security</h2>
+<p>Type: OpenID Connect<br>
+Flow: implicit<br>
+Authorization URL: <a href="https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com">https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</a></p>
+<h2 id="definitions">Definitions</h2>
+<p>TODO: Add Response Objects from above</p>
+<h2 id="examples">Examples</h2>
+<h3 id="description-of-example">{Description of example}</h3>
+<h4 id="sample-request">Sample Request</h4>
+<pre><code class="lang-HTTP">POST https://{platform-url}/connect/token
+</code></pre>
+<h4 id="sample-body">Sample Body</h4>
+<pre><code>{&quot;client_id&quot;:&quot;95d3c562-23eb-4e2d-8d3d-ea2448706934&quot;,&quot;client_secret&quot;:&quot;SH90ZgTR-MTObGLbO/u[7qIc-MP0vtAs&quot;}
+
+</code></pre>
+<h4 id="sample-response">Sample Response</h4>
+<pre><code>eyJhbDciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRdaWQiOiI5NWQzYzY2Mi0yM2VhLTRlMmQtOGQzZC1lYTI0NDg3MDY5MzQiLCJzdWIiOiI5NWQzYzY2Mi0yM2VhLTRlNmQtOGQzZC1lYTI0NDg3MDY5MzQiLCJuYW1lIjoiOTVkM2M2NjItMjNlYS00ZTJkLThkM2QtZWEyNDQ4NzA2OTM0IiwidHlwZSI6IkNsaWVudCBDcmVkZW50aWFscyIsImlhdCI6MTYwNDMwNTc0OCwidGVuYW50IjoiMjMzYTFjYTItNjg1NS00M2M1LThiOWMtYzdmODVhMWRkNTIwIiwicm9sZSI6ImFkbWluIiwiaXNfc3lzdGVtQWRtaW4iOmZhbHNlLCJhdmFpbGFibGVfdGVuYW50cyI6IjIzM2ExY2EyLTY4NTUtNDNjNS04YjljLWM3Zjg1YTFkZDUyMCIsImV4cCI6MTYwNjg5Nzc0OCwiaXNzIjoiaHR0cHM6Ly9jcnNsaW90LWFrcy1kZXYuY2VudHJhbHVzLmNsb3VkYXBwLmF6dXJlLmNvbS9hdXRoIiwiYXVkIjoiSW9UUGxhdGZvcm0ifQ.oGTvV4NH5qL4qf8xtWChzn4GCWeaBV8Z9RwXmInK6V9mE3kSk2LqPJg9x7OVPZwHOaQkUcEh2_e9IZKOtwF9JXgz9ZLeFedpBSoLQPAtshMj1YBIXw64MGnuxViB7NoETjxMYsS3cD63_xSSIq2NgjAixHXeT5yONi5SNKIlScRVv3fytLbWCZou2oWoThTIHUYb-A-plaBWjyLfzhCnSJboolFXWw5QbMZcIUNUvg8yJ1oR7M3-OWtHnKdo7vjkSnl5ASe0_dWXaX0LrYBmNUaPek9xG3xTYekhc8rNvf5hL1k7F9VwRVBysPEnaZcnbXrsOvsQ_MmAk4hcuYaDtA
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/APIs/identity-gateway/Authorize/Token.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

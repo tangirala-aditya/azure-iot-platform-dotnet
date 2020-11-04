@@ -1,23 +1,53 @@
 {
-  "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html": {
-    "href": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html",
+  "APIs/asa-manager/DeviceGroups/DeviceGroups.html": {
+    "href": "APIs/asa-manager/DeviceGroups/DeviceGroups.html",
+    "title": "DeviceGroups | 3M Serenity Documentation",
+    "keywords": "DeviceGroups DeviceGroups Controller contains methods to convert the DeviceGroups in the Cosmos DB Collection and converts into file format suitable for Azure Stream Analytics job. This document provides overview of following methods of DeviceGroup Controller. Begin Device Group Conversion Begin IotHub Job Delay Device Group Conversion Begin Device Group Conversion API that begins the conversion of devicegroups data from cosmos collection into csv format for Azure Stream Analytics job. Permissions NA Http Request GET /v1/devicegroups Request headers Header Value Authorization Bearer {token}. Required. Content-Type application/json Request Body N/A Response If successful, this method returns BeginConversionApiModel object in the response body. Respone Schema { \"tenantId\": \"string\", \"operationId\": \"string\" } Sample Response { \"tenantId\": \"ac1037c4-386e-4402-9209-f9602ce90afe\", \"operationId\": \"c2412f4c-a397-4b7a-81a1-0d175a9b69c6\" } Begin IotHub Job Delay Device Group Conversion API that begins the conversion of devicegroups data from cosmos collection into csv format for Azure Stream Analytics job based on completion status of an IoT Hub Job. Permissions NA Http Request GET /v1/devicegroups/iothubjobdelay/{jobId} Request headers Header Value Authorization Bearer {token}. Required. Content-Type application/json Query Params Name Description jobId JobId from IoT Hub Request Body N/A Response If successful, this method returns BeginConversionApiModel object in the response body. Respone Schema { \"tenantId\": \"string\", \"operationId\": \"string\" } Sample Response { \"tenantId\": \"ac1037c4-386e-4402-9209-f9602ce90afe\", \"operationId\": \"c2412f4c-a397-4b7a-81a1-0d175a9b69c6\" }"
+  },
+  "APIs/asa-manager/DeviceGroups/Overview.html": {
+    "href": "APIs/asa-manager/DeviceGroups/Overview.html",
+    "title": "Device Groups | 3M Serenity Documentation",
+    "keywords": "Device Groups Service: Asa Manager API Version: 2020-11-03 Operations"
+  },
+  "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html": {
+    "href": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html",
     "title": "Class DeviceGroupsController | 3M Serenity Documentation",
     "keywords": "Class DeviceGroupsController Inheritance System.Object DeviceGroupsController Namespace : Mmm.Iot.AsaManager.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public class DeviceGroupsController : Controller Constructors DeviceGroupsController(DeviceGroupsConverter, IBeginConversionHelper) Declaration public DeviceGroupsController(DeviceGroupsConverter devicegroupConverter, IBeginConversionHelper beginConversionHelper) Parameters Type Name Description DeviceGroupsConverter devicegroupConverter IBeginConversionHelper beginConversionHelper Methods BeginDeviceGroupConversion() Declaration public BeginConversionApiModel BeginDeviceGroupConversion() Returns Type Description BeginConversionApiModel BeginIotHubJobDelayDeviceGroupConversion(String) Declaration public BeginConversionApiModel BeginIotHubJobDelayDeviceGroupConversion(string jobId) Parameters Type Name Description System.String jobId Returns Type Description BeginConversionApiModel"
   },
-  "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.html": {
-    "href": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.html",
+  "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.html": {
+    "href": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.html",
     "title": "Namespace Mmm.Iot.AsaManager.WebService.Controllers | 3M Serenity Documentation",
     "keywords": "Namespace Mmm.Iot.AsaManager.WebService.Controllers Classes DeviceGroupsController RulesController StatusController"
   },
-  "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html": {
-    "href": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html",
+  "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html": {
+    "href": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html",
     "title": "Class RulesController | 3M Serenity Documentation",
     "keywords": "Class RulesController Inheritance System.Object RulesController Namespace : Mmm.Iot.AsaManager.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public class RulesController : Controller Constructors RulesController(RulesConverter, IBeginConversionHelper) Declaration public RulesController(RulesConverter ruleConverter, IBeginConversionHelper beginConversionHelper) Parameters Type Name Description RulesConverter ruleConverter IBeginConversionHelper beginConversionHelper Methods BeginRuleConversion() Declaration public BeginConversionApiModel BeginRuleConversion() Returns Type Description BeginConversionApiModel"
   },
-  "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html": {
-    "href": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html",
+  "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html": {
+    "href": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html",
     "title": "Class StatusController | 3M Serenity Documentation",
     "keywords": "Class StatusController Inheritance System.Object StatusController Namespace : Mmm.Iot.AsaManager.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public sealed class StatusController : ControllerBase Constructors StatusController(IStatusService) Declaration public StatusController(IStatusService statusService) Parameters Type Name Description IStatusService statusService Methods GetAsync() Declaration public Task<StatusApiModel> GetAsync() Returns Type Description System.Threading.Tasks.Task < StatusApiModel > Ping() Declaration public IActionResult Ping() Returns Type Description IActionResult"
+  },
+  "APIs/asa-manager/Overview.html": {
+    "href": "APIs/asa-manager/Overview.html",
+    "title": "ASA Manager | 3M Serenity Documentation",
+    "keywords": "ASA Manager The ASA Manager service offers APIs to asynchronously convert tenant data into formats suitable for Azure Stream Analytics Job inputs. REST operation groups The ASA Manager API provides operations for working with the following: Operation group Description DeviceGroups Rules Status"
+  },
+  "APIs/asa-manager/Rules.html": {
+    "href": "APIs/asa-manager/Rules.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
+  "APIs/asa-manager/Status.html": {
+    "href": "APIs/asa-manager/Status.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
+  "APIs/authorization-flow.html": {
+    "href": "APIs/authorization-flow.html",
+    "title": "Serenity Authorization Flow | 3M Serenity Documentation",
+    "keywords": "Serenity Authorization Flow TODO: Describe Serenity's Authorization Model Describe Azure B2C and it's configuration for OpenId https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect Explain how some systems have replaced this for alternative auth providers, like PSD and potentially EMD Describe the Authorization Flow, pulling information from and linking to: https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-authentication-flows Incorporate details from the following into their appropriate locations: https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview"
   },
   "APIs/config/Mmm.Iot.Config.WebService.Controllers.ConfigTypesController.html": {
     "href": "APIs/config/Mmm.Iot.Config.WebService.Controllers.ConfigTypesController.html",
@@ -109,60 +139,135 @@
     "title": "Class StatusController | 3M Serenity Documentation",
     "keywords": "Class StatusController Inheritance System.Object StatusController Namespace : Mmm.Iot.Diagnostics.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public sealed class StatusController : ControllerBase Constructors StatusController(IStatusService) Declaration public StatusController(IStatusService statusService) Parameters Type Name Description IStatusService statusService Methods GetAsync() Declaration public Task<StatusApiModel> GetAsync() Returns Type Description Task < StatusApiModel > Ping() Declaration public IActionResult Ping() Returns Type Description IActionResult"
   },
-  "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html": {
-    "href": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html",
+  "APIs/Examples/Overview.html": {
+    "href": "APIs/Examples/Overview.html",
+    "title": "Prerequisites for working with APIs | 3M Serenity Documentation",
+    "keywords": "Prerequisites for working with APIs"
+  },
+  "APIs/Examples/Postman.html": {
+    "href": "APIs/Examples/Postman.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
+  "APIs/Examples/Prerequisites.html": {
+    "href": "APIs/Examples/Prerequisites.html",
+    "title": "Prerequisites for working with APIs | 3M Serenity Documentation",
+    "keywords": "Prerequisites for working with APIs"
+  },
+  "APIs/identity-gateway/Authorize/Authorize.html": {
+    "href": "APIs/identity-gateway/Authorize/Authorize.html",
+    "title": "Authorize - Authorize | 3M Serenity Documentation",
+    "keywords": "Authorize - Authorize Service: Identity Gateway {TODO: Add Description} GET https://{platform-url}/connect/authorize URI Parameters Name Required Type Description redirect_uri ? string ? state ? string ? client_id ? string ? nonce ? string ? tenant ? string ? invite ? string ? Responses Name Type Description 200 OK TODO: Response Object Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com Definitions TODO: Add Response Objects from above"
+  },
+  "APIs/identity-gateway/Authorize/Callback.html": {
+    "href": "APIs/identity-gateway/Authorize/Callback.html",
+    "title": "POST Connect Callback | 3M Serenity Documentation",
+    "keywords": "POST Connect Callback This Method executes the callback method Http Request POST connect/callback Request headers Header Value Content-Type application/json Responses Name Type Description 200 OK TODO: Response Object Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com Sample Request Request Body Below are the details to be sent as part of form body. state id_token error error_description Response 200 Response"
+  },
+  "APIs/identity-gateway/Authorize/Index.html": {
+    "href": "APIs/identity-gateway/Authorize/Index.html",
+    "title": "Authorize | 3M Serenity Documentation",
+    "keywords": "Authorize Service: Identity Gateway Operations Authorize {TODO: Add Description} Logout {TODO: Add Description} Token {TODO: Add Description} Tenant {TODO: Add Description} Callback {TODO: Add Description}"
+  },
+  "APIs/identity-gateway/Authorize/Logout.html": {
+    "href": "APIs/identity-gateway/Authorize/Logout.html",
+    "title": "GET Connect Logout | 3M Serenity Documentation",
+    "keywords": "GET Connect Logout This Method returns to the post redirect uri passed. Permissions N/A Http Request GET auth/connect/logout?post_logout_redirect_uri={redirectUrl} Request headers Header Value Content-Type application/json Sample Request auth/connect/logout?post_logout_redirect_uri=https://crsliot-aks-dev.centralus.cloudapp.azure.com/ Request Body N/A Responses Name Type Description 200 OK TODO: Response Object Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com"
+  },
+  "APIs/identity-gateway/Authorize/Tenant.html": {
+    "href": "APIs/identity-gateway/Authorize/Tenant.html",
+    "title": "POST Switch Token | 3M Serenity Documentation",
+    "keywords": "POST Switch Token This Method will be fired when user switches the tenant and it updates the JWT token with the updated tenant details Permissions N/A Http Request POST connect/switch/{tenantId} Request headers Header Value Content-Type application/json Request Body N/A Responses Name Type Description 200 OK TODO: Response Object Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com Sample Request /auth/connect/switch/233a1ca2-6855-43c5-8b9c-c7f85a1dd520 Response eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZTMwZjMwMS00ZjU3LTRiM2UtOTQ5YS0zZmY4ZTkzODcwYjUiLCJuYW1lIjoiVmlzd2FuYWRoIEtvdGhhIENXIiwiaWF0IjoxNjA0Mjk2ODIyLCJ0ZW5hbnQiOiIyMzNhMWNhMi02ODU1LTQzYzUtOGI5Yy1jN2Y4NWExZGQ1MjAiLCJyb2xlIjoiYWRtaW4iLCJpc19zeXN0ZW1BZG1pbiI6dHJ1ZSwiYXZhaWxhYmxlX3RlbmFudHMiOlsiMjA5ZDdmNzktMzlhYS00ZTJhLThlOWMtNTZmMDRmNzYzM2Y5IiwiMjMzYTFjYTItNjg1NS00M2M1LThiOWMtYzdmODVhMWRkNTIwIiwiYTk0MDM1YTktZTFjNS00YmIxLWI3MzktM2I2OTQ5ZTU4NjY0IiwiZjI4NDM0NTEtNWEzNS00NTg5LTk4YmItMGE5YTVmZmUyOGNlIl0sImV4cCI6MTYwNjYzMTEzMSwiaXNzIjoiaHR0cHM6Ly9jcnNsaW90LWFrcy1kZXYuY2VudHJhbHVzLmNsb3VkYXBwLmF6dXJlLmNvbS9hdXRoIiwiYXVkIjoiSW9UUGxhdGZvcm0ifQ.jUCYmOuHYM4fkNObCQ6ObAvQ--H9uDrNcgcsojuwhEChPXz1anlaGzPuRZpfK7rhSJzwuC-jrBLf23nL7pxkQA2mUV7oahKVf6WVhOea7012HnWIk3mqr_l3lDyCNjQp9WH2Wz-tqG2LZjh7zutzCmBBAvXd8gyBMqqOwXAVU6yxveMxhmPhyk6LwJSc2fGxsprxNTACHNq89KETQo742peRMo95Xj3dobjRBiKbmglvwuEy2FkzsNjq25ikj6JOsQsgtraFABa35mdGqhLrikVuzmsFMDK0U6-l_-ot_c4FSPN9Dc_0oLSL5sB6tRW-zg6rPhhUu_ISLyHh0J51lw"
+  },
+  "APIs/identity-gateway/Authorize/Token.html": {
+    "href": "APIs/identity-gateway/Authorize/Token.html",
+    "title": "Authorize - Token | 3M Serenity Documentation",
+    "keywords": "Authorize - Token Service: Identity Gateway {TODO: Add Description} POST https://{platform-url}/connect/token Request headers Header Value Content-Type application/json Request Body Name In Required Type Description client_id true true string ? client_secret true true string ? scope true true string ? Responses Name Type Description 200 OK TODO: Response Object Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com Definitions TODO: Add Response Objects from above Examples {Description of example} Sample Request POST https://{platform-url}/connect/token Sample Body {\"client_id\":\"95d3c562-23eb-4e2d-8d3d-ea2448706934\",\"client_secret\":\"SH90ZgTR-MTObGLbO/u[7qIc-MP0vtAs\"} Sample Response eyJhbDciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRdaWQiOiI5NWQzYzY2Mi0yM2VhLTRlMmQtOGQzZC1lYTI0NDg3MDY5MzQiLCJzdWIiOiI5NWQzYzY2Mi0yM2VhLTRlNmQtOGQzZC1lYTI0NDg3MDY5MzQiLCJuYW1lIjoiOTVkM2M2NjItMjNlYS00ZTJkLThkM2QtZWEyNDQ4NzA2OTM0IiwidHlwZSI6IkNsaWVudCBDcmVkZW50aWFscyIsImlhdCI6MTYwNDMwNTc0OCwidGVuYW50IjoiMjMzYTFjYTItNjg1NS00M2M1LThiOWMtYzdmODVhMWRkNTIwIiwicm9sZSI6ImFkbWluIiwiaXNfc3lzdGVtQWRtaW4iOmZhbHNlLCJhdmFpbGFibGVfdGVuYW50cyI6IjIzM2ExY2EyLTY4NTUtNDNjNS04YjljLWM3Zjg1YTFkZDUyMCIsImV4cCI6MTYwNjg5Nzc0OCwiaXNzIjoiaHR0cHM6Ly9jcnNsaW90LWFrcy1kZXYuY2VudHJhbHVzLmNsb3VkYXBwLmF6dXJlLmNvbS9hdXRoIiwiYXVkIjoiSW9UUGxhdGZvcm0ifQ.oGTvV4NH5qL4qf8xtWChzn4GCWeaBV8Z9RwXmInK6V9mE3kSk2LqPJg9x7OVPZwHOaQkUcEh2_e9IZKOtwF9JXgz9ZLeFedpBSoLQPAtshMj1YBIXw64MGnuxViB7NoETjxMYsS3cD63_xSSIq2NgjAixHXeT5yONi5SNKIlScRVv3fytLbWCZou2oWoThTIHUYb-A-plaBWjyLfzhCnSJboolFXWw5QbMZcIUNUvg8yJ1oR7M3-OWtHnKdo7vjkSnl5ASe0_dWXaX0LrYBmNUaPek9xG3xTYekhc8rNvf5hL1k7F9VwRVBysPEnaZcnbXrsOvsQ_MmAk4hcuYaDtA"
+  },
+  "APIs/identity-gateway/Configuration/Index.html": {
+    "href": "APIs/identity-gateway/Configuration/Index.html",
+    "title": "Configuration | 3M Serenity Documentation",
+    "keywords": "Configuration Service: Identity Gateway API Version: 2020-11-03 Operations"
+  },
+  "APIs/identity-gateway/Index.html": {
+    "href": "APIs/identity-gateway/Index.html",
+    "title": "Identity Gateway Service REST API | 3M Serenity Documentation",
+    "keywords": "Identity Gateway Service REST API The Identity Gateway service is used to authenticate and manage users. Within each Serenity Instance an interactive Swagger UI is available at the following path /auth/index.html For more information, click here . REST operation groups The Identity Gateway service REST API provides operations for working with the following: Operation group Description Authorize Log in or out and context operations. Configuration SystemAdmin UserSettings UserTenant Status"
+  },
+  "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html": {
+    "href": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html",
     "title": "Class AuthorizeController | 3M Serenity Documentation",
     "keywords": "Class AuthorizeController Inheritance System.Object AuthorizeController Namespace : Mmm.Iot.IdentityGateway.Controllers Assembly : cs.temp.dll.dll Syntax public class AuthorizeController : Controller Constructors AuthorizeController(AppConfig, UserTenantContainer, UserSettingsContainer, IJwtHelpers, IOpenIdProviderConfiguration, IAuthenticationContext) Declaration public AuthorizeController(AppConfig config, UserTenantContainer userTenantContainer, UserSettingsContainer userSettingsContainer, IJwtHelpers jwtHelper, IOpenIdProviderConfiguration openIdProviderConfiguration, IAuthenticationContext authenticationContext) Parameters Type Name Description AppConfig config UserTenantContainer userTenantContainer UserSettingsContainer userSettingsContainer IJwtHelpers jwtHelper IOpenIdProviderConfiguration openIdProviderConfiguration IAuthenticationContext authenticationContext Methods Get(String) Declaration public IActionResult Get(string post_logout_redirect_uri) Parameters Type Name Description System.String post_logout_redirect_uri Returns Type Description IActionResult Get(String, String, String, String, String, String) Declaration public IActionResult Get(string redirect_uri, string state, string clientId, string nonce, string tenant, string invite) Parameters Type Name Description System.String redirect_uri System.String state System.String clientId System.String nonce System.String tenant System.String invite Returns Type Description IActionResult PostAsync(String, String) Declaration public Task<ActionResult> PostAsync(string authHeader, string tenant) Parameters Type Name Description System.String authHeader System.String tenant Returns Type Description System.Threading.Tasks.Task < ActionResult > PostAsync(String, String, String, String) Declaration public Task<object> PostAsync(string state, string id_token, string error, string error_description) Parameters Type Name Description System.String state System.String id_token System.String error System.String error_description Returns Type Description System.Threading.Tasks.Task < System.Object > PostTokenAsync(ClientCredentialInput) Declaration public Task<IActionResult> PostTokenAsync(ClientCredentialInput input) Parameters Type Name Description ClientCredentialInput input Returns Type Description System.Threading.Tasks.Task < IActionResult >"
   },
-  "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.html": {
-    "href": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.html",
+  "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.html": {
+    "href": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.html",
     "title": "Namespace Mmm.Iot.IdentityGateway.Controllers | 3M Serenity Documentation",
     "keywords": "Namespace Mmm.Iot.IdentityGateway.Controllers Classes AuthorizeController"
   },
-  "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html": {
-    "href": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html",
+  "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html": {
+    "href": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html",
     "title": "Class ConfigurationController | 3M Serenity Documentation",
     "keywords": "Class ConfigurationController Inheritance System.Object ConfigurationController Namespace : Mmm.Iot.IdentityGateway.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public class ConfigurationController : Controller Constructors ConfigurationController(AppConfig, IOpenIdProviderConfiguration, IRsaHelpers) Declaration public ConfigurationController(AppConfig config, IOpenIdProviderConfiguration openIdProviderConfiguration, IRsaHelpers rsaHelpers) Parameters Type Name Description AppConfig config IOpenIdProviderConfiguration openIdProviderConfiguration IRsaHelpers rsaHelpers Fields ContentType Declaration public const string ContentType = \"application/json\" Field Value Type Description System.String Methods GetJsonWebKeySet() Declaration public ContentResult GetJsonWebKeySet() Returns Type Description ContentResult GetOpenIdProviderConfiguration() Declaration public IActionResult GetOpenIdProviderConfiguration() Returns Type Description IActionResult"
   },
-  "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html": {
-    "href": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html",
+  "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html": {
+    "href": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html",
     "title": "Class ErrorModel | 3M Serenity Documentation",
     "keywords": "Class ErrorModel Inheritance System.Object ErrorModel Inherited Members System.Object.ToString() System.Object.Equals(System.Object) System.Object.Equals(System.Object, System.Object) System.Object.ReferenceEquals(System.Object, System.Object) System.Object.GetHashCode() System.Object.GetType() System.Object.MemberwiseClone() Namespace : Mmm.Iot.IdentityGateway.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public class ErrorModel Properties ErrorMessage Declaration public string ErrorMessage { get; set; } Property Value Type Description System.String"
   },
-  "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.html": {
-    "href": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.html",
+  "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.html": {
+    "href": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.html",
     "title": "Namespace Mmm.Iot.IdentityGateway.WebService.Controllers | 3M Serenity Documentation",
     "keywords": "Namespace Mmm.Iot.IdentityGateway.WebService.Controllers Classes ConfigurationController ErrorModel LowercaseContractResolver StatusController SystemAdminController UserSettingsController UserTenantController"
   },
-  "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html": {
-    "href": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html",
+  "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html": {
+    "href": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html",
     "title": "Class LowercaseContractResolver | 3M Serenity Documentation",
     "keywords": "Class LowercaseContractResolver Inheritance System.Object LowercaseContractResolver Namespace : Mmm.Iot.IdentityGateway.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public class LowercaseContractResolver : DefaultContractResolver Methods ResolvePropertyName(String) Declaration protected override string ResolvePropertyName(string propertyName) Parameters Type Name Description System.String propertyName Returns Type Description System.String"
   },
-  "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html": {
-    "href": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html",
+  "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html": {
+    "href": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html",
     "title": "Class StatusController | 3M Serenity Documentation",
     "keywords": "Class StatusController Inheritance System.Object StatusController Namespace : Mmm.Iot.IdentityGateway.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public sealed class StatusController : ControllerBase Constructors StatusController(IStatusService) Declaration public StatusController(IStatusService statusService) Parameters Type Name Description IStatusService statusService Methods GetAsync() Declaration public Task<StatusApiModel> GetAsync() Returns Type Description System.Threading.Tasks.Task < StatusApiModel > Ping() Declaration public IActionResult Ping() Returns Type Description IActionResult"
   },
-  "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html": {
-    "href": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html",
+  "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html": {
+    "href": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html",
     "title": "Class SystemAdminController | 3M Serenity Documentation",
     "keywords": "Class SystemAdminController Inheritance System.Object SystemAdminController Namespace : Mmm.Iot.IdentityGateway.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public class SystemAdminController : Controller Constructors SystemAdminController(SystemAdminContainer, UserTenantContainer) Declaration public SystemAdminController(SystemAdminContainer container, UserTenantContainer userTenantcontainer) Parameters Type Name Description SystemAdminContainer container UserTenantContainer userTenantcontainer Methods CreateSystemAdminAsync(UserModel) Declaration public Task<SystemAdminModel> CreateSystemAdminAsync(UserModel model) Parameters Type Name Description UserModel model Returns Type Description System.Threading.Tasks.Task < SystemAdminModel > DeleteSystemAdminAsync(String) Declaration public Task<SystemAdminModel> DeleteSystemAdminAsync(string userId) Parameters Type Name Description System.String userId Returns Type Description System.Threading.Tasks.Task < SystemAdminModel > GetAllNonSystemAdminsAsync() Declaration public Task<UserListModel> GetAllNonSystemAdminsAsync() Returns Type Description System.Threading.Tasks.Task < UserListModel > GetAllSystemAdminsAsync() Declaration public Task<UserListModel> GetAllSystemAdminsAsync() Returns Type Description System.Threading.Tasks.Task < UserListModel >"
   },
-  "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html": {
-    "href": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html",
+  "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html": {
+    "href": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html",
     "title": "Class UserSettingsController | 3M Serenity Documentation",
     "keywords": "Class UserSettingsController Inheritance System.Object UserSettingsController Namespace : Mmm.Iot.IdentityGateway.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public class UserSettingsController : Controller Constructors UserSettingsController(UserSettingsContainer) Declaration public UserSettingsController(UserSettingsContainer container) Parameters Type Name Description UserSettingsContainer container UserSettingsController(UserSettingsContainer, AppConfig) Declaration public UserSettingsController(UserSettingsContainer container, AppConfig config) Parameters Type Name Description UserSettingsContainer container AppConfig config Methods DeleteAsync(String, String) Declaration public Task<UserSettingsModel> DeleteAsync(string userId, string setting) Parameters Type Name Description System.String userId System.String setting Returns Type Description System.Threading.Tasks.Task < UserSettingsModel > GetAllAsync(String) Declaration public Task<UserSettingsListModel> GetAllAsync(string userId) Parameters Type Name Description System.String userId Returns Type Description System.Threading.Tasks.Task < UserSettingsListModel > GetAsync(String, String) Declaration public Task<UserSettingsModel> GetAsync(string userId, string setting) Parameters Type Name Description System.String userId System.String setting Returns Type Description System.Threading.Tasks.Task < UserSettingsModel > GetLatestBuildNumber() Declaration public UserSettingsModel GetLatestBuildNumber() Returns Type Description UserSettingsModel GetUserActiveDeviceGroupAsync() Declaration public Task<UserSettingsModel> GetUserActiveDeviceGroupAsync() Returns Type Description System.Threading.Tasks.Task < UserSettingsModel > PostAsync(String, String, String) Declaration public Task<UserSettingsModel> PostAsync(string userId, string setting, string value) Parameters Type Name Description System.String userId System.String setting System.String value Returns Type Description System.Threading.Tasks.Task < UserSettingsModel > PutAsync(String, String, String) Declaration public Task<UserSettingsModel> PutAsync(string userId, string setting, string value) Parameters Type Name Description System.String userId System.String setting System.String value Returns Type Description System.Threading.Tasks.Task < UserSettingsModel > PutUserActiveDeviceGroupAsync(String) Declaration public Task<UserSettingsModel> PutUserActiveDeviceGroupAsync(string value) Parameters Type Name Description System.String value Returns Type Description System.Threading.Tasks.Task < UserSettingsModel > UserClaimsDeleteAsync(String) Declaration public Task<UserSettingsModel> UserClaimsDeleteAsync(string setting) Parameters Type Name Description System.String setting Returns Type Description System.Threading.Tasks.Task < UserSettingsModel > UserClaimsGetAllAsync() Declaration public Task<UserSettingsListModel> UserClaimsGetAllAsync() Returns Type Description System.Threading.Tasks.Task < UserSettingsListModel > UserClaimsGetAsync(String) Declaration public Task<UserSettingsModel> UserClaimsGetAsync(string setting) Parameters Type Name Description System.String setting Returns Type Description System.Threading.Tasks.Task < UserSettingsModel > UserClaimsPostAsync(String, String) Declaration public Task<UserSettingsModel> UserClaimsPostAsync(string setting, string value) Parameters Type Name Description System.String setting System.String value Returns Type Description System.Threading.Tasks.Task < UserSettingsModel > UserClaimsPutAsync(String, String) Declaration public Task<UserSettingsModel> UserClaimsPutAsync(string setting, string value) Parameters Type Name Description System.String setting System.String value Returns Type Description System.Threading.Tasks.Task < UserSettingsModel >"
   },
-  "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html": {
-    "href": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html",
+  "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html": {
+    "href": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html",
     "title": "Class UserTenantController | 3M Serenity Documentation",
     "keywords": "Class UserTenantController Inheritance System.Object UserTenantController Namespace : Mmm.Iot.IdentityGateway.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public class UserTenantController : Controller Constructors UserTenantController(UserTenantContainer, IJwtHelpers, ISendGridClientFactory, IInviteHelpers, UserSettingsContainer) Declaration public UserTenantController(UserTenantContainer container, IJwtHelpers jwtHelper, ISendGridClientFactory sendGridClientFactory, IInviteHelpers inviteHelper, UserSettingsContainer settingsContainer) Parameters Type Name Description UserTenantContainer container IJwtHelpers jwtHelper ISendGridClientFactory sendGridClientFactory IInviteHelpers inviteHelper UserSettingsContainer settingsContainer Methods DeleteAllAsync() Declaration public Task<UserTenantListModel> DeleteAllAsync() Returns Type Description System.Threading.Tasks.Task < UserTenantListModel > DeleteAsync(String) Declaration public Task<UserTenantModel> DeleteAsync(string userId) Parameters Type Name Description System.String userId Returns Type Description System.Threading.Tasks.Task < UserTenantModel > GetAllTenantsForUserAsync(String) Declaration public Task<UserTenantListModel> GetAllTenantsForUserAsync(string userId) Parameters Type Name Description System.String userId Returns Type Description System.Threading.Tasks.Task < UserTenantListModel > GetAllUsersForTenantAsync() Declaration public Task<UserTenantListModel> GetAllUsersForTenantAsync() Returns Type Description System.Threading.Tasks.Task < UserTenantListModel > GetAsync(String) Declaration public Task<UserTenantModel> GetAsync(string userId) Parameters Type Name Description System.String userId Returns Type Description System.Threading.Tasks.Task < UserTenantModel > InviteAsync(Invitation) Declaration public Task<UserTenantModel> InviteAsync(Invitation invitation) Parameters Type Name Description Invitation invitation Returns Type Description System.Threading.Tasks.Task < UserTenantModel > PostAsync(String, UserTenantModel) Declaration public Task<UserTenantModel> PostAsync(string userId, UserTenantModel model) Parameters Type Name Description System.String userId UserTenantModel model Returns Type Description System.Threading.Tasks.Task < UserTenantModel > PutAsync(String, UserTenantModel) Declaration public Task<UserTenantModel> PutAsync(string userId, UserTenantModel update) Parameters Type Name Description System.String userId UserTenantModel update Returns Type Description System.Threading.Tasks.Task < UserTenantModel > UserClaimsDeleteAsync() Declaration public Task<UserTenantModel> UserClaimsDeleteAsync() Returns Type Description System.Threading.Tasks.Task < UserTenantModel > UserClaimsGetAllTenantsForUserAsync() Declaration public Task<UserTenantListModel> UserClaimsGetAllTenantsForUserAsync() Returns Type Description System.Threading.Tasks.Task < UserTenantListModel > UserClaimsGetAsync() Declaration public Task<UserTenantModel> UserClaimsGetAsync() Returns Type Description System.Threading.Tasks.Task < UserTenantModel > UserClaimsPostAsync(UserTenantModel) Declaration public Task<UserTenantModel> UserClaimsPostAsync(UserTenantModel model) Parameters Type Name Description UserTenantModel model Returns Type Description System.Threading.Tasks.Task < UserTenantModel > UserClaimsPutAsync(UserTenantModel) Declaration public Task<UserTenantModel> UserClaimsPutAsync(UserTenantModel update) Parameters Type Name Description UserTenantModel update Returns Type Description System.Threading.Tasks.Task < UserTenantModel >"
   },
+  "APIs/identity-gateway/Status/Index.html": {
+    "href": "APIs/identity-gateway/Status/Index.html",
+    "title": "Status | 3M Serenity Documentation",
+    "keywords": "Status Service: Identity Gateway API Version: 2020-11-03 Operations"
+  },
+  "APIs/identity-gateway/SystemAdmin/Index.html": {
+    "href": "APIs/identity-gateway/SystemAdmin/Index.html",
+    "title": "System Admin | 3M Serenity Documentation",
+    "keywords": "System Admin Service: Identity Gateway API Version: 2020-11-03 Operations"
+  },
+  "APIs/identity-gateway/UserSettings/Index.html": {
+    "href": "APIs/identity-gateway/UserSettings/Index.html",
+    "title": "User Settings | 3M Serenity Documentation",
+    "keywords": "User Settings Service: Identity Gateway API Version: 2020-11-03 Operations"
+  },
+  "APIs/identity-gateway/UserTenant/Index.html": {
+    "href": "APIs/identity-gateway/UserTenant/Index.html",
+    "title": "User Tenant | 3M Serenity Documentation",
+    "keywords": "User Tenant Service: Identity Gateway API Version: 2020-11-03 Operations"
+  },
   "APIs/index.html": {
     "href": "APIs/index.html",
-    "title": "TODO | 3M Serenity Documentation",
-    "keywords": "TODO List APIs with description and path Reference SWAGGER Files Add .NET projects to the src folder and run docfx to generate REAL API Documentation !"
+    "title": "Platform APIs | 3M Serenity Documentation",
+    "keywords": "Platform APIs There are many APIs available for use across the 3M IoT Platform. This document outlines those APIs and links to additional information. Serenity APIs This section provides reference information for the Serenity APIs. They conform to the OpenAPI Specification . TODO: List relevant Serenity API Services. Azure APIs TODO: List relevant Azure Services APIs."
   },
   "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html": {
     "href": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html",
@@ -199,6 +304,11 @@
     "title": "Class StatusController | 3M Serenity Documentation",
     "keywords": "Class StatusController Inheritance System.Object StatusController Namespace : Mmm.Iot.IoTHubManager.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public sealed class StatusController : ControllerBase Constructors StatusController(IStatusService) Declaration public StatusController(IStatusService statusService) Parameters Type Name Description IStatusService statusService Methods GetAsync() Declaration public Task<StatusApiModel> GetAsync() Returns Type Description System.Threading.Tasks.Task < StatusApiModel > Ping() Declaration public IActionResult Ping() Returns Type Description IActionResult"
   },
+  "APIs/Services.html": {
+    "href": "APIs/Services.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
   "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.html": {
     "href": "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.html",
     "title": "Namespace Mmm.Iot.StorageAdapter.WebService.Controllers | 3M Serenity Documentation",
@@ -213,6 +323,11 @@
     "href": "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html",
     "title": "Class ValuesController | 3M Serenity Documentation",
     "keywords": "Class ValuesController Inheritance System.Object ValuesController Namespace : Mmm.Iot.StorageAdapter.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public class ValuesController : Controller Constructors ValuesController(IKeyValueContainer, IKeyGenerator, ILogger<ValuesController>) Declaration public ValuesController(IKeyValueContainer container, IKeyGenerator keyGenerator, ILogger<ValuesController> logger) Parameters Type Name Description IKeyValueContainer container IKeyGenerator keyGenerator ILogger < ValuesController > logger Methods Delete(String, String) Declaration public Task Delete(string collectionId, string key) Parameters Type Name Description System.String collectionId System.String key Returns Type Description System.Threading.Tasks.Task Get(String) Declaration public Task<ValueListApiModel> Get(string collectionId) Parameters Type Name Description System.String collectionId Returns Type Description System.Threading.Tasks.Task < ValueListApiModel > Get(String, String) Declaration public Task<ValueApiModel> Get(string collectionId, string key) Parameters Type Name Description System.String collectionId System.String key Returns Type Description System.Threading.Tasks.Task < ValueApiModel > Post(String, ValueServiceModel) Declaration public Task<ValueApiModel> Post(string collectionId, ValueServiceModel model) Parameters Type Name Description System.String collectionId ValueServiceModel model Returns Type Description System.Threading.Tasks.Task < ValueApiModel > Put(String, String, ValueServiceModel) Declaration public Task<ValueApiModel> Put(string collectionId, string key, ValueServiceModel model) Parameters Type Name Description System.String collectionId System.String key ValueServiceModel model Returns Type Description System.Threading.Tasks.Task < ValueApiModel >"
+  },
+  "APIs/Swagger.html": {
+    "href": "APIs/Swagger.html",
+    "title": "Serenity and Swagger UI | 3M Serenity Documentation",
+    "keywords": "Serenity and Swagger UI Each Serenity web service has a Swagger UI that allows you to visualize and interact with the Serenity APIs. Swagger Paths Each Serenity web service has a specific path that exposes an interactive Swagger UI to the APIs as follows: Service Path Identity Gateway /auth/index.html Config /config/index.html Device Telemetry /telemetry/index.html Diagnostics /diagnostics/index.html IoTHub Manager /iothubmanager/index.html Tenant Manager /tenantmanager/index.html Using Swagger UI To access the Swagger UI, append it to the root URL using the following syntax: {root URL}/{Swagger Path} For example, the following will take you to the Identity Gateway in CRSL's Development environment: https://crsliot-aks-dev.centralus.cloudapp.azure.com/ iothubmanager/index.html Additional Details For additional information on Swagger UI, check out the Swagger UI Documentation"
   },
   "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html": {
     "href": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html",
@@ -312,7 +427,7 @@
   "GettingStarted/index.html": {
     "href": "GettingStarted/index.html",
     "title": "Getting Started | 3M Serenity Documentation",
-    "keywords": "Getting Started Welcome to the 3M IoT Platform on Azure documentation. This section provides an overview of the platform and how to get started using it and contributing to its improvement. Content Organization The left navigation is organized sequentially to provide a foundation for working with the platform. Use the Content Filter... to narrow down specific topics. Throughout this documentation you'll a Downloaded PDF to allow you to take the material offline. <!-- TODO: Replace with Cards Remove the table able and switch it into cards. --> The top navigation organizes content into sections as follows: SECTION DESCRIPTION Getting Started Introductory resources for those new to the platform Use Cases Examples of how the platform is being used at 3M. Guides Topics related to common questions and activities like how to manage devices. APIs Information about integrating the common services into custom solutions. The Search box allows you to search for content across all sections. Content Accuracy We have taken care to ensure the accuracy of this content but mistakes happen and things change over time. See How to Improve This Documentation to help us continue to improve the content and keep it up to date."
+    "keywords": "Getting Started Welcome to the 3M IoT Platform on Azure documentation. This section provides an overview of the platform and how to get started using it and contributing to its improvement. Content Organization The left navigation is organized sequentially to provide a foundation for working with the platform. Use the Filter Content... located above the navigation to filter for specific topics. As you navigate across links, you may see a PDF button for downloading documentation viable offline. The button's label will indicate the content scope of the PDF. For example, the content attached to the Getting Started link below will export all \"Getting Started\" content whereas is possible to download just the User Manual by navigating to that section. Content Accuracy We have taken care to ensure the accuracy of this content but mistakes happen and things change over time. See How to Improve This Documentation to help us continue to improve the content and keep it up to date. Sections The top navigation organizes content into sections as follows: SECTION DESCRIPTION Getting Started Introductory resources for those new to the platform Use Cases Examples of how the platform is being used at 3M. Guides Topics related to common questions and activities like how to manage devices. APIs Information about integrating the common services into custom solutions. The Search box allows you to search for content across all sections."
   },
   "GettingStarted/Overview/architecture.html": {
     "href": "GettingStarted/Overview/architecture.html",
@@ -622,7 +737,7 @@
   "index.html": {
     "href": "index.html",
     "title": "3M IoT Platform Documentation | 3M Serenity Documentation",
-    "keywords": "3M IoT Platform Documentation IoT is driving new opportunities across all industries. The 3M IoT Platform on Azure accelerates innovation by providing reusable services essential to every IoT solution. The 3M IoT Platform on Azure is enterprise ready and built to scale. The 3M IoT Platform on Azure increases time-to-market for unique offerings that are built with a consistent device management tier that standardizes administrative, operations, and support services. The 3M IoT Platform on Azure extends Microsoft's Remote Monitoring Accelerator by adding CI/CD support, multi-tenancy, threat protection, and many key features necessary for enterprise adoption. To learn more about how it's being used at 3M, check out the Use Cases . 3M IoT Platform on Azure Conceptual Architecture <!--<xref: SolutionFullName>--> Download All Documentation"
+    "keywords": "3M IoT Platform Documentation IoT is driving new opportunities across all industries. The 3M IoT Platform on Azure accelerates innovation by providing reusable services essential to every IoT solution. The platform's code name is Serenity . It's enterprise ready and built to scale. Serenity's battle-tested services standardize administrative, operations, and support services. It extends Microsoft's Remote Monitoring Accelerator by adding robust CI/CD, multi-tenancy, threat protection, and many key features necessary for enterprise adoption. To learn more about how it's being used at 3M, check out the Use Cases . 3M IoT Platform on Azure Conceptual Architecture Download Documentation"
   },
   "UseCases/index.html": {
     "href": "UseCases/index.html",

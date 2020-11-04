@@ -3,128 +3,128 @@ sorted: true
 references:
 - uid: Mmm.Iot.AsaManager.WebService.Controllers
   name: Mmm.Iot.AsaManager.WebService.Controllers
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.html
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.html
   commentId: N:Mmm.Iot.AsaManager.WebService.Controllers
   fullName: Mmm.Iot.AsaManager.WebService.Controllers
   nameWithType: Mmm.Iot.AsaManager.WebService.Controllers
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController
   name: DeviceGroupsController
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html
   commentId: T:Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController
   nameWithType: DeviceGroupsController
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.#ctor(DeviceGroupsConverter,IBeginConversionHelper)
   name: DeviceGroupsController(DeviceGroupsConverter, IBeginConversionHelper)
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html#Mmm_Iot_AsaManager_WebService_Controllers_DeviceGroupsController__ctor_DeviceGroupsConverter_IBeginConversionHelper_
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html#Mmm_Iot_AsaManager_WebService_Controllers_DeviceGroupsController__ctor_DeviceGroupsConverter_IBeginConversionHelper_
   commentId: M:Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.#ctor(DeviceGroupsConverter,IBeginConversionHelper)
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.DeviceGroupsController(DeviceGroupsConverter, IBeginConversionHelper)
   nameWithType: DeviceGroupsController.DeviceGroupsController(DeviceGroupsConverter, IBeginConversionHelper)
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.#ctor*
   name: DeviceGroupsController
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html#Mmm_Iot_AsaManager_WebService_Controllers_DeviceGroupsController__ctor_
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html#Mmm_Iot_AsaManager_WebService_Controllers_DeviceGroupsController__ctor_
   commentId: Overload:Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.DeviceGroupsController
   nameWithType: DeviceGroupsController.DeviceGroupsController
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.BeginDeviceGroupConversion
   name: BeginDeviceGroupConversion()
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html#Mmm_Iot_AsaManager_WebService_Controllers_DeviceGroupsController_BeginDeviceGroupConversion
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html#Mmm_Iot_AsaManager_WebService_Controllers_DeviceGroupsController_BeginDeviceGroupConversion
   commentId: M:Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.BeginDeviceGroupConversion
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.BeginDeviceGroupConversion()
   nameWithType: DeviceGroupsController.BeginDeviceGroupConversion()
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.BeginDeviceGroupConversion*
   name: BeginDeviceGroupConversion
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html#Mmm_Iot_AsaManager_WebService_Controllers_DeviceGroupsController_BeginDeviceGroupConversion_
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html#Mmm_Iot_AsaManager_WebService_Controllers_DeviceGroupsController_BeginDeviceGroupConversion_
   commentId: Overload:Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.BeginDeviceGroupConversion
   isSpec: "True"
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.BeginDeviceGroupConversion
   nameWithType: DeviceGroupsController.BeginDeviceGroupConversion
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.BeginIotHubJobDelayDeviceGroupConversion(System.String)
   name: BeginIotHubJobDelayDeviceGroupConversion(String)
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html#Mmm_Iot_AsaManager_WebService_Controllers_DeviceGroupsController_BeginIotHubJobDelayDeviceGroupConversion_System_String_
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html#Mmm_Iot_AsaManager_WebService_Controllers_DeviceGroupsController_BeginIotHubJobDelayDeviceGroupConversion_System_String_
   commentId: M:Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.BeginIotHubJobDelayDeviceGroupConversion(System.String)
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.BeginIotHubJobDelayDeviceGroupConversion(System.String)
   nameWithType: DeviceGroupsController.BeginIotHubJobDelayDeviceGroupConversion(String)
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.BeginIotHubJobDelayDeviceGroupConversion*
   name: BeginIotHubJobDelayDeviceGroupConversion
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html#Mmm_Iot_AsaManager_WebService_Controllers_DeviceGroupsController_BeginIotHubJobDelayDeviceGroupConversion_
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html#Mmm_Iot_AsaManager_WebService_Controllers_DeviceGroupsController_BeginIotHubJobDelayDeviceGroupConversion_
   commentId: Overload:Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.BeginIotHubJobDelayDeviceGroupConversion
   isSpec: "True"
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.BeginIotHubJobDelayDeviceGroupConversion
   nameWithType: DeviceGroupsController.BeginIotHubJobDelayDeviceGroupConversion
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.RulesController
   name: RulesController
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html
   commentId: T:Mmm.Iot.AsaManager.WebService.Controllers.RulesController
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.RulesController
   nameWithType: RulesController
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.RulesController.#ctor(RulesConverter,IBeginConversionHelper)
   name: RulesController(RulesConverter, IBeginConversionHelper)
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html#Mmm_Iot_AsaManager_WebService_Controllers_RulesController__ctor_RulesConverter_IBeginConversionHelper_
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html#Mmm_Iot_AsaManager_WebService_Controllers_RulesController__ctor_RulesConverter_IBeginConversionHelper_
   commentId: M:Mmm.Iot.AsaManager.WebService.Controllers.RulesController.#ctor(RulesConverter,IBeginConversionHelper)
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.RulesController.RulesController(RulesConverter, IBeginConversionHelper)
   nameWithType: RulesController.RulesController(RulesConverter, IBeginConversionHelper)
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.RulesController.#ctor*
   name: RulesController
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html#Mmm_Iot_AsaManager_WebService_Controllers_RulesController__ctor_
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html#Mmm_Iot_AsaManager_WebService_Controllers_RulesController__ctor_
   commentId: Overload:Mmm.Iot.AsaManager.WebService.Controllers.RulesController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.RulesController.RulesController
   nameWithType: RulesController.RulesController
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.RulesController.BeginRuleConversion
   name: BeginRuleConversion()
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html#Mmm_Iot_AsaManager_WebService_Controllers_RulesController_BeginRuleConversion
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html#Mmm_Iot_AsaManager_WebService_Controllers_RulesController_BeginRuleConversion
   commentId: M:Mmm.Iot.AsaManager.WebService.Controllers.RulesController.BeginRuleConversion
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.RulesController.BeginRuleConversion()
   nameWithType: RulesController.BeginRuleConversion()
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.RulesController.BeginRuleConversion*
   name: BeginRuleConversion
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html#Mmm_Iot_AsaManager_WebService_Controllers_RulesController_BeginRuleConversion_
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html#Mmm_Iot_AsaManager_WebService_Controllers_RulesController_BeginRuleConversion_
   commentId: Overload:Mmm.Iot.AsaManager.WebService.Controllers.RulesController.BeginRuleConversion
   isSpec: "True"
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.RulesController.BeginRuleConversion
   nameWithType: RulesController.BeginRuleConversion
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.StatusController
   name: StatusController
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html
   commentId: T:Mmm.Iot.AsaManager.WebService.Controllers.StatusController
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.StatusController
   nameWithType: StatusController
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.StatusController.#ctor(IStatusService)
   name: StatusController(IStatusService)
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html#Mmm_Iot_AsaManager_WebService_Controllers_StatusController__ctor_IStatusService_
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html#Mmm_Iot_AsaManager_WebService_Controllers_StatusController__ctor_IStatusService_
   commentId: M:Mmm.Iot.AsaManager.WebService.Controllers.StatusController.#ctor(IStatusService)
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.StatusController.StatusController(IStatusService)
   nameWithType: StatusController.StatusController(IStatusService)
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.StatusController.#ctor*
   name: StatusController
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html#Mmm_Iot_AsaManager_WebService_Controllers_StatusController__ctor_
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html#Mmm_Iot_AsaManager_WebService_Controllers_StatusController__ctor_
   commentId: Overload:Mmm.Iot.AsaManager.WebService.Controllers.StatusController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.StatusController.StatusController
   nameWithType: StatusController.StatusController
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.StatusController.GetAsync
   name: GetAsync()
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html#Mmm_Iot_AsaManager_WebService_Controllers_StatusController_GetAsync
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html#Mmm_Iot_AsaManager_WebService_Controllers_StatusController_GetAsync
   commentId: M:Mmm.Iot.AsaManager.WebService.Controllers.StatusController.GetAsync
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.StatusController.GetAsync()
   nameWithType: StatusController.GetAsync()
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.StatusController.GetAsync*
   name: GetAsync
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html#Mmm_Iot_AsaManager_WebService_Controllers_StatusController_GetAsync_
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html#Mmm_Iot_AsaManager_WebService_Controllers_StatusController_GetAsync_
   commentId: Overload:Mmm.Iot.AsaManager.WebService.Controllers.StatusController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.StatusController.GetAsync
   nameWithType: StatusController.GetAsync
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.StatusController.Ping
   name: Ping()
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html#Mmm_Iot_AsaManager_WebService_Controllers_StatusController_Ping
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html#Mmm_Iot_AsaManager_WebService_Controllers_StatusController_Ping
   commentId: M:Mmm.Iot.AsaManager.WebService.Controllers.StatusController.Ping
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.StatusController.Ping()
   nameWithType: StatusController.Ping()
 - uid: Mmm.Iot.AsaManager.WebService.Controllers.StatusController.Ping*
   name: Ping
-  href: APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html#Mmm_Iot_AsaManager_WebService_Controllers_StatusController_Ping_
+  href: APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html#Mmm_Iot_AsaManager_WebService_Controllers_StatusController_Ping_
   commentId: Overload:Mmm.Iot.AsaManager.WebService.Controllers.StatusController.Ping
   isSpec: "True"
   fullName: Mmm.Iot.AsaManager.WebService.Controllers.StatusController.Ping
@@ -1148,669 +1148,669 @@ references:
   nameWithType: StatusController.Ping
 - uid: Mmm.Iot.IdentityGateway.Controllers
   name: Mmm.Iot.IdentityGateway.Controllers
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.html
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.html
   commentId: N:Mmm.Iot.IdentityGateway.Controllers
   fullName: Mmm.Iot.IdentityGateway.Controllers
   nameWithType: Mmm.Iot.IdentityGateway.Controllers
 - uid: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController
   name: AuthorizeController
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html
   commentId: T:Mmm.Iot.IdentityGateway.Controllers.AuthorizeController
   fullName: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController
   nameWithType: AuthorizeController
 - uid: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.#ctor(AppConfig,UserTenantContainer,UserSettingsContainer,IJwtHelpers,IOpenIdProviderConfiguration,IAuthenticationContext)
   name: AuthorizeController(AppConfig, UserTenantContainer, UserSettingsContainer, IJwtHelpers, IOpenIdProviderConfiguration, IAuthenticationContext)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController__ctor_AppConfig_UserTenantContainer_UserSettingsContainer_IJwtHelpers_IOpenIdProviderConfiguration_IAuthenticationContext_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController__ctor_AppConfig_UserTenantContainer_UserSettingsContainer_IJwtHelpers_IOpenIdProviderConfiguration_IAuthenticationContext_
   commentId: M:Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.#ctor(AppConfig,UserTenantContainer,UserSettingsContainer,IJwtHelpers,IOpenIdProviderConfiguration,IAuthenticationContext)
   fullName: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.AuthorizeController(AppConfig, UserTenantContainer, UserSettingsContainer, IJwtHelpers, IOpenIdProviderConfiguration, IAuthenticationContext)
   nameWithType: AuthorizeController.AuthorizeController(AppConfig, UserTenantContainer, UserSettingsContainer, IJwtHelpers, IOpenIdProviderConfiguration, IAuthenticationContext)
 - uid: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.#ctor*
   name: AuthorizeController
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController__ctor_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController__ctor_
   commentId: Overload:Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.AuthorizeController
   nameWithType: AuthorizeController.AuthorizeController
 - uid: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.Get(System.String)
   name: Get(String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_Get_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_Get_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.Get(System.String)
   fullName: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.Get(System.String)
   nameWithType: AuthorizeController.Get(String)
 - uid: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.Get(System.String,System.String,System.String,System.String,System.String,System.String)
   name: Get(String, String, String, String, String, String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_Get_System_String_System_String_System_String_System_String_System_String_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_Get_System_String_System_String_System_String_System_String_System_String_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.Get(System.String,System.String,System.String,System.String,System.String,System.String)
   fullName: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.Get(System.String, System.String, System.String, System.String, System.String, System.String)
   nameWithType: AuthorizeController.Get(String, String, String, String, String, String)
 - uid: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.Get*
   name: Get
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_Get_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_Get_
   commentId: Overload:Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.Get
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.Get
   nameWithType: AuthorizeController.Get
 - uid: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostAsync(System.String,System.String)
   name: PostAsync(String, String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_PostAsync_System_String_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_PostAsync_System_String_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostAsync(System.String,System.String)
   fullName: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostAsync(System.String, System.String)
   nameWithType: AuthorizeController.PostAsync(String, String)
 - uid: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostAsync(System.String,System.String,System.String,System.String)
   name: PostAsync(String, String, String, String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_PostAsync_System_String_System_String_System_String_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_PostAsync_System_String_System_String_System_String_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostAsync(System.String,System.String,System.String,System.String)
   fullName: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostAsync(System.String, System.String, System.String, System.String)
   nameWithType: AuthorizeController.PostAsync(String, String, String, String)
 - uid: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostAsync*
   name: PostAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_PostAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_PostAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostAsync
   nameWithType: AuthorizeController.PostAsync
 - uid: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostTokenAsync(ClientCredentialInput)
   name: PostTokenAsync(ClientCredentialInput)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_PostTokenAsync_ClientCredentialInput_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_PostTokenAsync_ClientCredentialInput_
   commentId: M:Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostTokenAsync(ClientCredentialInput)
   fullName: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostTokenAsync(ClientCredentialInput)
   nameWithType: AuthorizeController.PostTokenAsync(ClientCredentialInput)
 - uid: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostTokenAsync*
   name: PostTokenAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_PostTokenAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html#Mmm_Iot_IdentityGateway_Controllers_AuthorizeController_PostTokenAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostTokenAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.PostTokenAsync
   nameWithType: AuthorizeController.PostTokenAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers
   name: Mmm.Iot.IdentityGateway.WebService.Controllers
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.html
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.html
   commentId: N:Mmm.Iot.IdentityGateway.WebService.Controllers
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers
   nameWithType: Mmm.Iot.IdentityGateway.WebService.Controllers
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController
   name: ConfigurationController
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html
   commentId: T:Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController
   nameWithType: ConfigurationController
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.#ctor(AppConfig,IOpenIdProviderConfiguration,IRsaHelpers)
   name: ConfigurationController(AppConfig, IOpenIdProviderConfiguration, IRsaHelpers)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController__ctor_AppConfig_IOpenIdProviderConfiguration_IRsaHelpers_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController__ctor_AppConfig_IOpenIdProviderConfiguration_IRsaHelpers_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.#ctor(AppConfig,IOpenIdProviderConfiguration,IRsaHelpers)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.ConfigurationController(AppConfig, IOpenIdProviderConfiguration, IRsaHelpers)
   nameWithType: ConfigurationController.ConfigurationController(AppConfig, IOpenIdProviderConfiguration, IRsaHelpers)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.#ctor*
   name: ConfigurationController
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController__ctor_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController__ctor_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.ConfigurationController
   nameWithType: ConfigurationController.ConfigurationController
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.ContentType
   name: ContentType
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController_ContentType
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController_ContentType
   commentId: F:Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.ContentType
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.ContentType
   nameWithType: ConfigurationController.ContentType
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.GetJsonWebKeySet
   name: GetJsonWebKeySet()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController_GetJsonWebKeySet
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController_GetJsonWebKeySet
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.GetJsonWebKeySet
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.GetJsonWebKeySet()
   nameWithType: ConfigurationController.GetJsonWebKeySet()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.GetJsonWebKeySet*
   name: GetJsonWebKeySet
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController_GetJsonWebKeySet_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController_GetJsonWebKeySet_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.GetJsonWebKeySet
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.GetJsonWebKeySet
   nameWithType: ConfigurationController.GetJsonWebKeySet
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.GetOpenIdProviderConfiguration
   name: GetOpenIdProviderConfiguration()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController_GetOpenIdProviderConfiguration
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController_GetOpenIdProviderConfiguration
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.GetOpenIdProviderConfiguration
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.GetOpenIdProviderConfiguration()
   nameWithType: ConfigurationController.GetOpenIdProviderConfiguration()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.GetOpenIdProviderConfiguration*
   name: GetOpenIdProviderConfiguration
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController_GetOpenIdProviderConfiguration_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ConfigurationController_GetOpenIdProviderConfiguration_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.GetOpenIdProviderConfiguration
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.GetOpenIdProviderConfiguration
   nameWithType: ConfigurationController.GetOpenIdProviderConfiguration
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel
   name: ErrorModel
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html
   commentId: T:Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel
   nameWithType: ErrorModel
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.ErrorMessage
   name: ErrorMessage
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ErrorModel_ErrorMessage
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ErrorModel_ErrorMessage
   commentId: P:Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.ErrorMessage
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.ErrorMessage
   nameWithType: ErrorModel.ErrorMessage
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.ErrorMessage*
   name: ErrorMessage
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ErrorModel_ErrorMessage_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html#Mmm_Iot_IdentityGateway_WebService_Controllers_ErrorModel_ErrorMessage_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.ErrorMessage
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.ErrorMessage
   nameWithType: ErrorModel.ErrorMessage
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver
   name: LowercaseContractResolver
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html
   commentId: T:Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver
   nameWithType: LowercaseContractResolver
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.ResolvePropertyName(System.String)
   name: ResolvePropertyName(String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html#Mmm_Iot_IdentityGateway_WebService_Controllers_LowercaseContractResolver_ResolvePropertyName_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html#Mmm_Iot_IdentityGateway_WebService_Controllers_LowercaseContractResolver_ResolvePropertyName_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.ResolvePropertyName(System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.ResolvePropertyName(System.String)
   nameWithType: LowercaseContractResolver.ResolvePropertyName(String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.ResolvePropertyName*
   name: ResolvePropertyName
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html#Mmm_Iot_IdentityGateway_WebService_Controllers_LowercaseContractResolver_ResolvePropertyName_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html#Mmm_Iot_IdentityGateway_WebService_Controllers_LowercaseContractResolver_ResolvePropertyName_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.ResolvePropertyName
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.ResolvePropertyName
   nameWithType: LowercaseContractResolver.ResolvePropertyName
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController
   name: StatusController
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html
   commentId: T:Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController
   nameWithType: StatusController
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.#ctor(IStatusService)
   name: StatusController(IStatusService)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_StatusController__ctor_IStatusService_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_StatusController__ctor_IStatusService_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.#ctor(IStatusService)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.StatusController(IStatusService)
   nameWithType: StatusController.StatusController(IStatusService)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.#ctor*
   name: StatusController
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_StatusController__ctor_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_StatusController__ctor_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.StatusController
   nameWithType: StatusController.StatusController
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.GetAsync
   name: GetAsync()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_StatusController_GetAsync
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_StatusController_GetAsync
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.GetAsync
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.GetAsync()
   nameWithType: StatusController.GetAsync()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.GetAsync*
   name: GetAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_StatusController_GetAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_StatusController_GetAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.GetAsync
   nameWithType: StatusController.GetAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.Ping
   name: Ping()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_StatusController_Ping
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_StatusController_Ping
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.Ping
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.Ping()
   nameWithType: StatusController.Ping()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.Ping*
   name: Ping
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_StatusController_Ping_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_StatusController_Ping_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.Ping
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.Ping
   nameWithType: StatusController.Ping
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController
   name: SystemAdminController
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html
   commentId: T:Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController
   nameWithType: SystemAdminController
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.#ctor(SystemAdminContainer,UserTenantContainer)
   name: SystemAdminController(SystemAdminContainer, UserTenantContainer)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController__ctor_SystemAdminContainer_UserTenantContainer_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController__ctor_SystemAdminContainer_UserTenantContainer_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.#ctor(SystemAdminContainer,UserTenantContainer)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.SystemAdminController(SystemAdminContainer, UserTenantContainer)
   nameWithType: SystemAdminController.SystemAdminController(SystemAdminContainer, UserTenantContainer)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.#ctor*
   name: SystemAdminController
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController__ctor_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController__ctor_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.SystemAdminController
   nameWithType: SystemAdminController.SystemAdminController
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.CreateSystemAdminAsync(UserModel)
   name: CreateSystemAdminAsync(UserModel)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_CreateSystemAdminAsync_UserModel_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_CreateSystemAdminAsync_UserModel_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.CreateSystemAdminAsync(UserModel)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.CreateSystemAdminAsync(UserModel)
   nameWithType: SystemAdminController.CreateSystemAdminAsync(UserModel)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.CreateSystemAdminAsync*
   name: CreateSystemAdminAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_CreateSystemAdminAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_CreateSystemAdminAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.CreateSystemAdminAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.CreateSystemAdminAsync
   nameWithType: SystemAdminController.CreateSystemAdminAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.DeleteSystemAdminAsync(System.String)
   name: DeleteSystemAdminAsync(String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_DeleteSystemAdminAsync_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_DeleteSystemAdminAsync_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.DeleteSystemAdminAsync(System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.DeleteSystemAdminAsync(System.String)
   nameWithType: SystemAdminController.DeleteSystemAdminAsync(String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.DeleteSystemAdminAsync*
   name: DeleteSystemAdminAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_DeleteSystemAdminAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_DeleteSystemAdminAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.DeleteSystemAdminAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.DeleteSystemAdminAsync
   nameWithType: SystemAdminController.DeleteSystemAdminAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.GetAllNonSystemAdminsAsync
   name: GetAllNonSystemAdminsAsync()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_GetAllNonSystemAdminsAsync
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_GetAllNonSystemAdminsAsync
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.GetAllNonSystemAdminsAsync
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.GetAllNonSystemAdminsAsync()
   nameWithType: SystemAdminController.GetAllNonSystemAdminsAsync()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.GetAllNonSystemAdminsAsync*
   name: GetAllNonSystemAdminsAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_GetAllNonSystemAdminsAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_GetAllNonSystemAdminsAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.GetAllNonSystemAdminsAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.GetAllNonSystemAdminsAsync
   nameWithType: SystemAdminController.GetAllNonSystemAdminsAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.GetAllSystemAdminsAsync
   name: GetAllSystemAdminsAsync()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_GetAllSystemAdminsAsync
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_GetAllSystemAdminsAsync
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.GetAllSystemAdminsAsync
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.GetAllSystemAdminsAsync()
   nameWithType: SystemAdminController.GetAllSystemAdminsAsync()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.GetAllSystemAdminsAsync*
   name: GetAllSystemAdminsAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_GetAllSystemAdminsAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_SystemAdminController_GetAllSystemAdminsAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.GetAllSystemAdminsAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.GetAllSystemAdminsAsync
   nameWithType: SystemAdminController.GetAllSystemAdminsAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController
   name: UserSettingsController
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html
   commentId: T:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController
   nameWithType: UserSettingsController
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.#ctor(UserSettingsContainer)
   name: UserSettingsController(UserSettingsContainer)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController__ctor_UserSettingsContainer_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController__ctor_UserSettingsContainer_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.#ctor(UserSettingsContainer)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserSettingsController(UserSettingsContainer)
   nameWithType: UserSettingsController.UserSettingsController(UserSettingsContainer)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.#ctor(UserSettingsContainer,AppConfig)
   name: UserSettingsController(UserSettingsContainer, AppConfig)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController__ctor_UserSettingsContainer_AppConfig_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController__ctor_UserSettingsContainer_AppConfig_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.#ctor(UserSettingsContainer,AppConfig)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserSettingsController(UserSettingsContainer, AppConfig)
   nameWithType: UserSettingsController.UserSettingsController(UserSettingsContainer, AppConfig)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.#ctor*
   name: UserSettingsController
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController__ctor_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController__ctor_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserSettingsController
   nameWithType: UserSettingsController.UserSettingsController
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.DeleteAsync(System.String,System.String)
   name: DeleteAsync(String, String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_DeleteAsync_System_String_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_DeleteAsync_System_String_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.DeleteAsync(System.String,System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.DeleteAsync(System.String, System.String)
   nameWithType: UserSettingsController.DeleteAsync(String, String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.DeleteAsync*
   name: DeleteAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_DeleteAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_DeleteAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.DeleteAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.DeleteAsync
   nameWithType: UserSettingsController.DeleteAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetAllAsync(System.String)
   name: GetAllAsync(String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetAllAsync_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetAllAsync_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetAllAsync(System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetAllAsync(System.String)
   nameWithType: UserSettingsController.GetAllAsync(String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetAllAsync*
   name: GetAllAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetAllAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetAllAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetAllAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetAllAsync
   nameWithType: UserSettingsController.GetAllAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetAsync(System.String,System.String)
   name: GetAsync(String, String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetAsync_System_String_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetAsync_System_String_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetAsync(System.String,System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetAsync(System.String, System.String)
   nameWithType: UserSettingsController.GetAsync(String, String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetAsync*
   name: GetAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetAsync
   nameWithType: UserSettingsController.GetAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetLatestBuildNumber
   name: GetLatestBuildNumber()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetLatestBuildNumber
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetLatestBuildNumber
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetLatestBuildNumber
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetLatestBuildNumber()
   nameWithType: UserSettingsController.GetLatestBuildNumber()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetLatestBuildNumber*
   name: GetLatestBuildNumber
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetLatestBuildNumber_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetLatestBuildNumber_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetLatestBuildNumber
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetLatestBuildNumber
   nameWithType: UserSettingsController.GetLatestBuildNumber
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetUserActiveDeviceGroupAsync
   name: GetUserActiveDeviceGroupAsync()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetUserActiveDeviceGroupAsync
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetUserActiveDeviceGroupAsync
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetUserActiveDeviceGroupAsync
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetUserActiveDeviceGroupAsync()
   nameWithType: UserSettingsController.GetUserActiveDeviceGroupAsync()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetUserActiveDeviceGroupAsync*
   name: GetUserActiveDeviceGroupAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetUserActiveDeviceGroupAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_GetUserActiveDeviceGroupAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetUserActiveDeviceGroupAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.GetUserActiveDeviceGroupAsync
   nameWithType: UserSettingsController.GetUserActiveDeviceGroupAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PostAsync(System.String,System.String,System.String)
   name: PostAsync(String, String, String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_PostAsync_System_String_System_String_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_PostAsync_System_String_System_String_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PostAsync(System.String,System.String,System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PostAsync(System.String, System.String, System.String)
   nameWithType: UserSettingsController.PostAsync(String, String, String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PostAsync*
   name: PostAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_PostAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_PostAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PostAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PostAsync
   nameWithType: UserSettingsController.PostAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PutAsync(System.String,System.String,System.String)
   name: PutAsync(String, String, String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_PutAsync_System_String_System_String_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_PutAsync_System_String_System_String_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PutAsync(System.String,System.String,System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PutAsync(System.String, System.String, System.String)
   nameWithType: UserSettingsController.PutAsync(String, String, String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PutAsync*
   name: PutAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_PutAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_PutAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PutAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PutAsync
   nameWithType: UserSettingsController.PutAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PutUserActiveDeviceGroupAsync(System.String)
   name: PutUserActiveDeviceGroupAsync(String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_PutUserActiveDeviceGroupAsync_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_PutUserActiveDeviceGroupAsync_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PutUserActiveDeviceGroupAsync(System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PutUserActiveDeviceGroupAsync(System.String)
   nameWithType: UserSettingsController.PutUserActiveDeviceGroupAsync(String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PutUserActiveDeviceGroupAsync*
   name: PutUserActiveDeviceGroupAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_PutUserActiveDeviceGroupAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_PutUserActiveDeviceGroupAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PutUserActiveDeviceGroupAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.PutUserActiveDeviceGroupAsync
   nameWithType: UserSettingsController.PutUserActiveDeviceGroupAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsDeleteAsync(System.String)
   name: UserClaimsDeleteAsync(String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsDeleteAsync_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsDeleteAsync_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsDeleteAsync(System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsDeleteAsync(System.String)
   nameWithType: UserSettingsController.UserClaimsDeleteAsync(String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsDeleteAsync*
   name: UserClaimsDeleteAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsDeleteAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsDeleteAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsDeleteAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsDeleteAsync
   nameWithType: UserSettingsController.UserClaimsDeleteAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsGetAllAsync
   name: UserClaimsGetAllAsync()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsGetAllAsync
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsGetAllAsync
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsGetAllAsync
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsGetAllAsync()
   nameWithType: UserSettingsController.UserClaimsGetAllAsync()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsGetAllAsync*
   name: UserClaimsGetAllAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsGetAllAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsGetAllAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsGetAllAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsGetAllAsync
   nameWithType: UserSettingsController.UserClaimsGetAllAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsGetAsync(System.String)
   name: UserClaimsGetAsync(String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsGetAsync_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsGetAsync_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsGetAsync(System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsGetAsync(System.String)
   nameWithType: UserSettingsController.UserClaimsGetAsync(String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsGetAsync*
   name: UserClaimsGetAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsGetAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsGetAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsGetAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsGetAsync
   nameWithType: UserSettingsController.UserClaimsGetAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsPostAsync(System.String,System.String)
   name: UserClaimsPostAsync(String, String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsPostAsync_System_String_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsPostAsync_System_String_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsPostAsync(System.String,System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsPostAsync(System.String, System.String)
   nameWithType: UserSettingsController.UserClaimsPostAsync(String, String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsPostAsync*
   name: UserClaimsPostAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsPostAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsPostAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsPostAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsPostAsync
   nameWithType: UserSettingsController.UserClaimsPostAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsPutAsync(System.String,System.String)
   name: UserClaimsPutAsync(String, String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsPutAsync_System_String_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsPutAsync_System_String_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsPutAsync(System.String,System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsPutAsync(System.String, System.String)
   nameWithType: UserSettingsController.UserClaimsPutAsync(String, String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsPutAsync*
   name: UserClaimsPutAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsPutAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserSettingsController_UserClaimsPutAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsPutAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.UserClaimsPutAsync
   nameWithType: UserSettingsController.UserClaimsPutAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController
   name: UserTenantController
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html
   commentId: T:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController
   nameWithType: UserTenantController
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.#ctor(UserTenantContainer,IJwtHelpers,ISendGridClientFactory,IInviteHelpers,UserSettingsContainer)
   name: UserTenantController(UserTenantContainer, IJwtHelpers, ISendGridClientFactory, IInviteHelpers, UserSettingsContainer)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController__ctor_UserTenantContainer_IJwtHelpers_ISendGridClientFactory_IInviteHelpers_UserSettingsContainer_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController__ctor_UserTenantContainer_IJwtHelpers_ISendGridClientFactory_IInviteHelpers_UserSettingsContainer_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.#ctor(UserTenantContainer,IJwtHelpers,ISendGridClientFactory,IInviteHelpers,UserSettingsContainer)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserTenantController(UserTenantContainer, IJwtHelpers, ISendGridClientFactory, IInviteHelpers, UserSettingsContainer)
   nameWithType: UserTenantController.UserTenantController(UserTenantContainer, IJwtHelpers, ISendGridClientFactory, IInviteHelpers, UserSettingsContainer)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.#ctor*
   name: UserTenantController
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController__ctor_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController__ctor_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserTenantController
   nameWithType: UserTenantController.UserTenantController
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.DeleteAllAsync
   name: DeleteAllAsync()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_DeleteAllAsync
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_DeleteAllAsync
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.DeleteAllAsync
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.DeleteAllAsync()
   nameWithType: UserTenantController.DeleteAllAsync()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.DeleteAllAsync*
   name: DeleteAllAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_DeleteAllAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_DeleteAllAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.DeleteAllAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.DeleteAllAsync
   nameWithType: UserTenantController.DeleteAllAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.DeleteAsync(System.String)
   name: DeleteAsync(String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_DeleteAsync_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_DeleteAsync_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.DeleteAsync(System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.DeleteAsync(System.String)
   nameWithType: UserTenantController.DeleteAsync(String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.DeleteAsync*
   name: DeleteAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_DeleteAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_DeleteAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.DeleteAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.DeleteAsync
   nameWithType: UserTenantController.DeleteAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAllTenantsForUserAsync(System.String)
   name: GetAllTenantsForUserAsync(String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_GetAllTenantsForUserAsync_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_GetAllTenantsForUserAsync_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAllTenantsForUserAsync(System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAllTenantsForUserAsync(System.String)
   nameWithType: UserTenantController.GetAllTenantsForUserAsync(String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAllTenantsForUserAsync*
   name: GetAllTenantsForUserAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_GetAllTenantsForUserAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_GetAllTenantsForUserAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAllTenantsForUserAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAllTenantsForUserAsync
   nameWithType: UserTenantController.GetAllTenantsForUserAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAllUsersForTenantAsync
   name: GetAllUsersForTenantAsync()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_GetAllUsersForTenantAsync
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_GetAllUsersForTenantAsync
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAllUsersForTenantAsync
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAllUsersForTenantAsync()
   nameWithType: UserTenantController.GetAllUsersForTenantAsync()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAllUsersForTenantAsync*
   name: GetAllUsersForTenantAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_GetAllUsersForTenantAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_GetAllUsersForTenantAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAllUsersForTenantAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAllUsersForTenantAsync
   nameWithType: UserTenantController.GetAllUsersForTenantAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAsync(System.String)
   name: GetAsync(String)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_GetAsync_System_String_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_GetAsync_System_String_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAsync(System.String)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAsync(System.String)
   nameWithType: UserTenantController.GetAsync(String)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAsync*
   name: GetAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_GetAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_GetAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.GetAsync
   nameWithType: UserTenantController.GetAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.InviteAsync(Invitation)
   name: InviteAsync(Invitation)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_InviteAsync_Invitation_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_InviteAsync_Invitation_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.InviteAsync(Invitation)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.InviteAsync(Invitation)
   nameWithType: UserTenantController.InviteAsync(Invitation)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.InviteAsync*
   name: InviteAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_InviteAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_InviteAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.InviteAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.InviteAsync
   nameWithType: UserTenantController.InviteAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.PostAsync(System.String,UserTenantModel)
   name: PostAsync(String, UserTenantModel)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_PostAsync_System_String_UserTenantModel_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_PostAsync_System_String_UserTenantModel_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.PostAsync(System.String,UserTenantModel)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.PostAsync(System.String, UserTenantModel)
   nameWithType: UserTenantController.PostAsync(String, UserTenantModel)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.PostAsync*
   name: PostAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_PostAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_PostAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.PostAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.PostAsync
   nameWithType: UserTenantController.PostAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.PutAsync(System.String,UserTenantModel)
   name: PutAsync(String, UserTenantModel)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_PutAsync_System_String_UserTenantModel_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_PutAsync_System_String_UserTenantModel_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.PutAsync(System.String,UserTenantModel)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.PutAsync(System.String, UserTenantModel)
   nameWithType: UserTenantController.PutAsync(String, UserTenantModel)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.PutAsync*
   name: PutAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_PutAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_PutAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.PutAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.PutAsync
   nameWithType: UserTenantController.PutAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsDeleteAsync
   name: UserClaimsDeleteAsync()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsDeleteAsync
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsDeleteAsync
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsDeleteAsync
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsDeleteAsync()
   nameWithType: UserTenantController.UserClaimsDeleteAsync()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsDeleteAsync*
   name: UserClaimsDeleteAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsDeleteAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsDeleteAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsDeleteAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsDeleteAsync
   nameWithType: UserTenantController.UserClaimsDeleteAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsGetAllTenantsForUserAsync
   name: UserClaimsGetAllTenantsForUserAsync()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsGetAllTenantsForUserAsync
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsGetAllTenantsForUserAsync
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsGetAllTenantsForUserAsync
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsGetAllTenantsForUserAsync()
   nameWithType: UserTenantController.UserClaimsGetAllTenantsForUserAsync()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsGetAllTenantsForUserAsync*
   name: UserClaimsGetAllTenantsForUserAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsGetAllTenantsForUserAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsGetAllTenantsForUserAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsGetAllTenantsForUserAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsGetAllTenantsForUserAsync
   nameWithType: UserTenantController.UserClaimsGetAllTenantsForUserAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsGetAsync
   name: UserClaimsGetAsync()
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsGetAsync
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsGetAsync
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsGetAsync
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsGetAsync()
   nameWithType: UserTenantController.UserClaimsGetAsync()
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsGetAsync*
   name: UserClaimsGetAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsGetAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsGetAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsGetAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsGetAsync
   nameWithType: UserTenantController.UserClaimsGetAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsPostAsync(UserTenantModel)
   name: UserClaimsPostAsync(UserTenantModel)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsPostAsync_UserTenantModel_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsPostAsync_UserTenantModel_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsPostAsync(UserTenantModel)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsPostAsync(UserTenantModel)
   nameWithType: UserTenantController.UserClaimsPostAsync(UserTenantModel)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsPostAsync*
   name: UserClaimsPostAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsPostAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsPostAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsPostAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsPostAsync
   nameWithType: UserTenantController.UserClaimsPostAsync
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsPutAsync(UserTenantModel)
   name: UserClaimsPutAsync(UserTenantModel)
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsPutAsync_UserTenantModel_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsPutAsync_UserTenantModel_
   commentId: M:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsPutAsync(UserTenantModel)
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsPutAsync(UserTenantModel)
   nameWithType: UserTenantController.UserClaimsPutAsync(UserTenantModel)
 - uid: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsPutAsync*
   name: UserClaimsPutAsync
-  href: APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsPutAsync_
+  href: APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html#Mmm_Iot_IdentityGateway_WebService_Controllers_UserTenantController_UserClaimsPutAsync_
   commentId: Overload:Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsPutAsync
   isSpec: "True"
   fullName: Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.UserClaimsPutAsync

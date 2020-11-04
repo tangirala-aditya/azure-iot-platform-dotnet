@@ -13,12 +13,120 @@
       "is_incremental": false
     },
     {
-      "type": "ManagedReference",
-      "source_relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.yml",
+      "type": "Conceptual",
+      "source_relative_path": "APIs/Examples/Overview.md",
       "output": {
         ".html": {
-          "relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html",
-          "hash": "M+01j45MuIuKOO6D745AcA=="
+          "relative_path": "APIs/Examples/Overview.html",
+          "hash": "LS8cVldQw5QtScL0I64kqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/Examples/Postman.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/Examples/Postman.html",
+          "hash": "yWJqRbcKdK4BfQhsGHWRqQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/Examples/Prerequisites.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/Examples/Prerequisites.html",
+          "hash": "RjvFIfCUsxdBItWSm15A0A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/Services.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/Services.html",
+          "hash": "ulSalpU0VQx3FERXOo82uA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/Swagger.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/Swagger.html",
+          "hash": "LD7gNy0SwVOEmD5UkkzmAw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/asa-manager/DeviceGroups/DeviceGroups.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/DeviceGroups/DeviceGroups.html",
+          "hash": "ymm6Jx/RGNzTktyNmUJJhg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/asa-manager/DeviceGroups/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/DeviceGroups/Overview.html",
+          "hash": "H/KMYCxv7TEACkeFWnipWw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/asa-manager/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/Overview.html",
+          "hash": "RMTH8wHcPCa3begTj1U96A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/asa-manager/Rules.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/Rules.html",
+          "hash": "1ufopiL7ibKoYngdV27qMQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/asa-manager/Status.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/Status.html",
+          "hash": "yTcXu2wjyAF1/9URe2My9g=="
         }
       },
       "is_incremental": false,
@@ -26,11 +134,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.yml",
+      "source_relative_path": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html",
-          "hash": "PhTT36np2f9xpy0Is9DJDg=="
+          "relative_path": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html",
+          "hash": "Cz3YSt+jjMX/dJwPBWF96g=="
         }
       },
       "is_incremental": false,
@@ -38,11 +146,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.yml",
+      "source_relative_path": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html",
-          "hash": "sLVbpkFSorILBDJUEfu+1g=="
+          "relative_path": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html",
+          "hash": "X8Yp98srnH1/94QsFVTDUQ=="
         }
       },
       "is_incremental": false,
@@ -50,11 +158,47 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.yml",
+      "source_relative_path": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/asa-manager/Mmm.Iot.AsaManager.WebService.Controllers.html",
-          "hash": "ijvRcvS8rLN5cWRoA6WEEA=="
+          "relative_path": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html",
+          "hash": "PYZhFFubn47SHCh3a77V9Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.html",
+          "hash": "oR/B5+kFAT9GBTO6L17r5A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "APIs/asa-manager/object-model/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/object-model/toc.html",
+          "hash": "GiQCmlU2OHIoXaMwCIEYVQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/authorization-flow.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/authorization-flow.html",
+          "hash": "rjGHOANXkqXpbklRHaXGeg=="
         }
       },
       "is_incremental": false,
@@ -277,12 +421,150 @@
       "version": ""
     },
     {
-      "type": "ManagedReference",
-      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.yml",
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/Authorize/Authorize.md",
       "output": {
         ".html": {
-          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html",
-          "hash": "VqM180OodSu78QtN1ITbwA=="
+          "relative_path": "APIs/identity-gateway/Authorize/Authorize.html",
+          "hash": "aI8g+rQv+65Cr6iN/X2ynA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/Authorize/Callback.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Authorize/Callback.html",
+          "hash": "3vLKxOzx0tVHFKURpX+k8g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/Authorize/Index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Authorize/Index.html",
+          "hash": "h1Id2erOPO4ngY1P3Xyjmg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/Authorize/Logout.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Authorize/Logout.html",
+          "hash": "U/8YgjnbxDiM9w3AfYaNjA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/Authorize/Tenant.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Authorize/Tenant.html",
+          "hash": "EZ4/KWaojoKmZ/gmd2z/Pw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/Authorize/Token.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Authorize/Token.html",
+          "hash": "OCx9DLCz+TLJogKPqcsilw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/Configuration/Index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Configuration/Index.html",
+          "hash": "aKCKQ61VSmF8dsWgwlPtcg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/Index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Index.html",
+          "hash": "L+3wxlQfrZHyXnpDvokMBA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/Status/Index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Status/Index.html",
+          "hash": "4orngsA5LSWIKeX9gJXfDQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/SystemAdmin/Index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/SystemAdmin/Index.html",
+          "hash": "bwZzaFELuRCFxe58ajjDUQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/UserSettings/Index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/UserSettings/Index.html",
+          "hash": "3rpYJ0G8Wxaz+Pinh3Gtvw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/UserTenant/Index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/UserTenant/Index.html",
+          "hash": "p6S/L2By2lebdJjiAo1NgA=="
         }
       },
       "is_incremental": false,
@@ -290,11 +572,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.yml",
+      "source_relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.Controllers.html",
-          "hash": "5S3tet8r5POHBuPszFOe8A=="
+          "relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.AuthorizeController.html",
+          "hash": "ZZKGHjcIYsdv+n9ovWTe/w=="
         }
       },
       "is_incremental": false,
@@ -302,11 +584,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.yml",
+      "source_relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html",
-          "hash": "KBX5Wb1ZaOMDGe+DwPQw4w=="
+          "relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.Controllers.html",
+          "hash": "/vjIfc6EWefGwXA2XJEUjA=="
         }
       },
       "is_incremental": false,
@@ -314,11 +596,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.yml",
+      "source_relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html",
-          "hash": "8MkMfa/OTH5M9Ft35GZh8Q=="
+          "relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ConfigurationController.html",
+          "hash": "vDuatjH1p1WS+/8RpoNp5g=="
         }
       },
       "is_incremental": false,
@@ -326,11 +608,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.yml",
+      "source_relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html",
-          "hash": "9ZL+6cFsWGlqxylLltAYsQ=="
+          "relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.ErrorModel.html",
+          "hash": "QRBZYjrDZC0eEzzcF8H0cg=="
         }
       },
       "is_incremental": false,
@@ -338,11 +620,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.yml",
+      "source_relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html",
-          "hash": "bIVSHv7NRFj8YpNKYmV7EA=="
+          "relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.LowercaseContractResolver.html",
+          "hash": "lZyRSY3LjnD9IqyGhpuA/w=="
         }
       },
       "is_incremental": false,
@@ -350,11 +632,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.yml",
+      "source_relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html",
-          "hash": "huzoEpWgXSutHjmLmYzpqw=="
+          "relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.StatusController.html",
+          "hash": "xGoTFpvRANyszBqZAVxRRQ=="
         }
       },
       "is_incremental": false,
@@ -362,11 +644,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.yml",
+      "source_relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html",
-          "hash": "mOY1YGpRpAynl2aY/OB44Q=="
+          "relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.SystemAdminController.html",
+          "hash": "o/SY4TrU3Wn/BlzulOZaqw=="
         }
       },
       "is_incremental": false,
@@ -374,11 +656,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.yml",
+      "source_relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html",
-          "hash": "mGoa+Ph6VtWuIDLGPXNXXA=="
+          "relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserSettingsController.html",
+          "hash": "7JpQ/Yiy5TlQVo6LFVXq9A=="
         }
       },
       "is_incremental": false,
@@ -386,11 +668,23 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.yml",
+      "source_relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/identity-gateway/Mmm.Iot.IdentityGateway.WebService.Controllers.html",
-          "hash": "sMojegD/DoBLkag5faLf1w=="
+          "relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.UserTenantController.html",
+          "hash": "Ih2rWIQG7zaTm0H7VdtcdA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/object-model/Mmm.Iot.IdentityGateway.WebService.Controllers.html",
+          "hash": "wh6Gpv3gdlmTXmkNqm4aZA=="
         }
       },
       "is_incremental": false,
@@ -402,7 +696,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/index.html",
-          "hash": "4QarH3MVesGHR11PEyrBKQ=="
+          "hash": "UBR/W77cQHSf9oz0aye3jA=="
         }
       },
       "is_incremental": false,
@@ -594,7 +888,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/toc.html",
-          "hash": "6xhsQWU1ywTvjD1D+d7Dcg=="
+          "hash": "e5Txk85lRsEDQKXeIBlahw=="
         }
       },
       "is_incremental": false,
@@ -1491,7 +1785,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/index.html",
-          "hash": "NzdyUgjE2osx7HiDdeZysw=="
+          "hash": "xHARFCjk2nWUKaDmLUdqhA=="
         }
       },
       "is_incremental": false,
@@ -3933,7 +4227,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "tAx2oi9ZYCpR5mYU5lC+Cw=="
+          "hash": "Nowd0/9UD2BSjeoKCNZlZA=="
         }
       },
       "is_incremental": false,
@@ -4013,7 +4307,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 79,
+          "total_file_count": 102,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

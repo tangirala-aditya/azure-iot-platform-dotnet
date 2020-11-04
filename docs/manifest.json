@@ -496,12 +496,39 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "APIs/identity-gateway/Configuration/Index.md",
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Configuration/Index.html",
-          "hash": "aKCKQ61VSmF8dsWgwlPtcg=="
+          "hash": "uudD6rV9kLluA6tflHDirw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/Configuration/openid-configuration-jwks.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Configuration/openid-configuration-jwks.html",
+          "hash": "57rAq7rEQKxLhkyZbZ+mng=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/identity-gateway/Configuration/openid-configuration.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/identity-gateway/Configuration/openid-configuration.html",
+          "hash": "ryjmQYNgFoMIVErlljg7AA=="
         }
       },
       "is_incremental": false,
@@ -888,7 +915,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/toc.html",
-          "hash": "e5Txk85lRsEDQKXeIBlahw=="
+          "hash": "Kv5MaDwj+ILNL2QrSqGfNQ=="
         }
       },
       "is_incremental": false,
@@ -4307,7 +4334,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 102,
+          "total_file_count": 104,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

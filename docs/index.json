@@ -187,7 +187,17 @@
   "APIs/identity-gateway/Configuration/Index.html": {
     "href": "APIs/identity-gateway/Configuration/Index.html",
     "title": "Configuration | 3M Serenity Documentation",
-    "keywords": "Configuration Service: Identity Gateway API Version: 2020-11-03 Operations"
+    "keywords": "Configuration Service: Identity Gateway Operations openid-configuration {TODO: Add Description} openid-configuration/jwks {TODO: Add Description}"
+  },
+  "APIs/identity-gateway/Configuration/openid-configuration.html": {
+    "href": "APIs/identity-gateway/Configuration/openid-configuration.html",
+    "title": "Configuration - OpenID Configuration | 3M Serenity Documentation",
+    "keywords": "Configuration - OpenID Configuration Service: Identity Gateway {TODO: Add Description} GET https://{platform-url}/.well-known/openid-configuration URI Parameters Name Required Type Description ? ? ? Responses Name Type Description 200 OK TODO: Response Object Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com Definitions TODO: Add Response Objects from above Examples"
+  },
+  "APIs/identity-gateway/Configuration/openid-configuration-jwks.html": {
+    "href": "APIs/identity-gateway/Configuration/openid-configuration-jwks.html",
+    "title": "Configuration - OpenID Configuration for JWKS | 3M Serenity Documentation",
+    "keywords": "Configuration - OpenID Configuration for JWKS Service: Identity Gateway {TODO: Add Description} Json Web Key Set (JWKS) GET https://{platform-url}/.well-known/openid-configuration/jwks Permissions ReadAll permission is required to call this api. URI Parameters Name Required Type Description ? ? ? Responses Name Type Description 200 OK TODO: Response Object Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com Definitions TODO: Add Response Objects from above Examples"
   },
   "APIs/identity-gateway/Index.html": {
     "href": "APIs/identity-gateway/Index.html",

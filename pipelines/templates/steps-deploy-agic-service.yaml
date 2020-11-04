@@ -1,0 +1,374 @@
+parameters:
+  subscriptionName:
+  locationName:
+  environmentName:
+  subscriptionId:
+  applicationCode:
+  applicationShortCode: 
+  environmentCategory:
+  kubernetesVersion:
+  aksAgentVmSize: Standard_DS2_v2
+
+jobs:
+  - template: get-approval.yaml
+    parameters:
+      environmentName: ${{parameters.environmentName}}
+
+  - job: printVariables
+    displayName: Print variables
+    dependsOn:
+      - getApproval
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: none
+
+      - template: print-pipeline-resource-variables.yaml
+        parameters:
+          pipelineResourceName: test
+
+      - script: |-
+          echo "parameter: subscriptionName: ${{parameters.subscriptionName}}"
+          echo "parameter: locationName: ${{parameters.locationName}}"
+          echo "parameter: environmentName: ${{parameters.environmentName}}"
+          echo "parameter: subscriptionId: ${{parameters.subscriptionId}}"
+          echo "parameter: applicationCode: ${{parameters.applicationCode}}"
+          echo "parameter: applicationShortCode: ${{parameters.applicationShortCode}}"
+          echo "parameter: environmentCategory: ${{parameters.environmentCategory}}"
+          echo "parameter: kubernetesVersion: ${{parameters.kubernetesVersion}}"
+          echo "variable: aksPartialName: $(aksPartialName)"
+          echo "variable: tenantId: $(tenantId)"
+          echo "variable: aksName: $(aksName)"
+          echo "variable: appConfigurationName: $(appConfigurationName)"
+          echo "variable: armParametersDirectory: $(armParametersDirectory)"
+          echo "variable: armTemplatesDirectory: $(armTemplatesDirectory)"
+          echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
+          echo "variable: resourceGroupName: $(resourceGroupName)"
+        displayName: Print variables
+
+
+  - job: deleteAksCluster
+    displayName: Delete Existing AKS Cluster
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+      
+      - task: AzureCLI@2
+        displayName: Delete Existing AKS
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+           az aks delete --name $(aksName) --resource-group $(resourceGroupName) --subscription ${{parameters.subscriptionId}} --yes
+          
+
+  - job: aks
+    displayName: Provision Azure Kubernetes Service
+    dependsOn:
+      - deleteAksCluster
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+
+      - template: apply-arm-tags.yaml
+        parameters:
+          environment: ${{parameters.environmentName}}
+
+      - task: AzureResourceGroupDeployment@2
+        displayName: Provision Azure Kubernetes Service
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          action: Create Or Update Resource Group
+          resourceGroupName: $(resourceGroupName)
+          location: ${{parameters.locationName}}
+          templateLocation: Linked artifact
+          csmFile: $(armTemplatesDirectory)/$(aksAcniPartialName).json
+          csmParametersFile: $(armParametersDirectory)/$(aksAcniPartialName).json
+          overrideParameters: >-
+            -resourceName $(aksName)
+            -applicationCode ${{parameters.applicationCode}}
+            -environmentCategory ${{parameters.environmentCategory}}
+            -location ${{parameters.locationName}}
+            -dnsPrefix $(aksName)-dns
+            -servicePrincipalClientId $servicePrincipalId
+            -servicePrincipalClientSecret $servicePrincipalKey
+            -aksServicePrincipalObjectId $(servicePrincipalObjectId)
+            -omsWorkspaceName $(omsWorkspaceName)
+            -kubernetesVersion ${{parameters.kubernetesVersion}}
+            -applicationGatewayName $(appGatewayName)
+            -applicationGatewayPublicIpName $(appGatewayPublicIpName)
+            -agentVMSize ${{parameters.aksAgentVmSize}}
+          deploymentMode: Incremental
+          addSpnToEnvironment: true
+
+      - template: steps-delete-oldest-deployment.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          deploymentPartialName: $(aksPartialName)
+          resourceGroupName: $(resourceGroupName)
+
+      - task: Kubernetes@1
+        displayName: Install the K8s Custom Resource Definition
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          arguments: --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/v$(certManagerVersion)/deploy/manifests/00-crds.yaml
+          outputFormat: name
+
+      - task: Kubernetes@1
+        displayName: Create K8s cert-manager namespace
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          useConfigurationFile: true
+          configurationType: inline
+          inline: |
+            apiVersion: v1
+            kind: Namespace
+            metadata:
+              name: cert-manager
+              labels:
+                cert-manager.io/disable-validation: "true"
+
+  - job: globalsecrets
+    displayName: Create K8s secrets
+    dependsOn:
+      - aks    
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: none
+
+      - task: AzureCLI@2
+        displayName: Create K8s globalsecrets secret
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
+            kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
+
+  - job: agic
+    displayName: Integrate AGIC 
+    dependsOn:
+       - aks
+       - globalsecrets
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+
+      - task: HelmInstaller@1
+        displayName: Install Helm
+        inputs:
+          helmVersionToInstall: $(helmVersion)
+
+      - task: HelmDeploy@0
+        displayName: Initialize Helm
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscription: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          namespace: default
+          command: init
+          arguments: --force-upgrade
+
+      # - task: AzureCLI@2
+      #   displayName: Enable RBAC in AKS Cluster
+      #   inputs:
+      #     azureSubscription: ${{parameters.subscriptionName}}
+      #     scriptLocation: inlineScript
+      #     scriptType: bash
+      #     inlineScript: |-
+      #       az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+      #       kubectl create serviceaccount --namespace kube-system tiller-sa
+      #       kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller-sa
+      #       helm init --tiller-namespace kube-system --service-account tiller-sa
+
+      - task: Bash@3
+        displayName: Install AGIC Helm repository
+        inputs:
+          targetType: inline
+          script: |-
+            # Add the AGIC Helm repository
+            helm repo add application-gateway-kubernetes-ingress https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/
+            # Update your local Helm chart repository cache
+            helm repo update
+
+      - task: AzureCLI@2
+        displayName: Get encoded secret of Azure service principal
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+                set -Eeuxo pipefail
+                subscriptionId=${{parameters.subscriptionId}}
+                cat <<EOF > sp.json
+                {
+                "clientId": "${servicePrincipalId}",
+                       "clientSecret": "${servicePrincipalKey}" ,
+                        "subscriptionId": "${subscriptionId}" ,
+                        "tenantId": "${tenantId}",
+                        "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+                "resourceManagerEndpointUrl": "https://management.azure.com/",
+                "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+                "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+                "galleryEndpointUrl": "https://gallery.azure.com/",
+                "managementEndpointUrl": "https://management.core.windows.net/"
+                }
+                EOF
+
+                encodedJson=$(cat sp.json | base64 -w0)
+                
+                echo "##vso[task.setvariable variable=encodedsecret]$encodedJson"
+          addSpnToEnvironment: true
+
+      - task: AzureCLI@2
+        displayName: AGIC Helm Chart
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+              set -Eeuxo pipefail
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+              wget https://raw.githubusercontent.com/Azure/application-gateway-kubernetes-ingress/master/docs/examples/sample-helm-config.yaml -O helm-config.yaml 
+              helm upgrade ingress-azure  -f helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure --namespace default --install --set appgw.name=$(appgatewayName) --set appgw.resourceGroup=$(resourceGroupName) --set appgw.subscriptionId=${{parameters.subscriptionId}} --set appgw.shared=false --set armAuth.type=servicePrincipal --set armAuth.secretJSON=$(encodedsecret) --set kubernetes.watchNamespace=default
+              helm list           
+
+      - task: Bash@3
+        displayName: Install jetstack Helm repository
+        inputs:
+          targetType: inline
+          script: |-
+            # Add the Jetstack Helm repository
+            helm repo add jetstack https://charts.jetstack.io
+            # Update your local Helm chart repository cache
+            helm repo update
+
+      - task: HelmDeploy@0
+        displayName: Deploy cert-manager
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscription: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          namespace: cert-manager
+          command: upgrade
+          chartType: Name
+          releaseName: cert-manager
+          chartName: jetstack/cert-manager
+          arguments: --version v$(certManagerVersion) --install --force
+
+      - task: Kubernetes@1
+        displayName: Create Cluster Issuer
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          useConfigurationFile: true
+          configuration: charts/ingress/cluster-issuer-agic-prod.yaml
+
+      - task: AzureCLI@2
+        displayName: Add DNS Record
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            set -Eeuxo pipefail
+            az network public-ip update -g $(resourceGroupName) -n $(appGatewayPublicIpName) --dns-name $(aksName) --allocation-method Static
+ 
+      - task: Kubernetes@1
+        displayName: Create Ingress
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          useConfigurationFile: true
+          configurationType: inline
+          inline: |
+            apiVersion: networking.k8s.io/v1beta1
+            kind: Ingress
+            metadata:
+              name: $(aksName)
+              namespace: default
+              annotations:
+                kubernetes.io/ingress.class: azure/application-gateway
+                nginx.ingress.kubernetes.io/rewrite-target: /$1
+                nginx.ingress.kubernetes.io/proxy-body-size: 200m
+                cert-manager.io/cluster-issuer: letsencrypt-prod
+                cert-manager.io/acme-challenge-type: http01
+            spec:
+              tls:
+              - hosts:
+                - $(aksName).$(locationName).cloudapp.azure.com
+                secretName: tls-prod
+              rules:
+              - host: $(aksName).$(locationName).cloudapp.azure.com
+                http:
+                  paths:
+                  - backend:
+                      serviceName: reverse-proxy
+                      servicePort: 10080
+                    path: /

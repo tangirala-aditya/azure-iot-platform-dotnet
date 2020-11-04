@@ -718,12 +718,15 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "APIs/index.md",
       "output": {
         ".html": {
           "relative_path": "APIs/index.html",
-          "hash": "UBR/W77cQHSf9oz0aye3jA=="
+          "hash": "A9VPYx8R0DcJmQwOwnKoEQ=="
         }
       },
       "is_incremental": false,
@@ -2821,6 +2824,28 @@
       "output": {
         "resource": {
           "relative_path": "images/icons/arrow-go-back-fill.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/icons/caret-down.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/icons/caret-down.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/icons/caret-right.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/icons/caret-right.png"
         }
       },
       "is_incremental": false,

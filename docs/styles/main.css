@@ -535,21 +535,26 @@ pre {
 
 
 /* Change nav expander to chevron */
-.toc .nav > li.active > .expand-stub::before,
 .toc .nav > li.in > .expand-stub::before,
 .toc .nav > li.in.active > .expand-stub::before,
 .toc .nav > li.filtered > .expand-stub::before {
   font-family: monospace;
-    font-size: 10px;
-    content: "\2bc6";
+    background-image: url('../images/icons/caret-down.png');
+    background-size: 8px 8px;
+    display: inline-block;
+    width: 8px; 
+    height: 8px;
+    content:"";
 }
 
 .toc .nav > li > .expand-stub::before,
 .toc .nav > li.active > .expand-stub::before {
-    font-family: Arial;
-    font-size: 10px;
-    line-height: 20px;
-    content: "\002b";
+  background-image: url('../images/icons/caret-right.png');
+  background-size: 8px 8px;
+  display: inline-block;
+  width: 8px; 
+  height: 8px;
+  content:"";
 }
 
 .nav-return::after {
@@ -562,9 +567,6 @@ pre {
 
 .bs-docs-sidenav li.active ul  {
   margin-left: 8px;
-}
-.Xlevel1.nav.bs-docs-sidenav {
-  font-size: 14px;
 }
 
 .article h3 {

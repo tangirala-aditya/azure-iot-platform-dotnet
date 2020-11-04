@@ -277,7 +277,7 @@
   "APIs/index.html": {
     "href": "APIs/index.html",
     "title": "Platform APIs | 3M Serenity Documentation",
-    "keywords": "Platform APIs There are many APIs available for use across the 3M IoT Platform. This document outlines those APIs and links to additional information. Serenity APIs This section provides reference information for the Serenity APIs. They conform to the OpenAPI Specification . TODO: List relevant Serenity API Services. Azure APIs TODO: List relevant Azure Services APIs."
+    "keywords": "Platform APIs There are many APIs available for use across the 3M IoT Platform. This document outlines those APIs and links to additional information. Serenity APIs This section provides reference information for the Serenity APIs. They conform to the OpenAPI Specification . TODO: List relevant Serenity API Services. Operation group Description Authorize Log in or out and context operations. Configuration SystemAdmin UserSettings UserTenant Status Azure APIs TODO: List relevant Azure Services APIs."
   },
   "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html": {
     "href": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html",

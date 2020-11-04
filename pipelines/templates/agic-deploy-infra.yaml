@@ -407,4 +407,4 @@ jobs:
                   - backend:
                       serviceName: reverse-proxy
                       servicePort: 10080
-                    path: /(.*)
+                    path: /

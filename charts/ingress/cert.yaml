@@ -12,7 +12,7 @@ spec:
     - http01:
         ingressClass: nginx
       domains:
-      - crsliotkubedev.centralus.cloudapp.azure.com
+      - ggktech-aks-dev.centralus.cloudapp.azure.com
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer

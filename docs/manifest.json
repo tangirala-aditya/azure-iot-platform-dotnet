@@ -205,12 +205,303 @@
       "version": ""
     },
     {
-      "type": "ManagedReference",
-      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.ConfigTypesController.yml",
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/ConfigTypes/config-types.md",
       "output": {
         ".html": {
-          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.ConfigTypesController.html",
-          "hash": "OqccOuBAMR48hGU7C81BGA=="
+          "relative_path": "APIs/config/ConfigTypes/config-types.html",
+          "hash": "sFefr6sZuhj5Ywi/X5FUJw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/ConfigTypes/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/ConfigTypes/index.html",
+          "hash": "lWule3NARCnmpCKoVXVUYg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/DeviceGroup/create-device-group.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/DeviceGroup/create-device-group.html",
+          "hash": "gj2nwt75LtBgLrQbw6OUzg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/DeviceGroup/delete-device-group.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/DeviceGroup/delete-device-group.html",
+          "hash": "VuxLdzri1+nNEl1NC5/FcA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/DeviceGroup/device-group-by-id.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/DeviceGroup/device-group-by-id.html",
+          "hash": "8BeIHkl6QCaGAQiUtgT+gg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/DeviceGroup/device-groups.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/DeviceGroup/device-groups.html",
+          "hash": "xKbkLBHveChsSKKBxNSRaQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/DeviceGroup/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/DeviceGroup/index.html",
+          "hash": "hCb4I1odahli+axBPZwS/g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/DeviceGroup/update-device-group.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/DeviceGroup/update-device-group.html",
+          "hash": "rT3H/V+8Qm/r1nn2hpXFRg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/Seed/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/Seed/index.html",
+          "hash": "TZ6Yx8jLGRnUYbDjKkrf/Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/Seed/seed.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/Seed/seed.html",
+          "hash": "KEKZSC60hVSeOZSG97IZVA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/SolutionSettings/get-action-settings.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/SolutionSettings/get-action-settings.html",
+          "hash": "nHWkHEyPkZgZDbtL7NKjmw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/SolutionSettings/get-default-firmware.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/SolutionSettings/get-default-firmware.html",
+          "hash": "K8Mk1NAxWyJGqVjJzNlyiA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/SolutionSettings/get-logo.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/SolutionSettings/get-logo.html",
+          "hash": "8vU5CZTV5hoHN8fAEfF1xg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/SolutionSettings/get-theme.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/SolutionSettings/get-theme.html",
+          "hash": "Ps+ZCfSJFGZc0/rd+tkqwQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/SolutionSettings/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/SolutionSettings/index.html",
+          "hash": "8G2aDo+zA9jTs2+MSFr/WA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/SolutionSettings/set-default-firmware.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/SolutionSettings/set-default-firmware.html",
+          "hash": "Sce6TRJd7EwHtF/ONFV6vQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/SolutionSettings/set-logo.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/SolutionSettings/set-logo.html",
+          "hash": "dWhXBFJCQUklA8A3MQJ8ew=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/SolutionSettings/set-theme.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/SolutionSettings/set-theme.html",
+          "hash": "DUd1CxYVAm/iZ9CcBEDnYA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/Status/get-status.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/Status/get-status.html",
+          "hash": "d993eBROfrRhtwqpkeUrsA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/Status/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/Status/index.html",
+          "hash": "rdlKOXoT4aFDVJOY0cWYAg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/Status/ping-status.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/Status/ping-status.html",
+          "hash": "a205/24tOaH2FC4Gw0Uf1w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/UserSettings/get-user-settings.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/UserSettings/get-user-settings.html",
+          "hash": "rGnC0lgv2g4wSpVmBG6y+g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/UserSettings/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/UserSettings/index.html",
+          "hash": "8tOr1t3h7EoKEIuhoTV1mg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/UserSettings/set-user-settings.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/UserSettings/set-user-settings.html",
+          "hash": "xIRTMBAGlSMOhI7H6t3nxw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "APIs/config/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/index.html",
+          "hash": "bOtU3JH5dbv2HVTuJ8GiYA=="
         }
       },
       "is_incremental": false,
@@ -218,11 +509,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.DeviceGroupController.yml",
+      "source_relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.ConfigTypesController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.DeviceGroupController.html",
-          "hash": "tDPp/SheQZmhdOCJ1ncODQ=="
+          "relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.ConfigTypesController.html",
+          "hash": "+XxH49VeB0Rb7kY1oZLp1Q=="
         }
       },
       "is_incremental": false,
@@ -230,11 +521,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.PackagesController.yml",
+      "source_relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.DeviceGroupController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.PackagesController.html",
-          "hash": "ssodCPVw/fUvxYqUoXW5ZQ=="
+          "relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.DeviceGroupController.html",
+          "hash": "Fl+QLugvZsB488d/jhFa8g=="
         }
       },
       "is_incremental": false,
@@ -242,11 +533,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.SeedController.yml",
+      "source_relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.PackagesController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.SeedController.html",
-          "hash": "qvfoHsEoZ6AY7bc/S/Cv+g=="
+          "relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.PackagesController.html",
+          "hash": "Bdtg1wLHaR5RjvqV9XVnNA=="
         }
       },
       "is_incremental": false,
@@ -254,11 +545,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.SolutionSettingsController.yml",
+      "source_relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.SeedController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.SolutionSettingsController.html",
-          "hash": "+bcw/Soh0pqM4G4dlamvJw=="
+          "relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.SeedController.html",
+          "hash": "GjaG9+tPsE0ehEd31FedcA=="
         }
       },
       "is_incremental": false,
@@ -266,11 +557,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.StatusController.yml",
+      "source_relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.SolutionSettingsController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.StatusController.html",
-          "hash": "uQMKbltIdNgEwimDURQh1g=="
+          "relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.SolutionSettingsController.html",
+          "hash": "4uKgR3WA+ODSfOkcXf+Tkw=="
         }
       },
       "is_incremental": false,
@@ -278,11 +569,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.UserSettingsController.yml",
+      "source_relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.StatusController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.UserSettingsController.html",
-          "hash": "RDOXzPehJvCZ2TCWpGZEHg=="
+          "relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.StatusController.html",
+          "hash": "KF5LwWzFtsWxekfRjLKnRg=="
         }
       },
       "is_incremental": false,
@@ -290,11 +581,35 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.yml",
+      "source_relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.UserSettingsController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/config/Mmm.Iot.Config.WebService.Controllers.html",
-          "hash": "ggUBcDi6t2Tp8EjvLnBUpA=="
+          "relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.UserSettingsController.html",
+          "hash": "ihfLRJtgS/PUAAzyKhU6pw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/object-model/Mmm.Iot.Config.WebService.Controllers.html",
+          "hash": "H3pbUN6RWxtBqmYq7XMPJA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "APIs/config/object-model/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/config/object-model/toc.html",
+          "hash": "LIilXU4wUAtSP1Av9X4Ezg=="
         }
       },
       "is_incremental": false,
@@ -385,12 +700,72 @@
       "version": ""
     },
     {
-      "type": "ManagedReference",
-      "source_relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.DiagnosticsEventsController.yml",
+      "type": "Conceptual",
+      "source_relative_path": "APIs/diagnostics/Events/index.md",
       "output": {
         ".html": {
-          "relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.DiagnosticsEventsController.html",
-          "hash": "2EL+JVILD/XVovBinykuRQ=="
+          "relative_path": "APIs/diagnostics/Events/index.html",
+          "hash": "UCusI6AGtC/q5zss87zpdQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/diagnostics/Events/post-log-diagnostics.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/diagnostics/Events/post-log-diagnostics.html",
+          "hash": "7izpcYnsYFUeviAR81yDwQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/diagnostics/Status/get-status.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/diagnostics/Status/get-status.html",
+          "hash": "4TTIT6wNDfn+IehQ9YNkAQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/diagnostics/Status/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/diagnostics/Status/index.html",
+          "hash": "hmpT8aRwBxuE8A0LW5x2Ow=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/diagnostics/Status/ping-status.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/diagnostics/Status/ping-status.html",
+          "hash": "XOZwaoW3JZJHuuzrlUm+hA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/diagnostics/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/diagnostics/index.html",
+          "hash": "kNaY1fJsd87C3YJuHt1F6Q=="
         }
       },
       "is_incremental": false,
@@ -398,11 +773,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.StatusController.yml",
+      "source_relative_path": "APIs/diagnostics/object-model/Mmm.Iot.Diagnostics.WebService.Controllers.DiagnosticsEventsController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.StatusController.html",
-          "hash": "dSn05p5vRmYcfvq7/YiezA=="
+          "relative_path": "APIs/diagnostics/object-model/Mmm.Iot.Diagnostics.WebService.Controllers.DiagnosticsEventsController.html",
+          "hash": "HRxZCojotsS1HawWtxONBg=="
         }
       },
       "is_incremental": false,
@@ -410,11 +785,35 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.yml",
+      "source_relative_path": "APIs/diagnostics/object-model/Mmm.Iot.Diagnostics.WebService.Controllers.StatusController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/diagnostics/Mmm.Iot.Diagnostics.WebService.Controllers.html",
-          "hash": "BUx0RszvGV/ofiI4qn+Khw=="
+          "relative_path": "APIs/diagnostics/object-model/Mmm.Iot.Diagnostics.WebService.Controllers.StatusController.html",
+          "hash": "H9rKOLvRTrwCwedJ5i97Bg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/diagnostics/object-model/Mmm.Iot.Diagnostics.WebService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/diagnostics/object-model/Mmm.Iot.Diagnostics.WebService.Controllers.html",
+          "hash": "xTu5yuof7ZkdwsP/MIHncA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "APIs/diagnostics/object-model/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/diagnostics/object-model/toc.html",
+          "hash": "hHS9A6pGThMG8Ti8hDa5iA=="
         }
       },
       "is_incremental": false,
@@ -918,7 +1317,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/toc.html",
-          "hash": "Kv5MaDwj+ILNL2QrSqGfNQ=="
+          "hash": "+pmo0WfCzjvan9qK3vtxaw=="
         }
       },
       "is_incremental": false,
@@ -4359,7 +4758,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 104,
+          "total_file_count": 135,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

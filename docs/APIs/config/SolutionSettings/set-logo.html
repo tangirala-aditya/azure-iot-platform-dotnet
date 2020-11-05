@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Set Logo | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Set Logo | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="set-logo">Set Logo</h2>
+
+<p>API that sets the logo and name of the solution.</p>
+<h3 id="permissions">Permissions</h3>
+<pre><code>- ReadAll
+</code></pre>
+<h3 id="http-request">Http Request</h3>
+<pre><code class="lang-HTTP">PUT /config/v1/solution-settings/logo
+</code></pre>
+<h3 id="request-headers">Request headers</h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization</td>
+<td>Bearer {token}. Required.</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>image/svg+xml or image/png or image/jpeg</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>{Name}</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-body">Request Body</h3>
+<pre><code>Binary: SVG/PNG/JPEG/JPG
+</code></pre>
+<h3 id="response-headers">Response Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>image/svg+xml or image/png or image/jpeg</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>{Name}</td>
+</tr>
+<tr>
+<td>IsDefault</td>
+<td>true/false</td>
+</tr>
+<tr>
+<td>Access-Control-Expose-Headers</td>
+<td>Name,IsDefault</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sample-response">Sample Response</h3>
+<pre><code class="lang-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;svg
+   xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;
+   xmlns:cc=&quot;http://creativecommons.org/ns#&quot;
+   xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+   xmlns:svg=&quot;http://www.w3.org/2000/svg&quot;
+   xmlns=&quot;http://www.w3.org/2000/svg&quot;
+   version=&quot;1.1&quot;
+   id=&quot;svg3400&quot;
+   viewBox=&quot;0 0 300 157.69046&quot;
+   height=&quot;157.69046&quot;
+   width=&quot;300&quot;&gt;
+    &lt;defs
+       id=&quot;defs3402&quot;&gt;
+        &lt;clipPath
+           id=&quot;clipPath3350&quot;
+           clipPathUnits=&quot;userSpaceOnUse&quot;&gt;
+            &lt;path
+               id=&quot;path3352&quot;
+               d=&quot;M 0,0 603,0 603,783 0,783 0,0 Z&quot; /&gt;
+        &lt;/clipPath&gt;
+    &lt;/defs&gt;
+    &lt;metadata
+       id=&quot;metadata3405&quot;&gt;
+        &lt;rdf:RDF&gt;
+            &lt;cc:Work
+               rdf:about=&quot;&quot;&gt;
+                &lt;dc:format&gt;image/svg+xml&lt;/dc:format&gt;
+                &lt;dc:type
+                   rdf:resource=&quot;http://purl.org/dc/dcmitype/StillImage&quot; /&gt;
+                &lt;dc:title&gt;&lt;/dc:title&gt;
+            &lt;/cc:Work&gt;
+        &lt;/rdf:RDF&gt;
+    &lt;/metadata&gt;
+    &lt;g
+       transform=&quot;translate(-322.94143,-762.82546)&quot;
+       id=&quot;layer1&quot;&gt;
+        &lt;g
+           id=&quot;g3346&quot;
+           transform=&quot;matrix(7.5619164,0,0,-7.5619164,48.401073,1766.4504)&quot;&gt;
+            &lt;g
+               clip-path=&quot;url(#clipPath3350)&quot;
+               id=&quot;g3348&quot;&gt;
+                &lt;g
+                   transform=&quot;translate(67.5289,132.1326)&quot;
+                   id=&quot;g3354&quot;&gt;
+                    &lt;path
+                       id=&quot;path3356&quot;
+                       style=&quot;fill:#ee1b2d;fill-opacity:1;fill-rule:nonzero;stroke:none&quot;
+                       d=&quot;M 0,0 -2.83,-11.512 -5.668,0 l -8.197,0 0,-4.251 c -0.996,3.72 -4.65,4.653 -7.915,4.706 -3.981,0.052 -8.392,-1.673 -8.545,-6.937 l 5.506,0 c 0,1.589 1.455,2.499 2.829,2.476 1.687,0.014 2.463,-0.706 2.502,-1.827 -0.058,-0.973 -0.632,-1.65 -2.488,-1.65 l -1.852,0 0,-3.82 1.681,0 c 0.955,0 2.284,-0.52 2.336,-1.88 0.064,-1.621 -1.063,-2.333 -2.45,-2.347 -2.476,0.092 -3.115,1.994 -3.115,3.63 l -5.715,0 c 0.024,-1.102 -0.012,-8.285 8.945,-8.232 4.291,-0.039 7.414,1.765 8.295,4.252 l 0,-3.812 5.512,0 0,12.42 3.048,-12.42 4.925,0 3.059,12.406 0,-12.417 5.624,0 L 8.317,0 0,0 Z m -13.847,-11.485 c -0.702,1.452 -1.69,2.087 -2.246,2.288 1.167,0.519 1.778,1.223 2.246,2.626 l 0,-4.914 z&quot; /&gt;
+                &lt;/g&gt;
+            &lt;/g&gt;
+        &lt;/g&gt;
+    &lt;/g&gt;
+&lt;/svg&gt;
+</code></pre>
+<h3 id="security">Security</h3>
+<p>Type: OpenID Connect<br>
+Flow: implicit<br>
+Authorization URL: <a href="https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com">https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</a></p>
+<p>A</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/APIs/config/SolutionSettings/set-logo.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

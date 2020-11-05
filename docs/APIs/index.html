@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Platform APIs | 3M Serenity Documentation </title>
+    <title>Serenity Services and APIs: Overview | 3M Serenity Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Platform APIs | 3M Serenity Documentation ">
+    <meta name="title" content="Serenity Services and APIs: Overview | 3M Serenity Documentation ">
     <meta name="generator" content="docfx 2.56.4.0">
     
     <link rel="shortcut icon" href="../images/3M_wordmark.svg">
@@ -69,47 +69,68 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="platform-apis">Platform APIs</h1>
+<h1 id="serenity-services-and-apis-overview">Serenity Services and APIs: Overview</h1>
 
-<p>There are many APIs available for use across the 3M IoT Platform.  This document outlines those APIs and links to additional information.</p>
-<h2 id="serenity-apis">Serenity APIs</h2>
-<p>This section provides reference information for the Serenity APIs. They conform to the <a href="https://swagger.io/specification/">OpenAPI Specification</a>.</p>
-<p>TODO: List relevant Serenity API Services.</p>
+<p>There are many services that expose <a href="https://en.wikipedia.org/wiki/API">APIs</a> across the Serenity IoT Platform.  This section describes the services, APIs, and how to use them.</p>
+<h2 id="platform-services">Platform Services</h2>
+<p>This section provides reference information for the Serenity APIs. They conform to the <a href="https://swagger.io/specification/">OpenAPI Specification</a>.  These services are exposed and can be used for system integration.</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Operation group</th>
-<th style="text-align: left;">Description</th>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><a href="./Authorize/Index.html">Authorize</a></td>
-<td style="text-align: left;">Log in or out and context operations.</td>
+<td style="text-align: left;"><a href="./identity-gateway/Index.html">Identity Gateway</a></td>
+<td style="text-align: left;">Authorization gateway service</td>
 </tr>
 <tr>
-<td style="text-align: left;"><a href="./Configuration/Index.html">Configuration</a></td>
+<td style="text-align: left;"><a href="./iothubmanager/Index.html">IoTHub Manager</a></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr>
-<td style="text-align: left;"><a href="./SystemAdmin/Index.html">SystemAdmin</a></td>
+<td style="text-align: left;"><a href="./tenantmanager/Index.html">Tenant Manager</a></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr>
-<td style="text-align: left;"><a href="./UserSettings/Index.html">UserSettings</a></td>
+<td style="text-align: left;"><a href="./telemetry/Index.html">Device Telemetry</a></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr>
-<td style="text-align: left;"><a href="./UserTenant/Index.html">UserTenant</a></td>
+<td style="text-align: left;"><a href="./Configuration/Index.html">Config</a></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr>
-<td style="text-align: left;"><a href="./Status/Index.html">Status</a></td>
+<td style="text-align: left;"><a href="./diagnostics/Index.html">Diagnostics</a></td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
-<h2 id="azure-apis">Azure APIs</h2>
+<p>To learn how to use the <a href="https://swagger.io/tools/swagger-ui/">Swagger UI</a> to interact with these services. <a href="./Swagger.html">click here</a>.
+To learn how to work with these services using other techniques, <a href="./Examples/index.html">click here</a>.</p>
+<h2 id="application-services">Application Services</h2>
+<p>These services are are only accessible from within the platform.  It's possible to contribute to directly to the platform and use these services from within. But these services are not available for external consumption and don't have swagger references.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a href="./asa-manager/Index.html">ASA Manager</a></td>
+<td style="text-align: left;">Data formatting service</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="./Storage-adapter/Index.html">Storage Adapter</a></td>
+<td style="text-align: left;">Storage service</td>
+</tr>
+</tbody>
+</table>
+<h2 id="azure-services">Azure Services</h2>
 <p>TODO: List relevant Azure Services APIs.</p>
 </article>
           </div>

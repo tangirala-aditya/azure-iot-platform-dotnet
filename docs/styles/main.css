@@ -101,7 +101,7 @@ a:focus {
 
 /* Level 3 Nav */
 .toc .nav li li li  a {
-  padding-left: 16px;
+  /*  margin-left: 5px;*/
   font-family: Segoe UI,SegoeUI,Helvetica Neue,Helvetica,Arial,sans-serif !important;
   font-size: 14px;
   line-height: 25.6px;
@@ -109,7 +109,7 @@ a:focus {
 
  /* Level 4 Nav */
  .toc .nav li li li li a {
-  padding-left: 30px;
+  /*  margin-left: 15px;*/
   font-family: Segoe UI,SegoeUI,Helvetica Neue,Helvetica,Arial,sans-serif !important;
   font-size: 14px;
   line-height: 25.6px;
@@ -571,7 +571,7 @@ pre {
 
 .article h3 {
   padding-top:14px;
-  border-bottom: 1px solid #ddd;
+  /*border-bottom: 1px solid #ddd;*/
 }
 
 .article h4 {
@@ -579,4 +579,31 @@ pre {
   border-bottom: none;
 }
 
+/* Table Styles */
 
+table  {
+  font-size: 14px;
+  margin-top: 0px;
+  margin-bottom: 20px !important;
+}
+
+table th:empty {
+  display: none;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+  background-color: transparent;
+}
+
+.table-bordered, .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+   border: none;
+}
+
+.table tr {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+.table thead tr {
+  border-top: none;  
+}

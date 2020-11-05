@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>POST Switch Token | 3M Serenity Documentation </title>
+    <title>Authorize - Tenant | 3M Serenity Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="POST Switch Token | 3M Serenity Documentation ">
+    <meta name="title" content="Authorize - Tenant | 3M Serenity Documentation ">
     <meta name="generator" content="docfx 2.56.4.0">
     
     <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
@@ -69,15 +69,12 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="post-switch-token">POST Switch Token</h1>
+<h1 id="authorize---tenant">Authorize - Tenant</h1>
 
-<pre><code>This Method will be fired when user switches the tenant and it updates the JWT token with the updated tenant details
-</code></pre>
-<h2 id="permissions">Permissions</h2>
-<pre><code>N/A
-</code></pre>
-<h2 id="http-request">Http Request</h2>
-<pre><code class="lang-HTTP">POST connect/switch/{tenantId}
+<p>Service: Identity Gateway</p>
+<p>Used to switch tenants</p>
+<!-- TODO Add link to Tenant documentation.-->
+<pre><code class="lang-HTTP">POST https://{platform-url}/connect/switch/{tenantId}
 </code></pre>
 <h2 id="request-headers">Request headers</h2>
 <table>
@@ -94,9 +91,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="request-body">Request Body</h2>
-<pre><code>N/A
-</code></pre>
+<!-- TODO : Add type below -->
 <h2 id="responses">Responses</h2>
 <table>
 <thead>
@@ -109,21 +104,22 @@
 <tbody>
 <tr>
 <td style="text-align: left;">200 OK</td>
-<td style="text-align: left;">TODO: Response Object</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
-<h2 id="security">Security</h2>
-<p>Type: OpenID Connect<br>
-Flow: implicit<br>
-Authorization URL: <a href="https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com">https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</a></p>
-<h2 id="sample-request">Sample Request</h2>
-<pre><code>/auth/connect/switch/233a1ca2-6855-43c5-8b9c-c7f85a1dd520
+<h3 id="examples">Examples</h3>
+<h2 id="tenant-switch-example">Tenant Switch Example</h2>
+<pre><code class="lang-HTTP"> POST https://{platform-url}/connect/switch/233a1ca2-6855-43c5-8b9c-c7f85a1dd520
 </code></pre>
-<h2 id="response">Response</h2>
-<pre><code>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZTMwZjMwMS00ZjU3LTRiM2UtOTQ5YS0zZmY4ZTkzODcwYjUiLCJuYW1lIjoiVmlzd2FuYWRoIEtvdGhhIENXIiwiaWF0IjoxNjA0Mjk2ODIyLCJ0ZW5hbnQiOiIyMzNhMWNhMi02ODU1LTQzYzUtOGI5Yy1jN2Y4NWExZGQ1MjAiLCJyb2xlIjoiYWRtaW4iLCJpc19zeXN0ZW1BZG1pbiI6dHJ1ZSwiYXZhaWxhYmxlX3RlbmFudHMiOlsiMjA5ZDdmNzktMzlhYS00ZTJhLThlOWMtNTZmMDRmNzYzM2Y5IiwiMjMzYTFjYTItNjg1NS00M2M1LThiOWMtYzdmODVhMWRkNTIwIiwiYTk0MDM1YTktZTFjNS00YmIxLWI3MzktM2I2OTQ5ZTU4NjY0IiwiZjI4NDM0NTEtNWEzNS00NTg5LTk4YmItMGE5YTVmZmUyOGNlIl0sImV4cCI6MTYwNjYzMTEzMSwiaXNzIjoiaHR0cHM6Ly9jcnNsaW90LWFrcy1kZXYuY2VudHJhbHVzLmNsb3VkYXBwLmF6dXJlLmNvbS9hdXRoIiwiYXVkIjoiSW9UUGxhdGZvcm0ifQ.jUCYmOuHYM4fkNObCQ6ObAvQ--H9uDrNcgcsojuwhEChPXz1anlaGzPuRZpfK7rhSJzwuC-jrBLf23nL7pxkQA2mUV7oahKVf6WVhOea7012HnWIk3mqr_l3lDyCNjQp9WH2Wz-tqG2LZjh7zutzCmBBAvXd8gyBMqqOwXAVU6yxveMxhmPhyk6LwJSc2fGxsprxNTACHNq89KETQo742peRMo95Xj3dobjRBiKbmglvwuEy2FkzsNjq25ikj6JOsQsgtraFABa35mdGqhLrikVuzmsFMDK0U6-l_-ot_c4FSPN9Dc_0oLSL5sB6tRW-zg6rPhhUu_ISLyHh0J51lw
-</code></pre>
+<!-- TODO: Confirm Response below 
+## Response
+```
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZTMwZjMwMS00ZjU3LTRiM2UtOTQ5YS0zZmY4ZTkzODcwYjUiLCJuYW1lIjoiVmlzd2FuYWRoIEtvdGhhIENXIiwiaWF0IjoxNjA0Mjk2ODIyLCJ0ZW5hbnQiOiIyMzNhMWNhMi02ODU1LTQzYzUtOGI5Yy1jN2Y4NWExZGQ1MjAiLCJyb2xlIjoiYWRtaW4iLCJpc19zeXN0ZW1BZG1pbiI6dHJ1ZSwiYXZhaWxhYmxlX3RlbmFudHMiOlsiMjA5ZDdmNzktMzlhYS00ZTJhLThlOWMtNTZmMDRmNzYzM2Y5IiwiMjMzYTFjYTItNjg1NS00M2M1LThiOWMtYzdmODVhMWRkNTIwIiwiYTk0MDM1YTktZTFjNS00YmIxLWI3MzktM2I2OTQ5ZTU4NjY0IiwiZjI4NDM0NTEtNWEzNS00NTg5LTk4YmItMGE5YTVmZmUyOGNlIl0sImV4cCI6MTYwNjYzMTEzMSwiaXNzIjoiaHR0cHM6Ly9jcnNsaW90LWFrcy1kZXYuY2VudHJhbHVzLmNsb3VkYXBwLmF6dXJlLmNvbS9hdXRoIiwiYXVkIjoiSW9UUGxhdGZvcm0ifQ.jUCYmOuHYM4fkNObCQ6ObAvQ--H9uDrNcgcsojuwhEChPXz1anlaGzPuRZpfK7rhSJzwuC-jrBLf23nL7pxkQA2mUV7oahKVf6WVhOea7012HnWIk3mqr_l3lDyCNjQp9WH2Wz-tqG2LZjh7zutzCmBBAvXd8gyBMqqOwXAVU6yxveMxhmPhyk6LwJSc2fGxsprxNTACHNq89KETQo742peRMo95Xj3dobjRBiKbmglvwuEy2FkzsNjq25ikj6JOsQsgtraFABa35mdGqhLrikVuzmsFMDK0U6-l_-ot_c4FSPN9Dc_0oLSL5sB6tRW-zg6rPhhUu_ISLyHh0J51lw
+```
+
+-->
 </article>
           </div>
           

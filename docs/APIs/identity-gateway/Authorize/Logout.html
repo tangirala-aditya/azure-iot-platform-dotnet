@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>GET Connect Logout | 3M Serenity Documentation </title>
+    <title>Authorize - Logout | 3M Serenity Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="GET Connect Logout | 3M Serenity Documentation ">
+    <meta name="title" content="Authorize - Logout | 3M Serenity Documentation ">
     <meta name="generator" content="docfx 2.56.4.0">
     
     <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
@@ -69,15 +69,12 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="get-connect-logout">GET Connect Logout</h1>
+<h1 id="authorize---logout">Authorize - Logout</h1>
 
-<pre><code>This Method returns to the post redirect uri passed.
-</code></pre>
-<h2 id="permissions">Permissions</h2>
-<pre><code>N/A
-</code></pre>
+<p>Service: Identity Gateway</p>
+<p>Returns to the redirect url passed on successful logout.</p>
 <h2 id="http-request">Http Request</h2>
-<pre><code class="lang-HTTP">GET auth/connect/logout?post_logout_redirect_uri={redirectUrl}
+<pre><code class="lang-HTTP">GET https://{platform-url}/connect/logout?post_logout_redirect_uri={redirectUrl}
 </code></pre>
 <h2 id="request-headers">Request headers</h2>
 <table>
@@ -94,12 +91,26 @@
 </tr>
 </tbody>
 </table>
-<h2 id="sample-request">Sample Request</h2>
-<pre><code>auth/connect/logout?post_logout_redirect_uri=https://crsliot-aks-dev.centralus.cloudapp.azure.com/
-</code></pre>
 <h2 id="request-body">Request Body</h2>
-<pre><code>N/A
-</code></pre>
+<p>In the request body, supply a JSON representation of ClientCredentialInput object:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Name</th>
+<th style="text-align: center;">Required</th>
+<th style="text-align: center;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>post_logout_redirect_uri</strong></td>
+<td style="text-align: center;">true</td>
+<td style="text-align: center;">string</td>
+<td style="text-align: left;">URI to redirect to on logout.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="responses">Responses</h2>
 <table>
 <thead>
@@ -117,10 +128,12 @@
 </tr>
 </tbody>
 </table>
-<h2 id="security">Security</h2>
-<p>Type: OpenID Connect<br>
-Flow: implicit<br>
-Authorization URL: <a href="https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com">https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</a></p>
+<h2 id="definitions">Definitions</h2>
+<p>TODO: Add Response Objects from above</p>
+<h2 id="examples">Examples</h2>
+<h3 id="log-out-of-crsl-dev">Log out of CRSL Dev</h3>
+<pre><code class="lang-HTTP">GET https://{platform-url}/connect/logout?post_logout_redirect_uri=https://crsliot-aks-dev.centralus.cloudapp.azure.com/
+</code></pre>
 </article>
           </div>
           

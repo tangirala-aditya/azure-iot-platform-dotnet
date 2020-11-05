@@ -47,7 +47,7 @@
   "APIs/authorization-flow.html": {
     "href": "APIs/authorization-flow.html",
     "title": "Serenity Authorization Flow | 3M Serenity Documentation",
-    "keywords": "Serenity Authorization Flow TODO: Describe Serenity's Authorization Model Describe Azure B2C and it's configuration for OpenId https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect Explain how some systems have replaced this for alternative auth providers, like PSD and potentially EMD Describe the Authorization Flow, pulling information from and linking to: https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-authentication-flows Incorporate details from the following into their appropriate locations: https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview"
+    "keywords": "Serenity Authorization Flow TODO: Describe Serenity's Authorization Model Describe Azure B2C and it's configuration for OpenId https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect Explain how some systems have replaced this for alternative auth providers, like PSD and potentially EMD Describe the Authorization Flow, pulling information from and linking to: https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-authentication-flows Incorporate details from the following into their appropriate locations: https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com"
   },
   "APIs/config/ConfigTypes/config-types.html": {
     "href": "APIs/config/ConfigTypes/config-types.html",
@@ -294,50 +294,35 @@
     "title": "Ping Status | 3M Serenity Documentation",
     "keywords": "Ping Status API that pings the Diagnostic Service and responds the status code. Permissions N/A Http Request GET /diagnostics/v1/status/ping Request headers Header Value Content-Type application/json Request Body N/A Response Responds 200 Status code"
   },
-  "APIs/Examples/Overview.html": {
-    "href": "APIs/Examples/Overview.html",
-    "title": "Prerequisites for working with APIs | 3M Serenity Documentation",
-    "keywords": "Prerequisites for working with APIs"
-  },
-  "APIs/Examples/Postman.html": {
-    "href": "APIs/Examples/Postman.html",
-    "title": "| 3M Serenity Documentation",
-    "keywords": ""
-  },
-  "APIs/Examples/Prerequisites.html": {
-    "href": "APIs/Examples/Prerequisites.html",
-    "title": "Prerequisites for working with APIs | 3M Serenity Documentation",
-    "keywords": "Prerequisites for working with APIs"
-  },
   "APIs/identity-gateway/Authorize/Authorize.html": {
     "href": "APIs/identity-gateway/Authorize/Authorize.html",
     "title": "Authorize - Authorize | 3M Serenity Documentation",
-    "keywords": "Authorize - Authorize Service: Identity Gateway {TODO: Add Description} GET https://{platform-url}/connect/authorize URI Parameters Name Required Type Description redirect_uri ? string ? state ? string ? client_id ? string ? nonce ? string ? tenant ? string ? invite ? string ? Responses Name Type Description 200 OK TODO: Response Object Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com Definitions TODO: Add Response Objects from above"
+    "keywords": "Authorize - Authorize Service: Identity Gateway Authorizes user through configured Authorization Provider. GET https://{platform-url}/connect/authorize <!-- TODO : Add Requirements and Descriptions below --> URI Parameters Name Required Type Description redirect_uri ? string ? state ? string ? client_id ? string ? nonce ? string ? tenant ? string ? invite ? string ? <!-- TODO : Add type below --> Responses Name Type Description 200 OK <!-- TODO ## Definitions TODO: Add Response Objects from above --> <!-- ## Examples ### Login to Serenity -->"
   },
   "APIs/identity-gateway/Authorize/Callback.html": {
     "href": "APIs/identity-gateway/Authorize/Callback.html",
     "title": "POST Connect Callback | 3M Serenity Documentation",
-    "keywords": "POST Connect Callback This Method executes the callback method Http Request POST connect/callback Request headers Header Value Content-Type application/json Responses Name Type Description 200 OK TODO: Response Object Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com Sample Request Request Body Below are the details to be sent as part of form body. state id_token error error_description Response 200 Response"
+    "keywords": "POST Connect Callback This Method executes the callback method Http Request POST https://{platform-url}/connect/callback Request headers Header Value Content-Type application/json Responses Name Type Description 200 OK TODO: Response Object Sample Request Request Body Below are the details to be sent as part of form body. state id_token error error_description Response 200 Response"
   },
   "APIs/identity-gateway/Authorize/Index.html": {
     "href": "APIs/identity-gateway/Authorize/Index.html",
     "title": "Authorize | 3M Serenity Documentation",
-    "keywords": "Authorize Service: Identity Gateway Operations Authorize {TODO: Add Description} Logout {TODO: Add Description} Token {TODO: Add Description} Tenant {TODO: Add Description} Callback {TODO: Add Description}"
+    "keywords": "Authorize Service: Identity Gateway Operations Authorize Authorizes user and redirects to callback Logout Returns to the redirect url passed on successful logout Token Returns JWT token matching claim Tenant Used to switch tenants Callback Called by B2C to redirect"
   },
   "APIs/identity-gateway/Authorize/Logout.html": {
     "href": "APIs/identity-gateway/Authorize/Logout.html",
-    "title": "GET Connect Logout | 3M Serenity Documentation",
-    "keywords": "GET Connect Logout This Method returns to the post redirect uri passed. Permissions N/A Http Request GET auth/connect/logout?post_logout_redirect_uri={redirectUrl} Request headers Header Value Content-Type application/json Sample Request auth/connect/logout?post_logout_redirect_uri=https://crsliot-aks-dev.centralus.cloudapp.azure.com/ Request Body N/A Responses Name Type Description 200 OK TODO: Response Object Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com"
+    "title": "Authorize - Logout | 3M Serenity Documentation",
+    "keywords": "Authorize - Logout Service: Identity Gateway Returns to the redirect url passed on successful logout. Http Request GET https://{platform-url}/connect/logout?post_logout_redirect_uri={redirectUrl} Request headers Header Value Content-Type application/json Request Body In the request body, supply a JSON representation of ClientCredentialInput object: Name Required Type Description post_logout_redirect_uri true string URI to redirect to on logout. Responses Name Type Description 200 OK TODO: Response Object Definitions TODO: Add Response Objects from above Examples Log out of CRSL Dev GET https://{platform-url}/connect/logout?post_logout_redirect_uri=https://crsliot-aks-dev.centralus.cloudapp.azure.com/"
   },
   "APIs/identity-gateway/Authorize/Tenant.html": {
     "href": "APIs/identity-gateway/Authorize/Tenant.html",
-    "title": "POST Switch Token | 3M Serenity Documentation",
-    "keywords": "POST Switch Token This Method will be fired when user switches the tenant and it updates the JWT token with the updated tenant details Permissions N/A Http Request POST connect/switch/{tenantId} Request headers Header Value Content-Type application/json Request Body N/A Responses Name Type Description 200 OK TODO: Response Object Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com Sample Request /auth/connect/switch/233a1ca2-6855-43c5-8b9c-c7f85a1dd520 Response eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZTMwZjMwMS00ZjU3LTRiM2UtOTQ5YS0zZmY4ZTkzODcwYjUiLCJuYW1lIjoiVmlzd2FuYWRoIEtvdGhhIENXIiwiaWF0IjoxNjA0Mjk2ODIyLCJ0ZW5hbnQiOiIyMzNhMWNhMi02ODU1LTQzYzUtOGI5Yy1jN2Y4NWExZGQ1MjAiLCJyb2xlIjoiYWRtaW4iLCJpc19zeXN0ZW1BZG1pbiI6dHJ1ZSwiYXZhaWxhYmxlX3RlbmFudHMiOlsiMjA5ZDdmNzktMzlhYS00ZTJhLThlOWMtNTZmMDRmNzYzM2Y5IiwiMjMzYTFjYTItNjg1NS00M2M1LThiOWMtYzdmODVhMWRkNTIwIiwiYTk0MDM1YTktZTFjNS00YmIxLWI3MzktM2I2OTQ5ZTU4NjY0IiwiZjI4NDM0NTEtNWEzNS00NTg5LTk4YmItMGE5YTVmZmUyOGNlIl0sImV4cCI6MTYwNjYzMTEzMSwiaXNzIjoiaHR0cHM6Ly9jcnNsaW90LWFrcy1kZXYuY2VudHJhbHVzLmNsb3VkYXBwLmF6dXJlLmNvbS9hdXRoIiwiYXVkIjoiSW9UUGxhdGZvcm0ifQ.jUCYmOuHYM4fkNObCQ6ObAvQ--H9uDrNcgcsojuwhEChPXz1anlaGzPuRZpfK7rhSJzwuC-jrBLf23nL7pxkQA2mUV7oahKVf6WVhOea7012HnWIk3mqr_l3lDyCNjQp9WH2Wz-tqG2LZjh7zutzCmBBAvXd8gyBMqqOwXAVU6yxveMxhmPhyk6LwJSc2fGxsprxNTACHNq89KETQo742peRMo95Xj3dobjRBiKbmglvwuEy2FkzsNjq25ikj6JOsQsgtraFABa35mdGqhLrikVuzmsFMDK0U6-l_-ot_c4FSPN9Dc_0oLSL5sB6tRW-zg6rPhhUu_ISLyHh0J51lw"
+    "title": "Authorize - Tenant | 3M Serenity Documentation",
+    "keywords": "Authorize - Tenant Service: Identity Gateway Used to switch tenants <!-- TODO Add link to Tenant documentation.--> POST https://{platform-url}/connect/switch/{tenantId} Request headers Header Value Content-Type application/json <!-- TODO : Add type below --> Responses Name Type Description 200 OK Examples Tenant Switch Example POST https://{platform-url}/connect/switch/233a1ca2-6855-43c5-8b9c-c7f85a1dd520 <!-- TODO: Confirm Response below ## Response ``` eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzZTMwZjMwMS00ZjU3LTRiM2UtOTQ5YS0zZmY4ZTkzODcwYjUiLCJuYW1lIjoiVmlzd2FuYWRoIEtvdGhhIENXIiwiaWF0IjoxNjA0Mjk2ODIyLCJ0ZW5hbnQiOiIyMzNhMWNhMi02ODU1LTQzYzUtOGI5Yy1jN2Y4NWExZGQ1MjAiLCJyb2xlIjoiYWRtaW4iLCJpc19zeXN0ZW1BZG1pbiI6dHJ1ZSwiYXZhaWxhYmxlX3RlbmFudHMiOlsiMjA5ZDdmNzktMzlhYS00ZTJhLThlOWMtNTZmMDRmNzYzM2Y5IiwiMjMzYTFjYTItNjg1NS00M2M1LThiOWMtYzdmODVhMWRkNTIwIiwiYTk0MDM1YTktZTFjNS00YmIxLWI3MzktM2I2OTQ5ZTU4NjY0IiwiZjI4NDM0NTEtNWEzNS00NTg5LTk4YmItMGE5YTVmZmUyOGNlIl0sImV4cCI6MTYwNjYzMTEzMSwiaXNzIjoiaHR0cHM6Ly9jcnNsaW90LWFrcy1kZXYuY2VudHJhbHVzLmNsb3VkYXBwLmF6dXJlLmNvbS9hdXRoIiwiYXVkIjoiSW9UUGxhdGZvcm0ifQ.jUCYmOuHYM4fkNObCQ6ObAvQ--H9uDrNcgcsojuwhEChPXz1anlaGzPuRZpfK7rhSJzwuC-jrBLf23nL7pxkQA2mUV7oahKVf6WVhOea7012HnWIk3mqr_l3lDyCNjQp9WH2Wz-tqG2LZjh7zutzCmBBAvXd8gyBMqqOwXAVU6yxveMxhmPhyk6LwJSc2fGxsprxNTACHNq89KETQo742peRMo95Xj3dobjRBiKbmglvwuEy2FkzsNjq25ikj6JOsQsgtraFABa35mdGqhLrikVuzmsFMDK0U6-l_-ot_c4FSPN9Dc_0oLSL5sB6tRW-zg6rPhhUu_ISLyHh0J51lw ``` -->"
   },
   "APIs/identity-gateway/Authorize/Token.html": {
     "href": "APIs/identity-gateway/Authorize/Token.html",
     "title": "Authorize - Token | 3M Serenity Documentation",
-    "keywords": "Authorize - Token Service: Identity Gateway {TODO: Add Description} POST https://{platform-url}/connect/token Request headers Header Value Content-Type application/json Request Body Name In Required Type Description client_id true true string ? client_secret true true string ? scope true true string ? Responses Name Type Description 200 OK TODO: Response Object Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com Definitions TODO: Add Response Objects from above Examples {Description of example} Sample Request POST https://{platform-url}/connect/token Sample Body {\"client_id\":\"95d3c562-23eb-4e2d-8d3d-ea2448706934\",\"client_secret\":\"SH90ZgTR-MTObGLbO/u[7qIc-MP0vtAs\"} Sample Response eyJhbDciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRdaWQiOiI5NWQzYzY2Mi0yM2VhLTRlMmQtOGQzZC1lYTI0NDg3MDY5MzQiLCJzdWIiOiI5NWQzYzY2Mi0yM2VhLTRlNmQtOGQzZC1lYTI0NDg3MDY5MzQiLCJuYW1lIjoiOTVkM2M2NjItMjNlYS00ZTJkLThkM2QtZWEyNDQ4NzA2OTM0IiwidHlwZSI6IkNsaWVudCBDcmVkZW50aWFscyIsImlhdCI6MTYwNDMwNTc0OCwidGVuYW50IjoiMjMzYTFjYTItNjg1NS00M2M1LThiOWMtYzdmODVhMWRkNTIwIiwicm9sZSI6ImFkbWluIiwiaXNfc3lzdGVtQWRtaW4iOmZhbHNlLCJhdmFpbGFibGVfdGVuYW50cyI6IjIzM2ExY2EyLTY4NTUtNDNjNS04YjljLWM3Zjg1YTFkZDUyMCIsImV4cCI6MTYwNjg5Nzc0OCwiaXNzIjoiaHR0cHM6Ly9jcnNsaW90LWFrcy1kZXYuY2VudHJhbHVzLmNsb3VkYXBwLmF6dXJlLmNvbS9hdXRoIiwiYXVkIjoiSW9UUGxhdGZvcm0ifQ.oGTvV4NH5qL4qf8xtWChzn4GCWeaBV8Z9RwXmInK6V9mE3kSk2LqPJg9x7OVPZwHOaQkUcEh2_e9IZKOtwF9JXgz9ZLeFedpBSoLQPAtshMj1YBIXw64MGnuxViB7NoETjxMYsS3cD63_xSSIq2NgjAixHXeT5yONi5SNKIlScRVv3fytLbWCZou2oWoThTIHUYb-A-plaBWjyLfzhCnSJboolFXWw5QbMZcIUNUvg8yJ1oR7M3-OWtHnKdo7vjkSnl5ASe0_dWXaX0LrYBmNUaPek9xG3xTYekhc8rNvf5hL1k7F9VwRVBysPEnaZcnbXrsOvsQ_MmAk4hcuYaDtA"
+    "keywords": "Authorize - Token Service: Identity Gateway Returns JWT token matching claim. Used by user registration to convert and invited user to a enrolled user. POST https://{platform-url}/connect/token Request headers Header Value Content-Type application/json Request Body In the request body, supply a JSON representation of ClientCredentialInput object: Name Required Type Description client_id true string Name of the user client_secret true string Current status of the user: Invited or Member scope true string Role of the user i.e., admin, readonly, contributor <!-- TODO : Confirm Descriptions above --> <!-- TODO : Add type below --> Responses Name Type Description 200 OK <!-- TODO ## Definitions TODO: Add Response Objects from above --> Examples {Description of example} Sample Request POST https://{platform-url}/connect/token Sample Body {\"client_id\":\"95d3c562-23eb-4e2d-8d3d-ea2448706934\",\"client_secret\":\"SH90ZgTR-MTObGLbO/u[7qIc-MP0vtAs\"} Sample Response eyJhbDciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRdaWQiOiI5NWQzYzY2Mi0yM2VhLTRlMmQtOGQzZC1lYTI0NDg3MDY5MzQiLCJzdWIiOiI5NWQzYzY2Mi0yM2VhLTRlNmQtOGQzZC1lYTI0NDg3MDY5MzQiLCJuYW1lIjoiOTVkM2M2NjItMjNlYS00ZTJkLThkM2QtZWEyNDQ4NzA2OTM0IiwidHlwZSI6IkNsaWVudCBDcmVkZW50aWFscyIsImlhdCI6MTYwNDMwNTc0OCwidGVuYW50IjoiMjMzYTFjYTItNjg1NS00M2M1LThiOWMtYzdmODVhMWRkNTIwIiwicm9sZSI6ImFkbWluIiwiaXNfc3lzdGVtQWRtaW4iOmZhbHNlLCJhdmFpbGFibGVfdGVuYW50cyI6IjIzM2ExY2EyLTY4NTUtNDNjNS04YjljLWM3Zjg1YTFkZDUyMCIsImV4cCI6MTYwNjg5Nzc0OCwiaXNzIjoiaHR0cHM6Ly9jcnNsaW90LWFrcy1kZXYuY2VudHJhbHVzLmNsb3VkYXBwLmF6dXJlLmNvbS9hdXRoIiwiYXVkIjoiSW9UUGxhdGZvcm0ifQ.oGTvV4NH5qL4qf8xtWChzn4GCWeaBV8Z9RwXmInK6V9mE3kSk2LqPJg9x7OVPZwHOaQkUcEh2_e9IZKOtwF9JXgz9ZLeFedpBSoLQPAtshMj1YBIXw64MGnuxViB7NoETjxMYsS3cD63_xSSIq2NgjAixHXeT5yONi5SNKIlScRVv3fytLbWCZou2oWoThTIHUYb-A-plaBWjyLfzhCnSJboolFXWw5QbMZcIUNUvg8yJ1oR7M3-OWtHnKdo7vjkSnl5ASe0_dWXaX0LrYBmNUaPek9xG3xTYekhc8rNvf5hL1k7F9VwRVBysPEnaZcnbXrsOvsQ_MmAk4hcuYaDtA"
   },
   "APIs/identity-gateway/Configuration/Index.html": {
     "href": "APIs/identity-gateway/Configuration/Index.html",
@@ -431,8 +416,8 @@
   },
   "APIs/index.html": {
     "href": "APIs/index.html",
-    "title": "Platform APIs | 3M Serenity Documentation",
-    "keywords": "Platform APIs There are many APIs available for use across the 3M IoT Platform. This document outlines those APIs and links to additional information. Serenity APIs This section provides reference information for the Serenity APIs. They conform to the OpenAPI Specification . TODO: List relevant Serenity API Services. Operation group Description Authorize Log in or out and context operations. Configuration SystemAdmin UserSettings UserTenant Status Azure APIs TODO: List relevant Azure Services APIs."
+    "title": "Serenity Services and APIs: Overview | 3M Serenity Documentation",
+    "keywords": "Serenity Services and APIs: Overview There are many services that expose APIs across the Serenity IoT Platform. This section describes the services, APIs, and how to use them. Platform Services This section provides reference information for the Serenity APIs. They conform to the OpenAPI Specification . These services are exposed and can be used for system integration. Identity Gateway Authorization gateway service IoTHub Manager Tenant Manager Device Telemetry Config Diagnostics To learn how to use the Swagger UI to interact with these services. click here . To learn how to work with these services using other techniques, click here . Application Services These services are are only accessible from within the platform. It's possible to contribute to directly to the platform and use these services from within. But these services are not available for external consumption and don't have swagger references. ASA Manager Data formatting service Storage Adapter Storage service Azure Services TODO: List relevant Azure Services APIs."
   },
   "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html": {
     "href": "APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html",
@@ -469,11 +454,6 @@
     "title": "Class StatusController | 3M Serenity Documentation",
     "keywords": "Class StatusController Inheritance System.Object StatusController Namespace : Mmm.Iot.IoTHubManager.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public sealed class StatusController : ControllerBase Constructors StatusController(IStatusService) Declaration public StatusController(IStatusService statusService) Parameters Type Name Description IStatusService statusService Methods GetAsync() Declaration public Task<StatusApiModel> GetAsync() Returns Type Description System.Threading.Tasks.Task < StatusApiModel > Ping() Declaration public IActionResult Ping() Returns Type Description IActionResult"
   },
-  "APIs/Services.html": {
-    "href": "APIs/Services.html",
-    "title": "| 3M Serenity Documentation",
-    "keywords": ""
-  },
   "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.html": {
     "href": "APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.html",
     "title": "Namespace Mmm.Iot.StorageAdapter.WebService.Controllers | 3M Serenity Documentation",
@@ -492,7 +472,22 @@
   "APIs/Swagger.html": {
     "href": "APIs/Swagger.html",
     "title": "Serenity and Swagger UI | 3M Serenity Documentation",
-    "keywords": "Serenity and Swagger UI Each Serenity web service has a Swagger UI that allows you to visualize and interact with the Serenity APIs. Swagger Paths Each Serenity web service has a specific path that exposes an interactive Swagger UI to the APIs as follows: Service Path Identity Gateway /auth/index.html Config /config/index.html Device Telemetry /telemetry/index.html Diagnostics /diagnostics/index.html IoTHub Manager /iothubmanager/index.html Tenant Manager /tenantmanager/index.html Using Swagger UI To access the Swagger UI, append it to the root URL using the following syntax: {root URL}/{Swagger Path} For example, the following will take you to the Identity Gateway in CRSL's Development environment: https://crsliot-aks-dev.centralus.cloudapp.azure.com/ iothubmanager/index.html Additional Details For additional information on Swagger UI, check out the Swagger UI Documentation"
+    "keywords": "Serenity and Swagger UI Each Serenity web service has a Swagger UI that allows you to visualize and interact with the Serenity APIs. Swagger Paths Each Serenity web service has a specific path that exposes an interactive Swagger UI to the APIs as follows: SERVICE PATH Identity Gateway /auth/index.html Config /config/index.html Device Telemetry /telemetry/index.html Diagnostics /diagnostics/index.html IoTHub Manager /iothubmanager/index.html Tenant Manager /tenantmanager/index.html Using Swagger UI To access the Swagger UI, append it to the root URL using the following syntax: {root URL}/{Swagger Path} For example, the following will take you to the Identity Gateway in CRSL's Development environment: https://crsliot-aks-dev.centralus.cloudapp.azure.com/ iothubmanager/index.html Additional Details For additional information on Swagger UI, check out the Swagger UI Documentation"
+  },
+  "APIs/Techniques/Index.html": {
+    "href": "APIs/Techniques/Index.html",
+    "title": "Prerequisites for working with APIs | 3M Serenity Documentation",
+    "keywords": "Prerequisites for working with APIs"
+  },
+  "APIs/Techniques/Postman.html": {
+    "href": "APIs/Techniques/Postman.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
+  "APIs/Techniques/Prerequisites.html": {
+    "href": "APIs/Techniques/Prerequisites.html",
+    "title": "Prerequisites for working with APIs | 3M Serenity Documentation",
+    "keywords": "Prerequisites for working with APIs"
   },
   "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html": {
     "href": "APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html",

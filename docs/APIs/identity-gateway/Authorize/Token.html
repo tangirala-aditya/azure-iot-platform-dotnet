@@ -72,7 +72,7 @@
 <h1 id="authorize---token">Authorize - Token</h1>
 
 <p>Service: Identity Gateway</p>
-<p>{TODO: Add Description}</p>
+<p>Returns JWT token matching claim.  Used by user registration to convert and invited user to a enrolled user.</p>
 <pre><code class="lang-HTTP"> POST https://{platform-url}/connect/token 
 </code></pre>
 <h2 id="request-headers">Request headers</h2>
@@ -91,11 +91,11 @@
 </tbody>
 </table>
 <h2 id="request-body">Request Body</h2>
+<p>In the request body, supply a JSON representation of ClientCredentialInput object:</p>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">Name</th>
-<th style="text-align: center;">In</th>
 <th style="text-align: center;">Required</th>
 <th style="text-align: center;">Type</th>
 <th style="text-align: left;">Description</th>
@@ -105,26 +105,25 @@
 <tr>
 <td style="text-align: left;"><strong>client_id</strong></td>
 <td style="text-align: center;">true</td>
-<td style="text-align: center;">true</td>
 <td style="text-align: center;">string</td>
-<td style="text-align: left;">?</td>
+<td style="text-align: left;">Name of the user</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>client_secret</strong></td>
 <td style="text-align: center;">true</td>
-<td style="text-align: center;">true</td>
 <td style="text-align: center;">string</td>
-<td style="text-align: left;">?</td>
+<td style="text-align: left;">Current status of the user: Invited or Member</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>scope</strong></td>
 <td style="text-align: center;">true</td>
-<td style="text-align: center;">true</td>
 <td style="text-align: center;">string</td>
-<td style="text-align: left;">?</td>
+<td style="text-align: left;">Role of the user i.e., admin, readonly, contributor</td>
 </tr>
 </tbody>
 </table>
+<!-- TODO : Confirm Descriptions above -->
+<!-- TODO : Add type below -->
 <h2 id="responses">Responses</h2>
 <table>
 <thead>
@@ -137,17 +136,15 @@
 <tbody>
 <tr>
 <td style="text-align: left;">200 OK</td>
-<td style="text-align: left;">TODO: Response Object</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
-<h2 id="security">Security</h2>
-<p>Type: OpenID Connect<br>
-Flow: implicit<br>
-Authorization URL: <a href="https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com">https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</a></p>
-<h2 id="definitions">Definitions</h2>
-<p>TODO: Add Response Objects from above</p>
+<!-- TODO 
+## Definitions
+TODO: Add Response Objects from above
+-->
 <h2 id="examples">Examples</h2>
 <h3 id="description-of-example">{Description of example}</h3>
 <h4 id="sample-request">Sample Request</h4>

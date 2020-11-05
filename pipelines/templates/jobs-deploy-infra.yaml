@@ -1311,7 +1311,6 @@ jobs:
               tls:
               - hosts:
                 - $(aksName).$(locationName).cloudapp.azure.com
-                secretName: tls-prod
               rules:
               - host: $(aksName).$(locationName).cloudapp.azure.com
                 http:

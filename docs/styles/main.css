@@ -100,8 +100,14 @@ a:focus {
  }
 
 /* Level 3 Nav */
-.toc .nav li li li  a {
-  /*  margin-left: 5px;*/
+.toc .nav .level3 {
+  margin-left: 12px;
+}
+.toc .nav .level3 > li:last-child  { /* Add space after last element */
+  padding-bottom: 8px;
+}
+.toc .nav li li li a {
+  
   font-family: Segoe UI,SegoeUI,Helvetica Neue,Helvetica,Arial,sans-serif !important;
   font-size: 14px;
   line-height: 25.6px;
@@ -114,6 +120,10 @@ a:focus {
   font-size: 14px;
   line-height: 25.6px;
  }
+ .toc .nav .level4 > li:last-child  { /* Add space after last element */
+  padding-bottom: 4px;
+}
+
 .pagination > .active > a {
   background-color: var(--header-bg-color);
   border-color: var(--header-bg-color);

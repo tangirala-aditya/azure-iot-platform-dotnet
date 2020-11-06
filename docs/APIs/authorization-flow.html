@@ -71,30 +71,26 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="serenity-authorization-flow">Serenity Authorization Flow</h1>
 
-<p>TODO:</p>
-<ul>
-<li><p>Describe Serenity's Authorization Model</p>
-</li>
-<li><p>Describe Azure B2C and it's configuration for OpenId</p>
-<ul>
-<li><a href="https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect">https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect</a></li>
-</ul>
-</li>
-<li><p>Explain how some systems have replaced this for alternative auth providers, like PSD and potentially EMD</p>
-</li>
-<li><p>Describe the Authorization Flow, pulling information from and linking to: <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-authentication-flows">https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-authentication-flows</a></p>
-</li>
-<li><p>Incorporate details from the following into their appropriate locations:</p>
-<ul>
-<li><a href="https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview">https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview</a></li>
-<li></li>
-</ul>
-</li>
-</ul>
-<h2 id="security">Security</h2>
-<p>Type: OpenID Connect<br>
-Flow: implicit<br>
-Authorization URL: <a href="https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com">https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</a></p>
+<h3 id="request-headers">Request headers</h3>
+<p>All API calls must include the following request headers
+|Header|Value|
+|---|---|
+|Authorization|Bearer {token}.|
+|Content-Type|application/json|</p>
+<!-- 
+TODO: 
+ - Describe Serenity's Authorization Model
+ - Describe Azure B2C and it's configuration for OpenId
+   - https://docs.microsoft.com/en-us/azure/active-directory-b2c/openid-connect
+
+
+ - Explain how some systems have replaced this for alternative auth providers, like PSD and potentially EMD
+ - Describe the Authorization Flow, pulling information from and linking to: https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-authentication-flows
+ 
+- Incorporate details from the following into their appropriate locations:
+  - https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview
+  - 
+-->
 </article>
           </div>
           

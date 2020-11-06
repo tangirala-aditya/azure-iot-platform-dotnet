@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/Swagger.html",
-          "hash": "B5tTlD21ZtJ0oZyOo0APKw=="
+          "hash": "5+Osb5RLt/GVaJxA5dH7Vg=="
         }
       },
       "is_incremental": false,
@@ -174,7 +174,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/authorization-flow.html",
-          "hash": "3mW9UZIcXh89rUocI3QCqw=="
+          "hash": "t9Haohmr/4ODQqWDrH0lWA=="
         }
       },
       "is_incremental": false,
@@ -581,6 +581,42 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Alarms/Delete.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Alarms/Delete.html",
+          "hash": "mjFIVLYkDW3uqmMh+R6wkw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Alarms/Details.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Alarms/Details.html",
+          "hash": "gPwtHsKPTdKg+f14YAthbw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Alarms/List.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Alarms/List.html",
+          "hash": "MAt71tHR+hpkaV2qn+V7Cg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "APIs/device-telemetry/Alarms/delete-alarm.md",
       "output": {
         ".html": {
@@ -640,12 +676,15 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "APIs/device-telemetry/Alarms/index.md",
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Alarms/index.html",
-          "hash": "Mbflz+8Dh3EETXlm6ECdhg=="
+          "hash": "Uhstuy6cOkFP4zPbH4P3FQ=="
         }
       },
       "is_incremental": false,
@@ -753,7 +792,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/DeviceFiles/index.html",
-          "hash": "JwzXRArJcDY0xxNRPLHpaw=="
+          "hash": "NQ0tjrmhNulJeDfxh0gUtQ=="
         }
       },
       "is_incremental": false,
@@ -768,7 +807,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Index.html",
-          "hash": "KlHTEq8Yu7TE1q1XdXkpJQ=="
+          "hash": "X9/KAsXnDk7V9dYTRJLClw=="
         }
       },
       "is_incremental": false,
@@ -1245,7 +1284,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Index.html",
-          "hash": "4HlorTGYWfi0772AZEdp5A=="
+          "hash": "RSBIaRKWnk5Ns1p2vJkhVw=="
         }
       },
       "is_incremental": false,
@@ -1428,7 +1467,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/index.html",
-          "hash": "Rek/xI5VSVoBYxWTBxQGyQ=="
+          "hash": "0q9Nd6DeB/G02bWLQyjtmw=="
         }
       },
       "is_incremental": false,
@@ -1440,7 +1479,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/Deployments/create-deployment.html",
-          "hash": "rwOoysLfz+xns0P6iDlkGA=="
+          "hash": "EGT7XWI7PJ/su1WEk+d1Hw=="
         }
       },
       "is_incremental": false,
@@ -1839,7 +1878,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/index.html",
-          "hash": "oHDOggGK4lszTzqrltbIyw=="
+          "hash": "/6ntNDR8UFiyOTBBtHKRVQ=="
         }
       },
       "is_incremental": false,
@@ -2301,7 +2340,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/index.html",
-          "hash": "Id319VwJafU5QBO3L8yuaQ=="
+          "hash": "iGxxCNV5mFZ2XbnJ08hVfA=="
         }
       },
       "is_incremental": false,
@@ -2376,7 +2415,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/toc.html",
-          "hash": "tYE4JVRaanlNHD1M/B2jhA=="
+          "hash": "Q7dJd8yTC5+bmzKe1HU0BQ=="
         }
       },
       "is_incremental": false,
@@ -5925,7 +5964,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 234,
+          "total_file_count": 237,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

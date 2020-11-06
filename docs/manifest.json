@@ -42,7 +42,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/Techniques/Postman.html",
-          "hash": "y50quasQi85a5B6HA3XJxw=="
+          "hash": "Hd4pnHMBUM2T2mSvZMIryQ=="
         }
       },
       "is_incremental": false,
@@ -580,12 +580,87 @@
       "version": ""
     },
     {
-      "type": "ManagedReference",
-      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.yml",
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/API-device-telemetry-23701--Status.md",
       "output": {
         ".html": {
-          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html",
-          "hash": "URMppS4yw35ZJ+uonA4HdA=="
+          "relative_path": "APIs/device-telemetry/API-device-telemetry-23701--Status.html",
+          "hash": "reNGBZ1aD0LcyCnpsXd1bw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Alarms/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Alarms/index.html",
+          "hash": "mYFbHUQt0ANm9sNHMZWP4A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/AlarmsByRule/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/AlarmsByRule/index.html",
+          "hash": "cvt55HiDJCkN9HO3fQjTKA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Index.html",
+          "hash": "33UmTqy+cL/xDMzn/vaMBw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Messages/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Messages/index.html",
+          "hash": "Y5kIswRMgD8V1v1IoMrR/g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Rules/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Rules/index.html",
+          "hash": "7csasYug0nCXtXCq3bD6VA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Status/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Status/index.html",
+          "hash": "T3qZEB/9HCROroBKVCqIkg=="
         }
       },
       "is_incremental": false,
@@ -593,11 +668,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.yml",
+      "source_relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html",
-          "hash": "+8CnkJ+evLF07mp8wfpppg=="
+          "relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html",
+          "hash": "pWXbA6Tzcbg5Me6BdPmV3A=="
         }
       },
       "is_incremental": false,
@@ -605,11 +680,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.yml",
+      "source_relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html",
-          "hash": "3oAAKSc8UOQfnAC2ETg66w=="
+          "relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html",
+          "hash": "V8qHO854tBK4ekRGy0azVw=="
         }
       },
       "is_incremental": false,
@@ -617,11 +692,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.yml",
+      "source_relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html",
-          "hash": "h80HokVDMzdXsE7eYoWLrw=="
+          "relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html",
+          "hash": "+0cUdWnXg2LngvRV4uKV6g=="
         }
       },
       "is_incremental": false,
@@ -629,11 +704,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.yml",
+      "source_relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html",
-          "hash": "825R3VIX/zGvDFxGFBZXQw=="
+          "relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html",
+          "hash": "Rk85Ifgf15EztEDkW0+6iA=="
         }
       },
       "is_incremental": false,
@@ -641,11 +716,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.yml",
+      "source_relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html",
-          "hash": "o3pIO1Ht1rY8lxW+hrXFHA=="
+          "relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html",
+          "hash": "Owm+P9glsP3teyaPBoWNfw=="
         }
       },
       "is_incremental": false,
@@ -653,11 +728,23 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.yml",
+      "source_relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.yml",
       "output": {
         ".html": {
-          "relative_path": "APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.html",
-          "hash": "ZYjXIbi4Bw+PNrCxWQWMvQ=="
+          "relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html",
+          "hash": "L3TsqFT4opJyY8T2vVyMyA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.html",
+          "hash": "FljHR9hcGszAjpqwFGWiwA=="
         }
       },
       "is_incremental": false,
@@ -894,7 +981,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Index.html",
-          "hash": "L+3wxlQfrZHyXnpDvokMBA=="
+          "hash": "4HlorTGYWfi0772AZEdp5A=="
         }
       },
       "is_incremental": false,
@@ -2037,7 +2124,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/toc.html",
-          "hash": "YERfNq5tCpwEEFkYDEqHfA=="
+          "hash": "fCnlUfevSnSp7rFghFCTpA=="
         }
       },
       "is_incremental": false,
@@ -2957,6 +3044,66 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Guides/Architecture/Azure-Blob-Storage.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/Architecture/Azure-Blob-Storage.html",
+          "hash": "377qauyzVsFYY4zvsGEw7g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/Architecture/Azure-Table-Storage.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/Architecture/Azure-Table-Storage.html",
+          "hash": "kShTppuwJsjjO60ibgEz3w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/Architecture/CosmosDb.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/Architecture/CosmosDb.html",
+          "hash": "PxzdDGDbXj5WS9myQxsQlQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/Architecture/Index.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/Architecture/Index.html",
+          "hash": "hcGHznwPfZXCKnEQ4GlDuQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/Architecture/Storage/CosmosDb/Index.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/Architecture/Storage/CosmosDb/Index.html",
+          "hash": "5nebkUDBk/hwnp3wO6Volg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Guides/Devices/Register-A-Device.md",
       "output": {
         ".html": {
@@ -3020,6 +3167,54 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/Add-System-Admin.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/Add-System-Admin.html",
+          "hash": "EWv9WeeSToqRuyH5FT46Vw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/Onboarding-Steps.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/Onboarding-Steps.html",
+          "hash": "EYFiIFWjev1E9XexhQpJDg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/Request-Access.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/Request-Access.html",
+          "hash": "Xi+Ok59wLy4YOJpY4PzhHQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/index.html",
+          "hash": "K0k4jwBf/a85/N08B4K1Pw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Guides/index.md",
       "output": {
         ".html": {
@@ -3039,7 +3234,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "eWQZFDvFGCc2tE8c7Higxw=="
+          "hash": "B3/AwDqpIoMtvNOYO9MLvg=="
         }
       },
       "is_incremental": false,
@@ -5478,7 +5673,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 196,
+          "total_file_count": 212,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

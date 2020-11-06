@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Cosmos DB | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Cosmos DB | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="cosmos-db">Cosmos DB</h1>
+
+<p>Azure Cosmos DB is an Fast NoSQL database with SLA-backed speed and availability, automatic and instant scalability.</p>
+<p>Serenity Platform uses CosmosDB as the primary data storage for entities which are not part of IoTHub.</p>
+<h2 id="information-stored">Information Stored</h2>
+<p>Following lists the resources/entities/objects that are stored in CosmosDB in Serenity</p>
+<ul>
+<li><code>Device Groups</code></li>
+<li><code>Solution Settings</code></li>
+<li><code>Device Twin Properties Cache</code></li>
+<li><code>Deployments</code></li>
+<li><code>Deployment Imapacted Twins</code></li>
+<li><code>Deployment Imapacted Modules</code></li>
+<li><code>Packages</code></li>
+<li><code>Package Config Types</code></li>
+<li><code>Rules</code></li>
+<li><code>Alarms</code></li>
+<li><code>Device LifeCycle Data</code></li>
+<li><code>Device Twin Change Data</code></li>
+<li><code>Device Telemetry</code></li>
+</ul>
+<h2 id="instance-details">Instance Details</h2>
+<p>Hierarchy of resources in <strong>Azure Cosmos DB</strong> is in the following order:</p>
+<ul>
+<li><code>Azure Cosmos account</code></li>
+<li><code>Databases</code></li>
+<li><code>Containers</code></li>
+<li><code>Items</code></li>
+</ul>
+<p>Following table depicts the timeframe or moment resources are created.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Resource</th>
+<th style="text-align: left;">Instance Level</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>Azure Cosmos account</code></strong></td>
+<td style="text-align: left;"><code>Environment</code></td>
+<td style="text-align: left;">An Cosmos Account is created for each environment</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>Databases</code></strong></td>
+<td style="text-align: left;"><code>Environment</code></td>
+<td style="text-align: left;">Databases are created at Environment level, they are specific to account.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>Containers</code></strong></td>
+<td style="text-align: left;"><code>Tenant</code></td>
+<td style="text-align: left;">Containers are created for each Tenant, based on the data that is being stored.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>Items</code></strong></td>
+<td style="text-align: left;"><code>Container</code></td>
+<td style="text-align: left;">Items are created when data is inserted into Containers.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="naming-conventions">Naming Conventions</h2>
+<p>As part of Serenity platform, several databases and containers are created to serve the needs of various data that is stored.</p>
+<h3 id="databases">Databases</h3>
+<p>Following table depicts the list of <strong><code>databases</code></strong> that are created in Serenity platform and their naming convention.
+|Database|Description|
+|:--|:--|:--|
+|<strong><code>pcs-storage</code></strong>|Stores the Key Value based information used for Serenity UI and managed by Users.|
+|<strong><code>iot</code></strong>|Stores the Data related to Device telemetry, Device Lifecyle, Device Twin change and Alarms based on Telemetry.|</p>
+<h3 id="containers">Containers</h3>
+<p>Following table depicts the list of <strong><code>containers</code></strong> that are created for each <strong><code>tenant</code></strong> in Serenity platform and their naming convention.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">container</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Naming Convention</th>
+<th style="text-align: left;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>pcs</code></strong></td>
+<td style="text-align: left;">Stores the Key Value based information used for Serenity UI and managed by Users for each Tenant.</td>
+<td style="text-align: left;"><strong><code>pcs-{tenantid}</code></strong></td>
+<td style="text-align: left;">pcs-1ebea982-68a3-483a-9c35-19015e7e8f16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>alarms</code></strong></td>
+<td style="text-align: left;">Stores the Alarms created by Stream Analytics Job using Telemtry and Rules</td>
+<td style="text-align: left;"><strong><code>alarms-{tenantid}</code></strong></td>
+<td style="text-align: left;">alarms-1ebea982-68a3-483a-9c35-19015e7e8f16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>telemetry</code></strong></td>
+<td style="text-align: left;">Stores the Telemetry Data from Devices processed by Message Functions</td>
+<td style="text-align: left;"><strong><code>telemetry-{tenantid}</code></strong></td>
+<td style="text-align: left;">telemetry-1ebea982-68a3-483a-9c35-19015e7e8f16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>lifecycle</code></strong></td>
+<td style="text-align: left;">Stores the LifeCycle events data of Devices processed by DeviceLifeCycle</td>
+<td style="text-align: left;"><strong><code>lifecycle-{tenantid}</code></strong></td>
+<td style="text-align: left;">lifecycle-1ebea982-68a3-483a-9c35-19015e7e8f16</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>twin-change</code></strong></td>
+<td style="text-align: left;">Stores the latest Twin change event data of a Device processed by DeviceTwin function</td>
+<td style="text-align: left;"><strong><code>twin-change-{tenantid}</code></strong></td>
+<td style="text-align: left;">twin-change-1ebea982-68a3-483a-9c35-19015e7e8f16</td>
+</tr>
+</tbody>
+</table>
+<h2 id="access-information">Access Information</h2>
+<p>Serenity Platform APIs communicate with CosmosDB using the AccessKeys and URL of the Cosmos Account.</p>
+<blockquote>
+<p>CosmosDb Connection is stored in KeyVault Secrets with Key as <strong><code>Global--CosmosDb--DocumentDbConnectionString</code></strong></p>
+</blockquote>
+<h2 id="cost-details">Cost Details</h2>
+<p>Configuration details of the CosmosDB accounts in Serenity Platform are as follows.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Setting</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">API</td>
+<td style="text-align: left;"><strong><code>SQL</code></strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">Consistency Level</td>
+<td style="text-align: left;"><strong><code>Strong</code></strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">Multi Region Writes</td>
+<td style="text-align: left;"><strong><code>False</code></strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">Automatic FailOver</td>
+<td style="text-align: left;"><strong><code>False</code></strong></td>
+</tr>
+</tbody>
+</table>
+<p>Configuration Details for a Container are as follows
+|Setting|Value|
+|:--|:--|
+|Provisioned RU/s|<strong><code>400</code></strong>|</p>
+<p>Monthly projected cost with the above configuration will be <strong><code>$23.36 per container</code></strong> with additional charges for storage at <strong><code>$0.250 PerGB/Month</code></strong></p>
+<h2 id="scaling">Scaling</h2>
+<p>Current configuration for Scaling is <strong><code>Manual</code></strong>. If the provisioned RU/s for each a container are not sufficient to cater the requests, Users have to manually increase the RU/s.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/azure/cosmos-db/introduction">Introduction to Azure Cosmos DB</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units">Request Units in Azure Cosmos DB</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/cosmos-db/set-throughput">Partitioning and horizontal scaling in Azure Cosmos DB</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/cosmos-db/concepts-limits">Azure Cosmos DB service quotas</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/Guides/Architecture/CosmosDb.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

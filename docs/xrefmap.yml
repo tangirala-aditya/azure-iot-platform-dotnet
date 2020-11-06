@@ -646,19 +646,19 @@ references:
   nameWithType: UserSettingsController.SetUserSettingAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers
   name: Mmm.Iot.DeviceTelemetry.WebService.Controllers
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.html
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.html
   commentId: N:Mmm.Iot.DeviceTelemetry.WebService.Controllers
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers
   nameWithType: Mmm.Iot.DeviceTelemetry.WebService.Controllers
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController
   name: AlarmsByRuleController
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html
   commentId: T:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController
   nameWithType: AlarmsByRuleController
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.#ctor(IAlarms,IRules,ILogger{Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController})
   name: AlarmsByRuleController(IAlarms, IRules, ILogger<AlarmsByRuleController>)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController__ctor_IAlarms_IRules_ILogger_Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController__
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController__ctor_IAlarms_IRules_ILogger_Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController__
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.#ctor(IAlarms,IRules,ILogger{Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController})
   name.vb: AlarmsByRuleController(IAlarms, IRules, ILogger(Of AlarmsByRuleController))
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.AlarmsByRuleController(IAlarms, IRules, ILogger<Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController>)
@@ -667,14 +667,14 @@ references:
   nameWithType.vb: AlarmsByRuleController.AlarmsByRuleController(IAlarms, IRules, ILogger(Of AlarmsByRuleController))
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.#ctor*
   name: AlarmsByRuleController
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController__ctor_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController__ctor_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.AlarmsByRuleController
   nameWithType: AlarmsByRuleController.AlarmsByRuleController
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.GetAsync(System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)
   name: GetAsync(String, String, String, Nullable<Int32>, Nullable<Int32>, String)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController_GetAsync_System_String_System_String_System_String_System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController_GetAsync_System_String_System_String_System_String_System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.GetAsync(System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)
   name.vb: GetAsync(String, String, String, Nullable(Of Int32), Nullable(Of Int32), String)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.GetAsync(System.String, System.String, System.String, System.Nullable<System.Int32>, System.Nullable<System.Int32>, System.String)
@@ -683,7 +683,7 @@ references:
   nameWithType.vb: AlarmsByRuleController.GetAsync(String, String, String, Nullable(Of Int32), Nullable(Of Int32), String)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.GetAsync(System.String,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)
   name: GetAsync(String, String, String, String, Nullable<Int32>, Nullable<Int32>, String)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController_GetAsync_System_String_System_String_System_String_System_String_System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController_GetAsync_System_String_System_String_System_String_System_String_System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.GetAsync(System.String,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)
   name.vb: GetAsync(String, String, String, String, Nullable(Of Int32), Nullable(Of Int32), String)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.GetAsync(System.String, System.String, System.String, System.String, System.Nullable<System.Int32>, System.Nullable<System.Int32>, System.String)
@@ -692,39 +692,39 @@ references:
   nameWithType.vb: AlarmsByRuleController.GetAsync(String, String, String, String, Nullable(Of Int32), Nullable(Of Int32), String)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.GetAsync*
   name: GetAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController_GetAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController_GetAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.GetAsync
   nameWithType: AlarmsByRuleController.GetAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.PostAsync(QueryApiModel)
   name: PostAsync(QueryApiModel)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController_PostAsync_QueryApiModel_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController_PostAsync_QueryApiModel_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.PostAsync(QueryApiModel)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.PostAsync(QueryApiModel)
   nameWithType: AlarmsByRuleController.PostAsync(QueryApiModel)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.PostAsync(System.String,QueryApiModel)
   name: PostAsync(String, QueryApiModel)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController_PostAsync_System_String_QueryApiModel_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController_PostAsync_System_String_QueryApiModel_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.PostAsync(System.String,QueryApiModel)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.PostAsync(System.String, QueryApiModel)
   nameWithType: AlarmsByRuleController.PostAsync(String, QueryApiModel)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.PostAsync*
   name: PostAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController_PostAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsByRuleController_PostAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.PostAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsByRuleController.PostAsync
   nameWithType: AlarmsByRuleController.PostAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController
   name: AlarmsController
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html
   commentId: T:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController
   nameWithType: AlarmsController
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.#ctor(IAlarms,ILogger{Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController})
   name: AlarmsController(IAlarms, ILogger<AlarmsController>)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController__ctor_IAlarms_ILogger_Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController__
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController__ctor_IAlarms_ILogger_Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController__
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.#ctor(IAlarms,ILogger{Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController})
   name.vb: AlarmsController(IAlarms, ILogger(Of AlarmsController))
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.AlarmsController(IAlarms, ILogger<Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController>)
@@ -733,53 +733,53 @@ references:
   nameWithType.vb: AlarmsController.AlarmsController(IAlarms, ILogger(Of AlarmsController))
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.#ctor*
   name: AlarmsController
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController__ctor_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController__ctor_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.AlarmsController
   nameWithType: AlarmsController.AlarmsController
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.Delete(AlarmIdListApiModel)
   name: Delete(AlarmIdListApiModel)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_Delete_AlarmIdListApiModel_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_Delete_AlarmIdListApiModel_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.Delete(AlarmIdListApiModel)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.Delete(AlarmIdListApiModel)
   nameWithType: AlarmsController.Delete(AlarmIdListApiModel)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.Delete*
   name: Delete
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_Delete_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_Delete_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.Delete
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.Delete
   nameWithType: AlarmsController.Delete
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.DeleteAsync(System.String)
   name: DeleteAsync(String)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_DeleteAsync_System_String_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_DeleteAsync_System_String_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.DeleteAsync(System.String)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.DeleteAsync(System.String)
   nameWithType: AlarmsController.DeleteAsync(String)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.DeleteAsync*
   name: DeleteAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_DeleteAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_DeleteAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.DeleteAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.DeleteAsync
   nameWithType: AlarmsController.DeleteAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.GetAsync(System.String)
   name: GetAsync(String)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_GetAsync_System_String_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_GetAsync_System_String_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.GetAsync(System.String)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.GetAsync(System.String)
   nameWithType: AlarmsController.GetAsync(String)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.GetAsync*
   name: GetAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_GetAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_GetAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.GetAsync
   nameWithType: AlarmsController.GetAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.ListAsync(System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)
   name: ListAsync(String, String, String, Nullable<Int32>, Nullable<Int32>, String)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_ListAsync_System_String_System_String_System_String_System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_ListAsync_System_String_System_String_System_String_System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.ListAsync(System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)
   name.vb: ListAsync(String, String, String, Nullable(Of Int32), Nullable(Of Int32), String)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.ListAsync(System.String, System.String, System.String, System.Nullable<System.Int32>, System.Nullable<System.Int32>, System.String)
@@ -788,91 +788,91 @@ references:
   nameWithType.vb: AlarmsController.ListAsync(String, String, String, Nullable(Of Int32), Nullable(Of Int32), String)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.ListAsync*
   name: ListAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_ListAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_ListAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.ListAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.ListAsync
   nameWithType: AlarmsController.ListAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.PatchAsync(System.String,AlarmStatusApiModel)
   name: PatchAsync(String, AlarmStatusApiModel)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_PatchAsync_System_String_AlarmStatusApiModel_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_PatchAsync_System_String_AlarmStatusApiModel_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.PatchAsync(System.String,AlarmStatusApiModel)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.PatchAsync(System.String, AlarmStatusApiModel)
   nameWithType: AlarmsController.PatchAsync(String, AlarmStatusApiModel)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.PatchAsync*
   name: PatchAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_PatchAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_PatchAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.PatchAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.PatchAsync
   nameWithType: AlarmsController.PatchAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.PostAsync(QueryApiModel)
   name: PostAsync(QueryApiModel)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_PostAsync_QueryApiModel_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_PostAsync_QueryApiModel_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.PostAsync(QueryApiModel)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.PostAsync(QueryApiModel)
   nameWithType: AlarmsController.PostAsync(QueryApiModel)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.PostAsync*
   name: PostAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_PostAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_AlarmsController_PostAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.PostAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.AlarmsController.PostAsync
   nameWithType: AlarmsController.PostAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController
   name: DeviceFilesController
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html
   commentId: T:Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController
   nameWithType: DeviceFilesController
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.#ctor(IDeviceFileUploads)
   name: DeviceFilesController(IDeviceFileUploads)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_DeviceFilesController__ctor_IDeviceFileUploads_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_DeviceFilesController__ctor_IDeviceFileUploads_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.#ctor(IDeviceFileUploads)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.DeviceFilesController(IDeviceFileUploads)
   nameWithType: DeviceFilesController.DeviceFilesController(IDeviceFileUploads)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.#ctor*
   name: DeviceFilesController
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_DeviceFilesController__ctor_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_DeviceFilesController__ctor_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.DeviceFilesController
   nameWithType: DeviceFilesController.DeviceFilesController
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.GetDeviceUploads(System.String)
   name: GetDeviceUploads(String)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_DeviceFilesController_GetDeviceUploads_System_String_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_DeviceFilesController_GetDeviceUploads_System_String_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.GetDeviceUploads(System.String)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.GetDeviceUploads(System.String)
   nameWithType: DeviceFilesController.GetDeviceUploads(String)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.GetDeviceUploads*
   name: GetDeviceUploads
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_DeviceFilesController_GetDeviceUploads_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_DeviceFilesController_GetDeviceUploads_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.GetDeviceUploads
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.GetDeviceUploads
   nameWithType: DeviceFilesController.GetDeviceUploads
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.GetFileContents(DownloadRequest)
   name: GetFileContents(DownloadRequest)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_DeviceFilesController_GetFileContents_DownloadRequest_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_DeviceFilesController_GetFileContents_DownloadRequest_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.GetFileContents(DownloadRequest)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.GetFileContents(DownloadRequest)
   nameWithType: DeviceFilesController.GetFileContents(DownloadRequest)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.GetFileContents*
   name: GetFileContents
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_DeviceFilesController_GetFileContents_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_DeviceFilesController_GetFileContents_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.GetFileContents
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.DeviceFilesController.GetFileContents
   nameWithType: DeviceFilesController.GetFileContents
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController
   name: MessagesController
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html
   commentId: T:Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController
   nameWithType: MessagesController
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.#ctor(IMessages,ILogger{Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController},AppConfig)
   name: MessagesController(IMessages, ILogger<MessagesController>, AppConfig)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController__ctor_IMessages_ILogger_Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController__AppConfig_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController__ctor_IMessages_ILogger_Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController__AppConfig_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.#ctor(IMessages,ILogger{Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController},AppConfig)
   name.vb: MessagesController(IMessages, ILogger(Of MessagesController), AppConfig)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.MessagesController(IMessages, ILogger<Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController>, AppConfig)
@@ -881,14 +881,14 @@ references:
   nameWithType.vb: MessagesController.MessagesController(IMessages, ILogger(Of MessagesController), AppConfig)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.#ctor*
   name: MessagesController
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController__ctor_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController__ctor_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.MessagesController
   nameWithType: MessagesController.MessagesController
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.GetAsync(System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)
   name: GetAsync(String, String, String, Nullable<Int32>, Nullable<Int32>, String)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController_GetAsync_System_String_System_String_System_String_System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController_GetAsync_System_String_System_String_System_String_System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.GetAsync(System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)
   name.vb: GetAsync(String, String, String, Nullable(Of Int32), Nullable(Of Int32), String)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.GetAsync(System.String, System.String, System.String, System.Nullable<System.Int32>, System.Nullable<System.Int32>, System.String)
@@ -897,14 +897,14 @@ references:
   nameWithType.vb: MessagesController.GetAsync(String, String, String, Nullable(Of Int32), Nullable(Of Int32), String)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.GetAsync*
   name: GetAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController_GetAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController_GetAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.GetAsync
   nameWithType: MessagesController.GetAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.GetTopDeviceMessagesAsync(System.Nullable{System.Int32},System.String)
   name: GetTopDeviceMessagesAsync(Nullable<Int32>, String)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController_GetTopDeviceMessagesAsync_System_Nullable_System_Int32__System_String_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController_GetTopDeviceMessagesAsync_System_Nullable_System_Int32__System_String_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.GetTopDeviceMessagesAsync(System.Nullable{System.Int32},System.String)
   name.vb: GetTopDeviceMessagesAsync(Nullable(Of Int32), String)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.GetTopDeviceMessagesAsync(System.Nullable<System.Int32>, System.String)
@@ -913,72 +913,72 @@ references:
   nameWithType.vb: MessagesController.GetTopDeviceMessagesAsync(Nullable(Of Int32), String)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.GetTopDeviceMessagesAsync*
   name: GetTopDeviceMessagesAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController_GetTopDeviceMessagesAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController_GetTopDeviceMessagesAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.GetTopDeviceMessagesAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.GetTopDeviceMessagesAsync
   nameWithType: MessagesController.GetTopDeviceMessagesAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.PostAsync(QueryApiModel)
   name: PostAsync(QueryApiModel)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController_PostAsync_QueryApiModel_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController_PostAsync_QueryApiModel_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.PostAsync(QueryApiModel)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.PostAsync(QueryApiModel)
   nameWithType: MessagesController.PostAsync(QueryApiModel)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.PostAsync*
   name: PostAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController_PostAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_MessagesController_PostAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.PostAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.MessagesController.PostAsync
   nameWithType: MessagesController.PostAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController
   name: RulesController
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html
   commentId: T:Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController
   nameWithType: RulesController
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.#ctor(IRules)
   name: RulesController(IRules)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController__ctor_IRules_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController__ctor_IRules_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.#ctor(IRules)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.RulesController(IRules)
   nameWithType: RulesController.RulesController(IRules)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.#ctor*
   name: RulesController
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController__ctor_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController__ctor_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.RulesController
   nameWithType: RulesController.RulesController
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.DeleteAsync(System.String)
   name: DeleteAsync(String)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_DeleteAsync_System_String_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_DeleteAsync_System_String_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.DeleteAsync(System.String)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.DeleteAsync(System.String)
   nameWithType: RulesController.DeleteAsync(String)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.DeleteAsync*
   name: DeleteAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_DeleteAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_DeleteAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.DeleteAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.DeleteAsync
   nameWithType: RulesController.DeleteAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.GetAsync(System.String)
   name: GetAsync(String)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_GetAsync_System_String_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_GetAsync_System_String_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.GetAsync(System.String)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.GetAsync(System.String)
   nameWithType: RulesController.GetAsync(String)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.GetAsync*
   name: GetAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_GetAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_GetAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.GetAsync
   nameWithType: RulesController.GetAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.ListAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Boolean})
   name: ListAsync(String, Nullable<Int32>, Nullable<Int32>, String, Nullable<Boolean>)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_ListAsync_System_String_System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_System_Nullable_System_Boolean__
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_ListAsync_System_String_System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_System_Nullable_System_Boolean__
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.ListAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Boolean})
   name.vb: ListAsync(String, Nullable(Of Int32), Nullable(Of Int32), String, Nullable(Of Boolean))
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.ListAsync(System.String, System.Nullable<System.Int32>, System.Nullable<System.Int32>, System.String, System.Nullable<System.Boolean>)
@@ -987,78 +987,78 @@ references:
   nameWithType.vb: RulesController.ListAsync(String, Nullable(Of Int32), Nullable(Of Int32), String, Nullable(Of Boolean))
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.ListAsync*
   name: ListAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_ListAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_ListAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.ListAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.ListAsync
   nameWithType: RulesController.ListAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.PostAsync(System.String,RuleApiModel)
   name: PostAsync(String, RuleApiModel)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_PostAsync_System_String_RuleApiModel_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_PostAsync_System_String_RuleApiModel_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.PostAsync(System.String,RuleApiModel)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.PostAsync(System.String, RuleApiModel)
   nameWithType: RulesController.PostAsync(String, RuleApiModel)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.PostAsync*
   name: PostAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_PostAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_PostAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.PostAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.PostAsync
   nameWithType: RulesController.PostAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.PutAsync(System.String,RuleApiModel)
   name: PutAsync(String, RuleApiModel)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_PutAsync_System_String_RuleApiModel_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_PutAsync_System_String_RuleApiModel_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.PutAsync(System.String,RuleApiModel)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.PutAsync(System.String, RuleApiModel)
   nameWithType: RulesController.PutAsync(String, RuleApiModel)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.PutAsync*
   name: PutAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_PutAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_RulesController_PutAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.PutAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.RulesController.PutAsync
   nameWithType: RulesController.PutAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController
   name: StatusController
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html
   commentId: T:Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController
   nameWithType: StatusController
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.#ctor(IStatusService)
   name: StatusController(IStatusService)
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_StatusController__ctor_IStatusService_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_StatusController__ctor_IStatusService_
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.#ctor(IStatusService)
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.StatusController(IStatusService)
   nameWithType: StatusController.StatusController(IStatusService)
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.#ctor*
   name: StatusController
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_StatusController__ctor_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_StatusController__ctor_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.StatusController
   nameWithType: StatusController.StatusController
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.GetAsync
   name: GetAsync()
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_StatusController_GetAsync
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_StatusController_GetAsync
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.GetAsync
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.GetAsync()
   nameWithType: StatusController.GetAsync()
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.GetAsync*
   name: GetAsync
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_StatusController_GetAsync_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_StatusController_GetAsync_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.GetAsync
   nameWithType: StatusController.GetAsync
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.Ping
   name: Ping()
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_StatusController_Ping
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_StatusController_Ping
   commentId: M:Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.Ping
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.Ping()
   nameWithType: StatusController.Ping()
 - uid: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.Ping*
   name: Ping
-  href: APIs/device-telemetry/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_StatusController_Ping_
+  href: APIs/device-telemetry/object-model/Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.html#Mmm_Iot_DeviceTelemetry_WebService_Controllers_StatusController_Ping_
   commentId: Overload:Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.Ping
   isSpec: "True"
   fullName: Mmm.Iot.DeviceTelemetry.WebService.Controllers.StatusController.Ping

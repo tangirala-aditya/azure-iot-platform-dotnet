@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Table Storage | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Table Storage | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="table-storage">Table Storage</h1>
+
+<pre><code>Allow you to store structured NoSQL data in the cloud, providing a key/attribute store with a schemaless design.
+</code></pre>
+<h2 id="information-stored">Information Stored</h2>
+<ul>
+<li>User</li>
+<li>User Settings</li>
+<li>SystemAdmin</li>
+<li>Tenant</li>
+<li>Tenant Operations</li>
+<li>Table Operations</li>
+</ul>
+<h2 id="instance-details">Instance Details</h2>
+<p>Hierarchy of resources in <strong>Azure Table Storage</strong> is in following order.</p>
+<ul>
+<li>Storage Account</li>
+<li>Tables</li>
+<li>Entities</li>
+<li>Properties</li>
+</ul>
+<p>Following table depicts the timeframe or moment resources are created.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Resource</th>
+<th style="text-align: left;">Instance Level</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Storage Account</strong></td>
+<td style="text-align: left;">Environment</td>
+<td style="text-align: left;">All access to Azure Storage is done through a storage account.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Tables</strong></td>
+<td style="text-align: left;">Environment</td>
+<td style="text-align: left;">A table is a collection of entities</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Entities</strong></td>
+<td style="text-align: left;">Environment</td>
+<td style="text-align: left;">An entity is a set of properties, similar to a database row.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Properties</strong></td>
+<td style="text-align: left;">Environment</td>
+<td style="text-align: left;">A property is a name-value pair.Each entity also has three system properties that specify a partition key, a row key, and a timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="access-information">Access Information</h2>
+<p>Serenity Platform APIs communicate with table storage using the AccessKeys and URL of the table storage.</p>
+<blockquote>
+<p>Table Storage Connection is stored in KeyVault Secrets with Key as <strong><code>Global--StorageAccountConnectionString</code></strong></p>
+</blockquote>
+<h2 id="cost-details">Cost Details</h2>
+<p>In Serenity, we are using storage account with below configurations.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Setting</th>
+<th style="text-align: left;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Region</td>
+<td style="text-align: left;">EastUS</td>
+</tr>
+<tr>
+<td style="text-align: left;">Type</td>
+<td style="text-align: left;">Table Storage</td>
+</tr>
+<tr>
+<td style="text-align: left;">Tier</td>
+<td style="text-align: left;">Standard</td>
+</tr>
+<tr>
+<td style="text-align: left;">Redundancy</td>
+<td style="text-align: left;">LRS</td>
+</tr>
+<tr>
+<td style="text-align: left;">Storage Account Type</td>
+<td style="text-align: left;">General Purpose V1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Capacity</th>
+<th style="text-align: left;">Cost</th>
+<th style="text-align: left;">Storage Transaction per 10000</th>
+<th style="text-align: left;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1GB</td>
+<td style="text-align: left;">$0.02</td>
+<td style="text-align: left;">$0.04</td>
+<td style="text-align: left;">$0.06</td>
+</tr>
+<tr>
+<td style="text-align: left;">2GB</td>
+<td style="text-align: left;">$0.05</td>
+<td style="text-align: left;">$0.04</td>
+<td style="text-align: left;">$0.08</td>
+</tr>
+<tr>
+<td style="text-align: left;">10GB</td>
+<td style="text-align: left;">$0.24</td>
+<td style="text-align: left;">$0.04</td>
+<td style="text-align: left;">$0.28</td>
+</tr>
+<tr>
+<td style="text-align: left;">100GB</td>
+<td style="text-align: left;">$2.40</td>
+<td style="text-align: left;">$0.04</td>
+<td style="text-align: left;">$2.44</td>
+</tr>
+</tbody>
+</table>
+<p>Monthly projected cost with the above configuration will be <strong><code>$0.06</code></strong> for 1GB with additional charges for storage at <strong><code>$0.02 PerGB/Month</code></strong> and <strong><code>$0.04 per 10000 transactions</code></strong></p>
+<h2 id="scaling">Scaling</h2>
+<p>The following table describes capacity, scalability, and performance targets for Table storage.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Resource</th>
+<th style="text-align: left;">Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Number of tables in an Azure storage account</td>
+<td style="text-align: left;">Limited only by the capacity of the storage account</td>
+</tr>
+<tr>
+<td style="text-align: left;">Number of partitions in a table</td>
+<td style="text-align: left;">Limited only by the capacity of the storage account</td>
+</tr>
+<tr>
+<td style="text-align: left;">Number of entities in a partition</td>
+<td style="text-align: left;">Limited only by the capacity of the storage account</td>
+</tr>
+<tr>
+<td style="text-align: left;">Maximum size of a single table</td>
+<td style="text-align: left;">500 TiB</td>
+</tr>
+<tr>
+<td style="text-align: left;">Maximum size of a single entity, including all property values</td>
+<td style="text-align: left;">1 MiB</td>
+</tr>
+<tr>
+<td style="text-align: left;">Size of the PartitionKey</td>
+<td style="text-align: left;">A string up to 1 KiB in size</td>
+</tr>
+<tr>
+<td style="text-align: left;">Size of an entity group transaction</td>
+<td style="text-align: left;">A transaction can include at most 100 entities and the payload must be less than 4 MiB in size. An entity group transaction can include an update to an entity only once.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Maximum number of stored access policies per table</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Maximum request rate per storage account</td>
+<td style="text-align: left;">20,000 transactions per second, which assumes a 1-KiB entity size</td>
+</tr>
+<tr>
+<td style="text-align: left;">Target throughput for a single table partition</td>
+<td style="text-align: left;">Up to 2,000 entities per second</td>
+</tr>
+</tbody>
+</table>
+<h2 id="references">References</h2>
+<pre><code>https://docs.microsoft.com/en-us/azure/storage/common/storage-account-overview
+https://docs.microsoft.com/en-us/azure/storage/common/storage-introduction 
+https://docs.microsoft.com/en-us/azure/storage/tables/scalability-targets 
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/Guides/Architecture/Azure-Table-Storage.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

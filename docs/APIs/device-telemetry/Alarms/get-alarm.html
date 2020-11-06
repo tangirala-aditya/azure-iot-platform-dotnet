@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Get alarm by alarmId | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Get alarm by alarmId | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="get-alarm-by-alarmid">Get alarm by alarmId</h2>
+
+<p>API that fetches a alarm details by alarmId.</p>
+<h3 id="permissions">Permissions</h3>
+<pre><code>ReadAll
+</code></pre>
+<h3 id="http-request">Http Request</h3>
+<pre><code class="lang-HTTP">GET /telemetry​/v1/Alarms/{id}
+</code></pre>
+<h3 id="query-parameters">Query parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Query parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>guid</td>
+<td>Alarms' unique id</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-headers">Request headers</h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization</td>
+<td>Bearer {token}. Required.</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-body">Request Body</h3>
+<pre><code>N/A
+</code></pre>
+<h3 id="response-schema">Response Schema</h3>
+<pre><code class="lang-Json">{
+  &quot;metadata&quot;: {
+    &quot;additionalProp1&quot;: &quot;string&quot;,
+    &quot;additionalProp2&quot;: &quot;string&quot;,
+    &quot;additionalProp3&quot;: &quot;string&quot;
+  },
+  &quot;eTag&quot;: &quot;string&quot;,
+  &quot;id&quot;: &quot;string&quot;,
+  &quot;dateCreated&quot;: &quot;string&quot;,
+  &quot;dateModified&quot;: &quot;string&quot;,
+  &quot;description&quot;: &quot;string&quot;,
+  &quot;groupId&quot;: &quot;string&quot;,
+  &quot;deviceId&quot;: &quot;string&quot;,
+  &quot;status&quot;: &quot;string&quot;,
+  &quot;rule&quot;: {
+    &quot;metadata&quot;: {
+      &quot;additionalProp1&quot;: &quot;string&quot;,
+      &quot;additionalProp2&quot;: &quot;string&quot;,
+      &quot;additionalProp3&quot;: &quot;string&quot;
+    },
+    &quot;id&quot;: &quot;string&quot;,
+    &quot;severity&quot;: &quot;string&quot;,
+    &quot;description&quot;: &quot;string&quot;
+  }
+}
+</code></pre>
+<h3 id="response">Response</h3>
+<ul>
+<li><p>Status Code 200</p>
+<pre><code class="lang-json">    {
+      &quot;ETag&quot;: &quot;\&quot;0100e67a-0000-0300-0000-5f8833120000\&quot;&quot;,
+      &quot;Id&quot;: &quot;84cd95cd-c5ee-2095-495a-3f47a9d3476f&quot;,
+      &quot;DateCreated&quot;: &quot;2020-10-15T11:31:00+00:00&quot;,
+      &quot;DateModified&quot;: &quot;2020-10-15T11:31:00+00:00&quot;,
+      &quot;Description&quot;: null,
+      &quot;GroupId&quot;: null,
+      &quot;DeviceId&quot;: &quot;sah_test_device&quot;,
+      &quot;Status&quot;: &quot;open&quot;,
+      &quot;Rule&quot;: {
+        &quot;Id&quot;: &quot;40550ad4-d830-4e69-8ba3-cd0b9ef7eec8&quot;,
+        &quot;Severity&quot;: &quot;Critical&quot;,
+        &quot;Description&quot;: &quot;TestDesc&quot;,
+        &quot;$metadata&quot;: {
+          &quot;$type&quot;: &quot;Rule;1&quot;,
+          &quot;$uri&quot;: &quot;/v1/rules/   40550ad4-d830-4e69-8ba3-cd0b9ef7eec8&quot;
+        }
+      },
+      &quot;$metadata&quot;: {
+        &quot;$type&quot;: &quot;Alarm;1&quot;,
+        &quot;$uri&quot;: &quot;/v1/alarms/    84cd95cd-c5ee-2095-495a-3f47a9d3476f&quot;
+      }
+    }
+</code></pre>
+</li>
+</ul>
+<h3 id="security">Security</h3>
+<p>Type: OpenID Connect</p>
+<p>Flow: implicit</p>
+<p>Authorization URL: <code>https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</code></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/APIs/device-telemetry/Alarms/get-alarm.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Device Telemetry Service REST API | 3M Serenity Documentation </title>
+    <title>Device Telemetry | 3M Serenity Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Device Telemetry Service REST API | 3M Serenity Documentation ">
+    <meta name="title" content="Device Telemetry | 3M Serenity Documentation ">
     <meta name="generator" content="docfx 2.56.4.0">
     
     <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
@@ -69,75 +69,43 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="device-telemetry-service-rest-api">Device Telemetry Service REST API</h1>
+<h1 id="device-telemetry">Device Telemetry</h1>
 
-<p>The Device Telemetry service is used to authenticate and manage users.</p>
-<p>Within each Serenity Instance an interactive Swagger UI is available at the following path <code>https://{platform-url}/telemetry/index.html </code>
-For more information, <a href="../../Swagger.html">click here</a>.</p>
-<h2 id="rest-operation-groups">REST operation groups</h2>
-<p>The Device Telemetry service REST API provides operations for working with the following:</p>
+<p>Device Telemetry service is used to manage Alarms, Rules, AlarmsByRules, Message and Device Files.</p>
+<p>Within each Serenity instance an interactive Swagger UI is available at the following path <code>/auth/index.html</code> for more information, <a href="../../Swagger.html">click here</a></p>
+<h2 id="rest-operation-groups">Rest Operation Groups</h2>
+<p>The Device Telemetry REST API provides operations for working with the following:</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Operation group</th>
-<th style="text-align: left;">Description</th>
+<th>Operation group</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><a href="./Authorize/Index.html">Authorize</a></td>
-<td style="text-align: left;">Log in or out and context operations.</td>
+<td><a href="Alarms/index.html">Alarms</a></td>
+<td>Manage Alarms</td>
 </tr>
 <tr>
-<td style="text-align: left;"><a href="./Configuration/Index.html">Configuration</a></td>
-<td style="text-align: left;"></td>
+<td><a href="AlarmsByRule/index.html">AlarmsByRule</a></td>
+<td>Fetch paginate details of Rules with Alarms count and Alarms for specific rule</td>
 </tr>
 <tr>
-<td style="text-align: left;"><a href="./SystemAdmin/Index.html">SystemAdmin</a></td>
-<td style="text-align: left;"></td>
+<td><a href="DeviceFiles/index.html">DeviceFiles</a></td>
+<td>Fetch device files detail and download device file</td>
 </tr>
 <tr>
-<td style="text-align: left;"><a href="./UserSettings/Index.html">UserSettings</a></td>
-<td style="text-align: left;"></td>
+<td><a href="Messages/index.html">Messages</a></td>
+<td>Manage Messages</td>
 </tr>
 <tr>
-<td style="text-align: left;"><a href="./UserTenant/Index.html">UserTenant</a></td>
-<td style="text-align: left;"></td>
+<td><a href="Rules/index.html">Rules</a></td>
+<td>Manage Rules</td>
 </tr>
 <tr>
-<td style="text-align: left;"><a href="./Status/Index.html">Status</a></td>
-<td style="text-align: left;"></td>
-</tr>
-</tbody>
-</table>
-<h2 id="operations">Operations</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;"></th>
-<th style="text-align: left;"></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><a href="./Alarms/Index.html">Alarms</a></td>
-<td style="text-align: left;"></td>
-</tr>
-<tr>
-<td style="text-align: left;"><a href="./AlarmsByRule/Index.html">AlarmsByRule</a></td>
-<td style="text-align: left;"></td>
-</tr>
-<tr>
-<td style="text-align: left;"><a href="./Messages/Index.html">Messages</a></td>
-<td style="text-align: left;"></td>
-</tr>
-<tr>
-<td style="text-align: left;"><a href="./Rules/Index.html">Rules</a></td>
-<td style="text-align: left;"></td>
-</tr>
-<tr>
-<td style="text-align: left;"><a href="./Status/Index.html">Status</a></td>
-<td style="text-align: left;"></td>
+<td><a href="Status/index.html">Status</a></td>
+<td>Health status operations for the Service</td>
 </tr>
 </tbody>
 </table>

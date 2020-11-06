@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Get messages | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Get messages | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="get-messages">Get messages</h2>
+
+<p>API that fetches list of messages.</p>
+<h3 id="permissions">Permissions</h3>
+<pre><code>ReadAll
+</code></pre>
+<h3 id="http-request">Http Request</h3>
+<pre><code class="lang-HTTP">GET /telemetry/v1/Messages
+</code></pre>
+<h3 id="query-parameters">Query parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Query parameter</th>
+<th>Type</th>
+<th>Example</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>from</td>
+<td>string</td>
+<td>NOW-PT24H</td>
+<td>The start of the time window for the query. ISO8601 format or &quot;NOW-{ISO 8601 duration}&quot;</td>
+</tr>
+<tr>
+<td>to</td>
+<td>string</td>
+<td>NOW</td>
+<td>The end of the time window for the query. ISO8601 format or &quot;NOW-{ISO 8601 duration}&quot;</td>
+</tr>
+<tr>
+<td>order</td>
+<td>string</td>
+<td>desc</td>
+<td>Whether to sort the result from the oldest (asc) or the most recent (desc)</td>
+</tr>
+<tr>
+<td>skip</td>
+<td>int</td>
+<td>0</td>
+<td>How many records to skip, used to paginate through the global list of messages</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>int</td>
+<td>50</td>
+<td>How many records to return, used to paginate through the global list of messages</td>
+</tr>
+<tr>
+<td>devices</td>
+<td>string</td>
+<td>id1,id6,xyz</td>
+<td>A filter used to request messages for specific devices</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-headers">Request headers</h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization</td>
+<td>Bearer {token}. Required.</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-body">Request Body</h3>
+<pre><code>N/A
+</code></pre>
+<h3 id="response-schema">Response Schema</h3>
+<pre><code class="lang-Json">{
+  &quot;items&quot;: [
+    {
+      &quot;deviceId&quot;: &quot;string&quot;,
+      &quot;time&quot;: &quot;string&quot;,
+      &quot;data&quot;: {
+        &quot;additionalProp1&quot;: [
+          null
+        ],
+        &quot;additionalProp2&quot;: [
+          null
+        ],
+        &quot;additionalProp3&quot;: [
+          null
+        ]
+      }
+    }
+  ],
+  &quot;properties&quot;: [
+    &quot;string&quot;
+  ],
+  &quot;metadata&quot;: {
+    &quot;additionalProp1&quot;: &quot;string&quot;,
+    &quot;additionalProp2&quot;: &quot;string&quot;,
+    &quot;additionalProp3&quot;: &quot;string&quot;
+  }
+}
+</code></pre>
+<h3 id="response">Response</h3>
+<ul>
+<li><p>Status Code 200</p>
+<pre><code class="lang-json">  {
+      &quot;Items&quot;: [
+          {
+              &quot;DeviceId&quot;: &quot;Elevator1&quot;,
+              &quot;Time&quot;: &quot;2017-01-14T05:39:45+00:00&quot;,
+              &quot;Data&quot;: {
+                  &quot;current_floor&quot;: 7
+              }
+          }
+      ],
+      &quot;Properties&quot;: [
+          &quot;current_floor&quot;,
+          &quot;temperature&quot;,
+          &quot;t_unit&quot;,
+          &quot;humidity&quot;,
+          &quot;latitude&quot;,
+          &quot;longitude&quot;
+      ],
+      &quot;$metadata&quot;: {
+          &quot;$type&quot;: &quot;MessageList;v1&quot;,
+          &quot;$uri&quot;: &quot;/v1/messages&quot;
+      }
+  }
+</code></pre>
+</li>
+</ul>
+<h3 id="security">Security</h3>
+<p>Type: OpenID Connect</p>
+<p>Flow: implicit</p>
+<p>Authorization URL: <code>https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</code></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/APIs/device-telemetry/Messages/get-messages.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

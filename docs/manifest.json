@@ -581,11 +581,59 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "APIs/device-telemetry/API-device-telemetry-23701--Status.md",
+      "source_relative_path": "APIs/device-telemetry/Alarms/delete-alarm.md",
       "output": {
         ".html": {
-          "relative_path": "APIs/device-telemetry/API-device-telemetry-23701--Status.html",
-          "hash": "reNGBZ1aD0LcyCnpsXd1bw=="
+          "relative_path": "APIs/device-telemetry/Alarms/delete-alarm.html",
+          "hash": "Hh3YChLeHKcnKMUhLKr4Dg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Alarms/delete-alarms.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Alarms/delete-alarms.html",
+          "hash": "wfuqlqr1fPGBJIVBuTk7IA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Alarms/get-alarm.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Alarms/get-alarm.html",
+          "hash": "zWoSVlL9cYOQPmXIbx5EOw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Alarms/get-alarms-alternative.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Alarms/get-alarms-alternative.html",
+          "hash": "N4enXLY+naTnZCZXu1yXTQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Alarms/get-alarms.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Alarms/get-alarms.html",
+          "hash": "Bwj6/F4Jqo5gGzk9uJtKAA=="
         }
       },
       "is_incremental": false,
@@ -597,7 +645,67 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Alarms/index.html",
-          "hash": "mYFbHUQt0ANm9sNHMZWP4A=="
+          "hash": "Mbflz+8Dh3EETXlm6ECdhg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Alarms/update-alarm-status.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Alarms/update-alarm-status.html",
+          "hash": "4IIxCFHqWsMehd/UeeXBgA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/AlarmsByRule/get-alarms-alternative.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/AlarmsByRule/get-alarms-alternative.html",
+          "hash": "Eyqwq3aHVnZ354UX0RIv3Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/AlarmsByRule/get-alarms.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/AlarmsByRule/get-alarms.html",
+          "hash": "GLEGQUK2NE4qHDVTLS+rVw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/AlarmsByRule/get-rules-alternative.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/AlarmsByRule/get-rules-alternative.html",
+          "hash": "jV+dPMQBJQjhHCIbqNztsw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/AlarmsByRule/get-rules.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/AlarmsByRule/get-rules.html",
+          "hash": "C/LOwlMqttuhzS4A3ofaSw=="
         }
       },
       "is_incremental": false,
@@ -609,7 +717,43 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/AlarmsByRule/index.html",
-          "hash": "cvt55HiDJCkN9HO3fQjTKA=="
+          "hash": "ndy+NCnWQ9yaeTFgfBKe0A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/DeviceFiles/download-device-file.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/DeviceFiles/download-device-file.html",
+          "hash": "lcMrI7+N0u908FSdpXDOoA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/DeviceFiles/get-files-uploaded.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/DeviceFiles/get-files-uploaded.html",
+          "hash": "2YDtuINACGC/ZVgA7H1vBA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/DeviceFiles/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/DeviceFiles/index.html",
+          "hash": "JwzXRArJcDY0xxNRPLHpaw=="
         }
       },
       "is_incremental": false,
@@ -624,7 +768,43 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Index.html",
-          "hash": "33UmTqy+cL/xDMzn/vaMBw=="
+          "hash": "KlHTEq8Yu7TE1q1XdXkpJQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Messages/get-messages-alternative.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Messages/get-messages-alternative.html",
+          "hash": "73SHQs+FS7LbvZTI8xLhPQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Messages/get-messages.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Messages/get-messages.html",
+          "hash": "lUdT6q94VIiai8LgbdKGZg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Messages/get-recent-messages.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Messages/get-recent-messages.html",
+          "hash": "e3MDEZncSnMxpT7otdDJZg=="
         }
       },
       "is_incremental": false,
@@ -636,7 +816,55 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Messages/index.html",
-          "hash": "Y5kIswRMgD8V1v1IoMrR/g=="
+          "hash": "87QBAqdHlbaiVqg6AD3Vjw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Rules/create-rule.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Rules/create-rule.html",
+          "hash": "opg0xXnEp1NfA6Rm1Qp8Vw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Rules/delete-rule.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Rules/delete-rule.html",
+          "hash": "s9KktHxp6kw+AbnDc5M30g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Rules/get-rule.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Rules/get-rule.html",
+          "hash": "gkZf18xpyNLwR38Ii7MW7g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Rules/get-rules.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Rules/get-rules.html",
+          "hash": "SSczuUagqRWlCTqNoobqIA=="
         }
       },
       "is_incremental": false,
@@ -648,7 +876,31 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Rules/index.html",
-          "hash": "7csasYug0nCXtXCq3bD6VA=="
+          "hash": "ppsT8BITTSioCwwxklq9gQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Rules/update-rule.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Rules/update-rule.html",
+          "hash": "50SPb2cz60QDbHd3QaWDXQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Status/get-status.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Status/get-status.html",
+          "hash": "RyDshMxff+kUK7o9wBQRPA=="
         }
       },
       "is_incremental": false,
@@ -660,7 +912,19 @@
       "output": {
         ".html": {
           "relative_path": "APIs/device-telemetry/Status/index.html",
-          "hash": "T3qZEB/9HCROroBKVCqIkg=="
+          "hash": "4YUMMfc1dNMBPEz2b4pR9w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/device-telemetry/Status/ping-status.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/device-telemetry/Status/ping-status.html",
+          "hash": "sJcklulgrX/irMLkGkThzQ=="
         }
       },
       "is_incremental": false,
@@ -1260,7 +1524,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/Deployments/index.html",
-          "hash": "lUXDju3Mcqz5ywe8nog2+A=="
+          "hash": "fbyypHw0hROdVBbscQyueg=="
         }
       },
       "is_incremental": false,
@@ -1356,7 +1620,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/Device/index.html",
-          "hash": "zp7NCfsgr+lTzeeSvb1ucg=="
+          "hash": "tC6h+ScKnxYSwb7qQqwe2Q=="
         }
       },
       "is_incremental": false,
@@ -1428,7 +1692,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/DeviceProperties/index.html",
-          "hash": "YMHN6nT4yXdGffDW0FQi9g=="
+          "hash": "lGz+aKVrOEs1kiY2rrec8Q=="
         }
       },
       "is_incremental": false,
@@ -1476,7 +1740,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/Jobs/index.html",
-          "hash": "XCv8M+IYwHNfE3gEbMdLsQ=="
+          "hash": "OumeFiVdpagYQTbgRaWYFQ=="
         }
       },
       "is_incremental": false,
@@ -1512,7 +1776,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/iothub-manager/Modules/index.html",
-          "hash": "98XPiViHs9wdFbVURC2HAQ=="
+          "hash": "cEwxbPBIQG0xdRTSdV2wYA=="
         }
       },
       "is_incremental": false,
@@ -1683,7 +1947,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/storage-adapter/Status/index.html",
-          "hash": "wPHSNKjRqBFmEGfbNfn1nQ=="
+          "hash": "uSwVCqU6oV9q1BfYbhA+AQ=="
         }
       },
       "is_incremental": false,
@@ -1743,7 +2007,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/storage-adapter/Values/index.html",
-          "hash": "ExkTVNx09e+TuacalSr+tg=="
+          "hash": "lkytolx/bAood+OboUKI8w=="
         }
       },
       "is_incremental": false,
@@ -1854,7 +2118,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/Alerting/index.html",
-          "hash": "5sRqI5mC+6k3eMAbN7zOKA=="
+          "hash": "Fwx6quhMPCKa8IB0Xbo61g=="
         }
       },
       "is_incremental": false,
@@ -1914,7 +2178,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/Status/index.html",
-          "hash": "L8ppf2AJc61l88sJ0lIJdg=="
+          "hash": "fUvrst5ZvyH6VDY++SuqYw=="
         }
       },
       "is_incremental": false,
@@ -1986,7 +2250,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/Tenant/index.html",
-          "hash": "jT/Y2alGhgCkiS9dQ0upqw=="
+          "hash": "K/1XBheZ/yNqwkGIqOYjRQ=="
         }
       },
       "is_incremental": false,
@@ -2010,7 +2274,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/TenantReady/index.html",
-          "hash": "2jXWlErdZH2QqxtRNw47rA=="
+          "hash": "SM2RfE0L0sT/W3X6d8+iPw=="
         }
       },
       "is_incremental": false,
@@ -2049,7 +2313,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html",
-          "hash": "nPRYB3tlDZiLgRUe+sgMog=="
+          "hash": "5jEm1TuZvtHsN8mt9kMCaQ=="
         }
       },
       "is_incremental": false,
@@ -2061,7 +2325,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html",
-          "hash": "c49mBP4/eJJJTJYgFYY7uw=="
+          "hash": "v3Y7Fc3nuenrk7PCIit2QA=="
         }
       },
       "is_incremental": false,
@@ -2073,7 +2337,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html",
-          "hash": "uCax2Js/oItP/7ykr3LmRA=="
+          "hash": "HgKc2Ui6G18W4kcCa6Kwmg=="
         }
       },
       "is_incremental": false,
@@ -2085,7 +2349,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.html",
-          "hash": "iElxLbvfTf2J5VSRXLJ6Qg=="
+          "hash": "M1vBJBfrifUsa8Mv1ytjnw=="
         }
       },
       "is_incremental": false,
@@ -2097,19 +2361,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.html",
-          "hash": "6Iui0rwBN89vToWHVsbeyg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "APIs/tenant-manager/object-model/toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "APIs/tenant-manager/object-model/toc.html",
-          "hash": "p0m+wfDvxpgZGLg0YWoHLA=="
+          "hash": "S3619Qd0B/cxqW8KhNHRkA=="
         }
       },
       "is_incremental": false,
@@ -2124,7 +2376,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/toc.html",
-          "hash": "fCnlUfevSnSp7rFghFCTpA=="
+          "hash": "tYE4JVRaanlNHD1M/B2jhA=="
         }
       },
       "is_incremental": false,
@@ -5673,7 +5925,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 212,
+          "total_file_count": 234,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

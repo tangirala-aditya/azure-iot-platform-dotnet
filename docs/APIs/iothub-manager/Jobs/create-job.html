@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Create Job | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Create Job | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="create-job">Create Job</h2>
+
+<p>Create a Job to add tags, modify properties or invoke methods on selected devices.</p>
+<h3 id="permissions">Permissions</h3>
+<p><strong>CreateJobs</strong> permission is required to call this api.</p>
+<h3 id="http-request">Http Request</h3>
+<pre><code class="lang-HTTP">POST /iothubmanager/v1/jobs
+</code></pre>
+<h3 id="request-headers">Request headers</h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization</td>
+<td>Bearer {token}. Required.</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-schema">Request Schema</h3>
+<pre><code class="lang-json">{
+  &quot;jobId&quot;: &quot;string&quot;,
+  &quot;queryCondition&quot;: &quot;string&quot;,
+  &quot;createdTimeUtc&quot;: &quot;2020-10-30T10:21:05.675Z&quot;,
+  &quot;startTimeUtc&quot;: &quot;2020-10-30T10:21:05.675Z&quot;,
+  &quot;endTimeUtc&quot;: &quot;2020-10-30T10:21:05.676Z&quot;,
+  &quot;maxExecutionTimeInSeconds&quot;: 0,
+  &quot;type&quot;: 0,
+  &quot;status&quot;: 0,
+  &quot;methodParameter&quot;: {
+    &quot;name&quot;: &quot;string&quot;,
+    &quot;responseTimeout&quot;: {},
+    &quot;connectionTimeout&quot;: {},
+    &quot;jsonPayload&quot;: &quot;string&quot;
+  },
+  &quot;updateTwin&quot;: {
+    &quot;eTag&quot;: &quot;string&quot;,
+    &quot;deviceId&quot;: &quot;string&quot;,
+    &quot;properties&quot;: {
+      &quot;reported&quot;: {
+        &quot;additionalProp1&quot;: [
+          null
+        ],
+        &quot;additionalProp2&quot;: [
+          null
+        ],
+        &quot;additionalProp3&quot;: [
+          null
+        ]
+      },
+      &quot;desired&quot;: {
+        &quot;additionalProp1&quot;: [
+          null
+        ],
+        &quot;additionalProp2&quot;: [
+          null
+        ],
+        &quot;additionalProp3&quot;: [
+          null
+        ]
+      },
+      &quot;deviceId&quot;: &quot;string&quot;,
+      &quot;moduleId&quot;: &quot;string&quot;
+    },
+    &quot;tags&quot;: {
+      &quot;additionalProp1&quot;: [
+        null
+      ],
+      &quot;additionalProp2&quot;: [
+        null
+      ],
+      &quot;additionalProp3&quot;: [
+        null
+      ]
+    },
+    &quot;isSimulated&quot;: true
+  },
+  &quot;failureReason&quot;: &quot;string&quot;,
+  &quot;statusMessage&quot;: &quot;string&quot;,
+  &quot;resultStatistics&quot;: {
+    &quot;deviceCount&quot;: 0,
+    &quot;failedCount&quot;: 0,
+    &quot;succeededCount&quot;: 0,
+    &quot;runningCount&quot;: 0,
+    &quot;pendingCount&quot;: 0
+  },
+  &quot;devices&quot;: [
+    {
+      &quot;deviceId&quot;: &quot;string&quot;,
+      &quot;status&quot;: 0,
+      &quot;startTimeUtc&quot;: &quot;2020-10-30T10:21:05.676Z&quot;,
+      &quot;endTimeUtc&quot;: &quot;2020-10-30T10:21:05.676Z&quot;,
+      &quot;createdDateTimeUtc&quot;: &quot;2020-10-30T10:21:05.676Z&quot;,
+      &quot;lastUpdatedDateTimeUtc&quot;: &quot;2020-10-30T10:21:05.676Z&quot;,
+      &quot;outcome&quot;: {
+        &quot;status&quot;: 0,
+        &quot;jsonPayload&quot;: &quot;string&quot;
+      },
+      &quot;error&quot;: {
+        &quot;code&quot;: &quot;string&quot;,
+        &quot;description&quot;: &quot;string&quot;
+      }
+    }
+  ]
+}
+</code></pre>
+<h3 id="request-body">Request Body</h3>
+<p>In the request body, supply a JSON representation of <strong>JobApiModel</strong> object.</p>
+<h3 id="response">Response</h3>
+<p>If successful, this method returns <strong>JobApiModel</strong> object in the response body.</p>
+<h3 id="response-schema">Response Schema</h3>
+<pre><code class="lang-json">{
+  &quot;jobId&quot;: &quot;string&quot;,
+  &quot;queryCondition&quot;: &quot;string&quot;,
+  &quot;createdTimeUtc&quot;: &quot;2020-10-30T10:21:05.675Z&quot;,
+  &quot;startTimeUtc&quot;: &quot;2020-10-30T10:21:05.675Z&quot;,
+  &quot;endTimeUtc&quot;: &quot;2020-10-30T10:21:05.676Z&quot;,
+  &quot;maxExecutionTimeInSeconds&quot;: 0,
+  &quot;type&quot;: 0,
+  &quot;status&quot;: 0,
+  &quot;methodParameter&quot;: {
+    &quot;name&quot;: &quot;string&quot;,
+    &quot;responseTimeout&quot;: {},
+    &quot;connectionTimeout&quot;: {},
+    &quot;jsonPayload&quot;: &quot;string&quot;
+  },
+  &quot;updateTwin&quot;: {
+    &quot;eTag&quot;: &quot;string&quot;,
+    &quot;deviceId&quot;: &quot;string&quot;,
+    &quot;properties&quot;: {
+      &quot;reported&quot;: {
+        &quot;additionalProp1&quot;: [
+          null
+        ],
+        &quot;additionalProp2&quot;: [
+          null
+        ],
+        &quot;additionalProp3&quot;: [
+          null
+        ]
+      },
+      &quot;desired&quot;: {
+        &quot;additionalProp1&quot;: [
+          null
+        ],
+        &quot;additionalProp2&quot;: [
+          null
+        ],
+        &quot;additionalProp3&quot;: [
+          null
+        ]
+      },
+      &quot;deviceId&quot;: &quot;string&quot;,
+      &quot;moduleId&quot;: &quot;string&quot;
+    },
+    &quot;tags&quot;: {
+      &quot;additionalProp1&quot;: [
+        null
+      ],
+      &quot;additionalProp2&quot;: [
+        null
+      ],
+      &quot;additionalProp3&quot;: [
+        null
+      ]
+    },
+    &quot;isSimulated&quot;: true
+  },
+  &quot;failureReason&quot;: &quot;string&quot;,
+  &quot;statusMessage&quot;: &quot;string&quot;,
+  &quot;resultStatistics&quot;: {
+    &quot;deviceCount&quot;: 0,
+    &quot;failedCount&quot;: 0,
+    &quot;succeededCount&quot;: 0,
+    &quot;runningCount&quot;: 0,
+    &quot;pendingCount&quot;: 0
+  },
+  &quot;devices&quot;: [
+    {
+      &quot;deviceId&quot;: &quot;string&quot;,
+      &quot;status&quot;: 0,
+      &quot;startTimeUtc&quot;: &quot;2020-10-30T10:21:05.676Z&quot;,
+      &quot;endTimeUtc&quot;: &quot;2020-10-30T10:21:05.676Z&quot;,
+      &quot;createdDateTimeUtc&quot;: &quot;2020-10-30T10:21:05.676Z&quot;,
+      &quot;lastUpdatedDateTimeUtc&quot;: &quot;2020-10-30T10:21:05.676Z&quot;,
+      &quot;outcome&quot;: {
+        &quot;status&quot;: 0,
+        &quot;jsonPayload&quot;: &quot;string&quot;
+      },
+      &quot;error&quot;: {
+        &quot;code&quot;: &quot;string&quot;,
+        &quot;description&quot;: &quot;string&quot;
+      }
+    }
+  ]
+}
+</code></pre>
+<h3 id="sample-response">Sample Response</h3>
+<pre><code class="lang-json">    {
+    &quot;JobId&quot;: &quot;Test-c372b74f-0d92-4b5c-9148-524fbaaf4e58&quot;,
+    &quot;MaxExecutionTimeInSeconds&quot;: 0,
+    &quot;Type&quot;: 4,
+    &quot;Status&quot;: 7
+    }
+</code></pre>
+<h3 id="security">Security</h3>
+<p>Type: OpenID Connect<br>
+Flow: implicit<br>
+Authorization URL: <a href="https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com">https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</a></p>
+<h3 id="examples">Examples</h3>
+<ol>
+<li><p>Job to update tags of a Device.</p>
+<h3 id="http-request-1">Http Request</h3>
+<pre><code class="lang-HTTP">POST /iothubmanager/v1/jobs
+</code></pre>
+<h3 id="requestbody">RequestBody</h3>
+<pre><code class="lang-json">{
+&quot;JobId&quot;: &quot;Test-c372b74f-0d92-4b5c-9148-524fbaaf4e58&quot;,
+&quot;QueryCondition&quot;: &quot;deviceId in ['DemoDevice']&quot;,
+&quot;MaxExecutionTimeInSeconds&quot;: 0,
+&quot;UpdateTwin&quot;: {
+    &quot;Tags&quot;: {
+    &quot;TestTag&quot;: &quot;Test&quot;
+    }
+}
+}
+</code></pre>
+<h3 id="response-1">Response</h3>
+<pre><code class="lang-json">{
+&quot;JobId&quot;: &quot;Test-c372b74f-0d92-4b5c-9148-524fbaaf4e58&quot;,
+&quot;MaxExecutionTimeInSeconds&quot;: 0,
+&quot;Type&quot;: 4,
+&quot;Status&quot;: 7
+}
+</code></pre>
+</li>
+<li><p>Job to execute direct on devices.</p>
+<h3 id="request">Request</h3>
+<pre><code class="lang-json">{
+&quot;JobId&quot;: &quot;Test-c372b74f-0d92-4b5c-9148-524fbaaf4e58&quot;,
+&quot;QueryCondition&quot;: &quot;deviceId in ['DemoDevice']&quot;,
+&quot;MaxExecutionTimeInSeconds&quot;: 0,
+&quot;MethodParameter&quot;: {
+    &quot;Name&quot;:&quot;methodName1&quot;,
+    &quot;JsonPayload&quot;:&quot;{TestPayLoad}&quot;
+}
+}
+</code></pre>
+<h3 id="response-2">Response</h3>
+<pre><code class="lang-json">{
+&quot;JobId&quot;: &quot;Test-c372b74f-0d92-4b5c-9148-524fbaaf4e58&quot;,
+&quot;MaxExecutionTimeInSeconds&quot;: 0,
+&quot;Type&quot;: 3,
+&quot;Status&quot;: 7
+}
+</code></pre>
+</li>
+</ol>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/APIs/iothub-manager/Jobs/create-job.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

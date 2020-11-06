@@ -1817,329 +1817,329 @@ references:
   nameWithType: UserTenantController.UserClaimsPutAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers
   name: Mmm.Iot.IoTHubManager.WebService.Controllers
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.html
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.html
   commentId: N:Mmm.Iot.IoTHubManager.WebService.Controllers
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers
   nameWithType: Mmm.Iot.IoTHubManager.WebService.Controllers
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController
   name: DeploymentsController
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html
   commentId: T:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController
   nameWithType: DeploymentsController
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.#ctor(IDeployments)
   name: DeploymentsController(IDeployments)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController__ctor_IDeployments_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController__ctor_IDeployments_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.#ctor(IDeployments)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.DeploymentsController(IDeployments)
   nameWithType: DeploymentsController.DeploymentsController(IDeployments)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.#ctor*
   name: DeploymentsController
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController__ctor_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController__ctor_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.DeploymentsController
   nameWithType: DeploymentsController.DeploymentsController
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.DeleteAsync(System.String,System.Boolean)
   name: DeleteAsync(String, Boolean)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_DeleteAsync_System_String_System_Boolean_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_DeleteAsync_System_String_System_Boolean_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.DeleteAsync(System.String,System.Boolean)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.DeleteAsync(System.String, System.Boolean)
   nameWithType: DeploymentsController.DeleteAsync(String, Boolean)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.DeleteAsync*
   name: DeleteAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_DeleteAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_DeleteAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.DeleteAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.DeleteAsync
   nameWithType: DeploymentsController.DeleteAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.ExportDeploymentReport(System.String,System.Boolean)
   name: ExportDeploymentReport(String, Boolean)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_ExportDeploymentReport_System_String_System_Boolean_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_ExportDeploymentReport_System_String_System_Boolean_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.ExportDeploymentReport(System.String,System.Boolean)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.ExportDeploymentReport(System.String, System.Boolean)
   nameWithType: DeploymentsController.ExportDeploymentReport(String, Boolean)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.ExportDeploymentReport*
   name: ExportDeploymentReport
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_ExportDeploymentReport_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_ExportDeploymentReport_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.ExportDeploymentReport
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.ExportDeploymentReport
   nameWithType: DeploymentsController.ExportDeploymentReport
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetAsync
   name: GetAsync()
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetAsync
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetAsync
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetAsync
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetAsync()
   nameWithType: DeploymentsController.GetAsync()
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetAsync(System.String,System.Boolean,System.Boolean)
   name: GetAsync(String, Boolean, Boolean)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetAsync_System_String_System_Boolean_System_Boolean_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetAsync_System_String_System_Boolean_System_Boolean_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetAsync(System.String,System.Boolean,System.Boolean)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetAsync(System.String, System.Boolean, System.Boolean)
   nameWithType: DeploymentsController.GetAsync(String, Boolean, Boolean)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetAsync*
   name: GetAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetAsync
   nameWithType: DeploymentsController.GetAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetDeploymentImpactedDevices(System.String,System.String,System.Boolean)
   name: GetDeploymentImpactedDevices(String, String, Boolean)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetDeploymentImpactedDevices_System_String_System_String_System_Boolean_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetDeploymentImpactedDevices_System_String_System_String_System_Boolean_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetDeploymentImpactedDevices(System.String,System.String,System.Boolean)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetDeploymentImpactedDevices(System.String, System.String, System.Boolean)
   nameWithType: DeploymentsController.GetDeploymentImpactedDevices(String, String, Boolean)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetDeploymentImpactedDevices*
   name: GetDeploymentImpactedDevices
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetDeploymentImpactedDevices_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetDeploymentImpactedDevices_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetDeploymentImpactedDevices
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetDeploymentImpactedDevices
   nameWithType: DeploymentsController.GetDeploymentImpactedDevices
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetDeploymentImpactedEdgeModules(System.String,System.String,System.Boolean)
   name: GetDeploymentImpactedEdgeModules(String, String, Boolean)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetDeploymentImpactedEdgeModules_System_String_System_String_System_Boolean_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetDeploymentImpactedEdgeModules_System_String_System_String_System_Boolean_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetDeploymentImpactedEdgeModules(System.String,System.String,System.Boolean)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetDeploymentImpactedEdgeModules(System.String, System.String, System.Boolean)
   nameWithType: DeploymentsController.GetDeploymentImpactedEdgeModules(String, String, Boolean)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetDeploymentImpactedEdgeModules*
   name: GetDeploymentImpactedEdgeModules
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetDeploymentImpactedEdgeModules_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_GetDeploymentImpactedEdgeModules_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetDeploymentImpactedEdgeModules
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.GetDeploymentImpactedEdgeModules
   nameWithType: DeploymentsController.GetDeploymentImpactedEdgeModules
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.PostAsync(DeploymentApiModel)
   name: PostAsync(DeploymentApiModel)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_PostAsync_DeploymentApiModel_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_PostAsync_DeploymentApiModel_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.PostAsync(DeploymentApiModel)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.PostAsync(DeploymentApiModel)
   nameWithType: DeploymentsController.PostAsync(DeploymentApiModel)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.PostAsync*
   name: PostAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_PostAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_PostAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.PostAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.PostAsync
   nameWithType: DeploymentsController.PostAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.ReactivateAsync(System.String)
   name: ReactivateAsync(String)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_ReactivateAsync_System_String_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_ReactivateAsync_System_String_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.ReactivateAsync(System.String)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.ReactivateAsync(System.String)
   nameWithType: DeploymentsController.ReactivateAsync(String)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.ReactivateAsync*
   name: ReactivateAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_ReactivateAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DeploymentsController_ReactivateAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.ReactivateAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DeploymentsController.ReactivateAsync
   nameWithType: DeploymentsController.ReactivateAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController
   name: DevicePropertiesController
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.html
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.html
   commentId: T:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController
   nameWithType: DevicePropertiesController
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.#ctor(IDeviceProperties)
   name: DevicePropertiesController(IDeviceProperties)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicePropertiesController__ctor_IDeviceProperties_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicePropertiesController__ctor_IDeviceProperties_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.#ctor(IDeviceProperties)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.DevicePropertiesController(IDeviceProperties)
   nameWithType: DevicePropertiesController.DevicePropertiesController(IDeviceProperties)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.#ctor*
   name: DevicePropertiesController
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicePropertiesController__ctor_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicePropertiesController__ctor_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.DevicePropertiesController
   nameWithType: DevicePropertiesController.DevicePropertiesController
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.GetAsync
   name: GetAsync()
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicePropertiesController_GetAsync
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicePropertiesController_GetAsync
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.GetAsync
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.GetAsync()
   nameWithType: DevicePropertiesController.GetAsync()
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.GetAsync*
   name: GetAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicePropertiesController_GetAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicePropertiesController_GetAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicePropertiesController.GetAsync
   nameWithType: DevicePropertiesController.GetAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController
   name: DevicesController
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html
   commentId: T:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController
   nameWithType: DevicesController
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.#ctor(IDevices,IDeviceService,IDeviceProperties)
   name: DevicesController(IDevices, IDeviceService, IDeviceProperties)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController__ctor_IDevices_IDeviceService_IDeviceProperties_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController__ctor_IDevices_IDeviceService_IDeviceProperties_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.#ctor(IDevices,IDeviceService,IDeviceProperties)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.DevicesController(IDevices, IDeviceService, IDeviceProperties)
   nameWithType: DevicesController.DevicesController(IDevices, IDeviceService, IDeviceProperties)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.#ctor*
   name: DevicesController
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController__ctor_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController__ctor_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.DevicesController
   nameWithType: DevicesController.DevicesController
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.DeleteAsync(System.String)
   name: DeleteAsync(String)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_DeleteAsync_System_String_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_DeleteAsync_System_String_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.DeleteAsync(System.String)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.DeleteAsync(System.String)
   nameWithType: DevicesController.DeleteAsync(String)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.DeleteAsync*
   name: DeleteAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_DeleteAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_DeleteAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.DeleteAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.DeleteAsync
   nameWithType: DevicesController.DeleteAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceAsync(System.String)
   name: GetDeviceAsync(String)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDeviceAsync_System_String_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDeviceAsync_System_String_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceAsync(System.String)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceAsync(System.String)
   nameWithType: DevicesController.GetDeviceAsync(String)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceAsync*
   name: GetDeviceAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDeviceAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDeviceAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceAsync
   nameWithType: DevicesController.GetDeviceAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceDeploymentAsync(System.String)
   name: GetDeviceDeploymentAsync(String)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDeviceDeploymentAsync_System_String_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDeviceDeploymentAsync_System_String_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceDeploymentAsync(System.String)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceDeploymentAsync(System.String)
   nameWithType: DevicesController.GetDeviceDeploymentAsync(String)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceDeploymentAsync*
   name: GetDeviceDeploymentAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDeviceDeploymentAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDeviceDeploymentAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceDeploymentAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceDeploymentAsync
   nameWithType: DevicesController.GetDeviceDeploymentAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceFilesAsync(System.String)
   name: GetDeviceFilesAsync(String)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDeviceFilesAsync_System_String_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDeviceFilesAsync_System_String_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceFilesAsync(System.String)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceFilesAsync(System.String)
   nameWithType: DevicesController.GetDeviceFilesAsync(String)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceFilesAsync*
   name: GetDeviceFilesAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDeviceFilesAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDeviceFilesAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceFilesAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDeviceFilesAsync
   nameWithType: DevicesController.GetDeviceFilesAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDevicesAsync(System.String)
   name: GetDevicesAsync(String)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDevicesAsync_System_String_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDevicesAsync_System_String_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDevicesAsync(System.String)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDevicesAsync(System.String)
   nameWithType: DevicesController.GetDevicesAsync(String)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDevicesAsync*
   name: GetDevicesAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDevicesAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_GetDevicesAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDevicesAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.GetDevicesAsync
   nameWithType: DevicesController.GetDevicesAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.InvokeDeviceMethodAsync(System.String,MethodParameterApiModel)
   name: InvokeDeviceMethodAsync(String, MethodParameterApiModel)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_InvokeDeviceMethodAsync_System_String_MethodParameterApiModel_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_InvokeDeviceMethodAsync_System_String_MethodParameterApiModel_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.InvokeDeviceMethodAsync(System.String,MethodParameterApiModel)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.InvokeDeviceMethodAsync(System.String, MethodParameterApiModel)
   nameWithType: DevicesController.InvokeDeviceMethodAsync(String, MethodParameterApiModel)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.InvokeDeviceMethodAsync*
   name: InvokeDeviceMethodAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_InvokeDeviceMethodAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_InvokeDeviceMethodAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.InvokeDeviceMethodAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.InvokeDeviceMethodAsync
   nameWithType: DevicesController.InvokeDeviceMethodAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.PostAsync(DeviceRegistryApiModel)
   name: PostAsync(DeviceRegistryApiModel)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_PostAsync_DeviceRegistryApiModel_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_PostAsync_DeviceRegistryApiModel_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.PostAsync(DeviceRegistryApiModel)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.PostAsync(DeviceRegistryApiModel)
   nameWithType: DevicesController.PostAsync(DeviceRegistryApiModel)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.PostAsync*
   name: PostAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_PostAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_PostAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.PostAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.PostAsync
   nameWithType: DevicesController.PostAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.PutAsync(System.String,DeviceRegistryApiModel)
   name: PutAsync(String, DeviceRegistryApiModel)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_PutAsync_System_String_DeviceRegistryApiModel_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_PutAsync_System_String_DeviceRegistryApiModel_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.PutAsync(System.String,DeviceRegistryApiModel)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.PutAsync(System.String, DeviceRegistryApiModel)
   nameWithType: DevicesController.PutAsync(String, DeviceRegistryApiModel)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.PutAsync*
   name: PutAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_PutAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_PutAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.PutAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.PutAsync
   nameWithType: DevicesController.PutAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.QueryDevicesAsync(System.String)
   name: QueryDevicesAsync(String)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_QueryDevicesAsync_System_String_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_QueryDevicesAsync_System_String_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.QueryDevicesAsync(System.String)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.QueryDevicesAsync(System.String)
   nameWithType: DevicesController.QueryDevicesAsync(String)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.QueryDevicesAsync*
   name: QueryDevicesAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_QueryDevicesAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_QueryDevicesAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.QueryDevicesAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.QueryDevicesAsync
   nameWithType: DevicesController.QueryDevicesAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.SendCloudToDeviceAsync(System.String,System.String)
   name: SendCloudToDeviceAsync(String, String)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_SendCloudToDeviceAsync_System_String_System_String_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_SendCloudToDeviceAsync_System_String_System_String_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.SendCloudToDeviceAsync(System.String,System.String)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.SendCloudToDeviceAsync(System.String, System.String)
   nameWithType: DevicesController.SendCloudToDeviceAsync(String, String)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.SendCloudToDeviceAsync*
   name: SendCloudToDeviceAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_SendCloudToDeviceAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_DevicesController_SendCloudToDeviceAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.SendCloudToDeviceAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.DevicesController.SendCloudToDeviceAsync
   nameWithType: DevicesController.SendCloudToDeviceAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController
   name: JobsController
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html
   commentId: T:Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController
   nameWithType: JobsController
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.#ctor(IJobs)
   name: JobsController(IJobs)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController__ctor_IJobs_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController__ctor_IJobs_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.#ctor(IJobs)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.JobsController(IJobs)
   nameWithType: JobsController.JobsController(IJobs)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.#ctor*
   name: JobsController
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController__ctor_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController__ctor_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.JobsController
   nameWithType: JobsController.JobsController
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.GetAsync(System.Nullable{JobType},System.Nullable{JobStatus},System.Nullable{System.Int32},System.String,System.String)
   name: GetAsync(Nullable<JobType>, Nullable<JobStatus>, Nullable<Int32>, String, String)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController_GetAsync_System_Nullable_JobType__System_Nullable_JobStatus__System_Nullable_System_Int32__System_String_System_String_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController_GetAsync_System_Nullable_JobType__System_Nullable_JobStatus__System_Nullable_System_Int32__System_String_System_String_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.GetAsync(System.Nullable{JobType},System.Nullable{JobStatus},System.Nullable{System.Int32},System.String,System.String)
   name.vb: GetAsync(Nullable(Of JobType), Nullable(Of JobStatus), Nullable(Of Int32), String, String)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.GetAsync(System.Nullable<JobType>, System.Nullable<JobStatus>, System.Nullable<System.Int32>, System.String, System.String)
@@ -2148,14 +2148,14 @@ references:
   nameWithType.vb: JobsController.GetAsync(Nullable(Of JobType), Nullable(Of JobStatus), Nullable(Of Int32), String, String)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.GetAsync*
   name: GetAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController_GetAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController_GetAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.GetAsync
   nameWithType: JobsController.GetAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.GetJobAsync(System.String,System.Nullable{System.Boolean},System.Nullable{DeviceJobStatus})
   name: GetJobAsync(String, Nullable<Boolean>, Nullable<DeviceJobStatus>)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController_GetJobAsync_System_String_System_Nullable_System_Boolean__System_Nullable_DeviceJobStatus__
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController_GetJobAsync_System_String_System_Nullable_System_Boolean__System_Nullable_DeviceJobStatus__
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.GetJobAsync(System.String,System.Nullable{System.Boolean},System.Nullable{DeviceJobStatus})
   name.vb: GetJobAsync(String, Nullable(Of Boolean), Nullable(Of DeviceJobStatus))
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.GetJobAsync(System.String, System.Nullable<System.Boolean>, System.Nullable<DeviceJobStatus>)
@@ -2164,187 +2164,187 @@ references:
   nameWithType.vb: JobsController.GetJobAsync(String, Nullable(Of Boolean), Nullable(Of DeviceJobStatus))
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.GetJobAsync*
   name: GetJobAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController_GetJobAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController_GetJobAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.GetJobAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.GetJobAsync
   nameWithType: JobsController.GetJobAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.ScheduleAsync(JobApiModel)
   name: ScheduleAsync(JobApiModel)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController_ScheduleAsync_JobApiModel_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController_ScheduleAsync_JobApiModel_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.ScheduleAsync(JobApiModel)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.ScheduleAsync(JobApiModel)
   nameWithType: JobsController.ScheduleAsync(JobApiModel)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.ScheduleAsync*
   name: ScheduleAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController_ScheduleAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_JobsController_ScheduleAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.ScheduleAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.JobsController.ScheduleAsync
   nameWithType: JobsController.ScheduleAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController
   name: ModulesController
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html
   commentId: T:Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController
   nameWithType: ModulesController
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.#ctor(IDevices)
   name: ModulesController(IDevices)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController__ctor_IDevices_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController__ctor_IDevices_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.#ctor(IDevices)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.ModulesController(IDevices)
   nameWithType: ModulesController.ModulesController(IDevices)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.#ctor*
   name: ModulesController
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController__ctor_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController__ctor_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.ModulesController
   nameWithType: ModulesController.ModulesController
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.GetModuleTwinAsync(System.String,System.String)
   name: GetModuleTwinAsync(String, String)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController_GetModuleTwinAsync_System_String_System_String_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController_GetModuleTwinAsync_System_String_System_String_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.GetModuleTwinAsync(System.String,System.String)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.GetModuleTwinAsync(System.String, System.String)
   nameWithType: ModulesController.GetModuleTwinAsync(String, String)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.GetModuleTwinAsync*
   name: GetModuleTwinAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController_GetModuleTwinAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController_GetModuleTwinAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.GetModuleTwinAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.GetModuleTwinAsync
   nameWithType: ModulesController.GetModuleTwinAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.GetModuleTwinsAsync(System.String)
   name: GetModuleTwinsAsync(String)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController_GetModuleTwinsAsync_System_String_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController_GetModuleTwinsAsync_System_String_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.GetModuleTwinsAsync(System.String)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.GetModuleTwinsAsync(System.String)
   nameWithType: ModulesController.GetModuleTwinsAsync(String)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.GetModuleTwinsAsync*
   name: GetModuleTwinsAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController_GetModuleTwinsAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController_GetModuleTwinsAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.GetModuleTwinsAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.GetModuleTwinsAsync
   nameWithType: ModulesController.GetModuleTwinsAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.QueryModuleTwinsAsync(System.String)
   name: QueryModuleTwinsAsync(String)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController_QueryModuleTwinsAsync_System_String_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController_QueryModuleTwinsAsync_System_String_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.QueryModuleTwinsAsync(System.String)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.QueryModuleTwinsAsync(System.String)
   nameWithType: ModulesController.QueryModuleTwinsAsync(String)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.QueryModuleTwinsAsync*
   name: QueryModuleTwinsAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController_QueryModuleTwinsAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_ModulesController_QueryModuleTwinsAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.QueryModuleTwinsAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.ModulesController.QueryModuleTwinsAsync
   nameWithType: ModulesController.QueryModuleTwinsAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController
   name: StatusController
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html
   commentId: T:Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController
   nameWithType: StatusController
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.#ctor(IStatusService)
   name: StatusController(IStatusService)
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_StatusController__ctor_IStatusService_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_StatusController__ctor_IStatusService_
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.#ctor(IStatusService)
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.StatusController(IStatusService)
   nameWithType: StatusController.StatusController(IStatusService)
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.#ctor*
   name: StatusController
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_StatusController__ctor_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_StatusController__ctor_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.StatusController
   nameWithType: StatusController.StatusController
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.GetAsync
   name: GetAsync()
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_StatusController_GetAsync
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_StatusController_GetAsync
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.GetAsync
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.GetAsync()
   nameWithType: StatusController.GetAsync()
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.GetAsync*
   name: GetAsync
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_StatusController_GetAsync_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_StatusController_GetAsync_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.GetAsync
   nameWithType: StatusController.GetAsync
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.Ping
   name: Ping()
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_StatusController_Ping
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_StatusController_Ping
   commentId: M:Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.Ping
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.Ping()
   nameWithType: StatusController.Ping()
 - uid: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.Ping*
   name: Ping
-  href: APIs/iothub-manager/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_StatusController_Ping_
+  href: APIs/iothub-manager/object-model/Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.html#Mmm_Iot_IoTHubManager_WebService_Controllers_StatusController_Ping_
   commentId: Overload:Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.Ping
   isSpec: "True"
   fullName: Mmm.Iot.IoTHubManager.WebService.Controllers.StatusController.Ping
   nameWithType: StatusController.Ping
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers
   name: Mmm.Iot.StorageAdapter.WebService.Controllers
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.html
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.html
   commentId: N:Mmm.Iot.StorageAdapter.WebService.Controllers
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers
   nameWithType: Mmm.Iot.StorageAdapter.WebService.Controllers
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController
   name: StatusController
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html
   commentId: T:Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController
   nameWithType: StatusController
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.#ctor(IStatusService)
   name: StatusController(IStatusService)
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_StatusController__ctor_IStatusService_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_StatusController__ctor_IStatusService_
   commentId: M:Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.#ctor(IStatusService)
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.StatusController(IStatusService)
   nameWithType: StatusController.StatusController(IStatusService)
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.#ctor*
   name: StatusController
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_StatusController__ctor_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_StatusController__ctor_
   commentId: Overload:Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.StatusController
   nameWithType: StatusController.StatusController
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.GetAsync
   name: GetAsync()
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_StatusController_GetAsync
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_StatusController_GetAsync
   commentId: M:Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.GetAsync
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.GetAsync()
   nameWithType: StatusController.GetAsync()
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.GetAsync*
   name: GetAsync
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_StatusController_GetAsync_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_StatusController_GetAsync_
   commentId: Overload:Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.GetAsync
   nameWithType: StatusController.GetAsync
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.Ping
   name: Ping()
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_StatusController_Ping
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_StatusController_Ping
   commentId: M:Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.Ping
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.Ping()
   nameWithType: StatusController.Ping()
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.Ping*
   name: Ping
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_StatusController_Ping_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_StatusController_Ping_
   commentId: Overload:Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.Ping
   isSpec: "True"
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.StatusController.Ping
   nameWithType: StatusController.Ping
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController
   name: ValuesController
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html
   commentId: T:Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController
   nameWithType: ValuesController
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.#ctor(IKeyValueContainer,IKeyGenerator,ILogger{Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController})
   name: ValuesController(IKeyValueContainer, IKeyGenerator, ILogger<ValuesController>)
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController__ctor_IKeyValueContainer_IKeyGenerator_ILogger_Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController__
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController__ctor_IKeyValueContainer_IKeyGenerator_ILogger_Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController__
   commentId: M:Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.#ctor(IKeyValueContainer,IKeyGenerator,ILogger{Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController})
   name.vb: ValuesController(IKeyValueContainer, IKeyGenerator, ILogger(Of ValuesController))
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.ValuesController(IKeyValueContainer, IKeyGenerator, ILogger<Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController>)
@@ -2353,84 +2353,84 @@ references:
   nameWithType.vb: ValuesController.ValuesController(IKeyValueContainer, IKeyGenerator, ILogger(Of ValuesController))
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.#ctor*
   name: ValuesController
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController__ctor_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController__ctor_
   commentId: Overload:Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.ValuesController
   nameWithType: ValuesController.ValuesController
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Delete(System.String,System.String)
   name: Delete(String, String)
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Delete_System_String_System_String_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Delete_System_String_System_String_
   commentId: M:Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Delete(System.String,System.String)
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Delete(System.String, System.String)
   nameWithType: ValuesController.Delete(String, String)
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Delete*
   name: Delete
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Delete_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Delete_
   commentId: Overload:Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Delete
   isSpec: "True"
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Delete
   nameWithType: ValuesController.Delete
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Get(System.String)
   name: Get(String)
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Get_System_String_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Get_System_String_
   commentId: M:Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Get(System.String)
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Get(System.String)
   nameWithType: ValuesController.Get(String)
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Get(System.String,System.String)
   name: Get(String, String)
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Get_System_String_System_String_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Get_System_String_System_String_
   commentId: M:Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Get(System.String,System.String)
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Get(System.String, System.String)
   nameWithType: ValuesController.Get(String, String)
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Get*
   name: Get
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Get_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Get_
   commentId: Overload:Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Get
   isSpec: "True"
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Get
   nameWithType: ValuesController.Get
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Post(System.String,ValueServiceModel)
   name: Post(String, ValueServiceModel)
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Post_System_String_ValueServiceModel_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Post_System_String_ValueServiceModel_
   commentId: M:Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Post(System.String,ValueServiceModel)
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Post(System.String, ValueServiceModel)
   nameWithType: ValuesController.Post(String, ValueServiceModel)
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Post*
   name: Post
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Post_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Post_
   commentId: Overload:Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Post
   isSpec: "True"
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Post
   nameWithType: ValuesController.Post
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Put(System.String,System.String,ValueServiceModel)
   name: Put(String, String, ValueServiceModel)
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Put_System_String_System_String_ValueServiceModel_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Put_System_String_System_String_ValueServiceModel_
   commentId: M:Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Put(System.String,System.String,ValueServiceModel)
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Put(System.String, System.String, ValueServiceModel)
   nameWithType: ValuesController.Put(String, String, ValueServiceModel)
 - uid: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Put*
   name: Put
-  href: APIs/storage-adapter/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Put_
+  href: APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.html#Mmm_Iot_StorageAdapter_WebService_Controllers_ValuesController_Put_
   commentId: Overload:Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Put
   isSpec: "True"
   fullName: Mmm.Iot.StorageAdapter.WebService.Controllers.ValuesController.Put
   nameWithType: ValuesController.Put
 - uid: Mmm.Iot.TenantManager.WebService.Controllers
   name: Mmm.Iot.TenantManager.WebService.Controllers
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.html
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.html
   commentId: N:Mmm.Iot.TenantManager.WebService.Controllers
   fullName: Mmm.Iot.TenantManager.WebService.Controllers
   nameWithType: Mmm.Iot.TenantManager.WebService.Controllers
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController
   name: AlertingController
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html
   commentId: T:Mmm.Iot.TenantManager.WebService.Controllers.AlertingController
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController
   nameWithType: AlertingController
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.#ctor(IAlertingContainer,ILogger{Mmm.Iot.TenantManager.WebService.Controllers.AlertingController})
   name: AlertingController(IAlertingContainer, ILogger<AlertingController>)
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController__ctor_IAlertingContainer_ILogger_Mmm_Iot_TenantManager_WebService_Controllers_AlertingController__
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController__ctor_IAlertingContainer_ILogger_Mmm_Iot_TenantManager_WebService_Controllers_AlertingController__
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.#ctor(IAlertingContainer,ILogger{Mmm.Iot.TenantManager.WebService.Controllers.AlertingController})
   name.vb: AlertingController(IAlertingContainer, ILogger(Of AlertingController))
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.AlertingController(IAlertingContainer, ILogger<Mmm.Iot.TenantManager.WebService.Controllers.AlertingController>)
@@ -2439,130 +2439,130 @@ references:
   nameWithType.vb: AlertingController.AlertingController(IAlertingContainer, ILogger(Of AlertingController))
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.#ctor*
   name: AlertingController
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController__ctor_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController__ctor_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.AlertingController
   nameWithType: AlertingController.AlertingController
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.AddAlertingAsync
   name: AddAlertingAsync()
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_AddAlertingAsync
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_AddAlertingAsync
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.AddAlertingAsync
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.AddAlertingAsync()
   nameWithType: AlertingController.AddAlertingAsync()
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.AddAlertingAsync*
   name: AddAlertingAsync
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_AddAlertingAsync_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_AddAlertingAsync_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.AddAlertingAsync
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.AddAlertingAsync
   nameWithType: AlertingController.AddAlertingAsync
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.GetAlertingAsync(System.Boolean)
   name: GetAlertingAsync(Boolean)
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_GetAlertingAsync_System_Boolean_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_GetAlertingAsync_System_Boolean_
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.GetAlertingAsync(System.Boolean)
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.GetAlertingAsync(System.Boolean)
   nameWithType: AlertingController.GetAlertingAsync(Boolean)
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.GetAlertingAsync*
   name: GetAlertingAsync
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_GetAlertingAsync_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_GetAlertingAsync_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.GetAlertingAsync
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.GetAlertingAsync
   nameWithType: AlertingController.GetAlertingAsync
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.RemoveAlertingAsync
   name: RemoveAlertingAsync()
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_RemoveAlertingAsync
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_RemoveAlertingAsync
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.RemoveAlertingAsync
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.RemoveAlertingAsync()
   nameWithType: AlertingController.RemoveAlertingAsync()
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.RemoveAlertingAsync*
   name: RemoveAlertingAsync
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_RemoveAlertingAsync_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_RemoveAlertingAsync_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.RemoveAlertingAsync
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.RemoveAlertingAsync
   nameWithType: AlertingController.RemoveAlertingAsync
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.StartAsync
   name: StartAsync()
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_StartAsync
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_StartAsync
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.StartAsync
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.StartAsync()
   nameWithType: AlertingController.StartAsync()
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.StartAsync*
   name: StartAsync
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_StartAsync_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_StartAsync_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.StartAsync
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.StartAsync
   nameWithType: AlertingController.StartAsync
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.StopAsync
   name: StopAsync()
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_StopAsync
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_StopAsync
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.StopAsync
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.StopAsync()
   nameWithType: AlertingController.StopAsync()
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.StopAsync*
   name: StopAsync
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_StopAsync_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html#Mmm_Iot_TenantManager_WebService_Controllers_AlertingController_StopAsync_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.StopAsync
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.StopAsync
   nameWithType: AlertingController.StopAsync
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.StatusController
   name: StatusController
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html
   commentId: T:Mmm.Iot.TenantManager.WebService.Controllers.StatusController
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.StatusController
   nameWithType: StatusController
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.StatusController.#ctor(IStatusService)
   name: StatusController(IStatusService)
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html#Mmm_Iot_TenantManager_WebService_Controllers_StatusController__ctor_IStatusService_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html#Mmm_Iot_TenantManager_WebService_Controllers_StatusController__ctor_IStatusService_
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.StatusController.#ctor(IStatusService)
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.StatusController.StatusController(IStatusService)
   nameWithType: StatusController.StatusController(IStatusService)
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.StatusController.#ctor*
   name: StatusController
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html#Mmm_Iot_TenantManager_WebService_Controllers_StatusController__ctor_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html#Mmm_Iot_TenantManager_WebService_Controllers_StatusController__ctor_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.StatusController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.StatusController.StatusController
   nameWithType: StatusController.StatusController
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.StatusController.GetAsync
   name: GetAsync()
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html#Mmm_Iot_TenantManager_WebService_Controllers_StatusController_GetAsync
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html#Mmm_Iot_TenantManager_WebService_Controllers_StatusController_GetAsync
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.StatusController.GetAsync
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.StatusController.GetAsync()
   nameWithType: StatusController.GetAsync()
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.StatusController.GetAsync*
   name: GetAsync
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html#Mmm_Iot_TenantManager_WebService_Controllers_StatusController_GetAsync_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html#Mmm_Iot_TenantManager_WebService_Controllers_StatusController_GetAsync_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.StatusController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.StatusController.GetAsync
   nameWithType: StatusController.GetAsync
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.StatusController.Ping
   name: Ping()
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html#Mmm_Iot_TenantManager_WebService_Controllers_StatusController_Ping
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html#Mmm_Iot_TenantManager_WebService_Controllers_StatusController_Ping
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.StatusController.Ping
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.StatusController.Ping()
   nameWithType: StatusController.Ping()
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.StatusController.Ping*
   name: Ping
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html#Mmm_Iot_TenantManager_WebService_Controllers_StatusController_Ping_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.StatusController.html#Mmm_Iot_TenantManager_WebService_Controllers_StatusController_Ping_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.StatusController.Ping
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.StatusController.Ping
   nameWithType: StatusController.Ping
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantController
   name: TenantController
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html
   commentId: T:Mmm.Iot.TenantManager.WebService.Controllers.TenantController
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantController
   nameWithType: TenantController
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.#ctor(ITenantContainer,ILogger{Mmm.Iot.TenantManager.WebService.Controllers.TenantController})
   name: TenantController(ITenantContainer, ILogger<TenantController>)
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController__ctor_ITenantContainer_ILogger_Mmm_Iot_TenantManager_WebService_Controllers_TenantController__
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController__ctor_ITenantContainer_ILogger_Mmm_Iot_TenantManager_WebService_Controllers_TenantController__
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.TenantController.#ctor(ITenantContainer,ILogger{Mmm.Iot.TenantManager.WebService.Controllers.TenantController})
   name.vb: TenantController(ITenantContainer, ILogger(Of TenantController))
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.TenantController(ITenantContainer, ILogger<Mmm.Iot.TenantManager.WebService.Controllers.TenantController>)
@@ -2571,85 +2571,85 @@ references:
   nameWithType.vb: TenantController.TenantController(ITenantContainer, ILogger(Of TenantController))
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.#ctor*
   name: TenantController
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController__ctor_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController__ctor_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.TenantController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.TenantController
   nameWithType: TenantController.TenantController
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.DeleteAsync(System.Boolean)
   name: DeleteAsync(Boolean)
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_DeleteAsync_System_Boolean_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_DeleteAsync_System_Boolean_
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.TenantController.DeleteAsync(System.Boolean)
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.DeleteAsync(System.Boolean)
   nameWithType: TenantController.DeleteAsync(Boolean)
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.DeleteAsync*
   name: DeleteAsync
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_DeleteAsync_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_DeleteAsync_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.TenantController.DeleteAsync
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.DeleteAsync
   nameWithType: TenantController.DeleteAsync
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.GetAsync
   name: GetAsync()
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_GetAsync
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_GetAsync
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.TenantController.GetAsync
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.GetAsync()
   nameWithType: TenantController.GetAsync()
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.GetAsync*
   name: GetAsync
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_GetAsync_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_GetAsync_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.TenantController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.GetAsync
   nameWithType: TenantController.GetAsync
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.GetTenantsAsync
   name: GetTenantsAsync()
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_GetTenantsAsync
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_GetTenantsAsync
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.TenantController.GetTenantsAsync
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.GetTenantsAsync()
   nameWithType: TenantController.GetTenantsAsync()
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.GetTenantsAsync*
   name: GetTenantsAsync
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_GetTenantsAsync_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_GetTenantsAsync_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.TenantController.GetTenantsAsync
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.GetTenantsAsync
   nameWithType: TenantController.GetTenantsAsync
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.PostAsync
   name: PostAsync()
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_PostAsync
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_PostAsync
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.TenantController.PostAsync
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.PostAsync()
   nameWithType: TenantController.PostAsync()
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.PostAsync*
   name: PostAsync
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_PostAsync_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_PostAsync_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.TenantController.PostAsync
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.PostAsync
   nameWithType: TenantController.PostAsync
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.UpdateAsync(System.String,System.String)
   name: UpdateAsync(String, String)
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_UpdateAsync_System_String_System_String_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_UpdateAsync_System_String_System_String_
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.TenantController.UpdateAsync(System.String,System.String)
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.UpdateAsync(System.String, System.String)
   nameWithType: TenantController.UpdateAsync(String, String)
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.UpdateAsync*
   name: UpdateAsync
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_UpdateAsync_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantController_UpdateAsync_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.TenantController.UpdateAsync
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantController.UpdateAsync
   nameWithType: TenantController.UpdateAsync
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController
   name: TenantReadyController
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.html
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.html
   commentId: T:Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController
   nameWithType: TenantReadyController
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.#ctor(ITenantContainer,ILogger{Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController})
   name: TenantReadyController(ITenantContainer, ILogger<TenantReadyController>)
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantReadyController__ctor_ITenantContainer_ILogger_Mmm_Iot_TenantManager_WebService_Controllers_TenantReadyController__
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantReadyController__ctor_ITenantContainer_ILogger_Mmm_Iot_TenantManager_WebService_Controllers_TenantReadyController__
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.#ctor(ITenantContainer,ILogger{Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController})
   name.vb: TenantReadyController(ITenantContainer, ILogger(Of TenantReadyController))
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.TenantReadyController(ITenantContainer, ILogger<Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController>)
@@ -2658,20 +2658,20 @@ references:
   nameWithType.vb: TenantReadyController.TenantReadyController(ITenantContainer, ILogger(Of TenantReadyController))
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.#ctor*
   name: TenantReadyController
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantReadyController__ctor_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantReadyController__ctor_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.#ctor
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.TenantReadyController
   nameWithType: TenantReadyController.TenantReadyController
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.GetAsync(System.String)
   name: GetAsync(String)
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantReadyController_GetAsync_System_String_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantReadyController_GetAsync_System_String_
   commentId: M:Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.GetAsync(System.String)
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.GetAsync(System.String)
   nameWithType: TenantReadyController.GetAsync(String)
 - uid: Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.GetAsync*
   name: GetAsync
-  href: APIs/tenant-manager/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantReadyController_GetAsync_
+  href: APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.html#Mmm_Iot_TenantManager_WebService_Controllers_TenantReadyController_GetAsync_
   commentId: Overload:Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.GetAsync
   isSpec: "True"
   fullName: Mmm.Iot.TenantManager.WebService.Controllers.TenantReadyController.GetAsync

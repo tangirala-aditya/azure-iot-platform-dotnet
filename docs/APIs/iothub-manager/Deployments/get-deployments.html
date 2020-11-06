@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Get Deployments | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Get Deployments | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="get-deployments">Get Deployments</h2>
+
+<p>Lists the deployments from the storage.</p>
+<h3 id="permissions">Permissions</h3>
+<p><strong>ReadAll</strong> permission is required to call this api.</p>
+<h3 id="http-request">Http Request</h3>
+<pre><code class="lang-HTTP">GET /iothub-manager/v1/deployments
+</code></pre>
+<h3 id="request-headers">Request headers</h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization</td>
+<td>Bearer {token}. Required.</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-body">Request Body</h3>
+<p>NA</p>
+<h3 id="response">Response</h3>
+<p>If successful, this method returns  DeploymentListApiModel object in the response body.</p>
+<pre><code class="lang-json">{
+  &quot;Items&quot;: [
+    {
+      &quot;Id&quot;: &quot;cb5a32d0-57dd-4ec2-ab64-1c20efbd8b02&quot;,
+      &quot;Name&quot;: &quot;TestDeviceGroupDeployment&quot;,
+      &quot;CreatedDateTimeUtc&quot;: &quot;2020-10-29T09:11:57.8832701Z&quot;,
+      &quot;DeviceGroupId&quot;: &quot;2f411a20-7632-45f0-bf43-5ae449b8727a&quot;,
+      &quot;DeviceGroupName&quot;: &quot;TestDeviceGroup&quot;,
+      &quot;DeviceGroupQuery&quot;: &quot;[{\&quot;key\&quot;:\&quot;Tags.TestDevice\&quot;,\&quot;operator\&quot;:\&quot;EQ\&quot;,\&quot;value\&quot;:\&quot;Yes\&quot;}]&quot;,
+      &quot;PackageContent&quot;: &quot;{\&quot;content\&quot;:{\&quot;deviceContent\&quot;:{\&quot;properties.desired.softwareConfig\&quot;:{\&quot;softwareName\&quot;:\&quot;Firmware\&quot;,\&quot;version\&quot;:\&quot;1.0.0\&quot;,\&quot;softwareURL\&quot;:\&quot;https://TestPackageUrl\&quot;,\&quot;fileName\&quot;:\&quot;SW1Package.json\&quot;,\&quot;serialNumber\&quot;:\&quot;\&quot;,\&quot;checkSum\&quot;:\&quot;16b557cb7b4828cefe71b9a9fdadb534bdce6089\&quot;}}},\&quot;metrics\&quot;:{\&quot;queries\&quot;:{\&quot;current\&quot;:\&quot;SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.version = properties.desired.softwareConfig.version AND properties.reported.softwareConfig.status='Success'\&quot;,\&quot;applying\&quot;:\&quot;SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND ( properties.reported.softwareConfig.status='Downloading' OR properties.reported.softwareConfig.status='Verifying' OR properties.reported.softwareConfig.status='Applying')\&quot;,\&quot;rebooting\&quot;:\&quot;SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.version = properties.desired.softwareConfig.version AND properties.reported.softwareConfig.status='Rebooting'\&quot;,\&quot;error\&quot;:\&quot;SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.status='Error'\&quot;,\&quot;rolledback\&quot;:\&quot;SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.status='RolledBack'\&quot;}},\&quot;targetCondition\&quot;:\&quot;\&quot;,\&quot;priority\&quot;:20,\&quot;id\&quot;:\&quot;sw1package_json-e406e3ff-3d21-4e37-b45c-d1d40ca5e7fa\&quot;}&quot;,
+      &quot;PackageName&quot;: &quot;Package1 (1.0.0)&quot;,
+      &quot;PackageId&quot;: &quot;c5e6e9ab-1567-4f99-a026-b558f473afd1&quot;,
+      &quot;Priority&quot;: 4,
+      &quot;PackageType&quot;: &quot;DeviceConfiguration&quot;,
+      &quot;ConfigType&quot;: &quot;Firmware&quot;,
+      &quot;Metrics&quot;: {
+        &quot;SystemMetrics&quot;: {
+          &quot;targetedCount&quot;: 1,
+          &quot;appliedCount&quot;: 1
+        },
+        &quot;CustomMetrics&quot;: {},
+        &quot;DeviceStatuses&quot;: null
+      },
+      &quot;$metadata&quot;: {
+        &quot;$type&quot;: &quot;DevicePropertyList;1&quot;,
+        &quot;$url&quot;: &quot;/v1/deviceproperties&quot;
+      },
+      &quot;DeviceIds&quot;: null,
+      &quot;IsActive&quot;: true,
+      &quot;IsLatest&quot;: true,
+      &quot;CreatedDate&quot;: &quot;2020-10-29T09:11:57+00:00&quot;,
+      &quot;ModifiedDate&quot;: null,
+      &quot;CreatedBy&quot;: &quot;TestUser&quot;,
+      &quot;ModifiedBy&quot;: null
+    },
+    {
+      &quot;Id&quot;: &quot;5819a276-372c-4b15-a9a9-2d9c8c1053c4&quot;,
+      &quot;Name&quot;: &quot;DeploymentSimulation&quot;,
+      &quot;CreatedDateTimeUtc&quot;: &quot;2020-10-16T09:00:26.2705406Z&quot;,
+      &quot;DeviceGroupId&quot;: &quot;85402f9f-3de2-4b55-bfd4-f7f3ce229270&quot;,
+      &quot;DeviceGroupName&quot;: &quot;SimulationGroup&quot;,
+      &quot;DeviceGroupQuery&quot;: &quot;[{\&quot;key\&quot;:\&quot;Tags.Org\&quot;,\&quot;operator\&quot;:\&quot;EQ\&quot;,\&quot;value\&quot;:\&quot;3M\&quot;}]&quot;,
+      &quot;PackageContent&quot;: &quot;{\&quot;content\&quot;:{\&quot;deviceContent\&quot;:{\&quot;properties.desired.softwareConfig\&quot;:{\&quot;softwareName\&quot;:\&quot;Firmware\&quot;,\&quot;version\&quot;:\&quot;1.0.0\&quot;,\&quot;softwareURL\&quot;:\&quot;https://TestPackageUrl\&quot;,\&quot;fileName\&quot;:\&quot;SW1Package.json\&quot;,\&quot;serialNumber\&quot;:\&quot;\&quot;,\&quot;checkSum\&quot;:\&quot;16b557cb7b4828cefe71b9a9fdadb534bdce6089\&quot;}}},\&quot;metrics\&quot;:{\&quot;queries\&quot;:{\&quot;current\&quot;:\&quot;SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.version = properties.desired.softwareConfig.version AND properties.reported.softwareConfig.status='Success'\&quot;,\&quot;applying\&quot;:\&quot;SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND ( properties.reported.softwareConfig.status='Downloading' OR properties.reported.softwareConfig.status='Verifying' OR properties.reported.softwareConfig.status='Applying')\&quot;,\&quot;rebooting\&quot;:\&quot;SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.version = properties.desired.softwareConfig.version AND properties.reported.softwareConfig.status='Rebooting'\&quot;,\&quot;error\&quot;:\&quot;SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.status='Error'\&quot;,\&quot;rolledback\&quot;:\&quot;SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.status='RolledBack'\&quot;}},\&quot;targetCondition\&quot;:\&quot;\&quot;,\&quot;priority\&quot;:20,\&quot;id\&quot;:\&quot;sw1package_json-e406e3ff-3d21-4e37-b45c-d1d40ca5e7fa\&quot;}&quot;,
+      &quot;PackageName&quot;: &quot;Package1 (1.0.0)&quot;,
+      &quot;PackageId&quot;: &quot;c5e6e9ab-1567-4f99-a026-b558f473afd1&quot;,
+      &quot;Priority&quot;: 4,
+      &quot;PackageType&quot;: &quot;DeviceConfiguration&quot;,
+      &quot;ConfigType&quot;: &quot;Firmware&quot;,
+      &quot;Metrics&quot;: {
+        &quot;SystemMetrics&quot;: {
+          &quot;targetedCount&quot;: 1,
+          &quot;appliedCount&quot;: 1,
+          &quot;reportedSuccessfulCount&quot;: 1,
+          &quot;reportedFailedCount&quot;: 0,
+          &quot;pendingCount&quot;: 0
+        },
+        &quot;CustomMetrics&quot;: {
+          &quot;current&quot;: 1
+        },
+        &quot;DeviceStatuses&quot;: {
+          &quot;SimulatedDevice&quot;: &quot;Succeeded&quot;
+        }
+      },
+      &quot;$metadata&quot;: {
+        &quot;$type&quot;: &quot;DevicePropertyList;1&quot;,
+        &quot;$url&quot;: &quot;/v1/deviceproperties&quot;
+      },
+      &quot;DeviceIds&quot;: null,
+      &quot;IsActive&quot;: false,
+      &quot;IsLatest&quot;: false,
+      &quot;CreatedDate&quot;: &quot;2020-10-16T08:49:03+00:00&quot;,
+      &quot;ModifiedDate&quot;: &quot;2020-10-16T11:14:03+00:00&quot;,
+      &quot;CreatedBy&quot;: &quot;TestUser&quot;,
+      &quot;ModifiedBy&quot;: &quot;TestUser&quot;
+    }
+  ],
+  &quot;$metadata&quot;: {
+    &quot;$type&quot;: &quot;DevicePropertyList;1&quot;,
+    &quot;$url&quot;: &quot;/v1/deviceproperties&quot;
+  }
+}
+</code></pre>
+<h3 id="security">Security</h3>
+<p>Type: OpenID Connect<br>
+Flow: implicit<br>
+Authorization URL: <a href="https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com">https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</a></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/APIs/iothub-manager/Deployments/get-deployments.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,354 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Get Deployment Impacted Modules | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Get Deployment Impacted Modules | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.4.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="get-deployment-impacted-modules">Get Deployment Impacted Modules</h2>
+
+<p>Lists the Modules which are affected by the Deployment.</p>
+<h3 id="permissions">Permissions</h3>
+<p><strong>ReadAll</strong> permission is required to call this api.</p>
+<h3 id="http-request">Http Request</h3>
+<pre><code class="lang-HTTP">POST /iothub-manager/v1/deployments/Modules/{id}?isLatest={isLatest}
+</code></pre>
+<h3 id="request-headers">Request headers</h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization</td>
+<td>Bearer {token}. Required.</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table>
+<h3 id="query-params">Query Params</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Deployment Id</td>
+</tr>
+<tr>
+<td>isLatest</td>
+<td><strong>true</strong> will retrieve the data of Modules using the query from request body<br> <strong>false</strong> will retrieve the data from Modules from storage, since the deployment is not currently impacting the device group.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-body">Request Body</h3>
+<p>string representing the query to fetch the devices.</p>
+<h3 id="response">Response</h3>
+<p>If successful, this method returns TwinPropertiesListApiModel in response body</p>
+<h3 id="response-schema">Response Schema</h3>
+<pre><code class="lang-json">{
+  &quot;metadata&quot;: {
+    &quot;additionalProp1&quot;: &quot;string&quot;,
+    &quot;additionalProp2&quot;: &quot;string&quot;,
+    &quot;additionalProp3&quot;: &quot;string&quot;
+  },
+  &quot;continuationToken&quot;: &quot;string&quot;,
+  &quot;items&quot;: [
+    {
+      &quot;reported&quot;: {
+        &quot;additionalProp1&quot;: [
+          null
+        ],
+        &quot;additionalProp2&quot;: [
+          null
+        ],
+        &quot;additionalProp3&quot;: [
+          null
+        ]
+      },
+      &quot;desired&quot;: {
+        &quot;additionalProp1&quot;: [
+          null
+        ],
+        &quot;additionalProp2&quot;: [
+          null
+        ],
+        &quot;additionalProp3&quot;: [
+          null
+        ]
+      },
+      &quot;deviceId&quot;: &quot;string&quot;,
+      &quot;moduleId&quot;: &quot;string&quot;
+    }
+  ]
+}
+</code></pre>
+<h3 id="sample-response">Sample Response</h3>
+<pre><code class="lang-json">{
+  &quot;$metadata&quot;: {
+    &quot;$type&quot;: &quot;DeviceList;1&quot;,
+    &quot;$uri&quot;: &quot;/v1/devices&quot;
+  },
+  &quot;ContinuationToken&quot;: null,
+  &quot;Items&quot;: [
+    {
+      &quot;Reported&quot;: {},
+      &quot;Desired&quot;: {
+        &quot;schemaVersion&quot;: &quot;2.0&quot;,
+        &quot;runtime&quot;: {
+          &quot;type&quot;: &quot;docker&quot;,
+          &quot;settings&quot;: {
+            &quot;loggingOptions&quot;: &quot;&quot;,
+            &quot;minDockerVersion&quot;: &quot;v1.25&quot;
+          }
+        },
+        &quot;systemModules&quot;: {
+          &quot;edgeAgent&quot;: {
+            &quot;type&quot;: &quot;docker&quot;,
+            &quot;settings&quot;: {
+              &quot;image&quot;: &quot;mcr.microsoft.com/azureiotedge-agent:1.0&quot;,
+              &quot;createOptions&quot;: &quot;{}&quot;
+            }
+          },
+          &quot;edgeHub&quot;: {
+            &quot;type&quot;: &quot;docker&quot;,
+            &quot;settings&quot;: {
+              &quot;image&quot;: &quot;mcr.microsoft.com/azureiotedge-hub:1.0&quot;,
+              &quot;createOptions&quot;: &quot;{}&quot;
+            },
+            &quot;status&quot;: &quot;running&quot;,
+            &quot;restartPolicy&quot;: &quot;always&quot;
+          }
+        },
+        &quot;modules&quot;: {}
+      },
+      &quot;DeviceId&quot;: &quot;Test0903&quot;,
+      &quot;ModuleId&quot;: &quot;$edgeAgent&quot;
+    }
+  ]
+}
+</code></pre>
+<h3 id="security">Security</h3>
+<p>Type: OpenID Connect<br>
+Flow: implicit<br>
+Authorization URL: <a href="https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com">https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</a></p>
+<h3 id="examples">Examples</h3>
+<ol>
+<li>Get Impacted Modules for the current active deployment.</li>
+</ol>
+<pre><code class="lang-HTTP">POST iothubmanager/v1/deployments/modules/5253c096-b56b-49d2-b230-61b7fcd0f0aa?isLatest=true
+</code></pre>
+<h3 id="request-body-1">Request Body</h3>
+<pre><code class="lang-json">&quot;deviceId IN ['TestDevice'] AND moduleId = '$edgeAgent'&quot;
+</code></pre>
+<h3 id="response-1">Response</h3>
+<pre><code class="lang-json">{
+  &quot;$metadata&quot;: {
+    &quot;$type&quot;: &quot;DeviceList;1&quot;,
+    &quot;$uri&quot;: &quot;/v1/devices&quot;
+  },
+  &quot;ContinuationToken&quot;: null,
+  &quot;Items&quot;: [
+    {
+      &quot;Reported&quot;: {},
+      &quot;Desired&quot;: {
+        &quot;schemaVersion&quot;: &quot;2.0&quot;,
+        &quot;runtime&quot;: {
+          &quot;type&quot;: &quot;docker&quot;,
+          &quot;settings&quot;: {
+            &quot;loggingOptions&quot;: &quot;&quot;,
+            &quot;minDockerVersion&quot;: &quot;v1.25&quot;
+          }
+        },
+        &quot;systemModules&quot;: {
+          &quot;edgeAgent&quot;: {
+            &quot;type&quot;: &quot;docker&quot;,
+            &quot;settings&quot;: {
+              &quot;image&quot;: &quot;mcr.microsoft.com/azureiotedge-agent:1.0&quot;,
+              &quot;createOptions&quot;: &quot;{}&quot;
+            }
+          },
+          &quot;edgeHub&quot;: {
+            &quot;type&quot;: &quot;docker&quot;,
+            &quot;settings&quot;: {
+              &quot;image&quot;: &quot;mcr.microsoft.com/azureiotedge-hub:1.0&quot;,
+              &quot;createOptions&quot;: &quot;{}&quot;
+            },
+            &quot;status&quot;: &quot;running&quot;,
+            &quot;restartPolicy&quot;: &quot;always&quot;
+          }
+        },
+        &quot;modules&quot;: {}
+      },
+      &quot;DeviceId&quot;: &quot;TestDevice&quot;,
+      &quot;ModuleId&quot;: &quot;$edgeAgent&quot;
+    }
+  ]
+}
+</code></pre>
+<ol start="2">
+<li>Get Impacted devices for the previously active deployment.</li>
+</ol>
+<pre><code class="lang-HTTP">POST iothubmanager/v1/deployments/modules/5253c096-b56b-49d2-b230-61b7fcd0f0aa?isLatest=false
+</code></pre>
+<h3 id="request-body-2">Request Body</h3>
+<pre><code class="lang-json">&quot;deviceId IN ['TestDevice'] AND moduleId = '$edgeAgent'&quot;
+</code></pre>
+<h3 id="response-2">Response</h3>
+<pre><code class="lang-json">{
+  &quot;$metadata&quot;: {
+    &quot;$type&quot;: &quot;DeviceList;1&quot;,
+    &quot;$uri&quot;: &quot;/v1/devices&quot;
+  },
+  &quot;ContinuationToken&quot;: null,
+  &quot;Items&quot;: [
+    {
+      &quot;Reported&quot;: {},
+      &quot;Desired&quot;: {
+        &quot;schemaVersion&quot;: &quot;2.0&quot;,
+        &quot;runtime&quot;: {
+          &quot;type&quot;: &quot;docker&quot;,
+          &quot;settings&quot;: {
+            &quot;loggingOptions&quot;: &quot;&quot;,
+            &quot;minDockerVersion&quot;: &quot;v1.25&quot;
+          }
+        },
+        &quot;systemModules&quot;: {
+          &quot;edgeAgent&quot;: {
+            &quot;type&quot;: &quot;docker&quot;,
+            &quot;settings&quot;: {
+              &quot;image&quot;: &quot;mcr.microsoft.com/azureiotedge-agent:1.0&quot;,
+              &quot;createOptions&quot;: &quot;{}&quot;
+            }
+          },
+          &quot;edgeHub&quot;: {
+            &quot;type&quot;: &quot;docker&quot;,
+            &quot;settings&quot;: {
+              &quot;image&quot;: &quot;mcr.microsoft.com/azureiotedge-hub:1.0&quot;,
+              &quot;createOptions&quot;: &quot;{}&quot;
+            },
+            &quot;status&quot;: &quot;running&quot;,
+            &quot;restartPolicy&quot;: &quot;always&quot;
+          }
+        },
+        &quot;modules&quot;: {}
+      },
+      &quot;DeviceId&quot;: &quot;TestDevice&quot;,
+      &quot;ModuleId&quot;: &quot;$edgeAgent&quot;
+    }
+  ]
+}
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/APIs/iothub-manager/Deployments/get-impacted-modules.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

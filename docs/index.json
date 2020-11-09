@@ -1,13 +1,23 @@
 {
-  "APIs/asa-manager/DeviceGroups/DeviceGroups.html": {
-    "href": "APIs/asa-manager/DeviceGroups/DeviceGroups.html",
-    "title": "DeviceGroups | 3M Serenity Documentation",
-    "keywords": "DeviceGroups DeviceGroups Controller contains methods to convert the DeviceGroups in the Cosmos DB Collection and converts into file format suitable for Azure Stream Analytics job. This document provides overview of following methods of DeviceGroup Controller. Begin Device Group Conversion Begin IotHub Job Delay Device Group Conversion Begin Device Group Conversion API that begins the conversion of devicegroups data from cosmos collection into csv format for Azure Stream Analytics job. Permissions NA Http Request GET /v1/devicegroups Request headers Header Value Authorization Bearer {token}. Required. Content-Type application/json Request Body N/A Response If successful, this method returns BeginConversionApiModel object in the response body. Respone Schema { \"tenantId\": \"string\", \"operationId\": \"string\" } Sample Response { \"tenantId\": \"ac1037c4-386e-4402-9209-f9602ce90afe\", \"operationId\": \"c2412f4c-a397-4b7a-81a1-0d175a9b69c6\" } Begin IotHub Job Delay Device Group Conversion API that begins the conversion of devicegroups data from cosmos collection into csv format for Azure Stream Analytics job based on completion status of an IoT Hub Job. Permissions NA Http Request GET /v1/devicegroups/iothubjobdelay/{jobId} Request headers Header Value Authorization Bearer {token}. Required. Content-Type application/json Query Params Name Description jobId JobId from IoT Hub Request Body N/A Response If successful, this method returns BeginConversionApiModel object in the response body. Respone Schema { \"tenantId\": \"string\", \"operationId\": \"string\" } Sample Response { \"tenantId\": \"ac1037c4-386e-4402-9209-f9602ce90afe\", \"operationId\": \"c2412f4c-a397-4b7a-81a1-0d175a9b69c6\" }"
+  "APIs/asa-manager/DeviceGroups/devicegroup-conversion.html": {
+    "href": "APIs/asa-manager/DeviceGroups/devicegroup-conversion.html",
+    "title": "Begin Device Group Conversion | 3M Serenity Documentation",
+    "keywords": "Begin Device Group Conversion API that begins the conversion of devicegroups data from cosmos collection into csv format for Azure Stream Analytics job. Permissions NA Http Request GET /v1/devicegroups Request headers Header Value Authorization Bearer {token}. Required. Content-Type application/json Request Body N/A Response If successful, this method returns BeginConversionApiModel object in the response body. Respone Schema { \"tenantId\": \"string\", \"operationId\": \"string\" } Sample Response { \"tenantId\": \"ac1037c4-386e-4402-9209-f9602ce90afe\", \"operationId\": \"c2412f4c-a397-4b7a-81a1-0d175a9b69c6\" }"
   },
-  "APIs/asa-manager/DeviceGroups/Overview.html": {
-    "href": "APIs/asa-manager/DeviceGroups/Overview.html",
+  "APIs/asa-manager/DeviceGroups/devicegroup-conversion-by-status.html": {
+    "href": "APIs/asa-manager/DeviceGroups/devicegroup-conversion-by-status.html",
+    "title": "Begin IotHub Job Delay Device Group Conversion | 3M Serenity Documentation",
+    "keywords": "Begin IotHub Job Delay Device Group Conversion API that begins the conversion of devicegroups data from cosmos collection into csv format for Azure Stream Analytics job based on completion status of an IoT Hub Job. Permissions NA Http Request GET /v1/devicegroups/iothubjobdelay/{jobId} Request headers Header Value Authorization Bearer {token}. Required. Content-Type application/json Query Params Name Description jobId JobId from IoT Hub Request Body N/A Response If successful, this method returns BeginConversionApiModel object in the response body. Respone Schema { \"tenantId\": \"string\", \"operationId\": \"string\" } Sample Response { \"tenantId\": \"ac1037c4-386e-4402-9209-f9602ce90afe\", \"operationId\": \"c2412f4c-a397-4b7a-81a1-0d175a9b69c6\" }"
+  },
+  "APIs/asa-manager/DeviceGroups/index.html": {
+    "href": "APIs/asa-manager/DeviceGroups/index.html",
     "title": "Device Groups | 3M Serenity Documentation",
-    "keywords": "Device Groups Service: Asa Manager API Version: 2020-11-03 Operations"
+    "keywords": "Device Groups Service: Asa Manager Operations Operation Description Begin Device Group Conversion Converts DeviceGroup data into CSV format for ASA Job. Begin IotHub Job Delay Device Group Conversion Converts DeviceGroup data into CSV format for ASA Job based on status of IoTHub Job."
+  },
+  "APIs/asa-manager/index.html": {
+    "href": "APIs/asa-manager/index.html",
+    "title": "ASA Manager | 3M Serenity Documentation",
+    "keywords": "ASA Manager ASA Manager Service offers methods to asynchronously convert data related to tenants into formats suitable for Azure Stream Analytics Job inputs. Following are the APIs which are part of IoTHub Manager REST operation groups The ASA Manager Service REST API provides operations for working with the following: Operation group Description DeviceGroups Conversion Operations for DeviceGroups. Rules Conversion Operations for Rules. Status Health status operations for the Service."
   },
   "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html": {
     "href": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html",
@@ -29,20 +39,30 @@
     "title": "Class StatusController | 3M Serenity Documentation",
     "keywords": "Class StatusController Inheritance System.Object StatusController Namespace : Mmm.Iot.AsaManager.WebService.Controllers Assembly : cs.temp.dll.dll Syntax public sealed class StatusController : ControllerBase Constructors StatusController(IStatusService) Declaration public StatusController(IStatusService statusService) Parameters Type Name Description IStatusService statusService Methods GetAsync() Declaration public Task<StatusApiModel> GetAsync() Returns Type Description System.Threading.Tasks.Task < StatusApiModel > Ping() Declaration public IActionResult Ping() Returns Type Description IActionResult"
   },
-  "APIs/asa-manager/Overview.html": {
-    "href": "APIs/asa-manager/Overview.html",
-    "title": "ASA Manager | 3M Serenity Documentation",
-    "keywords": "ASA Manager The ASA Manager service offers APIs to asynchronously convert tenant data into formats suitable for Azure Stream Analytics Job inputs. REST operation groups The ASA Manager API provides operations for working with the following: Operation group Description DeviceGroups Rules Status"
+  "APIs/asa-manager/Rules/index.html": {
+    "href": "APIs/asa-manager/Rules/index.html",
+    "title": "Rules | 3M Serenity Documentation",
+    "keywords": "Rules Service: ASA Manager Rules Controller contains methods which converts the Rules from CosmosCollection and converts into fileformat suitable for Azure Stream Analytics job. Operations Operation Description Begin Rule Conversion Converts Rules data into CSV format for ASA Job."
   },
-  "APIs/asa-manager/Rules.html": {
-    "href": "APIs/asa-manager/Rules.html",
-    "title": "| 3M Serenity Documentation",
-    "keywords": ""
+  "APIs/asa-manager/Rules/rule-conversion.html": {
+    "href": "APIs/asa-manager/Rules/rule-conversion.html",
+    "title": "Begin Rule Conversion | 3M Serenity Documentation",
+    "keywords": "Begin Rule Conversion API that begins the conversion of rules data from cosmos collection into csv format for Azure Stream Analytics job. Permissions NA Http Request GET /v1/rules Request headers Header Value Authorization Bearer {token}. Required. Content-Type application/json Request Body N/A Response If successful, this method returns BeginConversionApiModel object in the response body. Respone Schema { \"tenantId\": \"string\", \"operationId\": \"string\" } Sample Response { \"tenantId\": \"ac1037c4-386e-4402-9209-f9602ce90afe\", \"operationId\": \"c2412f4c-a397-4b7a-81a1-0d175a9b69c6\" }"
   },
-  "APIs/asa-manager/Status.html": {
-    "href": "APIs/asa-manager/Status.html",
-    "title": "| 3M Serenity Documentation",
-    "keywords": ""
+  "APIs/asa-manager/Status/get-status.html": {
+    "href": "APIs/asa-manager/Status/get-status.html",
+    "title": "Get Status | 3M Serenity Documentation",
+    "keywords": "Get Status API Method that provides the status of the ASA Manager Service and its dependencies Permissions N/A Http Request GET /v1/status Request headers Header Value Content-Type application/json Request Body N/A Response Schema { \"name\": \"string\", \"status\": { \"isHealthy\": true, \"message\": \"string\" }, \"currentTime\": \"string\", \"startTime\": \"string\", \"upTime\": 0, \"uid\": \"string\", \"properties\": { \"authRequired\": true, \"endpoint\": \"string\" }, \"dependencies\": { \"additionalProp1\": { \"isHealthy\": true, \"message\": \"string\" }, \"additionalProp2\": { \"isHealthy\": true, \"message\": \"string\" }, \"additionalProp3\": { \"isHealthy\": true, \"message\": \"string\" } }, \"metadata\": { \"additionalProp1\": \"string\", \"additionalProp2\": \"string\", \"additionalProp3\": \"string\" } } Sample Response { \"Name\": \"ASA Manager\", \"Status\": { \"IsHealthy\": true, \"Message\": \"Alive and well!\" }, \"CurrentTime\": \"2020-10-29T15:48:25+00:00\", \"StartTime\": \"2020-10-26T23:00:48+00:00\", \"UpTime\": 233256, \"UID\": \"WebService.c477e657-a941-4a01-82fd-ecc2d6cfaba4\", \"Properties\": { \"authRequired\": true, \"endpoint\": \"http://+:80\" }, \"Dependencies\": { \"Storage Adapter\": { \"IsHealthy\": true, \"Message\": \"Alive and well!\" }, \"IoTHub Manager\": { \"IsHealthy\": true, \"Message\": \"Alive and well!\" }, \"Blob Storage\": { \"IsHealthy\": true, \"Message\": \"Alive and well!\" } }, \"$metadata\": { \"$type\": \"Status;0\", \"$uri\": \"/status\" } } Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com"
+  },
+  "APIs/asa-manager/Status/index.html": {
+    "href": "APIs/asa-manager/Status/index.html",
+    "title": "Status | 3M Serenity Documentation",
+    "keywords": "Status Service: ASA Manager Operations Operation Description Get Status Gets status of the Service and its dependencies Ping Status Provides the health status of the service."
+  },
+  "APIs/asa-manager/Status/ping-status.html": {
+    "href": "APIs/asa-manager/Status/ping-status.html",
+    "title": "Ping Status | 3M Serenity Documentation",
+    "keywords": "Ping Status API method to provide the health status of the service. Permissions N/A Http Request GET /v1/status/ping Request headers Header Value Content-Type application/json Request Body N/A Response Respond with 200 Status code if service is up. Security Type: OpenID Connect Flow: implicit Authorization URL: https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com"
   },
   "APIs/authorization-flow.html": {
     "href": "APIs/authorization-flow.html",

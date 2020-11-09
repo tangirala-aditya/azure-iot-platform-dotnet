@@ -5,11 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace Mmm.Iot.AsaManager.WebService.Controllers
-   | 3M Serenity Documentation </title>
+    <title>Get Status | 3M Serenity Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace Mmm.Iot.AsaManager.WebService.Controllers
-   | 3M Serenity Documentation ">
+    <meta name="title" content="Get Status | 3M Serenity Documentation ">
     <meta name="generator" content="docfx 2.56.4.0">
     
     <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
@@ -18,7 +16,7 @@
     <link rel="stylesheet" href="../../../styles/main.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
     <meta property="docfx:navrel" content="../../../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
     
     <meta property="docfx:rel" content="../../../">
     
@@ -70,21 +68,110 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Mmm.Iot.AsaManager.WebService.Controllers">
-  
-  <h1 id="Mmm_Iot_AsaManager_WebService_Controllers" data-uid="Mmm.Iot.AsaManager.WebService.Controllers" class="text-break">Namespace Mmm.Iot.AsaManager.WebService.Controllers
-  </h1>
-  <div class="markdown level0 summary"></div>
-  <div class="markdown level0 conceptual"></div>
-  <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
-  </h3>
-      <h4><a class="xref" href="Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html">DeviceGroupsController</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html">RulesController</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html">StatusController</a></h4>
-      <section></section>
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="get-status">Get Status</h2>
+
+<p>API Method that provides the status of the ASA Manager Service and its dependencies</p>
+<h3 id="permissions">Permissions</h3>
+<pre><code>N/A
+</code></pre>
+<h3 id="http-request">Http Request</h3>
+<pre><code class="lang-HTTP">GET /v1/status
+</code></pre>
+<h3 id="request-headers">Request headers</h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-body">Request Body</h3>
+<pre><code>N/A
+</code></pre>
+<h3 id="response-schema">Response Schema</h3>
+<pre><code class="lang-json">{
+  &quot;name&quot;: &quot;string&quot;,
+  &quot;status&quot;: {
+    &quot;isHealthy&quot;: true,
+    &quot;message&quot;: &quot;string&quot;
+  },
+  &quot;currentTime&quot;: &quot;string&quot;,
+  &quot;startTime&quot;: &quot;string&quot;,
+  &quot;upTime&quot;: 0,
+  &quot;uid&quot;: &quot;string&quot;,
+  &quot;properties&quot;: {
+    &quot;authRequired&quot;: true,
+    &quot;endpoint&quot;: &quot;string&quot;
+  },
+  &quot;dependencies&quot;: {
+    &quot;additionalProp1&quot;: {
+      &quot;isHealthy&quot;: true,
+      &quot;message&quot;: &quot;string&quot;
+    },
+    &quot;additionalProp2&quot;: {
+      &quot;isHealthy&quot;: true,
+      &quot;message&quot;: &quot;string&quot;
+    },
+    &quot;additionalProp3&quot;: {
+      &quot;isHealthy&quot;: true,
+      &quot;message&quot;: &quot;string&quot;
+    }
+  },
+  &quot;metadata&quot;: {
+    &quot;additionalProp1&quot;: &quot;string&quot;,
+    &quot;additionalProp2&quot;: &quot;string&quot;,
+    &quot;additionalProp3&quot;: &quot;string&quot;
+  }
+}
+</code></pre>
+<h3 id="sample-response">Sample Response</h3>
+<pre><code class="lang-json">    {
+    &quot;Name&quot;: &quot;ASA Manager&quot;,
+    &quot;Status&quot;: {
+        &quot;IsHealthy&quot;: true,
+        &quot;Message&quot;: &quot;Alive and well!&quot;
+    },
+    &quot;CurrentTime&quot;: &quot;2020-10-29T15:48:25+00:00&quot;,
+    &quot;StartTime&quot;: &quot;2020-10-26T23:00:48+00:00&quot;,
+    &quot;UpTime&quot;: 233256,
+    &quot;UID&quot;: &quot;WebService.c477e657-a941-4a01-82fd-ecc2d6cfaba4&quot;,
+    &quot;Properties&quot;: {
+        &quot;authRequired&quot;: true,
+        &quot;endpoint&quot;: &quot;http://+:80&quot;
+    },
+    &quot;Dependencies&quot;: {
+        &quot;Storage Adapter&quot;: {
+            &quot;IsHealthy&quot;: true,
+            &quot;Message&quot;: &quot;Alive and well!&quot;
+        },
+        &quot;IoTHub Manager&quot;: {
+            &quot;IsHealthy&quot;: true,
+            &quot;Message&quot;: &quot;Alive and well!&quot;
+        },
+        &quot;Blob Storage&quot;: {
+            &quot;IsHealthy&quot;: true,
+            &quot;Message&quot;: &quot;Alive and well!&quot;
+        }
+    },
+    &quot;$metadata&quot;: {
+        &quot;$type&quot;: &quot;Status;0&quot;,
+        &quot;$uri&quot;: &quot;/status&quot;
+    }
+}
+
+</code></pre>
+<h3 id="security">Security</h3>
+<p>Type: OpenID Connect<br>
+Flow: implicit<br>
+Authorization URL: <a href="https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com">https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</a></p>
 </article>
           </div>
           
@@ -92,6 +179,9 @@
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/APIs/asa-manager/Status/get-status.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

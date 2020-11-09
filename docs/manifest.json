@@ -62,11 +62,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "APIs/asa-manager/DeviceGroups/DeviceGroups.md",
+      "source_relative_path": "APIs/asa-manager/DeviceGroups/devicegroup-conversion-by-status.md",
       "output": {
         ".html": {
-          "relative_path": "APIs/asa-manager/DeviceGroups/DeviceGroups.html",
-          "hash": "ymm6Jx/RGNzTktyNmUJJhg=="
+          "relative_path": "APIs/asa-manager/DeviceGroups/devicegroup-conversion-by-status.html",
+          "hash": "VLdHIruicGijMIFYmp7pHQ=="
         }
       },
       "is_incremental": false,
@@ -74,11 +74,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "APIs/asa-manager/DeviceGroups/Overview.md",
+      "source_relative_path": "APIs/asa-manager/DeviceGroups/devicegroup-conversion.md",
       "output": {
         ".html": {
-          "relative_path": "APIs/asa-manager/DeviceGroups/Overview.html",
-          "hash": "H/KMYCxv7TEACkeFWnipWw=="
+          "relative_path": "APIs/asa-manager/DeviceGroups/devicegroup-conversion.html",
+          "hash": "89S412zZ3mkRPdY8N5TTdA=="
         }
       },
       "is_incremental": false,
@@ -86,11 +86,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "APIs/asa-manager/Overview.md",
+      "source_relative_path": "APIs/asa-manager/DeviceGroups/index.md",
       "output": {
         ".html": {
-          "relative_path": "APIs/asa-manager/Overview.html",
-          "hash": "RMTH8wHcPCa3begTj1U96A=="
+          "relative_path": "APIs/asa-manager/DeviceGroups/index.html",
+          "hash": "MBXu976fxEcG8/4v9ogJCA=="
         }
       },
       "is_incremental": false,
@@ -98,11 +98,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "APIs/asa-manager/Rules.md",
+      "source_relative_path": "APIs/asa-manager/Rules/index.md",
       "output": {
         ".html": {
-          "relative_path": "APIs/asa-manager/Rules.html",
-          "hash": "1ufopiL7ibKoYngdV27qMQ=="
+          "relative_path": "APIs/asa-manager/Rules/index.html",
+          "hash": "sMmmGo4CziWxnugqoPx/0w=="
         }
       },
       "is_incremental": false,
@@ -110,11 +110,59 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "APIs/asa-manager/Status.md",
+      "source_relative_path": "APIs/asa-manager/Rules/rule-conversion.md",
       "output": {
         ".html": {
-          "relative_path": "APIs/asa-manager/Status.html",
-          "hash": "yTcXu2wjyAF1/9URe2My9g=="
+          "relative_path": "APIs/asa-manager/Rules/rule-conversion.html",
+          "hash": "Klgomc4w4Sen8nFm+9hjNg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/asa-manager/Status/get-status.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/Status/get-status.html",
+          "hash": "GhysAMfx9LANkZgAZeVbgw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/asa-manager/Status/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/Status/index.html",
+          "hash": "2z5NmcJYZ718KEZtY8ya6g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/asa-manager/Status/ping-status.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/Status/ping-status.html",
+          "hash": "FX9rCH8Y+QYURq8TW1okVQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "APIs/asa-manager/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/index.html",
+          "hash": "dCFCfo8yRMfEQCKwyu4iqg=="
         }
       },
       "is_incremental": false,
@@ -126,7 +174,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html",
-          "hash": "hiDSaYx27K14lpJMRP4wOg=="
+          "hash": "Cz3YSt+jjMX/dJwPBWF96g=="
         }
       },
       "is_incremental": false,
@@ -138,7 +186,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.RulesController.html",
-          "hash": "OmC8HhgwTHsEvDrP8TVijw=="
+          "hash": "X8Yp98srnH1/94QsFVTDUQ=="
         }
       },
       "is_incremental": false,
@@ -150,7 +198,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.StatusController.html",
-          "hash": "NBDSTquzQ4x86fEMtr8R8w=="
+          "hash": "PYZhFFubn47SHCh3a77V9Q=="
         }
       },
       "is_incremental": false,
@@ -162,7 +210,19 @@
       "output": {
         ".html": {
           "relative_path": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.html",
-          "hash": "dCsXhvQxK+4Ys2dy/9qbUg=="
+          "hash": "oR/B5+kFAT9GBTO6L17r5A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "APIs/asa-manager/object-model/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "APIs/asa-manager/object-model/toc.html",
+          "hash": "GiQCmlU2OHIoXaMwCIEYVQ=="
         }
       },
       "is_incremental": false,
@@ -2415,7 +2475,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/toc.html",
-          "hash": "Q7dJd8yTC5+bmzKe1HU0BQ=="
+          "hash": "AIwyNMejhFlyQ8rpV3sp3w=="
         }
       },
       "is_incremental": false,
@@ -5964,7 +6024,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 237,
+          "total_file_count": 241,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

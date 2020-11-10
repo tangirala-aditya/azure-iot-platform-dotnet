@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>User Settings of input User | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="User Settings of input User | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.5.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="user-settings-of-input-user">User Settings of input User</h1>
+
+<pre><code>This Method returns the settings of input userId
+</code></pre>
+<h2 id="permissions">Permissions</h2>
+<pre><code>**ReadAll** permission is required to call this api.
+</code></pre>
+<h2 id="http-request">Http Request</h2>
+<pre><code class="lang-HTTP">GET /auth/v1/settings/{userId}/all
+</code></pre>
+<h2 id="request-headers">Request headers</h2>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization</td>
+<td>Bearer {token}. Required.</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table>
+<h2 id="request-body">Request Body</h2>
+<pre><code>N/A
+</code></pre>
+<h2 id="sample-request">Sample Request</h2>
+<pre><code>/auth/v1/settings/3e30f301-4f57-4b3e-949a-3ff8e93870b5/all
+</code></pre>
+<h2 id="response-schema">Response Schema</h2>
+<pre><code>{
+  &quot;Method&quot;: &quot;string&quot;,
+  &quot;Models&quot;: [
+    {
+      &quot;value&quot;: &quot;string&quot;,
+      &quot;userId&quot;: &quot;string&quot;,
+      &quot;settingKey&quot;: &quot;string&quot;,
+      &quot;partitionKey&quot;: &quot;string&quot;,
+      &quot;rowKey&quot;: &quot;string&quot;,
+      &quot;timestamp&quot;: &quot;2020-11-03T06:44:26.955Z&quot;,
+      &quot;eTag&quot;: &quot;string&quot;
+    }
+  ]
+}
+</code></pre>
+<h2 id="response">Response</h2>
+<pre><code>{
+    &quot;Method&quot;: &quot;Get&quot;,
+    &quot;Models&quot;: [
+        {
+            &quot;value&quot;: &quot;2ceeeccf-f775-4ea3-b84e-5ea26b125ab6&quot;,
+            &quot;userId&quot;: &quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
+            &quot;settingKey&quot;: &quot;209d7f79-39aa-4e2a-8e9c-56f04f7633f9-ActiveDeviceGroup&quot;,
+            &quot;partitionKey&quot;: &quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
+            &quot;rowKey&quot;: &quot;209d7f79-39aa-4e2a-8e9c-56f04f7633f9-ActiveDeviceGroup&quot;,
+            &quot;timestamp&quot;: &quot;2020-09-22T05:42:01.4720202+00:00&quot;,
+            &quot;eTag&quot;: &quot;W/\&quot;datetime'2020-09-22T05%3A42%3A01.4720202Z'\&quot;&quot;
+        },
+        {
+            &quot;value&quot;: &quot;233a1ca2-6855-43c5-8b9c-c7f85a1dd520&quot;,
+            &quot;userId&quot;: &quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
+            &quot;settingKey&quot;: &quot;LastUsedTenant&quot;,
+            &quot;partitionKey&quot;: &quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
+            &quot;rowKey&quot;: &quot;LastUsedTenant&quot;,
+            &quot;timestamp&quot;: &quot;2020-10-14T05:43:26.3297439+00:00&quot;,
+            &quot;eTag&quot;: &quot;W/\&quot;datetime'2020-10-14T05%3A43%3A26.3297439Z'\&quot;&quot;
+        }
+    ]
+}
+</code></pre>
+<h2 id="security">Security</h2>
+<p>Type: OpenID Connect<br>
+Flow: implicit<br>
+Authorization URL: <a href="https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com">https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</a></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/APIs/identity-gateway/UserSettings/user-settings.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

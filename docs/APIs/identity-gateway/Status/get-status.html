@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Get Status | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Get Status | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.5.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="get-status">Get Status</h1>
+
+<p>API that fetches the status of Identity Gateway Service.</p>
+<h2 id="permissions">Permissions</h2>
+<pre><code>N/A
+</code></pre>
+<h2 id="http-request">Http Request</h2>
+<pre><code class="lang-HTTP">GET /auth/v1/status
+</code></pre>
+<h2 id="request-headers">Request headers</h2>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table>
+<h2 id="request-body">Request Body</h2>
+<pre><code>N/A
+</code></pre>
+<h2 id="response-schema">Response Schema</h2>
+<pre><code>{
+  &quot;Name&quot;: &quot;string&quot;,
+  &quot;Status&quot;: {
+    &quot;IsHealthy&quot;: true,
+    &quot;Message&quot;: &quot;string&quot;
+  },
+  &quot;CurrentTime&quot;: &quot;string&quot;,
+  &quot;StartTime&quot;: &quot;string&quot;,
+  &quot;UpTime&quot;: 0,
+  &quot;UID&quot;: &quot;string&quot;,
+  &quot;Properties&quot;: {
+    &quot;authRequired&quot;: true,
+    &quot;endpoint&quot;: &quot;string&quot;
+  },
+  &quot;Dependencies&quot;: {
+    &quot;additionalProp1&quot;: {
+      &quot;IsHealthy&quot;: true,
+      &quot;Message&quot;: &quot;string&quot;
+    },
+    &quot;additionalProp2&quot;: {
+      &quot;IsHealthy&quot;: true,
+      &quot;Message&quot;: &quot;string&quot;
+    },
+    &quot;additionalProp3&quot;: {
+      &quot;IsHealthy&quot;: true,
+      &quot;Message&quot;: &quot;string&quot;
+    }
+  },
+  &quot;$metadata&quot;: {
+    &quot;additionalProp1&quot;: &quot;string&quot;,
+    &quot;additionalProp2&quot;: &quot;string&quot;,
+    &quot;additionalProp3&quot;: &quot;string&quot;
+  }
+}
+</code></pre>
+<h2 id="response">Response</h2>
+<pre><code>{
+    &quot;Name&quot;: &quot;Identity Gateway&quot;,
+    &quot;Status&quot;: {
+        &quot;IsHealthy&quot;: true,
+        &quot;Message&quot;: &quot;Alive and well!&quot;
+    },
+    &quot;CurrentTime&quot;: &quot;2020-10-29T06:56:26+00:00&quot;,
+    &quot;StartTime&quot;: &quot;2020-10-26T22:59:39+00:00&quot;,
+    &quot;UpTime&quot;: 201407,
+    &quot;UID&quot;: &quot;WebService.4b725a62-1126-413d-8a53-30371955e6e1&quot;,
+    &quot;Properties&quot;: {
+        &quot;authRequired&quot;: true,
+        &quot;endpoint&quot;: &quot;http://+:80&quot;
+    },
+    &quot;Dependencies&quot;: {
+        &quot;Table Storage&quot;: {
+            &quot;IsHealthy&quot;: true,
+            &quot;Message&quot;: &quot;Alive and well!&quot;
+        }
+    },
+    &quot;$metadata&quot;: {
+        &quot;$type&quot;: &quot;Status;0&quot;,
+        &quot;$uri&quot;: &quot;/status&quot;
+    }
+}
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/APIs/identity-gateway/Status/get-status.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

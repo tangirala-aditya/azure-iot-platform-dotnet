@@ -482,7 +482,7 @@
   "APIs/identity-gateway/Authorize/Callback.html": {
     "href": "APIs/identity-gateway/Authorize/Callback.html",
     "title": "POST Connect Callback | 3M Serenity Documentation",
-    "keywords": "POST Connect Callback This Method executes the callback method Http Request POST https://{platform-url}/connect/callback Request headers Header Value Content-Type application/json Responses Name Type Description 200 OK TODO: Response Object Sample Request Request Body Below are the details to be sent as part of form body. state id_token error error_description Response 200 Response"
+    "keywords": "POST Connect Callback This Method executes the callback method and redirects to call back url Http Request POST https://{platform-url}/connect/callback Request headers Header Value Content-Type application/json Responses Name Type Description 200 OK Success Sample Request Request Body Below are the details to be sent as part of form body. state id_token error error_description Response 200 OK Response"
   },
   "APIs/identity-gateway/Authorize/Index.html": {
     "href": "APIs/identity-gateway/Authorize/Index.html",
@@ -492,7 +492,7 @@
   "APIs/identity-gateway/Authorize/Logout.html": {
     "href": "APIs/identity-gateway/Authorize/Logout.html",
     "title": "Authorize - Logout | 3M Serenity Documentation",
-    "keywords": "Authorize - Logout Service: Identity Gateway Returns to the redirect url passed on successful logout. Http Request GET https://{platform-url}/connect/logout?post_logout_redirect_uri={redirectUrl} Request headers Header Value Content-Type application/json Request Body In the request body, supply a JSON representation of ClientCredentialInput object: Name Required Type Description post_logout_redirect_uri true string URI to redirect to on logout. Responses Name Type Description 200 OK TODO: Response Object Definitions TODO: Add Response Objects from above Examples Log out of CRSL Dev GET https://{platform-url}/connect/logout?post_logout_redirect_uri=https://crsliot-aks-dev.centralus.cloudapp.azure.com/"
+    "keywords": "Authorize - Logout Service: Identity Gateway Returns to the redirect url passed on successful logout. Http Request GET https://{platform-url}/connect/logout?post_logout_redirect_uri={redirectUrl} Request headers Header Value Content-Type application/json Request Body In the request body, supply a JSON representation of ClientCredentialInput object: Name Required Type Description post_logout_redirect_uri true string URI to redirect to on logout. Responses Name Type Description 200 OK Success Examples Log out of CRSL Dev GET https://{platform-url}/connect/logout?post_logout_redirect_uri=https://crsliot-aks-dev.centralus.cloudapp.azure.com/"
   },
   "APIs/identity-gateway/Authorize/Tenant.html": {
     "href": "APIs/identity-gateway/Authorize/Tenant.html",

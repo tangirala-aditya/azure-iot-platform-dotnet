@@ -1239,7 +1239,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Authorize/Callback.html",
-          "hash": "4E4srkjw3AsxXSbWXmYrig=="
+          "hash": "ucDykUIKi3BmaZw9QXi22Q=="
         }
       },
       "is_incremental": false,
@@ -1266,7 +1266,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/identity-gateway/Authorize/Logout.html",
-          "hash": "fCJJCYIBO8X0tP8Muq6FYA=="
+          "hash": "BjlCIV9Evs5DVKqCg9Wqcg=="
         }
       },
       "is_incremental": false,

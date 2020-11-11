@@ -5041,6 +5041,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/guides/authorization-architecture.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/authorization-architecture.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/guides/authorization-architecture.png",
       "output": {
         "resource": {

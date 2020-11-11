@@ -17,7 +17,7 @@
   "APIs/asa-manager/index.html": {
     "href": "APIs/asa-manager/index.html",
     "title": "ASA Manager | 3M Serenity Documentation",
-    "keywords": "ASA Manager ASA Manager Service offers methods to asynchronously convert data related to tenants into formats suitable for Azure Stream Analytics Job inputs. REST operation groups The ASA Manager Service REST API provides operations for working with the following: Operation group Description DeviceGroups Conversion Operations for DeviceGroups. Rules Conversion Operations for Rules. Status Health status operations for the Service."
+    "keywords": "ASA Manager ASA Manager Service offers methods to asynchronously convert data related to tenants into formats suitable for Azure Stream Analytics Job inputs. This is an application service. It's not accessible from outside of the application. REST operation groups The ASA Manager Service REST API provides operations for working with the following: Operation group Description DeviceGroups Conversion Operations for DeviceGroups. Rules Conversion Operations for Rules. Status Health status operations for the Service."
   },
   "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html": {
     "href": "APIs/asa-manager/object-model/Mmm.Iot.AsaManager.WebService.Controllers.DeviceGroupsController.html",
@@ -962,7 +962,7 @@
   "APIs/storage-adapter/index.html": {
     "href": "APIs/storage-adapter/index.html",
     "title": "Storage Adapter Manager | 3M Serenity Documentation",
-    "keywords": "Storage Adapter Manager Storage Adapter Manager offers APIs to maintains data in DB storage and health status of service. REST operation groups The Device Telemetry REST API provides operations for working with the following: Operation group Description Values Manage data in storage Status Health status operations for the Service"
+    "keywords": "Storage Adapter Manager Storage Adapter Manager offers APIs to maintains data in DB storage and health status of service. This is an application service. It's not accessible from outside of the application. REST operation groups The Device Telemetry REST API provides operations for working with the following: Operation group Description Values Manage data in storage Status Health status operations for the Service"
   },
   "APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.html": {
     "href": "APIs/storage-adapter/object-model/Mmm.Iot.StorageAdapter.WebService.Controllers.html",
@@ -1232,7 +1232,7 @@
   "GettingStarted/index.html": {
     "href": "GettingStarted/index.html",
     "title": "Getting Started | 3M Serenity Documentation",
-    "keywords": "Getting Started Welcome to the 3M IoT Platform on Azure documentation. This section provides an overview of the platform and how to get started using it and contributing to its improvement. Content Organization The left navigation is organized sequentially to provide a foundation for working with the platform. Use the Filter Content... located above the navigation to filter for specific topics. As you navigate across links, you may see a PDF button for downloading documentation viable offline. The button's label will indicate the content scope of the PDF. For example, the content attached to the Getting Started link below will export all \"Getting Started\" content whereas is possible to download just the User Manual by navigating to that section. Content Accuracy We have taken care to ensure the accuracy of this content but mistakes happen and things change over time. See How to Improve This Documentation to help us continue to improve the content and keep it up to date. Sections The top navigation organizes content into sections as follows: SECTION DESCRIPTION Getting Started Introductory resources for those new to the platform Use Cases Examples of how the platform is being used at 3M. Guides Topics related to common questions and activities like how to manage devices. APIs Information about integrating the common services into custom solutions. The Search box allows you to search for content across all sections."
+    "keywords": "Getting Started Welcome to the 3M IoT Platform on Azure documentation. This section provides an overview of the platform and how to get started using it and contributing to its improvement. Layout The left navigation is organized sequentially to provide a foundation for working with the platform. Use the Filter Content... located above the navigation to filter for specific topics. Highlights 1 Content Sections Documentation organized by purpose./td> 2 Search Search across all documentation. 3 Filter Search within section. 4 Topic Navigation Naviate section topics. 5 Download PDF Export content. Description specificies scope. 6 Community Editing Help make improvements. 7 Quick Links Navigate in current document. 8 Header Link Bookmark link. Helpful when sharing. Download PDF Details As you navigate across links, you may see a PDF button for downloading documentation viable offline. The button's label will indicate the content scope of the PDF. For example, the content attached to the Getting Started link below will export all \"Getting Started\" documentation. It is also possible to download just the User Manual by navigating to that to that topic here , which changes to download scope to just the User Manual. In this case, the button's lable says User Manual to imply the change in scope. Accuracy We have taken care to ensure the accuracy of this content but mistakes happen and things change over time. See How to Improve This Documentation to help us continue to improve the content and keep it up to date. Content Sections The top navigation organizes content into the following sections: SECTION DESCRIPTION Getting Started Introductory resources for those new to the platform Use Cases Examples of how the platform is being used at 3M. Guides Topics related to common questions and activities like how to manage devices. APIs Information about integrating the common services into custom solutions."
   },
   "GettingStarted/Overview/architecture.html": {
     "href": "GettingStarted/Overview/architecture.html",
@@ -1277,7 +1277,7 @@
   "GettingStarted/Overview/services.html": {
     "href": "GettingStarted/Overview/services.html",
     "title": "Overview of Platform Services | 3M Serenity Documentation",
-    "keywords": "Overview of Platform Services The 3M IoT Platform on Azure has several scalable services for addressing core Device Management capabilities. The platform provides the following services: NAME DESCRIPTION Identity Gateway Config Device Telemetry IoT Hub Manager Storage Tenant Manager Device Twin Device Properties Cache"
+    "keywords": "Overview of Platform Services The 3M IoT Platform on Azure has several scalable services for addressing core Device Management capabilities. The platform provides the following services: NAME DESCRIPTION Identity Gateway Authorization gateway service IoT Hub Manager Manage Azure IoT Hub and devices Device Telemetry Manage Alarms, Rules, Messages and Device Files Tenant Manager Tenant management and alerting services Config Manage Packages, Device groups, Configuration types and Settings Storage Adapter Storage service ASA Amanager Data formating service"
   },
   "GettingStarted/Overview/technology.html": {
     "href": "GettingStarted/Overview/technology.html",
@@ -1472,7 +1472,7 @@
   "GettingStarted/UserManual/index.html": {
     "href": "GettingStarted/UserManual/index.html",
     "title": "User Guide Overview | 3M Serenity Documentation",
-    "keywords": "User Guide Overview This guide provides a walk-through us using the application user interface for the 3M IoT Platform on Azure You can take the guide offline by downloading the PDF. <!-- TODO: Add Cards For additional information, see: -->"
+    "keywords": "User Guide Overview This guide provides a walk-through us using the application user interface for the 3M IoT Platform on Azure. You can take the User Manual offline by downloading the PDF. Here are shortcuts to commonly accessed documentation: Users Management Add User Roles and Permissions Manage Devices Add Device Organize Devices <!-- TODO: Add Cards <div class=\"cards\"> <div class='card'> <div class='header'>DevOps</div> <div class='content'> <a class='link' src=\"./Guides/Versioning/How-To-Define-A-New-Version.html\">How to Define a new version</a> <a class='link' src=\"./Guides/Deployment/Deployment-Guide.html\">Deployment</a> </div> </div> </div> For additional information, see: -->"
   },
   "GettingStarted/UserManual/Maintenance.html": {
     "href": "GettingStarted/UserManual/Maintenance.html",
@@ -1534,30 +1534,70 @@
     "title": "| 3M Serenity Documentation",
     "keywords": ""
   },
+  "Guides/CI-CD/Automation/automated-tests.html": {
+    "href": "Guides/CI-CD/Automation/automated-tests.html",
+    "title": "Serenity Automated Tests | 3M Serenity Documentation",
+    "keywords": "Serenity Automated Tests"
+  },
+  "Guides/CI-CD/Automation/deployments.html": {
+    "href": "Guides/CI-CD/Automation/deployments.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
+  "Guides/CI-CD/Automation/index.html": {
+    "href": "Guides/CI-CD/Automation/index.html",
+    "title": "Overview of Serenity CI/CD Automation | 3M Serenity Documentation",
+    "keywords": "Overview of Serenity CI/CD Automation"
+  },
+  "Guides/CI-CD/index.html": {
+    "href": "Guides/CI-CD/index.html",
+    "title": "Serenity CI/CD | 3M Serenity Documentation",
+    "keywords": "Serenity CI/CD Serenity development fully embraces Contineous Integration / Contineous Development (CI/CD)."
+  },
+  "Guides/CI-CD/Security/AGIC/index.html": {
+    "href": "Guides/CI-CD/Security/AGIC/index.html",
+    "title": "Optional Kubernetes Hardening | 3M Serenity Documentation",
+    "keywords": "Optional Kubernetes Hardening The Azure Application Gateway (\"App Gateway\") and Application Gateway Ingress Controller (\"AGIC\") can be used to add additional security and performance improvements to the Serenity Platform. Although Microsoft recommends it, it is currently an optional add-on, primarily because of the additional costs. This document provides details about AGIC so that you can decide if you want to apply it to your platform's configuration. Overview The Application Gateway Ingress Controller (AGIC) is a Kubernetes application, which makes it possible for Azure Kubernetes Service (AKS) customers to leverage Azure's native Application Gateway L7 load-balancer to expose cloud software to the Internet. By default, Serenity's Kubernetes cluster is configured using the \"Basic Networking\" model. The optional \"Advanced Networking\" can be used in an AKS Cluster so that Nodes use the Azure Container Networking Interface (CNI) so that K8s Nodes are bound to specific IP addresses instead of broadcasting. Benefits AGIC offers the following advanages: Security Hardening Serenity APIs are protected by a native Web Appliation Firewall which reduces vulnerabilities like Denial of Service Attacks Role Based Access Control (RBAC) Service and User Accounts can be use to restrict access to AKS endpoints Increased Performance AGIC removes two extra service hops which consequently improves application performance by approximately 30 milliseconds. Costs In general, AGIC increases platform costs by approximately $300 per month. AGIC does not have to be applied to all environments. It can, for example, be applied to just production environments to reduce platform costs. <!-- Use the Azure Calculator TODO: --> Architectual Differences AKS Basic Networking AKS Advanced (CNI) Networking TODO TODO Note: AKS Advanced Networking allocates a subnet with a finite number of IPs. The number of available IPs determines the number of Pods that can run at the same time, which may influence scalability. Currently, the : ??? Additional Resources https://docs.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview"
+  },
+  "Guides/CI-CD/Security/index.html": {
+    "href": "Guides/CI-CD/Security/index.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
+  "Guides/Devices/Device-Isses.html": {
+    "href": "Guides/Devices/Device-Isses.html",
+    "title": "Device Issues | 3M Serenity Documentation",
+    "keywords": "Device Issues"
+  },
   "Guides/Devices/index.html": {
     "href": "Guides/Devices/index.html",
     "title": "Overview of IoT Devices on Azure | 3M Serenity Documentation",
     "keywords": "Overview of IoT Devices on Azure Conceptually, there are two types of devices that can be used in Azure: 1) Simulated and 2) Real. Simulated devices are used to test connectivity and offer a quick way to evaluate functionality without needing to procure any hardware. There are two types of real devices: IoT Edge device and IoT device. If you'd like to learn more about the types of devices that can work with Azure check out Microsoft's Device Catalog Device Registration Before you can use a real or simulated device, you must first register it. Use the following links to get started: Register a device Register a simulated device"
   },
-  "Guides/Devices/Register-A-Device.html": {
-    "href": "Guides/Devices/Register-A-Device.html",
+  "Guides/Devices/Monitor-Devices.html": {
+    "href": "Guides/Devices/Monitor-Devices.html",
+    "title": "| 3M Serenity Documentation",
+    "keywords": ""
+  },
+  "Guides/Devices/Register-Device.html": {
+    "href": "Guides/Devices/Register-Device.html",
     "title": "How to Register a Device | 3M Serenity Documentation",
     "keywords": "How to Register a Device For a device to connect to the solution accelerator, it must identify itself to IoT Hub using valid credentials. You have the opportunity to save the device connection string that contains these credentials when you add the device to the solution. You include the device connection string in your client application later in this tutorial. To add a device to your Remote Monitoring solution, complete the following steps on the Device Explorer page in the solution: Choose + New device , and then choose Real as the Device type : Enter a Device ID you wish to use to reference this device or allow the system to generate one for you. The value must be unique and connect include spaces. Select the desired authentication type and either have the system generate authentication keys for you or provide your own. CRSL generally uses a Symmetric Key but your organization might prefer x509. Chose whichever is the most approriate. Select the preferred option for how to define keys. You have the choice between: Providing your own Auto Generating"
   },
-  "Guides/Devices/Register-A-Simulated-Device.html": {
-    "href": "Guides/Devices/Register-A-Simulated-Device.html",
+  "Guides/Devices/Register-Simulated-Device.html": {
+    "href": "Guides/Devices/Register-Simulated-Device.html",
     "title": "How to Register a Simulated Device | 3M Serenity Documentation",
     "keywords": "How to Register a Simulated Device"
   },
-  "Guides/Devices/Simulating-Data.html": {
-    "href": "Guides/Devices/Simulating-Data.html",
+  "Guides/Devices/Simulate-Data.html": {
+    "href": "Guides/Devices/Simulate-Data.html",
     "title": "| 3M Serenity Documentation",
     "keywords": "Simulating Device Data using Azure Online Simulator This documentation explains how to simulate device telemetry using Azure Online Simulator i.e., Raspberry Pi Simulator. Note: The example used is to explain how to simulate Device data using connection string of a device. The step#1(Creating a device) can be skipped if the device is already present and connection string is available. Step-1: Creating a Device Create a device and fetch the connection string. Ex: (Using web application) Login to CRSL or PSD portal Go to Device Explorer and click New Device Give the inputs for creating a new device a. Device type: IoT Device/IoT Edge Device b. Device ID: Custom DeviceID or System generated DeviceID c. Authentication type: Symmetric key/ X.509 d. Authentication keys: Autogenerated/Enter manually (Primary and Secondary) e. Click on create/apply Once the device is connected, copy the connection strings (Sample connection string: HostName=iothub-233a1ca2.azure-devices.net;DeviceId=9db19edd-ba26-4e56-80f8-63582f0d1f8c;SharedAccessKey=bjRJEOgHkRxfefNnO4AfakB7No7bzIC3yqeHVlu/F2E=) Note: For creating a device in IoT hub, refer this: https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-raspberry-pi-web-simulator-get-started#register-a-new-device-in-the-iot-hub Step-2: Simulate Device telemetry Launch the Raspberry Pi online Simulator using: https://azure-samples.github.io/raspberry-pi-web-simulator/#getstarted The simulator has three areas a. Assembly area: Preview of the default circuit b. Coding area: An online code editor where the application to collect and send data in the simulator resides. Note: A default sample application is present in this area which helps to collect sensor data from BME280 sensor and sends to your Azure IoT Hub. This is fully compatible with real Pi devices c. Integrated Console window: Shows the output of your code. And it has three buttons i. Run: Run the application from the coding area ii. Reset: Resets the coding area to the default application by undoing the changes you made iii. Fold/Expand: Used to fold/expand the console window 3. In the coding area, if you are running the default application, scroll to the connectionString constant assignment(line.15) and replace the default placeholder with your device connection string from Step-1. Run code: Select Run from console window or type npm start to run the application Output: You should see the following output that shows the sensor data and the messages that are sent to your IoT hub Step-3: Verify telemetry data Telemetry data is sent and can be verified either through Azure portal or web application References: • https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-raspberry-pi-web-simulator-get-started • https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-vscode-iot-toolkit-cloud-device-messaging"
   },
   "Guides/index.html": {
     "href": "Guides/index.html",
     "title": "3M IoT Platform Guides | 3M Serenity Documentation",
-    "keywords": "3M IoT Platform Guides Welcome to the public documentation on guides that cover common activities of working with the platform. Managing Devices Overview This is what a card might look like. User Manual First section This is what a card might look like."
+    "keywords": "3M IoT Platform Guides Welcome to the public documentation on guides that cover common activities of working with the platform. Here are shortcuts to commonly accessed documentation: Device Management Add Device Organize Devices Users Management Add User Roles and Permissions"
   },
   "Guides/Issues/index.html": {
     "href": "Guides/Issues/index.html",

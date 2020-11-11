@@ -162,7 +162,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/asa-manager/index.html",
-          "hash": "hvxT5VLz2md6/F9PO75rvA=="
+          "hash": "7Gx3zWkJA37kSktGVQ7sAw=="
         }
       },
       "is_incremental": false,
@@ -2523,7 +2523,7 @@
       "output": {
         ".html": {
           "relative_path": "APIs/storage-adapter/index.html",
-          "hash": "pT0ode/ZSgy/T5akYdol3A=="
+          "hash": "EaGwRDXupFWiLTrIgvgJ3A=="
         }
       },
       "is_incremental": false,
@@ -3121,12 +3121,15 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "GettingStarted/Overview/services.md",
       "output": {
         ".html": {
           "relative_path": "GettingStarted/Overview/services.html",
-          "hash": "0W0eJAvsMb5/sz0IuqLKYw=="
+          "hash": "T7Afjv/EKEY/hHFBPEQhpg=="
         }
       },
       "is_incremental": false,
@@ -3658,12 +3661,15 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "GettingStarted/UserManual/index.md",
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/index.html",
-          "hash": "9esLuCdTO9VZv5IAO8+uNg=="
+          "hash": "XQxEjJ9PN6EPThbSOZFIfg=="
         }
       },
       "is_incremental": false,
@@ -3747,7 +3753,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/index.html",
-          "hash": "ea4TFjLQeWBR4DDsydet2w=="
+          "hash": "s7waJGKIlbym8Tc8UFv9iQ=="
         }
       },
       "is_incremental": false,
@@ -3830,11 +3836,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Guides/Devices/Register-A-Device.md",
+      "source_relative_path": "Guides/CI-CD/Automation/automated-tests.md",
       "output": {
         ".html": {
-          "relative_path": "Guides/Devices/Register-A-Device.html",
-          "hash": "ng4JeBrTcHU4j8hVvqsT7g=="
+          "relative_path": "Guides/CI-CD/Automation/automated-tests.html",
+          "hash": "k2Zh7zu6PppCgB7wZxz7CA=="
         }
       },
       "is_incremental": false,
@@ -3842,11 +3848,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Guides/Devices/Register-A-Simulated-Device.md",
+      "source_relative_path": "Guides/CI-CD/Automation/deployments.md",
       "output": {
         ".html": {
-          "relative_path": "Guides/Devices/Register-A-Simulated-Device.html",
-          "hash": "O34VxpL4WPu6of2axkrW0g=="
+          "relative_path": "Guides/CI-CD/Automation/deployments.html",
+          "hash": "+VRDDbOOscKwqWjNO7z/Gg=="
         }
       },
       "is_incremental": false,
@@ -3854,23 +3860,122 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Guides/Devices/Simulating-Data.md",
+      "source_relative_path": "Guides/CI-CD/Automation/index.md",
       "output": {
         ".html": {
-          "relative_path": "Guides/Devices/Simulating-Data.html",
-          "hash": "2YaBrrsFLeIzra6LwNrlBA=="
+          "relative_path": "Guides/CI-CD/Automation/index.html",
+          "hash": "LbJbtzUKEqRog1RLPbCgIg=="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/CI-CD/Security/AGIC/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/CI-CD/Security/AGIC/index.html",
+          "hash": "yud689gyqagXGr8R0TSjxA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/CI-CD/Security/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/CI-CD/Security/index.html",
+          "hash": "FH8vyd37hyxKKsYWWyXp2w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/CI-CD/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/CI-CD/index.html",
+          "hash": "9q+cniYObOgkTjcJoY4lSA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/Devices/Device-Isses.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/Devices/Device-Isses.html",
+          "hash": "SGrSaFGCR2GEq5iBbO2zMA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/Devices/Monitor-Devices.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/Devices/Monitor-Devices.html",
+          "hash": "QrmLc3/BrA55GntE4+OARw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/Devices/Register-Device.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/Devices/Register-Device.html",
+          "hash": "xp5gDQp7oZzwKLsH7iAgZA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/Devices/Register-Simulated-Device.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/Devices/Register-Simulated-Device.html",
+          "hash": "XiUcTIDEMOj8P3ah8jD6+A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/Devices/Simulate-Data.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/Devices/Simulate-Data.html",
+          "hash": "6lUk2W/fWnWvNoJw34gYGA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "Guides/Devices/index.md",
       "output": {
         ".html": {
           "relative_path": "Guides/Devices/index.html",
-          "hash": "HvjXC4uDHcIcIId6nqW/1w=="
+          "hash": "y3xK94dvZRUTrszUiurgtA=="
         }
       },
       "is_incremental": false,
@@ -4099,12 +4204,15 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "Guides/index.md",
       "output": {
         ".html": {
           "relative_path": "Guides/index.html",
-          "hash": "+ZAaZP1lHf3sQ53WMhf/7Q=="
+          "hash": "DuEaJBdeFR+8ZlsObUgMgg=="
         }
       },
       "is_incremental": false,
@@ -4119,7 +4227,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "Edkxc8B2DzSliq4BsCn4kA=="
+          "hash": "zYEXP5utFoDoKv2LfHQaGw=="
         }
       },
       "is_incremental": false,
@@ -4957,6 +5065,17 @@
       "output": {
         "resource": {
           "relative_path": "images/device-explorer/device-explorer-tag.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/documentation-layout.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/documentation-layout.png"
         }
       },
       "is_incremental": false,
@@ -6987,7 +7106,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 285,
+          "total_file_count": 293,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

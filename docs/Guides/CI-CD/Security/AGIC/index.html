@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Optional Kubernetes Hardening | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Optional Kubernetes Hardening | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.5.0">
+    
+    <link rel="shortcut icon" href="../../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../../toc.html">
+    <meta property="docfx:tocrel" content="../../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../../index.html">
+                <img id="logo" class="svg" src="../../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="optional-kubernetes-hardening">Optional Kubernetes Hardening</h1>
+
+<p>The Azure Application Gateway (&quot;App Gateway&quot;) and Application Gateway Ingress Controller (&quot;AGIC&quot;) can be used to add additional security and performance improvements to the Serenity Platform.  Although Microsoft recommends it, it is currently an optional add-on, primarily because of the additional costs.</p>
+<p>This document provides details about AGIC so that you can decide if you want to apply it to your platform's configuration.</p>
+<h2 id="overview">Overview</h2>
+<p>The Application Gateway Ingress Controller (AGIC) is a Kubernetes application, which makes it possible for Azure Kubernetes Service (AKS) customers to leverage Azure's native Application Gateway L7 load-balancer to expose cloud software to the Internet.  By default, Serenity's Kubernetes cluster is configured using the <a href="https://docs.microsoft.com/en-us/azure/aks/concepts-network#kubenet-basic-networking">&quot;Basic Networking&quot;</a> model.</p>
+<p>The optional &quot;Advanced Networking&quot; can be used in an AKS Cluster so that Nodes use the <a href="https://docs.microsoft.com/en-us/azure/aks/concepts-network#azure-cni-advanced-networking">Azure Container Networking Interface (CNI)</a> so that K8s Nodes are bound to specific IP addresses instead of broadcasting.</p>
+<h2 id="benefits">Benefits</h2>
+<p>AGIC offers the following advanages:</p>
+<ul>
+<li><strong>Security Hardening</strong><br>
+Serenity APIs are protected by a native Web Appliation Firewall which reduces vulnerabilities like Denial of Service Attacks</li>
+<li><strong>Role Based Access Control (RBAC)</strong><br>
+Service and User Accounts can be use to restrict access to AKS endpoints</li>
+<li><strong>Increased Performance</strong><br>
+AGIC removes two extra service hops which consequently improves application performance by approximately 30 milliseconds.</li>
+</ul>
+<h2 id="costs">Costs</h2>
+<p>In general, AGIC increases platform costs by approximately $300 per month. AGIC does not have to be applied to all environments. It can, for example, be applied to just production environments to reduce platform costs.</p>
+<!-- Use the Azure Calculator TODO: -->
+<h2 id="architectual-differences">Architectual Differences</h2>
+<table>
+<tr><td>AKS Basic Networking</td><td>AKS Advanced (CNI) Networking</td></tr>
+<tr><td>TODO</td><td>TODO</td></tr>
+</table>
+<br>
+<blockquote>
+<p>Note: AKS Advanced Networking allocates a subnet with a finite number of IPs. The number of available IPs determines the number of Pods that can run at the same time, which may influence scalability.
+Currently, the : ???</p>
+</blockquote>
+<h2 id="additional-resources">Additional Resources</h2>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview">https://docs.microsoft.com/en-us/azure/application-gateway/ingress-controller-overview</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/Guides/CI-CD/Security/AGIC/index.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../../styles/main.js"></script>
+  </body>
+</html>

@@ -72,10 +72,9 @@
 <h1 id="authorize---authorize">Authorize - Authorize</h1>
 
 <p>Service: Identity Gateway</p>
-<p>Authorizes user through configured Authorization Provider.</p>
+<p>Authorizes user through configured Authorization Provider and redirects to B2c Uri.</p>
 <pre><code class="lang-HTTP"> GET https://{platform-url}/connect/authorize 
 </code></pre>
-<!-- TODO : Add Requirements and Descriptions below -->
 <h2 id="uri-parameters">URI Parameters</h2>
 <table>
 <thead>
@@ -89,43 +88,42 @@
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>redirect_uri</strong></td>
-<td style="text-align: center;">?</td>
+<td style="text-align: center;">Yes</td>
 <td style="text-align: center;">string</td>
-<td style="text-align: left;">?</td>
+<td style="text-align: left;">callback url from B2C</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>state</strong></td>
-<td style="text-align: center;">?</td>
+<td style="text-align: center;">Yes</td>
 <td style="text-align: center;">string</td>
-<td style="text-align: left;">?</td>
+<td style="text-align: left;">Current State of auth</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>client_id</strong></td>
-<td style="text-align: center;">?</td>
+<td style="text-align: center;">Yes</td>
 <td style="text-align: center;">string</td>
-<td style="text-align: left;">?</td>
+<td style="text-align: left;">client ID GUID</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>nonce</strong></td>
-<td style="text-align: center;">?</td>
+<td style="text-align: center;">Yes</td>
 <td style="text-align: center;">string</td>
-<td style="text-align: left;">?</td>
+<td style="text-align: left;">nonce</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>tenant</strong></td>
-<td style="text-align: center;">?</td>
+<td style="text-align: center;">Yes</td>
 <td style="text-align: center;">string</td>
-<td style="text-align: left;">?</td>
+<td style="text-align: left;">tenant</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>invite</strong></td>
-<td style="text-align: center;">?</td>
+<td style="text-align: center;">Yes</td>
 <td style="text-align: center;">string</td>
-<td style="text-align: left;">?</td>
+<td style="text-align: left;">invitation string</td>
 </tr>
 </tbody>
 </table>
-<!-- TODO : Add type below -->
 <h2 id="responses">Responses</h2>
 <table>
 <thead>
@@ -143,17 +141,6 @@
 </tr>
 </tbody>
 </table>
-<!-- TODO 
-## Definitions
-TODO: Add Response Objects from above
--->
-<!-- 
-## Examples
-
-### Login to Serenity
-
-
--->
 </article>
           </div>
           

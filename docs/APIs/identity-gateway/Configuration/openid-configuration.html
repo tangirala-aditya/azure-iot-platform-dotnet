@@ -72,10 +72,7 @@
 <h1 id="configuration---openid-configuration">Configuration - OpenID Configuration</h1>
 
 <p>Service: Identity Gateway</p>
-<!-- TODO: 
-  Update description to match parent's description.  
- -->
-<p>This Method returns the open ID Provider Configuration.</p>
+<p>This Method returns the open ID Provider Configuration such as issuer, redirectUri, clientId, scope etc., based on the requested environment from the App Configuration.</p>
 <pre><code class="lang-HTTP"> GET https://{platform-url}/.well-known/openid-configuration
 </code></pre>
 <h2 id="permissions">Permissions</h2>
@@ -95,7 +92,6 @@
 </tr>
 </tbody>
 </table>
-<!-- TODO Update Response Object Type -->
 <h2 id="responses">Responses</h2>
 <table>
 <thead>
@@ -108,13 +104,11 @@
 <tbody>
 <tr>
 <td style="text-align: left;">200 OK</td>
-<td style="text-align: left;">TODO: Response Object</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
-<h2 id="definitions">Definitions</h2>
-<!-- TODO Update with the correct Response Object Type -->
 <h3 id="response-object-1">Response Object 1</h3>
 <pre><code>{
     &quot;issuer&quot;: &quot;https://{platform-url}/auth&quot;,

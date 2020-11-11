@@ -71,10 +71,10 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="delete-all-users">Delete all users</h1>
 
-<pre><code>This Method deletes all the user of the loggedIn user's tenant
-</code></pre>
+<p>This Method deletes all the user of the loggedIn user's tenant</p>
 <h2 id="permissions">Permissions</h2>
-<p><strong>UserManage</strong> permission is required to call this api.</p>
+<pre><code>UserManage
+</code></pre>
 <h2 id="http-request">Http Request</h2>
 <pre><code class="lang-HTTP">DELETE /auth/v1/tenants/all
 </code></pre>
@@ -101,7 +101,7 @@
 <pre><code>N/A
 </code></pre>
 <h2 id="response-schema">Response Schema</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
   &quot;Method&quot;: &quot;string&quot;,
   &quot;Models&quot;: [
     {
@@ -122,7 +122,7 @@
 }
 </code></pre>
 <h2 id="response">Response</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
     &quot;Method&quot;: &quot;GetUsers&quot;,
     &quot;Models&quot;: [
         {
@@ -136,8 +136,8 @@
             ],
             &quot;partitionKey&quot;: &quot;0568617a-0a2e-49be-9591-c59163ce2e7f&quot;,
             &quot;rowKey&quot;: &quot;233a1ca3-6855-43c5-8b9c-c7f85a1dd520&quot;,
-            &quot;timestamp&quot;: &quot;2020-08-17T18:30:24.5966896+00:00&quot;,
-            &quot;eTag&quot;: &quot;W/\&quot;datetime'2020-08-17T18%3A30%3A24.5966896Z'\&quot;&quot;
+            &quot;timestamp&quot;: &quot;2020-08-17T18:30:24.59668+00:00&quot;,
+            &quot;eTag&quot;: &quot;\&quot;datetime'2020-08-17T18%3A30%3A25966896Z'\&quot;&quot;
         }
     ]
 }

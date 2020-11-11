@@ -71,10 +71,9 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="get-latestbuildnumber">GET LatestBuildNumber</h1>
 
-<pre><code>This Method is used to fetch the latest build number deployed
-</code></pre>
+<p>This Method is used to fetch the latest build number deployed</p>
 <h2 id="permissions">Permissions</h2>
-<pre><code>**ReadAll** permission is required to call this api.
+<pre><code>ReadAll
 </code></pre>
 <h2 id="http-request">Http Request</h2>
 <pre><code class="lang-HTTP">GET /auth/v1/settings/LatestBuildNumber
@@ -102,10 +101,10 @@
 <pre><code>N/A
 </code></pre>
 <h2 id="sample-request">Sample Request</h2>
-<pre><code>/auth/v1/settings/LatestBuildNumber
+<pre><code class="lang-HTTP">GET /auth/v1/settings/LatestBuildNumber
 </code></pre>
 <h2 id="response-schema">Response Schema</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
   &quot;value&quot;: &quot;string&quot;,
   &quot;userId&quot;: &quot;string&quot;,
   &quot;settingKey&quot;: &quot;string&quot;,
@@ -116,7 +115,7 @@
 }
 </code></pre>
 <h2 id="response">Response</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
     &quot;value&quot;: &quot;72086&quot;,
     &quot;userId&quot;: null,
     &quot;settingKey&quot;: null,

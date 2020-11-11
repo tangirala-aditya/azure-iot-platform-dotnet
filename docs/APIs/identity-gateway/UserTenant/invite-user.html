@@ -73,7 +73,8 @@
 
 <p>Creates a new user when user gets invites to the system.</p>
 <h2 id="permissions">Permissions</h2>
-<p><strong>UserManage</strong> permission is required to call this api.</p>
+<pre><code>UserManage
+</code></pre>
 <h2 id="http-request">Http Request</h2>
 <pre><code class="lang-HTTP">POST /auth/v1/tenants/invite
 </code></pre>
@@ -151,10 +152,13 @@
 </tbody>
 </table>
 <h2 id="sample-request">Sample Request</h2>
-<pre><code>{&quot;email_address&quot;:&quot;invitedEmailAddress&quot;,&quot;role&quot;:&quot;admin&quot;}
+<pre><code class="lang-Json">{
+  &quot;email_address&quot;:&quot;invitedEmailAddress&quot;,
+  &quot;role&quot;:&quot;admin&quot;
+}
 </code></pre>
 <h2 id="response-schema">Response Schema</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
   &quot;Method&quot;: &quot;string&quot;,
   &quot;Models&quot;: [
     {
@@ -175,7 +179,7 @@
 }
 </code></pre>
 <h2 id="sample-response">Sample Response</h2>
-<pre><code>{
+<pre><code class="lang-C#">{
     eTag: &quot;W/&quot;datetime'2020-10-30T08%3A35%3A46.9315262Z'&quot;&quot;
     name: &quot;invitedEmailAddress&quot;
     partitionKey: &quot;465a5197-f412-4548-9180-d7f3e1331cda&quot;

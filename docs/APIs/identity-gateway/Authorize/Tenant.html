@@ -71,10 +71,10 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="authorize---tenant">Authorize - Tenant</h1>
 
-<p>Service: Identity Gateway</p>
 <p>Used to switch tenants from one tenant to other available tenant of logged in user</p>
 <!-- TODO Add link to Tenant documentation.-->
-<pre><code class="lang-HTTP">POST https://{platform-url}/connect/switch/{tenantId}
+<h2 id="http-request">Http Request</h2>
+<pre><code class="lang-HTTP">POST /connect/switch/{tenantId}
 </code></pre>
 <h2 id="request-headers">Request Headers</h2>
 <table>
@@ -108,12 +108,12 @@
 </tr>
 </tbody>
 </table>
-<h3 id="examples">Examples</h3>
-<h2 id="tenant-switch-example">Tenant Switch Example</h2>
-<pre><code class="lang-HTTP"> POST https://{platform-url}/connect/switch/233a1ca2-6855-43c5-8b9c-c7f85a1dd520
+<h2 id="examples">Examples</h2>
+<h3 id="tenant-switch">Tenant Switch</h3>
+<pre><code class="lang-HTTP"> POST /connect/switch/233a1ca2-6855-43c5-8b9c-c7f85a1dd520
 </code></pre>
-<h2 id="response">Response</h2>
-<pre><code>eyJhbGciOiJSUzI1NiIssssInR5cCI6IkpasasassXVCJ9.eyJzdWIiOiIzZTMwZjMwMS00ZjU3LTRiM2UtOTQ5YS0zZmY4ZTkzODcwYjUiLCJuYW1lIjoiVmlzd2FuYWRoIEtvdGhhIENXIiwiaWF0IjoxNjA0Mjk2ODIyLCJ0ZW5hbnQiOiIyMzNhMWNhMi02ODU1LTQzYzUtOGI5Yy1jN2Y4NWExZGQ1MjAiLCJyb2xlIjoiYWRtaW4iLCJpc19zeXN0ZW1BZG1pbiI6dHJ1ZSwiYXZhaWxhYmxlX3RlbmFudHMiOlsiMjA5ZDdmNzktMzlhYS00ZTJhLThlOWMtNTZmMDRmNzYzM2Y5IiwiMjMzYTFjYTItNjg1NS00M2M1LThiOWMtYzdmODVhMWRkNTIwIiwiYTk0MDM1YTktZTFjNS00YmIxLWI3MzktM2I2OTQ5ZTU4NjY0IiwiZjI4NDM0NTEtNWEzNS00NTg5LTk4YmItMGE5YTVmZmUyOGNlIl0sImV4cCI6MTYwNjYzMTEzMSwiaXNzIjoiaHR0cHM6Ly9jcnNsaW90LWFrcy1kZXYuY2VudHJhbHVzLmNsb3VkYXBwLmF6dXJlLmNvbS9hdXRoIiwiYXVkIjoiSW9UUGxhdGZvcm0ifQ.jUCYmOuHYM4fkNObCQ6ObAvQ--H9uDrNcgcsojuwhEChPXz1anlaGzPuRZpfK7rhSJzwuC-jrBLf23nL7pxkQA2mUV7oahKVf6WVhOea7012HnWIk3mqr_l3lDydsuofoisjdijahsduiahzofdjaljfk/szo/hafdnlozhjkfhduszhfauszuofhcjaCNjQp9WH2Wz-tqG2LZjh7zutzCmBBAvXd8gyBMqqOwXAVU6yxveMxhmPhyk6LwJSc2fGxsprxNTACHNq89KETQo742peRMo95Xj3dobjRBiKbmglvwuEy2FkzsNjq25ikj6JOsQsgtraFABa35mdGqhLrikVuhyuihjzmsFMDK0U6-l_-ot_c4FSPN9Dc_0oLSL5sB6tRW-zg6rPhhUu_ISLyHh0J51lw
+<h3 id="sample-response">Sample Response</h3>
+<pre><code class="lang-text">eyJhbGciOiJSUzI1NiIssssInR5cCI6IkpasasassXVCJ9.eyJzdWIiOiIzZTMwZjMwMS00ZjU3LTRiM2UtOTQ5YS0zZmY4ZTkzODcwYjUiLCJuYW1lIjoiVmlzd2FuYWRoIEtvdGhhIENXIiwiaWF0IjoxNjA0Mjk2ODIyLCJ0ZW5hbnQiOiIyMzNhMWNhMi02ODU1LTQzYzUtOGI5Yy1jN2Y4NWExZGQ1MjAiLCJyb2xlIjoiYWRtaW4iLCJpc19zeXN0ZW1BZG1pbiI6dHJ1ZSwiYXZhaWxhYmxlX3RlbmFudHMiOlsiMjA5ZDdmNzktMzlhYS00ZTJhLThlOWMtNTZmMDRmNzYzM2Y5IiwiMjMzYTFjYTItNjg1NS00M2M1LThiOWMtYzdmODVhMWRkNTIwIiwiYTk0MDM1YTktZTFjNS00YmIxLWI3MzktM2I2OTQ5ZTU4NjY0IiwiZjI4NDM0NTEtNWEzNS00NTg5LTk4YmItMGE5YTVmZmUyOGNlIl0sImV4cCI6MTYwNjYzMTEzMSwiaXNzIjoiaHR0cHM6Ly9jcnNsaW90LWFrcy1kZXYuY2VudHJhbHVzLmNsb3VkYXBwLmF6dXJlLmNvbS9hdXRoIiwiYXVkIjoiSW9UUGxhdGZvcm0ifQ.jUCYmOuHYM4fkNObCQ6ObAvQ--H9uDrNcgcsojuwhEChPXz1anlaGzPuRZpfK7rhSJzwuC-jrBLf23nL7pxkQA2mUV7oahKVf6WVhOea7012HnWIk3mqr_l3lDydsuofoisjdijahsduiahzofdjaljfk/szo/hafdnlozhjkfhduszhfauszuofhcjaCNjQp9WH2Wz-tqG2LZjh7zutzCmBBAvXd8gyBMqqOwXAVU6yxveMxhmPhyk6LwJSc2fGxsprxNTACHNq89KETQo742peRMo95Xj3dobjRBiKbmglvwuEy2FkzsNjq25ikj6JOsQsgtraFABa35mdGqhLrikVuhyuihjzmsFMDK0U6-l_-ot_c4FSPN9Dc_0oLSL5sB6tRW-zg6rPhhUu_ISLyHh0J51lw
 </code></pre>
 </article>
           </div>

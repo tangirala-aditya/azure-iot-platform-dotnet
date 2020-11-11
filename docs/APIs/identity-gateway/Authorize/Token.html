@@ -71,9 +71,9 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="authorize---token">Authorize - Token</h1>
 
-<p>Service: Identity Gateway</p>
 <p>Returns JWT token matching claim.  Used by user registration to convert and invited user to a enrolled user.</p>
-<pre><code class="lang-HTTP"> POST https://{platform-url}/connect/token 
+<h2 id="http-request">Http Request</h2>
+<pre><code class="lang-HTTP"> POST /connect/token
 </code></pre>
 <h2 id="request-headers">Request Headers</h2>
 <table>
@@ -139,15 +139,19 @@
 </tr>
 </tbody>
 </table>
-<h4 id="sample-request">Sample Request</h4>
-<pre><code class="lang-HTTP">POST https://{platform-url}/connect/token
+<h2 id="example">Example</h2>
+<h3 id="sample-request">Sample Request</h3>
+<pre><code class="lang-HTTP">POST /connect/token
 </code></pre>
-<h4 id="sample-body">Sample Body</h4>
-<pre><code>{&quot;client_id&quot;:&quot;95d3c562-23eb-4e2d-8d3d-ea2448706934&quot;,&quot;client_secret&quot;:&quot;SH90ZgTR-MTObGLbO/u[7qIc-MP0vtAs&quot;}
+<h3 id="sample-body">Sample Body</h3>
+<pre><code class="lang-Json">{
+    &quot;client_id&quot;:&quot;95d3c562-23eb-4e2d-8d3d-ea2448706934&quot;,
+    &quot;client_secret&quot;:&quot;SH90ZgTR-MTObGLbO/u[7qIc-MP0vtAs&quot;
+}
 
 </code></pre>
-<h4 id="sample-response">Sample Response</h4>
-<pre><code>eyJhbDciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRdaWQiOiI5NWQzYzY2Mi0yM2VhLTRlMmQtOGQzZC1lYTI0NDg3MDY5MzQiLCJzdWIiOiI5NWQzYzY2Mi0yM2VhLTRlNmQtOGQzZC1lYTI0NDg3MDY5MzQiLCJuYW1lIjoiOTVkM2M2NjItMjNlYS00ZTJkLThkM2QtZWEyNDQ4NzA2OTM0IiwidHlwZSI6IkNsaWVudCBDcmVkZW50aWFscyIsImlhdCI6MTYwNDMwNTc0OCwidGVuYW50IjoiMjMzYTFjYTItNjg1NS00M2M1LThiOWMtYzdmODVhMWRkNTIwIiwicm9sZSI6ImFkbWluIiwiaXNfc3lzdGVtQWRtaW4iOmZhbHNlLCJhdmFpbGFibGVfdGVuYW50cyI6IjIzM2ExY2EyLTY4NTUtNDNjNS04YjljLWM3Zjg1YTFkZDUyMCIsImV4cCI6MTYwNjg5Nzc0OCwiaXNzIjoiaHR0cHM6Ly9jcnNsaW90LWFrcy1kZXYuY2VudHJhbHVzLmNsb3VkYXBwLmF6dXJlLmNvbS9hdXRoIiwiYXVkIjoiSW9UUGxhdGZvcm0ifQ.oGTvV4NH5qL4qf8xtWChzn4GCWeaBV8Z9RwXmInK6V9mE3kSk2LqPJg9x7OVPZwHOaQkUcEh2_e9IZKOtwF9JXgz9ZLeFedpBSoLQPAtshMj1YBIXw64MGnuxViB7NoETjxMYsS3cD63_xSSIq2NgjAixHXeT5yONi5SNKIlScRVv3fytLbWCZou2oWoThTIHUYb-A-plaBWjyLfzhCnSJboolFXWw5QbMZcIUNUvg8yJ1oR7M3-OWtHnKdo7vjkSnl5ASe0_dWXaX0LrYBmNUaPek9xG3xTYekhc8rNvf5hL1k7F9VwRVBysPEnaZcnbXrsOvsQ_MmAk4hcuYaDtA
+<h3 id="sample-response">Sample Response</h3>
+<pre><code class="lang-text">eyJhbDciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRdaWQiOiI5NWQzYzY2Mi0yM2VhLTRlMmQtOGQzZC1lYTI0NDg3MDY5MzQiLCJzdWIiOiI5NWQzYzY2Mi0yM2VhLTRlNmQtOGQzZC1lYTI0NDg3MDY5MzQiLCJuYW1lIjoiOTVkM2M2NjItMjNlYS00ZTJkLThkM2QtZWEyNDQ4NzA2OTM0IiwidHlwZSI6IkNsaWVudCBDcmVkZW50aWFscyIsImlhdCI6MTYwNDMwNTc0OCwidGVuYW50IjoiMjMzYTFjYTItNjg1NS00M2M1LThiOWMtYzdmODVhMWRkNTIwIiwicm9sZSI6ImFkbWluIiwiaXNfc3lzdGVtQWRtaW4iOmZhbHNlLCJhdmFpbGFibGVfdGVuYW50cyI6IjIzM2ExY2EyLTY4NTUtNDNjNS04YjljLWM3Zjg1YTFkZDUyMCIsImV4cCI6MTYwNjg5Nzc0OCwiaXNzIjoiaHR0cHM6Ly9jcnNsaW90LWFrcy1kZXYuY2VudHJhbHVzLmNsb3VkYXBwLmF6dXJlLmNvbS9hdXRoIiwiYXVkIjoiSW9UUGxhdGZvcm0ifQ.oGTvV4NH5qL4qf8xtWChzn4GCWeaBV8Z9RwXmInK6V9mE3kSk2LqPJg9x7OVPZwHOaQkUcEh2_e9IZKOtwF9JXgz9ZLeFedpBSoLQPAtshMj1YBIXw64MGnuxViB7NoETjxMYsS3cD63_xSSIq2NgjAixHXeT5yONi5SNKIlScRVv3fytLbWCZou2oWoThTIHUYb-A-plaBWjyLfzhCnSJboolFXWw5QbMZcIUNUvg8yJ1oR7M3-OWtHnKdo7vjkSnl5ASe0_dWXaX0LrYBmNUaPek9xG3xTYekhc8rNvf5hL1k7F9VwRVBysPEnaZcnbXrsOvsQ_MmAk4hcuYaDtA
 </code></pre>
 </article>
           </div>

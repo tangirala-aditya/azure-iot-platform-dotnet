@@ -97,7 +97,7 @@
 <pre><code>N/A
 </code></pre>
 <h2 id="response-schema">Response Schema</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
   &quot;Name&quot;: &quot;string&quot;,
   &quot;Status&quot;: {
     &quot;IsHealthy&quot;: true,
@@ -133,31 +133,31 @@
 }
 </code></pre>
 <h2 id="response">Response</h2>
-<pre><code>{
-    &quot;Name&quot;: &quot;Identity Gateway&quot;,
-    &quot;Status&quot;: {
-        &quot;IsHealthy&quot;: true,
-        &quot;Message&quot;: &quot;Alive and well!&quot;
-    },
-    &quot;CurrentTime&quot;: &quot;2020-10-29T06:56:26+00:00&quot;,
-    &quot;StartTime&quot;: &quot;2020-10-26T22:59:39+00:00&quot;,
-    &quot;UpTime&quot;: 201407,
-    &quot;UID&quot;: &quot;WebService.4b725a62-1126-413d-8a53-30371955e6e1&quot;,
-    &quot;Properties&quot;: {
-        &quot;authRequired&quot;: true,
-        &quot;endpoint&quot;: &quot;http://+:80&quot;
-    },
-    &quot;Dependencies&quot;: {
-        &quot;Table Storage&quot;: {
+<pre><code class="lang-Json">    {
+        &quot;Name&quot;: &quot;Identity Gateway&quot;,
+        &quot;Status&quot;: {
             &quot;IsHealthy&quot;: true,
             &quot;Message&quot;: &quot;Alive and well!&quot;
+        },
+        &quot;CurrentTime&quot;: &quot;2020-10-29T06:56:26+00:00&quot;,
+        &quot;StartTime&quot;: &quot;2020-10-26T22:59:39+00:00&quot;,
+        &quot;UpTime&quot;: 201407,
+        &quot;UID&quot;: &quot;WebService.4b725a62-1126-413d-8a53-30371955e6e1&quot;,
+        &quot;Properties&quot;: {
+            &quot;authRequired&quot;: true,
+            &quot;endpoint&quot;: &quot;http://+:80&quot;
+        },
+        &quot;Dependencies&quot;: {
+            &quot;Table Storage&quot;: {
+                &quot;IsHealthy&quot;: true,
+                &quot;Message&quot;: &quot;Alive and well!&quot;
+            }
+        },
+        &quot;$metadata&quot;: {
+            &quot;$type&quot;: &quot;Status;0&quot;,
+            &quot;$uri&quot;: &quot;/status&quot;
         }
-    },
-    &quot;$metadata&quot;: {
-        &quot;$type&quot;: &quot;Status;0&quot;,
-        &quot;$uri&quot;: &quot;/status&quot;
     }
-}
 </code></pre>
 </article>
           </div>

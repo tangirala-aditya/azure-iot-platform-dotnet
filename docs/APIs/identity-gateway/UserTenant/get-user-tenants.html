@@ -71,10 +71,10 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="user-tenants">User Tenants</h1>
 
-<pre><code>This Method returns all the tenants of the user
-</code></pre>
+<p>This Method returns all the tenants of the user</p>
 <h2 id="permissions">Permissions</h2>
-<p><strong>ReadAll</strong> permission is required to call this api.</p>
+<pre><code>ReadAll
+</code></pre>
 <h2 id="http-request">Http Request</h2>
 <pre><code class="lang-HTTP">GET /auth/v1/tenants/{userId}/all
 </code></pre>
@@ -101,10 +101,10 @@
 <pre><code>N/A
 </code></pre>
 <h2 id="sample-response">Sample Response</h2>
-<pre><code>/auth/v1/tenants/3e30fq301-4f57-4b3e-949a-3ff8e93870b5/all
+<pre><code class="lang-HTTP">GET /auth/v1/tenants/3e30fq301-4f57-4b3e-949a-3ff8e93870b5/all
 </code></pre>
 <h2 id="response-schema">Response Schema</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
   &quot;Method&quot;: &quot;string&quot;,
   &quot;Models&quot;: [
     {
@@ -125,7 +125,7 @@
 }
 </code></pre>
 <h2 id="response">Response</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
     &quot;Method&quot;: &quot;GetTenants&quot;,
     &quot;Models&quot;: [
         {

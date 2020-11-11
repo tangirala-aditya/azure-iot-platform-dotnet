@@ -71,10 +71,10 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="create-user-from-claim-user">Create User from Claim User</h1>
 
-<pre><code>Creates a new user with the userId, tenantId present in the claims.
-</code></pre>
+<p>Creates a new user with the userId, tenantId present in the claims.</p>
 <h2 id="permissions">Permissions</h2>
-<p><strong>UserManage</strong> permission is required to call this api.</p>
+<pre><code>UserManage
+</code></pre>
 <h2 id="http-request">Http Request</h2>
 <pre><code class="lang-HTTP">POST /auth/v1/tenants
 </code></pre>
@@ -137,14 +137,14 @@
 </tbody>
 </table>
 <h2 id="sample-request">Sample Request</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
     &quot;roles&quot;: &quot;[\&quot;admin\&quot;]&quot;,
     &quot;name&quot;: &quot;UserName&quot;,
     &quot;type&quot;: &quot;Member&quot;
 }
 </code></pre>
 <h2 id="response-schema">Response Schema</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
   &quot;Method&quot;: &quot;string&quot;,
   &quot;Models&quot;: [
     {
@@ -165,7 +165,7 @@
 }
 </code></pre>
 <h2 id="sample-response">Sample Response</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
     &quot;roles&quot;: &quot;[\&quot;admin\&quot;]&quot;,
     &quot;name&quot;: &quot;UserName&quot;,
     &quot;type&quot;: &quot;Member&quot;,
@@ -174,10 +174,10 @@
     &quot;roleList&quot;: [
         &quot;admin&quot;
     ],
-    &quot;partitionKey&quot;: &quot;3e30fq301-4f57-4b3e-949a-3ff8e93870b5&quot;,
+    &quot;partitionKey&quot;:&quot;3e30fq301-4f57-4b3e-949a-3ff8e93870b5&quot;,
     &quot;rowKey&quot;: &quot;209d7f77-39aa-4e2a-8e9c-56f04f7633f9&quot;,
     &quot;timestamp&quot;: &quot;2020-10-30T07:52:52.4919217+00:00&quot;,
-    &quot;eTag&quot;: &quot;W/\&quot;datetime'2020-10-30T07%3A52%3A52.4919217Z'\&quot;&quot;
+    &quot;eTag&quot;: &quot;W\&quot;datetime'2020-10-30T07%3A52%3A524919217Z'\&quot;&quot;
 }
 </code></pre>
 <h2 id="security">Security</h2>

@@ -71,10 +71,9 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="update-usersetting-of-activedevicegroup">Update UserSetting of ActiveDevicegroup</h1>
 
-<pre><code>This Method is used to save the user settings based on claims userId and ActiveDeviceGroup Setting value
-</code></pre>
+<p>This Method is used to save the user settings based on claims userId and ActiveDeviceGroup Setting value</p>
 <h2 id="permissions">Permissions</h2>
-<pre><code>**UserManage** permission is required to call this api.
+<pre><code>UserManage
 </code></pre>
 <h2 id="http-request">Http Request</h2>
 <pre><code class="lang-HTTP">POST /auth/v1/settings/ActiveDeviceGroup/{value}
@@ -102,10 +101,10 @@
 <pre><code>N/A
 </code></pre>
 <h2 id="sample-request">Sample Request</h2>
-<pre><code>/auth/v1/settings/ActiveDeviceGroup/UpdatedValue
+<pre><code class="lang-HTTP">POST /auth/v1/settings/ActiveDeviceGroup/UpdatedValue
 </code></pre>
 <h2 id="response-schema">Response Schema</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
   &quot;value&quot;: &quot;string&quot;,
   &quot;userId&quot;: &quot;string&quot;,
   &quot;settingKey&quot;: &quot;string&quot;,
@@ -116,14 +115,14 @@
 }
 </code></pre>
 <h2 id="response">Response</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
     &quot;value&quot;: &quot;updatedValue&quot;,
     &quot;userId&quot;: &quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
     &quot;settingKey&quot;: &quot;ActiveDeviceGroup&quot;,
-    &quot;partitionKey&quot;: &quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
+    &quot;partitionKey&quot;:&quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
     &quot;rowKey&quot;: &quot;test&quot;,
     &quot;timestamp&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
-    &quot;eTag&quot;: &quot;W/\&quot;datetime'2020-10-29T10%3A34%3A48.4352166Z'\&quot;&quot;
+    &quot;eTag&quot;: &quot;W/\&quot;datetime'2020-10-29T10%3A34%3A484352166Z'\&quot;&quot;
 }
 </code></pre>
 <h2 id="security">Security</h2>

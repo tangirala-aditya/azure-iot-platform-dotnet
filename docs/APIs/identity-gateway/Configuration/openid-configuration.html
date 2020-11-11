@@ -71,12 +71,13 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="configuration---openid-configuration">Configuration - OpenID Configuration</h1>
 
-<p>Service: Identity Gateway</p>
 <p>This Method returns the open ID Provider Configuration such as issuer, redirectUri, clientId, scope etc., based on the requested environment from the App Configuration.</p>
-<pre><code class="lang-HTTP"> GET https://{platform-url}/.well-known/openid-configuration
+<h2 id="http-request">HTTP Request</h2>
+<pre><code class="lang-HTTP"> GET /.well-known/openid-configuration
 </code></pre>
 <h2 id="permissions">Permissions</h2>
-<p><strong>ReadAll</strong> permission is required to call this api.</p>
+<pre><code>ReadAll
+</code></pre>
 <h2 id="request-headers">Request Headers</h2>
 <table>
 <thead>
@@ -110,7 +111,7 @@
 </tbody>
 </table>
 <h3 id="response-object-1">Response Object 1</h3>
-<pre><code>{
+<pre><code class="lang-Json">{
     &quot;issuer&quot;: &quot;https://{platform-url}/auth&quot;,
     &quot;jwks_uri&quot;: &quot;https://{platform-url}/auth/.well-known/openid-configuration/jwks&quot;,
     &quot;authorization_endpoint&quot;: &quot;{platform-url}/auth/connect/authorize&quot;,

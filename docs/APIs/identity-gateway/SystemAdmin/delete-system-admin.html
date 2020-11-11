@@ -71,10 +71,10 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="delete-system-admin">Delete System Admin</h1>
 
-<pre><code>This Method deletes system admins in the system.
-</code></pre>
+<p>This Method deletes system admins in the system.</p>
 <h2 id="permissions">Permissions</h2>
-<p><strong>SystemAdmin</strong> is only allowed to call this api.</p>
+<pre><code>SystemAdmin
+</code></pre>
 <h2 id="http-request">Http Request</h2>
 <pre><code class="lang-HTTP">DELETE /auth/v1/systemAdmin/{userId}
 </code></pre>
@@ -101,7 +101,7 @@
 <pre><code>N/A
 </code></pre>
 <h2 id="response-schema">Response Schema</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
   &quot;name&quot;: &quot;string&quot;,
   &quot;partitionKey&quot;: &quot;string&quot;,
   &quot;rowKey&quot;: &quot;string&quot;,
@@ -110,7 +110,7 @@
 }
 </code></pre>
 <h2 id="response">Response</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
     &quot;name&quot;: &quot;UserName&quot;,
     &quot;partitionKey&quot;: &quot;3e30fq301-4f57-4b3e-949a-3ff8e93870b5&quot;,
     &quot;rowKey&quot;: &quot;3e30fq301-4f57-4b3e-949a-3ff8e93870b5&quot;,

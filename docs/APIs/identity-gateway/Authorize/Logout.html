@@ -71,10 +71,9 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="authorize---logout">Authorize - Logout</h1>
 
-<p>Service: Identity Gateway</p>
 <p>Returns to the redirect url passed on successful logout.</p>
 <h2 id="http-request">Http Request</h2>
-<pre><code class="lang-HTTP">GET https://{platform-url}/connect/logout?post_logout_redirect_uri={redirectUrl}
+<pre><code class="lang-HTTP">GET /connect/logout?post_logout_redirect_uri={redirectUrl}
 </code></pre>
 <h2 id="request-headers">Request Headers</h2>
 <table>
@@ -130,7 +129,7 @@
 </table>
 <h2 id="examples">Examples</h2>
 <h3 id="log-out-of-crsl-dev">Log out of CRSL Dev</h3>
-<pre><code class="lang-HTTP">GET https://{platform-url}/connect/logout?post_logout_redirect_uri=https://crsliot-aks-dev.centralus.cloudapp.azure.com/
+<pre><code class="lang-HTTP">GET /connect/logout?post_logout_redirect_uri=https://crsliot-aks-dev.centralus.cloudapp.azure.com/
 </code></pre>
 </article>
           </div>

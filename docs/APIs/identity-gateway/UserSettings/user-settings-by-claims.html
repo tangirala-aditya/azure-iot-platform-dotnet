@@ -71,10 +71,9 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="get-user-settings-of-loggedin-user">Get User Settings of loggedin User</h1>
 
-<pre><code>This Method returns all the user settings of loggedIn userId
-</code></pre>
+<p>This Method returns all the user settings of loggedIn userId</p>
 <h2 id="permissions">Permissions</h2>
-<pre><code>**ReadAll** permission is required to call this api.
+<pre><code>ReadAll
 </code></pre>
 <h2 id="http-request">Http Request</h2>
 <pre><code class="lang-HTTP">GET /auth/v1/settings/all
@@ -102,7 +101,7 @@
 <pre><code>N/A
 </code></pre>
 <h2 id="response-schema">Response Schema</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
   &quot;Method&quot;: &quot;string&quot;,
   &quot;Models&quot;: [
     {
@@ -118,26 +117,26 @@
 }
 </code></pre>
 <h2 id="response">Response</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
     &quot;Method&quot;: &quot;Get&quot;,
     &quot;Models&quot;: [
         {
-            &quot;value&quot;: &quot;2ceeeccf-f775-4ea3-b84e-5ea26b125ab6&quot;,
-            &quot;userId&quot;: &quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
-            &quot;settingKey&quot;: &quot;209d7f79-39aa-4e2a-8e9c-56f04f7633f9-ActiveDeviceGroup&quot;,
-            &quot;partitionKey&quot;: &quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
-            &quot;rowKey&quot;: &quot;209d7f79-39aa-4e2a-8e9c-56f04f7633f9-ActiveDeviceGroup&quot;,
-            &quot;timestamp&quot;: &quot;2020-09-22T05:42:01.4720202+00:00&quot;,
-            &quot;eTag&quot;: &quot;W/\&quot;datetime'2020-09-22T05%3A42%3A01.4720202Z'\&quot;&quot;
+            &quot;value&quot;:&quot;2ceeeccf-f775-4ea3-b84e-5ea26b125ab6&quot;,
+            &quot;userId&quot;:&quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
+            &quot;settingKey&quot;:&quot;209d7f79-39aa-4e2a-8e9c-56f04f7633f9-ActivDeviceGroup&quot;,
+            &quot;partitionKey&quot;:&quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
+            &quot;rowKey&quot;:&quot;209d7f79-39aa-4e2a-8e9c-56f04f7633f9-ActivDeviceGroup&quot;,
+            &quot;timestamp&quot;: &quot;2020-09-22T05:42:01.472020+00:00&quot;,
+            &quot;eTag&quot;: &quot;W\&quot;datetime'2020-09-22T05%3A42%3A014720202Z'\&quot;&quot;
         },
         {
-            &quot;value&quot;: &quot;233a1ca2-6855-43c5-8b9c-c7f85a1dd520&quot;,
-            &quot;userId&quot;: &quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
+            &quot;value&quot;:&quot;233a1ca2-6855-43c5-8b9c-c7f85a1dd520&quot;,
+            &quot;userId&quot;:&quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
             &quot;settingKey&quot;: &quot;LastUsedTenant&quot;,
-            &quot;partitionKey&quot;: &quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
+            &quot;partitionKey&quot;:&quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
             &quot;rowKey&quot;: &quot;LastUsedTenant&quot;,
-            &quot;timestamp&quot;: &quot;2020-10-14T05:43:26.3297439+00:00&quot;,
-            &quot;eTag&quot;: &quot;W/\&quot;datetime'2020-10-14T05%3A43%3A26.3297439Z'\&quot;&quot;
+            &quot;timestamp&quot;: &quot;2020-10-14T05:43:26.329743+00:00&quot;,
+            &quot;eTag&quot;: &quot;W\&quot;datetime'2020-10-14T05%3A43%3A263297439Z'\&quot;&quot;
         }
     ]
 }

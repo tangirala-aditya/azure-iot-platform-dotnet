@@ -71,10 +71,9 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="get-user-settings-by-userid-and-setting-name">Get User Settings by UserId and Setting Name</h1>
 
-<pre><code>This Method returns the settings based on UserId and Setting Name
-</code></pre>
+<p>This Method returns the settings based on UserId and Setting Name</p>
 <h2 id="permissions">Permissions</h2>
-<pre><code>**ReadAll** permission is required to call this api.
+<pre><code>ReadAll
 </code></pre>
 <h2 id="http-request">Http Request</h2>
 <pre><code class="lang-HTTP">GET /auth/v1/settings/{userId}/{setting}
@@ -102,10 +101,10 @@
 <pre><code>N/A
 </code></pre>
 <h2 id="sample-request">Sample Request</h2>
-<pre><code>/auth/v1/settings/3e30f301-4f57-4b3e-949a-3ff8e93870b5/LastUsedTenant
+<pre><code class="lang-HTTP">GET /auth/v1/settings/3e30f301-4f57-4b3e-949a-3ff8e93870b5/LastUsedTenant
 </code></pre>
 <h2 id="response-schema">Response Schema</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
   &quot;value&quot;: &quot;string&quot;,
   &quot;userId&quot;: &quot;string&quot;,
   &quot;settingKey&quot;: &quot;string&quot;,
@@ -116,14 +115,14 @@
 }
 </code></pre>
 <h2 id="response">Response</h2>
-<pre><code>{
+<pre><code class="lang-Json">{
     &quot;value&quot;: &quot;233a1ca2-6855-43c5-8b9c-c7f85a1dd520&quot;,
     &quot;userId&quot;: &quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
     &quot;settingKey&quot;: &quot;LastUsedTenant&quot;,
-    &quot;partitionKey&quot;: &quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
+    &quot;partitionKey&quot;:&quot;3e30f301-4f57-4b3e-949a-3ff8e93870b5&quot;,
     &quot;rowKey&quot;: &quot;LastUsedTenant&quot;,
     &quot;timestamp&quot;: &quot;2020-10-14T05:43:26.3297439+00:00&quot;,
-    &quot;eTag&quot;: &quot;W/\&quot;datetime'2020-10-14T05%3A43%3A26.3297439Z'\&quot;&quot;
+    &quot;eTag&quot;: &quot;W/\&quot;datetime'2020-10-14T05%3A43%3A263297439Z'\&quot;&quot;
 }
 </code></pre>
 <h2 id="security">Security</h2>

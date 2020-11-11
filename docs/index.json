@@ -1077,7 +1077,7 @@
   "APIs/tenant-manager/index.html": {
     "href": "APIs/tenant-manager/index.html",
     "title": "Tenant Manager | 3M Serenity Documentation",
-    "keywords": "Tenant Manager Tenant Manager offers APIs to maintains tenants, Alerting, tenants' readiness status, and health status of service. Within each Serenity instance an interactive Swagger UI is available at the following path https://{platform-url}/auth/index.html For more information about Swagger UI, click here . REST operation groups The Device Telemetry REST API provides operations for working with the following: Operation group Description Tenant Manage Tenant Tenant Ready Tenant readiness status Alerting Manage stream analytics job Status Health status operations for the Service"
+    "keywords": "Tenant Manager Tenant Manager offers APIs to maintains tenants, Alerting, tenants' readiness status, and health status of service. Within each Serenity instance an interactive Swagger UI is available at the following path https://{platform-url}/tenantmanager/index.html For more information about Swagger UI, click here . REST operation groups The Device Telemetry REST API provides operations for working with the following: Operation group Description Tenant Manage Tenant Tenant Ready Tenant readiness status Alerting Manage stream analytics job Status Health status operations for the Service"
   },
   "APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html": {
     "href": "APIs/tenant-manager/object-model/Mmm.Iot.TenantManager.WebService.Controllers.AlertingController.html",

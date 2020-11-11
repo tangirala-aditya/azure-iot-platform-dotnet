@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>User Registration APIs | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="User Registration APIs | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.5.0">
+    
+    <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="user-registration-apis">User Registration APIs</h1>
+
+<p>This document describes how ot use register a User to a Serenity platform using the Serenity APIs.</p>
+<h2 id="user-registration-apis-1">User Registration APIs</h2>
+<p>The following APIs are use to register a new user to a tenant:</p>
+<ul>
+<li><strong>Tenants API</strong>: POST /v1/tenants/invite</li>
+<li><strong>Connect API</strong>: GET /connect/authorize</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>In order to to invite a user, you must be an admin or have the UserManage permission.  This is required to invite using through the Serenity UI or API.  Specifically, the following is needed:</p>
+<ul>
+<li><strong>Role</strong>: Admin or any equivalent role assigned with the above permission</li>
+<li><strong>Permission</strong>: UserManage</li>
+</ul>
+<h2 id="how-to-use-apis-to-register-user">How to use APIs to Register User</h2>
+<p>The registration steps are as follows:</p>
+<ol>
+<li>Invite User</li>
+<li>Authorization</li>
+<li>Callback</li>
+</ol>
+<h3 id="invite-user">Invite User</h3>
+<p>In order to use the API to invite a new user to a tenant, you must have the following role and permission:</p>
+<ul>
+<li><strong>Role</strong>: Admin or any equivalent role assigned with the above permission</li>
+<li><strong>Permission</strong>: UserManage</li>
+</ul>
+<p><code>POST /v1/tenants/invite</code></p>
+<!-- Note: graphic stored in ../../../artifacts/authentication-architecture.xml -->
+<p><img src="https://www.websequencediagrams.com/cgi-bin/cdraw?lz=Q2xpZW50IC0-KyBVc2VyVGVuYW50Q29udHJvbGxlciA6IFtQb3N0XQpub3RlIHJpZ2h0IG9mIAAwBwogICAgSW52aXRlIGEAPAUgdG8gYSAAQQYgYW5kAB0FY3JlYQAdBW5ldwBiBS8AGgdSZWxhdGlvbnNoaXAARwVmb3IgdGhlbS4KZW5kIG5vdGUKAIECFS0-KyBKd3RTZWN1cml0eVRva2VuSGFuZACBLAdXcml0ZQAQBShuZXcAgVQFb2tlbildCmFsdCBTdWNjZXNzZnVsIAA0BSBDcmUAgQIFAIFKBQA_GC0-AIIJGWkAgX0FAIEABV0Agg4FAIEeFi0-IFNlbmRHcmlkAIJxBkZhY3RvcnkgOiBbU2VuZEVtYWlsQXN5bmMAgS4ISW5pdml0AIIeBQAYBSkAWQZvcHQgRmFpbHVyZS9FeGNlcHRpb24gV2hpbGUAXQVpbmcgAEgFAIMbBSAgIABhFwCBOBsATgkAgUsGAIE7Gj4AhAQIOiBbNTAwLCAAKw9lbmQKZWxzZQCBHxIAgk8fLQB0KABmMmVuZACEQBcAhXYSYWluAIYBBgCEIAVlAIMQD3B1dACEQxIAJAYAg3YTAEYGAIQuG04AhgUbAIFFKDIwMCwgACseAIJ1GwCBGxYAgkxALQCCbh8&amp;s=default" alt="Client to controller to service"></p>
+<p><strong>Request Body</strong></p>
+<pre><code>{
+  &quot;email_address&quot;: &quot;testuser@gmail.com&quot;,
+  &quot;role&quot;: &quot;admin&quot;, 
+  &quot;email_subject&quot; : &quot;custom subject&quot;, 
+  &quot;invite_uri&quot; : &quot;https://emdudahiotfepkg.azurewebsites.net&quot;,
+  &quot;from_email&quot; : &quot;testemail@email.com&quot;, 
+  &quot;from_message&quot; : &quot;This is a custom message&quot;, 
+  &quot;invite_user_meta_data : &quot;User data info&quot;
+  &quot;message_body&quot; : &quot;Welcome to the iot platform&quot;
+}
+</code></pre>
+<ul>
+<li>from_email,</li>
+<li>from_message,</li>
+<li>email_subject,</li>
+<li>invite_uri,</li>
+<li>invite_user_meta_data</li>
+<li>message_body</li>
+</ul>
+<p>are optional and have these default values:</p>
+<ul>
+<li>DefaultFromEmail = &quot;iotplatformnoreply@mmm.com&quot;;</li>
+<li>DefaultFromMessage = &quot;3M IoT Platform Team&quot;;</li>
+<li>DefaultSubject = &quot;Invitation to IoT Platform&quot;;</li>
+<li>DefaultInviteUri = Serenity front end.</li>
+<li>invite_user_meta_data = &quot;&quot;</li>
+<li>message_body = &quot;Tap the button below to accept this invitation. If you did not expect an invitation, you can delete this email.&quot;</li>
+</ul>
+<p><strong>Response</strong></p>
+<p>Returns 200 OK and object of the user invited in JSON. Example:</p>
+<pre><code>{
+  &quot;roles&quot;: &quot;['admin']&quot;,
+  &quot;name&quot;: &quot;testuser@gmail.com&quot;,
+  &quot;type&quot;: &quot;Invited&quot;,
+  &quot;userId&quot;: &quot;ec9745fa-9fa9-4d35-ab55-1e3bd064c4a2&quot;,
+  &quot;tenantId&quot;: &quot;78984017-fa19-4aa6-8824-7bdd9d9c50c3&quot;,
+  &quot;roleList&quot;: [
+    &quot;admin&quot;
+  ],
+  &quot;partitionKey&quot;: &quot;ec9745fa-9fa9-4d35-ab55-1e3bd064c4a2&quot;,
+  &quot;rowKey&quot;: &quot;78984017-fa19-4aa6-8824-7bdd9d9c50c3&quot;,
+  &quot;timestamp&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+  &quot;eTag&quot;: &quot;W/&quot;datetime'2020-10-22T08%3A45%3A35.0798098Z'&quot;
+}
+</code></pre>
+<h3 id="authorization">Authorization</h3>
+<p>Once the email invitation is sent to the user and user clicks on the invite, this method is called to redirect the user to Login and this also invokes the <strong><a href="#callback">callback</a></strong> internally</p>
+<p><code>GET /connect/authorize</code></p>
+<p>You must pass the following items in the query string</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Example</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>redirect_uri</td>
+<td>URI</td>
+<td><a href="https://aks-dev-spaces-odin.centralus.cloudapp.azure.com/">https://aks-dev-spaces-odin.centralus.cloudapp.azure.com/</a></td>
+<td>This is the URI that identity gateway should return to when it is done with the authentication.</td>
+</tr>
+<tr>
+<td>state</td>
+<td>string</td>
+<td>{'test':'test'}</td>
+<td>This is the string that will be returned to the frontend. This is for any WebUI state to be preserved.</td>
+</tr>
+<tr>
+<td>client_id</td>
+<td>string</td>
+<td>IoTPlatform</td>
+<td>This is the client id which gets included into the token as the audience</td>
+</tr>
+<tr>
+<td>nonce</td>
+<td>string</td>
+<td>n-0S6_WzA2Mj</td>
+<td>String value used to associate a Client session with an ID Token, and to mitigate replay attacks.</td>
+</tr>
+<tr>
+<td>tenant</td>
+<td>guid</td>
+<td>151a2bbe-78d9-488b-8163-d0af87b88f46</td>
+<td>Identifier for a tenant. User must have access to the tenant. If none is supplied then the LastUsedTenant setting will be the tenant they log into. If there is no LastUsedTenant Setting then a random one will be selected. If none is available an empty token will be minted</td>
+</tr>
+<tr>
+<td>invite</td>
+<td>JWT Token</td>
+<td>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI...</td>
+<td>A JWT Token containing three claims &quot;sub&quot; (user_id of invitation record), &quot;tenant&quot; (tenant Guid to assign them to), &quot;role&quot; (role(s) to assign them to)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong></p>
+<p>Redirects to authentication externally</p>
+<h3 id="callback">Callback</h3>
+<p><code>GET /connect/callback</code></p>
+<p>You must pass the following items in multi-part form</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Example</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>state</td>
+<td>string</td>
+<td>{'returnUrl':'https://aks-dev-spaces-odin.centralus.cloudapp.azure.com/', 'state':'{&quot;test&quot;:&quot;test&quot;}', 'tenant': '151a2bbe-78d9-488b-8163-d0af87b88f46', 'nonce': 'n-0S6_WzA2Mj', 'client_id': 'IoTPlatform', invitation: null}</td>
+<td>This string is returned from the authentication. It originally comes from the authorize endpoint on this same controller.</td>
+</tr>
+<tr>
+<td>id_token</td>
+<td>JWT Token</td>
+<td>eyJhbGciOiJIUzI1NiIsInR5cCI....</td>
+<td>This is the client id which gets included into the token as the audience</td>
+</tr>
+<tr>
+<td>error</td>
+<td>string</td>
+<td>AADSTS16000</td>
+<td>Error Code thrown by external provider</td>
+</tr>
+<tr>
+<td>error_description</td>
+<td>string</td>
+<td>SelectUserAccount - This is an interrupt thrown...</td>
+<td>Description of the error that was thrown by external auth provider</td>
+</tr>
+</tbody>
+</table>
+<p>The state from above has invitation property which indicates that the user has logged in for the first time if not null.</p>
+<p>If the user logged in for the first time using the Invite, data will be added/updated in below storage tables:</p>
+<ul>
+<li>User</li>
+<li>UserSettings</li>
+</ul>
+<p><strong>Response</strong></p>
+<p>Redirects back to location specified in the auth state variable.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/Guides/UserManagement/user-registration-apis.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

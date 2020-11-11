@@ -1,0 +1,447 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Roles and Permissions | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Roles and Permissions | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.5.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="roles-and-permissions">Roles and Permissions</h1>
+
+<p>This document provides information on Roles, Permissions, and mapping between them.</p>
+<h2 id="list-of-permissions">List of Permissions</h2>
+<table>
+<thead>
+<tr>
+<th>Permissions Name</th>
+<th>Permissions Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>View solution</td>
+<td>ReadAll</td>
+<td>Allows read only content</td>
+</tr>
+<tr>
+<td>Update alerts</td>
+<td>UpdateAlarms</td>
+<td>Allows to close or acknowledge alarms</td>
+</tr>
+<tr>
+<td>Delete alerts</td>
+<td>DeleteAlarms</td>
+<td>Allows deleting alarms</td>
+</tr>
+<tr>
+<td>Create devices</td>
+<td>CreateDevices</td>
+<td>Allows to add a device</td>
+</tr>
+<tr>
+<td>Update devices</td>
+<td>UpdateDevices</td>
+<td>Allows updating devices details</td>
+</tr>
+<tr>
+<td>Delete devices</td>
+<td>DeleteDevices</td>
+<td>Allows to delete devices</td>
+</tr>
+<tr>
+<td>Create device groups</td>
+<td>CreateDeviceGroups</td>
+<td>Allows to create a device group</td>
+</tr>
+<tr>
+<td>Update device groups</td>
+<td>UpdateDeviceGroups</td>
+<td>Allows updating a device group</td>
+</tr>
+<tr>
+<td>Delete device groups</td>
+<td>DeleteDeviceGroups</td>
+<td>Allows deleting device group</td>
+</tr>
+<tr>
+<td>Create rules</td>
+<td>CreateRules</td>
+<td>Allows creating a rule</td>
+</tr>
+<tr>
+<td>Update rules</td>
+<td>UpdateRules</td>
+<td>Allows updating a rule</td>
+</tr>
+<tr>
+<td>Delete rules</td>
+<td>DeleteRules</td>
+<td>Allows deleting a rule</td>
+</tr>
+<tr>
+<td>Create jobs</td>
+<td>CreateJobs</td>
+<td>Allows to create a device jobs</td>
+</tr>
+<tr>
+<td>Create packages</td>
+<td>CreatePackages</td>
+<td>Allows to create a package</td>
+</tr>
+<tr>
+<td>Delete packages</td>
+<td>DeletePackages</td>
+<td>Allows deleting a package</td>
+</tr>
+<tr>
+<td>Create deployments</td>
+<td>CreateDeployments</td>
+<td>Allows to create a deployment</td>
+</tr>
+<tr>
+<td>Delete deployments</td>
+<td>DeleteDeployments</td>
+<td>Allows deleting deployments</td>
+</tr>
+<tr>
+<td>Delete tenant</td>
+<td>DeleteTenant</td>
+<td>⚠️ No longer in use, only System Admin has the rights to delete tenant</td>
+</tr>
+<tr>
+<td>Enable alerting</td>
+<td>EnableAlerting</td>
+<td>Allows enabling alerting</td>
+</tr>
+<tr>
+<td>Disable alerting</td>
+<td>DisableAlerting</td>
+<td>Allows to disable alerting</td>
+</tr>
+<tr>
+<td>Invite users</td>
+<td>InviteUsers</td>
+<td>Allows to invite a user to system</td>
+</tr>
+<tr>
+<td>Delete users</td>
+<td>DeleteUsers</td>
+<td>Allows deleting users from system</td>
+</tr>
+<tr>
+<td>Update SIM management</td>
+<td>UpdateSIMManagement</td>
+<td>Allows managing device SIM cards</td>
+</tr>
+<tr>
+<td>AcquireToken</td>
+<td>AcquireToken</td>
+<td>⚠️ TBD</td>
+</tr>
+<tr>
+<td>TagPackages</td>
+<td>TagPackages</td>
+<td>Allows to tag package</td>
+</tr>
+<tr>
+<td>SendC2DMessages</td>
+<td>SendC2DMessages</td>
+<td>Allows to Send cloud to device message</td>
+</tr>
+<tr>
+<td>UserManage</td>
+<td>UserManage</td>
+<td>Allows managing user setting</td>
+</tr>
+</tbody>
+</table>
+<h2 id="list-of-roles">List of Roles</h2>
+<p>Currently, the system offers only 3 roles per tenant, which are shown below.</p>
+<ol>
+<li>Admin</li>
+<li>Contributor</li>
+<li>ReadOnly</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>System Admin is not related to above mentioned roles, it is special permission for a user who can create and delete tenants, and allowed to maintain other System Admins.</p>
+<p>By default, the System Admin who creates the tenant is automatically assigned the Admin role.</p>
+</blockquote>
+<h2 id="permission-and-role-mappings">Permission and Role mappings</h2>
+<table>
+<thead>
+<tr>
+<th>Permissions Name</th>
+<th>Admin</th>
+<th>Contributor</th>
+<th>Read Only</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>View solution</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Update alerts</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Delete alerts</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Create devices</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Update devices</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Delete devices</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Create device groups</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Update device groups</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Delete device groups</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Create rules</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Update rules</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Delete rules</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Create jobs</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Create packages</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Delete packages</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Create deployments</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Delete deployments</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Delete tenant</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Disable alerting</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Delete users</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Enable alerting</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Invite users</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>AcquireToken</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>TagPackages</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>SendC2DMessages</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Update SIM management</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>UserManage</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/Guides/UserManagement/Authentication/permissions.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

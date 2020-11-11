@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Add System Admin User | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Add System Admin User | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.5.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="add-system-admin-user">Add System Admin User</h1>
+
+<p>System admin is the user who has access across all the tenants. A System Admin can be added to a Serenity Instance using either of the following techniques:</p>
+<ol>
+<li><a href="#web-application">Web Application</a></li>
+<li><a href="#pipeline">Pipeline(One-time)</a></li>
+</ol>
+<h2 id="web-application">Web Application</h2>
+<p>An existing user can be made as <strong>SystemAdmin</strong> to the System from Web Application. Refere the steps <a href="../../Documentation/Public/GettingStarted/UserGuide/User-Management.md#add-system-admin">here</a> for adding an existing user as SystemAdmin through Web Application.</p>
+<p><strong>Note:</strong> The user has to be a Non-SystemAdmin user to be added as a SystemAdmin to the system</p>
+<p>Once a user is made SystemAdmin, the following happens:</p>
+<ol>
+<li>A row is added for this user in <strong>SystemAdmin</strong> Azure Storage table with below details:
+<ul>
+<li>PartitionKey: UserID</li>
+<li>RowKey: UserID</li>
+<li>Timestamp: Datetime when the User is made SystemAdmin</li>
+<li>Name: Name of the user<br>
+Ex: <img src="../../../images/guides/add-systemadmin-table.png" alt="SystemAdmin table"></li>
+</ul>
+</li>
+<li>The selected user will be added as a user to the rest of the tenants with Admin role which means, a record is added in User table with below details:<br>
+For each of the remaining available active tenants a record is inserted with
+<ul>
+<li>PartitionKey: UserID</li>
+<li>RowKey: TenantID</li>
+<li>Timestamp: Datetime when the User is made SystemAdmin</li>
+<li>Name: Name of the user</li>
+<li>Roles: <strong>Admin</strong></li>
+<li>Type: <strong>Member</strong></li>
+</ul>
+</li>
+</ol>
+<p><strong>Example:</strong><br>
+User table record before making the user as SystemAdmin:
+<img src="../../../images/guides/add-systemadmin-before.png" alt="Before SystemAdmin"></p>
+<p>User table record after making the user as SystemAdmin:
+<img src="../../../images/guides/add-systemadmin-after.png" alt="After SystemAdmin"></p>
+<h2 id="pipeline">Pipeline</h2>
+<p>During the system deployment a Default tenant is added to the system and a user is configured as a SystemAdmin to this tenant. As this happens during the deployment, this is a one-time assignment. Below are the details on how a SystemAdmin can be added through pipelines</p>
+<h3 id="configure-credentials">Configure credentials</h3>
+<p>The user credentials for SystemAdmin user are configured in the pipeline variables. Below are the details configured:</p>
+<ol>
+<li>Email Address</li>
+<li>Password</li>
+</ol>
+<p><img src="../../../images/guides/pipeline-variables.png" alt="Pipeline variables"></p>
+<h3 id="yaml-file">YAML file</h3>
+<p>Below are the details on how SystemAdmin is added through pipeline:</p>
+<ol>
+<li>Define variables
+<ul>
+<li><strong>UserId:</strong> Generate and assign a dedicated UserID in the variables  section</li>
+<li><strong>User table:</strong> User storage table name</li>
+<li><strong>SystemAdmin table:</strong> SystemAdmin storage table name
+<img src="../../../images/guides/systemadmin-pipeline-yaml-variables.png" alt="SystemAdmin UserId"></li>
+</ul>
+</li>
+<li>Add TestAccount details to App Configuration(Optional)<br>
+SystemAdmin EmailID and password from pipeline variables can be added to App Configuration for future use. Below are the App Config keys currently used:
+<ul>
+<li>TestUserCredentials:SystemAdmin:UserEmail</li>
+<li>TestUserCredentials:SystemAdmin:Password<br>
+<img src="../../../images/guides/add-systemadmin-appconfig.png" alt="Add SystemAdmin:AppConfig"></li>
+</ul>
+</li>
+<li>Verify and add Test Account in the User Table<br>
+The user is added in below tables:
+<ul>
+<li>User</li>
+<li>SystemAdmin
+<img src="../../../images/guides/add-systemadmin-pipelines.png" alt="Add SystemAdmin:Pipelines"></li>
+</ul>
+</li>
+</ol>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/Guides/UserManagement/UserAdministration/add-system-admin.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

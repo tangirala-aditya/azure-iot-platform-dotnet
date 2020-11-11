@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>User Registration Entities | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="User Registration Entities | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.5.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="user-registration-entities">User Registration Entities</h2>
+
+<p>User Registration is the process of inviting and providing access to an user for IoT Platform.</p>
+<p>User Registration involves the following list of Entities</p>
+<ol>
+<li>Azure B2C</li>
+<li>User</li>
+<li>UserSettings</li>
+</ol>
+<h1 id="azure-b2c">Azure B2C</h1>
+<p>Azure B2C uses external Identity providers to authenticate users.</p>
+<p>Currently for Platform is using 3M Azure AD to authenticate the Users for the applications.</p>
+<p>Users who are added as Members to Azure AD B2C can authenticate using the Azure AD Account.</p>
+<p>Users who are added as Guest, must have an B2B agreement with their organization AD to authenticate.</p>
+<h1 id="user">User</h1>
+<p>User table which will be residing in Table Storage of Storage Account holds the information about the user and the respective tenant for which user is assigned to.</p>
+<p>Each environment has it's own storage account.  If you have access to Azure Portal access to your subscription, you can search for it by name, which follows this convention:</p>
+<blockquote>
+<p>Storage Account follow the notation
+{ApplicationCode}<strong>storageacct</strong>{EnvironmentName}</p>
+</blockquote>
+<p>For example, the storage account in CRLS's development (dev) environment is: <strong>crsliotstorageacctdev</strong></p>
+<p>Following table provides information about the data that is stored in the User table.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Partition Key</td>
+<td>Indicates UserId from Azure B2C</td>
+</tr>
+<tr>
+<td>Row Key</td>
+<td>Indicates TenantId</td>
+</tr>
+<tr>
+<td>Time Stamp</td>
+<td>Indicates Last updated Date and Time</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>Indicates Name of the user</td>
+</tr>
+<tr>
+<td>Roles</td>
+<td>Indicates various roles User is assigned to.</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Indicates type of User</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Reference:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Member</td>
+<td>User accepted the Invite and assigned to Tenant.</td>
+</tr>
+<tr>
+<td>Invited</td>
+<td>Invite sent to User and yet to sign in.</td>
+</tr>
+<tr>
+<td>Client Credentials</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>DataModel of User table is as follows</p>
+<pre><code class="lang-c#">
+public class UserTenantModel : TableEntity
+    {
+        public string Roles { get; set; }
+
+        public string Name { get; set; }
+
+        public string Type { get; set; }
+
+        public string UserId
+        {
+            get
+            {
+                return this.PartitionKey;
+            }
+        }
+
+        public string TenantId
+        {
+            get
+            {
+                return this.RowKey;
+            }
+        }
+    }
+
+</code></pre>
+<h1 id="usersettings">UserSettings</h1>
+<p>User Settings table will store the information specific to User and will work as an lookup data and configuration data for an User.</p>
+<p>Following table provides information about the data that is stored in the User Settings table.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Partition Key</td>
+<td>UserId from Azure B2C</td>
+</tr>
+<tr>
+<td>Row Key</td>
+<td>Settings Key</td>
+</tr>
+<tr>
+<td>Time Stamp</td>
+<td>Last updated Date and Time</td>
+</tr>
+<tr>
+<td>Value</td>
+<td>Value for the Key.</td>
+</tr>
+</tbody>
+</table>
+<p>DataModel of UserSettings table is as follows</p>
+<pre><code class="lang-c#">    public class UserSettingsModel : TableEntity
+    {
+        public string Value { get; set; }
+
+        public string UserId
+        {
+            get
+            {
+                return this.PartitionKey;
+            }
+        }
+
+        public string SettingKey
+        {
+            get
+            {
+                return this.RowKey;
+            }
+        }
+    }
+
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/Guides/UserManagement/Storage/entities.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

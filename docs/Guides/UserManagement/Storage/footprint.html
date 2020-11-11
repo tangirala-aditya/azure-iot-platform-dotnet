@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>User Registration FootPrint | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="User Registration FootPrint | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.5.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="user-registration-footprint">User Registration FootPrint</h2>
+
+<p>This document lists the data points and their storage while registering a User to a Serenity platform.</p>
+<p>Below is the list of actions/operations performed while registering a new user to a Tenant:</p>
+<ol>
+<li>Sending Invitation Email to User for a Tenant.</li>
+<li>User Registration in AD B2C.</li>
+<li>User Details Mapping in Storage.</li>
+</ol>
+<h1 id="sending-invitation-email-to-user-for-a-tenant">Sending Invitation Email to User for a Tenant.</h1>
+<p>Sending Invitation to User is triggered by posting data to the following end point</p>
+<p><code>POST {identity-gateway-service}/v1/tenants/invite</code></p>
+<p><strong>Payload</strong></p>
+<pre><code>{
+  &quot;email_address&quot;: &quot;testuser@gmail.com&quot;,
+  &quot;role&quot;: &quot;admin&quot;, 
+  &quot;email_subject&quot; : &quot;custom subject&quot;, 
+  &quot;invite_uri&quot; : &quot;https://emdudahiotfepkg.azurewebsites.net&quot;,
+  &quot;from_email&quot; : &quot;testemail@email.com&quot;, 
+  &quot;from_message&quot; : &quot;This is a custom message&quot;, 
+  &quot;invite_user_meta_data : &quot;User data info&quot;
+  &quot;message_body&quot; : &quot;Welcome to the iot platform&quot;
+}
+
+</code></pre>
+<p>As part of this process, an UserTenant relationship is established using an arbitrary userid(a new GUID) that is generated, and inserted into User table in Table Storage.</p>
+<p>Data that is inserted into User table is as follows</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UserId/PartitionKey</td>
+<td>A new GUID.</td>
+</tr>
+<tr>
+<td>Tenant/RowKey</td>
+<td>TenantId from the token.</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>Email address from request.</td>
+</tr>
+<tr>
+<td>Roles</td>
+<td>JSON Serialized string from request.</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Invited</td>
+</tr>
+</tbody>
+</table>
+<p><img src="../../../images/guides/user-invited-guid.png" alt="Arbitrary User Tenant Relation"></p>
+<p>If the request provides an data in <strong>invite_user_meta_data</strong>, then the data is inserted into the UserSettings table using the key <strong>InviteUserMetaData</strong></p>
+<p>Data that is inserted into UserSetting table is as follows</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UserId/PartitionKey</td>
+<td>A new GUID.</td>
+</tr>
+<tr>
+<td>SettingKey/RowKey</td>
+<td>InviteUserMetaData</td>
+</tr>
+<tr>
+<td>Value</td>
+<td>Data from invite_user_meta_data property in request.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="user-registration-in-ad-b2c">User Registration in AD B2C</h1>
+<p>Once User receives a Invite email, on click of the Sign-In to the Platform link following operations will be performed.</p>
+<ol>
+<li><p>A call is triggered to <code>GET /connect/authorize</code> with the following query params</p>
+<pre><code>client_id: IoTPlatform
+redirect_uri: https://crsliot-aks-dev.centralus.cloudapp.azure.com
+state: acc7ec8aa2e145fc846c423da27486c3
+nonce: ad6d71ef090d4f43b71a5133197e5d83
+invite: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJ0ZW5hbnQiOiIyMDlkN2Y3OS0zOWFhLTRlMmEtOGU5Yy01NmYwNGY3NjMzZjkiLCJ1c2VySWQiOiIzMWRkNTBmNC1iYWVkLTQxNjUtOTUwZi1mNGM4NDQ4NGEyNjgiLCJleHAiOjE2MDM2NDIxMDYsImlzcyI6Imh0dHBzOi8vY3JzbGlvdC1ha3MtZGV2LmNlbnRyYWx1cy5jbG91ZGFwcC5henVyZS5jb20vYXV0aCIsImF1ZCI6IklkZW50aXR5R2F0ZXdheSJ9.FahRD6gNnnT3XlHH9h69og0y7HbyZ-gZrvfCnh1BROw2CcsbZ72BGNcINw3uTrn5_DDT6FH5plcA8klaSqViIke_LMY-SIi_FXT4eBExti489wT0w5Dthft0u6jcutu_rORryvFisZMJAU3ApygALIyP0caY8KEdhXODHfJh0YIw6PdoeYEXP7YFZEJ9rz7wtd6TM9VbzuZs3_Bm1PmNS-7T4mQcBl63P-IF6mNXt5Xon9Fn0ScbH641v9KM6ad_HExB2W4muyCnyHGBmQaliLHcqtpIooC5KQPRwT5UQ1EJQCgwu1L1dwuNR-vu5WceOux1VLm5dMFIbrsqR1bZrw
+</code></pre>
+<p>As part of this request, User will be navigated to Azure AD B2C Login Page.</p>
+</li>
+<li><p>User Registration in Azure AD B2C</p>
+<p>As part of the User Registration, User needs to fill in the Signup form with the required information. Once the registration is complete, an Identity will be created for the user in B2C as a Member with Federated Identity or Active Directory.</p>
+<p><img src="../../../images/guides/b2c-userid-name.png" alt="User in B2C"></p>
+</li>
+<li><p>Authorization Callback</p>
+<p>Once the User is registered and authenticated, a callback is triggered to <code>GET /connect/callback</code> with following query params</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Example</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>state</td>
+<td>string</td>
+<td>{'returnUrl':'https://aks-dev-spaces-odin.centralus.cloudapp.azure.com/', 'state':'{&quot;test&quot;:&quot;test&quot;}', 'tenant': '151a2bbe-78d9-488b-8163-d0af87b88f46', 'nonce': 'n-0S6_WzA2Mj', 'client_id': 'IoTPlatform', invitation: null}</td>
+<td>State Data that is being passed on from the Authorize action for post authentication data storage.</td>
+</tr>
+<tr>
+<td>id_token</td>
+<td>JWT Token</td>
+<td>eyJhbGciOiJIUzI1NiIsInR5cCI....</td>
+<td>Token that is being sent from  B2C which contains the data about the User.</td>
+</tr>
+<tr>
+<td>error</td>
+<td>string</td>
+<td>AADSTS16000</td>
+<td>Error Code thrown by external provider</td>
+</tr>
+<tr>
+<td>error_description</td>
+<td>string</td>
+<td>SelectUserAccount - This is an interrupt thrown...</td>
+<td>Description of the error that was thrown by external auth provider</td>
+</tr>
+</tbody>
+</table>
+<p>AuthState will provide us the JWT token that is minted during invitation process and it provides us the Tenant and arbitrary UserId that is created.</p>
+<p>id_token that is sent as part of request from B2C, will provide UserId from B2C,
+then a new User Tenant relationship is created in User table.</p>
+<p>Data that is inserted into User table is as follows</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UserId/PartitionKey</td>
+<td>UserId from the <strong>sub</strong> claim in id_token.</td>
+</tr>
+<tr>
+<td>Tenant/RowKey</td>
+<td>TenantId from the invitation token from state.</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>Name from <strong>name</strong> claim in id_token or Email from <strong>emails</strong> claims in id_token.  Name will take precedence.</td>
+</tr>
+<tr>
+<td>Roles</td>
+<td>JSON Serialized string from roles claim invitation token from state.</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Member</td>
+</tr>
+</tbody>
+</table>
+<p><img src="../../../images/guides/user-member-userid.png" alt="User Tenant Relation"></p>
+<p>UserSettings that are created as part of the Invitation process are transferred to UserId from B2C by updating in UserSettings table.</p>
+<p>An UserSetting record is created with Arbitrary UserId created in Invitation process with setting key as <strong>inviteId</strong> for the user for reference.</p>
+<p>Data that is inserted into User table is as follows</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UserId/PartitionKey</td>
+<td>UserId from the <strong>sub</strong> claim in id_token.</td>
+</tr>
+<tr>
+<td>SettingKey/RowKey</td>
+<td>InviteUserMetaData</td>
+</tr>
+<tr>
+<td>Value</td>
+<td>UserId from the <strong>userId</strong> claim in invitation token from state.</td>
+</tr>
+</tbody>
+</table>
+<p><img src="../../../images/guides/user-settings-inviteid.png" alt="User Settings"></p>
+<p>Finally, the placeholder UserTenant relationship that is created initially is deleted in User table.</p>
+</li>
+</ol>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/Guides/UserManagement/Storage/footprint.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

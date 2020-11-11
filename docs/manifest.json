@@ -3893,11 +3893,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Guides/UserManagement/Add-System-Admin.md",
+      "source_relative_path": "Guides/UserManagement/Architecture/authentication.md",
       "output": {
         ".html": {
-          "relative_path": "Guides/UserManagement/Add-System-Admin.html",
-          "hash": "bc5Lgwnb89y722cFmMoyBw=="
+          "relative_path": "Guides/UserManagement/Architecture/authentication.html",
+          "hash": "5gmsuq4aaxqKt/bsS33+tA=="
         }
       },
       "is_incremental": false,
@@ -3905,11 +3905,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Guides/UserManagement/Onboarding-Steps.md",
+      "source_relative_path": "Guides/UserManagement/Architecture/authorization.md",
       "output": {
         ".html": {
-          "relative_path": "Guides/UserManagement/Onboarding-Steps.html",
-          "hash": "9L+rscXyXs7zCsgPfLQSAQ=="
+          "relative_path": "Guides/UserManagement/Architecture/authorization.html",
+          "hash": "n6rGaalgOY0JIapH21aUnA=="
         }
       },
       "is_incremental": false,
@@ -3917,11 +3917,146 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Guides/UserManagement/Request-Access.md",
+      "source_relative_path": "Guides/UserManagement/Architecture/permissions.md",
       "output": {
         ".html": {
-          "relative_path": "Guides/UserManagement/Request-Access.html",
-          "hash": "z637D2fvwRLUwxAzDExfWg=="
+          "relative_path": "Guides/UserManagement/Architecture/permissions.html",
+          "hash": "kiPCFwIrKBXHEjhKxXB5WQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/Authentication/custom-permissions.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/Authentication/custom-permissions.html",
+          "hash": "HeIhAqR6SEgG3yQuN5r84Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/Authentication/identity-providers.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/Authentication/identity-providers.html",
+          "hash": "iTHIiO2rl/Ma3XGsuUAvsA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/Authentication/permissions.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/Authentication/permissions.html",
+          "hash": "6cGkvvAWKjXWWUIHXZgXKQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/Authentication/supported-token.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/Authentication/supported-token.html",
+          "hash": "MgzVqML/81peEJYE46jw3Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/Onboarding/accept-invite.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/Onboarding/accept-invite.html",
+          "hash": "BauJ5qfmsG7y292i0Lo/bQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/Onboarding/invite-user.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/Onboarding/invite-user.html",
+          "hash": "QSBMJmyf9KgJAChvJZk/0w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/Onboarding/prerequisites.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/Onboarding/prerequisites.html",
+          "hash": "ppEhArinh4XC8FlcJHJxnA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/Storage/entities.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/Storage/entities.html",
+          "hash": "XykJW46jNn990GW9iUldhw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/Storage/footprint.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/Storage/footprint.html",
+          "hash": "SHg5kU/TdHLNeDh7iyXWFg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/UserAdministration/add-system-admin.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/UserAdministration/add-system-admin.html",
+          "hash": "PtB2abUxW/vXgUjGiIrDqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/UserAdministration/external-users.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/UserAdministration/external-users.html",
+          "hash": "wBajZGujpwh+zRwGwzwEWw=="
         }
       },
       "is_incremental": false,
@@ -3933,7 +4068,31 @@
       "output": {
         ".html": {
           "relative_path": "Guides/UserManagement/index.html",
-          "hash": "JE4A7lhs0Px19f3gOLJh9Q=="
+          "hash": "RsB9MiyDWEyaExJz19Rpmg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/send-grid.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/send-grid.html",
+          "hash": "5PaLwuk15o8pTNvSbauKsA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/user-registration-apis.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/user-registration-apis.html",
+          "hash": "tMi8vrR8DoV0tFDBkqzClQ=="
         }
       },
       "is_incremental": false,
@@ -3960,7 +4119,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "B3/AwDqpIoMtvNOYO9MLvg=="
+          "hash": "Edkxc8B2DzSliq4BsCn4kA=="
         }
       },
       "is_incremental": false,
@@ -4809,6 +4968,424 @@
       "output": {
         "resource": {
           "relative_path": "images/github-clone.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/add-systemadmin-after.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/add-systemadmin-after.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/add-systemadmin-appconfig.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/add-systemadmin-appconfig.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/add-systemadmin-before.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/add-systemadmin-before.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/add-systemadmin-pipelines.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/add-systemadmin-pipelines.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/add-systemadmin-table.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/add-systemadmin-table.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/authentication-architecture.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/authentication-architecture.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/authorization-architecture.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/authorization-architecture.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/b2c-userid-name.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/b2c-userid-name.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/external-user/3m-invite.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/external-user/3m-invite.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/external-user/create-account.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/external-user/create-account.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/external-user/dashboard.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/external-user/dashboard.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/external-user/email-verification-mail.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/external-user/email-verification-mail.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/external-user/email-verification.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/external-user/email-verification.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/external-user/email-verified.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/external-user/email-verified.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/external-user/login-after-registration.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/external-user/login-after-registration.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/external-user/login-page.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/external-user/login-page.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/external-user/registration.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/external-user/registration.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/external-user/sign-up.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/external-user/sign-up.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/external-user/successfully-create.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/external-user/successfully-create.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/permission-api-implementation.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/permission-api-implementation.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/permission-api-sample.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/permission-api-sample.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/pipeline-variables.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/pipeline-variables.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/protected-component.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/protected-component.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/protected-example.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/protected-example.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/roles-app-configuration.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/roles-app-configuration.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/systemadmin-pipeline-yaml-variables.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/systemadmin-pipeline-yaml-variables.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/user-invited-guid.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/user-invited-guid.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/user-member-userid.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/user-member-userid.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/user-registration/3m-authenticate.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/user-registration/3m-authenticate.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/user-registration/3m-login-page.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/user-registration/3m-login-page.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/user-registration/3m-multi-authentication.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/user-registration/3m-multi-authentication.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/user-registration/email-invite.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/user-registration/email-invite.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/user-registration/junk-email.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/user-registration/junk-email.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/user-registration/login.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/user-registration/login.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/user-registration/microsoft-login-page.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/user-registration/microsoft-login-page.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/user-registration/successfull-login.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/user-registration/successfull-login.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/user-registration/tenant-details.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/user-registration/tenant-details.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/guides/user-settings-inviteid.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/guides/user-settings-inviteid.png"
         }
       },
       "is_incremental": false,
@@ -6399,7 +6976,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 272,
+          "total_file_count": 285,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

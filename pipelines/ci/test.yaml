@@ -417,8 +417,8 @@ stages:
     displayName: Build front-end containers
     dependsOn: []
     jobs:
-      - job: lintWebuiCode
-        displayName: Lint webui code
+      - job: lintAndBuildWebuiCode
+        displayName: Lint And Build webui code
         steps:
           - checkout: self
             displayName: Checkout repository
@@ -431,6 +431,11 @@ stages:
               npm install
               npm run lint
             displayName: npm run lint
+            workingDirectory: src/webui
+
+          - pwsh: |-
+              npm run build
+            displayName: npm run build
             workingDirectory: src/webui
 
           - task: CopyFiles@2

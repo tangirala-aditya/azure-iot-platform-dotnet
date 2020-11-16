@@ -434,7 +434,7 @@ stages:
             workingDirectory: src/webui
 
           - pwsh: |-
-              npm run build
+              npm run build-test
             displayName: npm run build-test
             workingDirectory: src/webui
 

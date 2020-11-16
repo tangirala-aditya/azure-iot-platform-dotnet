@@ -435,7 +435,7 @@ stages:
 
           - pwsh: |-
               npm run build
-            displayName: npm run build
+            displayName: npm run build-test
             workingDirectory: src/webui
 
           - task: CopyFiles@2

@@ -433,12 +433,9 @@ stages:
             displayName: npm run lint
             workingDirectory: src/webui
 
-          - task: Npm@1
+          - script: npm run build-test
             displayName: npm run build-test
-            inputs:
-              command: 'custom'
-              customCommand: run build-test
-              workingDir: src/webui
+            workingDirectory: src/webui
 
           - task: CopyFiles@2
             displayName: Prepare services artifacts

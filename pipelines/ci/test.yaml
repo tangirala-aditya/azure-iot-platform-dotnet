@@ -430,11 +430,8 @@ stages:
           - pwsh: |-
               npm install
               npm run lint
-            displayName: npm run lint
-            workingDirectory: src/webui
-
-          - script: npm run build-test
-            displayName: npm run build-test
+              npm run build-test
+            displayName: npm run lint and build-test
             workingDirectory: src/webui
 
           - task: CopyFiles@2

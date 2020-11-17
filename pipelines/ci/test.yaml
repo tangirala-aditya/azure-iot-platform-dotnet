@@ -437,7 +437,7 @@ stages:
             displayName: npm run build-test
             inputs:
               command: 'custom'
-              customCommand: npm run build-test
+              customCommand: run build-test
               workingDir: src/webui
 
           - task: CopyFiles@2

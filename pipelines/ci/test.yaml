@@ -438,7 +438,7 @@ stages:
             inputs:
               command: 'custom'
               customCommand: npm run build-test
-              workingDir: "/src/webui"
+              workingDir: src/webui
 
           - task: CopyFiles@2
             displayName: Prepare services artifacts

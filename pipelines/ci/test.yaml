@@ -433,10 +433,12 @@ stages:
             displayName: npm run lint
             workingDirectory: src/webui
 
-          - pwsh: |-
-              npm run build-test
+          - task: Npm@1
             displayName: npm run build-test
-            workingDirectory: src/webui
+            inputs:
+              command: 'custom'
+              customCommand: npm run build-test
+              workingDir: "/src/webui"
 
           - task: CopyFiles@2
             displayName: Prepare services artifacts

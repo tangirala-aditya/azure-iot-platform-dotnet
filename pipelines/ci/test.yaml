@@ -454,7 +454,8 @@ stages:
 
       - job: buildFrontEndContainers
         displayName: Build front-end containers
-        dependsOn: []
+        dependsOn:
+          - lintAndBuildWebuiCode
         strategy:
           matrix:
             reverse-proxy:

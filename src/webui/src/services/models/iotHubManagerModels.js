@@ -133,8 +133,7 @@ export const toSubmitPropertiesJobRequestModel = (
     // The toString call is necessary when a number should be saved as text.
     updatedProperties.forEach(
         ({ name, value, type }) =>
-            (Desired[name] =
-                type === "Number" ? float(value) : value.toString())
+            (Desired[name] = type === "Number" ? float(value) : value)
     );
     deletedProperties.forEach((name) => (Desired[name] = null));
     const request = {
@@ -289,3 +288,18 @@ export const toEdgeAgentModel = (edgeAgent = {}) =>
 
 export const toEdgeAgentsModel = (response = []) =>
     getItems(response).map(toEdgeAgentModel);
+
+export const toDevicesDeploymentHistoryModel = (response = []) =>
+    getItems(response).map(toDeviceDeploymentHistoryModel);
+
+export const toDeviceDeploymentHistoryModel = (twinServiceModel = {}) => {
+    if (twinServiceModel.Reported && twinServiceModel.Reported.firmware) {
+        var modelData = {
+            firmwareVersion:
+                twinServiceModel.Reported.firmware.currentFwVersion,
+            startTime: twinServiceModel.Reported.firmware.lastFwUpdateStartTime,
+            endTime: twinServiceModel.Reported.firmware.lastFwUpdateEndTime,
+        };
+        return modelData;
+    }
+};

@@ -5,12 +5,13 @@ parameters:
   applicationCode:
   applicationShortCode:
   imageTag:
+  blueGreen:
 
 jobs:
   - template: get-approval.yaml
     parameters:
       environmentName: ${{parameters.environmentName}}
-
+      
   - job: deploy
     displayName: Deploy
     variables:
@@ -81,15 +82,57 @@ jobs:
           echo "serviceName: $(serviceName)"
           echo "servicePort: $(servicePort)"
           echo "serviceProbesEnabled: $(serviceProbesEnabled)"
+          echo "blueGreen: ${{parameters.blueGreen}}"
         displayName: Print job variables
 
-      - template: steps-deploy-individual-service.yaml
-        parameters:
-          aksName: $(aksName)
-          resourceGroupName: $(resourceGroupName)
-          subscriptionName: ${{parameters.subscriptionName}}
-          serviceName: $(serviceName)
-          servicePort: $(servicePort)
-          serviceProbesEnabled: $(serviceProbesEnabled)
-          helmVersion: $(helmVersion)
-          imageTag: ${{parameters.imageTag}}
+      - ${{ if eq(parameters.blueGreen,false) }}:
+        - template: steps-deploy-individual-service.yaml
+          parameters:
+            aksName: $(aksName)
+            resourceGroupName: $(resourceGroupName)
+            subscriptionName: ${{parameters.subscriptionName}}
+            serviceName: $(serviceName)
+            servicePort: $(servicePort)
+            serviceProbesEnabled: $(serviceProbesEnabled)
+            helmVersion: $(helmVersion)
+            imageTag: ${{parameters.imageTag}}
+
+      - ${{ if eq(parameters.blueGreen,true) }}:
+        - template: steps-deploy-blue-green-service.yaml
+          parameters:
+            aksName: $(aksName)
+            resourceGroupName: $(resourceGroupName)
+            subscriptionName: ${{parameters.subscriptionName}}
+            serviceName: $(serviceName)
+            blueServiceName: $(serviceName)-blue
+            greenServiceName: $(serviceName)-green
+            servicePort: $(servicePort)
+            serviceProbesEnabled: $(serviceProbesEnabled)
+            helmVersion: $(helmVersion)
+            imageTag: ${{parameters.imageTag}}
+            type: blue
+
+
+  - job: addKey
+    displayName: Update Application Configuration with BuildNumber
+    variables:
+      - template: variables-all.yaml
+      - name: appConfigurationName
+        value: ${{parameters.applicationCode}}-$(appConfigurationPartialName)-${{parameters.environmentCategory}}
+
+    dependsOn:
+     - deploy
+    steps:
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          addSpnToEnvironment: true
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            set -Eeuxo pipefail
+            az appconfig kv set --key Global:BuildNumber --value $(Build.BuildId) --name $(appConfigurationName)  --yes
+
+
+
+

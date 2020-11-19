@@ -11,22 +11,27 @@ import {
     AjaxError,
     Btn,
     ComponentArray,
-    ContextMenu,
-    ContextMenuAlign,
+    ContextMenuAgile,
     PageContent,
     PageTitle,
     Protected,
     RefreshBarContainer as RefreshBar,
     SearchInput,
+    JsonEditorModal,
 } from "components/shared";
 import { DeviceNewContainer } from "./flyouts/deviceNew";
 import { SIMManagementContainer } from "./flyouts/SIMManagement";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
-import { svgs } from "utilities";
+import { svgs, getDeviceGroupParam } from "utilities";
 
 import "./devices.scss";
+import { IdentityGatewayService } from "services";
 
 const closedFlyoutState = { openFlyoutName: undefined };
+
+const closedModalState = {
+    openModalName: undefined,
+};
 
 export class Devices extends Component {
     constructor(props) {
@@ -34,9 +39,21 @@ export class Devices extends Component {
         this.state = {
             ...closedFlyoutState,
             contextBtns: null,
+            selectedDeviceGroupId: undefined,
         };
 
         this.props.updateCurrentWindow("Devices");
+    }
+
+    componentWillMount() {
+        if (this.props.location.search) {
+            this.setState({
+                selectedDeviceGroupId: getDeviceGroupParam(
+                    this.props.location.search
+                ),
+            });
+        }
+        IdentityGatewayService.VerifyAndRefreshCache();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -52,6 +69,16 @@ export class Devices extends Component {
                 default:
                     this.setState(closedFlyoutState);
             }
+        }
+    }
+
+    componentDidMount() {
+        if (this.state.selectedDeviceGroupId) {
+            window.history.replaceState(
+                {},
+                document.title,
+                this.props.location.pathname
+            );
         }
     }
 
@@ -86,6 +113,69 @@ export class Devices extends Component {
         this.props.logEvent(toDiagnosticsModel("Devices_Search", {}));
     };
 
+    openModal = (modalName, jsonValue) => {
+        this.setState({
+            openModalName: modalName,
+            modalJson: jsonValue,
+        });
+    };
+
+    closeModal = () => this.setState(closedModalState);
+
+    getOpenModal = () => {
+        const { t, theme, logEvent } = this.props;
+        if (this.state.openModalName === "json-editor") {
+            return (
+                <JsonEditorModal
+                    t={t}
+                    title={t(
+                        "devices.flyouts.details.properties.editPropertyValue"
+                    )}
+                    onClose={this.closeModal}
+                    jsonData={this.state.modalJson}
+                    logEvent={logEvent}
+                    theme={theme ? theme : "light"}
+                />
+            );
+        }
+        return null;
+    };
+
+    priorityChildren = () => {
+        const { t } = this.props;
+
+        let children = [
+            <DeviceGroupDropdown
+                deviceGroupIdFromUrl={this.state.selectedDeviceGroupId}
+            />,
+            <Protected permission={permissions.updateDeviceGroups}>
+                <ManageDeviceGroupsBtn />
+            </Protected>,
+            <CreateDeviceQueryBtn />,
+        ];
+
+        if (this.props.activeDeviceQueryConditions.length !== 0) {
+            children.push(<ResetActiveDeviceQueryBtn />);
+        }
+
+        if (
+            this.state.contextBtns &&
+            this.state.contextBtns.props.children.length > 0
+        ) {
+            children = children.concat(this.state.contextBtns.props.children);
+        }
+
+        children.push(
+            <Protected permission={permissions.updateSIMManagement}>
+                <Btn svg={svgs.simmanagement} onClick={this.openSIMManagement}>
+                    {t("devices.flyouts.SIMManagement.title")}
+                </Btn>
+            </Protected>
+        );
+
+        return children;
+    };
+
     render() {
         const {
                 t,
@@ -95,6 +185,7 @@ export class Devices extends Component {
                 isPending,
                 lastUpdated,
                 fetchDevices,
+                routeProps,
             } = this.props,
             gridProps = {
                 onGridReady: this.onGridReady,
@@ -109,33 +200,8 @@ export class Devices extends Component {
 
         return (
             <ComponentArray>
-                <ContextMenu>
-                    <ContextMenuAlign left={true}>
-                        <DeviceGroupDropdown />
-                        <Protected permission={permissions.updateDeviceGroups}>
-                            <ManageDeviceGroupsBtn />
-                        </Protected>
-                        {this.props.activeDeviceQueryConditions.length !== 0 ? (
-                            <ResetActiveDeviceQueryBtn />
-                        ) : null}
-                    </ContextMenuAlign>
-                    <ContextMenuAlign>
-                        <CreateDeviceQueryBtn />
-                        <SearchInput
-                            onChange={this.searchOnChange}
-                            onClick={this.onSearchClick}
-                            aria-label={t("devices.ariaLabel")}
-                            placeholder={t("devices.searchPlaceholder")}
-                        />
-                        {this.state.contextBtns}
-                        <Protected permission={permissions.updateSIMManagement}>
-                            <Btn
-                                svg={svgs.simmanagement}
-                                onClick={this.openSIMManagement}
-                            >
-                                {t("devices.flyouts.SIMManagement.title")}
-                            </Btn>
-                        </Protected>
+                <ContextMenuAgile
+                    farChildren={[
                         <Protected permission={permissions.createDevices}>
                             <Btn
                                 svg={svgs.plus}
@@ -143,19 +209,33 @@ export class Devices extends Component {
                             >
                                 {t("devices.flyouts.new.contextMenuName")}
                             </Btn>
-                        </Protected>
+                        </Protected>,
                         <RefreshBar
                             refresh={fetchDevices}
                             time={lastUpdated}
                             isPending={isPending}
                             t={t}
-                        />
-                    </ContextMenuAlign>
-                </ContextMenu>
+                            isShowIconOnly={true}
+                        />,
+                    ]}
+                    priorityChildren={this.priorityChildren()}
+                />
                 <PageContent className="devices-container">
                     <PageTitle titleValue={t("devices.title")} />
                     {!!error && <AjaxError t={t} error={error} />}
-                    {!error && <DevicesGridContainer {...gridProps} />}
+                    <SearchInput
+                        onChange={this.searchOnChange}
+                        onClick={this.onSearchClick}
+                        aria-label={t("devices.ariaLabel")}
+                        placeholder={t("devices.searchPlaceholder")}
+                    />
+                    {!error && (
+                        <DevicesGridContainer
+                            {...gridProps}
+                            {...routeProps}
+                            openPropertyEditorModal={this.openModal}
+                        />
+                    )}
                     {newDeviceFlyoutOpen && (
                         <DeviceNewContainer onClose={this.closeFlyout} />
                     )}
@@ -163,6 +243,7 @@ export class Devices extends Component {
                         <SIMManagementContainer onClose={this.closeFlyout} />
                     )}
                 </PageContent>
+                {this.getOpenModal()}
             </ComponentArray>
         );
     }

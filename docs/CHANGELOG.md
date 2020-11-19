@@ -9,11 +9,57 @@ To easily get a list of committed changes between current master and the previou
 git log --oneline --no-decorate --topo-order ^<previousRelease> master
 where <previousRelease> is the release name e.g 5.1.0
 -->
+
+## [5.4.1] - 2020-10-14
+### Fix
+- Fixed performance issues reading "deleted" rules
+- Fixed rule deletion to delete rules
+- Upgraded versions of several dlls harden security 
+- Fixed rule and alarms 502 issue
+- Enabled grid cell text highlight
+- Addressed auto refresh on settings flyout
+- Force support for HTTPS in template
+
+## [5.4.0] - 2020-10-05
+### Add
+- Deployment history by Device
+- New device telemetry comparison tool
+- Direct links to flyout panels
+- Migrated Azure Functions to Open Source Repo
+- Made flyouts expandable
+- Environment specific blue/green configuration and deployment
+
+### Fixed
+- Made toolbar buttons responsive
+- Added expand columns to grid
+- Integrated whiteSource bolt with test pipeline for enhanced security checks
+- Update last refresh component to show only refresh icon
+- Added tooltips to grid values on hover
+- Added test accounts to deployment process for automated tests
+- Shifted searchbox location
+- Tooltip on hover over device group name
+
+## [5.3.0] - 2020-09-10
+### Add
+- UI Enhancements for enabling / disabling active deployments, those impacting deployment quotas
+- Downloadable deployment reports
+- Nested Device Properties Editable in UI (up to 6 levels)
+- Get URLs that include DeviceGroup filtering
+- Auto-refresh UI cache after deployment
+- Improvements to tenant lifecycle
+
+### Fixed
+- Reported Properties Changes in Deployment Details
+- Fixed UI continuous refresh issues when alerting is off
+- Added changes to handle UNIX timestamp
+- Sys-admins can access to all tenants
+- Prevent users from filtering dashboard duration that does not have telemetry data
+
 ## [5.2.3] - 2020-08-18
 ### Fixed
-= Asa-maager twin update job properly triggers device group conversion
-- Updated methods to throw expcetion when there is no collection
-- Prevent Azure Function calls when alerting is diabled
+- Asa-manager twin update job properly triggers device group conversion
+- Updated methods to throw expectation when there is no collection
+- Prevent Azure Function calls when alerting is disabled
 - Updated ResourceNotFoundException in Rules Methods
 - Removed telemetry entries in health probes to reduce logging costs
 
@@ -86,6 +132,10 @@ where <previousRelease> is the release name e.g 5.1.0
 - Application configuration uses Azure App Configuration service in addition to Azure Key Vault
 - Code base rearchitected to use common library and reduce duplication
 
+[5.4.1]: https://github.com/3mcloud/azure-iot-platform-dotnet/releases/tag/5.4.1
+[5.4.0]: https://github.com/3mcloud/azure-iot-platform-dotnet/releases/tag/5.4.0
+[5.3.0]: https://github.com/3mcloud/azure-iot-platform-dotnet/releases/tag/5.3.0
+[5.2.3]: https://github.com/3mcloud/azure-iot-platform-dotnet/releases/tag/5.2.3
 [5.2.2]: https://github.com/3mcloud/azure-iot-platform-dotnet/releases/tag/5.2.2
 [5.2.1]: https://github.com/3mcloud/azure-iot-platform-dotnet/releases/tag/5.2.1
 [5.2.0]: https://github.com/3mcloud/azure-iot-platform-dotnet/releases/tag/5.2.0

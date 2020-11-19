@@ -17,19 +17,24 @@ import {
 } from "components/shell/flyouts";
 import {
     DashboardContainer,
-    DevicesContainer,
+    DevicesRouter,
     UsersContainer,
     RulesContainer,
     MaintenanceContainer,
     PackagesContainer,
     DeploymentsRouter,
 } from "./pages";
+import { IdentityGatewayService } from "services";
 
 class App extends Component {
     constructor(props) {
         super(props);
 
         this.state = { openFlyout: "" };
+    }
+
+    componentWillMount() {
+        IdentityGatewayService.VerifyAndRefreshCache();
     }
 
     closeFlyout = () => this.setState({ openFlyout: "" });
@@ -51,10 +56,10 @@ class App extends Component {
                 },
                 {
                     to: "/devices",
-                    exact: true,
+                    exact: false,
                     svg: svgs.tabs.devices,
                     labelId: "tabs.devices",
-                    component: DevicesContainer,
+                    component: DevicesRouter,
                 },
                 {
                     to: "/users",
@@ -100,6 +105,16 @@ class App extends Component {
                 {
                     path: "/devices",
                     crumbs: [{ to: "/devices", labelId: "tabs.devices" }],
+                },
+                {
+                    path: "/devices/telemetry",
+                    crumbs: [
+                        { to: "/devices", labelId: "tabs.devices" },
+                        {
+                            to: "/devices/telemetry",
+                            labelId: "devices.telemetry",
+                        },
+                    ],
                 },
                 {
                     path: "/rules",

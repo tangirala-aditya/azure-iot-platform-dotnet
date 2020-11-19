@@ -36,12 +36,14 @@ export class DeviceJobs extends LinkedComponent {
             formData: {
                 jobType: "tags",
             },
+            expandedValue: false,
         };
 
         // Linked components
         this.formDataLink = this.linkTo("formData");
 
         this.jobTypeLink = this.formDataLink.forkTo("jobType");
+        this.expandFlyout = this.expandFlyout.bind(this);
     }
 
     componentDidMount() {
@@ -62,6 +64,18 @@ export class DeviceJobs extends LinkedComponent {
         return [this.jobTypeLink].every((link) => !link.error);
     }
 
+    expandFlyout() {
+        if (this.state.expandedValue) {
+            this.setState({
+                expandedValue: false,
+            });
+        } else {
+            this.setState({
+                expandedValue: true,
+            });
+        }
+    }
+
     render() {
         const {
             t,
@@ -69,6 +83,8 @@ export class DeviceJobs extends LinkedComponent {
             devices,
             updateTags,
             updateProperties,
+            openPropertyEditorModal,
+            flyoutLink,
         } = this.props;
 
         return (
@@ -76,6 +92,11 @@ export class DeviceJobs extends LinkedComponent {
                 header={t("devices.flyouts.jobs.title")}
                 t={t}
                 onClose={onClose}
+                expanded={this.state.expandedValue}
+                onExpand={() => {
+                    this.expandFlyout();
+                }}
+                flyoutLink={flyoutLink}
             >
                 <Protected permission={permissions.createJobs}>
                     <div className="device-jobs-container">
@@ -139,6 +160,9 @@ export class DeviceJobs extends LinkedComponent {
                                         onClose={onClose}
                                         devices={devices}
                                         updateProperties={updateProperties}
+                                        openPropertyEditorModal={
+                                            openPropertyEditorModal
+                                        }
                                     />
                                 ) : null}
                             </ComponentArray>

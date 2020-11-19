@@ -23,6 +23,7 @@ import { svgs } from "utilities";
 import "./users.scss";
 import { SystemAdminNewContainer } from "./flyouts/systemAdminNew";
 import { SystemAdminDeleteContainer } from "./flyouts/systemAdminDelete";
+import { IdentityGatewayService } from "services";
 
 const closedFlyoutState = { openFlyoutName: undefined };
 
@@ -35,6 +36,10 @@ export class Users extends Component {
         };
 
         this.props.updateCurrentWindow("Users");
+    }
+
+    componentWillMount() {
+        IdentityGatewayService.VerifyAndRefreshCache();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -121,12 +126,6 @@ export class Users extends Component {
             <ComponentArray>
                 <ContextMenu>
                     <ContextMenuAlign>
-                        <SearchInput
-                            onChange={this.searchOnChange}
-                            onClick={this.onSearchClick}
-                            aria-label={t("users.ariaLabel")}
-                            placeholder={t("users.searchPlaceholder")}
-                        />
                         {this.state.contextBtns}
                         <Protected permission={permissions.inviteUsers}>
                             <Btn
@@ -165,12 +164,19 @@ export class Users extends Component {
                             time={lastUpdated}
                             isPending={isPending}
                             t={t}
+                            isShowIconOnly={true}
                         />
                     </ContextMenuAlign>
                 </ContextMenu>
                 <PageContent className="users-container">
                     <PageTitle titleValue={t("users.title")} />
                     {!!error && <AjaxError t={t} error={error} />}
+                    <SearchInput
+                        onChange={this.searchOnChange}
+                        onClick={this.onSearchClick}
+                        aria-label={t("users.ariaLabel")}
+                        placeholder={t("users.searchPlaceholder")}
+                    />
                     {!error && <UsersGridContainer {...gridProps} />}
                     {newUserFlyoutOpen && (
                         <UserNewContainer onClose={this.closeFlyout} />

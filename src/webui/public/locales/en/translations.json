@@ -78,10 +78,17 @@
         "permissionDenied": "Permission {{permission}} is denied."
     },
     "deviceGroupDropDown": {
-        "ariaLabel": "Device group"
+        "ariaLabel": "Device group",
+        "modals" : {
+            "copyLink": {
+                "contextMenuName": "Copy Link",
+                "title": "Copy Link"
+            }
+        }
     },
     "flyout": {
-        "closeTitle": "Close"
+        "closeTitle": "Close",
+        "getLinkTitle": "Get Link"
     },
     "settingsFlyout": {
         "title": "System settings",
@@ -162,8 +169,6 @@
                     }
                 }
             }
-
-
         }
     },
     "helpFlyout": {
@@ -238,12 +243,12 @@
     "deviceGroupsFlyout": {
         "actions": "Actions",
         "cancel": "Cancel",
-        "reset":"Reset",
+        "reset": "Reset",
         "title": "Manage device groups",
         "create": "Create new device group",
         "deviceGroupName": "Device group name",
-        "pinned":"Pinned Device Group",
-        "unpinned":"Unpinned Device Group",
+        "pinned": "Pinned Device Group",
+        "unpinned": "Unpinned Device Group",
         "new": "New device group",
         "edit": "Edit a device group",
         "name": "Name",
@@ -286,6 +291,7 @@
     },
     "dashboard": {
         "noData": "No data available",
+        "alertingTurnedOff": "Alerting is turned off",
         "panels": {
             "alerts": {
                 "header": "Alerts",
@@ -401,6 +407,8 @@
         "searchPlaceholder": "Search devices...",
         "noneFound": "No devices found.",
         "refresh": "Refresh",
+        "showTelemetry": "Show telemetry",
+        "returnToDevices": "Devices",
         "grid": {
             "connected": "Connected",
             "deviceName": "Device name",
@@ -451,7 +459,8 @@
                     "noneExist": "No properties found for this device.",
                     "copy": "Copy",
                     "copyAllProperties": "Copy a list of all properties for the device",
-                    "syncing": "{{reportedPropertyValue}} (Syncing {{desiredPropertyValue}})"
+                    "syncing": "{{reportedPropertyValue}} (Syncing {{desiredPropertyValue}})",
+                    "editPropertyValue": "Edit property value"
                 },
                 "tags": {
                     "title": "Tags",
@@ -471,6 +480,14 @@
                     "action": "Action",
                     "property": "Property",
                     "value": "Value"
+                },
+                "deviceDeployments": {
+                    "title": "Device Deployments",
+                    "description": "Deployment History of device",
+                    "noneExist": "No history present for this device",
+                    "firmwareVersion" : "Firmware Version",
+                    "startDate": "Start Date Time",
+                    "endDate": "End Date Time"
                 }
             },
             "delete": {
@@ -857,6 +874,7 @@
     },
     "deployments": {
         "title": "Deployments",
+        "returnToDeployments": "Deployments",
         "flyouts": {
             "new": {
                 "contextMenuName": "New deployment",
@@ -888,15 +906,15 @@
                     "name": "name greater than 50 characters"
                 }
             },
-            "status":{
+            "status": {
                 "title": "Deployment Status",
                 "relatedDeployment": {
                     "title": "Related Deployments",
-                    "noRelatedDeploymentText":"No Related deployments exist for the selected deployment."
+                    "noRelatedDeploymentText": "No Related deployments exist for the selected deployment."
                 },
                 "deploymentLimitText": "Your environment is currently limited to 100 active deployments.",
                 "active": "Active",
-                "inActive": "InActive",
+                "inActive": "Inactive",
                 "apply": "Apply",
                 "cancel": "Cancel",
                 "close": "Close",
@@ -926,7 +944,8 @@
                 "lastMessage": "Last Message",
                 "start": "Start",
                 "end": "End"
-            }
+            },
+            "downloadReport": "Download"
         },
         "modals": {
             "delete": {
@@ -934,6 +953,12 @@
                 "title": "Delete Deployment?",
                 "info": "Deleting '{{deploymentName}}' will stop this deployment from being applied to these devices. It may result in a lower priority deployment being applied.",
                 "gridInfo": "Deleting selected deployment(s) will stop deployment from being applied to the devices. It may result in a lower priority deployment being applied if any"
+            },
+            "statusChange": {
+                "contextMenuName": "StatusChange",
+                "title": "Update Deployment?",
+                "inactivate": "Do you want to inactivate the Deployment?",
+                "reactivate": "Do you want to re-activate the Deployment?"
             }
         },
         "grid": {
@@ -1034,10 +1059,13 @@
         "firmware": "Firmware",
         "custom": "Custom"
     },
-    "modal": {
-        "delete": "Delete",
-        "cancel": "Cancel"
-    },
+  "modal": {
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "close": "Close",
+    "copy": "Copy",
+    "ok": "Ok"
+  },
     "walkthrough": {
         "tabs": {
             "dashboard": "Dashboard",

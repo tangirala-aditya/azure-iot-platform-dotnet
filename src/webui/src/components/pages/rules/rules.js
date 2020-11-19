@@ -20,11 +20,12 @@ import {
     SearchInput,
 } from "components/shared";
 import { NewRuleFlyout } from "./flyouts";
-import { svgs } from "utilities";
+import { svgs, getDeviceGroupParam } from "utilities";
 import { toSinglePropertyDiagnosticsModel } from "services/models";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
 
 import "./rules.scss";
+import { IdentityGatewayService } from "services";
 
 const closedFlyoutState = {
     openFlyoutName: "",
@@ -38,6 +39,7 @@ export class Rules extends Component {
         this.state = {
             ...closedFlyoutState,
             contextBtns: null,
+            selectedDeviceGroupId: undefined,
         };
 
         if (!this.props.lastUpdated && !this.props.error) {
@@ -51,6 +53,17 @@ export class Rules extends Component {
                 this.props.applicationPermissionsAssigned
             );
         }
+    }
+
+    componentWillMount() {
+        if (this.props.location.search) {
+            this.setState({
+                selectedDeviceGroupId: getDeviceGroupParam(
+                    this.props.location.search
+                ),
+            });
+        }
+        IdentityGatewayService.VerifyAndRefreshCache();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -68,6 +81,16 @@ export class Rules extends Component {
         ) {
             this.logApplicationPermissions(
                 nextProps.applicationPermissionsAssigned
+            );
+        }
+    }
+
+    componentDidMount() {
+        if (this.state.selectedDeviceGroupId) {
+            window.history.replaceState(
+                {},
+                document.title,
+                this.props.location.pathname
             );
         }
     }
@@ -115,6 +138,9 @@ export class Rules extends Component {
                 lastUpdated,
                 fetchRules,
                 logEvent,
+                activeDeviceGroupId,
+                location,
+                userPermissions,
             } = this.props,
             gridProps = {
                 onGridReady: this.onGridReady,
@@ -124,13 +150,21 @@ export class Rules extends Component {
                 deviceGroups: this.props.deviceGroups,
                 refresh: fetchRules,
                 logEvent: this.props.logEvent,
+                activeDeviceGroupId: activeDeviceGroupId,
+                location: location,
+                userPermissions: userPermissions,
+                rulesGridApi: this.rulesGridApi,
             };
         return (
             <ComponentArray>
                 {alerting.jobState === "Running" && (
                     <ContextMenu>
                         <ContextMenuAlign left={true}>
-                            <DeviceGroupDropdown />
+                            <DeviceGroupDropdown
+                                deviceGroupIdFromUrl={
+                                    this.state.selectedDeviceGroupId
+                                }
+                            />
                             <Protected
                                 permission={permissions.updateDeviceGroups}
                             >
@@ -145,11 +179,6 @@ export class Rules extends Component {
                             ) : null}
                         </ContextMenuAlign>
                         <ContextMenuAlign>
-                            <SearchInput
-                                onChange={this.searchOnChange}
-                                placeholder={t("rules.searchPlaceholder")}
-                                aria-label={t("rules.ariaLabel")}
-                            />
                             {this.state.contextBtns}
                             <Protected permission={permissions.createRules}>
                                 <Btn
@@ -164,6 +193,7 @@ export class Rules extends Component {
                                 time={lastUpdated}
                                 isPending={isPending}
                                 t={t}
+                                isShowIconOnly={true}
                             />
                         </ContextMenuAlign>
                     </ContextMenu>
@@ -172,6 +202,11 @@ export class Rules extends Component {
                     <PageContent className="rules-container">
                         <PageTitle titleValue={t("rules.title")} />
                         {!!error && <AjaxError t={t} error={error} />}
+                        <SearchInput
+                            onChange={this.searchOnChange}
+                            placeholder={t("rules.searchPlaceholder")}
+                            aria-label={t("rules.ariaLabel")}
+                        />
                         {!error && <RulesGrid {...gridProps} />}
                         {this.state.openFlyoutName === "newRule" && (
                             <NewRuleFlyout

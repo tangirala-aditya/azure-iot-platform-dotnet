@@ -1,0 +1,25 @@
+trigger:
+- none
+ 
+pool:
+  vmImage: 'windows-latest'
+ 
+steps:
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: $(subscriptionName)
+    ScriptType: 'InlineScript'
+    Inline: |
+      $resources = Get-AzResource -ResourceGroup $(resourceGroupName)
+      $resourceGroup = Get-AzResourceGroup -Name $(resourceGroupName)
+      $tagsJson = Get-Content $(environmentName).json | ConvertFrom-Json
+      $tags = @{}
+      $tagsJson.psobject.properties | Foreach { $tags[$_.Name] = $_.Value }
+      
+      foreach ($resource in $resources)
+      {
+          Update-AzTag -ResourceId $resource.ResourceId -Tag $tags -Operation merge
+      }
+      Update-AzTag -ResourceId $resourceGroup.ResourceId -Tag $tags -Operation merge
+    azurePowerShellVersion: 'LatestVersion'
+    workingDirectory: '.\arm\tagging'

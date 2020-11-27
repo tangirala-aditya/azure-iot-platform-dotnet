@@ -1,0 +1,96 @@
+trigger: none
+pr: none
+resources:
+  pipelines:
+    - pipeline: test
+      source: azure-iot-platform-dotnet.ci.test
+      trigger:
+        branches:
+          - master
+pool:
+  vmImage: ubuntu-latest
+variables:
+  ${{ if eq(variables['Build.Reason'], 'ResourceTrigger') }}:
+    _imageTag: $(resources.pipeline.test.runID)
+  ${{ if ne(variables['Build.Reason'], 'ResourceTrigger') }}:
+    _imageTag: $(imageTag)
+stages:
+  - stage: checkParameters
+    displayName: Check parameters
+    dependsOn: []
+    jobs:
+      - job: checkParameters
+        displayName: Check parameters
+        steps:
+          - checkout: none
+
+          - script: |-
+              set -Eeuxo pipefail
+              echo "Image tag: '$(_imageTag)'"
+              if [ -z "$(_imageTag)" ]
+              then
+                echo "A value for the 'imageTag' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+            displayName: Check parameters
+
+  - stage: printPipelineResourceVariables
+    displayName: Print pipeline resource variables
+    dependsOn: []
+    jobs:
+      - job: printPipelineResourceVariables
+        displayName: Print pipeline resource variables
+        steps:
+          - checkout: none
+
+          - template: ../templates/print-pipeline-resource-variables.yaml
+            parameters:
+              pipelineResourceName: test
+
+  - stage: chimDev
+    displayName: CHIM dev
+    dependsOn:
+      - checkParameters
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_CHIM_Environment_DEV
+          subscriptionName: 3M-ACTAIR01-CHIMSMART-Dev
+          applicationCode: chimiot
+          applicationShortCode: chim
+          environmentCategory: dev
+          imageTag: $(_imageTag)
+          blueGreen: true
+          subscriptionId: 28299656-8110-4dc4-a33f-82a6cc3d05c2
+
+  - stage: chimQa
+    displayName: CHIM QA
+    dependsOn:
+      - chimDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_CHIM_Environment_QA
+          subscriptionName: 3M-ACTAIR02-CHIMSMART-QA
+          applicationCode: chimiot
+          applicationShortCode: chim
+          environmentCategory: qa
+          imageTag: $(_imageTag)
+          blueGreen: true
+          subscriptionId: 30975220-85e1-4769-8bc1-4542ec8569a0
+
+  - stage: chimProd
+    displayName: CHIM prod
+    dependsOn:
+      - chimQa
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_CHIM_Environment_PROD
+          subscriptionName: 3M-ACTAIR04-CHIMSMART-Prod
+          applicationCode: chimiot
+          applicationShortCode: chim
+          environmentCategory: prod
+          imageTag: $(_imageTag)
+          blueGreen: true
+          subscriptionId: 5401dcf9-9d00-445b-97b4-60b216ea4930

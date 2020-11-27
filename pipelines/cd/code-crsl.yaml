@@ -1,0 +1,113 @@
+trigger: none
+pr: none
+resources:
+  pipelines:
+    - pipeline: test
+      source: azure-iot-platform-dotnet.ci.test
+      trigger:
+        branches:
+          - master
+pool:
+  vmImage: ubuntu-latest
+variables:
+  ${{ if eq(variables['Build.Reason'], 'ResourceTrigger') }}:
+    _imageTag: $(resources.pipeline.test.runID)
+  ${{ if ne(variables['Build.Reason'], 'ResourceTrigger') }}:
+    _imageTag: $(imageTag)
+stages:
+  - stage: checkParameters
+    displayName: Check parameters
+    dependsOn: []
+    jobs:
+      - job: checkParameters
+        displayName: Check parameters
+        steps:
+          - checkout: none
+
+          - script: |-
+              set -Eeuxo pipefail
+              echo "Image tag: '$(_imageTag)'"
+              if [ -z "$(_imageTag)" ]
+              then
+                echo "A value for the 'imageTag' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+            displayName: Check parameters
+
+  - stage: printPipelineResourceVariables
+    displayName: Print pipeline resource variables
+    dependsOn: []
+    jobs:
+      - job: printPipelineResourceVariables
+        displayName: Print pipeline resource variables
+        steps:
+          - checkout: none
+
+          - template: ../templates/print-pipeline-resource-variables.yaml
+            parameters:
+              pipelineResourceName: test
+
+  - stage: crslDev
+    displayName: CRSL dev
+    dependsOn:
+      - checkParameters
+    condition: and(succeeded(), eq(variables['runCrslDevStage'], 'true'))
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_CRSL_Environment_Dev
+          subscriptionName: 3M-CRSLAD16-BBIoTP-DEV
+          applicationCode: crsliot
+          applicationShortCode: crsl
+          environmentCategory: dev
+          imageTag: $(_imageTag)
+          blueGreen: true
+          subscriptionId: c36fb2f8-f98d-40d0-90a9-d65e93acb428
+
+  - stage: ggkDev
+    displayName: GGK dev
+    dependsOn:
+      - checkParameters
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: GGK-Environment
+          subscriptionName: 3M-CRSLAD16-BBIoTP-DEV
+          applicationCode: ggktech
+          applicationShortCode: ggk
+          environmentCategory: dev
+          imageTag: $(_imageTag)
+          blueGreen: true
+          subscriptionId: c36fb2f8-f98d-40d0-90a9-d65e93acb428
+
+  - stage: crslQa
+    displayName: CRSL QA
+    dependsOn:
+      - crslDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_CRSL_Environment_QA
+          subscriptionName: 3M-CRSLAD17-BBIoTP-QA
+          applicationCode: crsliot
+          applicationShortCode: crsl
+          environmentCategory: qa
+          imageTag: $(_imageTag)
+          blueGreen: false
+          subscriptionId: f27c7c03-1ea8-49b8-9878-106e434b8a23
+
+  - stage: crslWkbnch
+    displayName: CRSL workbench
+    dependsOn:
+      - crslQa
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_CRSL_Environment_Wkbnch
+          subscriptionName: 3M-CRSLAD19-BBIoTP-Prod
+          applicationCode: crsliot
+          applicationShortCode: crsl
+          environmentCategory: wkbnch
+          imageTag: $(_imageTag)
+          blueGreen: false
+          subscriptionId: dcb37438-95ca-4a68-812d-39ce0d591df2

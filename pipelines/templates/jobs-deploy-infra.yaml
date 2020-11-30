@@ -1207,6 +1207,7 @@ jobs:
           namespace: default
           command: init
           arguments: --force-upgrade
+          waitForExecution: false
 
       - task: AzureCLI@2
         displayName: Install K8s Ingress Controller

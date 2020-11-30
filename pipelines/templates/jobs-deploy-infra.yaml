@@ -1206,7 +1206,6 @@ jobs:
           kubernetesCluster: $(aksName)
           namespace: default
           command: init
-          arguments: --force-upgrade
           waitForExecution: false
 
       - task: AzureCLI@2

@@ -35,7 +35,7 @@ stages:
           applicationShortCode: kci
           environmentCategory: dev
           environmentName: IoT_KCI_Environment_DEV
-          kubernetesVersion: 1.18.8
+          kubernetesVersion: 1.18.2
           sendgridEmail: aarkhzz@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -49,7 +49,7 @@ stages:
     jobs:
       - template: ../templates/jobs-deploy-infra.yaml
         parameters:
-          subscriptionName: 3M-CRSLBL42-KCI-IoT-QA
+          subscriptionName: 3M-CRSLBL43-KCI-IoT-QA
           locationName: $(locationName)
           appInsightsLocation: eastus
           subscriptionId: d4fe37c0-d20e-4ef1-91c2-e196016a2410
@@ -57,7 +57,7 @@ stages:
           applicationShortCode: kci
           environmentCategory: qa
           environmentName: IoT_KCI_Environment_QA
-          kubernetesVersion: 1.18.8
+          kubernetesVersion: 1.18.2
           sendgridEmail: aschmidt4@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -71,7 +71,7 @@ stages:
     jobs:
       - template: ../templates/jobs-deploy-infra.yaml
         parameters:
-          subscriptionName: 3M-CRSLBL42-KCI-IoT-CT
+          subscriptionName: 3M-CRSLBL44-KCI-IoT-CT
           locationName: $(locationName)
           appInsightsLocation: eastus
           subscriptionId: be48d2d2-4f01-43e1-b700-8fadff21655b
@@ -79,7 +79,7 @@ stages:
           applicationShortCode: kci
           environmentCategory: ct
           environmentName: IoT_KCI_Environment_CT
-          kubernetesVersion: 1.18.8
+          kubernetesVersion: 1.18.2
           sendgridEmail: aarkhzz@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -93,7 +93,7 @@ stages:
     jobs:
       - template: ../templates/jobs-deploy-infra.yaml
         parameters:
-          subscriptionName: 3M-CRSLBL42-KCI-IoT-PR
+          subscriptionName: 3M-CRSLBL45-KCI-IoT-PR
           locationName: $(locationName)
           appInsightsLocation: eastus
           subscriptionId: 0d62cc0d-a87c-445a-b1f2-091a8f10ee71
@@ -101,7 +101,7 @@ stages:
           applicationShortCode: kci
           environmentCategory: pr
           environmentName: IoT_KCI_Environment_PR
-          kubernetesVersion: 1.18.8
+          kubernetesVersion: 1.18.2
           sendgridEmail: aarkhzz@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453

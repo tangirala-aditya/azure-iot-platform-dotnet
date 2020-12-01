@@ -62,7 +62,7 @@ stages:
     dependsOn:
       - checkParameters
     jobs:
-      - template: ../templates/steps-deploy-blue-green-service.yaml
+      - template: ../templates/jobs-deploy-code.yaml
         parameters:
           environmentName: $(environmentName)
           subscriptionName: $(subscriptionName)

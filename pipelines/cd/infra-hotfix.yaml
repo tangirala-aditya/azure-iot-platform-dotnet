@@ -104,21 +104,14 @@ stages:
     dependsOn:
       - checkParameters
     jobs:
-      - template: ../templates/jobs-deploy-infra.yaml
+      - template: ../templates/steps-migrate-helm.yaml
         parameters:
           subscriptionName: $(subscriptionName)
           locationName: $(locationName)
-          appInsightsLocation: eastus
           environmentName: $(environmentName)
           subscriptionId: $(subscriptionId)
           applicationCode: $(applicationCode)
           applicationShortCode: $(applicationShortCode)
           environmentCategory: $(environmentCategory)
           kubernetesVersion: $(kubernetesVersion)
-          sendgridEmail: $(sendGridEmail)
-          sysAdmins: $(sysAdmins)
           aksAgentVmSize: $(aksAgentVmSize)
-          azureDevOpsProjectId: AzurePlatform
-          testPipelineId: 453
-          runVersion: specific
-          testPipelineRunId: $(testPipelineRunId)

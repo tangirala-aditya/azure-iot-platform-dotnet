@@ -31,6 +31,8 @@ const handleError = (fromAction) => (error) =>
         redux.actions.registerError(fromAction.type, { error, fromAction })
     );
 
+let ctoken = "";
+
 export const epics = createEpicScenario({
     /** Loads the devices */
     fetchDevices: {
@@ -47,7 +49,51 @@ export const epics = createEpicScenario({
                     );
                 });
             return IoTHubManagerService.getDevices(conditions)
+                .map((response) => {
+                    ctoken = response.ctoken;
+                    return response.items;
+                })
                 .map(toActionCreator(redux.actions.updateDevices, fromAction))
+                .flatMap((action) => {
+                    const actions = [];
+                    actions.push(action);
+                    if (ctoken) {
+                        actions.push(epics.actions.fetchDevicesByCToken());
+                    }
+                    return actions;
+                })
+                .catch(handleError(fromAction));
+        },
+    },
+
+    /** Loads the devices by cToken */
+    fetchDevicesByCToken: {
+        type: "DEVICES_FETCH_CTOKEN",
+        epic: (fromAction, store) => {
+            const rawConditions = getActiveDeviceGroupConditions(
+                    store.getState()
+                ).concat(getActiveDeviceQueryConditions(store.getState())),
+                conditions = rawConditions.filter((condition) => {
+                    return (
+                        !!condition.key &&
+                        !!condition.operator &&
+                        !!condition.value
+                    );
+                });
+            return IoTHubManagerService.getDevices(conditions, ctoken)
+                .map((response) => {
+                    ctoken = response.ctoken;
+                    return response.items;
+                })
+                .map(toActionCreator(redux.actions.insertDevices, fromAction))
+                .flatMap((action) => {
+                    const actions = [];
+                    actions.push(action);
+                    if (ctoken) {
+                        actions.push(epics.actions.fetchDevicesByCToken());
+                    }
+                    return actions;
+                })
                 .catch(handleError(fromAction));
         },
     },

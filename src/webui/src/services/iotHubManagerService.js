@@ -7,6 +7,7 @@ import { stringify } from "query-string";
 import { HttpClient } from "utilities/httpClient";
 import {
     toDevicesModel,
+    toGetDevicesModel,
     toDeviceModel,
     toModuleFieldsModel,
     toJobsModel,
@@ -24,10 +25,16 @@ const ENDPOINT = Config.serviceUrls.iotHubManager;
 /** Contains methods for calling the Device service */
 export class IoTHubManagerService {
     /** Returns a list of devices */
-    static getDevices(conditions = []) {
+    static getDevices(conditions = [], ctoken = "") {
+        var options = {};
+        if (ctoken) {
+            options.headers = {
+                "x-ms-continuation": ctoken,
+            };
+        }
         const query = encodeURIComponent(JSON.stringify(conditions));
-        return HttpClient.get(`${ENDPOINT}devices?query=${query}`).map(
-            toDevicesModel
+        return HttpClient.get(`${ENDPOINT}devices?query=${query}`, options).map(
+            toGetDevicesModel
         );
     }
 

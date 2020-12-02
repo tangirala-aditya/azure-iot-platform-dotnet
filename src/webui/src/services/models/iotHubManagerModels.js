@@ -11,6 +11,11 @@ import uuid from "uuid/v4";
 export const toDevicesModel = (response = {}) =>
     getItems(response).map(toDeviceModel);
 
+export const toGetDevicesModel = (response = {}) => {
+    var items = getItems(response).map(toDeviceModel);
+    return { items, ctoken: response.ContinuationToken };
+};
+
 export const toDeviceModel = (device = {}) => {
     const modelData = camelCaseReshape(device, {
             id: "id",

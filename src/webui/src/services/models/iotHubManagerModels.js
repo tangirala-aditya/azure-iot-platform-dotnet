@@ -8,12 +8,9 @@ import uuid from "uuid/v4";
 // Contains methods for converting service response
 // object to UI friendly objects
 
-export const toDevicesModel = (response = {}) =>
-    getItems(response).map(toDeviceModel);
-
-export const toGetDevicesModel = (response = {}) => {
+export const toDevicesModel = (response = {}) => {
     var items = getItems(response).map(toDeviceModel);
-    return { items, ctoken: response.ContinuationToken };
+    return { items, continuationToken: response.ContinuationToken };
 };
 
 export const toDeviceModel = (device = {}) => {

@@ -1,0 +1,186 @@
+parameters:
+  subscriptionName:
+  locationName:
+  environmentName:
+  subscriptionId:
+  applicationCode:
+  applicationShortCode: 
+  environmentCategory:
+  kubernetesVersion:
+  aksAgentVmSize: Standard_DS2_v2
+
+jobs:
+  - template: get-approval.yaml
+    parameters:
+      environmentName: ${{parameters.environmentName}}
+
+  - job: printVariables
+    displayName: Print variables
+    dependsOn:
+      - getApproval
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: none
+
+      - template: print-pipeline-resource-variables.yaml
+        parameters:
+          pipelineResourceName: test
+
+      - script: |-
+          echo "parameter: subscriptionName: ${{parameters.subscriptionName}}"
+          echo "parameter: locationName: ${{parameters.locationName}}"
+          echo "parameter: environmentName: ${{parameters.environmentName}}"
+          echo "parameter: subscriptionId: ${{parameters.subscriptionId}}"
+          echo "parameter: applicationCode: ${{parameters.applicationCode}}"
+          echo "parameter: applicationShortCode: ${{parameters.applicationShortCode}}"
+          echo "parameter: environmentCategory: ${{parameters.environmentCategory}}"
+          echo "parameter: kubernetesVersion: ${{parameters.kubernetesVersion}}"
+          echo "variable: aksPartialName: $(aksPartialName)"
+          echo "variable: tenantId: $(tenantId)"
+          echo "variable: aksName: $(aksName)"
+          echo "variable: appConfigurationName: $(appConfigurationName)"
+          echo "variable: armParametersDirectory: $(armParametersDirectory)"
+          echo "variable: armTemplatesDirectory: $(armTemplatesDirectory)"
+          echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
+          echo "variable: resourceGroupName: $(resourceGroupName)"
+        displayName: Print variables
+
+
+  - job: migratehelmversion
+    displayName: Migrate Helm v2 to v3
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+
+      - task: HelmInstaller@1
+        displayName: Install Helm
+        inputs:
+          helmVersionToInstall: $(helmVersion)
+
+      - task: HelmDeploy@0
+        displayName: Initialize Helm
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscription: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          namespace: default
+          command: init
+          arguments: --force-upgrade
+
+      - task: AzureCLI@2
+        displayName: Install Helm 3
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+              set -Eeuxo pipefail
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+              wget https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz
+
+      - task: AzureCLI@2
+        displayName: Set the root directory for helm3
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+              set -Eeuxo pipefail
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+              tar zxf helm-v3.2.1-linux-amd64.tar.gz
+              sudo mv $(Agent.BuildDirectory)/linux-amd64/helm /usr/local/bin/helm3
+
+      - task: AzureCLI@2
+        displayName: Install helm2to3 plugin
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+              set -Eeuxo pipefail
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+              helm plugin install https://github.com/helm/helm-2to3
+              helm plugin list           
+
+      - task: AzureCLI@2
+        displayName: Migration of  Helm 2 Configurations to Helm 3
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+              set -Eeuxo pipefail
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+              helm3 2to3 move config --dry-run
+              helm3 2to3 move config
+              helm3 repo list
+
+      - task: AzureCLI@2
+        displayName: Migration of  Helm 2 Releases to Helm 3
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+              set -Eeuxo pipefail
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+              helm ls -d -m 25 --namespace default --short | xargs helm3 2to3 convert --dry-run
+              helm ls -d -m 25 --namespace default --short | xargs helm3 2to3 convert --dry-run
+              helm3 list
+
+      - task: AzureCLI@2
+        displayName: Migration of  Helm 2 Releases to Helm 3
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+              set -Eeuxo pipefail
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+              helm ls -d -m 25 --namespace default --short | xargs helm3 2to3 convert --dry-run
+              helm ls -d -m 25 --namespace default --short | xargs helm3 2to3 convert --dry-run
+              helm3 list
+
+      - task: AzureCLI@2
+        displayName: Cleanup Helm v2 releases and configurations
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+              set -Eeuxo pipefail
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+              helm3 2to3 cleanup --dry-run
+              helm3 2to3 cleanup 
+
+      - task: AzureCLI@2
+        displayName: Reset the root path of helm
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+              set -Eeuxo pipefail
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+              sudo rm -rf $(Agent.BuildDirectory)/usr/local/bin/helm
+              sudo mv $(Agent.BuildDirectory)/usr/local/bin/{helm3,helm}

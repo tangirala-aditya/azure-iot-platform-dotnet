@@ -10,6 +10,7 @@ parameters:
   helmVersion:
   imageTag:
   type:
+  isBlueGreenFirstTime:
 
 
 steps:
@@ -27,6 +28,40 @@ steps:
   - checkout: self
     displayName: Checkout repository
          
+  - task: HelmInstaller@1
+    displayName: Install Helm
+    inputs:
+      helmVersionToInstall: ${{parameters.helmVersion}}
+
+  - task: HelmDeploy@0
+    displayName: Initialize Helm
+    inputs:
+      connectionType: Azure Resource Manager
+      azureSubscription: ${{parameters.subscriptionName}}
+      azureResourceGroup: ${{parameters.resourceGroupName}}
+      kubernetesCluster: ${{parameters.aksName}}
+      namespace: default
+      command: init
+      arguments: --force-upgrade
+
+
+  - task: HelmDeploy@0
+    displayName: Upgrading the service for first time
+    condition: eq(variables.isBlueGreenFirstTime,'true')
+    inputs:
+      connectionType: Azure Resource Manager
+      azureSubscription: ${{parameters.subscriptionName}}
+      azureResourceGroup: ${{parameters.resourceGroupName}}
+      kubernetesCluster: ${{parameters.aksName}}
+      namespace: default
+      command: upgrade
+      chartType: FilePath
+      chartPath: charts/mmm-iot-service-blue-green
+      releaseName: ${{parameters.serviceName}}
+      force: true
+      install: true
+      overrideValues: nameOverride=${{parameters.serviceName}},service.port=${{parameters.servicePort}},type=${{parameters.type}},deployment.enabled=false,service.enabled=true
+
   - task: AzureCLI@2
     displayName: Connect to AKS Cluster
     name: getPipelineVariables
@@ -51,40 +86,6 @@ steps:
           set -x
         fi 
         echo "_ $type _ Here is the type value"
-
-
-  - task: HelmInstaller@1
-    displayName: Install Helm
-    inputs:
-      helmVersionToInstall: ${{parameters.helmVersion}}
-
-  - task: HelmDeploy@0
-    displayName: Initialize Helm
-    inputs:
-      connectionType: Azure Resource Manager
-      azureSubscription: ${{parameters.subscriptionName}}
-      azureResourceGroup: ${{parameters.resourceGroupName}}
-      kubernetesCluster: ${{parameters.aksName}}
-      namespace: default
-      command: init
-      arguments: --force-upgrade
-
-
-  - task: HelmDeploy@0
-    displayName: Upgrading the service for first time
-    inputs:
-      connectionType: Azure Resource Manager
-      azureSubscription: ${{parameters.subscriptionName}}
-      azureResourceGroup: ${{parameters.resourceGroupName}}
-      kubernetesCluster: ${{parameters.aksName}}
-      namespace: default
-      command: upgrade
-      chartType: FilePath
-      chartPath: charts/mmm-iot-service-blue-green
-      releaseName: ${{parameters.serviceName}}
-      force: true
-      install: true
-      overrideValues: nameOverride=${{parameters.serviceName}},service.port=${{parameters.servicePort}},type=${{parameters.type}},deployment.enabled=false,service.enabled=true
 
   - task: HelmDeploy@0
     displayName: Creation Blue application deployment

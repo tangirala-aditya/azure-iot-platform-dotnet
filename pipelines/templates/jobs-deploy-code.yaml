@@ -111,6 +111,7 @@ jobs:
             helmVersion: $(helmVersion)
             imageTag: ${{parameters.imageTag}}
             type: blue
+            isBlueGreenFirstTime: false
 
 
   - job: addKey

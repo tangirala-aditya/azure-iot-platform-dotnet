@@ -6,6 +6,7 @@ parameters:
   applicationShortCode:
   imageTag:
   blueGreen:
+  isBlueGreenFirstTime:
 
 jobs:
   - template: get-approval.yaml

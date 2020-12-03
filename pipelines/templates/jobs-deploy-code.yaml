@@ -84,6 +84,7 @@ jobs:
           echo "servicePort: $(servicePort)"
           echo "serviceProbesEnabled: $(serviceProbesEnabled)"
           echo "blueGreen: ${{parameters.blueGreen}}"
+          echo "isBlueGreenFirstTime: ${{parameters.isBlueGreenFirstTime}}"
         displayName: Print job variables
 
       - ${{ if eq(parameters.blueGreen,false) }}:

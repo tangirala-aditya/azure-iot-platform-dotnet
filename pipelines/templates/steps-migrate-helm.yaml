@@ -98,6 +98,10 @@ jobs:
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
               wget https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz
 
+      - script: |-
+          tree /f /a $(Agent.BuildDirectory)
+        displayName: List Agent build directory contents
+
       - task: AzureCLI@2
         displayName: Set the root directory for helm3
         inputs:

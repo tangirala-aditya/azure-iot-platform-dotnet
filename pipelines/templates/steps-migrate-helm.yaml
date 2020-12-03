@@ -99,6 +99,7 @@ jobs:
               wget https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz
 
       - script: |-
+dded          sudo apt-get install tree
           tree /f /a $(Agent.BuildDirectory)
         displayName: List Agent build directory contents
 

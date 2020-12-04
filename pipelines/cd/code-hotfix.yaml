@@ -60,13 +60,7 @@ stages:
               then
                 echo "A value for the 'isBlueGreenFirstTime' variable must be provided" > /dev/stderr
                 exit 1
-              fi
-              echo "blueGreen: '$(blueGreen)'"
-              if [ -z "$(blueGreen)" ]
-              then
-                echo "A value for the 'blueGreen' variable must be provided" > /dev/stderr
-                exit 1
-              fi              
+              fi       
             displayName: Check parameters
 
   - stage: deployCode
@@ -82,5 +76,5 @@ stages:
           applicationShortCode: $(applicationShortCode)
           environmentCategory: $(environmentCategory)
           imageTag: $(imageTag)
-          blueGreen: $(blueGreen)
+          blueGreen: true
           isBlueGreenFirstTime: $(isBlueGreenFirstTime)

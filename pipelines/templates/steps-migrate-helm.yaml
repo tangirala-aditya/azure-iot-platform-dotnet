@@ -127,9 +127,17 @@ jobs:
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
               helm plugin install https://github.com/helm/helm-2to3
               helm plugin list
-              helm3 2to3 move config --dry-run
-              helm3 2to3 move config           
-
+              helm3 version --short
+              which helm3
+              pwd
+              cd ..
+              pwd
+              cd ..
+              pwd
+              cd ..
+              pwd ..
+              cd /usr/local/bin
+              pwd
       - task: AzureCLI@2
         displayName: Migration of  Helm 2 Configurations to Helm 3
         inputs:

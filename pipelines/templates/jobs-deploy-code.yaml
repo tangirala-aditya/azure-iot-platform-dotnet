@@ -7,6 +7,9 @@ parameters:
   imageTag:
   blueGreen:
   isBlueGreenFirstTime:
+  - name: test
+    type: boolean
+    default: false
 
 jobs:
   - template: get-approval.yaml
@@ -87,33 +90,58 @@ jobs:
           echo "isBlueGreenFirstTime: ${{parameters.isBlueGreenFirstTime}}"
         displayName: Print job variables
 
-      - ${{ if eq(string(parameters.blueGreen),'false') }}:
-        - template: steps-deploy-individual-service.yaml
-          parameters:
-            aksName: $(aksName)
-            resourceGroupName: $(resourceGroupName)
-            subscriptionName: ${{parameters.subscriptionName}}
-            serviceName: $(serviceName)
-            servicePort: $(servicePort)
-            serviceProbesEnabled: $(serviceProbesEnabled)
-            helmVersion: $(helmVersion)
-            imageTag: ${{parameters.imageTag}}
 
-      - ${{ if eq(string(parameters.blueGreen),'true') }}:
-        - template: steps-deploy-blue-green-service.yaml
-          parameters:
-            aksName: $(aksName)
-            resourceGroupName: $(resourceGroupName)
-            subscriptionName: ${{parameters.subscriptionName}}
-            serviceName: $(serviceName)
-            blueServiceName: $(serviceName)-blue
-            greenServiceName: $(serviceName)-green
-            servicePort: $(servicePort)
-            serviceProbesEnabled: $(serviceProbesEnabled)
-            helmVersion: $(helmVersion)
-            imageTag: ${{parameters.imageTag}}
-            type: blue
-            isBlueGreenFirstTime: ${{parameters.isBlueGreenFirstTime}}
+
+      - ${{ if eq(parameters.test, false) }}:
+      - script: echo "Running all the testswhen false"
+
+      - ${{ if eq(parameters.test, true) }}:
+      - script: echo "Running all the tests"
+
+
+
+
+
+
+      # - ${{ if eq(parameters.blueGreen,'false') }}:
+      #   - template: steps-deploy-individual-service.yaml
+      #     parameters:
+      #       aksName: $(aksName)
+      #       resourceGroupName: $(resourceGroupName)
+      #       subscriptionName: ${{parameters.subscriptionName}}
+      #       serviceName: $(serviceName)
+      #       servicePort: $(servicePort)
+      #       serviceProbesEnabled: $(serviceProbesEnabled)
+      #       helmVersion: $(helmVersion)
+      #       imageTag: ${{parameters.imageTag}}
+
+      # - ${{ if eq(parameters.blueGreen,false) }}:
+      #   - template: steps-deploy-individual-service.yaml
+      #     parameters:
+      #       aksName: $(aksName)
+      #       resourceGroupName: $(resourceGroupName)
+      #       subscriptionName: ${{parameters.subscriptionName}}
+      #       serviceName: $(serviceName)
+      #       servicePort: $(servicePort)
+      #       serviceProbesEnabled: $(serviceProbesEnabled)
+      #       helmVersion: $(helmVersion)
+      #       imageTag: ${{parameters.imageTag}}
+
+      # - ${{ if eq(parameters.blueGreen,'true') }}:
+      #   - template: steps-deploy-blue-green-service.yaml
+      #     parameters:
+      #       aksName: $(aksName)
+      #       resourceGroupName: $(resourceGroupName)
+      #       subscriptionName: ${{parameters.subscriptionName}}
+      #       serviceName: $(serviceName)
+      #       blueServiceName: $(serviceName)-blue
+      #       greenServiceName: $(serviceName)-green
+      #       servicePort: $(servicePort)
+      #       serviceProbesEnabled: $(serviceProbesEnabled)
+      #       helmVersion: $(helmVersion)
+      #       imageTag: ${{parameters.imageTag}}
+      #       type: blue
+      #       isBlueGreenFirstTime: ${{parameters.isBlueGreenFirstTime}}
 
 
   - job: addKey

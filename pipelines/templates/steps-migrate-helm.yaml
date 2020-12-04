@@ -125,8 +125,8 @@ jobs:
           inlineScript: |-
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-              helm plugin install https://github.com/helm/helm-2to3
-              helm plugin list
+              helm3 plugin install https://github.com/helm/helm-2to3
+              helm3 plugin list
               helm3 version --short
               which helm3
               pwd

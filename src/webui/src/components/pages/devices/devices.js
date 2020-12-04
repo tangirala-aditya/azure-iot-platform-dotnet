@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
+import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle";
 
 import { permissions, toDiagnosticsModel } from "services/models";
 import { DevicesGridContainer } from "./devicesGrid";
@@ -40,6 +41,8 @@ export class Devices extends Component {
             ...closedFlyoutState,
             contextBtns: null,
             selectedDeviceGroupId: undefined,
+            isCancelActive: true,
+            disableCancel: false,
         };
 
         this.props.updateCurrentWindow("Devices");
@@ -176,6 +179,19 @@ export class Devices extends Component {
         return children;
     };
 
+    cancelDeviceCalls = () => {
+        if (this.state.isCancelActive) {
+            this.setState({ isCancelActive: false, disableCancel: true });
+            return this.props.cancelDeviceCalls({ cancelSubsequentCalls: true });
+        }
+    };
+
+    refreshDevices = () => {
+        this.setState({ isCancelActive: true, disableCancel: false });
+        this.props.cancelDeviceCalls({ cancelSubsequentCalls: false });
+        return this.props.fetchDevices();
+    };
+
     render() {
         const {
                 t,
@@ -184,7 +200,6 @@ export class Devices extends Component {
                 deviceError,
                 isPending,
                 lastUpdated,
-                fetchDevices,
                 routeProps,
             } = this.props,
             gridProps = {
@@ -211,7 +226,7 @@ export class Devices extends Component {
                             </Btn>
                         </Protected>,
                         <RefreshBar
-                            refresh={fetchDevices}
+                            refresh={this.refreshDevices}
                             time={lastUpdated}
                             isPending={isPending}
                             t={t}
@@ -223,12 +238,29 @@ export class Devices extends Component {
                 <PageContent className="devices-container">
                     <PageTitle titleValue={t("devices.title")} />
                     {!!error && <AjaxError t={t} error={error} />}
-                    <SearchInput
-                        onChange={this.searchOnChange}
-                        onClick={this.onSearchClick}
-                        aria-label={t("devices.ariaLabel")}
-                        placeholder={t("devices.searchPlaceholder")}
-                    />
+                    <div className="search-left-div">
+                        <SearchInput
+                            onChange={this.searchOnChange}
+                            onClick={this.onSearchClick}
+                            aria-label={t("devices.ariaLabel")}
+                            placeholder={t("devices.searchPlaceholder")}
+                        />
+                    </div>
+                    <div className="cancel-right-div">
+                        <Toggle
+                            attr={{
+                                button: {
+                                    "aria-label": t("devices.cancelRequests"),
+                                    type: "button",
+                                },
+                            }}
+                            on={this.state.isCancelActive}
+                            onLabel={t("devices.cancelRequests")}
+                            offLabel={t("devices.cancelRequests")}
+                            onChange={this.cancelDeviceCalls}
+                            disabled={this.state.disableCancel}
+                        />
+                    </div>
                     {!error && (
                         <DevicesGridContainer
                             {...gridProps}

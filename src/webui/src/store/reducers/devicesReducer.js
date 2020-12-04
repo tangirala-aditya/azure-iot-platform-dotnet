@@ -57,7 +57,7 @@ export const epics = createEpicScenario({
                 .flatMap((action) => {
                     const actions = [];
                     actions.push(action);
-                    if (cToken) {
+                    if (cToken && !store.getState().devices.cancelDeviceCalls) {
                         actions.push(epics.actions.fetchDevicesByCToken());
                     }
                     return actions;
@@ -89,7 +89,7 @@ export const epics = createEpicScenario({
                 .flatMap((action) => {
                     const actions = [];
                     actions.push(action);
-                    if (cToken) {
+                    if (cToken && !store.getState().devices.cancelDeviceCalls) {
                         actions.push(epics.actions.fetchDevicesByCToken());
                     }
                     return actions;
@@ -154,6 +154,7 @@ const deviceSchema = new schema.Entity("devices"),
         entities: {},
         items: [],
         lastUpdated: "",
+        cancelDeviceCalls: false,
     },
     updateDevicesReducer = (state, { payload, fromAction }) => {
         const {
@@ -258,6 +259,11 @@ const deviceSchema = new schema.Entity("devices"),
             entities: { $merge: devices },
         });
     },
+    cancelDeviceCallsReducer = (state, { payload }) => {
+        return update(state, {
+            cancelDeviceCalls: { $set: payload.cancelSubsequentCalls },
+        });
+    },
     /* Action types that cause a pending flag */
     fetchableTypes = [
         epics.actionTypes.fetchDevices,
@@ -287,6 +293,10 @@ export const redux = createReducerScenario({
     resetPendingAndError: {
         type: "DEVICE_REDUCER_RESET_ERROR_PENDING",
         reducer: resetPendingAndErrorReducer,
+    },
+    cancelDeviceCalls: {
+        type: "CANCEL_DEVICE_CALLS",
+        reducer: cancelDeviceCallsReducer,
     },
 });
 

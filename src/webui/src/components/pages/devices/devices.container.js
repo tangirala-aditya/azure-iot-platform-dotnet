@@ -5,6 +5,7 @@ import { withNamespaces } from "react-i18next";
 import { Devices } from "./devices";
 import {
     epics as devicesEpics,
+    redux as devicesRedux,
     getDevices,
     getDevicesError,
     getDevicesLastUpdated,
@@ -35,6 +36,8 @@ const mapStateToProps = (state) => ({
             dispatch(appRedux.actions.updateCurrentWindow(currentWindow)),
         logEvent: (diagnosticsModel) =>
             dispatch(appEpics.actions.logEvent(diagnosticsModel)),
+        cancelDeviceCalls: (payload) =>
+            dispatch(devicesRedux.actions.cancelDeviceCalls(payload)),
     });
 
 export const DevicesContainer = withNamespaces()(

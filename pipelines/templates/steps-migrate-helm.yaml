@@ -147,8 +147,8 @@ jobs:
           inlineScript: |-
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-              helm3 2to3 move config --dry-run -y
-              helm3 2to3 move config -y
+              echo "y" | helm3 2to3 move config --dry-run -y
+              echo "y" | helm3 2to3 move config -y
               helm3 repo list
 
       - task: AzureCLI@2
@@ -186,8 +186,8 @@ jobs:
           inlineScript: |-
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-              helm3 2to3 cleanup --dry-run -y
-              helm3 2to3 cleanup -y
+             echo "y" | helm3 2to3 cleanup --dry-run
+             echo "y" | helm3 2to3 cleanup
 
       - task: AzureCLI@2
         displayName: Reset the root path of helm

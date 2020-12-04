@@ -85,10 +85,9 @@ jobs:
           echo "serviceProbesEnabled: $(serviceProbesEnabled)"
           echo "blueGreen: ${{parameters.blueGreen}}"
           echo "isBlueGreenFirstTime: ${{parameters.isBlueGreenFirstTime}}"
-          
         displayName: Print job variables
 
-      - ${{ if string(parameters.blueGreen) == 'false' }}:
+      - ${{ if eq(string(parameters.blueGreen),'false') }}:
         - template: steps-deploy-individual-service.yaml
           parameters:
             aksName: $(aksName)
@@ -100,7 +99,7 @@ jobs:
             helmVersion: $(helmVersion)
             imageTag: ${{parameters.imageTag}}
 
-      - ${{ if string(parameters.blueGreen) == 'true' }}:
+      - ${{ if eq(string(parameters.blueGreen),'true') }}:
         - template: steps-deploy-blue-green-service.yaml
           parameters:
             aksName: $(aksName)

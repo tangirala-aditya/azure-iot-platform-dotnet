@@ -113,6 +113,7 @@ jobs:
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
               tar zxf helm-v3.2.1-linux-amd64.tar.gz
+              tree /f /a $(Agent.BuildDirectory) 
               sudo mv $(Agent.BuildDirectory)/linux-amd64/helm /usr/local/bin/helm3
 
       - task: AzureCLI@2

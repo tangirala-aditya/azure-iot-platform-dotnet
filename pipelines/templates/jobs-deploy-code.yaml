@@ -88,7 +88,7 @@ jobs:
           echo "serviceProbesEnabled: $(serviceProbesEnabled)"
           echo "blueGreen: ${{parameters.blueGreen}}"
           echo "isBlueGreenFirstTime: ${{parameters.isBlueGreenFirstTime}}"
-          echo "test variable: ${{parameters.test}}"
+          echo "test variable: $(testVar)"
         displayName: Print job variables
 
 

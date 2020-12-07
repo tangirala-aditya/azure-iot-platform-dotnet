@@ -10,8 +10,6 @@ parameters:
   - name: test
     type: boolean
     default: false
-    values:
-    - true
 
 jobs:
   - template: get-approval.yaml
@@ -96,17 +94,32 @@ jobs:
 
 
       - script: echo "Running before conditional var valu ${{parameters.test}}"
-      - ${{ if eq(parameters.test, false) }}:
-        - script: echo "Running all the testswhen false"
+      - ${{ if eq(test, false) }}:
+        - script: echo "Running all the testswhen false1"
+      
+      - ${{ if eq($test, false) }}:
+        - script: echo "Running all the testswhen false2"
 
-      - ${{ if eq(parameters.test, true) }}:
-        - script: echo "Running all the tests"
+      - ${{ if eq($(test), false) }}:
+        - script: echo "Running all the testswhen false3"  
 
-      - ${{ if eq(parameters.test, 'false') }}:
-        - script: echo "false on quotes"
 
-      - ${{ if eq(parameters.test, 'true') }}:
-        - script: echo "true in quotes"
+      - ${{ if eq($test, 'false') }}:
+        - script: echo "Running all the testswhen false4"
+
+      - ${{ if eq($(test), 'false') }}:
+        - script: echo "Running all the testswhen false5"  
+
+
+
+      - ${{ if eq(test, true) }}:
+        - script: echo "Running all the tests6"
+
+      - ${{ if eq(test, 'false') }}:
+        - script: echo "false on quotes7"
+
+      - ${{ if eq(test, 'true') }}:
+        - script: echo "true in quotes8"
 
 
 

@@ -7,9 +7,9 @@ parameters:
   imageTag:
   blueGreen:
   isBlueGreenFirstTime:
-  - name: test
-    type: boolean
-    default: false
+- name: test
+  type: boolean
+  default: false
 
 jobs:
   - template: get-approval.yaml
@@ -88,6 +88,7 @@ jobs:
           echo "serviceProbesEnabled: $(serviceProbesEnabled)"
           echo "blueGreen: ${{parameters.blueGreen}}"
           echo "isBlueGreenFirstTime: ${{parameters.isBlueGreenFirstTime}}"
+          echo "test variable: $({parameters.test})"
         displayName: Print job variables
 
 

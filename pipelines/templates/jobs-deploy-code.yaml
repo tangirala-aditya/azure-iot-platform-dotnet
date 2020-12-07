@@ -96,7 +96,10 @@ jobs:
 
 
       - script: echo "testNullisblank" 
-        condition: eq('${​​​​​{​​​​​variables.testVar}​​​​​}​​​​​','true')
+        condition: eq('$​​[​​​​​variables.testVar]​​​​​','true')
+
+      - script: echo "testNullisblankcompile false" 
+        condition: eq('${​​​​​{​​​​​variables.testVar}​​​​​}​​​​​','false')
 
 
 

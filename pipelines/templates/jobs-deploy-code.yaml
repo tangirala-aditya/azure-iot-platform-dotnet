@@ -23,7 +23,7 @@ jobs:
       - name: resourceGroupName
         value: $(resourceGroupPartialName)-iot-${{parameters.applicationShortCode}}-${{parameters.environmentCategory}}
       - name: testVar
-        value: true
+        value: ${{parameters.blueGreen}}
     strategy:
       matrix:
         asa-manager:

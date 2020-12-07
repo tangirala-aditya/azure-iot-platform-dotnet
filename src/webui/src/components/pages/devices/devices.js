@@ -182,7 +182,9 @@ export class Devices extends Component {
     cancelDeviceCalls = () => {
         if (this.state.isCancelActive) {
             this.setState({ isCancelActive: false, disableCancel: true });
-            return this.props.cancelDeviceCalls({ cancelSubsequentCalls: true });
+            return this.props.cancelDeviceCalls({
+                cancelSubsequentCalls: true,
+            });
         }
     };
 

@@ -42,7 +42,7 @@ spec:
             httpGet:
               path: {{ .Values.deployment.probes.livenessPath }}
               port: http
-            initialDelaySeconds: 250
+            initialDelaySeconds: 450
             timeoutSeconds: 10
             periodSeconds: 10
             successThreshold: 1
@@ -51,7 +51,7 @@ spec:
             httpGet:
               path: {{ .Values.deployment.probes.readinessPath }}
               port: http
-            initialDelaySeconds: 250
+            initialDelaySeconds: 450
             timeoutSeconds: 10
             periodSeconds: 10
             successThreshold: 1

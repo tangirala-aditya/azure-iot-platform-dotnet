@@ -93,9 +93,6 @@ jobs:
 
 
       - script: echo "Running before conditional var valu ${{parameters.test}}"
-    
-      - script: echo "testNullisblank" 
-        condition: eq([​​​​​​variables.testVar​​]​​,'true')
 
       - ${{ if eq(variables['testVar'], false) }}:
         - script: echo "Running all the testswhen false3"  

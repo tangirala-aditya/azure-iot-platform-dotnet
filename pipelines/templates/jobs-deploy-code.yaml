@@ -95,8 +95,6 @@ jobs:
       - script: echo "Running before conditional var valu ${{parameters.test}}"
 
 
-      - script: echo "testNullisblank" 
-        condition: $[eq(​​​​​​​variables['testVar']​​​​​,'true')]
 
       - script: echo "testNullisblankcompile false" 
         condition: eq('${​​​​​{​​​​​variables.testVar}​​​​​}​​​​​','false')
@@ -111,11 +109,11 @@ jobs:
       # - ${{ if eq(variables['testVar'], true) }}:
       #   - script: echo "true in quotes8"
       
-      # - ${{ if eq(variables['testVar'], 'false') }}:
-      #   - script: echo "Running all the testswhen false31"  
+      - ${{ if eq(variables['testVar'], 'false') }}:
+        - script: echo "Running all the testswhen false31"  
 
-      # - ${{ if eq(variables['testVar'], 'true') }}:
-      #   - script: echo "true in quotes81"
+      - ${{ if eq(variables['testVar'], 'true') }}:
+        - script: echo "true in quotes81"
 
 
 

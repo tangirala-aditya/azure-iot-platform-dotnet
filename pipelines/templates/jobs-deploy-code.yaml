@@ -23,7 +23,7 @@ jobs:
       - name: resourceGroupName
         value: $(resourceGroupPartialName)-iot-${{parameters.applicationShortCode}}-${{parameters.environmentCategory}}
       - name: testVar
-        value: ${{parameters.blueGreen}}
+        value: false
     strategy:
       matrix:
         asa-manager:
@@ -94,14 +94,12 @@ jobs:
 
       - script: echo "Running before conditional var valu ${{parameters.test}}"
       
-      - ${{ if eq(variables['testVar'], true) }}:
+      - ${{ if eq(variables['testVar'], 'false') }}:
         - script: echo "Running all the testswhen false3"  
 
       - ${{ if eq(variables['testVar'], 'true') }}:
         - script: echo "true in quotes8"
 
-      - ${{ if eq(variables['testVar'], "true") }}:
-        - script: echo "true in quotes81"
 
 
 

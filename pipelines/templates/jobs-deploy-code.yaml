@@ -7,9 +7,7 @@ parameters:
   imageTag:
   blueGreen:
   isBlueGreenFirstTime:
-  - name: test
-    type: boolean
-    default: false
+  test:
 
 jobs:
   - template: get-approval.yaml
@@ -89,16 +87,15 @@ jobs:
           echo "blueGreen: ${{parameters.blueGreen}}"
           echo "isBlueGreenFirstTime: ${{parameters.isBlueGreenFirstTime}}"
           echo "test variable: ${{parameters.test}}"
-          echo "test variable fro pipeline $(test)"
         displayName: Print job variables
 
 
       - script: echo "Running before conditional var valu ${{parameters.test}}"
       
-      - ${{ if eq(parameters.test, false) }}:
+      - ${{ if eq(parameters.test, 'false') }}:
         - script: echo "Running all the testswhen false3"  
 
-      - ${{ if eq(parameters.test, true) }}:
+      - ${{ if eq(parameters.test, 'true') }}:
         - script: echo "true in quotes8"
 
 

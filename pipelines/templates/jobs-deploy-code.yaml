@@ -6,26 +6,26 @@ parameters:
   type: string
   default: "Default String"
 - name: environmentName
-    type: string
-    default: "Default String"
+  type: string
+  default: "Default String"
 - name: environmentCategory
-    type: string
-    default: "Default String"
+  type: string
+  default: "Default String"
 - name: applicationCode
-    type: string
-    default: "Default String"
+  type: string
+  default: "Default String"
 - name: applicationShortCode
-    type: string
-    default: "Default String"
+  type: string
+  default: "Default String"
 - name: imageTag
-    type: string
-    default: "Default String"
+  type: string
+  default: "Default String"
 - name: blueGreen
-    type: string
-    default: "Default String"
+  type: string
+  default: "Default String"
 - name: isBlueGreenFirstTime
-    type: string
-    default: "Default String"
+  type: string
+  default: "Default String"
 
 
 

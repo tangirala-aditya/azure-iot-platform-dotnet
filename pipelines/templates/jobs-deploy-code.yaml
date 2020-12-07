@@ -92,16 +92,16 @@ jobs:
 
 
       - script: echo "Running before conditional var valu $({parameters.test})"
-      - ${{ if eq({parameters.test}, false) }}:
+      - ${{ if eq(parameters.test, false) }}:
         - script: echo "Running all the testswhen false"
 
-      - ${{ if eq({parameters.test}, true) }}:
+      - ${{ if eq(parameters.test, true) }}:
         - script: echo "Running all the tests"
 
-      - ${{ if eq({parameters.test}, 'false') }}:
+      - ${{ if eq(parameters.test, 'false') }}:
         - script: echo "false on quotes"
 
-      - ${{ if eq({parameters.test}, 'true') }}:
+      - ${{ if eq(parameters.test, 'true') }}:
         - script: echo "true in quotes"
 
 

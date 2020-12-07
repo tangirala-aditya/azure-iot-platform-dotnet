@@ -145,8 +145,6 @@ jobs:
           inlineScript: |-
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-              kubectl get configmap -n kube-system -l "OWNER=TILLER" \
-               | awk '{print $1}' | grep -v NAME | cut -d '.' -f1 | uniq | xargs -n1 helm3 2to3 convert
               helm list  \
                | awk '{print $1}' | grep -v NAME | cut -d '.' -f1 | uniq | xargs -n1 helm3 2to3 convert
               kubectl get secrets \

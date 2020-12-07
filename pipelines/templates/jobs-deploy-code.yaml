@@ -23,7 +23,7 @@ jobs:
       - name: resourceGroupName
         value: $(resourceGroupPartialName)-iot-${{parameters.applicationShortCode}}-${{parameters.environmentCategory}}
       - name: testVar
-        value: ${{parameters.blueGreen}}
+        value: $[parameters.blueGreen]
     strategy:
       matrix:
         asa-manager:
@@ -96,14 +96,10 @@ jobs:
 
 
       - script: echo "testNullisblank" 
-        condition: eq($​​[​​​​​variables.testVar]​​​​​,'true')
-
-      - script: echo "testNullisblank" 
-        condition: eq($​​[​​​​​variables.testVar]​​​​​, true)
+        condition: $[eq(​​​​​​​variables['testVar']​​​​​,'true')]
 
       - script: echo "testNullisblankcompile false" 
         condition: eq('${​​​​​{​​​​​variables.testVar}​​​​​}​​​​​','false')
-
 
 
 

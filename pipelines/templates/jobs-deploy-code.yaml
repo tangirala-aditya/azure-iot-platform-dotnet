@@ -94,7 +94,7 @@ jobs:
 
       - script: echo "Running before conditional var valu ${{parameters.test}}"
       
-      - ${{ if eq($(testVar)), 'false') }}:
+      - ${{ if eq($(testVar), 'false') }}:
         - script: echo "Running all the testswhen false3"  
 
       - ${{ if eq($(testVar), 'true') }}:

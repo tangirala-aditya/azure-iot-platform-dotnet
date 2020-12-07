@@ -46,7 +46,7 @@ spec:
             httpGet:
               path: {{ .Values.deployment.probes.livenessPath }}
               port: http
-            initialDelaySeconds: 5
+            initialDelaySeconds: 250
             timeoutSeconds: 10
             periodSeconds: 10
             successThreshold: 1
@@ -55,7 +55,7 @@ spec:
             httpGet:
               path: {{ .Values.deployment.probes.readinessPath }}
               port: http
-            initialDelaySeconds: 5
+            initialDelaySeconds: 250
             timeoutSeconds: 10
             periodSeconds: 10
             successThreshold: 1
@@ -65,7 +65,7 @@ spec:
             httpGet:
               path: /
               port: 10080
-            initialDelaySeconds: 220
+            initialDelaySeconds: 450
             timeoutSeconds: 10
             periodSeconds: 10
             successThreshold: 1
@@ -74,7 +74,7 @@ spec:
             httpGet:
               path: /
               port: 10080
-            initialDelaySeconds: 250
+            initialDelaySeconds: 450
             timeoutSeconds: 10
             periodSeconds: 10
             successThreshold: 1

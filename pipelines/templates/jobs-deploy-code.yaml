@@ -7,10 +7,7 @@ parameters:
   imageTag:
   blueGreen:
   isBlueGreenFirstTime:
-  - name: testV
-    displayName: testVariable
-    type: boolean
-    default: false
+  testV: "false"
 
 
 jobs:

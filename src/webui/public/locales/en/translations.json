@@ -409,7 +409,7 @@
         "refresh": "Refresh",
         "showTelemetry": "Show telemetry",
         "returnToDevices": "Devices",
-        "cancelRequests": "Cancel Subsequent Requests",
+        "loadMore": "Load more",
         "grid": {
             "connected": "Connected",
             "deviceName": "Device name",

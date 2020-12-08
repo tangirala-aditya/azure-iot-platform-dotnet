@@ -41,8 +41,7 @@ export class Devices extends Component {
             ...closedFlyoutState,
             contextBtns: null,
             selectedDeviceGroupId: undefined,
-            isCancelActive: true,
-            disableCancel: false,
+            loadMore: true,
         };
 
         this.props.updateCurrentWindow("Devices");
@@ -149,6 +148,7 @@ export class Devices extends Component {
 
         let children = [
             <DeviceGroupDropdown
+                updateLoadMore={this.updateLoadMoreOnDeviceGroupChange}
                 deviceGroupIdFromUrl={this.state.selectedDeviceGroupId}
             />,
             <Protected permission={permissions.updateDeviceGroups}>
@@ -179,19 +179,30 @@ export class Devices extends Component {
         return children;
     };
 
-    cancelDeviceCalls = () => {
-        if (this.state.isCancelActive) {
-            this.setState({ isCancelActive: false, disableCancel: true });
+    switchLoadMore = (value) => {
+        if (!value) {
+            this.setState({ loadMore: false });
             return this.props.cancelDeviceCalls({
                 cancelSubsequentCalls: true,
             });
+        } else {
+            this.setState({ loadMore: true });
+            this.props.cancelDeviceCalls({
+                cancelSubsequentCalls: false,
+            });
+            return this.props.fetchDevicesByCToken();
         }
     };
 
     refreshDevices = () => {
-        this.setState({ isCancelActive: true, disableCancel: false });
+        this.setState({ loadMore: true });
         this.props.cancelDeviceCalls({ cancelSubsequentCalls: false });
         return this.props.fetchDevices();
+    };
+
+    updateLoadMoreOnDeviceGroupChange = () => {
+        this.setState({ loadMore: true });
+        this.props.cancelDeviceCalls({ cancelSubsequentCalls: false });
     };
 
     render() {
@@ -252,15 +263,14 @@ export class Devices extends Component {
                         <Toggle
                             attr={{
                                 button: {
-                                    "aria-label": t("devices.cancelRequests"),
+                                    "aria-label": t("devices.loadMore"),
                                     type: "button",
                                 },
                             }}
-                            on={this.state.isCancelActive}
-                            onLabel={t("devices.cancelRequests")}
-                            offLabel={t("devices.cancelRequests")}
-                            onChange={this.cancelDeviceCalls}
-                            disabled={this.state.disableCancel}
+                            on={this.state.loadMore}
+                            onLabel={t("devices.loadMore")}
+                            offLabel={t("devices.loadMore")}
+                            onChange={this.switchLoadMore}
                         />
                     </div>
                     {!error && (

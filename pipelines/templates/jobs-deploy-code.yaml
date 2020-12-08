@@ -14,8 +14,8 @@ jobs:
       
   - job: deploy
     displayName: Deploy
-    dependsOn: 
-      - upgradeRepo
+    # dependsOn: 
+    #   - upgradeRepo
     variables:
       - template: variables-all.yaml
       - name: aksName
@@ -135,12 +135,12 @@ jobs:
             set -Eeuxo pipefail
             az appconfig kv set --key Global:BuildNumber --value $(Build.BuildId) --name $(appConfigurationName)  --yes
   
-  - job : upgradeRepo
-    displayName: Updating the Helm Repository
-    steps:
-      - script:  |-
-          helm version
-          helm repo update
+  # - job : upgradeRepo
+  #   displayName: Updating the Helm Repository
+  #   steps:
+  #     - script:  |-
+  #         helm version
+  #         helm repo update
 
 
 

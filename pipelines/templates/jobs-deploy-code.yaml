@@ -3,29 +3,13 @@ parameters:
     type: boolean
     default: false
   - name: subscriptionName
-    type: string
-    default: "Default String"
   - name: environmentName
-    type: string
-    default: "Default String"
   - name: environmentCategory
-    type: string
-    default: "Default String"
   - name: applicationCode
-    type: string
-    default: "Default String"
   - name: applicationShortCode
-    type: string
-    default: "Default String"
   - name: imageTag
-    type: string
-    default: "Default String"
   - name: blueGreen
-    type: string
-    default: "Default String"
   - name: isBlueGreenFirstTime
-    type: string
-    default: "Default String"
 
 jobs:
   - template: get-approval.yaml
@@ -106,11 +90,11 @@ jobs:
           echo "serviceProbesEnabled: $(serviceProbesEnabled)"
           echo "blueGreen: ${{parameters.blueGreen}}"
           echo "isBlueGreenFirstTime: ${{parameters.isBlueGreenFirstTime}}"
-          echo "test variable: $(testVar)"
+          echo "test variable: $(testV)"
         displayName: Print job variables
 
 
-      - script: echo "Running before conditional var valu ${{parameters.test}}"
+      - script: echo "Running before conditional var valu ${{parameters.testV}}"
 
 
       - ${{ if eq(parameters.testV, true) }}:

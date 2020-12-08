@@ -96,7 +96,7 @@ jobs:
           inlineScript: |-
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-              wget https://get.helm.sh/helm-v3.4.0-linux-arm64.tar.gz
+              wget https://get.helm.sh/helm-v3.4.0-linux-amd64.tar.gz
 
       - script: |-
           sudo apt-get install tree

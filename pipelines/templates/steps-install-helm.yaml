@@ -10,8 +10,3 @@ steps:
     displayName: Install Helm
     inputs:
       helmVersionToInstall: $(helmVersion)
-  
-  - script:  |-
-      helm version
-      helm repo update
-    displayName: Updating the Helm Repo  

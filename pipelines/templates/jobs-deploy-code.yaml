@@ -103,7 +103,7 @@ jobs:
       - ${{ if eq(parameters.testV, 'false') }}:
         - script: echo "Running all the tests false "
 
-      -script: ${{parameters.testV}} = ${{parameters.blueGreen}}
+      - script: ${{parameters.testV}} = ${{parameters.blueGreen}}
 
 
       - script: echo "Running before conditional var value change ${{parameters.testV}}"

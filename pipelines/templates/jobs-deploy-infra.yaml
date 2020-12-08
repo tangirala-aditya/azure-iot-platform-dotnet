@@ -1197,17 +1197,6 @@ jobs:
         inputs:
           helmVersionToInstall: $(helmVersion)
 
-      - task: HelmDeploy@0
-        displayName: Initialize Helm
-        inputs:
-          connectionType: Azure Resource Manager
-          azureSubscription: ${{parameters.subscriptionName}}
-          azureResourceGroup: $(resourceGroupName)
-          kubernetesCluster: $(aksName)
-          namespace: default
-          command: init
-          arguments: --force-upgrade
-
       - task: AzureCLI@2
         displayName: Install K8s Ingress Controller
         inputs:
@@ -1216,7 +1205,7 @@ jobs:
           scriptType: bash
           inlineScript: |-
             helm version
-            helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+            helm repo add stable https://charts.helm.sh/stable
             helm repo update
             n=0
             until [ $n -ge 5 ]

@@ -10,14 +10,8 @@ steps:
     displayName: Install Helm
     inputs:
       helmVersionToInstall: $(helmVersion)
-
-  - task: HelmDeploy@0
-    displayName: Initialize Helm
-    inputs:
-      connectionType: Azure Resource Manager
-      azureSubscriptionEndpoint: $(subscriptionName)
-      azureResourceGroup: $(resourceGroupName)
-      kubernetesCluster: $(aksName)
-      namespace: $(kubernetesNamespace)
-      command: init
-      arguments: --force-upgrade
+  
+  - script:  |-
+      helm version
+      helm repo update
+    displayName: Updating the Helm Repo  

@@ -999,8 +999,8 @@ stages:
               azureResourceGroup: $(resourceGroupName)
               kubernetesCluster: $(aksName)
               useClusterAdmin: false
-              command: delete
-              arguments: --purge $(mmmIotPlatformServicesHelmChartReleaseName)
+              command: uninstall
+              arguments: $(mmmIotPlatformServicesHelmChartReleaseName)
 
       - job: uninstallIngressChart
         displayName: Uninstall ingress Helm chart
@@ -1026,8 +1026,8 @@ stages:
               azureResourceGroup: $(resourceGroupName)
               kubernetesCluster: $(aksName)
               useClusterAdmin: false
-              command: delete
-              arguments: --purge $(mmmIotPlatformIngressHelmChartReleaseName)
+              command: uninstall
+              arguments: $(mmmIotPlatformIngressHelmChartReleaseName)
 
       - job: deleteNamespace
         displayName: Delete namespace

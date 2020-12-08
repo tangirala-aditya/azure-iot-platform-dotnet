@@ -26,16 +26,6 @@ steps:
     inputs:
       helmVersionToInstall: ${{parameters.helmVersion}}
 
-  - task: HelmDeploy@0
-    displayName: Initialize Helm
-    inputs:
-      connectionType: Azure Resource Manager
-      azureSubscription: ${{parameters.subscriptionName}}
-      azureResourceGroup: ${{parameters.resourceGroupName}}
-      kubernetesCluster: ${{parameters.aksName}}
-      namespace: default
-      command: init
-      arguments: --force-upgrade
 
   - task: HelmDeploy@0
     inputs:

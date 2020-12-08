@@ -1,12 +1,31 @@
 parameters:
-  subscriptionName:
-  environmentName:
-  environmentCategory:
-  applicationCode:
-  applicationShortCode:
-  imageTag:
-  blueGreen:
-  isBlueGreenFirstTime:
+  - name: testV
+    type: boolean
+    default: false
+  - name: subscriptionName
+    type: string
+    default: "Default String"
+  - name: environmentName
+    type: string
+    default: "Default String"
+  - name: environmentCategory
+    type: string
+    default: "Default String"
+  - name: applicationCode
+    type: string
+    default: "Default String"
+  - name: applicationShortCode
+    type: string
+    default: "Default String"
+  - name: imageTag
+    type: string
+    default: "Default String"
+  - name: blueGreen
+    type: string
+    default: "Default String"
+  - name: isBlueGreenFirstTime
+    type: string
+    default: "Default String"
 
 jobs:
   - template: get-approval.yaml
@@ -22,7 +41,7 @@ jobs:
       - name: resourceGroupName
         value: $(resourceGroupPartialName)-iot-${{parameters.applicationShortCode}}-${{parameters.environmentCategory}}
       - name: testVar
-        value: $(parameters.blueGreen)
+        value: "false"
     strategy:
       matrix:
         asa-manager:
@@ -88,14 +107,17 @@ jobs:
           echo "blueGreen: ${{parameters.blueGreen}}"
           echo "isBlueGreenFirstTime: ${{parameters.isBlueGreenFirstTime}}"
           echo "test variable: $(testVar)"
-          echo "testV $(testV)"
         displayName: Print job variables
 
 
       - script: echo "Running before conditional var valu ${{parameters.test}}"
 
 
+      - ${{ if eq(parameters.testV, true) }}:
+        - script: echo "Running all the tests true"
 
+      - ${{ if eq(parameters.testV, false) }}:
+        - script: echo "Running all the tests false "
 
       # - ${{ if eq(variables['testVar'], false) }}:
       #   - script: echo "Running all the testswhen false3"  
@@ -103,11 +125,11 @@ jobs:
       # - ${{ if eq(variables['testVar'], true) }}:
       #   - script: echo "true in quotes8"
       
-      - ${{if eq(variables['testVar'], 'false')}}:
-        - script: echo "Running all the testswhen false31"  
+      # - ${{if eq(variables['testVar'], 'false')}}:
+      #   - script: echo "Running all the testswhen false31"  
 
-      - ${{ if eq(variables['testVar'], 'true') }}:
-        - script: echo "true in quotes81"
+      # - ${{ if eq(variables['testVar'], 'true') }}:
+      #   - script: echo "true in quotes81"
 
 
 

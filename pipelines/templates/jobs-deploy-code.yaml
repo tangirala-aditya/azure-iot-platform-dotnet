@@ -7,7 +7,6 @@ parameters:
   imageTag:
   blueGreen:
   isBlueGreenFirstTime:
-  test:
 
 jobs:
   - template: get-approval.yaml
@@ -23,7 +22,7 @@ jobs:
       - name: resourceGroupName
         value: $(resourceGroupPartialName)-iot-${{parameters.applicationShortCode}}-${{parameters.environmentCategory}}
       - name: testVar
-        value: $[parameters.blueGreen]
+        value: ${{parameters.blueGreen}}
     strategy:
       matrix:
         asa-manager:
@@ -89,6 +88,7 @@ jobs:
           echo "blueGreen: ${{parameters.blueGreen}}"
           echo "isBlueGreenFirstTime: ${{parameters.isBlueGreenFirstTime}}"
           echo "test variable: $(testVar)"
+          echo "testV $(testV)"
         displayName: Print job variables
 
 
@@ -103,11 +103,17 @@ jobs:
       # - ${{ if eq(variables['testVar'], true) }}:
       #   - script: echo "true in quotes8"
       
-      - ${{ if eq(variables['testVar'], 'false') }}:
+      - $[ if eq(variables['testVar'], 'false') ]:
         - script: echo "Running all the testswhen false31"  
 
-      - ${{ if eq(variables['testVar'], 'true') }}:
+      - $[ if eq(variables['testVar'], 'true') ]:
         - script: echo "true in quotes81"
+
+      - $[ if eq($testV, 'false') ]:
+        - script: echo "Running all the testswhen false312"  
+
+      - $[ if eq($testV, 'true') ]:
+        - script: echo "true in quotes812"
 
 
 

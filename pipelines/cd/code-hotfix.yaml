@@ -73,6 +73,11 @@ stages:
     displayName: Deploy code
     dependsOn:
       - checkParameters
+    parameters:
+      - name: testV
+        type: boolean
+        default: false
+        value: $(blueGreen)
     jobs:
       - template: ../templates/jobs-deploy-code.yaml
         parameters:
@@ -84,3 +89,4 @@ stages:
           imageTag: $(imageTag)
           blueGreen: $(blueGreen)
           isBlueGreenFirstTime: $(isBlueGreenFirstTime)
+          

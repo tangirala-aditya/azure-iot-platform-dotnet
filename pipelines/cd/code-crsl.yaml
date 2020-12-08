@@ -4,8 +4,6 @@ resources:
   pipelines:
     - pipeline: test
       source: azure-iot-platform-dotnet.ci.test
-      trigger:
-        branches: none
 pool:
   vmImage: ubuntu-latest
 variables:

@@ -93,7 +93,7 @@ jobs:
           echo "blueGreen: ${{parameters.blueGreen}}"
           echo "isBlueGreenFirstTime: ${{parameters.isBlueGreenFirstTime}}"
           echo "test variable: $(testVar)"
-          echo "test V: ${{paramaters.testV}}"
+          echo "test V: ${{parameters.testV}}"
         displayName: Print job variables
 
 

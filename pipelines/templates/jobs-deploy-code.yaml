@@ -10,6 +10,9 @@ parameters:
   - name: imageTag
   - name: blueGreen
   - name: isBlueGreenFirstTime
+  - name: aksPartialName
+    type: string
+    default: "aks"
 
 jobs:
   - template: get-approval.yaml

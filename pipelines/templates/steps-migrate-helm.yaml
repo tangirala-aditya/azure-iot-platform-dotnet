@@ -98,6 +98,10 @@ jobs:
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
               wget https://get.helm.sh/helm-v3.4.0-linux-arm64.tar.gz
 
+      - script: |-
+          sudo apt-get install tree
+          tree $(Agent.BuildDirectory)
+
       - task: AzureCLI@2
         displayName: Set the root directory for helm3
         inputs:

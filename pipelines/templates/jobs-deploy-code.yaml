@@ -1,18 +1,17 @@
 parameters:
+  subscriptionName:
+  environmentName:
+  environmentCategory:
+  applicationCode:
+  applicationShortCode:
+  imageTag:
+  blueGreen:
+  isBlueGreenFirstTime:
   - name: testV
+    displayName: testVariable
     type: boolean
     default: false
-  - name: subscriptionName
-  - name: environmentName
-  - name: environmentCategory
-  - name: applicationCode
-  - name: applicationShortCode
-  - name: imageTag
-  - name: blueGreen
-  - name: isBlueGreenFirstTime
-  - name: aksPartialName
-    type: string
-    default: "aks"
+
 
 jobs:
   - template: get-approval.yaml
@@ -93,11 +92,12 @@ jobs:
           echo "serviceProbesEnabled: $(serviceProbesEnabled)"
           echo "blueGreen: ${{parameters.blueGreen}}"
           echo "isBlueGreenFirstTime: ${{parameters.isBlueGreenFirstTime}}"
-          echo "test variable: $(testV)"
+          echo "test variable: $(testVar)"
+          echo "test V: ${{paramaters.testV}}"
         displayName: Print job variables
 
 
-      - script: echo "Running before conditional var valu ${{parameters.testV}}"
+      - script: echo "Running before conditional var valu ${{parameters.testVar}}"
 
 
       - ${{ if eq(parameters.testV, true) }}:

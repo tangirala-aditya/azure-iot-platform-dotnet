@@ -112,8 +112,9 @@ jobs:
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
               tar zxf helm-v3.4.0-linux-arm64.tar.gz
-              sudo mv $(Agent.BuildDirectory)/s/linux-amd64/helm /usr/local/bin/helm3
               tree $(Agent.BuildDirectory)
+              sudo mv $(Agent.BuildDirectory)/s/linux-amd64/helm /usr/local/bin/helm3
+              
 
       - task: AzureCLI@2
         displayName: Install helm2to3 plugin
@@ -128,6 +129,7 @@ jobs:
               helm3 plugin list
               helm3 version --short
               which helm3
+
       - task: AzureCLI@2
         displayName: Migration of  Helm 2 Configurations to Helm 3
         inputs:
@@ -141,20 +143,28 @@ jobs:
               echo "y" | helm3 2to3 move config
               helm3 repo list
 
-      - task: AzureCLI@2
-        displayName: Migration of  Helm 2 Releases to Helm 3
+      - task: ShellScript@2
         inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-              set -Eeuxo pipefail
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-              helm list  \
-               | awk '{print $1}' | grep -v NAME | cut -d '.' -f1 | uniq | xargs -n1 helm3 2to3 convert
-              kubectl get secrets \
-              | awk '{print $1}' | grep -v NAME | cut -d '.' -f1 | uniq | xargs -n1 helm3 2to3 convert
-              helm3 list
+          scriptPath: pipelines/cd/helm2_to_3_convert.sh
+          #args: '' # Optional
+          #disableAutoCwd: false # Optional
+          #cwd: '' # Optional
+          #failOnStandardError: false              
+
+      # - task: AzureCLI@2
+      #   displayName: Migration of  Helm 2 Releases to Helm 3
+      #   inputs:
+      #     azureSubscription: ${{parameters.subscriptionName}}
+      #     scriptLocation: inlineScript
+      #     scriptType: bash
+      #     inlineScript: |-
+      #         set -Eeuxo pipefail
+      #         az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+      #         helm list  \
+      #          | awk '{print $1}' | grep -v NAME | cut -d '.' -f1 | uniq | xargs -n1 helm3 2to3 convert
+      #         kubectl get secrets \
+      #         | awk '{print $1}' | grep -v NAME | cut -d '.' -f1 | uniq | xargs -n1 helm3 2to3 convert
+      #         helm3 list
 
       - task: AzureCLI@2
         displayName: Cleanup Helm v2 releases and configurations

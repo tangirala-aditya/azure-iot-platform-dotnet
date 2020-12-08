@@ -94,7 +94,7 @@ jobs:
         displayName: Print job variables
 
 
-      - script: echo "Running before conditional var valu ${{parameters.testVar}}"
+      - script: echo "Running before conditional var valu ${{parameters.testV}}"
 
 
       - ${{ if eq(parameters.testV, 'true') }}:

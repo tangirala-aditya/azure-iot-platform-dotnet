@@ -7,7 +7,7 @@ parameters:
   imageTag:
   blueGreen:
   isBlueGreenFirstTime:
-  testV: false
+  testV: "false"
 
 
 jobs:
@@ -97,11 +97,23 @@ jobs:
       - script: echo "Running before conditional var valu ${{parameters.testV}}"
 
 
-      - ${{ if eq(parameters.testV, true) }}:
+      - ${{ if eq(parameters.testV, 'true') }}:
         - script: echo "Running all the tests true"
 
-      - ${{ if eq(parameters.testV, false) }}:
+      - ${{ if eq(parameters.testV, 'false') }}:
         - script: echo "Running all the tests false "
+
+      -script: ${{parameters.testV}} = ${{parameters.blueGreen}}
+
+
+      - script: echo "Running before conditional var value change ${{parameters.testV}}"
+
+
+      - ${{ if eq(parameters.testV, 'true') }}:
+        - script: echo "Running all the tests true12"
+
+      - ${{ if eq(parameters.testV, 'false') }}:
+        - script: echo "Running all the tests false12 "      
 
       # - ${{ if eq(variables['testVar'], false) }}:
       #   - script: echo "Running all the testswhen false3"  

@@ -85,5 +85,4 @@ stages:
           imageTag: $(imageTag)
           blueGreen: $(blueGreen)
           isBlueGreenFirstTime: $(isBlueGreenFirstTime)
-          testV: $(blueGreen)
           

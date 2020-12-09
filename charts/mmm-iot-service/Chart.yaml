@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: v2
 name: mmm-iot-service
 description: A general-purpose Helm chart for a 3M IoT microservice
 type: application

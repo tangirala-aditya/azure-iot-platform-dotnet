@@ -48,7 +48,6 @@ stages:
     displayName: CRSL dev
     dependsOn:
       - checkParameters
-    condition: and(succeeded(), eq(variables['runCrslDevStage'], 'true'))
     jobs:
       - template: ../templates/jobs-deploy-code.yaml
         parameters:
@@ -56,22 +55,6 @@ stages:
           subscriptionName: 3M-CRSLAD16-BBIoTP-DEV
           applicationCode: crsliot
           applicationShortCode: crsl
-          environmentCategory: dev
-          imageTag: $(_imageTag)
-          blueGreen: true
-          subscriptionId: c36fb2f8-f98d-40d0-90a9-d65e93acb428
-
-  - stage: ggkDev
-    displayName: GGK dev
-    dependsOn:
-      - checkParameters
-    jobs:
-      - template: ../templates/jobs-deploy-code.yaml
-        parameters:
-          environmentName: GGK-Environment
-          subscriptionName: 3M-CRSLAD16-BBIoTP-DEV
-          applicationCode: ggktech
-          applicationShortCode: ggk
           environmentCategory: dev
           imageTag: $(_imageTag)
           blueGreen: true

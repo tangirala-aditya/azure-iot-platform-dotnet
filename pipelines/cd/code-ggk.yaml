@@ -4,7 +4,6 @@ resources:
   pipelines:
     - pipeline: test
       source: azure-iot-platform-dotnet.ci.test
-
 pool:
   vmImage: ubuntu-latest
 variables:
@@ -45,50 +44,19 @@ stages:
             parameters:
               pipelineResourceName: test
 
-  - stage: emdDev
-    displayName: EMD dev
+
+  - stage: ggkDev
+    displayName: GGK dev
     dependsOn:
       - checkParameters
     jobs:
       - template: ../templates/jobs-deploy-code.yaml
         parameters:
-          environmentName: IoT_EMD_Environment_DEV
-          subscriptionName: 3M-UDAH02-SpartanIotHub-Dev
-          applicationCode: emdiot
-          applicationShortCode: emd
+          environmentName: GGK-Environment
+          subscriptionName: 3M-CRSLAD16-BBIoTP-DEV
+          applicationCode: ggktech
+          applicationShortCode: ggk
           environmentCategory: dev
           imageTag: $(_imageTag)
-          blueGreen: false
-          subscriptionId: 191495e8-b878-4140-85eb-aae73a7119cd
-
-  - stage: emdQa
-    displayName: EMD QA
-    dependsOn:
-      - emdDev
-    jobs:
-      - template: ../templates/jobs-deploy-code.yaml
-        parameters:
-          environmentName: IoT_EMD_Environment_QA
-          subscriptionName: 3M-UDAH03-SpartanIotHub-QA
-          applicationCode: emdiot
-          applicationShortCode: emd
-          environmentCategory: qa
-          imageTag: $(_imageTag)
-          blueGreen: false
-          subscriptionId: 5248a0ea-c79b-4739-adc7-e76eeb27e253
-
-  - stage: emdCt
-    displayName: EMD CT
-    dependsOn:
-      - emdQa
-    jobs:
-      - template: ../templates/jobs-deploy-code.yaml
-        parameters:
-          environmentName: IoT_EMD_Environment_CT
-          subscriptionName: 3M-UDAH04-SpartanIotHub-CT
-          applicationCode: emdiot
-          applicationShortCode: emd
-          environmentCategory: ct
-          imageTag: $(_imageTag)
-          blueGreen: false
-          subscriptionId: e9f61243-5e9a-4b8a-918c-09fe7e9f1ec1
+          blueGreen: true
+          subscriptionId: c36fb2f8-f98d-40d0-90a9-d65e93acb428

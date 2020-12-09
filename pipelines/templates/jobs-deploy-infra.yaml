@@ -1261,7 +1261,7 @@ jobs:
           chartType: Name
           releaseName: cert-manager
           chartName: jetstack/cert-manager
-          arguments: --version v$(certManagerVersion) --install --force
+          arguments: --version v$(certManagerVersion) --install
 
       - task: Kubernetes@1
         displayName: Create Cluster Issuer

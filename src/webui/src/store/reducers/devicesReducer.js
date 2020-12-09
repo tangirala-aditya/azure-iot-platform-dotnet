@@ -145,7 +145,35 @@ export const epics = createEpicScenario({
                 .ofType(appRedux.actionTypes.updateActiveDeviceGroup)
                 .map(({ payload }) => payload)
                 .distinctUntilChanged()
-                .map((_) => epics.actions.fetchDevices()),
+                .flatMap((_) => [
+                    epics.actions.fetchDevices(),
+                    epics.actions.fetchDeviceStatistics(),
+                ]),
+    },
+
+    /** Loads the device statistics */
+    fetchDeviceStatistics: {
+        type: "DEVICE_STATISTICS_FETCH",
+        epic: (fromAction, store) => {
+            const rawConditions = getActiveDeviceGroupConditions(
+                    store.getState()
+                ).concat(getActiveDeviceQueryConditions(store.getState())),
+                conditions = rawConditions.filter((condition) => {
+                    return (
+                        !!condition.key &&
+                        !!condition.operator &&
+                        !!condition.value
+                    );
+                });
+            return IoTHubManagerService.getDeviceStatistics(conditions)
+                .map(
+                    toActionCreator(
+                        redux.actions.updateDeviceStatistics,
+                        fromAction
+                    )
+                )
+                .catch(handleError(fromAction));
+        },
     },
 });
 // ========================= Epics - END
@@ -161,6 +189,8 @@ const deviceSchema = new schema.Entity("devices"),
         entities: {},
         items: [],
         lastUpdated: "",
+        totalDeviceCount: 0,
+        connectedDeviceCount: 0,
         cancelDeviceCalls: false,
     },
     updateDevicesReducer = (state, { payload, fromAction }) => {
@@ -172,6 +202,13 @@ const deviceSchema = new schema.Entity("devices"),
             entities: { $set: devices },
             items: { $set: result },
             lastUpdated: { $set: moment() },
+            ...setPending(fromAction.type, false),
+        });
+    },
+    updateDeviceStatisticsReducer = (state, { payload, fromAction }) => {
+        return update(state, {
+            totalDeviceCount: { $set: payload.totalDeviceCount },
+            connectedDeviceCount: { $set: payload.connectedDeviceCount },
             ...setPending(fromAction.type, false),
         });
     },
@@ -276,10 +313,15 @@ const deviceSchema = new schema.Entity("devices"),
         epics.actionTypes.fetchDevices,
         epics.actionTypes.fetchDevicesByCondition,
         epics.actionTypes.fetchEdgeAgent,
+        epics.actionTypes.fetchDeviceStatistics,
     ];
 
 export const redux = createReducerScenario({
     updateDevices: { type: "DEVICES_UPDATE", reducer: updateDevicesReducer },
+    updateDeviceStatistics: {
+        type: "DEVICE_STATISTICS_UPDATE",
+        reducer: updateDeviceStatisticsReducer,
+    },
     updateDevicesByCondition: {
         type: "DEVICES_UPDATE_BY_CONDITION",
         reducer: updateDevicesByConditionReducer,
@@ -351,4 +393,20 @@ export const getDeviceModuleStatusPendingStatus = (state) =>
     getPending(getDevicesReducer(state), epics.actionTypes.fetchEdgeAgent);
 export const getDeviceModuleStatusError = (state) =>
     getError(getDevicesReducer(state), epics.actionTypes.fetchEdgeAgent);
+export const getDeviceStatistics = (state) => {
+    const deviceState = getDevicesReducer(state);
+    return deviceState
+        ? {
+              totalDeviceCount: deviceState.totalDeviceCount,
+              connectedDeviceCount: deviceState.connectedDeviceCount,
+          }
+        : undefined;
+};
+export const getDeviceStatisticsPendingStatus = (state) =>
+    getPending(
+        getDevicesReducer(state),
+        epics.actionTypes.fetchDeviceStatistics
+    );
+export const getDeviceStatisticsError = (state) =>
+    getError(getDevicesReducer(state), epics.actionTypes.fetchDeviceStatistics);
 // ========================= Selectors - END

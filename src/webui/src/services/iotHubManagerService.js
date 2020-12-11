@@ -11,6 +11,7 @@ import {
     toModuleFieldsModel,
     toJobsModel,
     toJobStatusModel,
+    toDeviceStatisticsModel,
     toDevicePropertiesModel,
     toDeploymentModel,
     toDeploymentsModel,
@@ -188,5 +189,13 @@ export class IoTHubManagerService {
         return HttpClient.get(
             `${ENDPOINT}devices/deploymentHistory/${deviceId}`
         ).map(toDevicesDeploymentHistoryModel);
+    }
+
+    /** Returns a device statistics */
+    static getDeviceStatistics(conditions = []) {
+        const query = encodeURIComponent(JSON.stringify(conditions));
+        return HttpClient.get(
+            `${ENDPOINT}devices/statistics?query=${query}`
+        ).map(toDeviceStatisticsModel);
     }
 }

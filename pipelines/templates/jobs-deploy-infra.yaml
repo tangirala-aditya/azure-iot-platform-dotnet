@@ -1198,16 +1198,6 @@ jobs:
         inputs:
           helmVersionToInstall: $(helmVersion)
 
-      - task: HelmDeploy@0
-        displayName: Initialize Helm
-        inputs:
-          connectionType: Azure Resource Manager
-          azureSubscription: ${{parameters.subscriptionName}}
-          azureResourceGroup: $(resourceGroupName)
-          kubernetesCluster: $(aksName)
-          namespace: default
-          command: init
-          arguments: --force-upgrade
 
       - task: AzureCLI@2
         displayName: Install K8s Ingress Controller

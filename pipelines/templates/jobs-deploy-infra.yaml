@@ -1248,7 +1248,7 @@ jobs:
             --namespace cert-manager \
             --version v1.1.0 \
             --install \
-           --set installCRDs=true
+            --set installCRDs=true
 
       - task: HelmDeploy@0
         displayName: Deploy cert-manager

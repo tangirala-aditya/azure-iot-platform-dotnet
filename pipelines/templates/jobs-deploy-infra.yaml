@@ -1177,8 +1177,8 @@ jobs:
 
   - job: ingress
     displayName: Create K8s ingress
-    dependsOn:
-      - aks
+    # dependsOn:
+    #   - aks
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

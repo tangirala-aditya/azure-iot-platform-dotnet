@@ -1243,12 +1243,6 @@ jobs:
             helm repo add jetstack https://charts.jetstack.io
             # Update your local Helm chart repository cache
             helm repo update
-            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
-            helm upgrade cert-manager jetstack/cert-manager \
-            --namespace cert-manager \
-            --version v1.1.0 \
-            --install \
-            --set installCRDs=true
 
       - task: HelmDeploy@0
         displayName: Deploy cert-manager
@@ -1262,7 +1256,7 @@ jobs:
           chartType: Name
           releaseName: cert-manager
           chartName: jetstack/cert-manager
-          arguments: --version v$(certManagerVersion) --install --set installCRDs=true
+          arguments: --version v$(certManagerVersion) --install
 
       - task: Kubernetes@1
         displayName: Create Cluster Issuer

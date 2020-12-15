@@ -60,4 +60,4 @@ variables:
   - name: tableStorageName
     value: SystemAdmin
   - name: inviteEmail
-    value: iotplatformnoreply@iot.cld.3m.com
+    value: iotplatformnoreply@${{parameters.applicationShortCode}}-${{parameters.environmentCategory}}.iot.cld.3m.com

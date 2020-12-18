@@ -95,12 +95,7 @@ jobs:
           scriptType: bash
           inlineScript: |-
               set -Eeuxo pipefail
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-added script               wget https://get.helm.sh/helm-v3.4.2-linux-amd64.tar.gz
-
-      - script: |-
-          sudo apt-get install tree
-          tree $(Agent.BuildDirectory)
+              wget https://get.helm.sh/helm-v3.4.2-linux-amd64.tar.gz
 
       - task: AzureCLI@2
         displayName: Set the root directory for helm3
@@ -110,9 +105,7 @@ added script               wget https://get.helm.sh/helm-v3.4.2-linux-amd64.tar.
           scriptType: bash
           inlineScript: |-
               set -Eeuxo pipefail
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
               tar zxf helm-v3.4.2-linux-amd64.tar.gz
-              tree $(Agent.BuildDirectory)
               sudo mv $(Agent.BuildDirectory)/s/linux-amd64/helm /usr/local/bin/helm3
               
 
@@ -146,25 +139,6 @@ added script               wget https://get.helm.sh/helm-v3.4.2-linux-amd64.tar.
       - task: ShellScript@2
         inputs:
           scriptPath: pipelines/cd/helm2_to_3_convert.sh
-          #args: '' # Optional
-          #disableAutoCwd: false # Optional
-          #cwd: '' # Optional
-          #failOnStandardError: false              
-
-      # - task: AzureCLI@2
-      #   displayName: Migration of  Helm 2 Releases to Helm 3
-      #   inputs:
-      #     azureSubscription: ${{parameters.subscriptionName}}
-      #     scriptLocation: inlineScript
-      #     scriptType: bash
-      #     inlineScript: |-
-      #         set -Eeuxo pipefail
-      #         az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-      #         helm list  \
-      #          | awk '{print $1}' | grep -v NAME | cut -d '.' -f1 | uniq | xargs -n1 helm3 2to3 convert
-      #         kubectl get secrets \
-      #         | awk '{print $1}' | grep -v NAME | cut -d '.' -f1 | uniq | xargs -n1 helm3 2to3 convert
-      #         helm3 list
 
       - task: AzureCLI@2
         displayName: Cleanup Helm v2 releases and configurations

@@ -594,7 +594,7 @@ stages:
           - task: AzureCLI@2
             displayName: Install K8s Ingress Controller
             inputs:
-              azureSubscription: ${{parameters.subscriptionName}}
+              azureSubscription: $(subscriptionName)
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |-

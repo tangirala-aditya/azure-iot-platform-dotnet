@@ -591,8 +591,42 @@ stages:
               aksName: $(aksName)
               kubernetesNamespace: $(kubernetesNamespace)
 
+      - task: AzureCLI@2
+        displayName: Install K8s Ingress Controller
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            helm version
+            helm repo add stable https://charts.helm.sh/stable
+            helm repo update
+            n=0
+            until [ $n -ge 5 ]
+            do
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+              # Use Helm to deploy an NGINX ingress controller
+              helm upgrade ingress-controller stable/nginx-ingress \
+                  --install \
+                  --force \
+                  --namespace  $(kubernetesNamespace) \
+                  --set nginx-ingress.controller.ingressClass=$(buildId)
+                  --set controller.replicaCount=2 \
+                  --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
+                  --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
+                  --wait \
+                2>&1 && break
+              n=$[$n+1]
+              sleep 1m
+            done
+            if [ $n -ge 5 ]
+            then
+              echo "Error Deploying ingress controller" 1>&2
+              exit 64
+            fi
+            
           - task: HelmDeploy@0
-            displayName: Install ingress Helm chart
+            displayName: Install ingress resources and issuer
             inputs:
               connectionType: Azure Resource Manager
               azureSubscriptionEndpoint: $(subscriptionName)

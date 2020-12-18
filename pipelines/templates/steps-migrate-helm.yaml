@@ -153,18 +153,6 @@ jobs:
               echo "y" | helm3 2to3 cleanup
 
       - task: AzureCLI@2
-        displayName: Reset the root path of helm
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-              set -Eeuxo pipefail
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-              sudo rm -rf /usr/local/bin/helm
-              sudo mv /usr/local/bin/{helm3,helm}
-
-      - task: AzureCLI@2
         displayName: Upgrade cert-manager
         inputs:
           azureSubscription: ${{parameters.subscriptionName}}
@@ -176,5 +164,5 @@ jobs:
             kubectl delete -n cert-manager deployment cert-manager cert-manager-cainjector cert-manager-webhook
             kubectl delete crds --all
             kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.crds.yaml
-            helm upgrade cert-manager jetstack/cert-manager   --namespace cert-manager   --version v1.1.0
+            helm3 upgrade cert-manager jetstack/cert-manager   --namespace cert-manager   --version v1.1.0
 

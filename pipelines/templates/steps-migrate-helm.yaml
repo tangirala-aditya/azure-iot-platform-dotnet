@@ -96,7 +96,7 @@ jobs:
           inlineScript: |-
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-              wget https://get.helm.sh/helm-v3.0.0-beta.4-linux-amd64.tar.gz
+added script               wget https://get.helm.sh/helm-v3.4.2-linux-amd64.tar.gz
 
       - script: |-
           sudo apt-get install tree
@@ -111,7 +111,7 @@ jobs:
           inlineScript: |-
               set -Eeuxo pipefail
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-              tar zxf helm-v3.0.0-beta.4-linux-amd64.tar.gz
+              tar zxf helm-v3.4.2-linux-amd64.tar.gz
               tree $(Agent.BuildDirectory)
               sudo mv $(Agent.BuildDirectory)/s/linux-amd64/helm /usr/local/bin/helm3
               
@@ -189,3 +189,18 @@ jobs:
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
               sudo rm -rf /usr/local/bin/helm
               sudo mv /usr/local/bin/{helm3,helm}
+
+      - task: AzureCLI@2
+        displayName: Upgrade cert-manager
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            set -Eeuxo pipefail
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+            kubectl delete -n cert-manager deployment cert-manager cert-manager-cainjector cert-manager-webhook
+            kubectl delete crds --all
+            kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.crds.yaml
+            helm upgrade cert-manager jetstack/cert-manager   --namespace cert-manager   --version v1.1.0
+

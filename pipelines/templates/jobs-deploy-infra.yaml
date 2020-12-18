@@ -483,76 +483,74 @@ jobs:
   #         deploymentPartialName: $(mapsPartialName)
   #         resourceGroupName: $(resourceGroupName)
 
-  # - job: appConfiguration
-  #   displayName: Provision App Configuration
-  #   dependsOn:
-  #     - resourceGroup
-  #   variables:
-  #     - template: variables-deploy-infra.yaml
-  #       parameters:
-  #         subscriptionName: ${{parameters.subscriptionName}}
-  #         locationName: ${{parameters.locationName}}
-  #         environmentName: ${{parameters.environmentName}}
-  #         subscriptionId: ${{parameters.subscriptionId}}
-  #         applicationCode: ${{parameters.applicationCode}}
-  #         applicationShortCode: ${{parameters.applicationShortCode}}
-  #         environmentCategory: ${{parameters.environmentCategory}}
-  #   steps:
-  #     - checkout: self
-  #       displayName: Checkout repository
+  - job: appConfiguration
+    displayName: Provision App Configuration
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
 
-  #     - template: apply-arm-tags.yaml
-  #       parameters:
-  #         environment: ${{parameters.environmentName}}
+      - template: apply-arm-tags.yaml
+        parameters:
+          environment: ${{parameters.environmentName}}
 
-  #     - task: AzureResourceGroupDeployment@2
-  #       displayName: Provision Azure App Configuration
-  #       inputs:
-  #         azureSubscription: ${{parameters.subscriptionName}}
-  #         action: Create Or Update Resource Group
-  #         resourceGroupName: $(resourceGroupName)
-  #         location: ${{parameters.locationName}}
-  #         templateLocation: Linked artifact
-  #         csmFile: $(armTemplatesDirectory)/$(appConfigurationPartialName).json
-  #         csmParametersFile: $(armParametersDirectory)/$(appConfigurationPartialName).json
-  #         overrideParameters: -appConfigName $(appConfigurationName) -location ${{parameters.locationName}}
-  #         deploymentMode: Incremental
-  #         addSpnToEnvironment: true
+      - task: AzureResourceGroupDeployment@2
+        displayName: Provision Azure App Configuration
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          action: Create Or Update Resource Group
+          resourceGroupName: $(resourceGroupName)
+          location: ${{parameters.locationName}}
+          templateLocation: Linked artifact
+          csmFile: $(armTemplatesDirectory)/$(appConfigurationPartialName).json
+          csmParametersFile: $(armParametersDirectory)/$(appConfigurationPartialName).json
+          overrideParameters: -appConfigName $(appConfigurationName) -location ${{parameters.locationName}}
+          deploymentMode: Incremental
+          addSpnToEnvironment: true
 
-  #     - template: steps-delete-oldest-deployment.yaml
-  #       parameters:
-  #         subscriptionName: ${{parameters.subscriptionName}}
-  #         deploymentPartialName: $(appConfigurationPartialName)
-  #         resourceGroupName: $(resourceGroupName)
+      - template: steps-delete-oldest-deployment.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          deploymentPartialName: $(appConfigurationPartialName)
+          resourceGroupName: $(resourceGroupName)
 
-  # - job: globalsecrets
-  #   displayName: Create K8s secrets
-  #   dependsOn:
-  #     - appConfiguration
-  #     - aks
-  #   variables:
-  #     - template: variables-deploy-infra.yaml
-  #       parameters:
-  #         subscriptionName: ${{parameters.subscriptionName}}
-  #         locationName: ${{parameters.locationName}}
-  #         environmentName: ${{parameters.environmentName}}
-  #         subscriptionId: ${{parameters.subscriptionId}}
-  #         applicationCode: ${{parameters.applicationCode}}
-  #         applicationShortCode: ${{parameters.applicationShortCode}}
-  #         environmentCategory: ${{parameters.environmentCategory}}
-  #   steps:
-  #     - checkout: none
+  - job: globalsecrets
+    displayName: Create K8s secrets
+    dependsOn:
+      - appConfiguration
+      - aks
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: none
 
-  #     - task: AzureCLI@2
-  #       displayName: Create K8s globalsecrets secret
-  #       inputs:
-  #         azureSubscription: ${{parameters.subscriptionName}}
-  #         scriptLocation: inlineScript
-  #         scriptType: bash
-  #         inlineScript: |-
-  #           az aks get-credentials -n $(aksName) -g $(resourceGroupName)
-  #           appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
-  #           kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
+      - task: AzureCLI@2
+        displayName: Create K8s globalsecrets secret
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
+            kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
 
   # - job: appInsights
   #   displayName: Provision Application Insights

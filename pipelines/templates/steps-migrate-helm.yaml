@@ -168,5 +168,5 @@ jobs:
             helm3 repo remove stable
             helm3 repo add "stable" "https://charts.helm.sh/stable" --force-update
             helm3 repo update
-            helm3 upgrade cert-manager jetstack/cert-manager   --namespace cert-manager   --version v1.1.0  --create-namespace
+            helm3 upgrade cert-manager jetstack/cert-manager   --namespace cert-manager   --version v1.1.0  --create-namespace --install
 

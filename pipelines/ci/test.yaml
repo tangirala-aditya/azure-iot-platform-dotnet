@@ -1032,7 +1032,7 @@ stages:
               kubernetesCluster: $(aksName)
               useClusterAdmin: false
               command: uninstall
-              arguments: $(mmmIotPlatformIngressHelmChartReleaseName)
+              arguments:  namespace $(kubernetesNamespace) $(mmmIotPlatformIngressHelmChartReleaseName)
 
       - job: deleteNamespace
         displayName: Delete namespace

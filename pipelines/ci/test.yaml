@@ -591,6 +591,12 @@ stages:
               aksName: $(aksName)
               kubernetesNamespace: $(kubernetesNamespace)
 
+
+          - script: |-
+              set -Eeuxo pipefail
+              helm dependency update $(mmmIotPlatformIngressHelmChartReleaseName)
+            displayName: Update helm local dependencies
+
           - task: HelmDeploy@0
             displayName: Install ingress Helm chart
             inputs:
@@ -603,7 +609,6 @@ stages:
               command: install
               chartName: charts/$(mmmIotPlatformIngressHelmChartName)
               releaseName: $(mmmIotPlatformIngressHelmChartReleaseName)
-              updatedependency: true
               arguments: >-
                 --set nginx-ingress.controller.ingressClass=$(buildId)
                 --set domain=$(testPipelineDomain)
@@ -701,7 +706,6 @@ stages:
               command: 'install'
               chartName: charts/$(mmmIotPlatformServicesHelmChartName)
               releaseName: $(mmmIotPlatformServicesHelmChartReleaseName)
-              updatedependency: true
               valueFile: $(mmmIotPlatformServicesHelmChartValuesFile)
               arguments: >-
                 --set secrets.globalsecrets.Global__ClientAuth__Jwt__AuthIssuer=https://$(testPipelineFqdn)/auth

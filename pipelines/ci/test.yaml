@@ -695,6 +695,12 @@ stages:
               sed -i -e 's/replace_this_imageTag/$(Build.BuildId)/g' $(mmmIotPlatformServicesHelmChartValuesFile)
             displayName: Set image tag
 
+          - script: |-
+              set -Eeuxo pipefail
+              cd charts/$(mmmIotPlatformServicesHelmChartName)
+              helm dependency update 
+            displayName: Update helm local dependencies
+
           - task: HelmDeploy@0
             displayName: Install services Helm chart
             inputs:
@@ -1005,7 +1011,7 @@ stages:
               kubernetesCluster: $(aksName)
               useClusterAdmin: false
               command: uninstall
-              arguments: $(mmmIotPlatformServicesHelmChartReleaseName)
+              arguments: --namespace $(kubernetesNamespace) $(mmmIotPlatformServicesHelmChartReleaseName)
 
       - job: uninstallIngressChart
         displayName: Uninstall ingress Helm chart
@@ -1032,7 +1038,7 @@ stages:
               kubernetesCluster: $(aksName)
               useClusterAdmin: false
               command: uninstall
-              arguments:  namespace $(kubernetesNamespace) $(mmmIotPlatformIngressHelmChartReleaseName)
+              arguments:  --namespace $(kubernetesNamespace) $(mmmIotPlatformIngressHelmChartReleaseName)
 
       - job: deleteNamespace
         displayName: Delete namespace

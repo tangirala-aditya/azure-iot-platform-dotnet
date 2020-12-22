@@ -1050,7 +1050,7 @@ stages:
               azureResourceGroup: $(resourceGroupName)
               kubernetesCluster: $(aksName)
               command: delete
-              arguments: namespace $(kubernetesNamespace) --now=true --ignore-not-found=true
+              arguments: --namespace $(kubernetesNamespace) --now=true --ignore-not-found=true
 
       - job: removeAuthenticationCallbackUrl
         displayName: Remove auth callback URL

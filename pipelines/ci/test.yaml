@@ -592,10 +592,11 @@ stages:
               kubernetesNamespace: $(kubernetesNamespace)
 
 
-          # - script: |-
-          #     set -Eeuxo pipefail
-          #     helm dependency update $(mmmIotPlatformIngressHelmChartReleaseName)
-          #   displayName: Update helm local dependencies
+          - script: |-
+              set -Eeuxo pipefail
+              cd charts
+              helm dependency update 
+            displayName: Update helm local dependencies
 
           - task: HelmDeploy@0
             displayName: Install ingress Helm chart

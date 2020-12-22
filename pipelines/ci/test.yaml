@@ -594,7 +594,7 @@ stages:
 
           - script: |-
               set -Eeuxo pipefail
-              cd charts
+              cd charts/$(mmmIotPlatformIngressHelmChartName)
               helm dependency update 
             displayName: Update helm local dependencies
 

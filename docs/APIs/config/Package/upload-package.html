@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Upload Package | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Upload Package | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="upload-package">Upload Package</h2>
+
+<p>API that uploads package firmware.</p>
+<h3 id="permissions">Permissions</h3>
+<pre><code>- CreatePackages
+</code></pre>
+<h3 id="http-request">Http Request</h3>
+<pre><code class="lang-HTTP">POST /config/v1/packages/UploadFile
+</code></pre>
+<h3 id="request-headers">Request Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization</td>
+<td>Bearer {token}. Required.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="other-attributes">Other Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RequestSizeLimit</td>
+<td>200000000</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-body">Request Body</h3>
+<pre><code>FormData: JSON file
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uploadedFile</td>
+<td>{file}</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sample-firmware-json">Sample Firmware JSON</h3>
+<pre><code class="lang-json">{
+     &quot;id&quot;: &quot;test_json-faa8cd85-fc81-4b93-804d-d99e8150807a&quot;,
+     &quot;content&quot;: {
+         &quot;deviceContent&quot;: {
+             &quot;properties.desired.softwareConfig&quot;: {
+                 &quot;softwareName&quot;: &quot;Firmware&quot;,
+                 &quot;version&quot;: &quot;1.0.0&quot;,
+                 &quot;softwareURL&quot;: &quot;https://test.blob.core.windows.net/233a1ca2-6855-43c5-8b9c-c7f85a1dd520-software-package/test.json?sv=2018-03-28&amp;sr=b&amp;sig=6u2TdIPhEMKOlbWNQBekUSavqLXMJw7ilm2xVIrwlYc%3D&amp;st=2020-06-02T07%3A21%3A11Z&amp;se=2020-06-03T07%3A26%3A11Z&amp;sp=rw&quot;,
+                 &quot;fileName&quot;: &quot;test.json&quot;,
+                 &quot;serialNumber&quot;: &quot;&quot;,
+                 &quot;checkSum&quot;: &quot;da39a3ee5e6b4b0d3255bfef95601890afd80709&quot;
+             }
+         }
+     },
+     &quot;metrics&quot;: {
+         &quot;queries&quot;: {
+             &quot;current&quot;: &quot;SELECT deviceId FROM devices WHERE configurations.[[{0}]].status = \'Applied\' AND properties.reported.softwareConfig.version = properties.desired.softwareConfig.version AND properties.reported.softwareConfig.status=\'Success\'&quot;,
+             &quot;applying&quot;: &quot;SELECT deviceId FROM devices WHERE configurations.[[{0}]].status = \'Applied\' AND ( properties.reported.softwareConfig.status=\'Downloading\' OR properties.reported.softwareConfig.status=\'Verifying\' OR properties.reported.softwareConfig.status=\'Applying\')&quot;,
+             &quot;rebooting&quot;: &quot;SELECT deviceId FROM devices WHERE configurations.[[{0}]].status = \'Applied\' AND properties.reported.softwareConfig.version = properties.desired.softwareConfig.version AND properties.reported.softwareConfig.status=\'Rebooting\'&quot;,
+             &quot;error&quot;: &quot;SELECT deviceId FROM devices WHERE configurations.[[{0}]].status = \'Applied\' AND properties.reported.softwareConfig.status=\'Error\'&quot;,
+             &quot;rolledback&quot;: &quot;SELECT deviceId FROM devices WHERE configurations.[[{0}]].status = \'Applied\' AND properties.reported.softwareConfig.status=\'RolledBack\'&quot;
+         }
+     },
+     &quot;targetCondition&quot;: &quot;&quot;,
+     &quot;priority&quot;: 20
+}
+</code></pre>
+<h3 id="response-schema">Response Schema</h3>
+<pre><code class="lang-json">{
+  &quot;softwarePackageURL&quot;: &quot;string&quot;,
+  &quot;checkSum&quot;: {
+    &quot;mD5&quot;: &quot;string&quot;,
+    &quot;shA1&quot;: &quot;string&quot;
+  }
+}
+</code></pre>
+<h3 id="sample-response">Sample Response</h3>
+<pre><code class="lang-json">{
+    &quot;SoftwarePackageURL&quot;: &quot;https://crsliotstorageacctdev.blob.core.windows.net/209d7f79-39aa-4e2a-8e9c-56f04f7633f9-software-package/SW2Package.json?sv=2018-03-28&amp;sr=b&amp;sig=juBMtr%2B82Ja4wCytdn3t%2BPyemnaIaKW%2FKEfYmdafHrU%3D&amp;st=2020-11-02T12%3A17%3A52Z&amp;se=2020-11-03T12%3A22%3A52Z&amp;sp=rw&quot;,
+    &quot;CheckSum&quot;: {
+        &quot;MD5&quot;: &quot;jdQF+qyJDC3u/me6j7Ywwg==&quot;,
+        &quot;SHA1&quot;: &quot;FrVXy3tIKM7+cbmp/a21NL3OYIk=&quot;
+    }
+}
+</code></pre>
+<h3 id="security">Security</h3>
+<p>Type: OpenID Connect<br>
+Flow: implicit<br>
+Authorization URL: <a href="https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com">https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</a></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/APIs/config/Package/upload-package.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

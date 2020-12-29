@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Activate Package | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Activate Package | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../../styles/docfx.css">
+    <link rel="stylesheet" href="../../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../../toc.html">
+    <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../../index.html">
+                <img id="logo" class="svg" src="../../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="activate-package">Activate Package</h2>
+
+<p>API that activates a package</p>
+<h3 id="permissions">Permissions</h3>
+<pre><code>- TagPackages
+</code></pre>
+<h3 id="http-request">Http Request</h3>
+<pre><code class="lang-HTTP">DELETE /config/v1/packages/{id:required}/tags/reserved.inactive
+</code></pre>
+<h3 id="query-params">Query Params</h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Package ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-headers">Request Headers</h3>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization</td>
+<td>Bearer {token}. Required.</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-body">Request Body</h3>
+<pre><code>N/A
+</code></pre>
+<h3 id="sample-request">Sample Request</h3>
+<pre><code class="lang-HTTP">DELETE /config/v1/packages/1ea5fc47-adf9-44ff-ba2a-fa33266df559/tags/reserved.inactive
+</code></pre>
+<h3 id="response-schema">Response Schema</h3>
+<pre><code class="lang-json">{
+  &quot;id&quot;: &quot;string&quot;,
+  &quot;name&quot;: &quot;string&quot;,
+  &quot;packageType&quot;: 0,
+  &quot;configType&quot;: &quot;string&quot;,
+  &quot;dateCreated&quot;: &quot;string&quot;,
+  &quot;content&quot;: &quot;string&quot;,
+  &quot;tags&quot;: [
+    &quot;string&quot;
+  ],
+  &quot;version&quot;: &quot;string&quot;,
+  &quot;createdDate&quot;: &quot;string&quot;,
+  &quot;modifiedDate&quot;: &quot;string&quot;,
+  &quot;createdBy&quot;: &quot;string&quot;,
+  &quot;modifiedBy&quot;: &quot;string&quot;
+}
+</code></pre>
+<h3 id="sample-response">Sample Response</h3>
+<pre><code class="lang-json">{
+    &quot;Id&quot;: &quot;1ea5fc47-adf9-44ff-ba2a-fa33266df559&quot;,
+    &quot;Name&quot;: &quot;EdgeSWPackage2&quot;,
+    &quot;PackageType&quot;: &quot;EdgeManifest&quot;,
+    &quot;ConfigType&quot;: &quot;&quot;,
+    &quot;DateCreated&quot;: &quot;2020-09-09T07:04:48+00:00&quot;,
+    &quot;Content&quot;: &quot;{\r\n                    \&quot;id\&quot;: \&quot;EdgeManifest1\&quot;,\r\n                    \&quot;schemaVersion\&quot;: \&quot;1.0\&quot;,\r\n                    \&quot;content\&quot;: {\r\n                        \&quot;modulesContent\&quot;: {\r\n                        \&quot;$edgeAgent\&quot;: {\r\n                            \&quot;properties.desired\&quot;: {\r\n                            \&quot;schemaVersion\&quot;: \&quot;2.0\&quot;,\r\n                            \&quot;runtime\&quot;: {\r\n                                \&quot;type\&quot;: \&quot;docker\&quot;,\r\n                                \&quot;settings\&quot;: {\r\n                                \&quot;loggingOptions\&quot;: \&quot;\&quot;,\r\n                                \&quot;minDockerVersion\&quot;: \&quot;v1.25\&quot;\r\n                                }\r\n                            },\r\n                            \&quot;systemModules\&quot;: {\r\n                                \&quot;edgeAgent\&quot;: {\r\n                                \&quot;type\&quot;: \&quot;docker\&quot;,\r\n                                \&quot;settings\&quot;: {\r\n                                    \&quot;image\&quot;: \&quot;mcr.microsoft.com/azureiotedge-agent:1.0\&quot;,\r\n                                    \&quot;createOptions\&quot;: \&quot;{}\&quot;\r\n                                }\r\n                                },\r\n                                \&quot;edgeHub\&quot;: {\r\n                                \&quot;type\&quot;: \&quot;docker\&quot;,\r\n                                \&quot;settings\&quot;: {\r\n                                    \&quot;image\&quot;: \&quot;mcr.microsoft.com/azureiotedge-hub:1.0\&quot;,\r\n                                    \&quot;createOptions\&quot;: \&quot;{}\&quot;\r\n                                },\r\n                                \&quot;status\&quot;: \&quot;running\&quot;,\r\n                                \&quot;restartPolicy\&quot;: \&quot;always\&quot;\r\n                                }\r\n                            },\r\n                            \&quot;modules\&quot;: {}\r\n                            }\r\n                        },\r\n                        \&quot;$edgeHub\&quot;: {\r\n                            \&quot;properties.desired\&quot;: {\r\n                            \&quot;schemaVersion\&quot;: \&quot;2.0\&quot;,\r\n                            \&quot;routes\&quot;: {\r\n                                \&quot;route\&quot;: \&quot;FROM /messages/* INTO $upstream\&quot;\r\n                            },\r\n                            \&quot;storeAndForwardConfiguration\&quot;: {\r\n                                \&quot;timeToLiveSecs\&quot;: 7200\r\n                            }\r\n                            }\r\n                        }\r\n                        }\r\n                    },\r\n                    \&quot;targetCondition\&quot;: \&quot;*\&quot;,\r\n                    \&quot;priority\&quot;: 30,\r\n                    \&quot;labels\&quot;: {\r\n                        \&quot;Name\&quot;: \&quot;Test\&quot;\r\n                    },\r\n                    \&quot;createdTimeUtc\&quot;: \&quot;2018-08-20T18:05:55.482Z\&quot;,\r\n                    \&quot;lastUpdatedTimeUtc\&quot;: \&quot;2018-08-20T18:05:55.482Z\&quot;,\r\n                    \&quot;etag\&quot;: null,\r\n                    \&quot;metrics\&quot;: {\r\n                        \&quot;results\&quot;: {},\r\n                        \&quot;queries\&quot;: {}\r\n                    }\r\n                 }&quot;,
+    &quot;Tags&quot;: [
+        &quot;devicegroup.*&quot;,
+        &quot;devicegroup.2ceeeccf-f775-4ea3-b84e-5ea26b125ab6&quot;
+    ],
+    &quot;Version&quot;: null,
+    &quot;CreatedDate&quot;: &quot;2020-09-09T07:04:48+00:00&quot;,
+    &quot;ModifiedDate&quot;: &quot;2020-11-02T11:41:12+00:00&quot;,
+    &quot;CreatedBy&quot;: &quot;Ragavender Basangari CW&quot;,
+    &quot;ModifiedBy&quot;: &quot;Sahithi Voruganti CW&quot;
+}
+</code></pre>
+<h3 id="security">Security</h3>
+<p>Type: OpenID Connect<br>
+Flow: implicit<br>
+Authorization URL: <a href="https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com">https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com</a></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/APIs/config/Package/activate-package.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../../styles/main.js"></script>
+  </body>
+</html>

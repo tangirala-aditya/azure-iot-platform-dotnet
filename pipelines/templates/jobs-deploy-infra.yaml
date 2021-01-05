@@ -222,21 +222,21 @@ jobs:
           deploymentPartialName: $(aksPartialName)
           resourceGroupName: $(resourceGroupName)
 
-      - task: Kubernetes@1
-        displayName: Create K8s ingress namespace
-        inputs:
-          connectionType: Azure Resource Manager
-          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
-          azureResourceGroup: $(resourceGroupName)
-          kubernetesCluster: $(aksName)
-          command: apply
-          useConfigurationFile: true
-          configurationType: inline
-          inline: |
-            apiVersion: v1
-            kind: Namespace
-            metadata:
-              name: ingress-basic
+      # - task: Kubernetes@1
+      #   displayName: Create K8s ingress namespace
+      #   inputs:
+      #     connectionType: Azure Resource Manager
+      #     azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+      #     azureResourceGroup: $(resourceGroupName)
+      #     kubernetesCluster: $(aksName)
+      #     command: apply
+      #     useConfigurationFile: true
+      #     configurationType: inline
+      #     inline: |
+      #       apiVersion: v1
+      #       kind: Namespace
+      #       metadata:
+      #         name: ingress-basic
 
       - task: Kubernetes@1
         displayName: Install the K8s Custom Resource Definition
@@ -246,26 +246,26 @@ jobs:
           azureResourceGroup: $(resourceGroupName)
           kubernetesCluster: $(aksName)
           command: apply
-          arguments: --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/v$(certManagerVersion)/deploy/manifests/00-crds.yaml
+          arguments: --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v$(certManagerVersion)/cert-manager.crds.yaml
           outputFormat: name
 
-      - task: Kubernetes@1
-        displayName: Create K8s cert-manager namespace
-        inputs:
-          connectionType: Azure Resource Manager
-          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
-          azureResourceGroup: $(resourceGroupName)
-          kubernetesCluster: $(aksName)
-          command: apply
-          useConfigurationFile: true
-          configurationType: inline
-          inline: |
-            apiVersion: v1
-            kind: Namespace
-            metadata:
-              name: cert-manager
-              labels:
-                cert-manager.io/disable-validation: "true"
+      # - task: Kubernetes@1
+      #   displayName: Create K8s cert-manager namespace
+      #   inputs:
+      #     connectionType: Azure Resource Manager
+      #     azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+      #     azureResourceGroup: $(resourceGroupName)
+      #     kubernetesCluster: $(aksName)
+      #     command: apply
+      #     useConfigurationFile: true
+      #     configurationType: inline
+      #     inline: |
+      #       apiVersion: v1
+      #       kind: Namespace
+      #       metadata:
+      #         name: cert-manager
+      #         labels:
+      #           cert-manager.io/disable-validation: "true"
 
   - job: storageAccount
     displayName: Provision Storage Account
@@ -1226,7 +1226,7 @@ jobs:
               # Use Helm to deploy an NGINX ingress controller
               helm upgrade ingress-controller stable/nginx-ingress \
                   --install \
-                  --namespace ingress-basic \
+                  --create-namespace ingress-basic \
                   --set controller.replicaCount=2 \
                   --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
                   --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
@@ -1273,7 +1273,7 @@ jobs:
           chartType: Name
           releaseName: cert-manager
           chartName: jetstack/cert-manager
-          arguments: --version v$(certManagerVersion) --install
+          arguments: --version v$(certManagerVersion) --install --create-namespace cert-manager
 
       - task: Kubernetes@1
         displayName: Create Cluster Issuer

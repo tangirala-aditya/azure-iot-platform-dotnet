@@ -1228,11 +1228,12 @@ jobs:
               # Use Helm to deploy an NGINX ingress controller
               helm upgrade ingress-controller stable/nginx-ingress \
                   --install \
-                  --create-namespace ingress-basic \
+                  --namespace ingress-basic \
                   --set controller.replicaCount=2 \
                   --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
                   --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
                   --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"="$(aksName)" \
+                  --create-namespace
                   --wait \
                 2>&1 && break
               n=$[$n+1]

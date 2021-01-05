@@ -1233,7 +1233,7 @@ jobs:
                   --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
                   --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
                   --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"="$(aksName)" \
-                  --create-namespace
+                  --create-namespace \
                   --wait \
                 2>&1 && break
               n=$[$n+1]

@@ -139,8 +139,8 @@ jobs:
 
   - job: aks
     displayName: Provision AKS
-    dependsOn:
-      - resourceGroup
+    # dependsOn:
+    #   - resourceGroup
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -496,8 +496,8 @@ jobs:
 
   - job: appConfiguration
     displayName: Provision App Configuration
-    dependsOn:
-      - resourceGroup
+    # dependsOn:
+    #   - resourceGroup
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

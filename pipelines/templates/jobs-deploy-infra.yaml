@@ -1120,7 +1120,7 @@ jobs:
     displayName: Provision Azure Automation and Sendgrid accounts
     dependsOn:
       - aks
-      - keyVault
+      # - keyVault
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

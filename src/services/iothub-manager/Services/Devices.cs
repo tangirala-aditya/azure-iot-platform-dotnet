@@ -145,7 +145,6 @@ namespace Mmm.Iot.IoTHubManager.Services
             }
 
             DeviceServiceListModel resultModel = null;
-
             string tenantId = this.tenantConnectionHelper.TenantId;
 
             if (string.IsNullOrWhiteSpace(continuationToken))

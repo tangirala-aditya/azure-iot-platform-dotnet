@@ -6,8 +6,6 @@ parameters:
   applicationCode:
   applicationShortCode: 
   environmentCategory:
-  kubernetesVersion:
-  aksAgentVmSize: Standard_DS2_v2
 
 jobs:
   - template: get-approval.yaml
@@ -43,14 +41,7 @@ jobs:
           echo "parameter: applicationCode: ${{parameters.applicationCode}}"
           echo "parameter: applicationShortCode: ${{parameters.applicationShortCode}}"
           echo "parameter: environmentCategory: ${{parameters.environmentCategory}}"
-          echo "parameter: kubernetesVersion: ${{parameters.kubernetesVersion}}"
-          echo "variable: aksPartialName: $(aksPartialName)"
-          echo "variable: tenantId: $(tenantId)"
           echo "variable: aksName: $(aksName)"
-          echo "variable: appConfigurationName: $(appConfigurationName)"
-          echo "variable: armParametersDirectory: $(armParametersDirectory)"
-          echo "variable: armTemplatesDirectory: $(armTemplatesDirectory)"
-          echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
           echo "variable: resourceGroupName: $(resourceGroupName)"
         displayName: Print variables
 

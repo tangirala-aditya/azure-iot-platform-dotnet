@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
+import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle";
 
 import { permissions, toDiagnosticsModel } from "services/models";
 import { DevicesGridContainer } from "./devicesGrid";
@@ -20,9 +21,10 @@ import {
     JsonEditorModal,
 } from "components/shared";
 import { DeviceNewContainer } from "./flyouts/deviceNew";
+import { AdvanceSearchContainer } from "./advanceSearch";
 import { SIMManagementContainer } from "./flyouts/SIMManagement";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
-import { svgs, getDeviceGroupParam } from "utilities";
+import { svgs, getDeviceGroupParam, getTenantIdParam } from "utilities";
 
 import "./devices.scss";
 import { IdentityGatewayService } from "services";
@@ -40,6 +42,8 @@ export class Devices extends Component {
             ...closedFlyoutState,
             contextBtns: null,
             selectedDeviceGroupId: undefined,
+            loadMore: props.loadMoreState,
+            isDeviceSearch: false,
         };
 
         this.props.updateCurrentWindow("Devices");
@@ -47,12 +51,29 @@ export class Devices extends Component {
 
     componentWillMount() {
         if (this.props.location.search) {
+            const tenantId = getTenantIdParam(this.props.location.search);
+            this.props.checkTenantAndSwitch({
+                tenantId: tenantId,
+                redirectUrl: window.location.href,
+            });
             this.setState({
                 selectedDeviceGroupId: getDeviceGroupParam(
                     this.props.location.search
                 ),
             });
         }
+
+        if (this.props && this.props.location.pathname === "/deviceSearch") {
+            this.props.resetDeviceByCondition();
+            this.setState({
+                isDeviceSearch: true,
+            });
+        } else {
+            this.setState({
+                isDeviceSearch: false,
+            });
+        }
+
         IdentityGatewayService.VerifyAndRefreshCache();
     }
 
@@ -143,18 +164,27 @@ export class Devices extends Component {
 
     priorityChildren = () => {
         const { t } = this.props;
+        const { isDeviceSearch } = this.state;
 
-        let children = [
-            <DeviceGroupDropdown
-                deviceGroupIdFromUrl={this.state.selectedDeviceGroupId}
-            />,
-            <Protected permission={permissions.updateDeviceGroups}>
-                <ManageDeviceGroupsBtn />
-            </Protected>,
-            <CreateDeviceQueryBtn />,
-        ];
+        let children = [];
 
-        if (this.props.activeDeviceQueryConditions.length !== 0) {
+        if (!isDeviceSearch) {
+            children.push([
+                <DeviceGroupDropdown
+                    updateLoadMore={this.updateLoadMoreOnDeviceGroupChange}
+                    deviceGroupIdFromUrl={this.state.selectedDeviceGroupId}
+                />,
+                <Protected permission={permissions.updateDeviceGroups}>
+                    <ManageDeviceGroupsBtn />
+                </Protected>,
+                <CreateDeviceQueryBtn />,
+            ]);
+        }
+
+        if (
+            !isDeviceSearch &&
+            this.props.activeDeviceQueryConditions.length !== 0
+        ) {
             children.push(<ResetActiveDeviceQueryBtn />);
         }
 
@@ -176,6 +206,32 @@ export class Devices extends Component {
         return children;
     };
 
+    switchLoadMore = (value) => {
+        if (!value) {
+            this.setState({ loadMore: false });
+            return this.props.cancelDeviceCalls({
+                makeSubsequentCalls: false,
+            });
+        } else {
+            this.setState({ loadMore: true });
+            this.props.cancelDeviceCalls({
+                makeSubsequentCalls: true,
+            });
+            return this.props.fetchDevicesByCToken();
+        }
+    };
+
+    refreshDevices = () => {
+        this.setState({ loadMore: false });
+        this.props.cancelDeviceCalls({ makeSubsequentCalls: false });
+        return this.props.fetchDevices();
+    };
+
+    updateLoadMoreOnDeviceGroupChange = () => {
+        this.setState({ loadMore: false });
+        this.props.cancelDeviceCalls({ makeSubsequentCalls: false });
+    };
+
     render() {
         const {
                 t,
@@ -183,52 +239,94 @@ export class Devices extends Component {
                 deviceGroupError,
                 deviceError,
                 isPending,
+                devicesByCondition,
+                devicesByConditionError,
+                isDevicesByConditionPanding,
                 lastUpdated,
-                fetchDevices,
                 routeProps,
             } = this.props,
+            { isDeviceSearch } = this.state,
+            deviceData = isDeviceSearch ? devicesByCondition : devices,
+            dataError = isDeviceSearch ? devicesByConditionError : deviceError,
+            isDataPending = isDeviceSearch
+                ? isDevicesByConditionPanding
+                : isPending,
             gridProps = {
                 onGridReady: this.onGridReady,
-                rowData: isPending ? undefined : devices || [],
+                rowData: isDataPending ? undefined : deviceData || [],
                 onContextMenuChange: this.onContextMenuChange,
                 t: this.props.t,
             },
             newDeviceFlyoutOpen = this.state.openFlyoutName === "new-device",
             simManagementFlyoutOpen =
                 this.state.openFlyoutName === "sim-management",
-            error = deviceGroupError || deviceError;
+            error = deviceGroupError || dataError;
 
         return (
             <ComponentArray>
                 <ContextMenuAgile
                     farChildren={[
                         <Protected permission={permissions.createDevices}>
-                            <Btn
-                                svg={svgs.plus}
-                                onClick={this.openNewDeviceFlyout}
-                            >
-                                {t("devices.flyouts.new.contextMenuName")}
-                            </Btn>
+                            {!this.state.isDeviceSearch && (
+                                <Btn
+                                    svg={svgs.plus}
+                                    onClick={this.openNewDeviceFlyout}
+                                >
+                                    {t("devices.flyouts.new.contextMenuName")}
+                                </Btn>
+                            )}
                         </Protected>,
-                        <RefreshBar
-                            refresh={fetchDevices}
-                            time={lastUpdated}
-                            isPending={isPending}
-                            t={t}
-                            isShowIconOnly={true}
-                        />,
+                        !this.state.isDeviceSearch && (
+                            <RefreshBar
+                                refresh={this.refreshDevices}
+                                time={lastUpdated}
+                                isPending={isPending}
+                                t={t}
+                                isShowIconOnly={true}
+                            />
+                        ),
                     ]}
                     priorityChildren={this.priorityChildren()}
                 />
                 <PageContent className="devices-container">
-                    <PageTitle titleValue={t("devices.title")} />
-                    {!!error && <AjaxError t={t} error={error} />}
-                    <SearchInput
-                        onChange={this.searchOnChange}
-                        onClick={this.onSearchClick}
-                        aria-label={t("devices.ariaLabel")}
-                        placeholder={t("devices.searchPlaceholder")}
+                    <PageTitle
+                        titleValue={
+                            !this.state.isDeviceSearch
+                                ? t("devices.title")
+                                : t("devices.deviceSearchTitle")
+                        }
+                        descriptionValue={
+                            !this.state.isDeviceSearch
+                                ? t("devices.titleDescription")
+                                : t("devices.deviceSearchTitleDescription")
+                        }
                     />
+                    {!!error && <AjaxError t={t} error={error} />}
+                    {this.state.isDeviceSearch && <AdvanceSearchContainer />}
+                    <div className="search-left-div">
+                        <SearchInput
+                            onChange={this.searchOnChange}
+                            onClick={this.onSearchClick}
+                            aria-label={t("devices.ariaLabel")}
+                            placeholder={t("devices.searchPlaceholder")}
+                        />
+                    </div>
+                    <div className="cancel-right-div">
+                        {!this.state.isDeviceSearch && (
+                            <Toggle
+                                attr={{
+                                    button: {
+                                        "aria-label": t("devices.loadMore"),
+                                        type: "button",
+                                    },
+                                }}
+                                on={this.state.loadMore}
+                                onLabel={t("devices.loadMore")}
+                                offLabel={t("devices.loadMore")}
+                                onChange={this.switchLoadMore}
+                            />
+                        )}
+                    </div>
                     {!error && (
                         <DevicesGridContainer
                             {...gridProps}

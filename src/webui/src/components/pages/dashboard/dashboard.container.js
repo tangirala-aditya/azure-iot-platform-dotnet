@@ -27,6 +27,9 @@ import {
     getDevicesLastUpdated,
     getDevicesPendingStatus,
     getEntities as getDeviceEntities,
+    getDeviceStatistics,
+    getDeviceStatisticsPendingStatus,
+    getDeviceStatisticsError,
 } from "store/reducers/devicesReducer";
 
 import { Dashboard } from "./dashboard";
@@ -43,6 +46,9 @@ const mapStateToProps = (state) => ({
         devices: getDeviceEntities(state),
         devicesError: getDevicesError(state),
         devicesIsPending: getDevicesPendingStatus(state),
+        deviceStatistics: getDeviceStatistics(state),
+        deviceStatisticsIsPending: getDeviceStatisticsPendingStatus(state),
+        deviceStatisticsError: getDeviceStatisticsError(state),
         rules: getRuleEntities(state),
         rulesError: getRulesError(state),
         rulesIsPending: getRulesPendingStatus(state),
@@ -58,6 +64,8 @@ const mapStateToProps = (state) => ({
             dispatch(appRedux.actions.updateTimeInterval(timeInterval)),
         updateCurrentWindow: (currentWindow) =>
             dispatch(appRedux.actions.updateCurrentWindow(currentWindow)),
+        checkTenantAndSwitch: (payload) =>
+            dispatch(appRedux.actions.checkTenantAndSwitch(payload)),
     });
 
 export const DashboardContainer = withNamespaces()(

@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
+import { Svg } from "components/shared/svg/svg";
 import { svgs } from "utilities";
 import { permissions } from "services/models";
 
@@ -67,7 +68,15 @@ class TenantGrid extends React.Component {
                 {!this.state.isEdit && (
                     <Cell>
                         {tenant.displayName === this.props.currentTenant ? (
-                            tenant.displayName
+                            <div className="pcs-renderer-cell">
+                                <p>
+                                    {tenant.displayName}
+                                    <Svg
+                                        path={svgs.star}
+                                        className="pcs-renderer-icon"
+                                    />
+                                </p>
+                            </div>
                         ) : (
                             <a
                                 onClick={() =>
@@ -75,15 +84,24 @@ class TenantGrid extends React.Component {
                                 }
                                 href="#"
                             >
-                                {tenant.displayName}
+                                <p>{tenant.displayName}</p>
                             </a>
                         )}
+                        <p className="iotHub-Name">{tenant.iotHubName}</p>
                     </Cell>
                 )}
                 {this.state.isEdit && this.state.tenantId !== tenant.id && (
                     <Cell>
                         {tenant.displayName === this.props.currentTenant ? (
-                            tenant.displayName
+                            <div className="pcs-renderer-cell">
+                                <p>
+                                    {tenant.displayName}{" "}
+                                    <Svg
+                                        path={svgs.star}
+                                        className="pcs-renderer-icon"
+                                    />{" "}
+                                </p>
+                            </div>
                         ) : (
                             <a
                                 onClick={() =>
@@ -91,17 +109,21 @@ class TenantGrid extends React.Component {
                                 }
                                 href="#"
                             >
-                                {tenant.displayName}
+                                <p>{tenant.displayName} </p>
                             </a>
                         )}
+                        <p className="iotHub-Name">{tenant.iotHubName}</p>
                     </Cell>
                 )}
                 {this.state.isEdit && this.state.tenantId === tenant.id && (
-                    <FormControl
-                        value={this.state.tenantName}
-                        type="text"
-                        onChange={this.handleChange}
-                    />
+                    <div>
+                        <FormControl
+                            value={this.state.tenantName}
+                            type="text"
+                            onChange={this.handleChange}
+                        />
+                        <p className="iotHub-Name">{tenant.iotHubName}</p>
+                    </div>
                 )}
                 <Cell>{tenant.role}</Cell>
                 <Cell>

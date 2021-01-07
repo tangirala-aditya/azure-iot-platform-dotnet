@@ -143,6 +143,54 @@ namespace Mmm.Iot.IdentityGateway.Services.Helpers
             return token;
         }
 
+        public JwtSecurityToken GetOktaIdentityToken(List<Claim> claims, string tenant, string audience, DateTime? expiration)
+        {
+            // add iat claim
+            var timeSinceEpoch = DateTime.UtcNow.ToEpochTime();
+            claims.Add(new Claim("iat", timeSinceEpoch.ToString(), ClaimValueTypes.Integer));
+
+            var sub = claims.First(t => t.Type == "oktaSub");
+            claims.Add(new Claim("sub", sub.Value));
+            claims.Remove(sub);
+
+            var iss = claims.First(t => t.Type == "oktaiss");
+            claims.Add(new Claim("iss", iss.Value));
+            claims.Remove(iss);
+
+            var aud = claims.First(t => t.Type == "oktaaud");
+
+            // claims.Add(new Claim("aud", aud.Value));
+            claims.Remove(aud);
+
+            var iat = claims.First(t => t.Type == "oktaiat");
+
+            // claims.Add(new Claim("iat", iat.Value));
+            claims.Remove(iat);
+
+            var exp = claims.First(t => t.Type == "oktaexp");
+            claims.Add(new Claim("exp", exp.Value));
+            claims.Remove(sub);
+
+            var jti = claims.First(t => t.Type == "oktajti");
+            claims.Add(new Claim("jti", jti.Value));
+            claims.Remove(jti);
+
+            var amr = claims.First(t => t.Type == "oktaamr");
+            claims.Add(new Claim("amr", amr.Value));
+            claims.Remove(amr);
+
+            var idp = claims.First(t => t.Type == "oktaidp");
+            claims.Add(new Claim("idp", idp.Value));
+            claims.Remove(idp);
+
+            DateTime expirationDateTime = expiration ?? DateTime.Now.AddDays(30);
+
+            // Token to String so you can use it in your client
+            var token = this.MintToken(claims, aud.Value, expirationDateTime);
+
+            return token;
+        }
+
         [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1121:UseBuiltInTypeAlias", Justification = "I need that Byte value not lowercase byte")]
         public string AtHash(String access_token)
         {

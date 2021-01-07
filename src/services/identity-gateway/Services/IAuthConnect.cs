@@ -15,7 +15,7 @@ namespace Mmm.Iot.IdentityGateway.Services
     {
         public UriBuilder GetLoginRedirectUri();
 
-        public UriBuilder GetLogoutRedirectUri(string post_logout_redirect_uri);
+        public UriBuilder GetLogoutRedirectUri(string post_logout_redirect_uri, string token = null);
 
         public Task<bool> AcquireTokenAndValidate(ClientCredentialInput input);
 

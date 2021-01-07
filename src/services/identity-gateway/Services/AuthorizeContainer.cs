@@ -48,15 +48,16 @@ namespace Mmm.Iot.IdentityGateway.Services
 
             // Need to build Query carefully to not clobber other query items -- just injecting state
             var query = HttpUtility.ParseQueryString(uri.Query);
-            query["state"] = JsonConvert.SerializeObject(new AuthState
+            var stateData = JsonConvert.SerializeObject(new AuthState
             { ReturnUrl = redirect_uri, State = state, Tenant = tenant, Nonce = nonce, ClientId = clientId, Invitation = invite });
+            query["state"] = HttpUtility.UrlEncode(stateData);
             query["redirect_uri"] = this.openIdProviderConfiguration.Issuer + "/connect/callback"; // must be https for B2C
             uri.Query = query.ToString();
 
             return uri;
         }
 
-        public UriBuilder GetLogoutRedirectUrl(string post_logout_redirect_uri)
+        public UriBuilder GetLogoutRedirectUrl(string post_logout_redirect_uri, string token = null)
         {
             // Validate Input
             if (!Uri.IsWellFormedUriString(post_logout_redirect_uri, UriKind.Absolute))
@@ -64,7 +65,7 @@ namespace Mmm.Iot.IdentityGateway.Services
                 throw new Exception("Redirect Uri is not valid!");
             }
 
-            var logoutUri = this.GetAuthConnect().GetLogoutRedirectUri(post_logout_redirect_uri);
+            var logoutUri = this.GetAuthConnect().GetLogoutRedirectUri(post_logout_redirect_uri, token);
 
             return logoutUri;
         }

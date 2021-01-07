@@ -45,7 +45,7 @@ namespace Mmm.Iot.IdentityGateway.Services
             return uri;
         }
 
-        public UriBuilder GetLogoutRedirectUri(string post_logout_redirect_uri)
+        public UriBuilder GetLogoutRedirectUri(string post_logout_redirect_uri, string token = null)
         {
             var uri = new UriBuilder(post_logout_redirect_uri);
             return uri;

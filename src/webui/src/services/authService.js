@@ -58,6 +58,7 @@ export class AuthService {
     }
 
     static onLoad(successCallback) {
+        debugger;
         AuthService.initialize();
         if (AuthService.isDisabled()) {
             console.debug("Skipping Auth onLoad because Auth is disabled");
@@ -202,8 +203,11 @@ export class AuthService {
         if (AuthService.isDisabled()) {
             return;
         }
-
-        AuthService._userManager.signoutRedirect();
+        AuthService.getCurrentUser().subscribe((user) => {
+            if (user) {
+                AuthService._userManager.signoutRedirect({id_token_hint: user.id_token});
+            } 
+        });
     }
 
     /**

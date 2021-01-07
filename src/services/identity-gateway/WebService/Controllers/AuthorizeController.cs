@@ -122,9 +122,9 @@ namespace Mmm.Iot.IdentityGateway.Controllers
 
         [HttpGet]
         [Route("connect/logout")]
-        public IActionResult Get([FromQuery] string post_logout_redirect_uri)
+        public IActionResult Get([FromQuery] string id_token_hint, [FromQuery] string post_logout_redirect_uri)
         {
-            var logoutUri = this.authorizeContainer.GetLogoutRedirectUrl(post_logout_redirect_uri);
+            var logoutUri = this.authorizeContainer.GetLogoutRedirectUrl(post_logout_redirect_uri, id_token_hint);
 
             return this.Redirect(
                 logoutUri.Uri.ToString());
@@ -187,7 +187,8 @@ namespace Mmm.Iot.IdentityGateway.Controllers
             AuthState authState = null;
             try
             {
-                authState = JsonConvert.DeserializeObject<AuthState>(state);
+                var decodedAuthState = HttpUtility.UrlDecode(state);
+                authState = JsonConvert.DeserializeObject<AuthState>(decodedAuthState);
             }
             catch (Exception e)
             {
@@ -200,6 +201,8 @@ namespace Mmm.Iot.IdentityGateway.Controllers
             var jwtHandler = new JwtSecurityTokenHandler();
             var jwt = jwtHandler.ReadJwtToken(id_token);
             var claims = this.authorizeContainer.GetClaims(jwt);
+            claims.Add(new Claim("oktaToken", id_token));
+
             string invitedTenant = authState.Tenant;
             string userNameOrEmail = string.Empty;
 

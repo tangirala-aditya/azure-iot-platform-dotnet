@@ -27,6 +27,9 @@ export class DeviceGroupDropdown extends Component {
         // Don't try to update the device group if the device id doesn't exist
         if (deviceGroupIds.indexOf(value) > -1) {
             this.props.changeDeviceGroup(value);
+            if (this.props.updateLoadMore) {
+                this.props.updateLoadMore();
+            }
         }
         this.props.logEvent(toDiagnosticsModel("DeviceFilter_Select", {}));
     };
@@ -41,7 +44,9 @@ export class DeviceGroupDropdown extends Component {
         const { t } = this.props;
         const link =
             window.location.href +
-            "?deviceGroupId=" +
+            "?tenantId=" +
+            this.props.currentTenantId +
+            "&deviceGroupId=" +
             this.props.activeDeviceGroupId;
         if (this.state.openModalName === "copy-link") {
             return (
@@ -67,11 +72,28 @@ export class DeviceGroupDropdown extends Component {
                 value: id,
             }));
 
-    render() {
+    componentDidMount() {
         const { deviceGroups } = this.props,
             deviceGroupIds = deviceGroups.map(({ id }) => id);
+        if (
+            this.state.deviceGroupIdFromUrl &&
+            deviceGroups &&
+            deviceGroups.length > 0 &&
+            deviceGroupIds.indexOf(this.state.deviceGroupIdFromUrl) <= -1
+        ) {
+            alert("Devicegroup doesn't exist");
+        }
+    }
+
+    render() {
+        const { deviceGroups, deviceStatistics } = this.props,
+            deviceGroupIds = deviceGroups.map(({ id }) => id);
         let activeDeviceGroupId = this.props.activeDeviceGroupId;
-        if (deviceGroups && this.state.deviceGroupIdFromUrl) {
+        if (
+            deviceGroups &&
+            deviceGroups.length > 0 &&
+            this.state.deviceGroupIdFromUrl
+        ) {
             if (deviceGroupIds.indexOf(this.state.deviceGroupIdFromUrl) > -1) {
                 this.props.changeDeviceGroup(this.state.deviceGroupIdFromUrl);
                 activeDeviceGroupId = this.state.deviceGroupIdFromUrl;
@@ -100,6 +122,21 @@ export class DeviceGroupDropdown extends Component {
                 <Btn svg={svgs.copyLink} onClick={this.openModal("copy-link")}>
                     Get Link
                 </Btn>
+                <div>
+                    <label className="devices-loaded-label">
+                        Devices Loaded
+                    </label>
+                    <p className="devices-loaded-value">
+                        {" "}
+                        {deviceStatistics
+                            ? deviceStatistics.loadedDeviceCount
+                            : undefined}
+                        /{" "}
+                        {deviceStatistics
+                            ? deviceStatistics.totalDeviceCount
+                            : undefined}
+                    </p>
+                </div>
                 {this.getOpenModal()}
             </ComponentArray>
         );

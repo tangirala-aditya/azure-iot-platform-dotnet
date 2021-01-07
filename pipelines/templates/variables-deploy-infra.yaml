@@ -59,3 +59,9 @@ variables:
     value: ${{parameters.applicationCode}}$(sendgridAccountPartialName)${{parameters.environmentCategory}}
   - name: tableStorageName
     value: SystemAdmin
+  - name: inviteEmail
+    value: iotplatformnoreply@iot.cld.3m.com
+  - name: maxDeviceCount
+    value: 5000
+  - name: processIOTHubBeyondLimit
+    value: false

@@ -55,7 +55,6 @@ namespace Mmm.Iot.IdentityGateway.Services
         {
             List<Claim> claims = new List<Claim>();
             claims = jwt.Claims.Where(t => new List<string> { "name", "sub" }.Contains(t.Type)).ToList();
-            claims.Add(new Claim("sub", "534a9d20-04aa-4f42-9cf9-d82fca6cf7df"));
             return claims;
         }
     }

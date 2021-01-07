@@ -17,15 +17,16 @@ namespace Mmm.Iot.IdentityGateway.Services
 {
     public class AuthorizeContainer
     {
+        private const string DefaultAuthProvider = "ADB2C";
+        private const string AuthProviderKey = "AuthProvider";
         private readonly IOpenIdProviderConfiguration openIdProviderConfiguration;
         private readonly IAppConfigurationClient appConfigurationClient;
         private readonly IServiceProvider serviceProvider;
         private AppConfig config;
         private IAuth0Connect auth0Connect;
         private IADB2CConnect adB2CConnect;
-        private IOktaConnect oktaConnect;
 
-        public AuthorizeContainer(AppConfig config, IOpenIdProviderConfiguration openIdProviderConfiguration, IServiceProvider serviceProvider, IAuth0Connect auth0Connect, IADB2CConnect adB2CConnect, IOktaConnect oktaConnect, IAppConfigurationClient appConfigurationClient)
+        public AuthorizeContainer(AppConfig config, IOpenIdProviderConfiguration openIdProviderConfiguration, IServiceProvider serviceProvider, IAuth0Connect auth0Connect, IADB2CConnect adB2CConnect, IAppConfigurationClient appConfigurationClient)
         {
             this.config = config;
             this.openIdProviderConfiguration = openIdProviderConfiguration;
@@ -33,7 +34,6 @@ namespace Mmm.Iot.IdentityGateway.Services
             this.serviceProvider = serviceProvider;
             this.auth0Connect = auth0Connect;
             this.adB2CConnect = adB2CConnect;
-            this.oktaConnect = oktaConnect;
         }
 
         public UriBuilder GetAuthorizationRedirectUrl(
@@ -95,7 +95,7 @@ namespace Mmm.Iot.IdentityGateway.Services
         {
             try
             {
-                await this.appConfigurationClient.SetValueAsync("AuthProvider", authProvider);
+                await this.appConfigurationClient.SetValueAsync(AuthProviderKey, authProvider);
             }
             catch
             {
@@ -107,15 +107,13 @@ namespace Mmm.Iot.IdentityGateway.Services
 
         private IAuthConnect GetAuthConnect()
         {
-            string authProvider = "Okta";  // this.GetAuthProvider();
+            string authProvider = this.GetAuthProvider();
             switch (authProvider)
             {
                 case "ADB2C":
                     return this.adB2CConnect;
                 case "Auth0":
                     return this.auth0Connect;
-                case "Okta":
-                    return this.oktaConnect;
                 default:
                     return this.adB2CConnect;
             }
@@ -123,11 +121,11 @@ namespace Mmm.Iot.IdentityGateway.Services
 
         private string GetAuthProvider()
         {
-            string authProvider = "ADB2C";
+            string authProvider = DefaultAuthProvider;
 
             try
             {
-                authProvider = this.appConfigurationClient.GetValueFromAppConfig("AuthProvider");
+                authProvider = this.appConfigurationClient.GetValueFromAppConfig(AuthProviderKey);
             }
             catch
             {

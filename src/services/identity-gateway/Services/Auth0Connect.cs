@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
@@ -26,12 +27,12 @@ namespace Mmm.Iot.IdentityGateway.Services
         public async Task<bool> AcquireTokenAndValidate(ClientCredentialInput input)
         {
             List<KeyValuePair<string, string>> data = new List<KeyValuePair<string, string>>();
-            data.Add(new KeyValuePair<string, string>("audience", "https://ragavtestapi/")); // TODO:Need to get data from AppConfig
+            data.Add(new KeyValuePair<string, string>("audience", this.config.AuthProvider.Auth0.TokenAudience));
             data.Add(new KeyValuePair<string, string>("grant_type", "client_credentials"));
             data.Add(new KeyValuePair<string, string>("client_id", input.ClientId));
             data.Add(new KeyValuePair<string, string>("client_secret", input.ClientSecret));
 
-            var response = await this.PostFormUrlEncoded<HttpResponseMessage>("https://ragavender3mtest.us.auth0.com/oauth/token", data);
+            var response = await this.PostFormUrlEncoded<HttpResponseMessage>(this.config.AuthProvider.Auth0.TokenUrl, data);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -43,14 +44,14 @@ namespace Mmm.Iot.IdentityGateway.Services
 
         public UriBuilder GetLoginRedirectUri()
         {
-            var uri = new UriBuilder("https://ragavender3mtest.us.auth0.com/authorize?response_type=id_token&client_id=j72K7vm8qWaUK1fngvDkx4pbIsgYQcS6&nonce=defaultNonce&redirect_uri=https%3A%2F%2Flocalhost%3A44367%2Fconnect%2Fcallback&scope=openid%20email%20profile&response_mode=form_post");
+            var uri = new UriBuilder(this.config.AuthProvider.Auth0.LoginUrl);
 
             return uri;
         }
 
         public UriBuilder GetLogoutRedirectUri(string post_logout_redirect_uri)
         {
-            var logoutUri = new UriBuilder("https://ragavender3mtest.us.auth0.com/v2/logout?client_id=j72K7vm8qWaUK1fngvDkx4pbIsgYQcS6&returnTo=http%3A%2F%2Fwww.example.com");
+            var logoutUri = new UriBuilder(this.config.AuthProvider.Auth0.LogoutUrl);
 
             var query = HttpUtility.ParseQueryString(logoutUri.Query);
 
@@ -60,7 +61,7 @@ namespace Mmm.Iot.IdentityGateway.Services
             return logoutUri;
         }
 
-        public List<Claim> GetClaims(System.IdentityModel.Tokens.Jwt.JwtSecurityToken jwt)
+        public List<Claim> GetClaims(JwtSecurityToken jwt)
         {
             List<Claim> claims = new List<Claim>();
             claims = jwt.Claims.Where(t => new List<string> { "name" }.Contains(t.Type)).ToList();

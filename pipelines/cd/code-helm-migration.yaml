@@ -79,5 +79,3 @@ stages:
           applicationCode: $(applicationCode)
           applicationShortCode: $(applicationShortCode)
           environmentCategory: $(environmentCategory)
-          kubernetesVersion: $(kubernetesVersion)
-          aksAgentVmSize: $(aksAgentVmSize)

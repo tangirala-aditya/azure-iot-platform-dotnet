@@ -8,7 +8,6 @@ parameters:
   appInsightsLocation: 
   environmentCategory:
   kubernetesVersion:
-  sendgridEmail:
   aksAgentVmSize: Standard_DS2_v2
   sysAdmins:
   azureDevOpsProjectId:
@@ -52,7 +51,6 @@ jobs:
           echo "parameter: applicationShortCode: ${{parameters.applicationShortCode}}"
           echo "parameter: environmentCategory: ${{parameters.environmentCategory}}"
           echo "parameter: kubernetesVersion: ${{parameters.kubernetesVersion}}"
-          echo "parameter: sendgridEmail: ${{parameters.sendgridEmail}}"
           echo "variable: aksPartialName: $(aksPartialName)"
           echo "variable: appConfigurationPartialName: $(appConfigurationPartialName)"
           echo "variable: appInsightsPartialName: $(appInsightsPartialName)"

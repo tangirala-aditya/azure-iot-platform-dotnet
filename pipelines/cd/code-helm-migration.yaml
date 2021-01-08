@@ -62,41 +62,7 @@ stages:
                 echo "A value for the 'environmentCategory' variable must be provided" > /dev/stderr
                 exit 1
               fi
-
-              echo "Kubernetes version: '$(kubernetesVersion)'"
-              if [ -z "$(kubernetesVersion)" ]
-              then
-                echo "A value for the 'kubernetesVersion' variable must be provided" > /dev/stderr
-                exit 1
-              fi
-
-              echo "SendGrid email: '$(sendGridEmail)'"
-              if [ -z "$(sendGridEmail)" ]
-              then
-                echo "A value for the 'sendGridEmail' variable must be provided" > /dev/stderr
-                exit 1
-              fi
-
-              echo "System Admins: '$(sysAdmins)'"
-              if [ -z "$(sysAdmins)" ]
-              then
-                echo "A value for the 'sysAdmins' variable must be provided in JSON format" > /dev/stderr
-                exit 1
-              fi
-
-              echo "AKS agent VM size: '$(aksAgentVmSize)'"
-              if [ -z "$(aksAgentVmSize)" ]
-              then
-                echo "A value for the 'aksAgentVmSize' variable must be provided" > /dev/stderr
-                exit 1
-              fi
-
-              echo "TestPipelineRunId: '$(testPipelineRunId)'"
-              if [ -z "$(testPipelineRunId)" ]
-              then
-                echo "A value for the 'testPipelineRunId' variable must be provided" > /dev/stderr
-                exit 1
-              fi
+      
             displayName: Check parameters
 
   - stage: deployInfrastructure
@@ -104,7 +70,7 @@ stages:
     dependsOn:
       - checkParameters
     jobs:
-      - template: ../templates/jobs-deploy-infra.yaml
+      - template: ../templates/steps-migrate-helm.yaml
         parameters:
           subscriptionName: $(subscriptionName)
           locationName: $(locationName)

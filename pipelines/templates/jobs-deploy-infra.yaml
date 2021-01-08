@@ -754,6 +754,8 @@ jobs:
             az keyvault secret set --vault-name $(keyVaultName) --name 'Global--ServicePrincipalId' --value $servicePrincipalId
             az keyvault secret set --vault-name $(keyVaultName) --name 'Global--ServicePrincipalKey' --value $servicePrincipalKey
 
+            az keyvault secret set --vault-name $(keyVaultName) --name 'IdentityGatewayService--SendGridApiKey' --value $(SENDGRIDAPIKEY)
+
             blobStorageKey=$(az storage account keys list -g $(resourceGroupName) -n $(storageAccountName) --query "[?contains(keyName, 'key1')]".value --output tsv)
             blobStorageConnString="DefaultEndpointsProtocol=https;AccountName=$(storageAccountName);AccountKey=$blobStorageKey;EndpointSuffix=core.windows.net"
             az keyvault secret set --vault-name $(keyVaultName) --name 'Global--StorageAccountConnectionString' --value $blobStorageConnString
@@ -1117,7 +1119,7 @@ jobs:
           deploymentMethod: zipDeploy
 
   - job: automationAccount
-    displayName: Provision Azure Automation and Sendgrid accounts
+    displayName: Provision Azure Automation account
     dependsOn:
       - aks
       - keyVault
@@ -1177,15 +1179,6 @@ jobs:
           ScriptType: FilePath
           ScriptPath: pipelines/cd/automationAcct.ps1
           ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -scriptFolder $(System.DefaultWorkingDirectory)/src/services/tenant-manager/RunBookCode -keyvaultName $(keyVaultName)
-          azurePowerShellVersion: LatestVersion
-
-      - task: AzurePowerShell@3
-        displayName: Create SendGrid Acct and API Key
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/sendgridAcct.ps1
-          ScriptArguments: -location ${{parameters.locationName}} -resourceGroup $(resourceGroupName) -resourceName $(sendgridAccountName) -keyvaultName $(keyVaultName) -email ${{parameters.sendgridEmail}}
           azurePowerShellVersion: LatestVersion
 
   - job: ingress

@@ -61,7 +61,7 @@ stages:
           applicationCode: ggktech
           applicationShortCode: ggk
           environmentCategory: dev
-          kubernetesVersion: 1.18.2
+          kubernetesVersion: 1.19.1
           sendgridEmail: aschmidt4@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453

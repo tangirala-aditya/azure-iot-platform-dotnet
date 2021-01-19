@@ -19,9 +19,9 @@ export const PageTitle = ({
             {titleValue}
         </h1>
         {descriptionValue && (
-            <h4 className={joinClasses(descriptionClassName)}>
+            <h5 className={joinClasses(descriptionClassName)}>
                 {descriptionValue}
-            </h4>
+            </h5>
         )}
     </div>
 );

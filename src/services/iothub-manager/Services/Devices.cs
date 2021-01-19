@@ -128,13 +128,20 @@ namespace Mmm.Iot.IoTHubManager.Services
             IEnumerable<QueryConditionClause> deviceIdClauses = null;
             if (!string.IsNullOrWhiteSpace(inputQuery))
             {
-                clauses = JsonConvert.DeserializeObject<IEnumerable<QueryConditionClause>>(inputQuery);
-                deviceIdClauses = clauses.Where(x => x.Key == "deviceId" && x.Operator == "LK").ToList();
-
-                if (deviceIdClauses != null && deviceIdClauses.Count() > 0)
+                try
                 {
-                    clauses = clauses.Where(x => x.Key != "deviceId" && x.Operator != "LK");
-                    inputQuery = JsonConvert.SerializeObject(clauses);
+                    clauses = JsonConvert.DeserializeObject<IEnumerable<QueryConditionClause>>(inputQuery);
+                    deviceIdClauses = clauses.Where(x => x.Key == "deviceId" && x.Operator == "LK").ToList();
+
+                    if (deviceIdClauses != null && deviceIdClauses.Count() > 0)
+                    {
+                        clauses = clauses.Where(x => x.Key != "deviceId" && x.Operator != "LK");
+                        inputQuery = JsonConvert.SerializeObject(clauses);
+                    }
+                }
+                catch
+                {
+                    // Any exception raised in deserializing will be ignored
                 }
 
                 if (!string.IsNullOrWhiteSpace(inputQuery))
@@ -144,13 +151,17 @@ namespace Mmm.Iot.IoTHubManager.Services
                 }
             }
 
+            DeviceServiceListModel resultModel = null;
             string tenantId = this.tenantConnectionHelper.TenantId;
 
-            var resultModel = await this.deviceQueryCache.GetCachedQueryResultAsync(tenantId, querytoBeCached);
-
-            if (resultModel != null)
+            if (string.IsNullOrWhiteSpace(continuationToken))
             {
-                return resultModel;
+                resultModel = await this.deviceQueryCache.GetCachedQueryResultAsync(tenantId, querytoBeCached);
+
+                if (resultModel != null)
+                {
+                    return resultModel;
+                }
             }
 
             string query = string.Empty;
@@ -224,14 +235,18 @@ namespace Mmm.Iot.IoTHubManager.Services
                     this.tenantConnectionHelper.GetIotHubName(),
                     connectedEdgeDevices.ContainsKey(azureTwin.DeviceId))),
                 allTwins.ContinuationToken);
-            this.deviceQueryCache.SetTenantQueryResult(
-                this.tenantConnectionHelper.TenantId,
-                querytoBeCached,
-                new DeviceQueryCacheResultServiceModel
-                {
-                    Result = resultModel,
-                    ResultTimestamp = DateTimeOffset.Now,
-                });
+
+            if (string.IsNullOrWhiteSpace(continuationToken))
+            {
+                this.deviceQueryCache.SetTenantQueryResult(
+                    this.tenantConnectionHelper.TenantId,
+                    querytoBeCached,
+                    new DeviceQueryCacheResultServiceModel
+                    {
+                        Result = resultModel,
+                        ResultTimestamp = DateTimeOffset.Now,
+                    });
+            }
 
             return resultModel;
         }

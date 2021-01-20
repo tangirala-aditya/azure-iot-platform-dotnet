@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { joinClasses } from "utilities";
 import { Btn } from "components/shared";
 // import { toDiagnosticsModel } from "services/models";
@@ -37,3 +38,10 @@ export class SidePanel extends Component {
         );
     }
 }
+
+SidePanel.propTypes = {
+    isExpanded: PropTypes.bool,
+    onClick: PropTypes.func,
+    children: PropTypes.node,
+    titleName: PropTypes.string,
+};

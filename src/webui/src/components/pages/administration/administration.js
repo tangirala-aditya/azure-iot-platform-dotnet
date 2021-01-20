@@ -39,24 +39,21 @@ export class Administration extends Component {
             pagesConfig = [
                 {
                     to: "/admin/test",
-                    exact: true,
                     labelId: "test",
                     component: PageNotFound,
                 },
                 {
                     to: "/admin/test1",
-                    exact: true,
                     labelId: "test1",
                     component: PageNotFound,
                 },
                 {
                     to: "/admin/test2",
-                    exact: true,
                     labelId: "test2",
                     component: PageNotFound,
                 }];
         return (
-            <ComponentArray>
+            <section className="admin-container">
                 <SidePanel
                     isExpanded={this.state.isNavExpanded}
                     onClick={this.handleNavToggle}
@@ -78,19 +75,21 @@ export class Administration extends Component {
                         );
                     })}
                 ></SidePanel>
-                <PageContent>{pagesConfig && (
-                    <Switch>
-                        {pagesConfig.map(({ to, exact, component }) => (
-                            <Route
-                                key={to}
-                                exact={exact}
-                                path={to}
-                                component={component}
-                            />
-                        ))}
-                    </Switch>
-                )}</PageContent>
-            </ComponentArray>
+                <ComponentArray>
+                    <PageContent className="administration-container">{pagesConfig && (
+                        <Switch>
+                            {pagesConfig.map(({ to, exact, component }) => (
+                                <Route
+                                    exact
+                                    key={to}
+                                    path={to}
+                                    component={component}
+                                />
+                            ))}
+                        </Switch>
+                    )}</PageContent>
+                </ComponentArray>
+            </section>
         );
     }
 }

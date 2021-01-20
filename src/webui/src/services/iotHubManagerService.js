@@ -32,6 +32,7 @@ export class IoTHubManagerService {
                 "x-ms-continuation": cToken,
             };
         }
+        options.timeout = 120000;
         const query = encodeURIComponent(JSON.stringify(conditions));
         return HttpClient.get(`${ENDPOINT}devices?query=${query}`, options).map(
             toDevicesModel
@@ -197,5 +198,15 @@ export class IoTHubManagerService {
         return HttpClient.get(
             `${ENDPOINT}devices/statistics?query=${query}`
         ).map(toDeviceStatisticsModel);
+    }
+
+    /** Queries Devices */
+    static getDevicesReportByQuery(conditions = []) {
+        const query = encodeURIComponent(JSON.stringify(conditions));
+        var response = HttpClient.get(
+            `${ENDPOINT}devices/report?query=${query}`,
+            { responseType: "blob", timeout: 120000 }
+        );
+        return response;
     }
 }

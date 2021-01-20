@@ -121,6 +121,53 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
             return deployment;
         }
 
+        public async Task<List<DeploymentServiceModel>> GetDeploymentsByIdFromStorage(string tenantId, string[] deploymentIds)
+        {
+            var sql = QueryBuilder.GetDocumentsSql(
+                "deployments",
+                null,
+                null,
+                null,
+                "_ts",
+                null,
+                "_ts",
+                "desc",
+                "_ts",
+                0,
+                100,
+                deploymentIds,
+                "Key");
+
+            FeedOptions queryOptions = new FeedOptions
+            {
+                EnableCrossPartitionQuery = true,
+                EnableScanInQuery = true,
+            };
+
+            List<Document> docs = new List<Document>();
+
+            try
+            {
+                CosmosOperations storageClient = await CosmosOperations.GetClientAsync();
+                docs = await storageClient.QueryDocumentsAsync(
+                   "pcs-storage",
+                   "test", // TODO: Replace with $"pcs-{tenantId}"
+                   queryOptions,
+                   sql,
+                   0,
+                   100);
+
+                var result = docs.Select(doc => new ValueServiceModel(doc));
+                var deploymentFromStorage = result.Select(res => this.CreateDeploymentServiceModel(res)).ToList();
+
+                return deploymentFromStorage;
+            }
+            catch (ResourceNotFoundException e)
+            {
+                throw new ResourceNotFoundException($"No deployments exist in CosmosDb. The telemetry collection {$"pcs-{tenantId}"} does not exist.", e);
+            }
+        }
+
         private bool CheckIfDeploymentWasMadeByRM(Configuration conf)
         {
             return conf.Labels != null &&

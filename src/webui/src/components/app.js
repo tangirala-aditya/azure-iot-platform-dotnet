@@ -21,6 +21,7 @@ import {
     UsersContainer,
     RulesContainer,
     MaintenanceContainer,
+    AdministrationContainer,
     PackagesContainer,
     DeploymentsRouter,
 } from "./pages";
@@ -102,6 +103,13 @@ class App extends Component {
                     svg: svgs.tabs.maintenance,
                     labelId: "tabs.maintenance",
                     component: MaintenanceContainer,
+                },
+                {
+                    to: "/admin",
+                    exact: false,
+                    svg: svgs.tabs.maintenance,
+                    labelId: "tabs.administration",
+                    component: AdministrationContainer,
                 },
             ],
             crumbsConfig = [
@@ -209,6 +217,10 @@ class App extends Component {
                         },
                         { to: "/maintenance/rule/:id", matchParam: "id" },
                     ],
+                },
+                {
+                    path: "/admin",
+                    crumbs: [{ to: "/admin", labelId: "tabs.administration" }],
                 },
             ],
             shellProps = {

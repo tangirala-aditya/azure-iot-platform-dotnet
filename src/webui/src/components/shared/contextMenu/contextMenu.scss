@@ -30,7 +30,7 @@ $headerHeight: 48px;
 
     .btn.dropdown-icon {
       @include rem-fallback(padding, 0px, 5px);
-      @include rem-fallback(min-width, 0px);
+      @include rem-fallback(min-width, 32px);
   
       .btn-icon { @include square-px-rem($grid-size*4); }
     }
@@ -54,7 +54,7 @@ $headerHeight: 48px;
       background-color: themed('colorContextMenuBtnBgHover');
       color: themed('colorContextMenuBtnTextHover');
 
-      svg { fill: themed('colorContextMenuBtnSvgFill'); }
+      svg icon { fill: themed('colorContextMenuBtnSvgFill'); }
     }
   }
 }

@@ -28,7 +28,8 @@
         "rules": "Rules",
         "maintenance": "Maintenance",
         "packages": "Packages",
-        "deployments": "Deployments"
+        "deployments": "Deployments",
+        "administration": "Administration"
     },
     "errorFormat": "Error: {{message}}",
     "edgeAgentStatus": {

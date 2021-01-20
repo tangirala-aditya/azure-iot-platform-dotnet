@@ -23,3 +23,4 @@ export * from "./refreshBar/refreshBar";
 export * from "./refreshBar/refreshBar.container";
 export * from "./svg";
 export * from "./timeSeriesInsightsLink";
+export * from "./sidePanel";

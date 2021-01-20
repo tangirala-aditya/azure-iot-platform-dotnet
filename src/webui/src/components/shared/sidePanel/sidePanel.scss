@@ -1,0 +1,134 @@
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+$layout-side-panel-collapsed-width: 32px;
+$layout-side-panel-expanded-width: 250px;
+
+.side-panel {
+    width: $layout-side-panel-collapsed-width;
+    position: relative;
+    // don't allow the size of the side panel to change:
+    flex-shrink: 0;
+    flex-grow: 0;
+    height: 100%;
+    transition-property: width, left, box-shadow;
+    transition-duration: $interaction-timing;
+    
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    
+    @include themify {
+        box-shadow: 2px 0px 6px rgba(0, 0, 0, 0.1);
+        background-color: themed('color-bg-navbar');
+    }
+
+    .side-panel-container{
+        flex-direction: column;
+        display: flex;
+        overflow: hidden;
+
+        .scrollable {
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+    }
+
+    &.expanded {
+        @include rem-fallback(min-width, $layout-side-panel-expanded-width);
+    }
+    
+    @media(max-width: $screen-sm - 1) {
+        display: none;
+    }
+
+    .btn.side-panel-button{
+        @include rem-fallback(padding, 0px, 5px);
+        @include rem-fallback(min-width, 32px);
+        @include rem-fallback(height, 48px);
+
+        position: absolute;
+        right: 0;
+    
+        .btn-icon { 
+            @include square-px-rem($grid-size*4);
+            fill: currentColor;
+         }
+
+         @include themify {
+            color: themed('color-text-navbar-item');
+            background-color: themed('color-bg-navbar');
+    
+            &:hover {
+                color: themed('color-text-white'); 
+                background-color: themed('color-bg-navbar-hover');
+            }
+        }
+      }
+}
+
+:global(.side-panel-header){
+    @include rem-fallback(height, 48px);
+    @include rem-fallback(padding, 0px, 20px);
+
+    font-size: $font-size-h2;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+:global(.global-side-panel-item) {
+    @include rem-fallback(height, 48px);
+    @include rem-fallback(padding, 20px, 20px);
+
+    width: 100%; // don't hardcode, scrollbar should push out the content.
+    
+    // don't allow the size to change:
+    flex-shrink: 0;
+    flex-grow: 0;
+    
+    // clear styling for <button> elements:
+    border: none;
+    outline: none;
+    margin: 0;
+    padding: 20px 20px;
+
+    // center icon and text and make this non-inline for <a> elements:
+    display: flex;
+    align-items: center;
+
+    @include themify {
+        color: themed('color-text-navbar-item');
+        background-color: themed('color-bg-navbar');
+
+        &:hover {
+            color: themed('color-text-white'); 
+            background-color: themed('color-bg-navbar-hover');
+
+            &:global(.global-side-panel-item-active) {
+                background-color: themed('color-bg-navbar-hover-selected');
+            }
+        }
+
+        &:active, &:global(.global-side-panel-item-active) {
+            color: themed('color-text-white');
+            background-color: themed('color-bg-navbar-selected');
+        }
+    }
+
+    &:focus {
+        outline-offset: -1px;
+        @include themify {
+            outline: 1px dashed themed('color-border-navbar-focus');
+        }
+    }
+}
+
+:global(.global-side-panel-item-text) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

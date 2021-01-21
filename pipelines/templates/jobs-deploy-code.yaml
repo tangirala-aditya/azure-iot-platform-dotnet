@@ -6,6 +6,7 @@ parameters:
   applicationShortCode:
   imageTag:
   blueGreen:
+  helmVersion:
 
 jobs:
   - template: get-approval.yaml
@@ -78,7 +79,7 @@ jobs:
           echo "resourceGroupPartialName: ${{parameters.resourceGroupPartialName}}"
           echo "aksName: $(aksName)"
           echo "resourceGroupName: $(resourceGroupName)"
-          echo "helmVersion: $(helmVersion)"
+          echo "helmVersion: ${{parameters.helmVersion}}"
           echo "serviceName: $(serviceName)"
           echo "servicePort: $(servicePort)"
           echo "serviceProbesEnabled: $(serviceProbesEnabled)"
@@ -94,7 +95,7 @@ jobs:
             serviceName: $(serviceName)
             servicePort: $(servicePort)
             serviceProbesEnabled: $(serviceProbesEnabled)
-            helmVersion: $(helmVersion)
+            helmVersion: ${{parameters.helmVersion}}
             imageTag: ${{parameters.imageTag}}
 
       - ${{ if eq(parameters.blueGreen,true) }}:
@@ -108,7 +109,7 @@ jobs:
             greenServiceName: $(serviceName)-green
             servicePort: $(servicePort)
             serviceProbesEnabled: $(serviceProbesEnabled)
-            helmVersion: $(helmVersion)
+            helmVersion: ${{parameters.helmVersion}}
             imageTag: ${{parameters.imageTag}}
             type: blue
 

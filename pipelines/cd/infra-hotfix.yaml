@@ -70,6 +70,13 @@ stages:
                 exit 1
               fi
 
+              echo "Helm Version: '$(helmVersion)'"
+              if [ -z "$(helmVersion)" ]
+              then
+                echo "A value for the 'helmVersion' variable must be provided" > /dev/stderr
+                exit 1
+              fi              
+
               echo "SendGrid email: '$(sendGridEmail)'"
               if [ -z "$(sendGridEmail)" ]
               then
@@ -115,6 +122,7 @@ stages:
           applicationShortCode: $(applicationShortCode)
           environmentCategory: $(environmentCategory)
           kubernetesVersion: $(kubernetesVersion)
+          helmVersion: $(helmVersion)
           sendgridEmail: $(sendGridEmail)
           sysAdmins: $(sysAdmins)
           aksAgentVmSize: $(aksAgentVmSize)

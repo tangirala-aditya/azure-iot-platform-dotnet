@@ -62,6 +62,7 @@ stages:
           environmentCategory: dev
           imageTag: $(_imageTag)
           blueGreen: true
+          helmVersion: 2.16.7
           subscriptionId: c36fb2f8-f98d-40d0-90a9-d65e93acb428
 
   - stage: acsDev
@@ -78,6 +79,7 @@ stages:
           environmentCategory: dev
           imageTag: $(_imageTag)
           blueGreen: true
+          helmVersion: 2.16.7
           subscriptionId: c36fb2f8-f98d-40d0-90a9-d65e93acb428
 
   - stage: crslQa
@@ -94,6 +96,7 @@ stages:
           environmentCategory: qa
           imageTag: $(_imageTag)
           blueGreen: false
+          helmVersion: 2.16.7
           subscriptionId: f27c7c03-1ea8-49b8-9878-106e434b8a23
 
   - stage: crslWkbnch
@@ -110,6 +113,7 @@ stages:
           environmentCategory: wkbnch
           imageTag: $(_imageTag)
           blueGreen: false
+          helmVersion: 2.16.7
           subscriptionId: dcb37438-95ca-4a68-812d-39ce0d591df2
 
   - stage: chimDev
@@ -126,6 +130,7 @@ stages:
           environmentCategory: dev
           imageTag: $(_imageTag)
           blueGreen: true
+          helmVersion: 2.16.7
           subscriptionId: 28299656-8110-4dc4-a33f-82a6cc3d05c2
 
   - stage: chimQa
@@ -142,6 +147,7 @@ stages:
           environmentCategory: qa
           imageTag: $(_imageTag)
           blueGreen: true
+          helmVersion: 2.16.7
           subscriptionId: 30975220-85e1-4769-8bc1-4542ec8569a0
 
   - stage: chimProd
@@ -158,6 +164,7 @@ stages:
           environmentCategory: prod
           imageTag: $(_imageTag)
           blueGreen: true
+          helmVersion: 2.16.7
           subscriptionId: 5401dcf9-9d00-445b-97b4-60b216ea4930
 
   - stage: psdDev
@@ -174,6 +181,7 @@ stages:
           environmentCategory: dev
           imageTag: $(_imageTag)
           blueGreen: false
+          helmVersion: 2.16.7
           subscriptionId: 1d0a4e20-e44d-43b5-97b0-9b577f5bf048
 
   - stage: psdQa
@@ -190,6 +198,7 @@ stages:
           environmentCategory:  qa
           imageTag: $(_imageTag)
           blueGreen: false
+          helmVersion: 2.16.7
           subscriptionId: 8c550fc0-24e0-43cb-8237-5fbb168c1071
 
   - stage: psdEu
@@ -206,6 +215,7 @@ stages:
           environmentCategory: eu
           imageTag: $(_imageTag)
           blueGreen: false
+          helmVersion: 2.16.7
           subscriptionId: 71fd3c60-f2c3-4e78-ad18-7e370fe3b068
 
   - stage: psdStg
@@ -222,6 +232,7 @@ stages:
           environmentCategory: stg
           imageTag: $(_imageTag)
           blueGreen: false
+          helmVersion: 2.16.7
           subscriptionId: 8c550fc0-24e0-43cb-8237-5fbb168c1071
 
   - stage: psdProd
@@ -238,6 +249,7 @@ stages:
           environmentCategory: prod
           imageTag: $(_imageTag)
           blueGreen: false
+          helmVersion: 2.16.7
           subscriptionId: 71fd3c60-f2c3-4e78-ad18-7e370fe3b068
 
   - stage: emdDev
@@ -254,6 +266,7 @@ stages:
           environmentCategory: dev
           imageTag: $(_imageTag)
           blueGreen: false
+          helmVersion: 2.16.7
           subscriptionId: 191495e8-b878-4140-85eb-aae73a7119cd
 
   - stage: emdQa
@@ -270,6 +283,7 @@ stages:
           environmentCategory: qa
           imageTag: $(_imageTag)
           blueGreen: false
+          helmVersion: 2.16.7
           subscriptionId: 5248a0ea-c79b-4739-adc7-e76eeb27e253
 
   - stage: emdCt
@@ -286,6 +300,7 @@ stages:
           environmentCategory: ct
           imageTag: $(_imageTag)
           blueGreen: false
+          helmVersion: 2.16.7
           subscriptionId: e9f61243-5e9a-4b8a-918c-09fe7e9f1ec1
 
   - stage: kciDev
@@ -302,6 +317,7 @@ stages:
           environmentCategory: dev
           imageTag: $(_imageTag)
           blueGreen: true
+          helmVersion: 2.16.7
           subscriptionId: 63eaf61c-4cb7-419e-ac27-553edf67c39d
 
   - stage: kciQa
@@ -318,6 +334,7 @@ stages:
           environmentCategory: qa
           imageTag: $(_imageTag)
           blueGreen: true
+          helmVersion: 2.16.7
           subscriptionId: d4fe37c0-d20e-4ef1-91c2-e196016a2410     
 
   - stage: kciCt
@@ -334,6 +351,7 @@ stages:
           environmentCategory: ct
           imageTag: $(_imageTag)
           blueGreen: true
+          helmVersion: 2.16.7
           subscriptionId:  be48d2d2-4f01-43e1-b700-8fadff21655b
 
   - stage: kciPr
@@ -350,4 +368,5 @@ stages:
           environmentCategory: pr
           imageTag: $(_imageTag)
           blueGreen: true
+          helmVersion: 2.16.7
           subscriptionId:  0d62cc0d-a87c-445a-b1f2-091a8f10ee71

@@ -38,6 +38,7 @@ stages:
           environmentCategory: dev
           environmentName: IoT_EMD_Environment_DEV
           kubernetesVersion: 1.15.7
+          helmVersion: 2.16.7
           sendgridEmail: cfinn@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -61,6 +62,7 @@ stages:
           environmentCategory: qa
           environmentName: IoT_EMD_Environment_QA
           kubernetesVersion: 1.15.7
+          helmVersion: 2.16.7
           sendgridEmail: cfinn@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -84,6 +86,7 @@ stages:
           environmentCategory: ct
           environmentName: IoT_EMD_Environment_CT
           kubernetesVersion: 1.15.7
+          helmVersion: 2.16.7
           sendgridEmail: cfinn@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453

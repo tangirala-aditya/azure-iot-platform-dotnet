@@ -38,6 +38,7 @@ stages:
           applicationShortCode: chim
           environmentCategory: dev
           kubernetesVersion: 1.16.10
+          helmVersion: 2.16.7
           sendgridEmail: blinzie@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -60,6 +61,7 @@ stages:
           applicationShortCode: chim
           environmentCategory: qa
           kubernetesVersion: 1.16.10
+          helmVersion: 2.16.7
           sendgridEmail: blinzie@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -83,6 +85,7 @@ stages:
           applicationShortCode: chim
           environmentCategory: prod
           kubernetesVersion: 1.16.10
+          helmVersion: 2.16.7
           sendgridEmail: blinzie@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453

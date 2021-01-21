@@ -36,6 +36,7 @@ stages:
           environmentCategory: dev
           environmentName: IoT_KCI_Environment_DEV
           kubernetesVersion: 1.18.2
+          helmVersion: 2.16.7
           sendgridEmail: aarkhzz@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -58,6 +59,7 @@ stages:
           environmentCategory: qa
           environmentName: IoT_KCI_Environment_QA
           kubernetesVersion: 1.18.2
+          helmVersion: 2.16.7
           sendgridEmail: aschmidt4@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -80,6 +82,7 @@ stages:
           environmentCategory: ct
           environmentName: IoT_KCI_Environment_CT
           kubernetesVersion: 1.18.2
+          helmVersion: 2.16.7
           sendgridEmail: aarkhzz@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -102,6 +105,7 @@ stages:
           environmentCategory: pr
           environmentName: IoT_KCI_Environment_PR
           kubernetesVersion: 1.18.2
+          helmVersion: 2.16.7
           sendgridEmail: aarkhzz@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453

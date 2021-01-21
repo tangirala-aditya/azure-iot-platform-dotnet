@@ -110,7 +110,9 @@ variables:
   - name: usersTableName
     value: user
   - name: sysAdminTableName
-    value: SystemAdmin    
+    value: SystemAdmin
+  - name: helmVersion
+    value: 2.16.7      
 resources:
   repositories:
     - repository: azure-iot-functional-tests

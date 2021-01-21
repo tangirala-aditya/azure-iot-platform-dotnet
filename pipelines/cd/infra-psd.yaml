@@ -38,6 +38,7 @@ stages:
           environmentCategory: dev
           environmentName: IoT_PSD_Environment_DEV
           kubernetesVersion: 1.15.7
+          helmVersion: 2.16.7
           sendgridEmail: lluppes@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -61,6 +62,7 @@ stages:
           environmentCategory: qa
           environmentName: IoT_PSD_Environment_QA
           kubernetesVersion: 1.16.8
+          helmVersion: 2.16.7
           sendgridEmail: lluppes@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -84,6 +86,7 @@ stages:
           environmentCategory: eu
           environmentName: IoT_PSD_Environment_EU
           kubernetesVersion: 1.16.8
+          helmVersion: 2.16.7
           sendgridEmail: lluppes@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -107,6 +110,7 @@ stages:
           environmentCategory: stg
           environmentName: IoT_PSD_Environment_STG
           kubernetesVersion: 1.16.8
+          helmVersion: 2.16.7
           sendgridEmail: lluppes@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
@@ -130,6 +134,7 @@ stages:
           environmentCategory: prod
           environmentName: IoT_PSD_Environment_Prod
           kubernetesVersion: 1.16.8
+          helmVersion: 2.16.7
           sendgridEmail: aschmidt4@mmm.com
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453

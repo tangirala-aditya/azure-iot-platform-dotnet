@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { Devices } from "./devices";
 import {
     epics as devicesEpics,
@@ -58,6 +58,6 @@ const mapStateToProps = (state) => ({
             dispatch(devicesRedux.actions.resetDeviceByCondition()),
     });
 
-export const DevicesContainer = withNamespaces()(
+export const DevicesContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(Devices)
 );

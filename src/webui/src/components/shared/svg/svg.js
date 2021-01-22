@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from "react";
-import ReactSVG from "react-svg";
+import { ReactSVG } from "react-svg";
 
 import "./svg.scss";
 

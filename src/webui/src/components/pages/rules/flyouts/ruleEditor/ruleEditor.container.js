@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { RuleEditor } from "./ruleEditor";
 import { getDeviceGroups } from "store/reducers/appReducer";
 import { redux as rulesRedux, getRuleById } from "store/reducers/rulesReducer";
@@ -20,6 +20,6 @@ const mapStateToProps = (state, props) => ({
             dispatch(appEpics.actions.logEvent(diagnosticsModel)),
     });
 
-export const RuleEditorContainer = withNamespaces()(
+export const RuleEditorContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(RuleEditor)
 );

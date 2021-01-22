@@ -114,42 +114,44 @@ export const Profile = (props) => {
                                             : ""}
                                     </div>
                                 </div>
-                                {/* Create the list of available tenants if there are any */
-                                !tenants || tenants.length === 0 ? (
-                                    t("profileFlyout.tenants.noTenant")
-                                ) : (
-                                    <Grid>
-                                        <Row>
-                                            <Cell>
-                                                {t(
-                                                    "profileFlyout.tenants.tenantNameColumn"
-                                                )}
-                                            </Cell>
-                                            <Cell>
-                                                {t(
-                                                    "profileFlyout.tenants.tenantRoleColumn"
-                                                )}
-                                            </Cell>
-                                            <Cell>
-                                                {t(
-                                                    "profileFlyout.tenants.tenantActionColumn"
-                                                )}
-                                            </Cell>
-                                        </Row>
-                                        <TenantGrid
-                                            updateTenant={updateTenant}
-                                            fetchTenants={fetchTenants}
-                                            currentTenant={currentTenant}
-                                            switchTenant={switchTenant}
-                                            deleteTenantThenSwitch={
-                                                deleteTenantThenSwitch
-                                            }
-                                            tenants={tenants}
-                                            t={t}
-                                            isSystemAdmin={isSystemAdmin}
-                                        ></TenantGrid>
-                                    </Grid>
-                                )}
+                                {
+                                    /* Create the list of available tenants if there are any */
+                                    !tenants || tenants.length === 0 ? (
+                                        t("profileFlyout.tenants.noTenant")
+                                    ) : (
+                                        <Grid>
+                                            <Row>
+                                                <Cell>
+                                                    {t(
+                                                        "profileFlyout.tenants.tenantNameColumn"
+                                                    )}
+                                                </Cell>
+                                                <Cell>
+                                                    {t(
+                                                        "profileFlyout.tenants.tenantRoleColumn"
+                                                    )}
+                                                </Cell>
+                                                <Cell>
+                                                    {t(
+                                                        "profileFlyout.tenants.tenantActionColumn"
+                                                    )}
+                                                </Cell>
+                                            </Row>
+                                            <TenantGrid
+                                                updateTenant={updateTenant}
+                                                fetchTenants={fetchTenants}
+                                                currentTenant={currentTenant}
+                                                switchTenant={switchTenant}
+                                                deleteTenantThenSwitch={
+                                                    deleteTenantThenSwitch
+                                                }
+                                                tenants={tenants}
+                                                t={t}
+                                                isSystemAdmin={isSystemAdmin}
+                                            ></TenantGrid>
+                                        </Grid>
+                                    )
+                                }
                                 {isSystemAdmin && (
                                     <Grid>
                                         <Cell id="create-tenant-cell">

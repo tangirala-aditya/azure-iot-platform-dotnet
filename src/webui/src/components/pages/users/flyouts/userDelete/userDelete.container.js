@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { UserDelete } from "./userDelete";
 import { redux as userRedux } from "store/reducers/usersReducer";
 
@@ -10,6 +10,6 @@ const mapDispatchToProps = (dispatch) => ({
     deleteUsers: (userIds) => dispatch(userRedux.actions.deleteUsers(userIds)),
 });
 
-export const UserDeleteContainer = withNamespaces()(
+export const UserDeleteContainer = withTranslation()(
     connect(null, mapDispatchToProps)(UserDelete)
 );

@@ -605,14 +605,16 @@ export class PackageNew extends LinkedComponent {
                                     />
                                 )}
                                 {configTypesIsPending && <Indicator />}
-                                {/** Displays an error message if one occurs while fetching configTypes. */
-                                configTypesError && (
-                                    <AjaxError
-                                        className="new-package-flyout-error"
-                                        t={t}
-                                        error={configTypesError}
-                                    />
-                                )}
+                                {
+                                    /** Displays an error message if one occurs while fetching configTypes. */
+                                    configTypesError && (
+                                        <AjaxError
+                                            className="new-package-flyout-error"
+                                            t={t}
+                                            error={configTypesError}
+                                        />
+                                    )
+                                }
                                 {completedSuccessfully && (
                                     <FormLabel className="new-package-success-labels">
                                         {configType}
@@ -847,14 +849,16 @@ export class PackageNew extends LinkedComponent {
                                     </Trans>
                                 </div>
                             )}
-                            {/** Displays an error message if one occurs while applying changes. */
-                            error && (
-                                <AjaxError
-                                    className="new-package-flyout-error"
-                                    t={t}
-                                    error={error}
-                                />
-                            )}
+                            {
+                                /** Displays an error message if one occurs while applying changes. */
+                                error && (
+                                    <AjaxError
+                                        className="new-package-flyout-error"
+                                        t={t}
+                                        error={error}
+                                    />
+                                )
+                            }
                             {fileError && (
                                 <AjaxError
                                     className="new-firmware-flyout-error"
@@ -862,61 +866,67 @@ export class PackageNew extends LinkedComponent {
                                     error={fileError}
                                 />
                             )}
-                            {/** If package is selected, show the buttons for uploading and closing the flyout. */
-                            packageFile && !completedSuccessfully && (
-                                <BtnToolbar>
-                                    <Btn
-                                        svg={svgs.upload}
-                                        primary={true}
-                                        disabled={
-                                            isPending || !this.formIsValid()
-                                        }
-                                        type="submit"
-                                    >
-                                        {t("packages.flyouts.new.upload")}
-                                    </Btn>
-                                    <Btn
-                                        svg={svgs.cancelX}
-                                        onClick={() =>
-                                            this.genericCloseClick(
-                                                "NewPackage_CancelClick"
-                                            )
-                                        }
-                                    >
-                                        {t("packages.flyouts.new.cancel")}
-                                    </Btn>
-                                </BtnToolbar>
-                            )}
-                            {/** If package is not selected, show only the cancel button. */
-                            !packageFile && (
-                                <BtnToolbar>
-                                    <Btn
-                                        svg={svgs.cancelX}
-                                        onClick={() =>
-                                            this.genericCloseClick(
-                                                "NewPackage_CancelClick"
-                                            )
-                                        }
-                                    >
-                                        {t("packages.flyouts.new.cancel")}
-                                    </Btn>
-                                </BtnToolbar>
-                            )}
-                            {/** After successful upload, show close button. */
-                            completedSuccessfully && (
-                                <BtnToolbar>
-                                    <Btn
-                                        svg={svgs.cancelX}
-                                        onClick={() =>
-                                            this.genericCloseClick(
-                                                "NewPackage_CancelClick"
-                                            )
-                                        }
-                                    >
-                                        {t("packages.flyouts.new.close")}
-                                    </Btn>
-                                </BtnToolbar>
-                            )}
+                            {
+                                /** If package is selected, show the buttons for uploading and closing the flyout. */
+                                packageFile && !completedSuccessfully && (
+                                    <BtnToolbar>
+                                        <Btn
+                                            svg={svgs.upload}
+                                            primary={true}
+                                            disabled={
+                                                isPending || !this.formIsValid()
+                                            }
+                                            type="submit"
+                                        >
+                                            {t("packages.flyouts.new.upload")}
+                                        </Btn>
+                                        <Btn
+                                            svg={svgs.cancelX}
+                                            onClick={() =>
+                                                this.genericCloseClick(
+                                                    "NewPackage_CancelClick"
+                                                )
+                                            }
+                                        >
+                                            {t("packages.flyouts.new.cancel")}
+                                        </Btn>
+                                    </BtnToolbar>
+                                )
+                            }
+                            {
+                                /** If package is not selected, show only the cancel button. */
+                                !packageFile && (
+                                    <BtnToolbar>
+                                        <Btn
+                                            svg={svgs.cancelX}
+                                            onClick={() =>
+                                                this.genericCloseClick(
+                                                    "NewPackage_CancelClick"
+                                                )
+                                            }
+                                        >
+                                            {t("packages.flyouts.new.cancel")}
+                                        </Btn>
+                                    </BtnToolbar>
+                                )
+                            }
+                            {
+                                /** After successful upload, show close button. */
+                                completedSuccessfully && (
+                                    <BtnToolbar>
+                                        <Btn
+                                            svg={svgs.cancelX}
+                                            onClick={() =>
+                                                this.genericCloseClick(
+                                                    "NewPackage_CancelClick"
+                                                )
+                                            }
+                                        >
+                                            {t("packages.flyouts.new.close")}
+                                        </Btn>
+                                    </BtnToolbar>
+                                )
+                            }
                         </SummarySection>
                     </form>
                 </div>

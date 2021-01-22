@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 import {
     epics as exampleEpics,
@@ -24,6 +24,6 @@ const mapStateToProps = (state) => ({
         fetchData: () => dispatch(exampleEpics.actions.fetchExamples()),
     });
 
-export const PageWithGridContainer = withNamespaces()(
+export const PageWithGridContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(PageWithGrid)
 );

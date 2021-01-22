@@ -471,14 +471,16 @@ export class DeploymentNew extends LinkedComponent {
                                     />
                                 )}
                                 {configTypesIsPending && <Indicator />}
-                                {/** Displays an error message if one occurs while fetching configTypes. */
-                                configTypesError && (
-                                    <AjaxError
-                                        className="new-deployment-flyout-error"
-                                        t={t}
-                                        error={configTypesError}
-                                    />
-                                )}
+                                {
+                                    /** Displays an error message if one occurs while fetching configTypes. */
+                                    configTypesError && (
+                                        <AjaxError
+                                            className="new-deployment-flyout-error"
+                                            t={t}
+                                            error={configTypesError}
+                                        />
+                                    )
+                                }
                                 {completedSuccessfully && (
                                     <FormLabel className="new-deployment-success-labels">
                                         {configType}
@@ -519,14 +521,16 @@ export class DeploymentNew extends LinkedComponent {
                                 />
                             )}
                             {packagesPending && <Indicator />}
-                            {/** Displays an error message if one occurs while fetching packages. */
-                            packagesError && (
-                                <AjaxError
-                                    className="new-deployment-flyout-error"
-                                    t={t}
-                                    error={packagesError}
-                                />
-                            )}
+                            {
+                                /** Displays an error message if one occurs while fetching packages. */
+                                packagesError && (
+                                    <AjaxError
+                                        className="new-deployment-flyout-error"
+                                        t={t}
+                                        error={packagesError}
+                                    />
+                                )
+                            }
                             {completedSuccessfully && (
                                 <FormLabel className="new-deployment-success-labels">
                                     {packageName}
@@ -617,82 +621,95 @@ export class DeploymentNew extends LinkedComponent {
                                     </ComponentArray>
                                 )}
                             </SummaryBody>
-                            {/** Displays a info message if package type selected is edge Manifest */
-                            !changesApplied && (
-                                <div className="new-deployment-info-text">
-                                    <strong className="new-deployment-info-star">
-                                        *{" "}
-                                    </strong>
-                                    {t("deployments.flyouts.new.infoText")}
-                                </div>
-                            )}
-                            {/** Displays a success message if deployment is created successfully */
-                            completedSuccessfully && (
-                                <div className="new-deployment-info-text">
-                                    <Trans
-                                        i18nKey={
-                                            "deployments.flyouts.new.successText"
-                                        }
-                                    >
-                                        View your deployment status detail for
-                                        <Link
-                                            className="link"
-                                            to={`/deployments/${createdDeploymentId}`}
+                            {
+                                /** Displays a info message if package type selected is edge Manifest */
+                                !changesApplied && (
+                                    <div className="new-deployment-info-text">
+                                        <strong className="new-deployment-info-star">
+                                            *{" "}
+                                        </strong>
+                                        {t("deployments.flyouts.new.infoText")}
+                                    </div>
+                                )
+                            }
+                            {
+                                /** Displays a success message if deployment is created successfully */
+                                completedSuccessfully && (
+                                    <div className="new-deployment-info-text">
+                                        <Trans
+                                            i18nKey={
+                                                "deployments.flyouts.new.successText"
+                                            }
                                         >
-                                            {{ deploymentName: name }}
-                                        </Link>
-                                        .
-                                    </Trans>
-                                </div>
-                            )}
-                            {/** Displays an error message if one occurs while creating deployment. */
-                            changesApplied && createError && (
-                                <AjaxError
-                                    className="new-deployment-flyout-error"
-                                    t={t}
-                                    error={createError}
-                                />
-                            )}
-                            {/** If form is complete, show the buttons for creating a deployment and closing the flyout. */
-                            !completedSuccessfully && (
-                                <BtnToolbar>
-                                    <Btn
-                                        primary={true}
-                                        disabled={
-                                            createIsPending ||
-                                            !this.formIsValid()
-                                        }
-                                        type="submit"
-                                    >
-                                        {t("deployments.flyouts.new.apply")}
-                                    </Btn>
-                                    <Btn
-                                        svg={svgs.cancelX}
-                                        onClick={() =>
-                                            this.genericCloseClick(
-                                                "NewDeployment_CancelClick"
-                                            )
-                                        }
-                                    >
-                                        {t("deployments.flyouts.new.cancel")}
-                                    </Btn>
-                                </BtnToolbar>
-                            )}
-                            {/** After successful deployment creation, show only close button. */
-                            completedSuccessfully && (
-                                <BtnToolbar>
-                                    <Btn
-                                        svg={svgs.cancelX}
-                                        onClick={() =>
-                                            this.genericCloseClick(
-                                                "NewDeployment_CancelClick"
-                                            )
-                                        }
-                                    >
-                                        {t("deployments.flyouts.new.close")}
-                                    </Btn>
-                                </BtnToolbar>
-                            )}
+                                            View your deployment status detail
+                                            for
+                                            <Link
+                                                className="link"
+                                                to={`/deployments/${createdDeploymentId}`}
+                                            >
+                                                {{ deploymentName: name }}
+                                            </Link>
+                                            .
+                                        </Trans>
+                                    </div>
+                                )
+                            }
+                            {
+                                /** Displays an error message if one occurs while creating deployment. */
+                                changesApplied && createError && (
+                                    <AjaxError
+                                        className="new-deployment-flyout-error"
+                                        t={t}
+                                        error={createError}
+                                    />
+                                )
+                            }
+                            {
+                                /** If form is complete, show the buttons for creating a deployment and closing the flyout. */
+                                !completedSuccessfully && (
+                                    <BtnToolbar>
+                                        <Btn
+                                            primary={true}
+                                            disabled={
+                                                createIsPending ||
+                                                !this.formIsValid()
+                                            }
+                                            type="submit"
+                                        >
+                                            {t("deployments.flyouts.new.apply")}
+                                        </Btn>
+                                        <Btn
+                                            svg={svgs.cancelX}
+                                            onClick={() =>
+                                                this.genericCloseClick(
+                                                    "NewDeployment_CancelClick"
+                                                )
+                                            }
+                                        >
+                                            {t(
+                                                "deployments.flyouts.new.cancel"
+                                            )}
+                                        </Btn>
+                                    </BtnToolbar>
+                                )
+                            }
+                            {
+                                /** After successful deployment creation, show only close button. */
+                                completedSuccessfully && (
+                                    <BtnToolbar>
+                                        <Btn
+                                            svg={svgs.cancelX}
+                                            onClick={() =>
+                                                this.genericCloseClick(
+                                                    "NewDeployment_CancelClick"
+                                                )
+                                            }
+                                        >
+                                            {t("deployments.flyouts.new.close")}
+                                        </Btn>
+                                    </BtnToolbar>
+                                )
+                            }
                         </SummarySection>
                     </form>
                 </div>

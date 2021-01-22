@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 // <flyoutcontainer>
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 import { ExampleFlyout } from "./exampleFlyout";
 
-export const ExampleFlyoutContainer = withNamespaces()(ExampleFlyout);
+export const ExampleFlyoutContainer = withTranslation()(ExampleFlyout);
 
 // </flyoutcontainer>

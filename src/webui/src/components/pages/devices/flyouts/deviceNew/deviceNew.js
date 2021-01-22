@@ -597,31 +597,36 @@ export class DeviceNew extends LinkedComponent {
                                     {t(deviceOptions.device.labelName)}
                                 </Radio>
                             </FormGroup>
-                            {// Disabled due to Simulation not being a feature of this release
-                            isEdgeDevice && false && (
-                                <FormGroup>
-                                    <FormLabel>
-                                        {t(deviceTypeOptions.labelName)}
-                                    </FormLabel>
-                                    {/* <Radio
+                            {
+                                // Disabled due to Simulation not being a feature of this release
+                                isEdgeDevice && false && (
+                                    <FormGroup>
+                                        <FormLabel>
+                                            {t(deviceTypeOptions.labelName)}
+                                        </FormLabel>
+                                        {/* <Radio
                     id="device-type-simulated"
                     link={this.deviceTypeLink}
                     value={deviceTypeOptions.simulated.value}
                     onChange={this.deviceTypeChange}>
                     {t(deviceTypeOptions.simulated.labelName)}
                   </Radio> */}
-                                    <Radio
-                                        id="device-type-real"
-                                        link={this.deviceTypeLink}
-                                        value={deviceTypeOptions.physical.value}
-                                        onChange={this.deviceTypeChange}
-                                    >
-                                        {t(
-                                            deviceTypeOptions.physical.labelName
-                                        )}
-                                    </Radio>
-                                </FormGroup>
-                            )}
+                                        <Radio
+                                            id="device-type-real"
+                                            link={this.deviceTypeLink}
+                                            value={
+                                                deviceTypeOptions.physical.value
+                                            }
+                                            onChange={this.deviceTypeChange}
+                                        >
+                                            {t(
+                                                deviceTypeOptions.physical
+                                                    .labelName
+                                            )}
+                                        </Radio>
+                                    </FormGroup>
+                                )
+                            }
                             {isSimulatedDevice && (
                                 <>
                                     <FormGroup>

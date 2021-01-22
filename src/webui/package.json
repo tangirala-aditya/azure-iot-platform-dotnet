@@ -22,7 +22,7 @@
         "jwt-decode": "3.1.2",
         "moment": "2.29.1",
         "njwt": "1.0.0",
-        "node-sass": "^5.0.0",
+        "node-sass": "4.14.1",
         "normalizr": "3.6.1",
         "oidc-client": "1.10.1",
         "prop-types": "15.7.2",
@@ -45,6 +45,7 @@
         "tsiclient": "1.4.8"
     },
     "devDependencies": {
+        "typescript": "3.4.3",
         "@typescript-eslint/eslint-plugin-tslint": "4.14.0",
         "enzyme": "3.11.0",
         "enzyme-adapter-react-16": "1.15.6",

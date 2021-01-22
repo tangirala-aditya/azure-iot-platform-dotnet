@@ -36,6 +36,7 @@ export class DeleteModal extends Component {
         } else {
             itemId.flatMap((itemId) => {
                 this.logAndDelete(deleteItem, itemId, logEvent);
+                return null;
             });
         }
 

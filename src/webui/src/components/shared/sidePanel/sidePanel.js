@@ -13,10 +13,7 @@ export class SidePanel extends Component {
         const { isExpanded, onClick, children, titleName } = this.props;
         return (
             <div
-                className={joinClasses(
-                    "side-panel",
-                    isExpanded && "expanded"
-                )}
+                className={joinClasses("side-panel", isExpanded && "expanded")}
             >
                 <Btn
                     icon={isExpanded ? "chevronLeft" : "chevronRight"}

@@ -107,7 +107,7 @@ class App extends Component {
                 {
                     to: "/admin",
                     exact: false,
-                    svg: svgs.tabs.maintenance,
+                    svg: svgs.tabs.admin,
                     labelId: "tabs.administration",
                     component: AdministrationContainer,
                 },

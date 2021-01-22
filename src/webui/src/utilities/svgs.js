@@ -62,6 +62,7 @@ import WarningIconPath from "assets/icons/warning.svg";
 import XIconPath from "assets/icons/x.svg";
 import EmailOpenIconPath from "assets/icons/email-open.svg";
 import MMMLogoPath from "assets/icons/3M_wordmark.svg";
+import adminIconPath from "assets/icons/admin.svg";
 
 /** A helper object mapping svg names to their paths */
 export const svgs = {
@@ -75,6 +76,7 @@ export const svgs = {
         rules: TabRulesIconPath,
         example: InfoBubbleIconPath,
         users: PeopleIconPath,
+        admin: adminIconPath,
     },
     devices: {
         generic: DeviceGenericIconPath,

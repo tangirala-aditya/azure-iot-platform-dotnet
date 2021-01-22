@@ -9,7 +9,4 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(appEpics.actions.logEvent(diagnosticsModel)),
 });
 
-export const SidePanelContainer = connect(
-    null,
-    mapDispatchToProps
-)(SidePanel);
+export const SidePanelContainer = connect(null, mapDispatchToProps)(SidePanel);

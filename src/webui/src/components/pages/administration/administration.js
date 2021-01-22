@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import {
     ComponentArray,
     SidePanelContainer as SidePanel,
-    PageContent
+    PageContent,
 } from "components/shared";
 import { Route, Redirect, Switch, NavLink } from "react-router-dom";
 import { PageNotFoundContainer as PageNotFound } from "components/shell/pageNotFound";
@@ -51,7 +51,8 @@ export class Administration extends Component {
                     to: "/admin/test2",
                     labelId: "test2",
                     component: PageNotFound,
-                }];
+                },
+            ];
         return (
             <section className="admin-container">
                 <SidePanel
@@ -59,36 +60,41 @@ export class Administration extends Component {
                     onClick={this.handleNavToggle}
                     titleName="Administration"
                     t={t}
-                    children={pagesConfig.map((tabProps, i) => {
-                        const label = t(tabProps.labelId);
-                        return (
-                            <NavLink
-                                key={i}
-                                to={tabProps.to}
-                                className="global-side-panel-item"
-                                activeClassName="global-side-panel-item-active"
-                                title={label}
-                                id={tabProps.labelId}
-                            >
-                                <div className="global-side-panel-item-text">{label}</div>
-                            </NavLink>
-                        );
-                    })}
-                ></SidePanel>
-                <ComponentArray>
-                    <PageContent className="administration-container">{pagesConfig && (
-                        <Switch>
-                            {pagesConfig.map(({ to, exact, component }) => (
-                                <Route
-                                    exact
-                                    key={to}
-                                    path={to}
-                                    component={component}
-                                />
-                            ))}
-                        </Switch>
-                    )}</PageContent>
-                </ComponentArray>
+                >{pagesConfig.map((tabProps, i) => {
+                    const label = t(tabProps.labelId);
+                    return (
+                        <NavLink
+                            key={i}
+                            to={tabProps.to}
+                            className="global-side-panel-item"
+                            activeClassName="global-side-panel-item-active"
+                            title={label}
+                            id={tabProps.labelId}
+                        >
+                            <div className="global-side-panel-item-text">
+                                {label}
+                            </div>
+                        </NavLink>
+                    );
+                })}
+                </SidePanel>
+                {pagesConfig && (
+                    <Switch>
+                        <Redirect
+                            exact
+                            from="/admin"
+                            to={pagesConfig[0].to}
+                        />
+                        {pagesConfig.map(({ to, component }) => (
+                            <Route
+                                exact
+                                key={to}
+                                path={to}
+                                component={component}
+                            />
+                        ))}
+                    </Switch>
+                )}
             </section>
         );
     }

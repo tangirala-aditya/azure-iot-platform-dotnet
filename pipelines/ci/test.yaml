@@ -345,6 +345,7 @@ stages:
           - task: CredScan@2
             displayName: Scan for credentials
             inputs:
+              toolMajorVersion: 'V2'
               verboseOutput: true
 
           - task: SdtReport@1

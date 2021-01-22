@@ -3,6 +3,8 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Mmm.Iot.Functions.DeploymentSync.Shared
 {
@@ -14,8 +16,10 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
 
         public string DeploymentName { get; set; }
 
+        public string PreviousFirmwareVersion { get; set; }
+
         public DateTime LastUpdatedDateTimeUtc { get; set; }
 
-        public TwinServiceModel Data { get; set; }
+        public Dictionary<string, JToken> ReportedProperties { get; set; }
     }
 }

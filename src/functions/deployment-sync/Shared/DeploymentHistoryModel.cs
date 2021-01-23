@@ -16,7 +16,7 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
 
         public string DeploymentName { get; set; }
 
-        public string PreviousFirmwareVersion { get; set; }
+        public string PreviousFirmwareReportedProperties { get; set; }
 
         public DateTime LastUpdatedDateTimeUtc { get; set; }
 

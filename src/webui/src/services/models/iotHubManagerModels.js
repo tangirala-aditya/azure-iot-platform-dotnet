@@ -294,13 +294,18 @@ export const toEdgeAgentsModel = (response = []) =>
 export const toDevicesDeploymentHistoryModel = (response = []) =>
     getItems(response).map(toDeviceDeploymentHistoryModel);
 
-export const toDeviceDeploymentHistoryModel = (twinServiceModel = {}) => {
-    if (twinServiceModel.Reported && twinServiceModel.Reported.firmware) {
+export const toDeviceDeploymentHistoryModel = (deploymentHistoryModel = {}) => {
+    if (
+        deploymentHistoryModel.reportedProperties &&
+        deploymentHistoryModel.reportedProperties.firmware
+    ) {
         var modelData = {
+            deploymentName: deploymentHistoryModel.deploymentName,
             firmwareVersion:
-                twinServiceModel.Reported.firmware.currentFwVersion,
-            startTime: twinServiceModel.Reported.firmware.lastFwUpdateStartTime,
-            endTime: twinServiceModel.Reported.firmware.lastFwUpdateEndTime,
+                deploymentHistoryModel.reportedProperties.firmware
+                    .currentFwVersion,
+            lastUpdatedTime: deploymentHistoryModel.lastUpdatedDateTimeUtc,
+            deploymentId: deploymentHistoryModel.deploymentId,
         };
         return modelData;
     }

@@ -174,8 +174,8 @@ namespace Mmm.Iot.Common.Services.Helpers
         }
 
         public static SqlQuerySpec GetDeviceDocumentsSqlByKey(
-            string key,
-            string keyProperty)
+            string keyProperty,
+            string key)
         {
             var sqlParameterCollection = new SqlParameterCollection();
             ValidateInput(ref key);

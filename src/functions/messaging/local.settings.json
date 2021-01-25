@@ -6,10 +6,10 @@
         "DeploymentsDatabaseId": "pcs-storage",
         "AppConfigurationConnectionString": "Endpoint=https://crsliot-appconfig-dev.azconfig.io;Id=Xgt/-l4-s0:pBH6Ix0z6nNK7DSSX7pQ;Secret=uMiLU1yD5LM6PZsxlZfHM3AOHidG8JAtojpBasrpuCQ=",
         "TableStorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=crsliotstorageacctdev;AccountKey=RI1nwejnaoWP92KlXtCwFAvqZyUsbEWbJwrxRTdb7TgyWdthCekQmLr72lw8qUmdDuOqYoDtOpAlymIcW9RO6g==;EndpointSuffix=core.windows.net",
-        "CosmosDbConnectionString": "AccountEndpoint=https://crsliot-cosmos-dev.documents.azure.com:443/;AccountKey=N2ZAnmE1Jv3jeFnnumLcO8McQ9t6cXckZWRzt7UhkxUmdzchFVmf3lRXMVNamqU7A6ZqCQafFC8LerB0SzP20Q==;",
+        "CosmosDbConnectionString": "AccountEndpoint=https://storage-db.documents.azure.com:443/;AccountKey=3z7jRuh0k8tPYdHgWRyTnahzelUTk7lccbkAf3L8IzHNNLkUMANGKbghIW8mQiQfyyujvsv12IqLfcDVilD90g==;",
         "AzureStorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=crsliotstorageacctdev;AccountKey=RI1nwejnaoWP92KlXtCwFAvqZyUsbEWbJwrxRTdb7TgyWdthCekQmLr72lw8qUmdDuOqYoDtOpAlymIcW9RO6g==;EndpointSuffix=core.windows.net",
         "Cosmos1": "AccountEndpoint=https://ggkmmmcosmos.documents.azure.com:443/;AccountKey=tspiDYki14WD4U17DiUytNE4ADp2lpW8SU6D3cKqotzHqGDjjolssQkFm157Jcd7YHJMFrIBDfaBhPZlgjH9kg==;",
-        "DeviceDeploymentHistoryConsumerGroup": "DeviceDeploymentHistory",
-        "TwinChangeEventHubConnectionString": "Endpoint=sb://crsliot-eventhub-dev.servicebus.windows.net/;SharedAccessKeyName=iothubroutes;SharedAccessKey=4ZPCdNKm2sldpNmTVjWyTbOuUjDvftt65empBvCFdEE=;EntityPath=twin-change"
+        "DeviceDeploymentHistoryConsumerGroup": "$Default",
+        "TwinChangeEventHubConnectionString": "Endpoint=sb://ragav-test.servicebus.windows.net/;SharedAccessKeyName=iothubroutes_ragav-test;SharedAccessKey=SQa8mdLqAK4saEkHCmTuBnUbzoeP6b1Km4ZR8Y475dw=;EntityPath=ragav-test-twin-change"
     }
 }

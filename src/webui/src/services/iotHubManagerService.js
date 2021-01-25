@@ -187,9 +187,9 @@ export class IoTHubManagerService {
     }
 
     static getDeploymentHistoryForSelectedDevice(deviceId) {
-        return HttpClient.get(
-            `${ENDPOINT}devices/deploymentHistory/${deviceId}`
-        ).map(toDevicesDeploymentHistoryModel);
+        return HttpClient.get(`${ENDPOINT}devices/deploymentHistory/Test1`).map(
+            toDevicesDeploymentHistoryModel
+        );
     }
 
     /** Returns a device statistics */

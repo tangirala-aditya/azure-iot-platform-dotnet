@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft. All rights reserved.
-const baseUrl = process.env.REACT_APP_BASE_SERVICE_URL || "",
+const baseUrl = "https://crsliot-aks-dev.centralus.cloudapp.azure.com/",
     validExtensions = [".png", ".jpeg", ".jpg", ".svg"],
     Config = {
         limitedAccessUrls: [],
@@ -7,7 +7,7 @@ const baseUrl = process.env.REACT_APP_BASE_SERVICE_URL || "",
             auth: `${baseUrl}/auth/`,
             identityGateway: `${baseUrl}/auth/v1/`,
             config: `${baseUrl}/config/v1/`,
-            iotHubManager: `${baseUrl}/iothubmanager/v1/`,
+            iotHubManager: `https://localhost:5001/v1/`,
             telemetry: `${baseUrl}/telemetry/v1/`,
             deviceSimulation: `${baseUrl}/devicesimulation/v1/`,
             diagnostics: `${baseUrl}/diagnostics/v1/`,

@@ -167,4 +167,5 @@ const jsonHeaders = {
     authenticationHeaders = (token) => ({
         "Csrf-Token": "nocheck",
         Authorization: `Bearer ${token}`,
+        "X-Source": "External",
     });

@@ -428,6 +428,29 @@ namespace Mmm.Iot.IoTHubManager.Services
                     .ToList());
         }
 
+        public async Task<DeploymentHistoryListModel> GetDeploymentDevicesAsync(string deploymentId, string query, bool isLatest)
+        {
+            var sql = QueryBuilder.GetDeviceDocumentsSqlByKey(deploymentId, "key");
+            FeedOptions queryOptions = new FeedOptions
+            {
+                EnableCrossPartitionQuery = true,
+                EnableScanInQuery = true,
+            };
+            List<Document> docs = await this.storageClient.QueryDocumentsAsync(
+                this.DocumentDbDatabaseId,
+                "test", // TO replace: $"{this.DocumentDataType}-{tenantId}",
+                queryOptions,
+                sql,
+                0,
+                1000);
+
+            return docs == null
+                 ? new DeploymentHistoryListModel(null)
+                 : new DeploymentHistoryListModel(docs
+                    .Select(doc => new ValueServiceModel(doc)).Select(x => JsonConvert.DeserializeObject<DeploymentHistoryModel>(x.Data))
+                    .ToList());
+        }
+
         public async Task<DeviceStatisticsServiceModel> GetDeviceStatisticsAsync(string query)
         {
             if (!string.IsNullOrWhiteSpace(query))

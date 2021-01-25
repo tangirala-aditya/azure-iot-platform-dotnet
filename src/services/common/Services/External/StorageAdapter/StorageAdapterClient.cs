@@ -14,7 +14,7 @@ namespace Mmm.Iot.Common.Services.External.StorageAdapter
         private readonly int timeout;
 
         public StorageAdapterClient(AppConfig config, IExternalRequestHelper requestHelper)
-            : base(config.ExternalDependencies.StorageAdapterServiceUrl, requestHelper)
+            : base("https://localhost:4001/v1", requestHelper)
         {
             this.timeout = config.ExternalDependencies.StorageAdapterServiceTimeout;
         }

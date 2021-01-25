@@ -18,8 +18,7 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared.Helpers
 
             string connectionString = Environment.GetEnvironmentVariable("AppConfigurationConnectionString", EnvironmentVariableTarget.Process);
 
-            AppConfigHelper appConfigHelper = new AppConfigHelper(connectionString);
-            return appConfigHelper.GetValue(appConfigurationKey);
+            return "HostName=ragav-test.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=XL6M6N90gGs2q7vGcnarGgFJtzTGzJ3wuhpxZx+CYR8=";
         }
 
         public static RegistryManager GetRegistry(string tenantId)

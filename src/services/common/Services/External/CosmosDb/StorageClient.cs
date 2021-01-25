@@ -465,7 +465,7 @@ namespace Mmm.Iot.Common.Services.External.CosmosDb
 
             try
             {
-                Match match = Regex.Match(config.Global.CosmosDb.DocumentDbConnectionString, ConnectionStringValueRegex);
+                Match match = Regex.Match("AccountEndpoint=https://storage-db.documents.azure.com:443/;AccountKey=3z7jRuh0k8tPYdHgWRyTnahzelUTk7lccbkAf3L8IzHNNLkUMANGKbghIW8mQiQfyyujvsv12IqLfcDVilD90g==;", ConnectionStringValueRegex);
 
                 // Get the storage uri from the regular expression match
                 Uri.TryCreate(match.Groups["endpoint"].Value, UriKind.RelativeOrAbsolute, out Uri storageUriEndpoint);

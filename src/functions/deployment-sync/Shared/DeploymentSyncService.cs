@@ -154,7 +154,7 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
                 CosmosOperations storageClient = await CosmosOperations.GetClientAsync();
                 docs = await storageClient.QueryDocumentsAsync(
                    "pcs-storage",
-                   "test", // TODO: Replace with $"pcs-{tenantId}"
+                   $"pcs-{tenantId}",
                    this.DefaultQueryOptions,
                    sql,
                    0,
@@ -195,7 +195,7 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
                                             NullValueHandling = NullValueHandling.Ignore,
                                         });
 
-            await storageClient.SaveDocumentAsync(string.Format(DeploymentHistoryCollection, deviceTwin.DeviceId), deploymentModel.Id, new ValueServiceModel() { Data = value }, "/dbs/pcs-storage/colls/test" /*TOReplace: this.GenerateCollectionLink(tenantId)*/, Guid.NewGuid());
+            await storageClient.SaveDocumentAsync(string.Format(DeploymentHistoryCollection, deviceTwin.DeviceId), deploymentModel.Id, new ValueServiceModel() { Data = value }, this.GenerateCollectionLink(tenantId), Guid.NewGuid());
         }
 
         private async Task<TwinServiceModel> GetPreviousFirmwareReportedProperties(string tenantId, string deviceId, string deploymentId)
@@ -222,16 +222,21 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
                 CosmosOperations storageClient = await CosmosOperations.GetClientAsync();
                 docs = await storageClient.QueryDocumentsAsync(
                    "pcs-storage",
-                   "test", // TODO: Replace with $"pcs-{tenantId}"
+                   $"pcs-{tenantId}",
                    this.DefaultQueryOptions,
                    sql,
                    0,
                    100);
 
                 var result = docs.Select(doc => new ValueServiceModel(doc));
-                var previousDeployment = JsonConvert.DeserializeObject<DeploymentHistoryModel>(result.FirstOrDefault()?.Data);
-                var previousTwin = previousDeployment.Twin;
-                return previousTwin != null ? previousTwin : null;
+                if (result != null && result.Count() > 0)
+                {
+                    var previousDeployment = JsonConvert.DeserializeObject<DeploymentHistoryModel>(result.FirstOrDefault()?.Data);
+                    var previousTwin = previousDeployment.Twin;
+                    return previousTwin != null ? previousTwin : null;
+                }
+
+                return null;
             }
             catch (ResourceNotFoundException e)
             {

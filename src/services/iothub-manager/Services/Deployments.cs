@@ -27,7 +27,7 @@ namespace Mmm.Iot.IoTHubManager.Services
 {
     public class Deployments : IDeployments
     {
-        private const int MaxDeployments = 100;
+        private const int MaxDeployments = 1000;
         private const string DeploymentNameLabel = "Name";
         private const string DeploymentGroupIdLabel = "DeviceGroupId";
         private const string DeploymentGroupNameLabel = "DeviceGroupName";

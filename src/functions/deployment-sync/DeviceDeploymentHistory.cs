@@ -21,7 +21,7 @@ namespace Mmm.Iot.Functions.DeploymentSync
 {
     public static class DeviceDeploymentHistory
     {
-        public const string FIRMWARE = "firmware";
+        public const string FIRMWARE = "Firmware";
 
         [FunctionName("DeviceDeploymentHistory")]
         public static async Task Run([EventHubTrigger(eventHubName: "twin-change", Connection = "TwinChangeEventHubConnectionString", ConsumerGroup = "%DeviceDeploymentHistoryConsumerGroup%")] EventData[] events, ILogger log)
@@ -46,7 +46,7 @@ namespace Mmm.Iot.Functions.DeploymentSync
                         bool isFirmWareUpdate = false;
                         foreach (var field in fields)
                         {
-                            isFirmWareUpdate = field.Key.Contains(FIRMWARE);
+                            isFirmWareUpdate = field.Key.Contains(FIRMWARE, StringComparison.OrdinalIgnoreCase);
                             if (isFirmWareUpdate)
                             {
                                 break;
@@ -58,7 +58,7 @@ namespace Mmm.Iot.Functions.DeploymentSync
                             message.SystemProperties.TryGetValue("iothub-connection-device-id", out object deviceId);
                             var newTwin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
                             var appliedConfigurations = newTwin.Configurations.Where(c => c.Value.Status.Equals(ConfigurationStatus.Applied));
-                            if (appliedConfigurations.Count() > 0)
+                            if (appliedConfigurations != null && appliedConfigurations.Count() > 0)
                             {
                                 DeploymentSyncService service = new DeploymentSyncService();
                                 var appliedDeploymentFromStorage = service.GetDeploymentsByIdFromStorage(Convert.ToString(tenant), appliedConfigurations.Select(ac => ac.Key).ToArray()).Result.FirstOrDefault();

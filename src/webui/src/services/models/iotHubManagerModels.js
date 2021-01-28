@@ -296,13 +296,13 @@ export const toDevicesDeploymentHistoryModel = (response = []) =>
 
 export const toDeviceDeploymentHistoryModel = (deploymentHistoryModel = {}) => {
     if (
-        deploymentHistoryModel.reportedProperties &&
-        deploymentHistoryModel.reportedProperties.firmware
+        deploymentHistoryModel.twin.reportedProperties &&
+        deploymentHistoryModel.twin.reportedProperties.firmware
     ) {
         var modelData = {
             deploymentName: deploymentHistoryModel.deploymentName,
             firmwareVersion:
-                deploymentHistoryModel.reportedProperties.firmware
+                deploymentHistoryModel.twin.reportedProperties.firmware
                     .currentFwVersion,
             lastUpdatedTime: deploymentHistoryModel.lastUpdatedDateTimeUtc,
             deploymentId: deploymentHistoryModel.deploymentId,

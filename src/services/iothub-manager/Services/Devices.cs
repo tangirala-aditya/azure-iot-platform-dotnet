@@ -415,7 +415,7 @@ namespace Mmm.Iot.IoTHubManager.Services
             };
             List<Document> docs = await this.storageClient.QueryDocumentsAsync(
                 this.DocumentDbDatabaseId,
-                "test", // TO replace: $"{this.DocumentDataType}-{tenantId}",
+                $"{this.DocumentDataType}-{tenantId}",
                 queryOptions,
                 sql,
                 0,

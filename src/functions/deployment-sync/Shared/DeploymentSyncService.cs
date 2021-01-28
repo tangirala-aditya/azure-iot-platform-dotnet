@@ -175,16 +175,16 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
         {
             CosmosOperations storageClient = await CosmosOperations.GetClientAsync();
 
-            string previousFirmware = await this.GetPreviousFirmwareReportedProperties(tenantId, deviceTwin.DeviceId, deploymentModel.Id);
+            TwinServiceModel previousTwin = await this.GetPreviousFirmwareReportedProperties(tenantId, deviceTwin.DeviceId, deploymentModel.Id);
             var deviceTwinServiceModel = new TwinServiceModel(deviceTwin);
             DeploymentHistoryModel modelToSave = new DeploymentHistoryModel
             {
                 DeploymentId = deploymentModel.Id,
                 DeploymentName = deploymentModel.Name,
                 DeviceId = deviceTwin.DeviceId,
-                PreviousFirmwareReportedProperties = previousFirmware ?? string.Empty,
+                PreviousFirmwareTwin = previousTwin,
                 LastUpdatedDateTimeUtc = DateTime.UtcNow,
-                ReportedProperties = deviceTwinServiceModel.ReportedProperties,
+                Twin = deviceTwinServiceModel,
             };
 
             var value = JsonConvert.SerializeObject(
@@ -198,7 +198,7 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
             await storageClient.SaveDocumentAsync(string.Format(DeploymentHistoryCollection, deviceTwin.DeviceId), deploymentModel.Id, new ValueServiceModel() { Data = value }, "/dbs/pcs-storage/colls/test" /*TOReplace: this.GenerateCollectionLink(tenantId)*/, Guid.NewGuid());
         }
 
-        private async Task<string> GetPreviousFirmwareReportedProperties(string tenantId, string deviceId, string deploymentId)
+        private async Task<TwinServiceModel> GetPreviousFirmwareReportedProperties(string tenantId, string deviceId, string deploymentId)
         {
             var sql = QueryBuilder.GetDocumentsSql(
                 $"deviceDeploymentHistory-{deviceId}",
@@ -230,8 +230,8 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
 
                 var result = docs.Select(doc => new ValueServiceModel(doc));
                 var previousDeployment = JsonConvert.DeserializeObject<DeploymentHistoryModel>(result.FirstOrDefault()?.Data);
-                var reportedProperties = previousDeployment.ReportedProperties;
-                return reportedProperties != null ? JsonConvert.SerializeObject(reportedProperties) : string.Empty;
+                var previousTwin = previousDeployment.Twin;
+                return previousTwin != null ? previousTwin : null;
             }
             catch (ResourceNotFoundException e)
             {

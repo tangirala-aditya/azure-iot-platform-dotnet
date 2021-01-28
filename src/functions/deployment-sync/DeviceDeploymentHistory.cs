@@ -15,11 +15,14 @@ using Microsoft.Extensions.Logging;
 using Mmm.Iot.Functions.DeploymentSync.Shared;
 using Mmm.Iot.Functions.DeploymentSync.Shared.Helpers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Mmm.Iot.Functions.DeploymentSync
 {
     public static class DeviceDeploymentHistory
     {
+        public const string FIRMWARE = "firmware";
+
         [FunctionName("DeviceDeploymentHistory")]
         public static async Task Run([EventHubTrigger(eventHubName: "twin-change", Connection = "TwinChangeEventHubConnectionString", ConsumerGroup = "%DeviceDeploymentHistoryConsumerGroup%")] EventData[] events, ILogger log)
         {
@@ -34,14 +37,33 @@ namespace Mmm.Iot.Functions.DeploymentSync
                     if (tenant != null)
                     {
                         string eventData = Encoding.UTF8.GetString(message.Body.Array);
-                        message.SystemProperties.TryGetValue("iothub-connection-device-id", out object deviceId);
-                        var newTwin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
-                        var appliedConfigurations = newTwin.Configurations.Where(c => c.Value.Status.Equals(ConfigurationStatus.Applied));
-                        if (appliedConfigurations.Count() > 0)
+                        Twin twin = JsonConvert.DeserializeObject<Twin>(eventData);
+                        TwinServiceModel twinServiceModel = new TwinServiceModel(twin);
+                        Dictionary<string, JToken> reportedProperties = twinServiceModel.ReportedProperties;
+                        var json = JToken.Parse(JsonConvert.SerializeObject(reportedProperties));
+                        var fieldsCollector = new JsonFieldsCollector(json);
+                        var fields = fieldsCollector.GetAllFields();
+                        bool isFirmWareUpdate = false;
+                        foreach (var field in fields)
                         {
-                            DeploymentSyncService service = new DeploymentSyncService();
-                            var appliedDeploymentFromStorage = service.GetDeploymentsByIdFromStorage(Convert.ToString(tenant), appliedConfigurations.Select(ac => ac.Key).ToArray()).Result.FirstOrDefault();
-                            await service.SaveDeploymentHistory(Convert.ToString(tenant), appliedDeploymentFromStorage, newTwin);
+                            isFirmWareUpdate = field.Key.Contains(FIRMWARE);
+                            if (isFirmWareUpdate)
+                            {
+                                break;
+                            }
+                        }
+
+                        if (isFirmWareUpdate)
+                        {
+                            message.SystemProperties.TryGetValue("iothub-connection-device-id", out object deviceId);
+                            var newTwin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
+                            var appliedConfigurations = newTwin.Configurations.Where(c => c.Value.Status.Equals(ConfigurationStatus.Applied));
+                            if (appliedConfigurations.Count() > 0)
+                            {
+                                DeploymentSyncService service = new DeploymentSyncService();
+                                var appliedDeploymentFromStorage = service.GetDeploymentsByIdFromStorage(Convert.ToString(tenant), appliedConfigurations.Select(ac => ac.Key).ToArray()).Result.FirstOrDefault();
+                                await service.SaveDeploymentHistory(Convert.ToString(tenant), appliedDeploymentFromStorage, newTwin);
+                            }
                         }
                     }
                 }

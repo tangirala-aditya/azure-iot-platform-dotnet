@@ -9,9 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Queues;
 using Microsoft.Azure.Devices;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
+using Mmm.Iot.Common.Services.External.CosmosDb;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
 using Mmm.Iot.Common.Services.Helpers;
 using Mmm.Iot.Common.Services.Models;
@@ -19,6 +22,7 @@ using Mmm.Iot.Config.Services.Models;
 using Mmm.Iot.IoTHubManager.Services.External;
 using Mmm.Iot.IoTHubManager.Services.Helpers;
 using Mmm.Iot.IoTHubManager.Services.Models;
+using Mmm.Iot.StorageAdapter.Services.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using static Mmm.Iot.Config.Services.Models.DeviceStatusQueries;
@@ -58,6 +62,7 @@ namespace Mmm.Iot.IoTHubManager.Services
         private readonly IStorageAdapterClient client;
         private readonly IDevices devices;
         private readonly AppConfig config;
+        private readonly IStorageClient storageClient;
 
         public Deployments(
             AppConfig config,
@@ -66,7 +71,8 @@ namespace Mmm.Iot.IoTHubManager.Services
             ITenantConnectionHelper tenantConnectionHelper,
             IConfigClient packagesConfigClient,
             IStorageAdapterClient client,
-            IDevices devices)
+            IDevices devices,
+            IStorageClient storageClient)
         {
             if (config == null)
             {
@@ -80,11 +86,36 @@ namespace Mmm.Iot.IoTHubManager.Services
             this.client = client;
             this.devices = devices;
             this.config = config;
+            this.storageClient = storageClient;
         }
 
         public Deployments(ITenantConnectionHelper tenantHelper)
         {
             this.tenantHelper = tenantHelper ?? throw new ArgumentNullException("tenantHelper");
+        }
+
+        public virtual string DocumentDataType
+        {
+            get
+            {
+                return "pcs";
+            }
+        }
+
+        public virtual string DocumentDatabaseSuffix
+        {
+            get
+            {
+                return "storage";
+            }
+        }
+
+        public virtual string DocumentDbDatabaseId
+        {
+            get
+            {
+                return $"{this.DocumentDataType}-{this.DocumentDatabaseSuffix}";
+            }
         }
 
         public async Task<DeploymentServiceModel> CreateAsync(DeploymentServiceModel model, string userId, string tenantId)
@@ -346,10 +377,63 @@ namespace Mmm.Iot.IoTHubManager.Services
             await this.MarkDeploymentAsActive(deploymentId, userId);
         }
 
-        public async Task<DeviceServiceListModel> GetDeviceListAsync(string deploymentId, string query, bool isLatest)
+        public async Task<DeviceServiceListModel> GetDeviceListAsync(string deploymentId, string tenantId)
         {
-            var devices = await this.devices.GetListAsync(query, null);
-            return devices;
+            DeploymentServiceModel deployment = await this.GetAsync(deploymentId, true, false);
+            string query = string.Empty;
+            int iotHublimit = 500;
+            string deviceListValue = string.Empty;
+            DeviceServiceListModel allDevices = null;
+
+            List<string> deviceIds = deployment.DeploymentMetrics.DeviceStatuses.Keys.ToList();
+
+            for (int i = 0; i < (deviceIds.Count / iotHublimit) + 1; i++)
+            {
+                if (i != 0 && (deviceIds.Count % (i * iotHublimit)) <= 0)
+                {
+                    break;
+                }
+
+                List<string> batchDeviceIds = deviceIds.Skip(i * iotHublimit).Take(iotHublimit).ToList();
+                if (batchDeviceIds != null && batchDeviceIds.Count > 0)
+                {
+                    // deviceListValue = $"({string.Join(" or ", deviceIds.Select(v => $"deviceId = '{v}'"))})";
+                    deviceListValue = string.Join(",", batchDeviceIds.Select(p => $"'{p}'"));
+                }
+
+                query = $" deviceId IN [{deviceListValue}]";
+
+                int countOfDevicestoFetch = string.IsNullOrWhiteSpace(deviceListValue) ? 1000 : deviceIds.Count();
+
+                var devices = await this.devices.GetListAsync(query, null);
+
+                if (allDevices == null)
+                {
+                    allDevices = new DeviceServiceListModel(devices.Items, devices.ContinuationToken);
+                }
+                else
+                {
+                    allDevices.Items.AddRange(devices.Items);
+                }
+
+                while (!string.IsNullOrWhiteSpace(devices.ContinuationToken))
+                {
+                    devices = await this.devices.GetListAsync(query, null);
+                    allDevices.Items.AddRange(devices.Items);
+                }
+            }
+
+            var deploymentDeviceHistory = await this.GetDeploymentDevicesAsync(deploymentId, tenantId);
+            if (deploymentDeviceHistory != null && deploymentDeviceHistory.Items.Count > 0)
+            {
+                allDevices.Items.ForEach(item =>
+                {
+                    item.Twin = deploymentDeviceHistory.Items.FirstOrDefault(i => i.DeviceId == item.Id)?.Twin ?? item.Twin;
+                    item.PreviousTwin = deploymentDeviceHistory.Items.FirstOrDefault(i => i.DeviceId == item.Id)?.PreviousFirmwareTwin;
+                });
+            }
+
+            return allDevices;
         }
 
         public async Task<TwinServiceListModel> GetModulesListAsync(string deploymentId, string query, bool isLatest)
@@ -368,18 +452,14 @@ namespace Mmm.Iot.IoTHubManager.Services
             return moduletwins;
         }
 
-        public async Task<List<DeviceDeploymentStatusServiceModel>> GetDeploymentStatusReport(string id, bool isLatest = true)
+        public async Task<List<DeviceDeploymentStatusServiceModel>> GetDeploymentStatusReport(string id, string tenantId, bool isLatest = true)
         {
             List<DeviceDeploymentStatusServiceModel> deviceDeploymentStatuses = new List<DeviceDeploymentStatusServiceModel>();
             var deploymentDetails = await this.GetAsync(id, true, isLatest);
 
             if (deploymentDetails != null && deploymentDetails.DeploymentMetrics != null && deploymentDetails.DeploymentMetrics.DeviceStatuses != null && deploymentDetails.DeploymentMetrics.DeviceStatuses.Keys.Count > 0)
             {
-                string deviceQuery = @"deviceId IN [{0}]";
-                var deviceIdsQuery = string.Join(",", deploymentDetails.DeploymentMetrics.DeviceStatuses.Keys.Select(d => $"'{d}'"));
-                var query = string.Format(deviceQuery, deviceIdsQuery);
-
-                DeviceServiceListModel devices = await this.GetDeviceListAsync(id, query, isLatest);
+                var devices = await this.GetDeviceListAsync(id, tenantId);
 
                 foreach (var item in deploymentDetails.DeploymentMetrics.DeviceStatuses)
                 {
@@ -395,17 +475,30 @@ namespace Mmm.Iot.IoTHubManager.Services
             return deviceDeploymentStatuses;
         }
 
-        private async Task<TwinServiceListModel> GetDeploymentDevicesAsync(string deploymentId)
+        private async Task<DeploymentHistoryListModel> GetDeploymentDevicesAsync(string deploymentId, string tenantId)
         {
-            List<TwinServiceModel> deploymentImpactedDevices = new List<TwinServiceModel>();
-            var response = await this.client.GetAllAsync(string.Format(DeploymentDevicePropertiesCollection, deploymentId));
-
-            if (response != null && response.Items.Count > 0)
+            var sql = QueryBuilder.GetDeploymentDeviceDocumentsSqlByKey("Key", deploymentId);
+            FeedOptions queryOptions = new FeedOptions
             {
-                deploymentImpactedDevices.AddRange(response.Items.Select(this.CreateTwinServiceModel));
-            }
+                EnableCrossPartitionQuery = true,
+                EnableScanInQuery = true,
+            };
+            List<Document> docs = await this.storageClient.QueryDocumentsAsync(
+                this.DocumentDbDatabaseId,
+                $"{this.DocumentDataType}-{tenantId}",
+                queryOptions,
+                sql,
+                0,
+                10000);
 
-            return new TwinServiceListModel(deploymentImpactedDevices);
+            return docs == null
+                 ? new DeploymentHistoryListModel(null)
+                 : new DeploymentHistoryListModel(docs.Select(doc => new ValueServiceModel(doc))
+                .GroupBy(x => x.CollectionId)
+                .Select(y => y.ToList()
+                              .FirstOrDefault())
+                .Select(x => JsonConvert.DeserializeObject<DeploymentHistoryModel>(x.Data))
+                    .ToList());
         }
 
         private async Task<TwinServiceListModel> GetDeploymentImapactedModulesAsync(string deploymentId)

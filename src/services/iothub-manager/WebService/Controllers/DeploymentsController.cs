@@ -119,9 +119,9 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
 
         [HttpPost("Devices/{id}")]
         [Authorize("ReadAll")]
-        public async Task<DeviceListApiModel> GetDeploymentImpactedDevices(string id, [FromBody] string query, [FromQuery] bool isLatest = false)
+        public async Task<DeviceListApiModel> GetDeploymentImpactedDevices(string id)
         {
-            return new DeviceListApiModel(await this.deployments.GetDeviceListAsync(id, query, isLatest));
+            return new DeviceListApiModel(await this.deployments.GetDeviceListAsync(id, this.GetTenantId()));
         }
 
         [HttpPost("Modules/{id}")]
@@ -137,7 +137,7 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
         {
             List<DeviceDeploymentStatus> deviceDeploymentStatuses = new List<DeviceDeploymentStatus>();
 
-            var deploymentStatuses = await this.deployments.GetDeploymentStatusReport(id, isLatest);
+            var deploymentStatuses = await this.deployments.GetDeploymentStatusReport(id, this.GetTenantId(), isLatest);
 
             if (deploymentStatuses != null && deploymentStatuses.Count > 0)
             {

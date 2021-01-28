@@ -953,6 +953,7 @@
                 "name": "Name",
                 "deploymentStatus": "Deployment Status",
                 "firmware": "Firmware",
+                "previousFirmware": "Previous Firmware",
                 "lastMessage": "Last Message",
                 "start": "Start",
                 "end": "End"

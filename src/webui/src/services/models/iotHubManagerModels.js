@@ -23,6 +23,8 @@ export const toDeviceModel = (device = {}) => {
             "properties.reported.telemetry": "telemetry",
             "properties.reported.type": "type",
             "properties.reported.firmware.currentFwVersion": "currentFwVersion",
+            "previousProperties.reported.firmware.currentFwVersion":
+                "previousFwVersion",
             "properties.reported.firmware.lastFwUpdateStartTime":
                 "lastFwUpdateStartTime",
             "properties.reported.firmware.lastFwUpdateEndTime":
@@ -55,6 +57,11 @@ export const toDeviceModel = (device = {}) => {
             $set: modelData.currentFwVersion
                 ? modelData.currentFwVersion
                 : dot.pick("Properties.Reported.Firmware", device),
+        },
+        previousFirmware: {
+            $set: modelData.previousFwVersion
+                ? modelData.previousFwVersion
+                : dot.pick("PreviousProperties.Reported.Firmware", device),
         },
     });
 };

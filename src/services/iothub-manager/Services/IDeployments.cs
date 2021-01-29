@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.IoTHubManager.Services.Models;
+using Mmm.Iot.StorageAdapter.Services.Models;
 
 namespace Mmm.Iot.IoTHubManager.Services
 {
@@ -32,5 +33,7 @@ namespace Mmm.Iot.IoTHubManager.Services
         Task<List<DeviceDeploymentStatusServiceModel>> GetDeploymentStatusReport(string id, bool isLatest = true);
 
         Task<TwinServiceListModel> GetModulesListAsync(string deploymentId, string query, bool isLatest);
+
+        Task<IEnumerable<ValueServiceModel>> GetDeploymentHistory(string collectionId, string tenantId);
     }
 }

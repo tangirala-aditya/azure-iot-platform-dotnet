@@ -198,7 +198,9 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
                 this.tenantHelper.Object,
                 this.packageConfigClient.Object,
                 this.storageAdapterClient.Object,
-                this.devices.Object);
+                this.devices.Object,
+                null,
+                null);
         }
 
         [Theory]

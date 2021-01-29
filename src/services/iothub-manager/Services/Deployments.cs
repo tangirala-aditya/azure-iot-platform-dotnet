@@ -9,9 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Queues;
 using Microsoft.Azure.Devices;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
+using Mmm.Iot.Common.Services.External.AppConfiguration;
+using Mmm.Iot.Common.Services.External.CosmosDb;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
 using Mmm.Iot.Common.Services.Helpers;
 using Mmm.Iot.Common.Services.Models;
@@ -19,6 +22,7 @@ using Mmm.Iot.Config.Services.Models;
 using Mmm.Iot.IoTHubManager.Services.External;
 using Mmm.Iot.IoTHubManager.Services.Helpers;
 using Mmm.Iot.IoTHubManager.Services.Models;
+using Mmm.Iot.StorageAdapter.Services.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using static Mmm.Iot.Config.Services.Models.DeviceStatusQueries;
@@ -51,6 +55,8 @@ namespace Mmm.Iot.IoTHubManager.Services
         private const string LatestTag = "reserved.latest";
         private const string InActiveTag = "reserved.inactive";
         private const string ReactivatedTag = "reserved.reactivated";
+        private const string AppConfigTenantInfoKey = "tenant";
+        private const string AppConfigPcsCollectionKey = "pcs-collection";
         private readonly ILogger logger;
         private readonly IDeploymentEventLog deploymentLog;
         private readonly ITenantConnectionHelper tenantHelper;
@@ -58,6 +64,8 @@ namespace Mmm.Iot.IoTHubManager.Services
         private readonly IStorageAdapterClient client;
         private readonly IDevices devices;
         private readonly AppConfig config;
+        private readonly IStorageClient storageClient;
+        private readonly IAppConfigurationClient appConfigurationClient;
 
         public Deployments(
             AppConfig config,
@@ -66,7 +74,9 @@ namespace Mmm.Iot.IoTHubManager.Services
             ITenantConnectionHelper tenantConnectionHelper,
             IConfigClient packagesConfigClient,
             IStorageAdapterClient client,
-            IDevices devices)
+            IDevices devices,
+            IStorageClient storageClient,
+            IAppConfigurationClient appConfigurationClient)
         {
             if (config == null)
             {
@@ -80,6 +90,8 @@ namespace Mmm.Iot.IoTHubManager.Services
             this.client = client;
             this.devices = devices;
             this.config = config;
+            this.storageClient = storageClient;
+            this.appConfigurationClient = appConfigurationClient;
         }
 
         public Deployments(ITenantConnectionHelper tenantHelper)
@@ -421,6 +433,23 @@ namespace Mmm.Iot.IoTHubManager.Services
             }
 
             return deviceDeploymentStatuses;
+        }
+
+        public async Task<IEnumerable<ValueServiceModel>> GetDeploymentHistory(string collectionId, string tenantId)
+        {
+            var sql = QueryBuilder.GetDeviceDocumentsSqlByKeyLikeSearch("CollectionId", collectionId);
+
+            var deploymentHistory = await this.storageClient.QueryDocumentsAsync(
+                "pcs-storage",
+                this.GetPcsCollectionId(tenantId),
+                new FeedOptions
+                {
+                    EnableCrossPartitionQuery = true,
+                },
+                sql,
+                0,
+                1000);
+            return deploymentHistory.Select(doc => new ValueServiceModel(doc));
         }
 
         private async Task<TwinServiceListModel> GetDeploymentDevicesAsync(string deploymentId)
@@ -894,7 +923,7 @@ namespace Mmm.Iot.IoTHubManager.Services
             {
                 string deviceQuery = deploymentDetail.TargetCondition == "*" ? string.Empty : deploymentDetail.TargetCondition;
                 await this.GetDeviceTwins(deviceQuery, null, twins);
-                }
+            }
 
             return twins;
         }
@@ -1030,6 +1059,12 @@ namespace Mmm.Iot.IoTHubManager.Services
             }
 
             return sb.ToString();
+        }
+
+        private string GetPcsCollectionId(string tenantId)
+        {
+            return this.appConfigurationClient.GetValue(
+                $"{AppConfigTenantInfoKey}:{tenantId}:{AppConfigPcsCollectionKey}");
         }
     }
 }

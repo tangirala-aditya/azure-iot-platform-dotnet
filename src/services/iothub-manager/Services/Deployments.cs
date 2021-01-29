@@ -377,60 +377,58 @@ namespace Mmm.Iot.IoTHubManager.Services
             await this.MarkDeploymentAsActive(deploymentId, userId);
         }
 
-        public async Task<DeviceServiceListModel> GetDeviceListAsync(string deploymentId, string tenantId)
+        public async Task<DeviceServiceListModel> GetDeviceListAsync(string deploymentId, List<string> deviceIds, string tenantId)
         {
-            DeploymentServiceModel deployment = await this.GetAsync(deploymentId, true, false);
             string query = string.Empty;
             int iotHublimit = 500;
             string deviceListValue = string.Empty;
-            DeviceServiceListModel allDevices = null;
+            DeviceServiceListModel allDevices = new DeviceServiceListModel(new List<DeviceServiceModel>(), null);
 
-            List<string> deviceIds = deployment.DeploymentMetrics.DeviceStatuses.Keys.ToList();
-
-            for (int i = 0; i < (deviceIds.Count / iotHublimit) + 1; i++)
+            if (deviceIds.Count > 0)
             {
-                if (i != 0 && (deviceIds.Count % (i * iotHublimit)) <= 0)
+                for (int i = 0; i < (deviceIds.Count / iotHublimit) + 1; i++)
                 {
-                    break;
-                }
+                    if (i != 0 && (deviceIds.Count % (i * iotHublimit)) <= 0)
+                    {
+                        break;
+                    }
 
-                List<string> batchDeviceIds = deviceIds.Skip(i * iotHublimit).Take(iotHublimit).ToList();
-                if (batchDeviceIds != null && batchDeviceIds.Count > 0)
-                {
-                    // deviceListValue = $"({string.Join(" or ", deviceIds.Select(v => $"deviceId = '{v}'"))})";
-                    deviceListValue = string.Join(",", batchDeviceIds.Select(p => $"'{p}'"));
-                }
+                    List<string> batchDeviceIds = deviceIds.Skip(i * iotHublimit).Take(iotHublimit).ToList();
+                    if (batchDeviceIds != null && batchDeviceIds.Count > 0)
+                    {
+                        deviceListValue = string.Join(",", batchDeviceIds.Select(p => $"'{p}'"));
+                    }
 
-                query = $" deviceId IN [{deviceListValue}]";
+                    query = $" deviceId IN [{deviceListValue}]";
 
-                int countOfDevicestoFetch = string.IsNullOrWhiteSpace(deviceListValue) ? 1000 : deviceIds.Count();
+                    int countOfDevicestoFetch = string.IsNullOrWhiteSpace(deviceListValue) ? 1000 : deviceIds.Count();
 
-                var devices = await this.devices.GetListAsync(query, null);
+                    var devices = await this.devices.GetListAsync(query, null);
 
-                if (allDevices == null)
-                {
-                    allDevices = new DeviceServiceListModel(devices.Items, devices.ContinuationToken);
-                }
-                else
-                {
                     allDevices.Items.AddRange(devices.Items);
+
+                    while (!string.IsNullOrWhiteSpace(devices.ContinuationToken))
+                    {
+                        devices = await this.devices.GetListAsync(query, null);
+                        allDevices.Items.AddRange(devices.Items);
+                    }
                 }
 
-                while (!string.IsNullOrWhiteSpace(devices.ContinuationToken))
+                var deploymentDeviceHistory = await this.GetDeploymentDevicesAsync(deploymentId, tenantId);
+                if (deploymentDeviceHistory != null && deploymentDeviceHistory.Items.Count > 0)
                 {
-                    devices = await this.devices.GetListAsync(query, null);
-                    allDevices.Items.AddRange(devices.Items);
-                }
-            }
+                    allDevices.Items.ForEach(item =>
+                    {
+                        var twin = deploymentDeviceHistory.Items.FirstOrDefault(i => i.DeviceId == item.Id)?.Twin;
 
-            var deploymentDeviceHistory = await this.GetDeploymentDevicesAsync(deploymentId, tenantId);
-            if (deploymentDeviceHistory != null && deploymentDeviceHistory.Items.Count > 0)
-            {
-                allDevices.Items.ForEach(item =>
-                {
-                    item.Twin = deploymentDeviceHistory.Items.FirstOrDefault(i => i.DeviceId == item.Id)?.Twin ?? item.Twin;
-                    item.PreviousTwin = deploymentDeviceHistory.Items.FirstOrDefault(i => i.DeviceId == item.Id)?.PreviousFirmwareTwin;
-                });
+                        if (twin != null)
+                        {
+                            item.Twin = twin;
+                        }
+
+                        item.PreviousTwin = deploymentDeviceHistory.Items.FirstOrDefault(i => i.DeviceId == item.Id)?.PreviousFirmwareTwin;
+                    });
+                }
             }
 
             return allDevices;
@@ -459,16 +457,27 @@ namespace Mmm.Iot.IoTHubManager.Services
 
             if (deploymentDetails != null && deploymentDetails.DeploymentMetrics != null && deploymentDetails.DeploymentMetrics.DeviceStatuses != null && deploymentDetails.DeploymentMetrics.DeviceStatuses.Keys.Count > 0)
             {
-                var devices = await this.GetDeviceListAsync(id, tenantId);
+                var deviceIds = deploymentDetails.DeploymentMetrics.DeviceStatuses.Keys.ToList();
+
+                var devices = await this.GetDeviceListAsync(id, deviceIds, tenantId);
 
                 foreach (var item in deploymentDetails.DeploymentMetrics.DeviceStatuses)
                 {
                     var reportedProperties = devices.Items.First(x => x.Id == item.Key).Twin.ReportedProperties;
+                    var previosReportedProperties = devices.Items.First(x => x.Id == item.Key)?.PreviousTwin?.ReportedProperties;
 
-                    var json = JToken.Parse(JsonConvert.SerializeObject(reportedProperties));
-                    var fieldsCollector = new JsonFieldsCollector(json);
-                    var fields = fieldsCollector.GetAllFields();
-                    deviceDeploymentStatuses.Add(new DeviceDeploymentStatusServiceModel(item.Key, item.Value, fields));
+                    // var json = JToken.Parse(JsonConvert.SerializeObject(reportedProperties));
+                    // var fieldsCollector = new JsonFieldsCollector(json);
+                    // var fields = fieldsCollector.GetAllFields();
+                    var fields = this.FieldsCollection(reportedProperties);
+                    Dictionary<string, JValue> previousFields = null;
+
+                    if (previosReportedProperties != null)
+                    {
+                        previousFields = this.FieldsCollection(previosReportedProperties);
+                    }
+
+                    deviceDeploymentStatuses.Add(new DeviceDeploymentStatusServiceModel(item.Key, item.Value, fields, previousFields));
                 }
             }
 
@@ -911,6 +920,13 @@ namespace Mmm.Iot.IoTHubManager.Services
             }
 
             return new DeploymentServiceListModel(deployments?.OrderByDescending(x => x.CreatedDateTimeUtc).ToList());
+        }
+
+        private Dictionary<string, JValue> FieldsCollection(Dictionary<string, JToken> reportedProperties)
+        {
+            var json = JToken.Parse(JsonConvert.SerializeObject(reportedProperties));
+            var fieldsCollector = new JsonFieldsCollector(json);
+            return fieldsCollector.GetAllFields();
         }
     }
 }

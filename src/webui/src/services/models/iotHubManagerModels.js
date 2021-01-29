@@ -23,7 +23,8 @@ export const toDeviceModel = (device = {}) => {
             "properties.reported.telemetry": "telemetry",
             "properties.reported.type": "type",
             "properties.reported.firmware.currentFwVersion": "currentFwVersion",
-            "previousProperties.reported.firmware.currentFwVersion": "previousFwVersion",
+            "previousProperties.reported.firmware.currentFwVersion":
+                "previousFwVersion",
             "properties.reported.firmware.lastFwUpdateStartTime":
                 "lastFwUpdateStartTime",
             "properties.reported.firmware.lastFwUpdateEndTime":

@@ -249,24 +249,26 @@ namespace Mmm.Iot.IoTHubManager.Services
                 throw new ArgumentNullException(nameof(deploymentId));
             }
 
+            DeploymentServiceModel deployment = await this.GetDeploymentFromStorageAsync(deploymentId);
+            isLatest = deployment.Tags.Contains(LatestTag);
             if (isLatest)
             {
-                var deployment = await this.tenantHelper.GetRegistry().GetConfigurationAsync(deploymentId);
+                var deploymentFromHub = await this.tenantHelper.GetRegistry().GetConfigurationAsync(deploymentId);
 
-                if (deployment == null)
+                if (deploymentFromHub == null)
                 {
                     throw new ResourceNotFoundException($"Deployment with id {deploymentId} not found.");
                 }
 
-                if (!this.CheckIfDeploymentWasMadeByRM(deployment))
+                if (!this.CheckIfDeploymentWasMadeByRM(deploymentFromHub))
                 {
                     throw new ResourceNotSupportedException($"Deployment with id {deploymentId}" + @" was
                                                         created externally and therefore not supported");
                 }
 
-                IDictionary<string, DeploymentStatus> deviceStatuses = this.GetDeviceStatuses(deployment);
+                IDictionary<string, DeploymentStatus> deviceStatuses = this.GetDeviceStatuses(deploymentFromHub);
 
-                return new DeploymentServiceModel(deployment)
+                return new DeploymentServiceModel(deploymentFromHub)
                 {
                     DeploymentMetrics =
                 {
@@ -278,8 +280,6 @@ namespace Mmm.Iot.IoTHubManager.Services
             }
             else
             {
-                DeploymentServiceModel deployment = await this.GetDeploymentFromStorageAsync(deploymentId);
-
                 if (deployment != null && deployment.DeploymentMetrics != null)
                 {
                     deployment.PackageContent = null;

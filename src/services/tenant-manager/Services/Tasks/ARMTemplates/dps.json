@@ -1,29 +1,28 @@
-{{
+{
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {{
-    }},
-    "variables": {{}},
+    "parameters": {},
+    "variables": {},
     "resources": [
-        {{
+        {
             "type": "Microsoft.Devices/provisioningServices",
             "apiVersion": "2020-01-01",
             "name": "{0}",
             "location": "{1}",
-            "sku": {{
+            "sku": {
                 "name": "S1",
                 "tier": "Standard"
-            }},
-            "properties": {{
+            },
+            "properties": {
                 "iotHubs": [
-                    {{
+                    {
                         "applyAllocationPolicy": false,
                         "connectionString": "{2}",
                         "location": "{1}"
-                    }}
+                    }
                 ],
                 "allocationPolicy": "Hashed"
-            }}
-        }}
+            }
+        }
     ]
-}}
+}

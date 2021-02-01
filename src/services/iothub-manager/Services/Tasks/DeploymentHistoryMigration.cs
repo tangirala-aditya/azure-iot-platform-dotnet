@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Hosting;
 using Mmm.Iot.Common.Services.Config;
+using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.CosmosDb;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
 using Mmm.Iot.Common.Services.External.TableStorage;
@@ -26,21 +27,26 @@ namespace Mmm.Iot.IoTHubManager.Services.Tasks
     {
         private const string DeploymentHistoryPropertiesCollection = "deploymentHistory";
         private const string DeploymentDevicePropertiesCollection = "deploymentdevices";
+        private const string DeviceDeploymentHistory = "deviceDeploymentHistory-{0}";
         private const string TenantTable = "tenant";
         private const string TenantMigrationStatus = "tenantMigrationStatus";
+        private const string AppConfigTenantInfoKey = "tenant";
+        private const string AppConfigPcsCollectionKey = "pcs-collection";
         private readonly CancellationTokenSource stoppingCts = new CancellationTokenSource();
         private readonly IStorageClient client;
         private readonly ITableStorageClient tableStorageClient;
         private readonly AppConfig config;
         private readonly IDeployments deployments;
+        private readonly IAppConfigurationClient appConfigurationClient;
         private Task executingTask;
 
-        public DeploymentHistoryMigration(IStorageClient client, ITableStorageClient tableStorageClient, AppConfig config, IDeployments deployments)
+        public DeploymentHistoryMigration(IStorageClient client, ITableStorageClient tableStorageClient, AppConfig config, IDeployments deployments, IAppConfigurationClient appConfigurationClient)
         {
             this.client = client;
             this.tableStorageClient = tableStorageClient;
             this.config = config;
             this.deployments = deployments;
+            this.appConfigurationClient = appConfigurationClient;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -108,11 +114,14 @@ namespace Mmm.Iot.IoTHubManager.Services.Tasks
                 {
                     string tenantToMigrate = tenantsToMigrate.First();
 
+                    // Get Deployments for Name
+                    Dictionary<string, string> deployments = await this.GetDeployments(tenantToMigrate, "deployments");
+
                     bool isTenantMigrationCompleted = false;
                     while (!isTenantMigrationCompleted)
                     {
                         // get the data from tenant for deploymentdevices collection
-                        IEnumerable<ValueServiceModel> deploymentImpactedDevicesData = null; // await this.GetDataForMigration(tenantToMigrate, DeploymentDevicePropertiesCollection);
+                        IEnumerable<ValueServiceModel> deploymentImpactedDevicesData = await this.GetDataForMigration(tenantToMigrate, DeploymentDevicePropertiesCollection);
 
                         if (deploymentImpactedDevicesData != null && deploymentImpactedDevicesData.Count() > 0)
                         {
@@ -122,21 +131,24 @@ namespace Mmm.Iot.IoTHubManager.Services.Tasks
                                 DeploymentHistoryModel deviceDeploymentHistory = new DeploymentHistoryModel();
                                 deviceDeploymentHistory.DeploymentId = data.CollectionId.Substring(18);
                                 deviceDeploymentHistory.DeviceId = data.Key;
-                                deviceDeploymentHistory.DeploymentName = string.Empty; // TODO:
+                                deviceDeploymentHistory.DeploymentName = deployments.ContainsKey(deviceDeploymentHistory.DeploymentId) ? deployments[deviceDeploymentHistory.DeploymentId] : string.Empty;
                                 deviceDeploymentHistory.LastUpdatedDateTimeUtc = data.Timestamp.UtcDateTime;
                                 deviceDeploymentHistory.PreviousFirmwareTwin = null;
                                 deviceDeploymentHistory.Twin = JsonConvert.DeserializeObject<TwinServiceModel>(data.Data);
 
                                 // save the record to new collection
-                                // await this.SaveDataToStorage(deviceDeploymentHistory.DeviceId, deviceDeploymentHistory.DeploymentId, deviceDeploymentHistory, tenantToMigrate);
+                                var isSuccess = await this.SaveDataToStorage(string.Format(DeviceDeploymentHistory, deviceDeploymentHistory.DeviceId), deviceDeploymentHistory.DeploymentId, deviceDeploymentHistory, tenantToMigrate);
 
-                                // Delete the existing data once saved.
-                                // await this.DeleteDataFromStorage(tenantToMigrate, data.CollectionId, data.Key);
+                                if (isSuccess)
+                                {
+                                    // Delete the existing data once saved.
+                                    await this.DeleteDataFromStorage(tenantToMigrate, data.CollectionId, data.Key);
+                                }
                             }
                         }
                         else
                         {
-                            IEnumerable<ValueServiceModel> deploymentImpactedDevicesHistoryData = null; // await this.GetDataForMigration(tenantToMigrate, DeploymentHistoryPropertiesCollection);
+                            IEnumerable<ValueServiceModel> deploymentImpactedDevicesHistoryData = await this.GetDataForMigration(tenantToMigrate, DeploymentHistoryPropertiesCollection);
                             if (deploymentImpactedDevicesHistoryData != null && deploymentImpactedDevicesHistoryData.Count() > 0)
                             {
                                 // Convert the data into new model to be saved
@@ -145,16 +157,19 @@ namespace Mmm.Iot.IoTHubManager.Services.Tasks
                                     DeploymentHistoryModel deviceDeploymentHistory = new DeploymentHistoryModel();
                                     deviceDeploymentHistory.DeploymentId = data.CollectionId.Substring(18, data.CollectionId.Length - (36 + 1) - 18);
                                     deviceDeploymentHistory.DeviceId = data.Key;
-                                    deviceDeploymentHistory.DeploymentName = string.Empty; // TODO:
+                                    deviceDeploymentHistory.DeploymentName = deployments.ContainsKey(deviceDeploymentHistory.DeploymentId) ? deployments[deviceDeploymentHistory.DeploymentId] : string.Empty;
                                     deviceDeploymentHistory.LastUpdatedDateTimeUtc = data.Timestamp.UtcDateTime;
                                     deviceDeploymentHistory.PreviousFirmwareTwin = null;
                                     deviceDeploymentHistory.Twin = JsonConvert.DeserializeObject<TwinServiceModel>(data.Data);
 
                                     // save the record to new collection
-                                    // await this.SaveDataToStorage(deviceDeploymentHistory.DeviceId, deviceDeploymentHistory.DeploymentId, deviceDeploymentHistory, tenantToMigrate);
+                                    var isSuccess = await this.SaveDataToStorage(string.Format(DeviceDeploymentHistory, deviceDeploymentHistory.DeviceId), deviceDeploymentHistory.DeploymentId, deviceDeploymentHistory, tenantToMigrate);
 
-                                    // Delete the existing data once saved.
-                                    // await this.DeleteDataFromStorage(tenantToMigrate, data.CollectionId, data.Key);
+                                    if (isSuccess)
+                                    {
+                                        // Delete the existing data once saved.
+                                        await this.DeleteDataFromStorage(tenantToMigrate, data.CollectionId, data.Key);
+                                    }
                                 }
                             }
                             else
@@ -187,8 +202,9 @@ namespace Mmm.Iot.IoTHubManager.Services.Tasks
             return await this.deployments.GetDeploymentHistory(collectionId, tenantId);
         }
 
-        private async Task SaveDataToStorage(string collectionId, string key, DeploymentHistoryModel deploymentHistory, string tenantId)
+        private async Task<bool> SaveDataToStorage(string collectionId, string key, DeploymentHistoryModel deploymentHistory, string tenantId)
         {
+            bool isSuccess = false;
             var value = JsonConvert.SerializeObject(
                 deploymentHistory,
                 Formatting.None,
@@ -199,13 +215,28 @@ namespace Mmm.Iot.IoTHubManager.Services.Tasks
 
             KeyValueDocument document = new KeyValueDocument(collectionId, key, value, Guid.NewGuid().ToString());
 
-            await this.client.CreateDocumentAsync("pcs-storage", $"pcs-{tenantId}", document);
+            try
+            {
+                await this.client.CreateDocumentAsync("pcs-storage", this.GetPcsCollectionId(tenantId), document);
+                isSuccess = true;
+            }
+            catch (Exception)
+            {
+            }
+
+            return isSuccess;
         }
 
         private async Task DeleteDataFromStorage(string tenantId, string collectionId, string key)
         {
             string docId = DocumentIdHelper.GenerateId(collectionId, key);
-            await this.client.DeleteDocumentAsync("pcs-storage", $"pcs-{tenantId}", docId);
+            try
+            {
+                await this.client.DeleteDocumentAsync("pcs-storage", this.GetPcsCollectionId(tenantId), docId);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private async Task InsertTenantMigrationStatus(string tenantId)
@@ -213,6 +244,17 @@ namespace Mmm.Iot.IoTHubManager.Services.Tasks
             // Create a new tenant and save it to table storage
             var migratedTenant = new TenantMigrationModel(tenantId, true);
             await this.tableStorageClient.InsertAsync<TenantMigrationModel>(TenantMigrationStatus, migratedTenant);
+        }
+
+        private async Task<Dictionary<string, string>> GetDeployments(string tenantId, string collectionId)
+        {
+            return await this.deployments.GetDeployments(collectionId, tenantId);
+        }
+
+        private string GetPcsCollectionId(string tenantId)
+        {
+            return this.appConfigurationClient.GetValue(
+                $"{AppConfigTenantInfoKey}:{tenantId}:{AppConfigPcsCollectionKey}");
         }
     }
 }

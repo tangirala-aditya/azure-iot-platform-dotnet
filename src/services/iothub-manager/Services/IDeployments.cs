@@ -35,5 +35,7 @@ namespace Mmm.Iot.IoTHubManager.Services
         Task<TwinServiceListModel> GetModulesListAsync(string deploymentId, string query, bool isLatest);
 
         Task<IEnumerable<ValueServiceModel>> GetDeploymentHistory(string collectionId, string tenantId);
+
+        Task<Dictionary<string, string>> GetDeployments(string collectionId, string tenantId);
     }
 }

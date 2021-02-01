@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Queues;
 using Microsoft.Azure.Devices;
+using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.Common.Services.Config;
@@ -439,17 +440,62 @@ namespace Mmm.Iot.IoTHubManager.Services
         {
             var sql = QueryBuilder.GetDeviceDocumentsSqlByKeyLikeSearch("CollectionId", collectionId);
 
-            var deploymentHistory = await this.storageClient.QueryDocumentsAsync(
-                "pcs-storage",
-                this.GetPcsCollectionId(tenantId),
-                new FeedOptions
-                {
-                    EnableCrossPartitionQuery = true,
-                },
-                sql,
-                0,
-                1000);
-            return deploymentHistory.Select(doc => new ValueServiceModel(doc));
+            List<Document> deploymentHistory = null;
+            try
+            {
+                deploymentHistory = await this.storageClient.QueryDocumentsAsync(
+                        "pcs-storage",
+                        this.GetPcsCollectionId(tenantId),
+                        new FeedOptions
+                        {
+                            EnableCrossPartitionQuery = true,
+                        },
+                        sql,
+                        0,
+                        1000);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, $"Error occured while fetching Deployment History from {this.GetPcsCollectionId(tenantId)}");
+            }
+
+            var result = deploymentHistory == null ?
+                new List<ValueServiceModel>() :
+                deploymentHistory.Select(doc => new ValueServiceModel(doc));
+
+            return result;
+        }
+
+        public async Task<Dictionary<string, string>> GetDeployments(string collectionName, string tenantId)
+        {
+            var sql = QueryBuilder.GetDocumentsByProperty("CollectionId", collectionName);
+
+            List<Document> docs = null;
+            try
+            {
+                docs = await this.storageClient.QueryDocumentsAsync(
+                        "pcs-storage",
+                        this.GetPcsCollectionId(tenantId),
+                        new FeedOptions
+                        {
+                            EnableCrossPartitionQuery = true,
+                        },
+                        sql,
+                        0,
+                        1000);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, $"Error occured while fetching Deployments from {this.GetPcsCollectionId(tenantId)}");
+            }
+
+            var deploymentsFromStorage = docs == null ?
+                new List<ValueServiceModel>() :
+                docs.Select(doc => new ValueServiceModel(doc));
+
+            var deployments = deploymentsFromStorage.Select(d => this.CreateDeploymentServiceModel(d));
+
+            return deployments.ToDictionary(dep => dep.Id, dep => dep.Name);
         }
 
         private async Task<TwinServiceListModel> GetDeploymentDevicesAsync(string deploymentId)
@@ -1065,6 +1111,19 @@ namespace Mmm.Iot.IoTHubManager.Services
         {
             return this.appConfigurationClient.GetValue(
                 $"{AppConfigTenantInfoKey}:{tenantId}:{AppConfigPcsCollectionKey}");
+        }
+
+        private DeploymentServiceModel CreateDeploymentServiceModel(ValueServiceModel response)
+        {
+            var output = JsonConvert.DeserializeObject<DeploymentServiceModel>(response.Data);
+            output.Id = response.Key;
+            output.ETag = response.ETag;
+            if (output.Tags == null)
+            {
+                output.Tags = new List<string>();
+            }
+
+            return output;
         }
     }
 }

@@ -121,11 +121,10 @@ export class IoTHubManagerService {
         );
     }
 
-    static getDevicesByQueryForDeployment(id, query, isLatest) {
-        return HttpClient.post(
+    static getDevicesByQueryForDeployment(id, isLatest = true) {
+        return HttpClient.get(
             `${ENDPOINT}deployments/devices/${id}?isLatest=${isLatest}`,
-            query,
-            { timeout: 120000 }
+            { timeout: 180000 }
         ).map(toDevicesModel);
     }
 

@@ -2,16 +2,15 @@
 // Copyright (c) 3M. All rights reserved.
 // </copyright>
 
-using System;
 using Microsoft.Azure.Documents;
 
-namespace Mmm.Iot.Functions.DeploymentSync.Shared
+namespace Mmm.Iot.IoTHubManager.Services.Models
 {
     internal sealed class KeyValueDocument : Resource
     {
-        public KeyValueDocument(string collectionId, string key, string data, Guid? id = null)
+        public KeyValueDocument(string collectionId, string key, string data, string id)
         {
-            this.Id = id.HasValue ? id.ToString() : GenerateId(collectionId, key);
+            this.Id = id;
             this.CollectionId = collectionId;
             this.Key = key;
             this.Data = data;
@@ -22,10 +21,5 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
         public string Key { get; }
 
         public string Data { get; }
-
-        public static string GenerateId(string collectionId, string key)
-        {
-            return $"{collectionId.ToLowerInvariant()}.{key.ToLowerInvariant()}";
-        }
     }
 }

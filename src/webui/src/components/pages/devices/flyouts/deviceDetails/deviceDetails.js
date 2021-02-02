@@ -1053,7 +1053,7 @@ export class DeviceDetails extends Component {
                                                         </Cell>
                                                         <Cell className="col-4">
                                                             {t(
-                                                                "devices.flyouts.details.deviceDeployments.lastUpdatedTime"
+                                                                "devices.flyouts.details.deviceDeployments.date"
                                                             )}
                                                         </Cell>
                                                     </Row>
@@ -1079,7 +1079,7 @@ export class DeviceDetails extends Component {
                                                                 </Cell>
                                                                 <Cell className="col-4">
                                                                     {formatTime(
-                                                                        deployment.lastUpdatedTime
+                                                                        deployment.date
                                                                     )}
                                                                 </Cell>
                                                             </Row>

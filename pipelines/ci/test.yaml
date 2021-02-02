@@ -346,6 +346,7 @@ stages:
             displayName: Scan for credentials
             inputs:
               verboseOutput: true
+              toolMajorVersion: 'V2'
 
           - task: SdtReport@1
             displayName: Generate report

@@ -86,7 +86,7 @@ namespace Mmm.Iot.IdentityGateway.Controllers
             [FromBody] ClientCredentialInput input)
         {
             string resourceUri = "https://graph.microsoft.com/";
-            ClientCredential clientCredential = new ClientCredential(input.ClientId,clientSecret:"djdhafkjda6Z0TWSm6lyPHKsx7H*F");
+            ClientCredential clientCredential = new ClientCredential(input.ClientId, ClientSecret: "djdhafkjda6Z0TWSm6lyPHKsx7H*F");
 
             try
             {

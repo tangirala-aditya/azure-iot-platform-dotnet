@@ -358,7 +358,7 @@ stages:
               RoslynAnalyzers: false
               RoslynAnalyzersBreakOn: Error
               TSLint: false
-              ToolLogsNotFoundAction: Error
+              ToolLogsNotFoundAction: Standard
 
           - task: PublishSecurityAnalysisLogs@2
             displayName: Publish report

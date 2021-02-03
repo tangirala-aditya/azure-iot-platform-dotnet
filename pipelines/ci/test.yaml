@@ -357,6 +357,17 @@ stages:
               RoslynAnalyzersBreakOn: Error
               ToolLogsNotFoundAction: Standard
 
+          - task: PostAnalysis@1
+            inputs:
+              AllTools: false
+              BinSkim: true
+              BinSkimBreakOn: Error
+              CredScan: true
+              RoslynAnalyzers: true
+              RoslynAnalyzersBreakOn: Error
+              TSLint: false
+              ToolLogsNotFoundAction: Standard
+
           - task: PublishSecurityAnalysisLogs@2
             displayName: Publish report
             inputs:

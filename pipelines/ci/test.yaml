@@ -346,7 +346,8 @@ stages:
             displayName: Scan for credentials
             inputs:
               verboseOutput: true
-              toolMajorVersion: 'V2'
+              toolMajorVersion: V2
+              suppressionsFile: CredScanSuppressions.json
 
           - task: SdtReport@1
             displayName: Generate report

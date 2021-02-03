@@ -347,7 +347,7 @@ stages:
             inputs:
               verboseOutput: true
               toolMajorVersion: V2
-              suppressionsFile: CredScanSuppressions.json
+              suppressionsFile: 'tools/credscan-exclusion.json'
 
           - task: SdtReport@1
             displayName: Generate report

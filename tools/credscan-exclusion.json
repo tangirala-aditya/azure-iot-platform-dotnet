@@ -1,0 +1,9 @@
+{
+    "tool": "Credential Scanner",
+    "suppressions": [
+    {
+        "file": "\test\\services\\identity-gateway\\WebService.Test\\Controllers\\AuthorizeControllerTest.cs", 
+        "_justification": "A few dummy test constants, not actual secrets."
+    }
+  ]
+} 

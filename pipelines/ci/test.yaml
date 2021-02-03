@@ -351,13 +351,18 @@ stages:
           - task: SdtReport@1
             displayName: Generate report
             inputs:
-              AllTools: true
+              AllTools: false
+              BinSkim: true
               BinSkimBreakOn: Error
               CredScan: true
+              MSRD: false
+              RoslynAnalyzers: false
               RoslynAnalyzersBreakOn: Error
+              TSLint: false
               ToolLogsNotFoundAction: Standard
 
           - task: PostAnalysis@1
+            displayName: Security post analysis
             inputs:
               AllTools: false
               BinSkim: true

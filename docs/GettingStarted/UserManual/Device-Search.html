@@ -1,0 +1,300 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Device Search | 3M Serenity Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Device Search | 3M Serenity Documentation ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../../images/3M_wordmark.svg">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../images/3M_wordmark.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="device-search">Device Search</h1>
+
+<p>The <strong>Device Search</strong> is used for searching across all the IoT devices. This section provides a way for the user to search/query the devices based on below device fields:</p>
+<ol>
+<li>Device name</li>
+<li>Firmware</li>
+<li>Status</li>
+</ol>
+<p>Below are the features it offers:</p>
+<ol>
+<li><a href="#search-devices">Search Devices</a></li>
+<li><a href="#download-the-results">Download the Results</a></li>
+<li><a href="#device-details">Device Details</a></li>
+<li><a href="#delete-device">Delete Device</a></li>
+<li><a href="#configure-a-device">Configure a Device</a></li>
+<li><a href="#more">More</a></li>
+</ol>
+<h2 id="search-devices">Search Devices</h2>
+<p>A user can use this feature to search devices. The search is done by adding one or more query conditions using the device fields, an operator and a value. The device search is independent of their device groups and the results can be downloaded. Below are the steps:</p>
+<ul>
+<li><p>Go to Device Search page</p>
+</li>
+<li><p>After navigating to the Device search page add one or more conditions.</p>
+<ol>
+<li>Click on Add condition</li>
+<li>Select the field. <strong>Example:</strong> Device Name</li>
+<li>Select the operator. <strong>Example:</strong> Contains</li>
+<li>Enter the Value. <strong>Example:</strong> test
+<img src="../../images/device-search/add-condition-button.png" alt="Add condition button">
+<img src="../../images/device-search/add-condition.png" alt="Add condition"></li>
+</ol>
+</li>
+<li><p>To add more conditions, repeat 1-4 from previous step.
+<img src="../../images/device-search/add-conditions.png" alt="Add conditions"></p>
+</li>
+<li><p>A condition once added can also be removed
+<img src="../../images/device-search/remove-condition.png" alt="Remove conditions"></p>
+</li>
+<li><p>Once the conditions are added, click on <strong>Query</strong> button
+<img src="../../images/device-search/query-button.png" alt="Query button"></p>
+<ul>
+<li><p>The results are displayed in a grid. The following lists the columns and their usage in the <strong>Device Search</strong> grid
+<img src="../../images/device-search/device-search-grid.png" alt="Device search grid"></p>
+<table>
+<thead>
+<tr>
+<th>Column Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Device Name</td>
+<td>Name of the Device</td>
+</tr>
+<tr>
+<td>Simulated</td>
+<td>Indicates whether device simulation is on or off</td>
+</tr>
+<tr>
+<td>Device Type</td>
+<td>Describes the type of device</td>
+</tr>
+<tr>
+<td>Firmware</td>
+<td>Latest device firmware version</td>
+</tr>
+<tr>
+<td>Telemetry</td>
+<td>Schema of the telemetry</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>Indicates whether the device is connected to the Azure IoT   hub</td>
+</tr>
+<tr>
+<td>Last Connection</td>
+<td>Last date when a device connected to Azure IoT hub</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>We have a search bar associated with the grid where we can filter the grid data.
+<img src="../../images/device-search/search.png" alt="Search"></p>
+</li>
+</ul>
+</li>
+<li><p><strong>Reset</strong> button resets the added conditions and clears the search results</p>
+</li>
+</ul>
+<h2 id="download-the-results">Download the Results</h2>
+<p><strong>Download</strong> button is available for downloading the Device search results. On clicking this button, the results are downloaded in the form of a spreadsheet.</p>
+<p><img src="../../images/device-search/download.png" alt="Download results"></p>
+<h2 id="device-details">Device Details</h2>
+<p>The <strong>Device Details</strong> panel displays information about a device such as telemetry, tag values, the methods it supports, and the properties reported by the device.</p>
+<p>Once the device search is done, click on the device name in the results grid. It will open the <strong>Device Details</strong> panel. This is the same device details panel which is seen in <strong>Device explorer page</strong>.</p>
+<p>Below are the details the <strong>Device Details</strong> panel provides.</p>
+<ol>
+<li><p><strong>Alert Grid</strong></p>
+<ul>
+<li>The grid will be displayed when alerts are observed for a device.</li>
+</ul>
+<p><img src="../../images/device-search/device-details-alert.png" alt="Device Search Grid"></p>
+</li>
+<li><p><strong>Telemetry</strong></p>
+</li>
+<li><p><strong>Tags</strong></p>
+</li>
+<li><p><strong>Methods</strong></p>
+<p><img src="../../images/device-search/device-details-telemetry.png" alt="Device Search Grid"></p>
+</li>
+<li><p><strong>Properties</strong></p>
+</li>
+<li><p><strong>Diagnostics</strong></p>
+<p><img src="../../images/device-search/device-details-properties.png" alt="Device Search Grid"></p>
+</li>
+<li><p><strong>Deployment messages</strong></p>
+<ul>
+<li>Edge module messages on the device.</li>
+</ul>
+</li>
+<li><p><strong>Device Uploads</strong></p>
+<ul>
+<li>File Uploads from the device.</li>
+</ul>
+</li>
+<li><p><strong>Device Deployments</strong></p>
+<ul>
+<li>Deployment history of the device.</li>
+</ul>
+<p><img src="../../images/device-search/device-details-deployment.png" alt="Device Search Grid"></p>
+</li>
+</ol>
+<h2 id="delete-device">Delete Device</h2>
+<p>Devices that are no longer needed or in use can be deleted.</p>
+<p>Steps to delete a device:</p>
+<ul>
+<li><p>Select one or more devices by clicking on the checkbox to the left of the device name in the search results grid.</p>
+</li>
+<li><p>After selecting devices the <strong>🗑️Delete</strong> button will be visible in the toolbar; click <strong>Delete</strong>.</p>
+<p><img src="../../images/device-search/delete.png" alt="Device Search Grid"></p>
+</li>
+<li><p>Click on the toggle button to delete the device(s) and the <strong>Delete</strong> button will be activated.</p>
+<p><img src="../../images/device-search/delete-confirmation.png" alt="Device Search Grid"></p>
+</li>
+<li><p>After deleting the device(s) you will see a message that the device(s) have been deleted and the device details removed from the <strong>Device Explorer</strong> grid.</p>
+<p><img src="../../images/device-search/delete-successful.png" alt="Device Search Grid"></p>
+</li>
+</ul>
+<h2 id="configure-a-device">Configure a Device</h2>
+<p>The <strong>Device Search</strong> grid also allows updating device properties similar to Device Explorer page. Below are the steps:</p>
+<ul>
+<li><p>Once the search results are displayed, select a device by clicking on the check box to the left side of the device name in the grid. The  click the <strong>Jobs</strong> button in the toolbar.</p>
+<p><img src="../../images/device-search/jobs-button.png" alt="Device Search Grid"></p>
+</li>
+<li><p>The Jobs panel opens up, select <strong>Properties</strong>.</p>
+<p><img src="../../images/device-search/properties-select.png" alt="Device Search Grid"></p>
+</li>
+<li><p>The <strong>Jobs</strong> panel shows the updateable property values for the selected device.</p>
+</li>
+<li><p>To update the device properties, set the <strong>Job Name</strong> in the text box, update the properties value(s), and click <strong>Apply</strong>.</p>
+</li>
+</ul>
+<p><img src="../../images/device-search/properties-update.png" alt="Device Search Grid"></p>
+<ul>
+<li>To track the status of the job, click <strong>View job status</strong>.</li>
+</ul>
+<p><img src="../../images/device-search/properties-update-successful.png" alt="Device Search Grid"></p>
+<ul>
+<li><p>After the job completes, navigate to the <strong>Device Explorer</strong> and verify the updated properties details in the device details panel under the <strong>Properties</strong> section.</p>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>The job status does not show live status, to refresh the status click the <strong>refresh</strong> button.</p>
+</blockquote>
+<p><img src="../../images/device-search/properties-job-status.png" alt="Device Search Grid"></p>
+</li>
+</ul>
+<h2 id="more">More</h2>
+<p>Device Search grid also provides a few more features, listed below:</p>
+<ol>
+<li>Show telemetry</li>
+<li>Send Message</li>
+</ol>
+<h3 id="show-telemetry">Show telemetry</h3>
+<p>The <strong>Show telemetry</strong> page is useful to show one or more devices' telemetry on a separate page.</p>
+<p>Select one or more devices in the grid and click the <strong>Show telemetry</strong> button.</p>
+<p><img src="../../images/device-search/show-telemetry.png" alt="Device Search Grid">
+<img src="../../images/device-search/show-telemetry-page.png" alt="Device Search Grid"></p>
+<h3 id="send-message">Send Message</h3>
+<p><strong>TODO</strong></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://dev.azure.com/3M-Bluebird/AzurePlatform/_git/docs-serenity?path=Documentation/Public/GettingStarted/UserManual/Device-Search.md&amp;version=GBmaster&amp;line=1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            IoT Platform Documentation © 3M - All rights reserved
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -3738,7 +3738,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/Device-Explorer.html",
-          "hash": "KdlBy+0m/eUFugvHXo8GlA=="
+          "hash": "b3Ap+g7Z4ykU3SrDeYq5xQ=="
         }
       },
       "is_incremental": false,
@@ -3843,7 +3843,7 @@
       "output": {
         ".html": {
           "relative_path": "GettingStarted/UserManual/toolbar.html",
-          "hash": "Dutwv7q/Dq+WivXH6j2+JQ=="
+          "hash": "r/mAaybHFj4MK3LxrkmsXA=="
         }
       },
       "is_incremental": false,
@@ -4981,6 +4981,17 @@
       "output": {
         "resource": {
           "relative_path": "images/device-explorer/device-explorer-device-group-default.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/device-explorer/device-explorer-download.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/device-explorer/device-explorer-download.png"
         }
       },
       "is_incremental": false,
@@ -6719,6 +6730,17 @@
       "output": {
         "resource": {
           "relative_path": "images/tool-bar/device-group-unpin.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/tool-bar/devices-loaded.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/tool-bar/devices-loaded.png"
         }
       },
       "is_incremental": false,

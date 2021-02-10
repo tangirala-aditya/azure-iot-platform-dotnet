@@ -20,8 +20,27 @@
         "metadata": {
           "description": "Object Id of the Application to be added to Access policy"
         }
+      },
+      "enableSoftDelete":{
+        "type":"bool" ,
+       "metadata": {
+           "description" : "Enable Soft Delete option of the Key Vault"
       }
     },
+    "softDeleteRetentionInDays":{
+      "type":"bool",
+     "metadata": {
+         "description" : "Enable Soft Delete option of the Key Vault"
+      }
+    },
+    "enablePurgeProtection": {
+      "type":"bool",
+     "metadata": {
+         "description" : "Enable Purge Protection option of the Key Vault"
+      }      
+    }   
+  },
+
     "variables": {
       "location": "[resourceGroup().location]"
     },

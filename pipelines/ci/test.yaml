@@ -330,17 +330,25 @@ stages:
               artifact: $(publishedFilesArtifactName)
               path: $(Build.SourcesDirectory)
 
-          - task: AntiMalware@3
+          # - task: AntiMalware@3
+          #   displayName: Scan for malware
+          #   inputs:
+          #     InputType: 'Basic'
+          #     ScanType: 'CustomScan'
+          #     FileDirPath: '$(Build.SourcesDirectory)'
+          #     EnableServices: true
+          #     SupportLogOnError: true
+          #     TreatSignatureUpdateFailureAs: 'Warning'
+          #     SignatureFreshness: 'UpToDate'
+          #     TreatStaleSignatureAs: 'Warning'
+
+          - task: ms-codeanalysis.vss-microsoft-security-code-analysis-devops.build-task-antimalware.AntiMalware@3
             displayName: Scan for malware
             inputs:
-              InputType: 'Basic'
-              ScanType: 'CustomScan'
               FileDirPath: '$(Build.SourcesDirectory)'
               EnableServices: true
               SupportLogOnError: true
-              TreatSignatureUpdateFailureAs: 'Warning'
-              SignatureFreshness: 'UpToDate'
-              TreatStaleSignatureAs: 'Warning'
+              TreatStaleSignatureAs: Warning
 
           - task: CredScan@2
             displayName: Scan for credentials

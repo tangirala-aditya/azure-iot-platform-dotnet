@@ -345,6 +345,7 @@ stages:
           - task: ms-codeanalysis.vss-microsoft-security-code-analysis-devops.build-task-antimalware.AntiMalware@3
             displayName: Scan for malware
             inputs:
+              InputType: 'Basic'
               ScanType: 'CustomScan'
               FileDirPath: '$(Build.SourcesDirectory)'
               EnableServices: true

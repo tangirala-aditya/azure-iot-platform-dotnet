@@ -107,7 +107,7 @@ class Shell extends Component {
                         id={tabProps.labelId}
                     >
                         <Svg
-                            path={tabProps.svg}
+                            src={tabProps.svg}
                             className="global-nav-item-icon"
                         />
                         <div className="global-nav-item-text">{label}</div>
@@ -182,7 +182,7 @@ class Shell extends Component {
         return (
             <div className="nav-item">
                 {(isDefaultLogo || getLogoError) && (
-                    <Svg path={appLogo} className="nav-item-icon" />
+                    <Svg src={appLogo} className="nav-item-icon" />
                 )}
                 {!isDefaultLogo && (
                     <div className="nav-item-icon">

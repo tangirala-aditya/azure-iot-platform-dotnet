@@ -36,7 +36,7 @@ export class ApplicationSettings extends Component {
         };
     }
 
-    renderSvgLogo = (logo) => <Svg path={logo} className="logo-svg" />;
+    renderSvgLogo = (logo) => <Svg src={logo} className="logo-svg" />;
 
     onApplicationNameInputClick = () => {
         this.props.logEvent(toDiagnosticsModel("Settings_NameUpdated", {}));
@@ -84,14 +84,14 @@ export class ApplicationSettings extends Component {
                             {isValidFile ? (
                                 <Svg
                                     className="checkmark"
-                                    path={svgs.checkmark}
+                                    src={svgs.checkmark}
                                     alt={t("applicationSettings.checkmark")}
                                 />
                             ) : (
                                 newLogoName && (
                                     <Svg
                                         className="invalid-file-x"
-                                        path={svgs.x}
+                                        src={svgs.x}
                                         alt={t("applicationSettings.error")}
                                     />
                                 )
@@ -103,7 +103,7 @@ export class ApplicationSettings extends Component {
                         <div className="upload-error-message">
                             <Svg
                                 className="upload-error-asterisk"
-                                path={svgs.error}
+                                src={svgs.error}
                                 alt={t("applicationSettings.error")}
                             />
                             {t("applicationSettings.uploadError")}

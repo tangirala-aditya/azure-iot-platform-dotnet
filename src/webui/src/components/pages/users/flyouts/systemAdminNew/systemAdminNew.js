@@ -234,7 +234,7 @@ export class SystemAdminNew extends LinkedComponent {
                                     {completedSuccessfully && (
                                         <Svg
                                             className="summary-icon"
-                                            path={svgs.apply}
+                                            src={svgs.apply}
                                         />
                                     )}
                                 </SummaryBody>

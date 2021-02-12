@@ -8,4 +8,4 @@ import { Svg } from "components/shared/svg/svg";
 import "../cellRenderer.scss";
 
 export const GlimmerRenderer = (props) =>
-    props.value ? <Svg path={svgs.glimmer} className="glimmer-icon" /> : null;
+    props.value ? <Svg src={svgs.glimmer} className="glimmer-icon" /> : null;

@@ -23,7 +23,7 @@ export const StatProperty = ({
             <div className={joinClasses("stat-value", sizeClass)}>{value}</div>
             {svg && (
                 <Svg
-                    path={svg}
+                    src={svg}
                     className={joinClasses("stat-icon", svgClassName)}
                 />
             )}

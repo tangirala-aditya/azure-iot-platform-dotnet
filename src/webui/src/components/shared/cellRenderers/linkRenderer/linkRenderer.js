@@ -16,7 +16,7 @@ export const LinkRenderer = ({ to, svgPath, ariaLabel, onLinkClick }) => {
                 aria-label={ariaLabel}
                 className="pcs-renderer-link"
             >
-                <Svg path={svgPath || svgs.ellipsis} onClick={onLinkClick} />
+                <Svg src={svgPath || svgs.ellipsis} onClick={onLinkClick} />
             </NavLink>
         </div>
     );

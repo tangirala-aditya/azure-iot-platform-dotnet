@@ -190,7 +190,7 @@ export class UserDelete extends Component {
                                 {completedSuccessfully && (
                                     <Svg
                                         className="summary-icon"
-                                        path={svgs.apply}
+                                        src={svgs.apply}
                                     />
                                 )}
                             </SummaryBody>

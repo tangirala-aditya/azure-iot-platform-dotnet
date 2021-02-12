@@ -55,6 +55,13 @@ export const deviceColumnDefs = {
     },
 };
 
+/** Default column definitions*/
+export const defaultColDef = {
+    sortable: true,
+    lockPinned: true,
+    resizable: true,
+};
+
 /** Given a device object, extract and return the device Id */
 export const getSoftSelectId = ({ Id }) => Id;
 

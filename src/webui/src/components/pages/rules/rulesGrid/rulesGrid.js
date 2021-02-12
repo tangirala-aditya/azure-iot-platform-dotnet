@@ -5,7 +5,11 @@ import { Trans } from "react-i18next";
 
 import { permissions, toDiagnosticsModel } from "services/models";
 import { Btn, ComponentArray, PcsGrid, Protected } from "components/shared";
-import { rulesColumnDefs, defaultRulesGridProps } from "./rulesGridConfig";
+import {
+    rulesColumnDefs,
+    defaultRulesGridProps,
+    defaultColDef,
+} from "./rulesGridConfig";
 import { checkboxColumn } from "components/shared/pcsGrid/pcsGridConfig";
 import {
     isFunc,
@@ -320,10 +324,11 @@ export class RulesGrid extends Component {
             ...defaultRulesGridProps,
             onFirstDataRendered: this.onFirstDataRendered,
             columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
+            defaultColDef: defaultColDef,
             sizeColumnsToFit: true,
             getSoftSelectId: this.getSoftSelectId,
             softSelectId: this.state.softSelectedRuleId || {},
-            deltaRowDataMode: true,
+            immutableData: true,
             ...this.props, // Allow default property overrides
             getRowNodeId: ({ id }) => id,
             enableSorting: true,

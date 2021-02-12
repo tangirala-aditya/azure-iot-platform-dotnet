@@ -162,7 +162,7 @@ export class DeviceGroupDelete extends Component {
                             {completedSuccessfully && (
                                 <Svg
                                     className="summary-icon"
-                                    path={svgs.apply}
+                                    src={svgs.apply}
                                 />
                             )}
                         </SummaryBody>

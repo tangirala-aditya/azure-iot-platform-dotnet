@@ -20,7 +20,7 @@ export const checkboxColumn = {
     lockPosition: true,
     cellClass: FIRST_COLUMN_CLASS,
     headerClass: CHECKBOX_COLUMN_CLASS,
-    suppressResize: true,
+    resizable: false,
     checkboxSelection: true,
     headerCheckboxSelection: true,
     headerCheckboxSelectionFilteredOnly: true,

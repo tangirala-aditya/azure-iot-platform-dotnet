@@ -3,7 +3,11 @@
 import React, { Component } from "react";
 import { permissions, toDiagnosticsModel } from "services/models";
 import { Btn, ComponentArray, PcsGrid, Protected } from "components/shared";
-import { deviceColumnDefs, defaultDeviceGridProps } from "./devicesGridConfig";
+import {
+    deviceColumnDefs,
+    defaultDeviceGridProps,
+    defaultColDef,
+} from "./devicesGridConfig";
 import { DeviceDeleteContainer } from "../flyouts/deviceDelete";
 import { DeviceJobsContainer } from "../flyouts/deviceJobs";
 import { DeviceDetailsContainer } from "../flyouts/deviceDetails";
@@ -298,11 +302,12 @@ export class DevicesGrid extends Component {
             ...defaultDeviceGridProps,
             onFirstDataRendered: this.onFirstDataRendered,
             columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
+            defaultColDef: defaultColDef,
             sizeColumnsToFit: true,
             getSoftSelectId: this.getSoftSelectId,
             softSelectId: this.state.softSelectedDeviceId || {},
             ...this.props, // Allow default property overrides
-            deltaRowDataMode: true,
+            immutableData: true,
             enableSorting: true,
             unSortIcon: true,
             getRowNodeId: ({ id }) => id,

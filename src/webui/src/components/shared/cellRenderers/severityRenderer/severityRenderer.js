@@ -26,7 +26,7 @@ export const SeverityRenderer = ({ value, context: { t }, iconOnly }) => {
         }`;
     return (
         <div className={cellClasses}>
-            <Svg path={getSvg(cleanValue)} className="pcs-renderer-icon" />
+            <Svg src={getSvg(cleanValue)} className="pcs-renderer-icon" />
             {!iconOnly && (
                 <div className="pcs-renderer-text">
                     {t(`rules.severity.${cleanValue}`)}

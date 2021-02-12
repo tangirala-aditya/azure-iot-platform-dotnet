@@ -181,7 +181,7 @@ export class DeleteRule extends Component {
         return (
             <div>
                 <div className="delete-info">
-                    <Svg className="asterisk-svg" path={svgs.error} />
+                    <Svg className="asterisk-svg" src={svgs.error} />
                     <div className="delete-info-text">
                         <Trans i18nKey="rules.flyouts.deleteRule.preDeleteText">
                             keep...
@@ -255,7 +255,7 @@ export class DeleteRule extends Component {
                 <div className="delete-confirmation">
                     <div className="delete-confirmation-text">
                         <Trans i18nKey={confirmationKey}>Disable</Trans>
-                        <Svg className="check-svg" path={svgs.checkmark} />
+                        <Svg className="check-svg" src={svgs.checkmark} />
                     </div>
                     {ruleDeleted && (
                         <div className="post-delete-info-text">

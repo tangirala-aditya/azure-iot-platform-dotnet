@@ -109,7 +109,7 @@ const isIntRegex = /^-?\d*$/,
                 <div className="device-detail-value">{value}</div>
                 <Svg
                     className="copy-icon"
-                    path={svgs.copy}
+                    src={svgs.copy}
                     onClick={() => copyToClipboard(value)}
                 />
             </div>
@@ -859,7 +859,7 @@ export class DeviceNew extends LinkedComponent {
                                 {completedSuccessfully && (
                                     <Svg
                                         className="summary-icon"
-                                        path={svgs.apply}
+                                        src={svgs.apply}
                                     />
                                 )}
                                 {completedSuccessfully &&

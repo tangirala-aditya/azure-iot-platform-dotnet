@@ -97,6 +97,13 @@ export const rulesColumnDefs = {
     },
 };
 
+/** Default column definitions*/
+export const defaultColDef = {
+    sortable: true,
+    lockPinned: true,
+    resizable: true,
+};
+
 export const defaultRulesGridProps = {
     enableColResize: true,
     multiSelect: true,

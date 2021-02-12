@@ -7,7 +7,7 @@ import { svgs } from "utilities";
 
 export const DeviceIcon = ({ type }) => (
     <Svg
-        path={svgs.devices[(type || "generic").toLowerCase()]}
+        src={svgs.devices[(type || "generic").toLowerCase()]}
         className="device-icon"
     />
 );

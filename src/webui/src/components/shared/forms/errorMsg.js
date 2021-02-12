@@ -12,7 +12,7 @@ export const ErrorMsg = (props) => {
     const { children, className } = props;
     return (
         <div className={joinClasses("error-message", className)}>
-            <Svg path={svgs.error} className="error-icon" />
+            <Svg src={svgs.error} className="error-icon" />
             {children}
         </div>
     );

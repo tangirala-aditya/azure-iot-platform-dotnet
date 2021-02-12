@@ -3,7 +3,11 @@
 import React, { Component } from "react";
 import { permissions, toDiagnosticsModel } from "services/models";
 import { Btn, ComponentArray, PcsGrid, Protected } from "components/shared";
-import { userColumnDefs, defaultUserGridProps } from "./usersGridConfig";
+import {
+    userColumnDefs,
+    defaultUserGridProps,
+    defaultColDef,
+} from "./usersGridConfig";
 import { UserDeleteContainer } from "../flyouts/userDelete";
 import { isFunc, svgs, translateColumnDefs } from "utilities";
 import { checkboxColumn } from "components/shared/pcsGrid/pcsGridConfig";
@@ -132,11 +136,12 @@ export class UsersGrid extends Component {
             /* Grid Properties */
             ...defaultUserGridProps,
             columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
+            defaultColDef: defaultColDef,
             sizeColumnsToFit: true,
             getSoftSelectId: this.getSoftSelectId,
             softSelectId: this.state.softSelectedUserId || {},
             ...this.props, // Allow default property overrides
-            deltaRowDataMode: true,
+            immutableData: true,
             enableSorting: true,
             unSortIcon: true,
             getRowNodeId: ({ id }) => id,

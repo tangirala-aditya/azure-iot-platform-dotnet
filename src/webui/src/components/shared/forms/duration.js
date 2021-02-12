@@ -107,7 +107,7 @@ export class Duration extends Component {
                         value={this.format(hours)}
                     />
                 </FormGroup>
-                <Svg path={svgs.colon} className="duration-colon-icon" />
+                <Svg src={svgs.colon} className="duration-colon-icon" />
                 <FormGroup>
                     <FormLabel>MM</FormLabel>
                     <FormControl
@@ -116,7 +116,7 @@ export class Duration extends Component {
                         value={this.format(minutes)}
                     />
                 </FormGroup>
-                <Svg path={svgs.colon} className="duration-colon-icon" />
+                <Svg src={svgs.colon} className="duration-colon-icon" />
                 <FormGroup>
                     <FormLabel>SS</FormLabel>
                     <FormControl

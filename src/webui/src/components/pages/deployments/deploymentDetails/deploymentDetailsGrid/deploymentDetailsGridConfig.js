@@ -46,12 +46,19 @@ export const deploymentDetailsColumnDefs = {
     },
 };
 
+/** Default column definitions*/
+export const defaultColDef = {
+    sortable: true,
+    lockPinned: true,
+    resizable: true,
+};
+
 export const defaultDeploymentDetailsGridProps = {
     enableColResize: true,
     pagination: true,
     paginationPageSize: Config.paginationPageSize,
     sizeColumnsToFit: true,
-    deltaRowDataMode: true,
+    immutableData: true,
     enableSorting: true,
     unSortIcon: true,
     domLayout: "autoHeight",

@@ -9,8 +9,8 @@ import { Indicator } from "../indicator/indicator";
 import { ROW_HEIGHT } from "components/shared/pcsGrid/pcsGridConfig";
 import { SearchInput } from "components/shared";
 
-import "../../../../node_modules/ag-grid-community/src/styles/ag-grid.scss";
-import "../../../../node_modules/ag-grid-community/src/styles/ag-theme-dark.scss";
+import "../../../../node_modules/ag-grid-community/dist/styles/ag-grid.scss";
+import "../../../../node_modules/ag-grid-community/dist/styles/ag-theme-material/sass/ag-theme-material.scss";
 import "./pcsGrid.scss";
 import { Btn } from "../forms";
 import { ComponentArray } from "../componentArray/componentArray";
@@ -110,8 +110,8 @@ export class PcsGrid extends Component {
      * Forces and update event
      */
     refreshRows = () => {
-        if (this.gridApi && isFunc(this.gridApi.updateRowData)) {
-            this.gridApi.updateRowData({ update: [] });
+        if (this.gridApi && isFunc(this.gridApi.applyTransaction)) {
+            this.gridApi.applyTransaction({ update: [] });
         }
     };
 
@@ -223,7 +223,7 @@ export class PcsGrid extends Component {
                     </div>
                 )}
                 <div
-                    className={`pcs-grid-container ag-theme-dark ${
+                    className={`pcs-grid-container ag-theme-material ${
                         gridParams.suppressMovableColumns
                             ? ""
                             : "movable-columns"

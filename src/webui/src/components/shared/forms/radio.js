@@ -78,7 +78,7 @@ export class Radio extends Component {
                         ref="radioInputElement"
                     />
                     <Svg
-                        path={svgs.radioSelected}
+                        src={svgs.radioSelected}
                         className={joinClasses(
                             "radio-icon",
                             disabled ? "disabled" : ""

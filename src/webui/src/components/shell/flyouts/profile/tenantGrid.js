@@ -72,7 +72,7 @@ class TenantGrid extends React.Component {
                                 <p>
                                     {tenant.displayName}
                                     <Svg
-                                        path={svgs.star}
+                                        src={svgs.star}
                                         className="pcs-renderer-icon"
                                     />
                                 </p>
@@ -97,7 +97,7 @@ class TenantGrid extends React.Component {
                                 <p>
                                     {tenant.displayName}{" "}
                                     <Svg
-                                        path={svgs.star}
+                                        src={svgs.star}
                                         className="pcs-renderer-icon"
                                     />{" "}
                                 </p>

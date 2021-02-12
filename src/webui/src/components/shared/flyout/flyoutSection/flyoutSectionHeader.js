@@ -22,7 +22,7 @@ export const FlyoutSectionHeader = withAccordion(
                 {children}
                 {accordionIsCollapsable && (
                     <Svg
-                        path={svgs.chevron}
+                        src={svgs.chevron}
                         className={joinClasses(
                             "collapse-section-icon",
                             accordionIsOpen ? "expanded" : "collapsed"

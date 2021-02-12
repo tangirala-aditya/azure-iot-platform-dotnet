@@ -26,12 +26,11 @@ $cell-highlight-border: transparent;
 $cell-horizontal-border: transparent;
 $header-background-color: transparent;
 
-@import 'node_modules/ag-grid-community/src/styles/ag-grid.scss';
-@import 'node_modules/ag-grid-community/src/styles/ag-theme-dark.scss';
+@import 'node_modules/ag-grid-community/dist/styles/ag-grid.scss';
+@import 'node_modules/ag-grid-community/dist/styles/ag-theme-material/sass/ag-theme-material-mixin.scss';
 
 $doublePadding: $baseContentPadding * 2;
-.pcs-grid-container.ag-theme-dark {
-  @include ag-theme-classic($params);
+.pcs-grid-container.ag-theme-material {
   height: calc(100% - #{$pageTitleHeight} - #{$refreshBarHeight});
   position: relative;
   flex-shrink: 0;
@@ -77,7 +76,7 @@ $doublePadding: $baseContentPadding * 2;
 
       &.first-child-column {
         // Correct alignment of the padding since the border will add width
-        @include rem-fallback(padding-left, $cell-horizontal-padding - 1px - $selectedRowBorderWidth);
+        @include rem-fallback(padding-left, 1px - $selectedRowBorderWidth);
         @include rem-fallback(border-left, $selectedRowBorderWidth solid transparent);
       }
     }
@@ -92,6 +91,9 @@ $doublePadding: $baseContentPadding * 2;
       color: themed('colorGridCellText');
     }
 
+    .ag-header-row{
+      background-color: themed('color-bg-table');
+
     .ag-header-cell {
       color: themed('colorGridCellText');
 
@@ -99,11 +101,11 @@ $doublePadding: $baseContentPadding * 2;
         visibility: hidden;
         opacity: 0;
         transition: visibility 0s, opacity 0.5s linear;
-        background-image: url(themed('gridSortIcon'));
+        // TODO: background-image: url(themed('gridSortIcon'));
       }
 
-      .ag-icon-asc { background-image: url(themed('gridAscIcon')); }
-      .ag-icon-desc { background-image: url(themed('gridDescIcon')); }
+      // TODO: .ag-icon-asc { background-image: url(themed('gridAscIcon')); }
+      // TODO: .ag-icon-desc { background-image: url(themed('gridDescIcon')); }
 
       .ag-header-cell-resize::after {
         height: $headerResizeHeight;
@@ -117,13 +119,14 @@ $doublePadding: $baseContentPadding * 2;
       }
 
       &:hover {
-        .ag-icon-none:not(.ag-hidden),
+        // TODO: .ag-icon-none:not(.ag-hidden),
         .ag-header-cell-resize::after {
           visibility: visible;
           opacity: 1;
          }
       }
     }
+  }
 
     .ag-row {
       background-color: themed('color-bg-table');
@@ -142,6 +145,8 @@ $doublePadding: $baseContentPadding * 2;
     }
 
     .ag-paging-panel {
+      background-color: themed('color-bg-table');
+      border-top: $rowBorderHeight solid themed('color-bg-content');
       color: themed('colorGridHeaderText');
 
       .ag-paging-button {

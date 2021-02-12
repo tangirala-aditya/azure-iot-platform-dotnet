@@ -58,7 +58,7 @@ export class AlertsPanel extends Component {
                 rowData: alerts,
                 suppressFlyouts: true,
                 domLayout: "autoHeight",
-                deltaRowDataMode: false,
+                immutableData: false,
                 t,
             },
             showOverlay = isPending && !alerts.length;

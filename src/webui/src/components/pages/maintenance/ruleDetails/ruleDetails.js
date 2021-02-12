@@ -374,7 +374,7 @@ export class RuleDetails extends Component {
             alertsGridProps = {
                 domLayout: "autoHeight",
                 rowSelection: "multiple",
-                deltaRowDataMode: true,
+                immutableData: true,
                 getRowNodeId: ({ id }) => id,
                 rowData: isPending ? undefined : this.state.occurrences,
                 sizeColumnsToFit: true,

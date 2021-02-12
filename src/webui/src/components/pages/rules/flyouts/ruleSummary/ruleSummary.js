@@ -103,7 +103,7 @@ export class RuleSummary extends Component {
                     </SectionDesc>
                     {includeSummaryStatus && isPending && <Indicator />}
                     {includeSummaryStatus && completedSuccessfully && (
-                        <Svg className="summary-icon" path={svgs.apply} />
+                        <Svg className="summary-icon" src={svgs.apply} />
                     )}
                 </SummaryBody>
             </SummarySection>

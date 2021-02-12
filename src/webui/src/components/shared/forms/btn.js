@@ -22,7 +22,7 @@ export const Btn = (props) => {
                 primary ? "btn-primary" : "btn-secondary"
             )}
         >
-            {props.svg && <Svg path={props.svg} className="btn-icon" />}
+            {props.svg && <Svg src={props.svg} className="btn-icon" />}
             {props.icon && <Icon icon={props.icon} className="btn-icon" />}
             {props.children && <div className="btn-text">{props.children}</div>}
         </button>

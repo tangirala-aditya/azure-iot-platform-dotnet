@@ -13,7 +13,7 @@ export const ConnectionStatusRenderer = ({ value, context: { t } }) => {
     return (
         <div className={cellClasses}>
             {value ? null : (
-                <Svg path={svgs.disabled} className="pcs-renderer-icon" />
+                <Svg src={svgs.disabled} className="pcs-renderer-icon" />
             )}
             <div className="pcs-renderer-text">
                 {value

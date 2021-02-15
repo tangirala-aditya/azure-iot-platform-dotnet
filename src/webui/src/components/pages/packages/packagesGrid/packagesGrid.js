@@ -165,8 +165,6 @@ export class PackagesGrid extends Component {
             immutableData: true,
             ...this.props, // Allow default property overrides
             getRowNodeId: ({ id }) => id,
-            enableSorting: true,
-            unSortIcon: true,
             onHardSelectChange: this.onHardSelectChange,
             context: {
                 t: this.props.t,

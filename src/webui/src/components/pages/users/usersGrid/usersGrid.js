@@ -142,8 +142,6 @@ export class UsersGrid extends Component {
             softSelectId: this.state.softSelectedUserId || {},
             ...this.props, // Allow default property overrides
             immutableData: true,
-            enableSorting: true,
-            unSortIcon: true,
             getRowNodeId: ({ id }) => id,
             context: {
                 t: this.props.t,

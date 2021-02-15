@@ -76,6 +76,7 @@ $doublePadding: $baseContentPadding * 2;
 
       &.first-child-column {
         // Correct alignment of the padding since the border will add width
+        // TODO: @include rem-fallback(padding-left, $cell-horizontal-padding - 1px - $selectedRowBorderWidth);
         @include rem-fallback(padding-left, 1px - $selectedRowBorderWidth);
         @include rem-fallback(border-left, $selectedRowBorderWidth solid transparent);
       }
@@ -119,7 +120,7 @@ $doublePadding: $baseContentPadding * 2;
       }
 
       &:hover {
-        // TODO: .ag-icon-none:not(.ag-hidden),
+        .ag-icon-none:not(.ag-hidden),
         .ag-header-cell-resize::after {
           visibility: visible;
           opacity: 1;

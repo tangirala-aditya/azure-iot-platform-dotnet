@@ -122,8 +122,6 @@ export class ExampleGrid extends Component {
             softSelectId: (this.state.softSelectedDevice || {}).id,
             ...this.props, // Allow default property overrides
             immutableData: true,
-            enableSorting: true,
-            unSortIcon: true,
             getRowNodeId: ({ id }) => id,
             context: {
                 t: this.props.t,

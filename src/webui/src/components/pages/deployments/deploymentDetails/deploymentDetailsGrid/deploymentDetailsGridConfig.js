@@ -59,7 +59,5 @@ export const defaultDeploymentDetailsGridProps = {
     paginationPageSize: Config.paginationPageSize,
     sizeColumnsToFit: true,
     immutableData: true,
-    enableSorting: true,
-    unSortIcon: true,
     domLayout: "autoHeight",
 };

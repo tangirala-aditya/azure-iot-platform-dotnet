@@ -121,8 +121,6 @@ export const defaultDeploymentsGridProps = {
     enableColResize: true,
     pagination: true,
     paginationPageSize: Config.paginationPageSize,
-    enableSorting: true,
-    unSortIcon: true,
     sizeColumnsToFit: true,
     immutableData: true,
 };

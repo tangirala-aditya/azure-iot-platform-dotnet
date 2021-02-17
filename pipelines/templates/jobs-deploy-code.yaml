@@ -84,9 +84,10 @@ jobs:
           echo "servicePort: $(servicePort)"
           echo "serviceProbesEnabled: $(serviceProbesEnabled)"
           echo "blueGreen: ${{parameters.blueGreen}}"
+          echo "services: ${{parameters.services}}"
         displayName: Print job variables
 
-      - ${{ if and(eq(parameters.blueGreen,false), eq(parameters.services, 'asa-manager')) }}:
+      - ${{ if and(eq(parameters.blueGreen,false), eq(variables['serviceName'], parameters.services)) }}:
         - template: steps-deploy-individual-service.yaml
           parameters:
             aksName: $(aksName)
@@ -98,7 +99,7 @@ jobs:
             helmVersion: $(helmVersion)
             imageTag: ${{parameters.imageTag}}
 
-      - ${{ if and(eq(parameters.blueGreen,true), eq(parameters.services, 'asa-manager')) }}:
+      - ${{ if and(eq(parameters.blueGreen,true), eq(variables['serviceName'], parameters.services)) }}:
         - template: steps-deploy-blue-green-service.yaml
           parameters:
             aksName: $(aksName)

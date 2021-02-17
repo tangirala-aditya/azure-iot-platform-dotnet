@@ -69,7 +69,7 @@ jobs:
 
       - download: none
 
-      condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager'))
+      
       
       - script: |-
           echo "subscriptionName: ${{parameters.subscriptionName}}"

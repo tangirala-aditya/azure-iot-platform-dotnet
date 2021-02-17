@@ -26,7 +26,6 @@ jobs:
           serviceName: asa-manager
           servicePort: 80
           serviceProbesEnabled: true
-          TYPE: asa-manager
         config:
           serviceName: config
           servicePort: 80
@@ -113,7 +112,6 @@ jobs:
             imageTag: ${{parameters.imageTag}}
             type: blue
 
-    condition: and(succeeded(), eq(variables['TYPE'], Null))
 
 
   - job: addKey

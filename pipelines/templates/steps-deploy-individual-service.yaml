@@ -9,6 +9,8 @@ parameters:
   imageTag:
 
 steps:
+  - condition: and(succeeded(), eq(${parameters.serviceName}, 'asa-manager'))
+  
   - script: |-
       echo "aksName: ${{parameters.aksName}}"
       echo "resourceGroupName: ${{parameters.resourceGroupName}}"

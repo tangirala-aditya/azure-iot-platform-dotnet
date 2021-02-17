@@ -112,7 +112,7 @@ jobs:
             imageTag: ${{parameters.imageTag}}
             type: blue
     
-      condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager'))
+      - condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager'))
 
 
   - job: addKey

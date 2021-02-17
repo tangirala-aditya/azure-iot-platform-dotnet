@@ -84,7 +84,7 @@ jobs:
           echo "serviceProbesEnabled: $(serviceProbesEnabled)"
           echo "blueGreen: ${{parameters.blueGreen}}"
         displayName: Print job variables
-        condition: and(succeeded(), eq("$(serviceName)", 'asa-manager'))
+        condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager'))
 
       - ${{ if eq(parameters.blueGreen,false) }}:
         - template: steps-deploy-individual-service.yaml

@@ -69,8 +69,6 @@ jobs:
 
       - download: none
 
-      
-      
       - script: |-
           echo "subscriptionName: ${{parameters.subscriptionName}}"
           echo "environmentName: ${{parameters.environmentName}}"
@@ -87,7 +85,7 @@ jobs:
           echo "blueGreen: ${{parameters.blueGreen}}"
         displayName: Print job variables
 
-      - ${{ if eq(parameters.blueGreen,false) }}:
+      - ${{ if and(eq(parameters.blueGreen,false), eq(variables['serviceName'], 'asa-manager')) }}:
         - template: steps-deploy-individual-service.yaml
           parameters:
             aksName: $(aksName)
@@ -113,7 +111,6 @@ jobs:
             helmVersion: $(helmVersion)
             imageTag: ${{parameters.imageTag}}
             type: blue
-    
 
 
   - job: addKey

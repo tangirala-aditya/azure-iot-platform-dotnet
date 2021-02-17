@@ -112,6 +112,8 @@ jobs:
             imageTag: ${{parameters.imageTag}}
             type: blue
 
+    condition: and(succeeded(), eq(variables['TYPE'], 'asa-manager'))
+
 
   - job: addKey
     displayName: Update Application Configuration with BuildNumber

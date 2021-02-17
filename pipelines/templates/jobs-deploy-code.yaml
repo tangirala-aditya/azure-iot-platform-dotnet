@@ -87,8 +87,8 @@ jobs:
         condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager'))
 
       - ${{ if eq(parameters.blueGreen,false) }}:
+        condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager')) 
         - template: steps-deploy-individual-service.yaml
-          condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager')) 
           parameters:
             aksName: $(aksName)
             resourceGroupName: $(resourceGroupName)
@@ -100,6 +100,7 @@ jobs:
             imageTag: ${{parameters.imageTag}}
 
       - ${{ if eq(parameters.blueGreen,true) }}:
+        condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager')) 
         - template: steps-deploy-blue-green-service.yaml
           condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager'))
           parameters:

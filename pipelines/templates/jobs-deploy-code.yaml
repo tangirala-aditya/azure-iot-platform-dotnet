@@ -69,6 +69,8 @@ jobs:
 
       - download: none
 
+      condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager'))
+      
       - script: |-
           echo "subscriptionName: ${{parameters.subscriptionName}}"
           echo "environmentName: ${{parameters.environmentName}}"
@@ -112,7 +114,6 @@ jobs:
             imageTag: ${{parameters.imageTag}}
             type: blue
     
-      - condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager'))
 
 
   - job: addKey

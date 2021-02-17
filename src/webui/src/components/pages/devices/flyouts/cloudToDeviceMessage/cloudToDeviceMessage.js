@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from "react";
-import { Observable } from "rxjs";
+import { from } from "rxjs";
 
 import { LinkedComponent } from "utilities";
 import { IoTHubManagerService } from "services";
@@ -25,6 +25,7 @@ import {
 } from "components/shared";
 
 import "./cloudToDeviceMessage.scss";
+import { map, mergeMap } from "rxjs/operators";
 
 export class CloudToDeviceMessage extends LinkedComponent {
     constructor(props) {
@@ -98,12 +99,14 @@ export class CloudToDeviceMessage extends LinkedComponent {
         event.preventDefault();
         this.setState({ isPending: true, error: null });
 
-        this.subscription = Observable.from(this.state.physicalDevices)
-            .flatMap(({ id }) =>
-                IoTHubManagerService.sendCloudToDeviceMessages(
-                    id,
-                    JSON.stringify(this.state.jsonPayload.jsObject)
-                ).map(() => id)
+        this.subscription = from(this.state.physicalDevices)
+            .pipe(
+                mergeMap(({ id }) =>
+                    IoTHubManagerService.sendCloudToDeviceMessages(
+                        id,
+                        JSON.stringify(this.state.jsonPayload.jsObject)
+                    ).pipe(map(() => id))
+                )
             )
             .subscribe(
                 (sentDeviceId) => {

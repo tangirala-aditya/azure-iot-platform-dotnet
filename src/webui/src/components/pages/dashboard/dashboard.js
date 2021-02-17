@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
-import { Observable, Subject } from "rxjs";
+import { forkJoin, from, merge, of, Subject } from "rxjs";
 import moment from "moment";
 
 import Config from "app.config";
@@ -42,6 +42,15 @@ import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "component
 
 import "./dashboard.scss";
 import { HttpClient } from "utilities/httpClient";
+import {
+    delay,
+    map,
+    mergeMap,
+    retryWhen,
+    startWith,
+    switchMap,
+    tap,
+} from "rxjs/operators";
 
 const initialState = {
         // Telemetry data
@@ -128,51 +137,55 @@ export class Dashboard extends Component {
                 this.setState({ telemetryIsPending: true }),
             getTelemetryStream = ({ deviceIds = [] }) =>
                 deviceIds.length === 0
-                    ? Observable.from(() => {})
-                    : TelemetryService.getTelemetryByDeviceId(
-                          deviceIds,
-                          TimeIntervalDropdown.getTimeIntervalDropdownValue()
-                      )
-                          .flatMap((items) => {
-                              this.setState({
-                                  telemetryQueryExceededLimit:
-                                      items.length >=
-                                      Config.telemetryQueryResultLimit,
-                              });
-                              return Observable.of(items);
-                          })
-                          .merge(
-                              this.telemetryRefresh$ // Previous request complete
-                                  .delay(Config.telemetryRefreshInterval) // Wait to refresh
-                                  .do(onPendingStart)
-                                  .flatMap((_) =>
-                                      TelemetryService.getTelemetryByDeviceIdP1M(
-                                          deviceIds
-                                      )
+                    ? from(() => {})
+                    : merge(
+                          TelemetryService.getTelemetryByDeviceId(
+                              deviceIds,
+                              TimeIntervalDropdown.getTimeIntervalDropdownValue()
+                          ).pipe(
+                              mergeMap((items) => {
+                                  this.setState({
+                                      telemetryQueryExceededLimit:
+                                          items.length >=
+                                          Config.telemetryQueryResultLimit,
+                                  });
+                                  return of(items);
+                              })
+                          ),
+                          this.telemetryRefresh$.pipe(
+                              // Previous request complete
+                              delay(Config.telemetryRefreshInterval), // Wait to refresh
+                              tap(onPendingStart),
+                              mergeMap((_) =>
+                                  TelemetryService.getTelemetryByDeviceIdP1M(
+                                      deviceIds
                                   )
+                              )
                           )
-                          .flatMap(
+                      ).pipe(
+                          mergeMap(
                               transformTelemetryResponse(
                                   () => this.state.telemetry
                               )
-                          )
-                          .map((telemetry) => ({
+                          ),
+                          map((telemetry) => ({
                               telemetry,
                               telemetryIsPending: false,
-                          })) // Stream emits new state
+                          })), // Stream emits new state
                           // Retry any retryable errors
-                          .retryWhen(
+                          retryWhen(
                               retryHandler(maxRetryAttempts, retryWaitTime)
-                          ),
+                          )
+                      ),
             // Telemetry stream - END
 
             // Analytics stream - START
             getAnalyticsStream = ({ deviceIds = [], timeInterval }) =>
-                this.panelsRefresh$
-                    .delay(Config.dashboardRefreshInterval)
-                    .startWith(0)
-                    .do((_) => this.setState({ analyticsIsPending: true }))
-                    .flatMap((_) => {
+                this.panelsRefresh$.pipe(
+                    delay(Config.dashboardRefreshInterval),
+                    startWith(0),
+                    tap((_) => this.setState({ analyticsIsPending: true })),
+                    mergeMap((_) => {
                         const devices = deviceIds.length
                                 ? deviceIds.join(",")
                                 : undefined,
@@ -189,21 +202,21 @@ export class Dashboard extends Component {
                                 devices,
                             };
                         if (this.props.alerting.isActive) {
-                            return Observable.forkJoin(
+                            return forkJoin([
                                 TelemetryService.getActiveAlerts(currentParams),
                                 TelemetryService.getActiveAlerts(
                                     previousParams
                                 ),
 
                                 TelemetryService.getAlerts(currentParams),
-                                TelemetryService.getAlerts(previousParams)
-                            );
+                                TelemetryService.getAlerts(previousParams),
+                            ]);
                         } else {
                             this.setState({ analyticsIsPending: false });
-                            return Observable.forkJoin([], [], [], []);
+                            return forkJoin([[], [], [], []]);
                         }
-                    })
-                    .map(
+                    }),
+                    map(
                         ([
                             currentActiveAlerts,
                             previousActiveAlerts,
@@ -339,9 +352,10 @@ export class Dashboard extends Component {
                                 devicesInAlert,
                             };
                         }
-                    )
+                    ),
                     // Retry any retryable errors
-                    .retryWhen(retryHandler(maxRetryAttempts, retryWaitTime));
+                    retryWhen(retryHandler(maxRetryAttempts, retryWaitTime))
+                );
         // Analytics stream - END
 
         this.subscriptions.push(
@@ -349,27 +363,37 @@ export class Dashboard extends Component {
         );
 
         this.subscriptions.push(
-            this.dashboardRefresh$.switchMap(getTelemetryStream).subscribe(
-                (telemetryState) =>
-                    this.setState(
-                        { ...telemetryState, lastRefreshed: moment() },
-                        () => this.telemetryRefresh$.next("r")
-                    ),
-                (telemetryError) =>
-                    this.setState({ telemetryError, telemetryIsPending: false })
-            )
+            this.dashboardRefresh$
+                .pipe(switchMap(getTelemetryStream))
+                .subscribe(
+                    (telemetryState) =>
+                        this.setState(
+                            { ...telemetryState, lastRefreshed: moment() },
+                            () => this.telemetryRefresh$.next("r")
+                        ),
+                    (telemetryError) =>
+                        this.setState({
+                            telemetryError,
+                            telemetryIsPending: false,
+                        })
+                )
         );
 
         this.subscriptions.push(
-            this.dashboardRefresh$.switchMap(getAnalyticsStream).subscribe(
-                (analyticsState) =>
-                    this.setState(
-                        { ...analyticsState, lastRefreshed: moment() },
-                        () => this.panelsRefresh$.next("r")
-                    ),
-                (analyticsError) =>
-                    this.setState({ analyticsError, analyticsIsPending: false })
-            )
+            this.dashboardRefresh$
+                .pipe(switchMap(getAnalyticsStream))
+                .subscribe(
+                    (analyticsState) =>
+                        this.setState(
+                            { ...analyticsState, lastRefreshed: moment() },
+                            () => this.panelsRefresh$.next("r")
+                        ),
+                    (analyticsError) =>
+                        this.setState({
+                            analyticsError,
+                            analyticsIsPending: false,
+                        })
+                )
         );
 
         // Start polling all panels

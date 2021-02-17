@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from "react";
-import { Observable } from "rxjs";
+import { of } from "rxjs";
 import update from "immutability-helper";
 
 import { LinkedComponent } from "utilities";
@@ -73,13 +73,12 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
         if (this.populateStateSubscription) {
             this.populateStateSubscription.unsubscribe();
         }
-        this.populateStateSubscription = Observable.of(methods).subscribe(
-            (methods) =>
-                this.setState(
-                    update(this.state, {
-                        methods: { $set: methods },
-                    })
-                )
+        this.populateStateSubscription = of(methods).subscribe((methods) =>
+            this.setState(
+                update(this.state, {
+                    methods: { $set: methods },
+                })
+            )
         );
     }
 

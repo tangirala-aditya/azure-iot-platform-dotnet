@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import "rxjs";
-import { Observable } from "rxjs";
+import { of } from "rxjs";
 import update from "immutability-helper";
 import { DeviceSimulationService } from "services";
 import {
@@ -15,26 +15,26 @@ import {
     getPending,
     getError,
 } from "store/utilities";
+import { catchError, map } from "rxjs/operators";
 
 // ========================= Epics - START
 const handleError = (fromAction) => (error) =>
-    Observable.of(
-        redux.actions.registerError(fromAction.type, { error, fromAction })
-    );
+    of(redux.actions.registerError(fromAction.type, { error, fromAction }));
 
 export const epics = createEpicScenario({
     /** Loads the simulation status */
     fetchSimulationStatus: {
         type: "SIMULATION_STATUS_FETCH",
         epic: (fromAction) =>
-            DeviceSimulationService.getSimulatedDevices()
-                .map(
+            DeviceSimulationService.getSimulatedDevices().pipe(
+                map(
                     toActionCreator(
                         redux.actions.getSimulationStatus,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Toggles the simulation status */
@@ -44,28 +44,30 @@ export const epics = createEpicScenario({
             DeviceSimulationService.toggleSimulation(
                 fromAction.payload.etag,
                 fromAction.payload.enabled
-            )
-                .map(
+            ).pipe(
+                map(
                     toActionCreator(
                         redux.actions.getSimulationStatus,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Loads the options for Device Models */
     fetchSimulationDeviceModelOptions: {
         type: "SIMULATION_DEVICE_MODEL_OPTIONS_FETCH",
         epic: (fromAction) =>
-            DeviceSimulationService.getDeviceModelSelectOptions()
-                .map(
+            DeviceSimulationService.getDeviceModelSelectOptions().pipe(
+                map(
                     toActionCreator(
                         redux.actions.getDeviceModelOptions,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 });
 // ========================= Epics - END

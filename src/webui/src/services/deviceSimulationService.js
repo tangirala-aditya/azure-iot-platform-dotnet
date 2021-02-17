@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { Observable } from "rxjs";
+import { from } from "rxjs";
+import { map, reduce, mergeMap } from "rxjs/operators";
 
 import Config from "app.config";
 import { HttpClient } from "utilities/httpClient";
@@ -21,8 +22,8 @@ export class DeviceSimulationService {
      * Returns a list of devicemodels
      */
     static getDeviceModelSelectOptions() {
-        return HttpClient.get(`${ENDPOINT}devicemodels`).map(
-            toDeviceModelSelectOptions
+        return HttpClient.get(`${ENDPOINT}devicemodels`).pipe(
+            map(toDeviceModelSelectOptions)
         );
     }
 
@@ -30,8 +31,8 @@ export class DeviceSimulationService {
      * Get the list of running simulated devices
      */
     static getSimulatedDevices() {
-        return HttpClient.get(`${ENDPOINT}simulations/${SIMULATION_ID}`).map(
-            toDeviceSimulationModel
+        return HttpClient.get(`${ENDPOINT}simulations/${SIMULATION_ID}`).pipe(
+            map(toDeviceSimulationModel)
         );
     }
 
@@ -42,7 +43,7 @@ export class DeviceSimulationService {
         return HttpClient.put(
             `${ENDPOINT}simulations/${SIMULATION_ID}`,
             simulation
-        ).map(toDeviceSimulationModel);
+        ).pipe(map(toDeviceSimulationModel));
     }
 
     /**
@@ -52,17 +53,17 @@ export class DeviceSimulationService {
         return HttpClient.patch(`${ENDPOINT}simulations/${SIMULATION_ID}`, {
             Etag,
             Enabled,
-        }).map(toDeviceSimulationModel);
+        }).pipe(map(toDeviceSimulationModel));
     }
 
     /**
      * Gets the simulated device models, increments the given one, then updates on the server
      */
     static incrementSimulatedDeviceModel(deviceModelId, increment) {
-        return DeviceSimulationService.getSimulatedDevices()
-            .flatMap((simulations) =>
-                Observable.from(simulations.deviceModels)
-                    .reduce(
+        return DeviceSimulationService.getSimulatedDevices().pipe(
+            mergeMap((simulations) =>
+                from(simulations.deviceModels).pipe(
+                    reduce(
                         (acc, { id, count }) => ({
                             ...acc,
                             [id]: {
@@ -76,16 +77,18 @@ export class DeviceSimulationService {
                                 count: increment,
                             },
                         }
-                    )
-                    .map((deviceModels) => ({
+                    ),
+                    map((deviceModels) => ({
                         ...simulations,
                         deviceModels: Object.values(deviceModels),
                     }))
-            )
-            .flatMap((simulation) =>
+                )
+            ),
+            mergeMap((simulation) =>
                 DeviceSimulationService.updateSimulatedDevices(
                     toDeviceSimulationRequestModel(simulation)
                 )
-            );
+            )
+        );
     }
 }

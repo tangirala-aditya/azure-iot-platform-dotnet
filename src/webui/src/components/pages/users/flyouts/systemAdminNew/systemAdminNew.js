@@ -95,12 +95,12 @@ export class SystemAdminNew extends LinkedComponent {
                 this.state.formData.userId,
                 selectedUser
             ).subscribe(
-                function (user) {
+                (user) => {
                     this.setState({
                         successCount: this.state.successCount + 1,
                     });
                     this.props.fetchAllNonSystemAdmins();
-                }.bind(this),
+                }, // TODO: verify
                 (error) =>
                     this.setState({
                         error,

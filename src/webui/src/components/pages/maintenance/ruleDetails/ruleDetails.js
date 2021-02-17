@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import { Trans } from "react-i18next";
-import { Observable, Subject } from "rxjs";
+import { EMPTY, merge, of, Subject } from "rxjs";
 
 import Config from "app.config";
 import { permissions, toDiagnosticsModel } from "services/models";
@@ -46,6 +46,15 @@ import { ROW_HEIGHT } from "components/shared/pcsGrid/pcsGridConfig";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
 
 import "./ruleDetails.scss";
+import {
+    delay,
+    distinctUntilChanged,
+    map,
+    mergeMap,
+    switchMap,
+    tap,
+    toArray,
+} from "rxjs/operators";
 
 const tabIds = {
         all: "all",
@@ -118,47 +127,56 @@ export class RuleDetails extends Component {
 
         this.subscriptions.push(
             this.restartTelemetry$
-                .distinctUntilChanged()
-                .map((deviceIds) =>
-                    deviceIds.split(idDelimiter).filter((id) => id)
-                )
-                .do(() =>
-                    this.setState({ telemetry: {}, telemetryIsPending: false })
-                )
-                .switchMap((deviceIds) => {
-                    if (deviceIds.length > 0) {
-                        return TelemetryService.getTelemetryByDeviceIdP15M(
-                            deviceIds
-                        )
-                            .flatMap((items) => {
-                                this.setState({
-                                    telemetryQueryExceededLimit:
-                                        items.length >= 1000,
-                                });
-                                return Observable.of(items);
-                            })
-                            .merge(
-                                this.telemetryRefresh$ // Previous request complete
-                                    .delay(Config.telemetryRefreshInterval) // Wait to refresh
-                                    .do(onPendingStart)
-                                    .flatMap((_) =>
+                .pipe(
+                    distinctUntilChanged(),
+                    map((deviceIds) =>
+                        deviceIds.split(idDelimiter).filter((id) => id)
+                    ),
+                    tap(() =>
+                        this.setState({
+                            telemetry: {},
+                            telemetryIsPending: false,
+                        })
+                    ),
+                    switchMap((deviceIds) => {
+                        if (deviceIds.length > 0) {
+                            return merge(
+                                TelemetryService.getTelemetryByDeviceIdP15M(
+                                    deviceIds
+                                ).pipe(
+                                    mergeMap((items) => {
+                                        this.setState({
+                                            telemetryQueryExceededLimit:
+                                                items.length >= 1000,
+                                        });
+                                        return of(items);
+                                    })
+                                ),
+                                this.telemetryRefresh$.pipe(
+                                    // Previous request complete
+                                    delay(Config.telemetryRefreshInterval), // Wait to refresh
+                                    tap(onPendingStart),
+                                    mergeMap((_) =>
                                         TelemetryService.getTelemetryByDeviceIdP1M(
                                             deviceIds
                                         )
                                     )
-                            )
-                            .flatMap(
-                                transformTelemetryResponse(
-                                    () => this.state.telemetry
                                 )
-                            )
-                            .map((telemetry) => ({
-                                telemetry,
-                                telemetryIsPending: false,
-                            }));
-                    }
-                    return Observable.empty();
-                })
+                            ).pipe(
+                                mergeMap(
+                                    transformTelemetryResponse(
+                                        () => this.state.telemetry
+                                    )
+                                ),
+                                map((telemetry) => ({
+                                    telemetry,
+                                    telemetryIsPending: false,
+                                }))
+                            );
+                        }
+                        return EMPTY;
+                    })
+                )
                 .subscribe(
                     (telemetryState) =>
                         this.setState(telemetryState, () =>
@@ -225,19 +243,21 @@ export class RuleDetails extends Component {
 
     updateAlertStatus = (selectedAlerts, status) =>
         this.subscriptions.push(
-            Observable.of(selectedAlerts)
-                .do(() => this.setState({ updatingAlertStatus: true }))
-                .flatMap((alerts) => alerts)
-                .flatMap(({ id }) =>
-                    TelemetryService.updateAlertStatus(id, status)
-                )
-                .toArray() // Use toArray to wait for all calls to succeed
+            of(selectedAlerts)
+                .pipe(
+                    tap(() => this.setState({ updatingAlertStatus: true })),
+                    mergeMap((alerts) => alerts),
+                    mergeMap(({ id }) =>
+                        TelemetryService.updateAlertStatus(id, status)
+                    ),
+                    toArray()
+                ) // Use toArray to wait for all calls to succeed
                 .subscribe(
                     () => {
                         this.props.setAlertStatus(selectedAlerts, status);
                         this.onAlertGridHardSelectChange([]);
                     },
-                    undefined, // TODO: Handle error
+                    () => undefined, // TODO: Handle error
                     () => this.setState({ updatingAlertStatus: false })
                 )
         );
@@ -250,7 +270,7 @@ export class RuleDetails extends Component {
                 () => {
                     this.refreshData();
                 },
-                undefined, // TODO: Handle error
+                () => undefined, // TODO: Handle error
                 () => this.setState({ updatingAlertStatus: false })
             )
         );

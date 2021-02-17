@@ -129,12 +129,12 @@ export class UserNew extends LinkedComponent {
                 this.state.formData.email,
                 this.state.formData.role
             ).subscribe(
-                function (user) {
+                (user) => {
                     this.setState({
                         successCount: this.state.successCount + 1,
                     });
                     this.props.insertUsers(user);
-                }.bind(this),
+                }, // TODO: verify
                 (error) =>
                     this.setState({
                         error,

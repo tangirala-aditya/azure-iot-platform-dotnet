@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from "react";
-import { Observable } from "rxjs";
+import { of } from "rxjs";
 import update from "immutability-helper";
 
 import { LinkedComponent } from "utilities";
@@ -74,13 +74,12 @@ export class DeviceGroupTelemetryFormat extends LinkedComponent {
         if (this.populateStateSubscription) {
             this.populateStateSubscription.unsubscribe();
         }
-        this.populateStateSubscription = Observable.of(format).subscribe(
-            (format) =>
-                this.setState(
-                    update(this.state, {
-                        format: { $set: format },
-                    })
-                )
+        this.populateStateSubscription = of(format).subscribe((format) =>
+            this.setState(
+                update(this.state, {
+                    format: { $set: format },
+                })
+            )
         );
     }
 

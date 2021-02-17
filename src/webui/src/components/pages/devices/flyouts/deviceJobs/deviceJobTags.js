@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Observable } from "rxjs";
+import { from } from "rxjs";
 import update from "immutability-helper";
 
 import { IoTHubManagerService } from "services";
@@ -35,6 +35,7 @@ import {
     SummarySection,
     Svg,
 } from "components/shared";
+import { distinct, filter, map, mergeMap, reduce } from "rxjs/operators";
 
 update.extend("$autoArray", (val, obj) => update(obj || [], val));
 
@@ -105,47 +106,52 @@ export class DeviceJobTags extends LinkedComponent {
         if (this.populateStateSubscription) {
             this.populateStateSubscription.unsubscribe();
         }
-        this.populateStateSubscription = Observable.from(devices)
-            .map(({ tags }) => new Set(Object.keys(tags)))
-            .reduce((commonTags, deviceTags) =>
-                commonTags
-                    ? new Set(
-                          [...commonTags].filter((tag) => deviceTags.has(tag))
-                      )
-                    : deviceTags
-            ) // At this point, a stream of a single event. A common set of tags.
-            .flatMap((commonTagsSet) =>
-                Observable.from(devices)
-                    .flatMap(({ tags }) => Object.entries(tags))
-                    .filter(([tag]) => commonTagsSet.has(tag))
-            )
-            .distinct(([tagName, tagVal]) => `${tagName} ${tagVal}`)
-            .reduce(
-                (acc, [tagName, tagVal]) =>
-                    update(acc, {
-                        [tagName]: {
-                            $autoArray: {
-                                $push: [tagVal],
+        this.populateStateSubscription = from(devices)
+            .pipe(
+                map(({ tags }) => new Set(Object.keys(tags))),
+                reduce((commonTags, deviceTags) =>
+                    commonTags
+                        ? new Set(
+                              [...commonTags].filter((tag) =>
+                                  deviceTags.has(tag)
+                              )
+                          )
+                        : deviceTags
+                ), // At this point, a stream of a single event. A common set of tags.
+                mergeMap((commonTagsSet) =>
+                    from(devices).pipe(
+                        mergeMap(({ tags }) => Object.entries(tags)),
+                        filter(([tag]) => commonTagsSet.has(tag))
+                    )
+                ),
+                distinct(([tagName, tagVal]) => `${tagName} ${tagVal}`),
+                reduce(
+                    (acc, [tagName, tagVal]) =>
+                        update(acc, {
+                            [tagName]: {
+                                $autoArray: {
+                                    $push: [tagVal],
+                                },
                             },
-                        },
-                    }),
-                {}
-            )
-            .flatMap((tagToValMap) => Object.entries(tagToValMap))
-            .reduce(
-                (newState, [name, values]) => {
-                    const value =
-                            values.length === 1
-                                ? values[0]
-                                : tagJobConstants.multipleValues,
-                        type = values.every(isNumeric)
-                            ? tagJobConstants.numberType
-                            : tagJobConstants.stringType;
-                    return update(newState, {
-                        commonTags: { $push: [{ name, value, type }] },
-                    });
-                },
-                { ...initialState, jobName: this.state.jobName }
+                        }),
+                    {}
+                ),
+                mergeMap((tagToValMap) => Object.entries(tagToValMap)),
+                reduce(
+                    (newState, [name, values]) => {
+                        const value =
+                                values.length === 1
+                                    ? values[0]
+                                    : tagJobConstants.multipleValues,
+                            type = values.every(isNumeric)
+                                ? tagJobConstants.numberType
+                                : tagJobConstants.stringType;
+                        return update(newState, {
+                            commonTags: { $push: [{ name, value, type }] },
+                        });
+                    },
+                    { ...initialState, jobName: this.state.jobName }
+                )
             )
             .subscribe((newState) => this.setState(newState));
     }

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
-import { Observable, Subject } from "rxjs";
+import { merge, of, Subject } from "rxjs";
 import { Trans } from "react-i18next";
 import moment from "moment";
 import {
@@ -44,6 +44,7 @@ import { transformTelemetryResponse } from "components/pages/dashboard/panels";
 import { getEdgeAgentStatusCode } from "utilities";
 
 import "./deviceDetails.scss";
+import { delay, map, mergeMap, switchMap, tap } from "rxjs/operators";
 
 const Section = Flyout.Section,
     serializeNestedDeviceProperties = (parentName, value) => {
@@ -130,47 +131,52 @@ export class DeviceDetails extends Component {
             refreshInterval = ((hours * 60 + minutes) * 60 + seconds) * 1000,
             // Telemetry stream - START
             onPendingStart = () => this.setState({ telemetryIsPending: true }),
-            telemetry$ = this.resetTelemetry$
-                .do((_) => this.setState({ telemetry: {} }))
-                .switchMap(
+            telemetry$ = this.resetTelemetry$.pipe(
+                tap((_) => this.setState({ telemetry: {} })),
+                switchMap(
                     (deviceId) =>
-                        TelemetryService.getTelemetryByDeviceId(
-                            [deviceId],
-                            TimeIntervalDropdown.getTimeIntervalDropdownValue()
-                        )
-                            .flatMap((items) => {
-                                this.setState({
-                                    telemetryQueryExceededLimit:
-                                        items.length >= 1000,
-                                });
-                                return Observable.of(items);
-                            })
-                            .merge(
-                                this.telemetryRefresh$ // Previous request complete
-                                    .delay(
-                                        refreshInterval ||
-                                            Config.dashboardRefreshInterval
-                                    ) // Wait to refresh
-                                    .do(onPendingStart)
-                                    .flatMap((_) =>
-                                        TelemetryService.getTelemetryByDeviceIdP1M(
-                                            [deviceId]
-                                        )
-                                    )
+                        merge(
+                            TelemetryService.getTelemetryByDeviceId(
+                                [deviceId],
+                                TimeIntervalDropdown.getTimeIntervalDropdownValue()
+                            ).pipe(
+                                mergeMap((items) => {
+                                    this.setState({
+                                        telemetryQueryExceededLimit:
+                                            items.length >= 1000,
+                                    });
+                                    return of(items);
+                                })
+                            ),
+                            this.telemetryRefresh$.pipe(
+                                // Previous request complete
+                                delay(
+                                    refreshInterval ||
+                                        Config.dashboardRefreshInterval
+                                ), // Wait to refresh
+                                tap(onPendingStart),
+                                mergeMap((_) =>
+                                    TelemetryService.getTelemetryByDeviceIdP1M([
+                                        deviceId,
+                                    ])
+                                )
                             )
-                            .flatMap((messages) =>
+                        ).pipe(
+                            mergeMap((messages) =>
                                 transformTelemetryResponse(
                                     () => this.state.telemetry
                                 )(messages).map((telemetry) => ({
                                     telemetry,
                                     lastMessage: messages[0],
                                 }))
-                            )
-                            .map((newState) => ({
+                            ),
+                            map((newState) => ({
                                 ...newState,
                                 telemetryIsPending: false,
-                            })) // Stream emits new state
-                );
+                            }))
+                        ) // Stream emits new state
+                )
+            );
         // Telemetry stream - END
 
         this.telemetrySubscription = telemetry$.subscribe(

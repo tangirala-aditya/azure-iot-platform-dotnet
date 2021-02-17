@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
-import { Observable } from "rxjs";
+import { from } from "rxjs";
 import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle";
 
 import { IoTHubManagerService } from "services";
@@ -23,6 +23,7 @@ import {
 } from "components/shared";
 
 import "./deviceDelete.scss";
+import { map, mergeMap } from "rxjs/operators";
 
 export class DeviceDelete extends Component {
     constructor(props) {
@@ -87,9 +88,11 @@ export class DeviceDelete extends Component {
         event.preventDefault();
         this.setState({ isPending: true, error: null });
 
-        this.subscription = Observable.from(this.state.physicalDevices)
-            .flatMap(({ id }) =>
-                IoTHubManagerService.deleteDevice(id).map(() => id)
+        this.subscription = from(this.state.physicalDevices)
+            .pipe(
+                mergeMap(({ id }) =>
+                    IoTHubManagerService.deleteDevice(id).pipe(map(() => id))
+                )
             )
             .subscribe(
                 (deletedDeviceId) => {

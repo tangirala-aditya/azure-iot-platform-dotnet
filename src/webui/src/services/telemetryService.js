@@ -3,7 +3,7 @@
 import { stringify } from "query-string";
 import Config from "app.config";
 import { HttpClient } from "utilities/httpClient";
-import { Observable } from "rxjs";
+import { of, throwError } from "rxjs";
 import {
     toActiveAlertsModel,
     toAlertForRuleModel,
@@ -16,6 +16,7 @@ import {
     toTelemetryRequestModel,
     toDeviceUploadsModel,
 } from "./models";
+import { map, catchError } from "rxjs/operators";
 
 const ENDPOINT = Config.serviceUrls.telemetry;
 const ContinueAsEmptyMessages = { messages: {} };
@@ -25,26 +26,29 @@ const ContinueAsEmptyAlarms = { alarms: {}, alarm: {} };
 export class TelemetryService {
     /** Returns the status properties for the telemetry service */
     static getStatus() {
-        return HttpClient.get(`${ENDPOINT}status`).map(toStatusModel);
+        return HttpClient.get(`${ENDPOINT}status`).pipe(map(toStatusModel));
     }
 
     /** Returns a list of rules */
     static getRules(params = {}) {
         return HttpClient.get(`${ENDPOINT}rules?${stringify(params)}`, {
             timeout: 120000,
-        })
-            .catch((error) => this.catch404(error, ContinueAsEmptyAlarms))
-            .map(toRulesModel);
+        }).pipe(
+            catchError((error) => this.catch404(error, ContinueAsEmptyAlarms)),
+            map(toRulesModel)
+        );
     }
 
     /** creates a new rule */
     static createRule(rule) {
-        return HttpClient.post(`${ENDPOINT}rules`, rule).map(toRuleModel);
+        return HttpClient.post(`${ENDPOINT}rules`, rule).pipe(map(toRuleModel));
     }
 
     /** updates an existing rule */
     static updateRule(id, rule) {
-        return HttpClient.put(`${ENDPOINT}rules/${id}`, rule).map(toRuleModel);
+        return HttpClient.put(`${ENDPOINT}rules/${id}`, rule).pipe(
+            map(toRuleModel)
+        );
     }
 
     /** Returns a list of alarms (all statuses) */
@@ -53,9 +57,10 @@ export class TelemetryService {
             params.devices = params.devices.split(",");
         }
         let body = toTelemetryRequestModel(params);
-        return HttpClient.post(`${ENDPOINT}alarms`, body)
-            .catch((error) => this.catch404(error, ContinueAsEmptyAlarms))
-            .map(toAlertsModel);
+        return HttpClient.post(`${ENDPOINT}alarms`, body).pipe(
+            catchError((error) => this.catch404(error, ContinueAsEmptyAlarms)),
+            map(toAlertsModel)
+        );
     }
 
     /** Returns a list of active alarms (open or ack) */
@@ -64,9 +69,10 @@ export class TelemetryService {
             params.devices = params.devices.split(",");
         }
         let body = toTelemetryRequestModel(params);
-        return HttpClient.post(`${ENDPOINT}alarmsbyrule`, body)
-            .catch((error) => this.catch404(error, ContinueAsEmptyAlarms))
-            .map(toActiveAlertsModel);
+        return HttpClient.post(`${ENDPOINT}alarmsbyrule`, body).pipe(
+            catchError((error) => this.catch404(error, ContinueAsEmptyAlarms)),
+            map(toActiveAlertsModel)
+        );
     }
 
     /** Returns a list of alarms created from a given rule */
@@ -75,16 +81,17 @@ export class TelemetryService {
             params.devices = params.devices.split(",");
         }
         let body = toTelemetryRequestModel(params);
-        return HttpClient.post(`${ENDPOINT}alarmsbyrule/${id}`, body)
-            .catch((error) => this.catch404(error, ContinueAsEmptyAlarms))
-            .map(toAlertsForRuleModel);
+        return HttpClient.post(`${ENDPOINT}alarmsbyrule/${id}`, body).pipe(
+            catchError((error) => this.catch404(error, ContinueAsEmptyAlarms)),
+            map(toAlertsForRuleModel)
+        );
     }
 
     /** Returns a list of alarms created from a given rule */
     static updateAlertStatus(id, Status) {
         return HttpClient.patch(`${ENDPOINT}alarms/${encodeURIComponent(id)}`, {
             Status,
-        }).map(toAlertForRuleModel);
+        }).pipe(map(toAlertForRuleModel));
     }
 
     static deleteAlerts(ids) {
@@ -95,9 +102,12 @@ export class TelemetryService {
     /** Returns a telemetry events */
     static getTelemetryByMessages(params = {}) {
         let body = toTelemetryRequestModel(params);
-        return HttpClient.post(`${ENDPOINT}messages`, body)
-            .catch((error) => this.catch404(error, ContinueAsEmptyMessages))
-            .map(toMessagesModel);
+        return HttpClient.post(`${ENDPOINT}messages`, body).pipe(
+            catchError((error) =>
+                this.catch404(error, ContinueAsEmptyMessages)
+            ),
+            map(toMessagesModel)
+        );
     }
 
     static getTelemetryByDeviceId(devices = [], timeInterval) {
@@ -129,14 +139,14 @@ export class TelemetryService {
     }
 
     static deleteRule(id) {
-        return HttpClient.delete(`${ENDPOINT}rules/${id}`).map(() => ({
-            deletedRuleId: id,
-        }));
+        return HttpClient.delete(`${ENDPOINT}rules/${id}`).pipe(
+            map(() => ({ deletedRuleId: id }))
+        );
     }
 
     static getDeviceUploads(id) {
-        var response = HttpClient.get(`${ENDPOINT}deviceFiles/${id}`).map(
-            toDeviceUploadsModel
+        var response = HttpClient.get(`${ENDPOINT}deviceFiles/${id}`).pipe(
+            map(toDeviceUploadsModel)
         );
         return response;
     }
@@ -155,8 +165,6 @@ export class TelemetryService {
     for instances where this is the case, we want to catch this 404 and simply return no data instead
     */
     static catch404(error, continueAs) {
-        return error.status === 404
-            ? Observable.of(continueAs)
-            : Observable.throw(error);
+        return error.status === 404 ? of(continueAs) : throwError(error);
     }
 }

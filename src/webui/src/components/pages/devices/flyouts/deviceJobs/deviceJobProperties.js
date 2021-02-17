@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Observable } from "rxjs";
+import { from } from "rxjs";
 import update from "immutability-helper";
 
 import { IoTHubManagerService } from "services";
@@ -34,6 +34,7 @@ import {
     SummarySection,
     Svg,
 } from "components/shared";
+import { distinct, map, mergeMap, reduce } from "rxjs/operators";
 
 update.extend("$autoArray", (val, obj) => update(obj || [], val));
 
@@ -139,101 +140,108 @@ export class DeviceJobProperties extends LinkedComponent {
             return { id: device.id, properties };
         });
 
-        this.populateStateSubscription = Observable.from(devicesWithProps)
-            .map(({ properties }) => new Set(Object.keys(properties)))
-            .reduce((commonProperties, deviceProperties) =>
-                commonProperties
-                    ? new Set(
-                          [...commonProperties].filter((property) =>
-                              deviceProperties.has(property)
+        this.populateStateSubscription = from(devicesWithProps)
+            .pipe(
+                map(({ properties }) => new Set(Object.keys(properties))),
+                reduce((commonProperties, deviceProperties) =>
+                    commonProperties
+                        ? new Set(
+                              [...commonProperties].filter((property) =>
+                                  deviceProperties.has(property)
+                              )
                           )
-                      )
-                    : deviceProperties
-            ) // At this point, a stream of a single event. A common set of properties.
-            .flatMap((commonPropertiesSet) =>
-                Observable.from(devicesWithProps)
-                    .flatMap(({ properties }) => Object.entries(properties))
-                    .filter(([property]) => commonPropertiesSet.has(property))
-            )
-            .distinct(
-                ([propertyName, propertyVal]) =>
-                    `${propertyName} ${propertyVal.display}`
-            )
-            .reduce(
-                (acc, [propertyName, propertyVal]) =>
-                    update(acc, {
-                        [propertyName]: {
-                            $autoArray: {
-                                $push: [propertyVal],
-                            },
-                        },
-                    }),
-                {}
-            )
-            .flatMap((propertyToValMap) => Object.entries(propertyToValMap))
-            .reduce(
-                (newState, [name, values]) => {
-                    const valueData = values.reduce(
-                        (
-                            valAcc,
-                            { reported, desired, display, inSync, isJSON }
-                        ) => {
-                            if (!valAcc.reported) {
-                                valAcc.reported = reported;
-                                valAcc.display = display;
-                            }
-                            if (!inSync) {
-                                valAcc.anyOutOfSync = true;
-                            }
-                            if (reported !== valAcc.reported) {
-                                valAcc.reported =
-                                    propertyJobConstants.multipleValues;
-                                valAcc.display = valAcc.anyOutOfSync
-                                    ? t(
-                                          "devices.flyouts.jobs.properties.syncing",
-                                          {
-                                              reportedPropertyValue:
-                                                  propertyJobConstants.multipleValues,
-                                              desiredPropertyValue: "",
-                                          }
-                                      )
-                                    : propertyJobConstants.multipleValues;
-                            }
-                            if (!isNumeric(reported)) {
-                                valAcc.type = propertyJobConstants.stringType;
-                            }
-                            valAcc.isJSON = isJSON;
-                            return valAcc;
-                        },
-                        {
-                            reported: undefined,
-                            display: undefined,
-                            anyOutOfSync: false,
-                            type: propertyJobConstants.numberType,
-                            isJSON: false,
-                        }
-                    );
-                    return update(newState, {
-                        commonProperties: {
-                            $push: [
-                                {
-                                    name,
-                                    value: valueData.display,
-                                    jsonValue: {
-                                        jsObject: valueData.display,
-                                    },
-                                    type: valueData.type,
-                                    readOnly:
-                                        name ===
-                                            propertyJobConstants.firmware ||
-                                        valueData.anyOutOfSync,
-                                    isJSON: valueData.isJSON,
+                        : deviceProperties
+                ), // At this point, a stream of a single event. A common set of properties.
+                mergeMap((commonPropertiesSet) =>
+                    from(devicesWithProps)
+                        .flatMap(({ properties }) => Object.entries(properties))
+                        .filter(([property]) =>
+                            commonPropertiesSet.has(property)
+                        )
+                ),
+                distinct(
+                    ([propertyName, propertyVal]) =>
+                        `${propertyName} ${propertyVal.display}`
+                ),
+                reduce(
+                    (acc, [propertyName, propertyVal]) =>
+                        update(acc, {
+                            [propertyName]: {
+                                $autoArray: {
+                                    $push: [propertyVal],
                                 },
-                            ],
-                        },
-                    });
-                },
-                { ...initialState, jobName: this.state.jobName }
+                            },
+                        }),
+                    {}
+                ),
+                mergeMap((propertyToValMap) =>
+                    Object.entries(propertyToValMap)
+                ),
+                reduce(
+                    (newState, [name, values]) => {
+                        const valueData = values.reduce(
+                            (
+                                valAcc,
+                                { reported, desired, display, inSync, isJSON }
+                            ) => {
+                                if (!valAcc.reported) {
+                                    valAcc.reported = reported;
+                                    valAcc.display = display;
+                                }
+                                if (!inSync) {
+                                    valAcc.anyOutOfSync = true;
+                                }
+                                if (reported !== valAcc.reported) {
+                                    valAcc.reported =
+                                        propertyJobConstants.multipleValues;
+                                    valAcc.display = valAcc.anyOutOfSync
+                                        ? t(
+                                              "devices.flyouts.jobs.properties.syncing",
+                                              {
+                                                  reportedPropertyValue:
+                                                      propertyJobConstants.multipleValues,
+                                                  desiredPropertyValue: "",
+                                              }
+                                          )
+                                        : propertyJobConstants.multipleValues;
+                                }
+                                if (!isNumeric(reported)) {
+                                    valAcc.type =
+                                        propertyJobConstants.stringType;
+                                }
+                                valAcc.isJSON = isJSON;
+                                return valAcc;
+                            },
+                            {
+                                reported: undefined,
+                                display: undefined,
+                                anyOutOfSync: false,
+                                type: propertyJobConstants.numberType,
+                                isJSON: false,
+                            }
+                        );
+                        return update(newState, {
+                            commonProperties: {
+                                $push: [
+                                    {
+                                        name,
+                                        value: valueData.display,
+                                        jsonValue: {
+                                            jsObject: valueData.display,
+                                        },
+                                        type: valueData.type,
+                                        readOnly:
+                                            name ===
+                                                propertyJobConstants.firmware ||
+                                            valueData.anyOutOfSync,
+                                        isJSON: valueData.isJSON,
+                                    },
+                                ],
+                            },
+                        });
+                    },
+                    { ...initialState, jobName: this.state.jobName }
+                )
             )
             .subscribe((newState) => this.setState(newState));
     };

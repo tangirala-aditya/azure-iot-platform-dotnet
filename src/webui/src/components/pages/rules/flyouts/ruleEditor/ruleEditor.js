@@ -34,6 +34,7 @@ import {
 import { RuleSummaryContainer as RuleSummary } from "../ruleSummary";
 
 import "./ruleEditor.scss";
+import { map, mergeMap } from "rxjs/operators";
 
 const Section = Flyout.Section;
 
@@ -306,19 +307,20 @@ export class RuleEditor extends LinkedComponent {
                 this.subscription = IoTHubManagerService.getDevices(
                     group.conditions
                 )
-                    .flatMap(
-                        (devices) => {
+                    .pipe(
+                        mergeMap((devices) => {
                             const deviceIds = devices.items
                                     .map((dvc) => `'${dvc.id}'`)
                                     .join(","),
                                 modulesQuery = `deviceId IN [${deviceIds}]`;
                             return IoTHubManagerService.getModulesFields(
                                 modulesQuery
+                            ).pipe(
+                                map((devices, modules) => {
+                                    return [devices.items, modules];
+                                })
                             );
-                        },
-                        (devices, modules) => {
-                            return [devices.items, modules];
-                        }
+                        })
                     )
                     .subscribe(
                         (groupDevicesAndModules) => {

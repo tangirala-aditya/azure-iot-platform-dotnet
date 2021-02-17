@@ -14,6 +14,7 @@ import "../../../../node_modules/ag-grid-community/dist/styles/ag-theme-material
 import "./pcsGrid.scss";
 import { Btn } from "../forms";
 import { ComponentArray } from "../componentArray/componentArray";
+import { debounceTime, filter } from "rxjs/operators";
 
 /**
  * PcsGrid is a helper wrapper around AgGrid. The primary functionality of this wrapper
@@ -49,12 +50,14 @@ export class PcsGrid extends Component {
     componentDidMount() {
         this.subscriptions.push(
             this.resizeEvents
-                .debounceTime(Config.gridResizeDebounceTime)
-                .filter(
-                    () =>
-                        !!this.gridApi &&
-                        !!this.props.sizeColumnsToFit &&
-                        window.outerWidth >= Config.gridMinResize
+                .pipe(
+                    debounceTime(Config.gridResizeDebounceTime),
+                    filter(
+                        () =>
+                            !!this.gridApi &&
+                            !!this.props.sizeColumnsToFit &&
+                            window.outerWidth >= Config.gridMinResize
+                    )
                 )
                 .subscribe(() => this.gridApi.sizeColumnsToFit())
         );

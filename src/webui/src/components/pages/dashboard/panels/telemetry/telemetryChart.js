@@ -2,13 +2,14 @@
 
 import React, { Component } from "react";
 import update from "immutability-helper";
-import { Observable } from "rxjs";
+import { from } from "rxjs";
 import "tsiclient";
 //import { PivotMenu } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Pivot";
 import { AdvancedPivotMenu } from "./advancedPivotMenu.js";
 import { toDiagnosticsModel } from "services/models";
 
 import "./telemetryChart.scss";
+import { filter, map, mergeMap, reduce } from "rxjs/operators";
 var jstz = require("jstz");
 var timezone = jstz.determine().name();
 
@@ -40,21 +41,22 @@ export const chartColorObjects = chartColors.map((color) => ({ color }));
  * @param items An array of telemetry messages from the getTelemetry response object
  */
 export const transformTelemetryResponse = (getCurrentTelemetry) => (items) =>
-    Observable.from(items)
-        .flatMap(({ data, deviceId, time }) =>
-            Observable.from(Object.keys(data))
-                .filter(
+    from(items).pipe(
+        mergeMap(({ data, deviceId, time }) =>
+            from(Object.keys(data)).pipe(
+                filter(
                     (metric) =>
                         metric.indexOf("Unit") < 0 && !isNaN(data[metric])
-                )
-                .map((metric) => ({
+                ),
+                map((metric) => ({
                     metric,
                     deviceId,
                     time,
                     data: data[metric],
                 }))
-        )
-        .reduce(
+            )
+        ),
+        reduce(
             (acc, { metric, deviceId, time, data }) =>
                 update(acc, {
                     [metric]: {
@@ -76,9 +78,9 @@ export const transformTelemetryResponse = (getCurrentTelemetry) => (items) =>
                     },
                 }),
             getCurrentTelemetry()
-        )
+        ),
         // Remove overflowing items
-        .map((telemetry) => {
+        map((telemetry) => {
             Object.keys(telemetry).forEach((metric) => {
                 Object.keys(telemetry[metric]).forEach((deviceId) => {
                     const datums = Object.keys(telemetry[metric][deviceId][""]);
@@ -98,7 +100,8 @@ export const transformTelemetryResponse = (getCurrentTelemetry) => (items) =>
                 });
             });
             return telemetry;
-        });
+        })
+    );
 
 export class TelemetryChart extends Component {
     static telemetryChartCount = 0;

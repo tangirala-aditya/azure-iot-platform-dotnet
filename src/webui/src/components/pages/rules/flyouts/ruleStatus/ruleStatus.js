@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
-import { Observable } from "rxjs";
+import { from } from "rxjs";
 import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle";
 
 import { AjaxError, Btn, BtnToolbar, Protected } from "components/shared";
@@ -12,6 +12,7 @@ import Flyout from "components/shared/flyout";
 import { RuleSummaryContainer as RuleSummary } from "../ruleSummary";
 
 import "./ruleStatus.scss";
+import { mergeMap, map } from "rxjs/operators";
 
 export class RuleStatus extends Component {
     constructor(props) {
@@ -63,12 +64,19 @@ export class RuleStatus extends Component {
             ...rule,
             enabled: status,
         }));
-        this.subscription = Observable.from(requestPropList)
-            .flatMap((rule) =>
-                TelemetryService.updateRule(
-                    rule.id,
-                    toEditRuleRequestModel(rule)
-                ).map((updatedRule) => ({ ...rule, eTag: updatedRule.eTag }))
+        this.subscription = from(requestPropList)
+            .pipe(
+                mergeMap((rule) =>
+                    TelemetryService.updateRule(
+                        rule.id,
+                        toEditRuleRequestModel(rule)
+                    ).pipe(
+                        map((updatedRule) => ({
+                            ...rule,
+                            eTag: updatedRule.eTag,
+                        }))
+                    )
+                )
             )
             .subscribe(
                 (updatedRule) => {

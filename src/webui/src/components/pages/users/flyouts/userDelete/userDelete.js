@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
-import { Observable } from "rxjs";
+import { from } from "rxjs";
 import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle";
 
 import { IdentityGatewayService } from "services";
@@ -23,6 +23,7 @@ import {
 } from "components/shared";
 
 import "./userDelete.scss";
+import { map, mergeMap } from "rxjs/operators";
 
 export class UserDelete extends Component {
     constructor(props) {
@@ -80,17 +81,22 @@ export class UserDelete extends Component {
         event.preventDefault();
         this.setState({ isPending: true, error: null });
 
-        this.subscription = Observable.from(this.state.users)
-            .flatMap(
-                ({ id }) => IdentityGatewayService.deleteUser(id).map(() => id) // On success return id
+        this.subscription = from(this.state.users)
+            .pipe(
+                mergeMap(
+                    ({ id }) =>
+                        IdentityGatewayService.deleteUser(id).pipe(
+                            map(() => id)
+                        ) // On success return id
+                )
             )
             .subscribe(
-                function (deletedUserId) {
+                (deletedUserId) => {
                     this.setState({
                         successCount: this.state.successCount + 1,
                     });
                     this.props.deleteUsers([deletedUserId]);
-                }.bind(this),
+                }, // TODO: verify
                 (error) =>
                     this.setState({
                         error,

@@ -2,7 +2,7 @@
 
 // <reducer>
 import "rxjs";
-import { Observable } from "rxjs";
+import { of } from "rxjs";
 import moment from "moment";
 import { schema, normalize } from "normalizr";
 import update from "immutability-helper";
@@ -19,21 +19,21 @@ import {
     getPending,
     getError,
 } from "store/utilities";
+import { catchError, map } from "rxjs/operators";
 
 // ========================= Epics - START
 const handleError = (fromAction) => (error) =>
-    Observable.of(
-        redux.actions.registerError(fromAction.type, { error, fromAction })
-    );
+    of(redux.actions.registerError(fromAction.type, { error, fromAction }));
 
 export const epics = createEpicScenario({
     /** Loads the example items */
     fetchExamples: {
         type: "EXAMPLES_FETCH",
         epic: (fromAction) =>
-            ExampleService.getExampleItems()
-                .map(toActionCreator(redux.actions.updateExamples, fromAction))
-                .catch(handleError(fromAction)),
+            ExampleService.getExampleItems().pipe(
+                map(toActionCreator(redux.actions.updateExamples, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
 });
 // ========================= Epics - END

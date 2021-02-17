@@ -77,10 +77,10 @@ export class SystemAdminDelete extends LinkedComponent {
         IdentityGatewayService.deleteSystemAdmin(
             this.state.formData.userId
         ).subscribe(
-            function (deletedUserId) {
+            (deletedUserId) => {
                 this.props.deleteUsers([deletedUserId]);
                 this.props.getAllSystemAdmins();
-            }.bind(this),
+            }, // TODO: verify
             (error) =>
                 this.setState({
                     error,

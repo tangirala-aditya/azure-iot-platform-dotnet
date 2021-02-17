@@ -8,8 +8,6 @@ parameters:
   helmVersion:
   imageTag:
 
-
-jobs:
 - job: sdfiapmpoawih
   displayName: 'testing conditionals'
   condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager'))

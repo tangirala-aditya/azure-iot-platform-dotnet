@@ -71,3 +71,4 @@ stages:
           environmentCategory: $(environmentCategory)
           imageTag: $(imageTag)
           blueGreen: false
+          services: $(services)

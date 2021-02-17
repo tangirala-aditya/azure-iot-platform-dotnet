@@ -97,7 +97,7 @@ jobs:
             helmVersion: $(helmVersion)
             imageTag: ${{parameters.imageTag}}
 
-      - ${{ if eq(parameters.blueGreen,true) }}:
+      - ${{ if and(eq(parameters.blueGreen,true), eq(variables['serviceName'], 'asa-manager')) }}:
         - template: steps-deploy-blue-green-service.yaml
           parameters:
             aksName: $(aksName)

@@ -86,8 +86,8 @@ jobs:
         displayName: Print job variables
         condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager'))
 
-      - ${{ if eq(parameters.blueGreen,false) }}:
-        condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager')) 
+      - ${{ if (eq(parameters.blueGreen,false)) and (eq(variables['serviceName'], 'asa-manager'))}}:
+        condition: and(succeeded(), ) 
         - template: steps-deploy-individual-service.yaml
           parameters:
             aksName: $(aksName)
@@ -99,7 +99,7 @@ jobs:
             helmVersion: $(helmVersion)
             imageTag: ${{parameters.imageTag}}
 
-      - ${{ if eq(parameters.blueGreen,true) }}:
+      - ${{ if (eq(parameters.blueGreen,true)) and (eq(variables['serviceName'], 'asa-manager'))}}:
         condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager')) 
         - template: steps-deploy-blue-green-service.yaml
           condition: and(succeeded(), eq(variables['serviceName'], 'asa-manager'))

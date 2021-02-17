@@ -18,14 +18,14 @@ steps:
       echo "serviceProbesEnabled: ${{parameters.serviceProbesEnabled}}"
       echo "helmVersion: ${{parameters.helmVersion}}"
     displayName: Print step variables
-    condition: and(succeeded(), eq(parameters.serviceName, 'asa-manager'))
+    condition: and(succeeded(), eq(${{parameters.serviceName}}, 'asa-manager'))
 
   - checkout: self
     displayName: Checkout repository
 
   - task: HelmInstaller@1
     displayName: Install Helm
-    condition: and(succeeded(), eq(parameters.serviceName, 'asa-manager'))
+    condition: and(succeeded(), eq(${{parameters.serviceName}}, 'asa-manager'))
     inputs:
       helmVersionToInstall: ${{parameters.helmVersion}}
 

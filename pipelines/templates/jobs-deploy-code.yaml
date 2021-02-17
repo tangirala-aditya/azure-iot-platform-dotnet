@@ -87,7 +87,7 @@ jobs:
           echo "services: ${{parameters.services}}"
         displayName: Print job variables
 
-      - ${{ if and(eq(parameters.blueGreen,false), eq($[variables.serviceName], parameters.services)) }}:
+      - ${{ if and(eq(parameters.blueGreen,false), eq(variables.serviceName, parameters.services)) }}:
         - template: steps-deploy-individual-service.yaml
           parameters:
             aksName: $(aksName)

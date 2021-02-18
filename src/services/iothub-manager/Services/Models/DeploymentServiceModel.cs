@@ -100,6 +100,8 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
 
         public string TargetCondition { get; set; }
 
+        public string JobId { get; set; }
+
         private void VerifyConfigurationLabel(Configuration deployment, string labelName)
         {
             if (!deployment.Labels.ContainsKey(labelName))

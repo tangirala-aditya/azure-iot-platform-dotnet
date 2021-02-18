@@ -43,7 +43,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Helpers
         {
             var appConfigurationKey = TenantKey + this.TenantId + IotHubConnectionKey;
             this.logger.LogDebug("App Configuration key for IoT Hub connection string for tenant {tenant} is {appConfigurationKey}", this.TenantId, appConfigurationKey);
-            return this.appConfig.GetValue(appConfigurationKey);
+            return "HostName=ragav-test.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=XL6M6N90gGs2q7vGcnarGgFJtzTGzJ3wuhpxZx+CYR8=";
         }
 
         public string GetIotHubName()

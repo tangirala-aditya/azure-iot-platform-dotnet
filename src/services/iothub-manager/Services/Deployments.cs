@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Queues;
 using Microsoft.Azure.Devices;
+using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Logging;
@@ -20,6 +21,7 @@ using Mmm.Iot.Common.Services.External.StorageAdapter;
 using Mmm.Iot.Common.Services.Helpers;
 using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.Config.Services.Models;
+using Mmm.Iot.IoTHubManager.Services.Extensions;
 using Mmm.Iot.IoTHubManager.Services.External;
 using Mmm.Iot.IoTHubManager.Services.Helpers;
 using Mmm.Iot.IoTHubManager.Services.Models;
@@ -124,7 +126,9 @@ namespace Mmm.Iot.IoTHubManager.Services
             }
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<DeploymentServiceModel> CreateAsync(DeploymentServiceModel model, string userId, string tenantId)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             if (string.IsNullOrEmpty(model.DeviceGroupId))
             {
@@ -162,39 +166,22 @@ namespace Mmm.Iot.IoTHubManager.Services
 
             var configuration = ConfigurationsHelper.ToHubConfiguration(model);
 
-            // Update the Metrics related to previous deployment which targets the same device group as the metrics
-            // will be overriden once the new deployment gets applied to the devices.
-            var deviceMetrics = await this.UpdateMetricsOfCurrentDeployment(model.DeviceGroupId, model.Priority, tenantId);
-            bool shouldMarkAsLatest = deviceMetrics.ShouldMarkAsLatest;
+            var result = JSONConverter.DotNotationToDictionary(configuration.Content.DeviceContent);
+            var jsonResult = JsonConvert.SerializeObject(result);
+            var desiredTwin = JsonConvert.DeserializeObject<Twin>(jsonResult);
 
-            var deploymentResult = await this.tenantHelper.GetRegistry().AddConfigurationAsync(configuration);
-
-            // TODO: Add specific exception handling when exception types are exposed
-            // https://github.com/Azure/azure-iot-sdk-csharp/issues/649
-            var result = new DeploymentServiceModel(deploymentResult);
-
-            // Setting the id so that deployment id is populated
-            model.Id = result.Id;
-            model.CreatedDateTimeUtc = result.CreatedDateTimeUtc;
-
-            // Add latest tag to deployment if deployment has highest priority for the device group.
-            if (shouldMarkAsLatest)
+            var jobId = Guid.NewGuid().ToString();
+            try
             {
-                if (model.Tags == null)
-                {
-                    model.Tags = new List<string>();
-                }
-
-                model.Tags.Add(LatestTag);
+                await this.tenantHelper.GetJobClient().ScheduleTwinUpdateAsync(jobId, configuration.TargetCondition, desiredTwin, DateTime.UtcNow, 600);
             }
-            else
+            catch (Exception ex)
             {
-                // Update the Device Statuses for the DeploymentId for future references.
-                model.DeploymentMetrics = result.DeploymentMetrics;
+                throw new Exception(ex.Message);
             }
 
-            // Store the deployment details in Cosmos DB
-            await this.StoreDeploymentInSecondaryStorage(model, userId);
+            model.JobId = jobId;
+            model.Id = configuration.Id;
 
             // Log a custom event to Application Insights
             // this.deploymentLog.LogDeploymentCreate(model, tenantId, userId);

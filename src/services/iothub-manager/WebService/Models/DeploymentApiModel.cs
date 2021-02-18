@@ -55,6 +55,7 @@ namespace Mmm.Iot.IoTHubManager.WebService.Models
             this.CreatedBy = serviceModel.CreatedBy;
             this.ModifiedDate = serviceModel.ModifiedDate;
             this.ModifiedBy = serviceModel.ModifiedBy;
+            this.JobId = serviceModel.JobId;
         }
 
         [JsonProperty(PropertyName = "Id")]
@@ -108,6 +109,9 @@ namespace Mmm.Iot.IoTHubManager.WebService.Models
 
         [JsonProperty("IsLatest")]
         public bool IsLatest { get; set; }
+
+        [JsonProperty("JobId")]
+        public string JobId { get; set; }
 
         public DeploymentServiceModel ToServiceModel()
         {

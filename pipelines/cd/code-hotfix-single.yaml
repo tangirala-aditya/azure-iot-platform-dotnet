@@ -71,4 +71,6 @@ stages:
           environmentCategory: $(environmentCategory)
           imageTag: $(imageTag)
           blueGreen: false
-          services: $(services)
+          serviceName: $(serviceName)
+          servicePort: $(servicePort)
+          serviceProbesEnabled: $(serviceProbesEnabled)

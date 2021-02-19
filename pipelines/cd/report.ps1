@@ -7,6 +7,7 @@ Param(
     $AzureDevOpsPersonalAccessToken
 )
 
+
 Class SerenityEnvironments : System.Management.Automation.IValidateSetValuesGenerator {
     [String[]] GetValidValues() {
         return Get-SerenityEnvironmentNames

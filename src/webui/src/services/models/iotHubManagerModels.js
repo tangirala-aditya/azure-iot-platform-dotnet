@@ -8,8 +8,10 @@ import uuid from "uuid/v4";
 // Contains methods for converting service response
 // object to UI friendly objects
 
-export const toDevicesModel = (response = {}) =>
-    getItems(response).map(toDeviceModel);
+export const toDevicesModel = (response = {}) => {
+    var items = getItems(response).map(toDeviceModel);
+    return { items, continuationToken: response.ContinuationToken };
+};
 
 export const toDeviceModel = (device = {}) => {
     const modelData = camelCaseReshape(device, {
@@ -21,6 +23,8 @@ export const toDeviceModel = (device = {}) => {
             "properties.reported.telemetry": "telemetry",
             "properties.reported.type": "type",
             "properties.reported.firmware.currentFwVersion": "currentFwVersion",
+            "previousProperties.reported.firmware.currentFwVersion":
+                "previousFwVersion",
             "properties.reported.firmware.lastFwUpdateStartTime":
                 "lastFwUpdateStartTime",
             "properties.reported.firmware.lastFwUpdateEndTime":
@@ -53,6 +57,11 @@ export const toDeviceModel = (device = {}) => {
             $set: modelData.currentFwVersion
                 ? modelData.currentFwVersion
                 : dot.pick("Properties.Reported.Firmware", device),
+        },
+        previousFirmware: {
+            $set: modelData.previousFwVersion
+                ? modelData.previousFwVersion
+                : dot.pick("PreviousProperties.Reported.Firmware", device),
         },
     });
 };
@@ -292,14 +301,34 @@ export const toEdgeAgentsModel = (response = []) =>
 export const toDevicesDeploymentHistoryModel = (response = []) =>
     getItems(response).map(toDeviceDeploymentHistoryModel);
 
-export const toDeviceDeploymentHistoryModel = (twinServiceModel = {}) => {
-    if (twinServiceModel.Reported && twinServiceModel.Reported.firmware) {
-        var modelData = {
-            firmwareVersion:
-                twinServiceModel.Reported.firmware.currentFwVersion,
-            startTime: twinServiceModel.Reported.firmware.lastFwUpdateStartTime,
-            endTime: twinServiceModel.Reported.firmware.lastFwUpdateEndTime,
-        };
-        return modelData;
-    }
+export const toDeviceDeploymentHistoryModel = (deploymentHistoryModel = {}) => {
+    const modelData = camelCaseReshape(deploymentHistoryModel, {
+        deploymentName: "deploymentName",
+        deploymentId: "deploymentId",
+        "twin.reportedProperties.firmware.currentFwVersion": "currentFwVersion",
+        "twin.reportedProperties.firmware.lastFwUpdateEndTime":
+            "lastFwUpdateEndTime",
+    });
+
+    return update(modelData, {
+        firmwareVersion: {
+            $set: modelData.currentFwVersion
+                ? modelData.currentFwVersion
+                : dot.pick(
+                      "twin.reportedProperties.firmware",
+                      deploymentHistoryModel
+                  ),
+        },
+        date: {
+            $set: modelData.lastFwUpdateEndTime
+                ? modelData.lastFwUpdateEndTime
+                : dot.pick("lastUpdatedDateTimeUtc", deploymentHistoryModel),
+        },
+    });
 };
+
+export const toDeviceStatisticsModel = (response = {}) =>
+    camelCaseReshape(response, {
+        totalDeviceCount: "totalDeviceCount",
+        connectedDeviceCount: "connectedDeviceCount",
+    });

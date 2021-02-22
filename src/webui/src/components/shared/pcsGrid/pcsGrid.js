@@ -7,6 +7,7 @@ import Config from "app.config";
 import { isFunc } from "utilities";
 import { Indicator } from "../indicator/indicator";
 import { ROW_HEIGHT } from "components/shared/pcsGrid/pcsGridConfig";
+import { SearchInput } from "components/shared";
 
 import "../../../../node_modules/ag-grid-community/src/styles/ag-grid.scss";
 import "../../../../node_modules/ag-grid-community/src/styles/ag-theme-dark.scss";
@@ -110,6 +111,7 @@ export class PcsGrid extends Component {
      */
     refreshRows = () => {
         if (this.gridApi && isFunc(this.gridApi.updateRowData)) {
+            this.gridApi.setQuickFilter("");
             this.gridApi.updateRowData({ update: [] });
         }
     };
@@ -154,6 +156,12 @@ export class PcsGrid extends Component {
         }
     };
 
+    searchOnChange = ({ target: { value } }) => {
+        if (this.gridApi) {
+            this.gridApi.setQuickFilter(value);
+        }
+    };
+
     render() {
         const {
                 onSoftSelectChange,
@@ -194,14 +202,25 @@ export class PcsGrid extends Component {
         return (
             <ComponentArray>
                 {rowData && (
-                    <div className="expand-col-container">
-                        <Btn
-                            onClick={this.expandColumns}
-                            className="expand-columns"
-                            icon="chevronRightMed"
-                        >
-                            Expand Columns
-                        </Btn>
+                    <div className="flex-container">
+                        {this.props.searchPlaceholder && (
+                            <div className="flex-child">
+                                <SearchInput
+                                    onChange={this.searchOnChange}
+                                    placeholder={this.props.searchPlaceholder}
+                                    aria-label={this.props.searchAreaLabel}
+                                />
+                            </div>
+                        )}
+                        <div className="flex-child">
+                            <Btn
+                                onClick={this.expandColumns}
+                                className="expand-columns"
+                                icon="chevronRightMed"
+                            >
+                                Expand Columns
+                            </Btn>
+                        </div>
                     </div>
                 )}
                 <div

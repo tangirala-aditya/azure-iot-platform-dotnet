@@ -29,7 +29,6 @@ stages:
               kubernetesVersion: 1.18.2
               azureServiceConnectionName: 3M-CRSLAD16-BBIoTP-Dev
               serenityEnvironment: crslDev
-
   - stage: ggkDev
     dependsOn: []
     displayName: GGK dev

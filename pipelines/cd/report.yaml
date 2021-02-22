@@ -15,7 +15,6 @@ schedules:
       include:
         - master
     always: true
-    
 stages:
   - stage: crslDev
     dependsOn: []

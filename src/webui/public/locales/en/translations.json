@@ -5,8 +5,10 @@
         "profile": "Profile",
         "more": "More",
         "getStarted": "Get started",
-        "documentation": "Documentation",
-        "sendSuggestion": "Send a suggestion"
+        "iotAcceleratorDocumentation": "IoT Accelerator Documentation",
+        "publicDocumentation": "Public Documentation",
+        "innerSourceDocumentation": "InnerSource Documentation",
+        "devopsDocumentation": "Devops Documentation"
     },
     "globalNav": {
         "expand": "Expand Side Navigation",
@@ -79,7 +81,7 @@
     },
     "deviceGroupDropDown": {
         "ariaLabel": "Device group",
-        "modals" : {
+        "modals": {
             "copyLink": {
                 "contextMenuName": "Copy Link",
                 "title": "Copy Link"
@@ -166,13 +168,15 @@
                     },
                     "deployment": {
                         "id": "When deploying your package, this value will be replaced by the ID of your deployment"
-                    }
+                    },
+                    "uniqueId":"Parent only. UniqueId used to attach to a Firmware Package creation."
                 }
             }
         }
     },
     "helpFlyout": {
-        "title": "Documentation"
+        "platformTitle": "Platform Documentation",
+        "microsoftTitle": "Microsoft Documentation"
     },
     "profileFlyout": {
         "title": "User Profile",
@@ -220,7 +224,8 @@
             "GT": "> Greater than",
             "LT": "< Less than",
             "GE": ">= Greater than or equal",
-            "LE": "<= Less than or equal"
+            "LE": "<= Less than or equal",
+            "LK": "Contains"
         },
         "value": "Value",
         "valuePlaceholder": "Enter value",
@@ -237,8 +242,11 @@
             "operatorCantBeEmpty": "Operator is required",
             "valueCantBeEmpty": "Value is required",
             "typeCantBeEmpty": "Type is required",
-            "selectedType": "Must be of the selected type"
-        }
+            "selectedType": "Must be of the selected type",
+            "statusCantBeEmpty": "Status is Required"
+        },
+        "status": "Status",
+        "statusPlaceholder": "Select Status"
     },
     "deviceGroupsFlyout": {
         "actions": "Actions",
@@ -403,12 +411,17 @@
     },
     "devices": {
         "title": "Device Explorer",
+        "titleDescription": "Explore devices within the current device group.",
         "ariaLabel": "Search devices",
         "searchPlaceholder": "Search devices...",
         "noneFound": "No devices found.",
         "refresh": "Refresh",
+        "deviceSearchTitle": "Device Search",
+        "deviceSearchTitleDescription": "Search across all devices.",
+        "downloadDeviceReport": "Download",
         "showTelemetry": "Show telemetry",
         "returnToDevices": "Devices",
+        "loadMore": "Load more",
         "grid": {
             "connected": "Connected",
             "deviceName": "Device name",
@@ -485,9 +498,9 @@
                     "title": "Device Deployments",
                     "description": "Deployment History of device",
                     "noneExist": "No history present for this device",
-                    "firmwareVersion" : "Firmware Version",
-                    "startDate": "Start Date Time",
-                    "endDate": "End Date Time"
+                    "deploymentName": "Deployment name",
+                    "firmwareVersion": "Firmware Version",
+                    "date": "Date"
                 }
             },
             "delete": {
@@ -941,6 +954,7 @@
                 "name": "Name",
                 "deploymentStatus": "Deployment Status",
                 "firmware": "Firmware",
+                "previousFirmware": "Previous Firmware",
                 "lastMessage": "Last Message",
                 "start": "Start",
                 "end": "End"
@@ -1059,13 +1073,13 @@
         "firmware": "Firmware",
         "custom": "Custom"
     },
-  "modal": {
-    "delete": "Delete",
-    "cancel": "Cancel",
-    "close": "Close",
-    "copy": "Copy",
-    "ok": "Ok"
-  },
+    "modal": {
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "close": "Close",
+        "copy": "Copy",
+        "ok": "Ok"
+    },
     "walkthrough": {
         "tabs": {
             "dashboard": "Dashboard",

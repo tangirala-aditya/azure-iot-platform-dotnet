@@ -13,6 +13,7 @@ using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.Documents;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.Common.Services.Config;
+using Mmm.Iot.Common.Services.External.CosmosDb;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
 using Mmm.Iot.Common.Services.Helpers;
 using Mmm.Iot.Common.Services.Models;
@@ -171,6 +172,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
         private Mock<IConfigClient> packageConfigClient;
         private Mock<IStorageAdapterClient> storageAdapterClient;
         private Mock<IDevices> devices;
+        private Mock<IStorageClient> storageClient;
         private string packageTypeLabel = "Type";
 
         public DeploymentsTest()
@@ -183,6 +185,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
             this.tenantHelper.Setup(e => e.GetRegistry()).Returns(this.registry.Object);
             TelemetryClient mockTelemetryClient = this.InitializeMockTelemetryChannel();
             this.devices = new Mock<IDevices>();
+            this.storageClient = new Mock<IStorageClient>();
 
             MockIdentity.MockClaims("one");
             this.deployments = new Deployments(
@@ -198,7 +201,9 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
                 this.tenantHelper.Object,
                 this.packageConfigClient.Object,
                 this.storageAdapterClient.Object,
-                this.devices.Object);
+                this.devices.Object,
+                this.storageClient.Object,
+                null);
         }
 
         [Theory]
@@ -288,7 +293,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
             var configurations = new List<Configuration>();
             configurations.Add(existingConfig);
 
-            this.registry.Setup(r => r.GetConfigurationsAsync(100)).ReturnsAsync(configurations);
+            this.registry.Setup(r => r.GetConfigurationsAsync(1000)).ReturnsAsync(configurations);
             this.tenantHelper.Setup(e => e.GetRegistry()).Returns(this.registry.Object);
 
             // Act
@@ -321,6 +326,9 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
                 .ReturnsAsync(configuration);
             this.tenantHelper.Setup(e => e.GetRegistry()).Returns(this.registry.Object);
 
+            var deploymentStorageData = this.CreateDeploymentStorageData(0);
+            this.storageAdapterClient.Setup(r => r.GetAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(deploymentStorageData);
+
             // Act & Assert
             await Assert.ThrowsAsync(
                 Type.GetType(ResourceNotFoundException),
@@ -341,7 +349,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
                 configurations.Add(this.CreateConfiguration(i, true));
             }
 
-            this.registry.Setup(r => r.GetConfigurationsAsync(100)).ReturnsAsync(configurations);
+            this.registry.Setup(r => r.GetConfigurationsAsync(1000)).ReturnsAsync(configurations);
             this.tenantHelper.Setup(e => e.GetRegistry()).Returns(this.registry.Object);
 
             // Act
@@ -363,7 +371,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
         {
             // Arrange
             var configurations = new List<Configuration>();
-            this.registry.Setup(r => r.GetConfigurationsAsync(100)).ReturnsAsync(configurations);
+            this.registry.Setup(r => r.GetConfigurationsAsync(1000)).ReturnsAsync(configurations);
             this.tenantHelper.Setup(e => e.GetRegistry()).Returns(this.registry.Object);
 
             var storageData = new List<ValueApiModel>();
@@ -412,6 +420,9 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
             returnedDeployment = await this.deployments.GetAsync(deploymentId);
             deviceStatuses = returnedDeployment.DeploymentMetrics.DeviceStatuses;
             Assert.Null(deviceStatuses);
+
+            deploymentStorageData = this.CreateDeploymentStorageData(0, false);
+            this.storageAdapterClient.Setup(r => r.GetAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(deploymentStorageData);
 
             returnedDeployment = await this.deployments.GetAsync("deployment0", false, false);
             deviceStatuses = returnedDeployment.DeploymentMetrics.DeviceStatuses;
@@ -465,6 +476,8 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
             this.registry.Setup(r => r.CreateQuery(It.IsAny<string>())).Returns(new ResultQuery(0));
 
             this.tenantHelper.Setup(e => e.GetRegistry()).Returns(this.registry.Object);
+            var deploymentStorageData = this.CreateDeploymentStorageData(0);
+            this.storageAdapterClient.Setup(r => r.GetAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(deploymentStorageData);
 
             // Act
             var returnedDeployment = await this.deployments.GetAsync(deploymentId);
@@ -537,6 +550,9 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
             // Assert Should return Deplyment metrics according to label
             Assert.NotNull(returnedDeployment.DeploymentMetrics.DeviceMetrics);
             Assert.Equal(3, returnedDeployment.DeploymentMetrics.DeviceMetrics.Count());
+
+            deploymentStorageData = this.CreateDeploymentStorageData(0, false);
+            this.storageAdapterClient.Setup(r => r.GetAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(deploymentStorageData);
 
             returnedDeployment = await this.deployments.GetAsync("deployment0", false, false);
             Assert.NotNull(returnedDeployment.DeploymentMetrics.DeviceMetrics);
@@ -616,7 +632,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
                 this.CreateConfiguration(1, false),
             };
 
-            this.registry.Setup(r => r.GetConfigurationsAsync(100))
+            this.registry.Setup(r => r.GetConfigurationsAsync(1000))
                 .ReturnsAsync(configurations);
             this.tenantHelper.Setup(e => e.GetRegistry()).Returns(this.registry.Object);
 
@@ -707,7 +723,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
             return conf;
         }
 
-        private ValueApiModel CreateDeploymentStorageData(int idx)
+        private ValueApiModel CreateDeploymentStorageData(int idx, bool isLatest = true)
         {
             // Arrange
             var deviceGroupId = "dvcGroupId";
@@ -731,6 +747,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
                 CreatedDateTimeUtc = DateTime.UtcNow,
                 CreatedDateTime = DateTime.UtcNow,
                 DeploymentMetrics = new DeploymentMetricsServiceModel() { DeviceStatuses = new Dictionary<string, DeploymentStatus> { { "device1", DeploymentStatus.Pending } } },
+                Tags = isLatest ? new List<string>() { "reserved.latest" } : new List<string>(),
             };
             var jsonValue = JsonConvert.SerializeObject(deployment);
             ValueApiModel value = new ValueApiModel() { Key = idx.ToString(), Data = jsonValue };

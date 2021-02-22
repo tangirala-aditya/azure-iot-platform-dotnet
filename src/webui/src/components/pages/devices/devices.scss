@@ -11,3 +11,26 @@
     .status { color: themed('colorContentText'); }
   }
 }
+
+.search-left-div{
+  width: 50%; 
+  height: 10%; 
+  float: left;
+}
+
+.cancel-right-div{
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 50%; 
+  height: 3%;
+  margin-top: 1.5%;
+}
+
+.download-deviceReport > .svg-container.btn-icon{
+  transform: rotate(180deg) !important;
+}
+
+
+.download-deviceReport{
+  padding-bottom: 15px;
+}

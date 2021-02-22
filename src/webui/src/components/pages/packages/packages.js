@@ -21,6 +21,8 @@ import {
     getParamByName,
     getFlyoutNameParam,
     getFlyoutLink,
+    getTenantIdParam,
+    copyToClipboard,
 } from "utilities";
 
 import "./packages.scss";
@@ -38,12 +40,18 @@ export class Packages extends Component {
             ...closedFlyoutState,
             contextBtns: null,
             packageJson: "testjson file",
+            packageId: null,
             selectedDeviceGroupId: undefined,
         };
     }
 
     componentWillMount() {
         if (this.props.location.search) {
+            const tenantId = getTenantIdParam(this.props.location.search);
+            this.props.checkTenantAndSwitch({
+                tenantId: tenantId,
+                redirectUrl: window.location.href,
+            });
             this.setState({
                 selectedDeviceGroupId: getDeviceGroupParam(
                     this.props.location.search
@@ -135,6 +143,7 @@ export class Packages extends Component {
             })
         );
         const flyoutLink = getFlyoutLink(
+            this.props.currentTenantId,
             this.props.deviceGroupId,
             "packageId",
             rowData.id,
@@ -143,8 +152,16 @@ export class Packages extends Component {
         this.setState({
             openFlyoutName: "package-json",
             packageJson: rowData.content,
+            packageId: rowData.id,
             flyoutLink: flyoutLink,
         });
+    };
+
+    onCellClicked = (selectedPackage) => {
+        if (selectedPackage.colDef.field === "id") {
+            console.log(selectedPackage);
+            copyToClipboard(selectedPackage.data.id);
+        }
     };
 
     render() {
@@ -165,6 +182,7 @@ export class Packages extends Component {
                 t: this.props.t,
                 getSoftSelectId: this.getSoftSelectId,
                 onSoftSelectChange: this.onSoftSelectChange,
+                onCellClicked: this.onCellClicked,
             };
 
         return (
@@ -212,6 +230,7 @@ export class Packages extends Component {
                     {this.state.openFlyoutName === "package-json" && (
                         <PackageJSONContainer
                             packageJson={this.state.packageJson}
+                            packageId={this.state.packageId}
                             onClose={this.closeFlyout}
                             flyoutLink={this.state.flyoutLink}
                         />

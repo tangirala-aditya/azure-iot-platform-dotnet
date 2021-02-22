@@ -37,8 +37,7 @@ const handleError = (fromAction) => (error) =>
             .join();
     },
     createEdgeAgentQuery = (ids) =>
-        `"deviceId IN [${ids}] AND moduleId = '$edgeAgent'"`,
-    createDevicesQuery = (ids) => `"deviceId IN [${ids}]"`;
+        `"deviceId IN [${ids}] AND moduleId = '$edgeAgent'"`;
 
 export const epics = createEpicScenario({
     /** Loads all Deployments */
@@ -78,9 +77,6 @@ export const epics = createEpicScenario({
             ) {
                 return IoTHubManagerService.getDevicesByQueryForDeployment(
                     fromAction.payload.id,
-                    createDevicesQuery(
-                        getDeployedDeviceIds(fromAction.payload)
-                    ),
                     fromAction.payload.isLatest
                 )
                     .map(
@@ -101,9 +97,6 @@ export const epics = createEpicScenario({
                 ),
                 IoTHubManagerService.getDevicesByQueryForDeployment(
                     fromAction.payload.id,
-                    createDevicesQuery(
-                        getDeployedDeviceIds(fromAction.payload)
-                    ),
                     fromAction.payload.isLatest
                 )
             )
@@ -218,7 +211,7 @@ const deploymentSchema = new schema.Entity("deployments"),
         { payload: [modules, devices], fromAction }
     ) => {
         const normalizedDevices =
-                normalize(devices, deployedDevicesListSchema).entities
+                normalize(devices.items, deployedDevicesListSchema).entities
                     .deployedDevices || {},
             normalizedModules =
                 normalize(modules, deployedDevicesListSchema).entities
@@ -243,7 +236,7 @@ const deploymentSchema = new schema.Entity("deployments"),
     },
     updateADMDeployedDevicesReducer = (state, { payload, fromAction }) => {
         const normalizedDevices =
-                normalize(payload, deployedDevicesListSchema).entities
+                normalize(payload.items, deployedDevicesListSchema).entities
                     .deployedDevices || {},
             deployedDevices = Object.keys(normalizedDevices).reduce(
                 (acc, deviceId) => ({
@@ -254,6 +247,8 @@ const deploymentSchema = new schema.Entity("deployments"),
                             normalizedDevices[deviceId].lastFwUpdateStartTime,
                         end: normalizedDevices[deviceId].lastFwUpdateEndTime,
                         firmware: normalizedDevices[deviceId].firmware,
+                        previousFirmware:
+                            normalizedDevices[deviceId].previousFirmware,
                         device: normalizedDevices[deviceId],
                     },
                 }),

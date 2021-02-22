@@ -11,6 +11,7 @@ import {
     toModuleFieldsModel,
     toJobsModel,
     toJobStatusModel,
+    toDeviceStatisticsModel,
     toDevicePropertiesModel,
     toDeploymentModel,
     toDeploymentsModel,
@@ -24,9 +25,16 @@ const ENDPOINT = Config.serviceUrls.iotHubManager;
 /** Contains methods for calling the Device service */
 export class IoTHubManagerService {
     /** Returns a list of devices */
-    static getDevices(conditions = []) {
+    static getDevices(conditions = [], cToken = null) {
+        var options = {};
+        if (cToken) {
+            options.headers = {
+                "x-ms-continuation": cToken,
+            };
+        }
+        options.timeout = 120000;
         const query = encodeURIComponent(JSON.stringify(conditions));
-        return HttpClient.get(`${ENDPOINT}devices?query=${query}`).map(
+        return HttpClient.get(`${ENDPOINT}devices?query=${query}`, options).map(
             toDevicesModel
         );
     }
@@ -113,11 +121,10 @@ export class IoTHubManagerService {
         );
     }
 
-    static getDevicesByQueryForDeployment(id, query, isLatest) {
-        return HttpClient.post(
+    static getDevicesByQueryForDeployment(id, isLatest = true) {
+        return HttpClient.get(
             `${ENDPOINT}deployments/devices/${id}?isLatest=${isLatest}`,
-            query,
-            { timeout: 120000 }
+            { timeout: 180000 }
         ).map(toDevicesModel);
     }
 
@@ -182,5 +189,23 @@ export class IoTHubManagerService {
         return HttpClient.get(
             `${ENDPOINT}devices/deploymentHistory/${deviceId}`
         ).map(toDevicesDeploymentHistoryModel);
+    }
+
+    /** Returns a device statistics */
+    static getDeviceStatistics(conditions = []) {
+        const query = encodeURIComponent(JSON.stringify(conditions));
+        return HttpClient.get(
+            `${ENDPOINT}devices/statistics?query=${query}`
+        ).map(toDeviceStatisticsModel);
+    }
+
+    /** Queries Devices */
+    static getDevicesReportByQuery(conditions = []) {
+        const query = encodeURIComponent(JSON.stringify(conditions));
+        var response = HttpClient.get(
+            `${ENDPOINT}devices/report?query=${query}`,
+            { responseType: "blob", timeout: 120000 }
+        );
+        return response;
     }
 }

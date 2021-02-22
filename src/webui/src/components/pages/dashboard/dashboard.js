@@ -12,6 +12,7 @@ import {
     getIntervalParams,
     retryHandler,
     getDeviceGroupParam,
+    getTenantIdParam,
 } from "utilities";
 import { Grid, Cell } from "./grid";
 import { PanelErrorBoundary } from "./panel";
@@ -40,6 +41,7 @@ import {
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
 
 import "./dashboard.scss";
+import { HttpClient } from "utilities/httpClient";
 
 const initialState = {
         // Telemetry data
@@ -88,7 +90,18 @@ export class Dashboard extends Component {
     }
 
     componentWillMount() {
+        const redirectUrl = HttpClient.getLocalStorageValue("redirectUrl");
+        HttpClient.removeLocalStorageItem("redirectUrl");
+        if (redirectUrl) {
+            window.location.href = redirectUrl;
+        }
+
         if (this.props.location.search) {
+            const tenantId = getTenantIdParam(this.props.location.search);
+            this.props.checkTenantAndSwitch({
+                tenantId: tenantId,
+                redirectUrl: window.location.href,
+            });
             this.setState({
                 selectedDeviceGroupId: getDeviceGroupParam(
                     this.props.location.search
@@ -416,6 +429,9 @@ export class Dashboard extends Component {
                 devices,
                 devicesError,
                 devicesIsPending,
+                deviceStatistics,
+                deviceStatisticsIsPending,
+                deviceStatisticsError,
 
                 activeDeviceGroup,
                 deviceGroups,
@@ -448,16 +464,12 @@ export class Dashboard extends Component {
                 lastRefreshed,
             } = this.state,
             // Count the number of online and offline devices
-            deviceIds = Object.keys(devices),
-            onlineDeviceCount = deviceIds.length
-                ? deviceIds.reduce(
-                      (count, deviceId) =>
-                          devices[deviceId].connected ? count + 1 : count,
-                      0
-                  )
+            onlineDeviceCount = deviceStatistics
+                ? deviceStatistics.connectedDeviceCount
                 : undefined,
-            offlineDeviceCount = deviceIds.length
-                ? deviceIds.length - onlineDeviceCount
+            offlineDeviceCount = deviceStatistics
+                ? deviceStatistics.totalDeviceCount -
+                  deviceStatistics.connectedDeviceCount
                 : undefined,
             // Add parameters to Time Series Insights Url
             timeSeriesParamUrl = timeSeriesExplorerUrl
@@ -545,11 +557,12 @@ export class Dashboard extends Component {
                                 onlineDeviceCount={onlineDeviceCount}
                                 offlineDeviceCount={offlineDeviceCount}
                                 isPending={
-                                    analyticsIsPending || devicesIsPending
+                                    analyticsIsPending ||
+                                    deviceStatisticsIsPending
                                 }
                                 error={
                                     deviceGroupError ||
-                                    devicesError ||
+                                    deviceStatisticsError ||
                                     analyticsError
                                 }
                                 alerting={alerting}

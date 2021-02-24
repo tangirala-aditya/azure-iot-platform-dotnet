@@ -89,6 +89,62 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             return new DeploymentApiModel(await this.deployments.CreateAsync(deployment.ToServiceModel(), this.GetClaimsUserDetails(), this.GetTenantId()));
         }
 
+        [HttpPost("Jobs")]
+        [Authorize("CreateDeployments")]
+        public async Task<DeploymentApiModel> PostAsyncWithJobs([FromBody] DeploymentApiModel deployment)
+        {
+            if (string.IsNullOrWhiteSpace(deployment.Name))
+            {
+                throw new InvalidInputException("Name must be provided");
+            }
+
+            // If DeviceGroupId is provided, fill the DeviceGroup details if they are not provided
+            if (!string.IsNullOrWhiteSpace(deployment.DeviceGroupId) && string.IsNullOrWhiteSpace(deployment.DeviceGroupQuery))
+            {
+                await this.HydrateDeploymentWithDeviceGroupDetails(deployment);
+            }
+
+            // If PackageId is provided, fill the package details if they are not provided
+            if (!string.IsNullOrWhiteSpace(deployment.PackageId) && string.IsNullOrWhiteSpace(deployment.PackageContent))
+            {
+                await this.HydrateDeploymentWithPackageDetails(deployment);
+            }
+
+            if (string.IsNullOrWhiteSpace(deployment.DeviceGroupId))
+            {
+                throw new InvalidInputException("DeviceGroupId must be provided");
+            }
+
+            if (string.IsNullOrWhiteSpace(deployment.DeviceGroupName))
+            {
+                throw new InvalidInputException("DeviceGroupName must be provided");
+            }
+
+            if (string.IsNullOrWhiteSpace(deployment.DeviceGroupQuery) && (deployment.DeviceIds == null || (deployment.DeviceIds != null && deployment.DeviceIds.Count() == 0)))
+            {
+                throw new InvalidInputException("DeviceGroupQuery must be provided");
+            }
+
+            if (string.IsNullOrWhiteSpace(deployment.PackageContent))
+            {
+                throw new InvalidInputException("PackageContent must be provided");
+            }
+
+            if (deployment.PackageType.Equals(PackageType.DeviceConfiguration)
+                && string.IsNullOrEmpty(deployment.ConfigType))
+            {
+                throw new InvalidInputException("Configuration type must be provided");
+            }
+
+            if (deployment.Priority < 0)
+            {
+                throw new InvalidInputException($"Invalid priority provided of {deployment.Priority}. " +
+                                                "It must be non-negative");
+            }
+
+            return new DeploymentApiModel(await this.deployments.CreateAsyncWithJobs(deployment.ToServiceModel(), this.GetClaimsUserDetails(), this.GetTenantId()));
+        }
+
         [HttpGet]
         [Authorize("ReadAll")]
         public async Task<DeploymentListApiModel> GetAsync()

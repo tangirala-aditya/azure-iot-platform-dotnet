@@ -43,7 +43,16 @@ namespace Mmm.Iot.IoTHubManager.Services.Helpers
         {
             var appConfigurationKey = TenantKey + this.TenantId + IotHubConnectionKey;
             this.logger.LogDebug("App Configuration key for IoT Hub connection string for tenant {tenant} is {appConfigurationKey}", this.TenantId, appConfigurationKey);
-            return this.appConfig.GetValue(appConfigurationKey);
+            /*return "HostName=classicdeploymentshub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=fOdAYtoz2NGge6ssjp0ksnrV4Fv3xd6Hg+U2VjVG95E=";*/
+            return "HostName=ragav-test.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=XL6M6N90gGs2q7vGcnarGgFJtzTGzJ3wuhpxZx+CYR8=";
+        }
+
+        public string GetIotHubConnectionStringForJobs()
+        {
+            var appConfigurationKey = TenantKey + this.TenantId + IotHubConnectionKey;
+            this.logger.LogDebug("App Configuration key for IoT Hub connection string for tenant {tenant} is {appConfigurationKey}", this.TenantId, appConfigurationKey);
+            /*return "HostName=deploymentswithjobshub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=L6NYDeXhF8K1So0fXVcjHx/HUhuu/SKl31AiUViyaF0=";*/
+            return "HostName=ragav-test.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=XL6M6N90gGs2q7vGcnarGgFJtzTGzJ3wuhpxZx+CYR8=";
         }
 
         public string GetIotHubName()
@@ -77,11 +86,27 @@ namespace Mmm.Iot.IoTHubManager.Services.Helpers
             return registry;
         }
 
+        public RegistryManager GetRegistryForJobs()
+        {
+            RegistryManager registry = null;
+
+            IoTHubConnectionHelper.CreateUsingHubConnectionString(this.GetIotHubConnectionStringForJobs(), (conn) =>
+            {
+                registry = RegistryManager.CreateFromConnectionString(conn);
+            });
+            if (registry == null)
+            {
+                throw new InvalidConfigurationException($"Invalid tenant information for HubConnectionstring.");
+            }
+
+            return registry;
+        }
+
         public JobClient GetJobClient()
         {
             JobClient job = null;
 
-            IoTHubConnectionHelper.CreateUsingHubConnectionString(this.GetIotHubConnectionString(), conn =>
+            IoTHubConnectionHelper.CreateUsingHubConnectionString(this.GetIotHubConnectionStringForJobs(), conn =>
              {
                  job = JobClient.CreateFromConnectionString(conn);
              });

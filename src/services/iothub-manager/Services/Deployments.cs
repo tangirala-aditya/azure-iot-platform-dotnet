@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Queues;
 using Microsoft.Azure.Devices;
+using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Logging;
@@ -20,6 +21,7 @@ using Mmm.Iot.Common.Services.External.StorageAdapter;
 using Mmm.Iot.Common.Services.Helpers;
 using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.Config.Services.Models;
+using Mmm.Iot.IoTHubManager.Services.Extensions;
 using Mmm.Iot.IoTHubManager.Services.External;
 using Mmm.Iot.IoTHubManager.Services.Helpers;
 using Mmm.Iot.IoTHubManager.Services.Models;
@@ -164,9 +166,8 @@ namespace Mmm.Iot.IoTHubManager.Services
 
             // Update the Metrics related to previous deployment which targets the same device group as the metrics
             // will be overriden once the new deployment gets applied to the devices.
-            var deviceMetrics = await this.UpdateMetricsOfCurrentDeployment(model.DeviceGroupId, model.Priority, tenantId);
-            bool shouldMarkAsLatest = deviceMetrics.ShouldMarkAsLatest;
-
+            // var deviceMetrics = await this.UpdateMetricsOfCurrentDeployment(model.DeviceGroupId, model.Priority, tenantId);
+            // bool shouldMarkAsLatest = deviceMetrics.ShouldMarkAsLatest;
             var deploymentResult = await this.tenantHelper.GetRegistry().AddConfigurationAsync(configuration);
 
             // TODO: Add specific exception handling when exception types are exposed
@@ -178,7 +179,7 @@ namespace Mmm.Iot.IoTHubManager.Services
             model.CreatedDateTimeUtc = result.CreatedDateTimeUtc;
 
             // Add latest tag to deployment if deployment has highest priority for the device group.
-            if (shouldMarkAsLatest)
+            /*if (shouldMarkAsLatest)
             {
                 if (model.Tags == null)
                 {
@@ -191,13 +192,71 @@ namespace Mmm.Iot.IoTHubManager.Services
             {
                 // Update the Device Statuses for the DeploymentId for future references.
                 model.DeploymentMetrics = result.DeploymentMetrics;
-            }
+            }*/
 
             // Store the deployment details in Cosmos DB
-            await this.StoreDeploymentInSecondaryStorage(model, userId);
+            // await this.StoreDeploymentInSecondaryStorage(model, userId);
 
             // Log a custom event to Application Insights
             // this.deploymentLog.LogDeploymentCreate(model, tenantId, userId);
+            return model;
+        }
+
+        public async Task<DeploymentServiceModel> CreateAsyncWithJobs(DeploymentServiceModel model, string userId, string tenantId)
+        {
+            if (string.IsNullOrEmpty(model.DeviceGroupId))
+            {
+                throw new ArgumentNullException(DeviceGroupIdParameter);
+            }
+
+            if (string.IsNullOrEmpty(model.DeviceGroupQuery) && (model.DeviceIds == null || (model.DeviceIds != null && model.DeviceIds.Count() == 0)))
+            {
+                throw new ArgumentNullException(DeviceGroupQueryParameter);
+            }
+
+            if (string.IsNullOrEmpty(model.Name))
+            {
+                throw new ArgumentNullException(NameParameter);
+            }
+
+            if (string.IsNullOrEmpty(model.PackageContent))
+            {
+                throw new ArgumentNullException(PackageContentParameter);
+            }
+
+            if (model.PackageType.Equals(PackageType.DeviceConfiguration)
+                && string.IsNullOrEmpty(model.ConfigType))
+            {
+                throw new ArgumentNullException(ConfigurationTypeParameter);
+            }
+
+            if (model.Priority < 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    PriorityParameter,
+                    model.Priority,
+                    "The priority provided should be 0 or greater");
+            }
+
+            var configuration = ConfigurationsHelper.ToHubConfiguration(model);
+
+            var result = JSONConverter.DotNotationToDictionary(configuration.Content.DeviceContent);
+            var jsonResult = JsonConvert.SerializeObject(result);
+            var desiredTwin = JsonConvert.DeserializeObject<Twin>(jsonResult);
+
+            var jobId = Guid.NewGuid().ToString();
+            try
+            {
+                await this.tenantHelper.GetJobClient().ScheduleTwinUpdateAsync(jobId, configuration.TargetCondition, desiredTwin, DateTime.UtcNow, 600);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            model.JobId = jobId;
+            model.Id = configuration.Id;
+
             return model;
         }
 

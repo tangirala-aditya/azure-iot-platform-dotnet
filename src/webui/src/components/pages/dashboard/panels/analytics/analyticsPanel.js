@@ -60,8 +60,8 @@ export class AnalyticsPanel extends Component {
         if (this.props.topAlerts.length) {
             // Convert the raw counts into a chart readable format
             const currentWindow = this.props.t(
-                "dashboard.panels.analytics.currentWindow"
-            ),
+                    "dashboard.panels.analytics.currentWindow"
+                ),
                 previousWindow = this.props.t(
                     "dashboard.panels.analytics.previousWindow"
                 ),
@@ -133,15 +133,15 @@ export class AnalyticsPanel extends Component {
 
     render() {
         const {
-            t,
-            isPending,
-            criticalAlertsChange,
-            alertsPerDeviceId,
-            topAlerts,
-            timeSeriesExplorerUrl,
-            error,
-            isAlertingActive,
-        } = this.props,
+                t,
+                isPending,
+                criticalAlertsChange,
+                alertsPerDeviceId,
+                topAlerts,
+                timeSeriesExplorerUrl,
+                error,
+                isAlertingActive,
+            } = this.props,
             showOverlay = isPending && !criticalAlertsChange;
         return (
             <Panel>

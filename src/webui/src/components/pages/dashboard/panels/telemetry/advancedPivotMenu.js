@@ -40,12 +40,13 @@ export class AdvancedPivotMenu extends React.Component {
             "[class^=Pivot_pivot-menu]"
         );
         if (target) {
-            let showSliderIcons = this.refs.offsetWidth - 80 <= target[0].offsetWidth;
-            if (showSliderIcons !== prevState.showSliderIcons) {               
+            let showSliderIcons =
+                this.refs.offsetWidth - 80 <= target[0].offsetWidth;
+            if (showSliderIcons !== prevState.showSliderIcons) {
                 this.setState({
                     showSliderIcons:
                         this.refs.offsetWidth - 80 <= target[0].offsetWidth,
-                })
+                });
             }
         }
     }
@@ -93,8 +94,9 @@ export class AdvancedPivotMenu extends React.Component {
             >
                 {showSliderIcons && (
                     <div
-                        className={`btnSlider btnSliderLeft ${this.state.prevDisable ? "disableSlider" : ""
-                            }`}
+                        className={`btnSlider btnSliderLeft ${
+                            this.state.prevDisable ? "disableSlider" : ""
+                        }`}
                         onClick={this.slideLeft.bind(this)}
                     >
                         {"<"}
@@ -105,8 +107,9 @@ export class AdvancedPivotMenu extends React.Component {
                 </div>
                 {showSliderIcons && (
                     <div
-                        className={`btnSlider btnSliderRight ${this.state.nextDisable ? "disableSlider" : ""
-                            }`}
+                        className={`btnSlider btnSliderRight ${
+                            this.state.nextDisable ? "disableSlider" : ""
+                        }`}
                         onClick={this.slideRight.bind(this)}
                     >
                         {">"}

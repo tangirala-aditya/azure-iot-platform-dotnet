@@ -127,7 +127,10 @@ export class DeploymentNew extends LinkedComponent {
     // }
 
     static getDerivedStateFromProps(props, state) {
-        const toPackageSelectOption = ({ id, name }) => ({ label: name, value: id });
+        const toPackageSelectOption = ({ id, name }) => ({
+            label: name,
+            value: id,
+        });
         const packagesEnum = {
             edgeManifest: "EdgeManifest",
             deviceConfiguration: "DeviceConfiguration",
@@ -150,8 +153,8 @@ export class DeploymentNew extends LinkedComponent {
                 deviceGroupQuery: JSON.stringify(deviceGroup.conditions),
             };
         }
-        
-        if (deviceGroupId !== state.deviceGroupId) {            
+
+        if (deviceGroupId !== state.deviceGroupId) {
             // Reset package selection
             updateState = {
                 ...updateState,
@@ -166,12 +169,10 @@ export class DeploymentNew extends LinkedComponent {
                     ...updateState,
                     packageOptions: packages
                         .filter(
-                            (value) =>
-                                value.packageType === state.packageType
+                            (value) => value.packageType === state.packageType
                         )
                         .map(toPackageSelectOption),
                 };
-
             } else if (
                 state.packageType === packagesEnum.deviceConfiguration &&
                 state.configType
@@ -190,12 +191,12 @@ export class DeploymentNew extends LinkedComponent {
                 updateState = {
                     ...updateState,
                     packageOptions: [],
-                }
+                };
             }
             updateState = {
                 ...updateState,
                 packages: packages,
-            }
+            };
         }
 
         return updateState;
@@ -376,16 +377,16 @@ export class DeploymentNew extends LinkedComponent {
 
     render() {
         const {
-            t,
-            createIsPending,
-            createError,
-            packagesPending,
-            packagesError,
-            createdDeploymentId,
-            configTypes,
-            configTypesError,
-            configTypesIsPending,
-        } = this.props,
+                t,
+                createIsPending,
+                createError,
+                packagesPending,
+                packagesError,
+                createdDeploymentId,
+                configTypes,
+                configTypesError,
+                configTypesIsPending,
+            } = this.props,
             {
                 name,
                 packageType,
@@ -411,7 +412,7 @@ export class DeploymentNew extends LinkedComponent {
                 // Validate for non-empty value if packageType is of type 'Device Configuration'
                 (configValue) =>
                     this.packageTypeLink.value ===
-                        packagesEnum.deviceConfiguration
+                    packagesEnum.deviceConfiguration
                         ? Validator.notEmpty(configValue)
                         : true,
                 this.props.t("deployments.flyouts.new.validation.required")
@@ -438,17 +439,17 @@ export class DeploymentNew extends LinkedComponent {
         );
 
         const isPackageTypeSelected =
-            packageType === packagesEnum.edgeManifest ||
-            (packageType !== "" && configType !== ""),
+                packageType === packagesEnum.edgeManifest ||
+                (packageType !== "" && configType !== ""),
             packageTypeSelectOptions = packageTypeOptions.map((value) => ({
                 label: getPackageTypeTranslation(value, t),
                 value,
             })),
             configTypeSelectOptions = configTypes
                 ? configTypes.map((value) => ({
-                    label: getConfigTypeTranslation(value, t),
-                    value,
-                }))
+                      label: getConfigTypeTranslation(value, t),
+                      value,
+                  }))
                 : {},
             completedSuccessfully =
                 changesApplied && !createError && !createIsPending,
@@ -587,8 +588,8 @@ export class DeploymentNew extends LinkedComponent {
                                     placeholder={
                                         isPackageTypeSelected
                                             ? t(
-                                                "deployments.flyouts.new.packagePlaceHolder"
-                                            )
+                                                  "deployments.flyouts.new.packagePlaceHolder"
+                                              )
                                             : ""
                                     }
                                     clearable={false}

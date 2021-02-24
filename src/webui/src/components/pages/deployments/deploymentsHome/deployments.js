@@ -64,7 +64,7 @@ export class Deployments extends Component {
 
             this.state.selectedDeviceGroupId = getDeviceGroupParam(
                 this.props.location.search
-            )
+            );
         }
     }
 
@@ -82,17 +82,16 @@ export class Deployments extends Component {
     // }
 
     static getDerivedStateFromProps(props, state) {
-        if (props.isPending &&
-            props.isPending !== state.preIsPending) {
-          return {
-            ...closedFlyoutState,
-            preIsPending: props.isPending,
-          };
+        if (props.isPending && props.isPending !== state.preIsPending) {
+            return {
+                ...closedFlyoutState,
+                preIsPending: props.isPending,
+            };
         }
-    
+
         // Return null to indicate no change to state.
         return null;
-      }
+    }
 
     componentDidMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
@@ -188,7 +187,7 @@ export class Deployments extends Component {
                 relatedDeployments: selectedDeployment.node.gridOptionsWrapper.gridOptions.rowData.filter(
                     (x) =>
                         x.deviceGroupId ===
-                        selectedDeployment.data.deviceGroupId &&
+                            selectedDeployment.data.deviceGroupId &&
                         x.id !== selectedDeployment.data.id
                 ),
                 flyoutLink: flyoutLink,
@@ -198,14 +197,14 @@ export class Deployments extends Component {
 
     render() {
         const {
-            t,
-            deployments,
-            error,
-            isPending,
-            fetchDeployments,
-            lastUpdated,
-            allActiveDeployments,
-        } = this.props,
+                t,
+                deployments,
+                error,
+                isPending,
+                fetchDeployments,
+                lastUpdated,
+                allActiveDeployments,
+            } = this.props,
             gridProps = {
                 onGridReady: this.onGridReady,
                 onFirstDataRendered: this.onFirstDataRendered,

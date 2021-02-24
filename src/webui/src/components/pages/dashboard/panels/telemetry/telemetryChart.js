@@ -139,14 +139,14 @@ export class TelemetryChart extends Component {
 
     UNSAFE_componentWillReceiveProps({ telemetry }) {
         const telemetryKeys = Object.keys(telemetry)
-            .filter(
-                (key) =>
-                    this.props.deviceGroup.telemetryFormat.length === 0 ||
-                    this.props.deviceGroup.telemetryFormat.filter(
-                        (format) => format.key === key
-                    ).length > 0
-            )
-            .sort(),
+                .filter(
+                    (key) =>
+                        this.props.deviceGroup.telemetryFormat.length === 0 ||
+                        this.props.deviceGroup.telemetryFormat.filter(
+                            (format) => format.key === key
+                        ).length > 0
+                )
+                .sort(),
             currentKey = this.state.telemetryKey;
         this.setState({
             telemetryKeys,
@@ -213,8 +213,9 @@ export class TelemetryChart extends Component {
                         (format) => format.key === key
                     );
                 return {
-                    label: `${keyFormatMatch ? keyFormatMatch.displayName : key
-                        } [${count}]`,
+                    label: `${
+                        keyFormatMatch ? keyFormatMatch.displayName : key
+                    } [${count}]`,
                     key,
                     onClick: this.setTelemetryKey(key),
                 };

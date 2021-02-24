@@ -110,8 +110,8 @@ export class Dashboard extends Component {
                 redirectUrl: window.location.href,
             });
             this.state.selectedDeviceGroupId = getDeviceGroupParam(
-                    this.props.location.search
-                )
+                this.props.location.search
+            );
         }
     }
 
@@ -135,7 +135,7 @@ export class Dashboard extends Component {
     //         });
     //     }
     // }
-    
+
     componentDidMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
         if (this.state.selectedDeviceGroupId) {

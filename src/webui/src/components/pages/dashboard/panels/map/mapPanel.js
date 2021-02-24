@@ -47,11 +47,11 @@ export class MapPanel extends Component {
     //     this.calculatePins(nextProps);
     // }
 
-      shouldComponentUpdate(nextProps, nextState){
+    shouldComponentUpdate(nextProps, nextState) {
         this.calculatePins(nextProps);
 
         return true;
-      }
+    }
 
     onMapReady = (map) => {
         // Create the map popup

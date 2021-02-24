@@ -191,7 +191,7 @@ export class DeviceDetails extends Component {
         this.resetTelemetry$.next(deviceId);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const {
             deviceModuleStatus,
             isDeviceModuleStatusPending,

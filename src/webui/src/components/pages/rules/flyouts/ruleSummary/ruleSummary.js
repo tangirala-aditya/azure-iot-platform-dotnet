@@ -40,7 +40,7 @@ export class RuleSummary extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.deviceCount !== undefined &&
             nextProps.deviceCount !== this.state.devicesAffected

@@ -71,59 +71,134 @@ export class DeploymentNew extends LinkedComponent {
         this.expandFlyout = this.expandFlyout.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { devices, packages, deviceGroups, deviceGroupId } = nextProps;
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     const { devices, packages, deviceGroups, deviceGroupId } = nextProps;
+    //     if (devices && devices.length > 0) {
+    //         this.setState({ targetedDeviceCount: devices.length });
+    //     }
+    //     if (deviceGroupId !== undefined) {
+    //         const deviceGroup = deviceGroups.find(
+    //             (deviceGroup) => deviceGroup.id === deviceGroupId
+    //         );
+    //         const deviceGroupName = deviceGroup.displayName;
+    //         this.setState({ deviceGroupName, deviceGroupId });
+
+    //         this.setState({
+    //             deviceGroupQuery: JSON.stringify(deviceGroup.conditions),
+    //         });
+    //     }
+    //     // Reset package selection
+    //     this.setState({
+    //         packageId: undefined,
+    //         packageName: "",
+    //     });
+    //     if (packages !== undefined) {
+    //         if (this.state.packageType === packagesEnum.edgeManifest) {
+    //             this.setState({
+    //                 packageOptions: packages
+    //                     .filter(
+    //                         (value) =>
+    //                             value.packageType === this.state.packageType
+    //                     )
+    //                     .map(this.toPackageSelectOption),
+    //             });
+    //         } else if (
+    //             this.state.packageType === packagesEnum.deviceConfiguration &&
+    //             this.state.configType
+    //         ) {
+    //             this.setState({
+    //                 packageOptions: packages
+    //                     .filter(
+    //                         (value) =>
+    //                             value.configType === this.state.configType &&
+    //                             value.packageType === this.state.packageType
+    //                     )
+    //                     .map(this.toPackageSelectOption),
+    //             });
+    //         } else {
+    //             this.setState({
+    //                 packageOptions: [],
+    //             });
+    //         }
+    //         this.setState({
+    //             packages: packages,
+    //         });
+    //     }
+    // }
+
+    static getDerivedStateFromProps(props, state) {
+        const toPackageSelectOption = ({ id, name }) => ({ label: name, value: id });
+        const packagesEnum = {
+            edgeManifest: "EdgeManifest",
+            deviceConfiguration: "DeviceConfiguration",
+        };
+        let updateState = null;
+        const { devices, packages, deviceGroups, deviceGroupId } = props;
         if (devices && devices.length > 0) {
-            this.setState({ targetedDeviceCount: devices.length });
+            updateState = { targetedDeviceCount: devices.length };
         }
         if (deviceGroupId !== undefined) {
             const deviceGroup = deviceGroups.find(
                 (deviceGroup) => deviceGroup.id === deviceGroupId
             );
             const deviceGroupName = deviceGroup.displayName;
-            this.setState({ deviceGroupName, deviceGroupId });
 
-            this.setState({
+            updateState = {
+                ...updateState,
+                deviceGroupName,
+                deviceGroupId,
                 deviceGroupQuery: JSON.stringify(deviceGroup.conditions),
-            });
+            };
         }
-        // Reset package selection
-        this.setState({
-            packageId: undefined,
-            packageName: "",
-        });
+        
+        if (deviceGroupId !== state.deviceGroupId) {            
+            // Reset package selection
+            updateState = {
+                ...updateState,
+                packageId: undefined,
+                packageName: "",
+            };
+        }
+
         if (packages !== undefined) {
-            if (this.state.packageType === packagesEnum.edgeManifest) {
-                this.setState({
+            if (state.packageType === packagesEnum.edgeManifest) {
+                updateState = {
+                    ...updateState,
                     packageOptions: packages
                         .filter(
                             (value) =>
-                                value.packageType === this.state.packageType
+                                value.packageType === state.packageType
                         )
-                        .map(this.toPackageSelectOption),
-                });
+                        .map(toPackageSelectOption),
+                };
+
             } else if (
-                this.state.packageType === packagesEnum.deviceConfiguration &&
-                this.state.configType
+                state.packageType === packagesEnum.deviceConfiguration &&
+                state.configType
             ) {
-                this.setState({
+                updateState = {
+                    ...updateState,
                     packageOptions: packages
                         .filter(
                             (value) =>
-                                value.configType === this.state.configType &&
-                                value.packageType === this.state.packageType
+                                value.configType === state.configType &&
+                                value.packageType === state.packageType
                         )
-                        .map(this.toPackageSelectOption),
-                });
+                        .map(toPackageSelectOption),
+                };
             } else {
-                this.setState({
+                updateState = {
+                    ...updateState,
                     packageOptions: [],
-                });
+                }
             }
-            this.setState({
+            updateState = {
+                ...updateState,
                 packages: packages,
-            });
+            }
         }
+
+        return updateState;
     }
 
     componentWillUnmount() {
@@ -301,16 +376,16 @@ export class DeploymentNew extends LinkedComponent {
 
     render() {
         const {
-                t,
-                createIsPending,
-                createError,
-                packagesPending,
-                packagesError,
-                createdDeploymentId,
-                configTypes,
-                configTypesError,
-                configTypesIsPending,
-            } = this.props,
+            t,
+            createIsPending,
+            createError,
+            packagesPending,
+            packagesError,
+            createdDeploymentId,
+            configTypes,
+            configTypesError,
+            configTypesIsPending,
+        } = this.props,
             {
                 name,
                 packageType,
@@ -336,7 +411,7 @@ export class DeploymentNew extends LinkedComponent {
                 // Validate for non-empty value if packageType is of type 'Device Configuration'
                 (configValue) =>
                     this.packageTypeLink.value ===
-                    packagesEnum.deviceConfiguration
+                        packagesEnum.deviceConfiguration
                         ? Validator.notEmpty(configValue)
                         : true,
                 this.props.t("deployments.flyouts.new.validation.required")
@@ -363,17 +438,17 @@ export class DeploymentNew extends LinkedComponent {
         );
 
         const isPackageTypeSelected =
-                packageType === packagesEnum.edgeManifest ||
-                (packageType !== "" && configType !== ""),
+            packageType === packagesEnum.edgeManifest ||
+            (packageType !== "" && configType !== ""),
             packageTypeSelectOptions = packageTypeOptions.map((value) => ({
                 label: getPackageTypeTranslation(value, t),
                 value,
             })),
             configTypeSelectOptions = configTypes
                 ? configTypes.map((value) => ({
-                      label: getConfigTypeTranslation(value, t),
-                      value,
-                  }))
+                    label: getConfigTypeTranslation(value, t),
+                    value,
+                }))
                 : {},
             completedSuccessfully =
                 changesApplied && !createError && !createIsPending,
@@ -512,8 +587,8 @@ export class DeploymentNew extends LinkedComponent {
                                     placeholder={
                                         isPackageTypeSelected
                                             ? t(
-                                                  "deployments.flyouts.new.packagePlaceHolder"
-                                              )
+                                                "deployments.flyouts.new.packagePlaceHolder"
+                                            )
                                             : ""
                                     }
                                     clearable={false}

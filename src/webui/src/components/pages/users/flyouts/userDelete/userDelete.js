@@ -46,7 +46,7 @@ export class UserDelete extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.users &&
             (this.props.users || []).length !== nextProps.users.length

@@ -7,6 +7,7 @@ import { isFunc } from "utilities";
 
 const AzureMaps = window.atlas;
 
+// Check the hooks
 export class AzureMap extends Component {
     componentDidMount() {
         if (!this.map && this.props.azureMapsKey) {
@@ -14,9 +15,15 @@ export class AzureMap extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (!this.map && nextProps.azureMapsKey) {
-            this.initializeMap(nextProps.azureMapsKey);
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     if (!this.map && nextProps.azureMapsKey) {
+    //         this.initializeMap(nextProps.azureMapsKey);
+    //     }
+    // }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (!this.map && this.props.azureMapsKey) {
+            this.initializeMap(this.props.azureMapsKey);
         }
     }
 
@@ -27,10 +34,10 @@ export class AzureMap extends Component {
         }
     }
 
-    shouldComponentUpdate(nextProps) {
-        // Component props never result in a dom updates from React
-        return false;
-    }
+    // shouldComponentUpdate(nextProps) {
+    //     // Component props never result in a dom updates from React
+    //     return false;
+    // }
 
     initializeMap(azureMapsKey) {
         this.map = new AzureMaps.Map("map", {

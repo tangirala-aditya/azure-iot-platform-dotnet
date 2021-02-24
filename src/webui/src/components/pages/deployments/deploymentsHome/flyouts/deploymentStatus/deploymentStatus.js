@@ -14,6 +14,7 @@ import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/T
 
 import "./deploymentStatus.scss";
 import { IoTHubManagerService } from "services";
+import { setTestabilityGetter } from "@angular/core";
 
 export class DeploymentStatus extends LinkedComponent {
     constructor(props) {
@@ -47,10 +48,21 @@ export class DeploymentStatus extends LinkedComponent {
         }
     }
 
-    componentWillReceiveProps(nextprops) {
-        this.setState({
-            isActive: nextprops.selectedDeployment.isActive,
-        });
+    // UNSAFE_componentWillReceiveProps(nextprops) {
+    //     this.setState({
+    //         isActive: nextprops.selectedDeployment.isActive,
+    //     });
+    // }
+
+    static getDerivedStateFromProps(props, state){
+
+        if (state.isActive !== props.selectedDeployment.isActive) {
+            return {
+                isActive: nextprops.selectedDeployment.isActive,
+            };
+        }
+
+        return null;
     }
 
     onDeploymentStatusChange = (updatedStatus) => {

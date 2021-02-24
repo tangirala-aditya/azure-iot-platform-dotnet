@@ -30,7 +30,7 @@ export class Duration extends Component {
     }
 
     // TODO: Update the props to accept h, m, seconds, or value
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const ms = (nextProps.value && nextProps.value.ms) || 0;
         this.setState(this.convertMsToUnits(ms));
     }

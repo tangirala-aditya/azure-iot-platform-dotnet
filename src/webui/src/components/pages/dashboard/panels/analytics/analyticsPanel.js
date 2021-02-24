@@ -52,19 +52,20 @@ export class AnalyticsPanel extends Component {
         window.removeEventListener("focus", this.handleWindowFocus);
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    // mgr from UNSAFE_componentWillUpdate
+    componentDidUpdate(prevProps, prevState) {
         const staticTime = "";
 
         // ================== Bar chart - START
-        if (nextProps.topAlerts.length) {
+        if (this.props.topAlerts.length) {
             // Convert the raw counts into a chart readable format
-            const currentWindow = nextProps.t(
-                    "dashboard.panels.analytics.currentWindow"
-                ),
-                previousWindow = nextProps.t(
+            const currentWindow = this.props.t(
+                "dashboard.panels.analytics.currentWindow"
+            ),
+                previousWindow = this.props.t(
                     "dashboard.panels.analytics.previousWindow"
                 ),
-                barChartDatum = nextProps.topAlerts.map(
+                barChartDatum = this.props.topAlerts.map(
                     ({ name, count, previousCount }) => ({
                         [name]: {
                             [currentWindow]: { [staticTime]: { val: count } }, // TODO: Translate legends
@@ -75,7 +76,7 @@ export class AnalyticsPanel extends Component {
                     })
                 );
 
-            if (nextState.renderChart) {
+            if (this.state.renderChart) {
                 this.barChart.render(
                     barChartDatum,
                     {
@@ -84,9 +85,9 @@ export class AnalyticsPanel extends Component {
                         yAxisState: "shared",
                         tooltip: true,
                         theme:
-                            nextProps.theme === "mmm"
+                            this.props.theme === "mmm"
                                 ? "light"
-                                : nextProps.theme,
+                                : this.props.theme,
                     },
                     this.props.colors
                 );
@@ -95,7 +96,7 @@ export class AnalyticsPanel extends Component {
         // ================== Bar chart - END
 
         // ================== Pie chart - START
-        const deviceTypes = Object.keys(nextProps.alertsPerDeviceId);
+        const deviceTypes = Object.keys(this.props.alertsPerDeviceId);
         if (deviceTypes.length) {
             // Convert the raw counts into a chart readable format
             // Sort the deviceTypes so the chart sections and color won't change on update
@@ -103,13 +104,13 @@ export class AnalyticsPanel extends Component {
                 [deviceType]: {
                     "": {
                         [staticTime]: {
-                            val: nextProps.alertsPerDeviceId[deviceType],
+                            val: this.props.alertsPerDeviceId[deviceType],
                         },
                     },
                 },
             }));
 
-            if (nextState.renderChart) {
+            if (this.state.renderChart) {
                 this.pieChart.render(
                     pieChartDatum,
                     {
@@ -119,9 +120,9 @@ export class AnalyticsPanel extends Component {
                         tooltip: true,
                         arcWidthRatio: 1,
                         theme:
-                            nextProps.theme === "mmm"
+                            this.props.theme === "mmm"
                                 ? "light"
-                                : nextProps.theme,
+                                : this.props.theme,
                     },
                     this.props.colors
                 );
@@ -132,15 +133,15 @@ export class AnalyticsPanel extends Component {
 
     render() {
         const {
-                t,
-                isPending,
-                criticalAlertsChange,
-                alertsPerDeviceId,
-                topAlerts,
-                timeSeriesExplorerUrl,
-                error,
-                isAlertingActive,
-            } = this.props,
+            t,
+            isPending,
+            criticalAlertsChange,
+            alertsPerDeviceId,
+            topAlerts,
+            timeSeriesExplorerUrl,
+            error,
+            isAlertingActive,
+        } = this.props,
             showOverlay = isPending && !criticalAlertsChange;
         return (
             <Panel>

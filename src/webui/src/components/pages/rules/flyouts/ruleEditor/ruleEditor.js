@@ -104,7 +104,7 @@ export class RuleEditor extends LinkedComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const { rule } = nextProps;
         if (rule) {
             this.setFormState(rule);

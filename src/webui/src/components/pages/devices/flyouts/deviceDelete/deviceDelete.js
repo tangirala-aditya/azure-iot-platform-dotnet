@@ -47,7 +47,7 @@ export class DeviceDelete extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.devices &&
             (this.props.devices || []).length !== nextProps.devices.length

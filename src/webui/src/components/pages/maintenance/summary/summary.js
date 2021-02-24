@@ -42,7 +42,7 @@ export class Summary extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (this.props.location.search) {
             const tenantId = getTenantIdParam(this.props.location.search);
             this.props.checkTenantAndSwitch({

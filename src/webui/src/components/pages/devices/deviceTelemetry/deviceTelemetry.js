@@ -38,7 +38,7 @@ export class DeviceTelemetry extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (
             this.props &&
             this.props.location.pathname === "/deviceSearch/telemetry"

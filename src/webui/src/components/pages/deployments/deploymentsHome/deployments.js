@@ -46,6 +46,7 @@ export class Deployments extends Component {
             ...closedFlyoutState,
             contextBtns: null,
             selectedDeviceGroupId: undefined,
+            preIsPending: null,
         };
 
         this.props.updateCurrentWindow("Deployments");
@@ -53,35 +54,48 @@ export class Deployments extends Component {
         if (!this.props.lastUpdated && !this.props.error) {
             this.props.fetchDeployments();
         }
-    }
 
-    componentWillMount() {
         if (this.props.location.search) {
             const tenantId = getTenantIdParam(this.props.location.search);
             this.props.checkTenantAndSwitch({
                 tenantId: tenantId,
                 redirectUrl: window.location.href,
             });
-            this.setState({
-                selectedDeviceGroupId: getDeviceGroupParam(
-                    this.props.location.search
-                ),
-            });
+
+            this.state.selectedDeviceGroupId = getDeviceGroupParam(
+                this.props.location.search
+            )
         }
-        IdentityGatewayService.VerifyAndRefreshCache();
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (
-            nextProps.isPending &&
-            nextProps.isPending !== this.props.isPending
-        ) {
-            // If the grid data refreshes, hide the flyout
-            this.setState(closedFlyoutState);
+    // UNSAFE_componentWillMount() {
+    // }
+
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     if (
+    //         nextProps.isPending &&
+    //         nextProps.isPending !== this.props.isPending
+    //     ) {
+    //         // If the grid data refreshes, hide the flyout
+    //         this.setState(closedFlyoutState);
+    //     }
+    // }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.isPending &&
+            props.isPending !== state.preIsPending) {
+          return {
+            ...closedFlyoutState,
+            preIsPending: props.isPending,
+          };
         }
-    }
+    
+        // Return null to indicate no change to state.
+        return null;
+      }
 
     componentDidMount() {
+        IdentityGatewayService.VerifyAndRefreshCache();
         if (this.state.selectedDeviceGroupId) {
             window.history.replaceState(
                 {},
@@ -174,7 +188,7 @@ export class Deployments extends Component {
                 relatedDeployments: selectedDeployment.node.gridOptionsWrapper.gridOptions.rowData.filter(
                     (x) =>
                         x.deviceGroupId ===
-                            selectedDeployment.data.deviceGroupId &&
+                        selectedDeployment.data.deviceGroupId &&
                         x.id !== selectedDeployment.data.id
                 ),
                 flyoutLink: flyoutLink,
@@ -184,14 +198,14 @@ export class Deployments extends Component {
 
     render() {
         const {
-                t,
-                deployments,
-                error,
-                isPending,
-                fetchDeployments,
-                lastUpdated,
-                allActiveDeployments,
-            } = this.props,
+            t,
+            deployments,
+            error,
+            isPending,
+            fetchDeployments,
+            lastUpdated,
+            allActiveDeployments,
+        } = this.props,
             gridProps = {
                 onGridReady: this.onGridReady,
                 onFirstDataRendered: this.onFirstDataRendered,

@@ -43,9 +43,15 @@ export class MapPanel extends Component {
         this.state = { selectedDeviceId: undefined };
     }
 
-    componentWillReceiveProps(nextProps) {
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     this.calculatePins(nextProps);
+    // }
+
+      shouldComponentUpdate(nextProps, nextState){
         this.calculatePins(nextProps);
-    }
+
+        return true;
+      }
 
     onMapReady = (map) => {
         // Create the map popup

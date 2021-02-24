@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
-import { forkJoin, from, merge, of, Subject } from "rxjs";
+import { EMPTY, forkJoin, merge, of, Subject } from "rxjs";
 import moment from "moment";
 
 import Config from "app.config";
@@ -96,9 +96,7 @@ export class Dashboard extends Component {
         this.panelsRefresh$ = new Subject();
 
         this.props.updateCurrentWindow("Dashboard");
-    }
 
-    componentWillMount() {
         const redirectUrl = HttpClient.getLocalStorageValue("redirectUrl");
         HttpClient.removeLocalStorageItem("redirectUrl");
         if (redirectUrl) {
@@ -111,16 +109,35 @@ export class Dashboard extends Component {
                 tenantId: tenantId,
                 redirectUrl: window.location.href,
             });
-            this.setState({
-                selectedDeviceGroupId: getDeviceGroupParam(
+            this.state.selectedDeviceGroupId = getDeviceGroupParam(
                     this.props.location.search
-                ),
-            });
+                )
         }
-        IdentityGatewayService.VerifyAndRefreshCache();
     }
 
+    // UNSAFE_componentWillMount() {
+    //     const redirectUrl = HttpClient.getLocalStorageValue("redirectUrl");
+    //     HttpClient.removeLocalStorageItem("redirectUrl");
+    //     if (redirectUrl) {
+    //         window.location.href = redirectUrl;
+    //     }
+
+    //     if (this.props.location.search) {
+    //         const tenantId = getTenantIdParam(this.props.location.search);
+    //         this.props.checkTenantAndSwitch({
+    //             tenantId: tenantId,
+    //             redirectUrl: window.location.href,
+    //         });
+    //         this.setState({
+    //             selectedDeviceGroupId: getDeviceGroupParam(
+    //                 this.props.location.search
+    //             ),
+    //         });
+    //     }
+    // }
+    
     componentDidMount() {
+        IdentityGatewayService.VerifyAndRefreshCache();
         if (this.state.selectedDeviceGroupId) {
             window.history.replaceState(
                 {},
@@ -137,7 +154,7 @@ export class Dashboard extends Component {
                 this.setState({ telemetryIsPending: true }),
             getTelemetryStream = ({ deviceIds = [] }) =>
                 deviceIds.length === 0
-                    ? from(() => {})
+                    ? EMPTY
                     : merge(
                           TelemetryService.getTelemetryByDeviceId(
                               deviceIds,
@@ -411,15 +428,29 @@ export class Dashboard extends Component {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 
-    componentWillReceiveProps(nextProps) {
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    //     if (
+    //         nextProps.deviceLastUpdated !== this.props.deviceLastUpdated ||
+    //         nextProps.timeInterval !== this.props.timeInterval
+    //     ) {
+    //         this.dashboardRefresh$.next(
+    //             refreshEvent(
+    //                 Object.keys(nextProps.devices),
+    //                 nextProps.timeInterval
+    //             )
+    //         );
+    //     }
+    // }
+
+    componentDidUpdate(prevProps, prevState) {
         if (
-            nextProps.deviceLastUpdated !== this.props.deviceLastUpdated ||
-            nextProps.timeInterval !== this.props.timeInterval
+            prevProps.deviceLastUpdated !== this.props.deviceLastUpdated ||
+            prevProps.timeInterval !== this.props.timeInterval
         ) {
             this.dashboardRefresh$.next(
                 refreshEvent(
-                    Object.keys(nextProps.devices),
-                    nextProps.timeInterval
+                    Object.keys(this.props.devices),
+                    this.props.timeInterval
                 )
             );
         }

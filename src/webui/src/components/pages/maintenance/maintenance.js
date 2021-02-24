@@ -184,7 +184,7 @@ export class Maintenance extends Component {
         );
     };
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
     }
 
@@ -199,7 +199,7 @@ export class Maintenance extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const {
             devicesIsPending,
             deviceLastUpdated,

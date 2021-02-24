@@ -97,7 +97,7 @@ export class RuleDetails extends Component {
         this.subscriptions = [];
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (this.props.location.search) {
             const tenantId = getTenantIdParam(this.props.location.search);
             this.props.checkTenantAndSwitch({
@@ -194,7 +194,7 @@ export class RuleDetails extends Component {
         this.props.logEvent(toDiagnosticsModel("AlertDetails_Click", {}));
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.handleProps(nextProps);
     }
 

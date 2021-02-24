@@ -302,7 +302,7 @@ export const epics = createEpicScenario({
     },
 
     /** Poll the server for the action settings. */
-     pollActionSettings: {
+    pollActionSettings: {
         type: "APP_POLL_SOLUTION_ACTION_SETTINGS",
         rawEpic: (action$, store, actionType) =>
             action$.pipe(

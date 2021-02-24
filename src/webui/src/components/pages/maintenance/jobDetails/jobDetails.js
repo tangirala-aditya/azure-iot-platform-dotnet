@@ -40,7 +40,7 @@ export class JobDetails extends Component {
         this.props.logEvent(toDiagnosticsModel("JobDetails_Click", {}));
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.handleNewProps(nextProps);
     }
 

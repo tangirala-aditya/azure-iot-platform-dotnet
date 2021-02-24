@@ -96,11 +96,11 @@ export class Settings extends LinkedComponent {
         this.expandFlyout = this.expandFlyout.bind(this);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
     }
 
-    componentWillReceiveProps({
+    UNSAFE_componentWillReceiveProps({
         isSimulationEnabled,
         setLogoPending,
         setLogoError,

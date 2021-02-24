@@ -22,7 +22,7 @@ export class PackageJSON extends LinkedComponent {
         this.props.onClose();
     };
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.packageJson !== this.props.packageJson) {
             var jsonData = JSON.parse(nextProps.packageJson);
             this.state = {

@@ -31,11 +31,13 @@ class App extends Component {
         super(props);
 
         this.state = { openFlyout: "" };
-    }
 
-    componentWillMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
     }
+
+    // UNSAFE_componentWillMount() {
+    //     IdentityGatewayService.VerifyAndRefreshCache();
+    // }
 
     closeFlyout = () => this.setState({ openFlyout: "" });
 

@@ -72,7 +72,7 @@ export class PcsGrid extends Component {
     registerResizeEvent = () => this.resizeEvents.next("r");
 
     /** When new props are passed in, check if the soft select state needs to be updated */
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.state.currentSoftSelectId !== nextProps.softSelectId) {
             this.setState(
                 { currentSoftSelectId: nextProps.softSelectId },

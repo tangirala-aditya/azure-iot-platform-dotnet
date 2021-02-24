@@ -34,7 +34,7 @@ export class RuleStatus extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const { rules } = nextProps;
         this.setState({
             rules,

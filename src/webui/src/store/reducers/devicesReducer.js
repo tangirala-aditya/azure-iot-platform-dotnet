@@ -117,7 +117,9 @@ export const epics = createEpicScenario({
     fetchDevicesByCondition: {
         type: "DEVICES_FETCH_BY_CONDITION",
         epic: (fromAction) => {
-            return IoTHubManagerService.getDevices(fromAction.payload.data).pipe(
+            return IoTHubManagerService.getDevices(
+                fromAction.payload.data
+            ).pipe(
                 map((response) => {
                     return response.items;
                 }),

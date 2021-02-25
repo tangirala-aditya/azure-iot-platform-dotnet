@@ -101,7 +101,7 @@ export class DevicesGrid extends Component {
         }
     };
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.state.flyoutOpened === false) {
             this.setState({ flyoutOpened: true });
             this.getDefaultFlyout(nextProps.rowData);

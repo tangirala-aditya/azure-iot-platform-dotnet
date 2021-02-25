@@ -165,10 +165,12 @@ export class DeviceDetails extends Component {
                             mergeMap((messages) =>
                                 transformTelemetryResponse(
                                     () => this.state.telemetry
-                                )(messages).map((telemetry) => ({
-                                    telemetry,
-                                    lastMessage: messages[0],
-                                }))
+                                )(messages).pipe(
+                                    map((telemetry) => ({
+                                        telemetry,
+                                        lastMessage: messages[0],
+                                    }))
+                                )
                             ),
                             map((newState) => ({
                                 ...newState,
@@ -191,7 +193,7 @@ export class DeviceDetails extends Component {
         this.resetTelemetry$.next(deviceId);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const {
             deviceModuleStatus,
             isDeviceModuleStatusPending,

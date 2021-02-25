@@ -43,7 +43,7 @@ export class MapPanel extends Component {
         this.state = { selectedDeviceId: undefined };
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.calculatePins(nextProps);
     }
 

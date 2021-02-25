@@ -52,7 +52,7 @@ export class AnalyticsPanel extends Component {
         window.removeEventListener("focus", this.handleWindowFocus);
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    UNSAFE_componentWillUpdate(nextProps, nextState) {
         const staticTime = "";
 
         // ================== Bar chart - START

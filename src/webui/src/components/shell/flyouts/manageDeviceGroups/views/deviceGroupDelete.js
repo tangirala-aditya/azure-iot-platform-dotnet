@@ -40,7 +40,7 @@ export class DeviceGroupDelete extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.setState({
             id: this.props.id,
             deviceGroupName: this.props.displayName,

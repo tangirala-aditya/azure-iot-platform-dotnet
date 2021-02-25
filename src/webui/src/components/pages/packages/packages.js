@@ -43,7 +43,7 @@ export class Packages extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (this.props.location.search) {
             const tenantId = getTenantIdParam(this.props.location.search);
             this.props.checkTenantAndSwitch({
@@ -59,7 +59,7 @@ export class Packages extends Component {
         IdentityGatewayService.VerifyAndRefreshCache();
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.isPending &&
             nextProps.isPending !== this.props.isPending

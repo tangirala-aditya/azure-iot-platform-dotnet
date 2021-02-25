@@ -84,7 +84,7 @@ export class DeviceJobTags extends LinkedComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.devices &&
             (this.props.devices || []).length !== nextProps.devices.length

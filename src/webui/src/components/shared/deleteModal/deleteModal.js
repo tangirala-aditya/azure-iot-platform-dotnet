@@ -23,7 +23,7 @@ export class DeleteModal extends Component {
         };
     }
 
-    componentWillReceiveProps({ error, isPending, onDelete }) {
+    UNSAFE_componentWillReceiveProps({ error, isPending, onDelete }) {
         if (this.state.changesApplied && !error && !isPending) {
             onDelete();
         }

@@ -52,7 +52,7 @@ export class DeviceGroupTelemetryFormat extends LinkedComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.format &&
             (this.state.format || []).length !== nextProps.format.length

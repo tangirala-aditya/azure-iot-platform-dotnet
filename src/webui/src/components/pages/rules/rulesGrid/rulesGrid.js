@@ -112,7 +112,7 @@ export class RulesGrid extends Component {
         };
     }
 
-    componentWillReceiveProps({ rowData }) {
+    UNSAFE_componentWillReceiveProps({ rowData }) {
         const { selectedRules = [], softSelectedRuleId } = this.state;
         if (rowData && (selectedRules.length || softSelectedRuleId)) {
             let updatedSoftSelectedRule;

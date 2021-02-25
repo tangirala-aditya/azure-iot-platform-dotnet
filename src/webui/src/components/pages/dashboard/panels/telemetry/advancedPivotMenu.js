@@ -19,7 +19,7 @@ export class AdvancedPivotMenu extends React.Component {
         this.checkButtons(this.refs.offsetWidth, this.refs.scrollWidth);
     }
 
-    componentWillReceiveProps(nextprops) {
+    UNSAFE_componentWillReceiveProps(nextprops) {
         var target = ReactDOM.findDOMNode(this).querySelectorAll(
             "[class^=Pivot_pivot-menu]"
         );

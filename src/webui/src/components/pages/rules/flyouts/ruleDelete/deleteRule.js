@@ -38,7 +38,7 @@ export class DeleteRule extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.rule) {
             const { rule } = nextProps;
             this.setState({

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
-import { forkJoin, from, merge, of, Subject } from "rxjs";
+import { EMPTY, forkJoin, merge, of, Subject } from "rxjs";
 import moment from "moment";
 
 import Config from "app.config";
@@ -98,7 +98,7 @@ export class Dashboard extends Component {
         this.props.updateCurrentWindow("Dashboard");
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const redirectUrl = HttpClient.getLocalStorageValue("redirectUrl");
         HttpClient.removeLocalStorageItem("redirectUrl");
         if (redirectUrl) {
@@ -137,7 +137,7 @@ export class Dashboard extends Component {
                 this.setState({ telemetryIsPending: true }),
             getTelemetryStream = ({ deviceIds = [] }) =>
                 deviceIds.length === 0
-                    ? from(() => {})
+                    ? EMPTY
                     : merge(
                           TelemetryService.getTelemetryByDeviceId(
                               deviceIds,
@@ -411,7 +411,7 @@ export class Dashboard extends Component {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.deviceLastUpdated !== this.props.deviceLastUpdated ||
             nextProps.timeInterval !== this.props.timeInterval

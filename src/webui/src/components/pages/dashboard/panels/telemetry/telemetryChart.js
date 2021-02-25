@@ -137,7 +137,7 @@ export class TelemetryChart extends Component {
         window.removeEventListener("focus", this.handleWindowFocus);
     }
 
-    componentWillReceiveProps({ telemetry }) {
+    UNSAFE_componentWillReceiveProps({ telemetry }) {
         const telemetryKeys = Object.keys(telemetry)
                 .filter(
                     (key) =>
@@ -155,7 +155,7 @@ export class TelemetryChart extends Component {
         });
     }
 
-    componentWillUpdate({ telemetry, theme }, { telemetryKey }) {
+    UNSAFE_componentWillUpdate({ telemetry, theme }, { telemetryKey }) {
         let chartData = [];
         if (
             Object.keys(telemetry).length &&

@@ -71,7 +71,7 @@ export class DeploymentNew extends LinkedComponent {
         this.expandFlyout = this.expandFlyout.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const { devices, packages, deviceGroups, deviceGroupId } = nextProps;
         if (devices && devices.length > 0) {
             this.setState({ targetedDeviceCount: devices.length });

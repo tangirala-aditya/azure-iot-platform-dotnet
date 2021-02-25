@@ -38,7 +38,7 @@ export class DeviceTelemetry extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (
             this.props &&
             this.props.location.pathname === "/deviceSearch/telemetry"
@@ -97,10 +97,12 @@ export class DeviceTelemetry extends Component {
                             mergeMap((messages) =>
                                 transformTelemetryResponse(
                                     () => this.state.telemetry
-                                )(messages).map((telemetry) => ({
-                                    telemetry,
-                                    lastMessage: messages[0],
-                                }))
+                                )(messages).pipe(
+                                    map((telemetry) => ({
+                                        telemetry,
+                                        lastMessage: messages[0],
+                                    }))
+                                )
                             ),
                             map((newState) => ({
                                 ...newState,

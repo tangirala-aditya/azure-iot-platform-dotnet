@@ -51,7 +51,7 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.methods &&
             (this.state.methods || []).length !== nextProps.methods.length

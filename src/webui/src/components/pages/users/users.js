@@ -37,11 +37,11 @@ export class Users extends Component {
         this.props.updateCurrentWindow("Users");
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.isPending &&
             nextProps.isPending !== this.props.isPending

@@ -34,7 +34,7 @@ import {
     SummarySection,
     Svg,
 } from "components/shared";
-import { distinct, map, mergeMap, reduce } from "rxjs/operators";
+import { distinct, filter, map, mergeMap, reduce } from "rxjs/operators";
 
 update.extend("$autoArray", (val, obj) => update(obj || [], val));
 
@@ -82,12 +82,12 @@ export class DeviceJobProperties extends LinkedComponent {
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps) {
         if (
-            nextProps.devices &&
-            (this.props.devices || []).length !== nextProps.devices.length
+            this.props.devices &&
+            (this.props.devices || []).length !== prevProps.devices.length
         ) {
-            this.populateState(nextProps.devices);
+            this.populateState(this.props.devices);
         }
     }
 
@@ -153,11 +153,11 @@ export class DeviceJobProperties extends LinkedComponent {
                         : deviceProperties
                 ), // At this point, a stream of a single event. A common set of properties.
                 mergeMap((commonPropertiesSet) =>
-                    from(devicesWithProps)
-                        .flatMap(({ properties }) => Object.entries(properties))
-                        .filter(([property]) =>
+                    from(devicesWithProps).pipe(
+                        mergeMap(({ properties }) => Object.entries(properties)),
+                        filter(([property]) =>
                             commonPropertiesSet.has(property)
-                        )
+                        ))
                 ),
                 distinct(
                     ([propertyName, propertyVal]) =>
@@ -518,7 +518,7 @@ export class DeviceJobProperties extends LinkedComponent {
                                         },
                                         idx
                                     ) => (
-                                        <ComponentArray>
+                                        <ComponentArray key={idx}>
                                             <Row
                                                 id={idx}
                                                 className={

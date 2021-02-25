@@ -40,20 +40,17 @@ export class Summary extends Component {
         this.state = {
             selectedDeviceGroupId: undefined,
         };
-    }
 
-    UNSAFE_componentWillMount() {
         if (this.props.location.search) {
             const tenantId = getTenantIdParam(this.props.location.search);
             this.props.checkTenantAndSwitch({
                 tenantId: tenantId,
                 redirectUrl: window.location.href,
             });
-            this.setState({
-                selectedDeviceGroupId: getDeviceGroupParam(
-                    this.props.location.search
-                ),
-            });
+
+            this.state.selectedDeviceGroupId = getDeviceGroupParam(
+                this.props.location.search
+            )
         }
     }
 

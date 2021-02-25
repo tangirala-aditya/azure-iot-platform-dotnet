@@ -52,49 +52,50 @@ export class Rules extends Component {
                 this.props.applicationPermissionsAssigned
             );
         }
-    }
 
-    UNSAFE_componentWillMount() {
         if (this.props.location.search) {
             const tenantId = getTenantIdParam(this.props.location.search);
             this.props.checkTenantAndSwitch({
                 tenantId: tenantId,
                 redirectUrl: window.location.href,
             });
-            this.setState({
-                selectedDeviceGroupId: getDeviceGroupParam(
-                    this.props.location.search
-                ),
-            });
+
+            this.state.selectedDeviceGroupId = getDeviceGroupParam(
+                this.props.location.search
+            )
         }
-        IdentityGatewayService.VerifyAndRefreshCache();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        if (
-            nextProps.isPending &&
-            nextProps.isPending !== this.props.isPending
-        ) {
-            // If the grid data refreshes, hide the flyout and deselect soft selections
-            this.setState(closedFlyoutState);
+    static getDerivedStateFromProps(props, state) {
+        if (props.isPending && props.isPending !== state.preIsPending) {
+            return {
+                ...closedFlyoutState,
+                preIsPending: props.isPending,
+            };
         }
-        if (
-            nextProps.applicationPermissionsAssigned !== undefined &&
-            nextProps.applicationPermissionsAssigned !==
-                this.props.applicationPermissionsAssigned
-        ) {
-            this.logApplicationPermissions(
-                nextProps.applicationPermissionsAssigned
-            );
-        }
+
+        return null;
     }
 
     componentDidMount() {
+        IdentityGatewayService.VerifyAndRefreshCache();
         if (this.state.selectedDeviceGroupId) {
             window.history.replaceState(
                 {},
                 document.title,
                 this.props.location.pathname
+            );
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (
+            this.props.applicationPermissionsAssigned !== undefined &&
+            prevProps.applicationPermissionsAssigned !==
+            this.props.applicationPermissionsAssigned
+        ) {
+            this.logApplicationPermissions(
+                this.props.applicationPermissionsAssigned
             );
         }
     }
@@ -128,19 +129,19 @@ export class Rules extends Component {
 
     render() {
         const {
-                alerting,
-                t,
-                rules,
-                error,
-                isPending,
-                lastUpdated,
-                fetchRules,
-                logEvent,
-                activeDeviceGroupId,
-                location,
-                userPermissions,
-                currentTenantId,
-            } = this.props,
+            alerting,
+            t,
+            rules,
+            error,
+            isPending,
+            lastUpdated,
+            fetchRules,
+            logEvent,
+            activeDeviceGroupId,
+            location,
+            userPermissions,
+            currentTenantId,
+        } = this.props,
             gridProps = {
                 onGridReady: this.onGridReady,
                 rowData: isPending ? undefined : rules || [],
@@ -171,12 +172,12 @@ export class Rules extends Component {
                                 <ManageDeviceGroupsBtn />
                             </Protected>
                             {this.props.activeDeviceQueryConditions.length !==
-                            0 ? (
-                                <>
-                                    <CreateDeviceQueryBtn />
-                                    <ResetActiveDeviceQueryBtn />
-                                </>
-                            ) : null}
+                                0 ? (
+                                    <>
+                                        <CreateDeviceQueryBtn />
+                                        <ResetActiveDeviceQueryBtn />
+                                    </>
+                                ) : null}
                         </ContextMenuAlign>
                         <ContextMenuAlign>
                             {this.state.contextBtns}

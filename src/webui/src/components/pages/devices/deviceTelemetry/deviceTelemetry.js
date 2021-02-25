@@ -58,8 +58,8 @@ export class DeviceTelemetry extends Component {
             device: { telemetry: { interval = "0" } = {} } = {},
         } = this.props;
         const [hours = 0, minutes = 0, seconds = 0] = interval
-                .split(":")
-                .map(int),
+            .split(":")
+            .map(int),
             refreshInterval = ((hours * 60 + minutes) * 60 + seconds) * 1000,
             // Telemetry stream - START
             onPendingStart = () => this.setState({ telemetryIsPending: true }),
@@ -84,7 +84,7 @@ export class DeviceTelemetry extends Component {
                                 // Previous request complete
                                 delay(
                                     refreshInterval ||
-                                        Config.dashboardRefreshInterval
+                                    Config.dashboardRefreshInterval
                                 ), // Wait to refresh
                                 tap(onPendingStart),
                                 mergeMap((_) =>
@@ -97,10 +97,10 @@ export class DeviceTelemetry extends Component {
                             mergeMap((messages) =>
                                 transformTelemetryResponse(
                                     () => this.state.telemetry
-                                )(messages).map((telemetry) => ({
+                                )(messages).pipe(map((telemetry) => ({
                                     telemetry,
                                     lastMessage: messages[0],
-                                }))
+                                })))
                             ),
                             map((newState) => ({
                                 ...newState,
@@ -151,7 +151,7 @@ export class DeviceTelemetry extends Component {
             // Add parameters to Time Series Insights Url
             timeSeriesParamUrl = timeSeriesExplorerUrl
                 ? timeSeriesExplorerUrl +
-                  '&relativeMillis=1800000&timeSeriesDefinitions=[{"name":"Devices","splitBy":"iothub-connection-device-id"}]'
+                '&relativeMillis=1800000&timeSeriesDefinitions=[{"name":"Devices","splitBy":"iothub-connection-device-id"}]'
                 : undefined;
         return (
             <ComponentArray>

@@ -52,7 +52,6 @@ export class AnalyticsPanel extends Component {
         window.removeEventListener("focus", this.handleWindowFocus);
     }
 
-    // mgr from UNSAFE_componentWillUpdate
     componentDidUpdate(prevProps, prevState) {
         const staticTime = "";
 

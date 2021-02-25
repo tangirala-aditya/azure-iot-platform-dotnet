@@ -117,17 +117,17 @@ export class DeviceDetails extends Component {
         }
 
         const {
-                device = {},
-                device: { telemetry: { interval = "0" } = {} } = {},
-            } = this.props,
+            device = {},
+            device: { telemetry: { interval = "0" } = {} } = {},
+        } = this.props,
             deviceId = device.id;
         this.fetchAlerts(deviceId);
         this.fetchDeviceUploads(deviceId);
         this.fetchDeviceDeployments(deviceId);
 
         const [hours = 0, minutes = 0, seconds = 0] = interval
-                .split(":")
-                .map(int),
+            .split(":")
+            .map(int),
             refreshInterval = ((hours * 60 + minutes) * 60 + seconds) * 1000,
             // Telemetry stream - START
             onPendingStart = () => this.setState({ telemetryIsPending: true }),
@@ -152,7 +152,7 @@ export class DeviceDetails extends Component {
                                 // Previous request complete
                                 delay(
                                     refreshInterval ||
-                                        Config.dashboardRefreshInterval
+                                    Config.dashboardRefreshInterval
                                 ), // Wait to refresh
                                 tap(onPendingStart),
                                 mergeMap((_) =>
@@ -165,10 +165,10 @@ export class DeviceDetails extends Component {
                             mergeMap((messages) =>
                                 transformTelemetryResponse(
                                     () => this.state.telemetry
-                                )(messages).map((telemetry) => ({
+                                )(messages).pipe(map((telemetry) => ({
                                     telemetry,
                                     lastMessage: messages[0],
-                                }))
+                                })))
                             ),
                             map((newState) => ({
                                 ...newState,
@@ -345,15 +345,15 @@ export class DeviceDetails extends Component {
 
     render() {
         const {
-                t,
-                onClose,
-                device,
-                theme,
-                timeSeriesExplorerUrl,
-                isDeviceModuleStatusPending,
-                deviceModuleStatusError,
-                flyoutLink,
-            } = this.props,
+            t,
+            onClose,
+            device,
+            theme,
+            timeSeriesExplorerUrl,
+            isDeviceModuleStatusPending,
+            deviceModuleStatusError,
+            flyoutLink,
+        } = this.props,
             { telemetry, lastMessage, currentModuleStatus } = this.state,
             lastMessageTime = (lastMessage || {}).time,
             isPending = this.state.isAlertsPending && this.props.isRulesPending,
@@ -361,9 +361,9 @@ export class DeviceDetails extends Component {
                 rowData: isPending
                     ? undefined
                     : this.applyRuleNames(
-                          this.state.alerts || [],
-                          this.props.rules || []
-                      ),
+                        this.state.alerts || [],
+                        this.props.rules || []
+                    ),
                 t: this.props.t,
                 deviceGroups: this.props.deviceGroups,
                 domLayout: "autoHeight",
@@ -383,11 +383,9 @@ export class DeviceDetails extends Component {
 
             timeSeriesParamUrl = timeSeriesExplorerUrl
                 ? timeSeriesExplorerUrl +
-                  `&relativeMillis=1800000&timeSeriesDefinitions=[{"name":"${
-                      device.id
-                  }","measureName":"${
-                      Object.keys(telemetry).sort()[0]
-                  }","predicate":"'${device.id}'"}]`
+                `&relativeMillis=1800000&timeSeriesDefinitions=[{"name":"${device.id
+                }","measureName":"${Object.keys(telemetry).sort()[0]
+                }","predicate":"'${device.id}'"}]`
                 : undefined;
 
         return (
@@ -423,20 +421,20 @@ export class DeviceDetails extends Component {
                                         <div className="device-simulated">
                                             {device.isSimulated
                                                 ? t(
-                                                      "devices.flyouts.details.simulated"
-                                                  )
+                                                    "devices.flyouts.details.simulated"
+                                                )
                                                 : t(
-                                                      "devices.flyouts.details.notSimulated"
-                                                  )}
+                                                    "devices.flyouts.details.notSimulated"
+                                                )}
                                         </div>
                                         <div className="device-connected">
                                             {device.connected
                                                 ? t(
-                                                      "devices.flyouts.details.connected"
-                                                  )
+                                                    "devices.flyouts.details.connected"
+                                                )
                                                 : t(
-                                                      "devices.flyouts.details.notConnected"
-                                                  )}
+                                                    "devices.flyouts.details.notConnected"
+                                                )}
                                         </div>
                                     </Cell>
                                 </Row>
@@ -587,18 +585,18 @@ export class DeviceDetails extends Component {
                                             "devices.flyouts.details.methods.noneExist"
                                         )
                                     ) : (
-                                        <Grid>
-                                            {device.methods.map(
-                                                (methodName, idx) => (
-                                                    <Row key={idx}>
-                                                        <Cell>
-                                                            {methodName}
-                                                        </Cell>
-                                                    </Row>
-                                                )
-                                            )}
-                                        </Grid>
-                                    )}
+                                            <Grid>
+                                                {device.methods.map(
+                                                    (methodName, idx) => (
+                                                        <Row key={idx}>
+                                                            <Cell>
+                                                                {methodName}
+                                                            </Cell>
+                                                        </Row>
+                                                    )
+                                                )}
+                                            </Grid>
+                                        )}
                                 </Section.Content>
                             </Section.Container>
 
@@ -665,10 +663,10 @@ export class DeviceDetails extends Component {
                                                             idx
                                                         ) => {
                                                             const desiredPropertyValue =
-                                                                    device
-                                                                        .desiredProperties[
-                                                                        propertyName
-                                                                    ],
+                                                                device
+                                                                    .desiredProperties[
+                                                                propertyName
+                                                                ],
                                                                 serializedProperties = serializeNestedDeviceProperties(
                                                                     propertyName,
                                                                     propertyValue
@@ -682,25 +680,25 @@ export class DeviceDetails extends Component {
                                                                     value,
                                                                 ]) => {
                                                                     const displayValue =
-                                                                            !desiredPropertyValue ||
+                                                                        !desiredPropertyValue ||
                                                                             value ===
-                                                                                desiredPropertyValue
-                                                                                ? value.toString()
-                                                                                : t(
-                                                                                      "devices.flyouts.details.properties.syncing",
-                                                                                      {
-                                                                                          reportedPropertyValue: value.toString(),
-                                                                                          desiredPropertyValue: desiredPropertyValue.toString(),
-                                                                                      }
-                                                                                  ),
+                                                                            desiredPropertyValue
+                                                                            ? value.toString()
+                                                                            : t(
+                                                                                "devices.flyouts.details.properties.syncing",
+                                                                                {
+                                                                                    reportedPropertyValue: value.toString(),
+                                                                                    desiredPropertyValue: desiredPropertyValue.toString(),
+                                                                                }
+                                                                            ),
                                                                         truncatedDisplayName =
                                                                             propertyDisplayName.length <=
-                                                                            20
+                                                                                20
                                                                                 ? propertyDisplayName
                                                                                 : `...${propertyDisplayName.substring(
-                                                                                      propertyDisplayName.length -
-                                                                                          17
-                                                                                  )}`;
+                                                                                    propertyDisplayName.length -
+                                                                                    17
+                                                                                )}`;
                                                                     rows.push(
                                                                         <Row
                                                                             key={
@@ -804,11 +802,11 @@ export class DeviceDetails extends Component {
                                                 <Cell className="col-15">
                                                     {device.connected
                                                         ? t(
-                                                              "devices.flyouts.details.connected"
-                                                          )
+                                                            "devices.flyouts.details.connected"
+                                                        )
                                                         : t(
-                                                              "devices.flyouts.details.notConnected"
-                                                          )}
+                                                            "devices.flyouts.details.notConnected"
+                                                        )}
                                                 </Cell>
                                             </Row>
                                             {device.connected && (
@@ -822,10 +820,10 @@ export class DeviceDetails extends Component {
                                                         <Cell className="col-15">
                                                             {lastMessageTime
                                                                 ? moment(
-                                                                      lastMessageTime
-                                                                  ).format(
-                                                                      DEFAULT_TIME_FORMAT
-                                                                  )
+                                                                    lastMessageTime
+                                                                ).format(
+                                                                    DEFAULT_TIME_FORMAT
+                                                                )
                                                                 : "---"}
                                                         </Cell>
                                                     </Row>

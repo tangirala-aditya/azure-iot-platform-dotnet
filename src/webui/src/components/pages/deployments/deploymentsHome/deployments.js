@@ -68,19 +68,6 @@ export class Deployments extends Component {
         }
     }
 
-    // UNSAFE_componentWillMount() {
-    // }
-
-    // UNSAFE_componentWillReceiveProps(nextProps) {
-    //     if (
-    //         nextProps.isPending &&
-    //         nextProps.isPending !== this.props.isPending
-    //     ) {
-    //         // If the grid data refreshes, hide the flyout
-    //         this.setState(closedFlyoutState);
-    //     }
-    // }
-
     static getDerivedStateFromProps(props, state) {
         if (props.isPending && props.isPending !== state.preIsPending) {
             return {

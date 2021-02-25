@@ -47,12 +47,6 @@ export class DeploymentStatus extends LinkedComponent {
         }
     }
 
-    // UNSAFE_componentWillReceiveProps(nextprops) {
-    //     this.setState({
-    //         isActive: nextprops.selectedDeployment.isActive,
-    //     });
-    // }
-
     static getDerivedStateFromProps(props, state) {
         if (state.isActive !== props.selectedDeployment.isActive) {
             return {

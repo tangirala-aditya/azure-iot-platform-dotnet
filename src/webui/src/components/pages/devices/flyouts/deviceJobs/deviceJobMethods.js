@@ -75,12 +75,12 @@ export class DeviceJobMethods extends LinkedComponent {
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps) {
         if (
-            nextProps.devices &&
-            (this.props.devices || []).length !== nextProps.devices.length
+            this.props.devices &&
+            (this.props.devices || []).length !== prevProps.devices.length
         ) {
-            this.populateState(nextProps.devices);
+            this.populateState(this.props.devices);
         }
     }
 

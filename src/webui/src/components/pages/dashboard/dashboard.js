@@ -115,27 +115,6 @@ export class Dashboard extends Component {
         }
     }
 
-    // UNSAFE_componentWillMount() {
-    //     const redirectUrl = HttpClient.getLocalStorageValue("redirectUrl");
-    //     HttpClient.removeLocalStorageItem("redirectUrl");
-    //     if (redirectUrl) {
-    //         window.location.href = redirectUrl;
-    //     }
-
-    //     if (this.props.location.search) {
-    //         const tenantId = getTenantIdParam(this.props.location.search);
-    //         this.props.checkTenantAndSwitch({
-    //             tenantId: tenantId,
-    //             redirectUrl: window.location.href,
-    //         });
-    //         this.setState({
-    //             selectedDeviceGroupId: getDeviceGroupParam(
-    //                 this.props.location.search
-    //             ),
-    //         });
-    //     }
-    // }
-
     componentDidMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
         if (this.state.selectedDeviceGroupId) {
@@ -427,20 +406,6 @@ export class Dashboard extends Component {
     componentWillUnmount() {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
-
-    // UNSAFE_componentWillReceiveProps(nextProps) {
-    //     if (
-    //         nextProps.deviceLastUpdated !== this.props.deviceLastUpdated ||
-    //         nextProps.timeInterval !== this.props.timeInterval
-    //     ) {
-    //         this.dashboardRefresh$.next(
-    //             refreshEvent(
-    //                 Object.keys(nextProps.devices),
-    //                 nextProps.timeInterval
-    //             )
-    //         );
-    //     }
-    // }
 
     componentDidUpdate(prevProps, prevState) {
         if (

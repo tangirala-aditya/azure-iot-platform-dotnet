@@ -71,61 +71,6 @@ export class DeploymentNew extends LinkedComponent {
         this.expandFlyout = this.expandFlyout.bind(this);
     }
 
-    // UNSAFE_componentWillReceiveProps(nextProps) {
-    //     const { devices, packages, deviceGroups, deviceGroupId } = nextProps;
-    //     if (devices && devices.length > 0) {
-    //         this.setState({ targetedDeviceCount: devices.length });
-    //     }
-    //     if (deviceGroupId !== undefined) {
-    //         const deviceGroup = deviceGroups.find(
-    //             (deviceGroup) => deviceGroup.id === deviceGroupId
-    //         );
-    //         const deviceGroupName = deviceGroup.displayName;
-    //         this.setState({ deviceGroupName, deviceGroupId });
-
-    //         this.setState({
-    //             deviceGroupQuery: JSON.stringify(deviceGroup.conditions),
-    //         });
-    //     }
-    //     // Reset package selection
-    //     this.setState({
-    //         packageId: undefined,
-    //         packageName: "",
-    //     });
-    //     if (packages !== undefined) {
-    //         if (this.state.packageType === packagesEnum.edgeManifest) {
-    //             this.setState({
-    //                 packageOptions: packages
-    //                     .filter(
-    //                         (value) =>
-    //                             value.packageType === this.state.packageType
-    //                     )
-    //                     .map(this.toPackageSelectOption),
-    //             });
-    //         } else if (
-    //             this.state.packageType === packagesEnum.deviceConfiguration &&
-    //             this.state.configType
-    //         ) {
-    //             this.setState({
-    //                 packageOptions: packages
-    //                     .filter(
-    //                         (value) =>
-    //                             value.configType === this.state.configType &&
-    //                             value.packageType === this.state.packageType
-    //                     )
-    //                     .map(this.toPackageSelectOption),
-    //             });
-    //         } else {
-    //             this.setState({
-    //                 packageOptions: [],
-    //             });
-    //         }
-    //         this.setState({
-    //             packages: packages,
-    //         });
-    //     }
-    // }
-
     static getDerivedStateFromProps(props, state) {
         const toPackageSelectOption = ({ id, name }) => ({
             label: name,

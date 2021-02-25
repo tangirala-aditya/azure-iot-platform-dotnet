@@ -47,6 +47,7 @@ export class Maintenance extends Component {
             succeededJobsCount: undefined,
 
             lastUpdated: undefined,
+            isDataPending: false
         };
 
         if (!this.props.rulesLastUpdated) {
@@ -67,18 +68,6 @@ export class Maintenance extends Component {
             ),
             params = { ...timeParams, devices },
             jobParams = { ...timeParams };
-        this.setState({
-            alertsIsPending: true,
-            jobsIsPending: true,
-            alertCount: undefined,
-            alertsError: undefined,
-            criticalAlertCount: undefined,
-            warningAlertCount: undefined,
-            jobsCount: undefined,
-            failedJobsCount: undefined,
-            succeededJobsCount: undefined,
-            jobsError: undefined,
-        });
         this.clearSubscriptions();
         this.subscriptions.push(
             TelemetryService.getActiveAlerts(params)
@@ -183,12 +172,9 @@ export class Maintenance extends Component {
             )
         );
     };
-
-    UNSAFE_componentWillMount() {
-        IdentityGatewayService.VerifyAndRefreshCache();
-    }
-
+    
     componentDidMount() {
+        IdentityGatewayService.VerifyAndRefreshCache();
         const {
             devicesIsPending,
             deviceLastUpdated,
@@ -196,22 +182,51 @@ export class Maintenance extends Component {
         } = this.props;
         if (!devicesIsPending && deviceLastUpdated) {
             this.getData(deviceEntities);
+            this.setState({ isDataPending: false });
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(props, state) {
+
         const {
             devicesIsPending,
             deviceLastUpdated,
-            deviceEntities,
             timeInterval,
-        } = nextProps;
-        if (
+        } = props;
+
+       if (
             (!devicesIsPending &&
-                deviceLastUpdated !== this.props.deviceLastUpdated) ||
-            timeInterval !== this.props.timeInterval
+            deviceLastUpdated !== state.preDeviceLastUpdated) ||
+            timeInterval !== state.preTimeInterval
         ) {
+            return {
+                alertsIsPending: true,
+                jobsIsPending: true,
+                alertCount: undefined,
+                alertsError: undefined,
+                criticalAlertCount: undefined,
+                warningAlertCount: undefined,
+                jobsCount: undefined,
+                failedJobsCount: undefined,
+                succeededJobsCount: undefined,
+                jobsError: undefined,
+                preDeviceLastUpdated: deviceLastUpdated,
+                preTimeInterval: timeInterval,
+                isDataPending: true
+            }
+        }
+
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        const {
+            deviceEntities,
+            timeInterval
+        } = this.props; 
+        if (this.state.isDataPending) {
             this.getData(deviceEntities, timeInterval);
+            this.setState({ isDataPending: false });
         }
     }
 

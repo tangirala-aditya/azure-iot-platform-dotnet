@@ -41,32 +41,30 @@ export class Packages extends Component {
             packageJson: "testjson file",
             selectedDeviceGroupId: undefined,
         };
-    }
 
-    UNSAFE_componentWillMount() {
         if (this.props.location.search) {
             const tenantId = getTenantIdParam(this.props.location.search);
             this.props.checkTenantAndSwitch({
                 tenantId: tenantId,
                 redirectUrl: window.location.href,
             });
-            this.setState({
-                selectedDeviceGroupId: getDeviceGroupParam(
-                    this.props.location.search
-                ),
-            });
+
+            this.state.selectedDeviceGroupId = getDeviceGroupParam(
+                this.props.location.search
+            )
         }
-        IdentityGatewayService.VerifyAndRefreshCache();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        if (
-            nextProps.isPending &&
-            nextProps.isPending !== this.props.isPending
-        ) {
-            // If the grid data refreshes, hide the flyout
-            this.setState(closedFlyoutState);
+    static getDerivedStateFromProps(props, state) {
+        if (props.isPending && props.isPending !== state.preIsPending) {
+            return {
+                ...closedFlyoutState,
+                preIsPending: props.isPending,
+            };
         }
+
+        // Return null to indicate no change to state.
+        return null;
     }
 
     onFirstDataRendered = () => {
@@ -103,6 +101,7 @@ export class Packages extends Component {
     }
 
     componentDidMount() {
+        IdentityGatewayService.VerifyAndRefreshCache();
         if (this.state.selectedDeviceGroupId) {
             window.history.replaceState(
                 {},
@@ -156,13 +155,13 @@ export class Packages extends Component {
 
     render() {
         const {
-                t,
-                packages,
-                error,
-                isPending,
-                fetchPackages,
-                lastUpdated,
-            } = this.props,
+            t,
+            packages,
+            error,
+            isPending,
+            fetchPackages,
+            lastUpdated,
+        } = this.props,
             gridProps = {
                 onGridReady: this.onGridReady,
                 onFirstDataRendered: this.onFirstDataRendered,

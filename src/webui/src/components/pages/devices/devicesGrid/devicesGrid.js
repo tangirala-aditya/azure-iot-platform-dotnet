@@ -55,35 +55,36 @@ export class DevicesGrid extends Component {
             deviceColumnDefs.lastConnection,
         ];
 
-        this.contextBtns = (
-            <ComponentArray>
-                <Protected permission={permissions.createJobs}>
-                    <Btn
-                        svg={svgs.reconfigure}
-                        onClick={this.openFlyout("jobs")}
-                    >
-                        {props.t("devices.flyouts.jobs.title")}
-                    </Btn>
-                </Protected>
-                <Protected permission={permissions.deleteDevices}>
-                    <Btn svg={svgs.trash} onClick={this.openFlyout("delete")}>
-                        {props.t("devices.flyouts.delete.title")}
-                    </Btn>
-                </Protected>
-                <Protected permission={permissions.sendC2DMessage}>
-                    <Btn
-                        svg={svgs.email}
-                        onClick={this.openFlyout("c2dmessage")}
-                    >
-                        {props.t("devices.flyouts.c2dMessage.sendMessage")}
-                    </Btn>
-                </Protected>
-                <Btn icon="areaChart" onClick={this.goToTelemetryScreen}>
-                    {props.t("devices.showTelemetry")}
-                </Btn>
-            </ComponentArray>
-        );
     }
+
+    contextBtns = () => (
+        <ComponentArray>
+            <Protected permission={permissions.createJobs}>
+                <Btn
+                    svg={svgs.reconfigure}
+                    onClick={this.openFlyout("jobs")}
+                >
+                    {this.props.t("devices.flyouts.jobs.title")}
+                </Btn>
+            </Protected>
+            <Protected permission={permissions.deleteDevices}>
+                <Btn svg={svgs.trash} onClick={this.openFlyout("delete")}>
+                    {this.props.t("devices.flyouts.delete.title")}
+                </Btn>
+            </Protected>
+            <Protected permission={permissions.sendC2DMessage}>
+                <Btn
+                    svg={svgs.email}
+                    onClick={this.openFlyout("c2dmessage")}
+                >
+                    {this.props.t("devices.flyouts.c2dMessage.sendMessage")}
+                </Btn>
+            </Protected>
+            <Btn icon="areaChart" onClick={this.goToTelemetryScreen}>
+                {this.props.t("devices.showTelemetry")}
+            </Btn>
+        </ComponentArray>
+    );
 
     UNSAFE_componentWillMount() {
         if (this.props && this.props.location.pathname === "/deviceSearch") {
@@ -278,7 +279,7 @@ export class DevicesGrid extends Component {
         const { onContextMenuChange, onHardSelectChange } = this.props;
         if (isFunc(onContextMenuChange)) {
             onContextMenuChange(
-                selectedDevices.length > 0 ? this.contextBtns : null
+                selectedDevices.length > 0 ? this.contextBtns() : null
             );
         }
         if (isFunc(onHardSelectChange)) {

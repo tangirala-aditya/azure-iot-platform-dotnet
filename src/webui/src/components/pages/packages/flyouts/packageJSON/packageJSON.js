@@ -21,17 +21,19 @@ export class PackageJSON extends LinkedComponent {
     onFlyoutClose = (eventName) => {
         this.props.onClose();
     };
-
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.packageJson !== this.props.packageJson) {
-            var jsonData = JSON.parse(nextProps.packageJson);
-            this.state = {
+    
+    static getDerivedStateFromProps(props, state) {
+        if (props.packageJson !== state.packageJson) {
+            var jsonData = JSON.parse(props.packageJson);
+            return {
                 packageJson: {
                     jsObject: { jsonData },
                 },
             };
         }
-    }
+
+        return null;
+      }
 
     expandFlyout() {
         if (this.state.expandedValue) {

@@ -36,8 +36,7 @@ const handleError = (fromAction) => (error) =>
             .join();
     },
     createEdgeAgentQuery = (ids) =>
-        `"deviceId IN [${ids}] AND moduleId = '$edgeAgent'"`,
-    createDevicesQuery = (ids) => `"deviceId IN [${ids}]"`;
+        `"deviceId IN [${ids}] AND moduleId = '$edgeAgent'"`;
 
 export const epics = createEpicScenario({
     /** Loads all Deployments */
@@ -79,9 +78,6 @@ export const epics = createEpicScenario({
             ) {
                 return IoTHubManagerService.getDevicesByQueryForDeployment(
                     fromAction.payload.id,
-                    createDevicesQuery(
-                        getDeployedDeviceIds(fromAction.payload)
-                    ),
                     fromAction.payload.isLatest
                 ).pipe(
                     map(
@@ -103,9 +99,6 @@ export const epics = createEpicScenario({
                 ),
                 IoTHubManagerService.getDevicesByQueryForDeployment(
                     fromAction.payload.id,
-                    createDevicesQuery(
-                        getDeployedDeviceIds(fromAction.payload)
-                    ),
                     fromAction.payload.isLatest
                 ),
             ]).pipe(
@@ -260,6 +253,8 @@ const deploymentSchema = new schema.Entity("deployments"),
                             normalizedDevices[deviceId].lastFwUpdateStartTime,
                         end: normalizedDevices[deviceId].lastFwUpdateEndTime,
                         firmware: normalizedDevices[deviceId].firmware,
+                        previousFirmware:
+                            normalizedDevices[deviceId].previousFirmware,
                         device: normalizedDevices[deviceId],
                     },
                 }),

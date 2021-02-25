@@ -117,13 +117,15 @@ export const epics = createEpicScenario({
     fetchDevicesByCondition: {
         type: "DEVICES_FETCH_BY_CONDITION",
         epic: (fromAction) => {
-            return IoTHubManagerService.getDevices(fromAction.payload).pipe(
+            return IoTHubManagerService.getDevices(fromAction.payload.data).pipe(
                 map((response) => {
                     return response.items;
                 }),
                 map(
                     toActionCreator(
-                        redux.actions.updateDevicesByCondition,
+                        fromAction.payload.insertIntoGrid
+                            ? redux.actions.insertDevices
+                            : redux.actions.updateDevicesByCondition,
                         fromAction
                     )
                 ),
@@ -272,6 +274,14 @@ const deviceSchema = new schema.Entity("devices"),
         });
     },
     insertDevicesReducer = (state, { payload }) => {
+        // As some of the multiple contains clauses lead to duplicates, we are explicitly removing the duplicates
+        payload = payload.filter(
+            (v, i, a) => a.findIndex((t) => t.id === v.id) === i
+        );
+        // Excluding the devices that are already loaded(on-demand) into the grid
+        payload = payload.filter((device) => {
+            return !state.items.includes(device.id);
+        });
         const inserted = payload.map((device) => ({ ...device, isNew: true })),
             {
                 entities: { devices },

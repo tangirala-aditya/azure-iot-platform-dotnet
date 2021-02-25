@@ -168,7 +168,8 @@
                     },
                     "deployment": {
                         "id": "When deploying your package, this value will be replaced by the ID of your deployment"
-                    }
+                    },
+                    "uniqueId":"Parent only. UniqueId used to attach to a Firmware Package creation."
                 }
             }
         }
@@ -497,9 +498,9 @@
                     "title": "Device Deployments",
                     "description": "Deployment History of device",
                     "noneExist": "No history present for this device",
+                    "deploymentName": "Deployment name",
                     "firmwareVersion": "Firmware Version",
-                    "startDate": "Start Date Time",
-                    "endDate": "End Date Time"
+                    "date": "Date"
                 }
             },
             "delete": {
@@ -953,6 +954,7 @@
                 "name": "Name",
                 "deploymentStatus": "Deployment Status",
                 "firmware": "Firmware",
+                "previousFirmware": "Previous Firmware",
                 "lastMessage": "Last Message",
                 "start": "Start",
                 "end": "End"

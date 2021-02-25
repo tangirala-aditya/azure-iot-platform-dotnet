@@ -41,6 +41,7 @@ export class DeviceTelemetry extends Component {
     UNSAFE_componentWillMount() {
         if (
             this.props &&
+            this.props.location &&
             this.props.location.pathname === "/deviceSearch/telemetry"
         ) {
             this.setState({

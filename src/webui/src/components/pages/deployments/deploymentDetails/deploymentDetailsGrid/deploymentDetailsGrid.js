@@ -28,6 +28,7 @@ export class DeploymentDetailsGrid extends Component {
             deploymentDetailsColumnDefs.name,
             deploymentDetailsColumnDefs.deploymentStatus,
             deploymentDetailsColumnDefs.firmware,
+            deploymentDetailsColumnDefs.previousFirmware,
             deploymentDetailsColumnDefs.start,
             deploymentDetailsColumnDefs.end,
         ];

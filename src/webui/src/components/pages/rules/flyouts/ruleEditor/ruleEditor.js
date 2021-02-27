@@ -316,7 +316,7 @@ export class RuleEditor extends LinkedComponent {
                             return IoTHubManagerService.getModulesFields(
                                 modulesQuery
                             ).pipe(
-                                map((devices, modules) => {
+                                map((modules) => {
                                     return [devices.items, modules];
                                 })
                             );

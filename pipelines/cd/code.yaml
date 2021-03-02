@@ -62,7 +62,7 @@ stages:
           applicationShortCode: $(applicationShortCode)
           environmentCategory: $(environmentCategory)
           imageTag: $(_imageTag)
-          blueGreen: $(blueGreen)
+          blueGreen: true
           subscriptionId: $(subscriptionId)
 
   - stage: acsDev

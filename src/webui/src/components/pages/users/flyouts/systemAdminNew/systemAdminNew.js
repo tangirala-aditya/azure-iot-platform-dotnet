@@ -100,7 +100,7 @@ export class SystemAdminNew extends LinkedComponent {
                         successCount: this.state.successCount + 1,
                     });
                     this.props.fetchAllNonSystemAdmins();
-                }, // TODO: verify
+                },
                 (error) =>
                     this.setState({
                         error,

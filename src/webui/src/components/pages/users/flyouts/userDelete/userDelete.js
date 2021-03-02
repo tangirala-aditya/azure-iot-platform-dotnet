@@ -96,7 +96,7 @@ export class UserDelete extends Component {
                         successCount: this.state.successCount + 1,
                     });
                     this.props.deleteUsers([deletedUserId]);
-                }, // TODO: verify
+                },
                 (error) =>
                     this.setState({
                         error,

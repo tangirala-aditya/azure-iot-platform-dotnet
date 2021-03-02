@@ -10,7 +10,7 @@ import { ROW_HEIGHT } from "components/shared/pcsGrid/pcsGridConfig";
 import { SearchInput } from "components/shared";
 
 import "../../../../node_modules/ag-grid-community/dist/styles/ag-grid.scss";
-import "../../../../node_modules/ag-grid-community/dist/styles/ag-theme-material/sass/ag-theme-material.scss";
+import "../../../../node_modules/ag-grid-community/dist/styles/ag-theme-alpine/sass/ag-theme-alpine.scss";
 import "./pcsGrid.scss";
 import { Btn } from "../forms";
 import { ComponentArray } from "../componentArray/componentArray";
@@ -227,7 +227,7 @@ export class PcsGrid extends Component {
                     </div>
                 )}
                 <div
-                    className={`pcs-grid-container ag-theme-material ${
+                    className={`pcs-grid-container ag-theme-alpine ${
                         gridParams.suppressMovableColumns
                             ? ""
                             : "movable-columns"

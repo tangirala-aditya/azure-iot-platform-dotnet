@@ -27,10 +27,10 @@ $cell-horizontal-border: transparent;
 $header-background-color: transparent;
 
 @import 'node_modules/ag-grid-community/dist/styles/ag-grid.scss';
-@import 'node_modules/ag-grid-community/dist/styles/ag-theme-material/sass/ag-theme-material-mixin.scss';
+@import 'node_modules/ag-grid-community/dist/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin';
 
 $doublePadding: $baseContentPadding * 2;
-.pcs-grid-container.ag-theme-material {
+.pcs-grid-container.ag-theme-alpine {
   height: calc(100% - #{$pageTitleHeight} - #{$refreshBarHeight});
   position: relative;
   flex-shrink: 0;
@@ -75,9 +75,6 @@ $doublePadding: $baseContentPadding * 2;
       @include rem-fallback(line-height, $rowLineHeight);
 
       &.first-child-column {
-        // Correct alignment of the padding since the border will add width
-        // TODO: @include rem-fallback(padding-left, $cell-horizontal-padding - 1px - $selectedRowBorderWidth);
-        @include rem-fallback(padding-left, 1px - $selectedRowBorderWidth);
         @include rem-fallback(border-left, $selectedRowBorderWidth solid transparent);
       }
     }
@@ -87,76 +84,80 @@ $doublePadding: $baseContentPadding * 2;
   .ag-paging-button { cursor: pointer; }
 
   @include themify($themes) {
+
+    .ag-root-wrapper {
+      background-color: themed('color-bg-table');
+
     .ag-header-cell-moving {
       background-color: themed('colorGridRowSelectedBackground');
       color: themed('colorGridCellText');
     }
 
-    .ag-header-row{
-      background-color: themed('color-bg-table');
-
-    .ag-header-cell {
-      color: themed('colorGridCellText');
-
-      .ag-icon-none {
-        visibility: hidden;
-        opacity: 0;
-        transition: visibility 0s, opacity 0.5s linear;
-        // TODO: background-image: url(themed('gridSortIcon'));
-      }
-
-      // TODO: .ag-icon-asc { background-image: url(themed('gridAscIcon')); }
-      // TODO: .ag-icon-desc { background-image: url(themed('gridDescIcon')); }
-
-      .ag-header-cell-resize::after {
-        height: $headerResizeHeight;
-        margin-top: ($header-height - $headerResizeHeight)/2;
-        visibility: hidden;
-        opacity: 0;
-        transition: visibility 0s, opacity 0.1s linear;
-        @include rem-fallback(width, 3px);
-        @include rem-fallback(border-left, 1px solid transparent);
-        border-color: themed('colorGridRowBorder');
-      }
-
-      &:hover {
-        .ag-icon-none:not(.ag-hidden),
+      .ag-header-viewport {
+        background-color: themed('color-bg-table');
+      
+      .ag-header-cell {
+        color: themed('colorGridCellText');
+      
+        .ag-icon-none {
+          visibility: hidden;
+          opacity: 0;
+          transition: visibility 0s, opacity 0.5s linear;
+        }
+      
+        .ag-icon-asc { color: themed('colorGridCellText') }
+        .ag-icon-desc { color: themed('colorGridCellText') }
+      
         .ag-header-cell-resize::after {
-          visibility: visible;
-          opacity: 1;
-         }
+          height: $headerResizeHeight;
+          margin-top: ($header-height - $headerResizeHeight)/2;
+          visibility: hidden;
+          opacity: 0;
+          transition: visibility 0s, opacity 0.1s linear;
+          @include rem-fallback(width, 3px);
+          @include rem-fallback(border-left, 1px solid transparent);
+          border-color: themed('colorGridRowBorder');
+        }
+      
+        &:hover {
+          .ag-icon-none:not(.ag-hidden),
+          .ag-header-cell-resize::after {
+            visibility: visible;
+            opacity: 1;
+           }
+        }
       }
     }
-  }
-
-    .ag-row {
-      background-color: themed('color-bg-table');
-
-      // ag-grid doesn't really support row separators, so to emulate the fluent styling,
-      // add a big vertical border with the page content background color:
-
-      // Uncomment for lines separate items
-      // padding-top: $rowBorderHeight;
-      // border-top: 1px solid lightgrey;
-
-      border-top: $rowBorderHeight solid themed('color-bg-content');
-      border-bottom: $rowBorderHeight solid themed('color-bg-content');
-
-      .ag-cell { color: themed('colorGridCellText'); }
-    }
-
-    .ag-paging-panel {
-      background-color: themed('color-bg-table');
-      border-top: $rowBorderHeight solid themed('color-bg-content');
-      color: themed('colorGridHeaderText');
-
-      .ag-paging-button {
-        border: none;
-        background-color: transparent;
+  
+      .ag-row {
+        background-color: themed('color-bg-table');
+      
+        // ag-grid doesn't really support row separators, so to emulate the fluent styling,
+        // add a big vertical border with the page content background color:
+      
+        // Uncomment for lines separate items
+        // padding-top: $rowBorderHeight;
+        // border-top: 1px solid lightgrey;
+      
+        border-top: $rowBorderHeight solid themed('color-bg-content');
+        border-bottom: $rowBorderHeight solid themed('color-bg-content');
+      
+        .ag-cell { color: themed('colorGridCellText'); }
+      }
+    
+      .ag-paging-panel {
+        background-color: themed('color-bg-table');
+        border-top: $rowBorderHeight solid themed('color-bg-content');
         color: themed('colorGridHeaderText');
-
-        &:hover {
-          color: themed('colorGridCellText');
+      
+        .ag-paging-button {
+          border: none;
+          background-color: transparent;
+          color: themed('colorGridHeaderText');
+        
+          &:hover {
+            color: themed('colorGridCellText');
+          }
         }
       }
     }
@@ -180,9 +181,10 @@ $doublePadding: $baseContentPadding * 2;
 .btn.expand-columns {
   @include rem-fallback(width, 15px);
   @include rem-fallback(margin, 10px, 0px, 10px, 0px);
+
   @include themify($themes) {
-  .btn:hover {
-    background-color: themed('color-bg-content');
+    .btn:hover {
+      background-color: themed('color-bg-content');
+    }
   }
-}
 }

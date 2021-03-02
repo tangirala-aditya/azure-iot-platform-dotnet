@@ -80,7 +80,7 @@ export class SystemAdminDelete extends LinkedComponent {
             (deletedUserId) => {
                 this.props.deleteUsers([deletedUserId]);
                 this.props.getAllSystemAdmins();
-            }, // TODO: verify
+            },
             (error) =>
                 this.setState({
                     error,

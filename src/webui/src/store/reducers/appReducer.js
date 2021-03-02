@@ -337,7 +337,7 @@ export const epics = createEpicScenario({
                         timeout$ = of(
                             redux.actions.updateActionPollingTimeout()
                         ).pipe(delay(Config.actionSetupPollingTimeLimit));
-                    return scheduled(poll$, timeout$).pipe(mergeAll(), first()); // TODO: Test
+                    return scheduled(poll$, timeout$).pipe(mergeAll(), first());
                 })
             ),
     },

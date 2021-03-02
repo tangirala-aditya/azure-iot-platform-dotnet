@@ -134,7 +134,7 @@ export class UserNew extends LinkedComponent {
                         successCount: this.state.successCount + 1,
                     });
                     this.props.insertUsers(user);
-                }, // TODO: verify
+                },
                 (error) =>
                     this.setState({
                         error,

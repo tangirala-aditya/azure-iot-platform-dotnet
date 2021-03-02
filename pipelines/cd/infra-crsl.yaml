@@ -3,7 +3,10 @@ pr: none
 pool:
   vmImage: ubuntu-latest
 variables:
-  locationName: centralus
+- group: crslDev
+- group: acsDev
+- name: locationName
+  value: centralus
 stages:
   - stage: checkParameters
     displayName: Check parameters

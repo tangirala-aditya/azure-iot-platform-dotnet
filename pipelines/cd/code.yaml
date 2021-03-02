@@ -10,12 +10,10 @@ resources:
 pool:
   vmImage: ubuntu-latest
 variables:
-  ${{ if eq(variables['Build.Reason'], 'ResourceTrigger') }}:
-    _imageTag: $(resources.pipeline.test.runID)
-  ${{ if ne(variables['Build.Reason'], 'ResourceTrigger') }}:
-    _imageTag: $(imageTag)
 - group: crslDev
 - group: acsDev
+- name: _imageTag
+  value: 80860
 stages:
   - stage: checkParameters
     displayName: Check parameters

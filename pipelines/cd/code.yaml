@@ -10,10 +10,10 @@ resources:
 pool:
   vmImage: ubuntu-latest
 variables:
-  ${{ if eq(variables['Build.Reason'], 'ResourceTrigger') }}:
-    _imageTag: $(resources.pipeline.test.runID)
-  ${{ if ne(variables['Build.Reason'], 'ResourceTrigger') }}:
-    _imageTag: $(imageTag)
+- group: crslDev
+- group: acsDev
+- name: _imageTag
+  value: 80860
 stages:
   - stage: checkParameters
     displayName: Check parameters
@@ -48,36 +48,40 @@ stages:
 
   - stage: crslDev
     displayName: CRSL dev
+    variables:
+    - group: crslDev
     dependsOn:
       - checkParameters
     condition: and(succeeded(), eq(variables['runCrslDevStage'], 'true'))
     jobs:
       - template: ../templates/jobs-deploy-code.yaml
         parameters:
-          environmentName: IoT_CRSL_Environment_Dev
-          subscriptionName: 3M-CRSLAD16-BBIoTP-DEV
-          applicationCode: crsliot
-          applicationShortCode: crsl
-          environmentCategory: dev
+          environmentName: $(environmentName)
+          subscriptionName: $(subscriptionName)
+          applicationCode: $(applicationCode)
+          applicationShortCode: $(applicationShortCode)
+          environmentCategory: $(environmentCategory)
           imageTag: $(_imageTag)
-          blueGreen: true
-          subscriptionId: c36fb2f8-f98d-40d0-90a9-d65e93acb428
+          blueGreen: $(blueGreen)
+          subscriptionId: $(subscriptionId)
 
   - stage: acsDev
     displayName: ACS dev
+    variables:
+    - group: acsDev
     dependsOn:
       - checkParameters
     jobs:
       - template: ../templates/jobs-deploy-code.yaml
         parameters:
-          environmentName: ACS-Environment
-          subscriptionName: 3M-CRSLAD16-BBIoTP-DEV
-          applicationCode: acshyd
-          applicationShortCode: acs
-          environmentCategory: dev
+          environmentName: $(environmentName)
+          subscriptionName: $(subscriptionName)
+          applicationCode: $(applicationCode)
+          applicationShortCode: $(applicationShortCode)
+          environmentCategory: $(environmentCategory)
           imageTag: $(_imageTag)
           blueGreen: true
-          subscriptionId: c36fb2f8-f98d-40d0-90a9-d65e93acb428
+          subscriptionId: $(subscriptionId)
 
   - stage: crslQa
     displayName: CRSL QA

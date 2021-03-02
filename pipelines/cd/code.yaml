@@ -14,6 +14,8 @@ variables:
     _imageTag: $(resources.pipeline.test.runID)
   ${{ if ne(variables['Build.Reason'], 'ResourceTrigger') }}:
     _imageTag: $(imageTag)
+    - group: crslDev
+    - group: acsDev
 stages:
   - stage: checkParameters
     displayName: Check parameters

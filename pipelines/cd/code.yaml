@@ -13,10 +13,7 @@ variables:
 - group: crslDev
 - group: acsDev
 - name: _imageTag
-  value:
-  ${{ if ne(variables['Build.Reason'], 'ResourceTrigger') }}: $(imageTag)
-  ${{ if eq(variables['Build.Reason'], 'ResourceTrigger') }}: $(resources.pipeline.test.runID)
-
+  value: 80860
 stages:
   - stage: checkParameters
     displayName: Check parameters

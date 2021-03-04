@@ -15,13 +15,12 @@
 
   .new-deployment-flyout-error { @include rem-fallback(padding-top, 24px); }
 
-  .new-deployment-formGroup,
-  {
+  .new-deployment-formGroup {
     @include rem-fallback(padding-top, 12px);
     @include rem-fallback(padding-bottom, 12px);
   }
 
-  .summary-icon svg {
+  :global(.summary-icon) svg {
     @include square-px-rem(16px);
     @include rem-fallback(margin-left, 8px);
   }
@@ -40,7 +39,7 @@
   }
 
   @include themify($themes) {
-    .summary-icon svg { fill: themed('colorContentText'); }
+    :global(.summary-icon) svg { fill: themed('colorContentText'); }
 
     .new-deployment-flyout-error { border-color: themed('colorAlert'); }
 

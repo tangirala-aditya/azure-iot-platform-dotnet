@@ -11,7 +11,7 @@
   padding: $baseContentPadding;
 }
 
-.small-green-circle {
+:global(.small-green-circle) {
   height: 15px !important;
   width: 15px !important;
   background-color: green;
@@ -21,7 +21,7 @@
   padding: 7px;
 }
 
-.small-black-circle {
+:global(.small-black-circle) {
   height: 15px !important;
   width: 15px !important;
   background-color: black;

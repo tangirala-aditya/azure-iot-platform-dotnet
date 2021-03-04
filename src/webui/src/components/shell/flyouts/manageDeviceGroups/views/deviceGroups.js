@@ -1,11 +1,15 @@
 import React from "react";
 import { from } from "rxjs";
-import "../manageDeviceGroups.scss";
 import { compareByProperty } from "utilities";
 import { Btn, BtnToolbar } from "components/shared";
 import { ConfigService } from "services";
 import { toDeviceGroupModel } from "services/models";
 import { map, mergeMap } from "rxjs/operators";
+import pinned from "./pushpin-closed.png";
+import unpinned from "./pushpin-open.png";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../manageDeviceGroups.module.scss"));
 
 export class DeviceGroups extends React.Component {
     // TODO: Remove constructor when args are passed in
@@ -105,18 +109,18 @@ export class DeviceGroups extends React.Component {
         return (
             <div>
                 <form onSubmit={this.apply}>
-                    <div className="device-group">
-                        <div className="group-title">
+                    <div className={css("device-group")}>
+                        <div className={css("group-title")}>
                             {" "}
                             {t("deviceGroupsFlyout.deviceGroupName")}
                         </div>
-                        <div className="list">
+                        <div className={css("list")}>
                             {deviceGroups
                                 .sort(compareByProperty("sortOrder", true))
                                 .sort(compareByProperty("isPinned", false))
                                 .map((deviceGroup, idx) => (
                                     <div
-                                        className="item"
+                                        className={css("item")}
                                         key={idx}
                                         data-index={idx}
                                         draggable
@@ -128,8 +132,8 @@ export class DeviceGroups extends React.Component {
                                     >
                                         {deviceGroup.isPinned ? (
                                             <img
-                                                className="pinned"
-                                                src={require("./pushpin-closed.png")}
+                                                className={css("pinned")}
+                                                src={pinned}
                                                 onClick={() =>
                                                     this.onPinnedChanged(idx)
                                                 }
@@ -139,8 +143,8 @@ export class DeviceGroups extends React.Component {
                                             />
                                         ) : (
                                             <img
-                                                className="unpinned"
-                                                src={require("./pushpin-open.png")}
+                                                className={css("unpinned")}
+                                                src={unpinned}
                                                 onClick={() =>
                                                     this.onPinnedChanged(idx)
                                                 }
@@ -150,7 +154,7 @@ export class DeviceGroups extends React.Component {
                                             />
                                         )}
                                         <div
-                                            className="title"
+                                            className={css("title")}
                                             key={idx}
                                             onClick={onEditDeviceGroup(
                                                 deviceGroup

@@ -20,6 +20,9 @@ import {
     Svg,
 } from "components/shared";
 
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../manageDeviceGroups.module.scss"));
+
 export class DeviceGroupDelete extends Component {
     constructor(props) {
         super(props);
@@ -126,7 +129,7 @@ export class DeviceGroupDelete extends Component {
                     className="device-group-delete-container"
                     onSubmit={this.deleteDeviceGroup}
                 >
-                    <div className="device-group-delete-header">
+                    <div className={css("device-group-delete-header")}>
                         {t("deviceGroupsFlyout.delete.header")}
                     </div>
                     <div className="device-group-delete-descr">
@@ -161,7 +164,7 @@ export class DeviceGroupDelete extends Component {
                             {this.state.isPending && <Indicator />}
                             {completedSuccessfully && (
                                 <Svg
-                                    className="summary-icon"
+                                    className={css("summary-icon")}
                                     src={svgs.apply}
                                 />
                             )}
@@ -170,7 +173,7 @@ export class DeviceGroupDelete extends Component {
 
                     {error && (
                         <AjaxError
-                            className="device-group-delete-error"
+                            className={css("device-group-delete-error")}
                             t={t}
                             error={error}
                         />

@@ -12,10 +12,10 @@
     .profile-header-grid {
       @include rem-fallback(padding, 0px);
 
-      .row {
+      :global(.row) {
         @include rem-fallback(padding, 0px);
 
-        .cell { display: inline !important; }
+        :global(.cell) { display: inline !important; }
       }
     }
   }
@@ -41,12 +41,12 @@
   color: darkgray;
 }
 
-a > p, .pcs-renderer-cell > p {
+a > p, :global(.pcs-renderer-cell) > p {
   word-break: break-all;
   padding-right: 2px;
 }
 
-.pcs-renderer-cell {
+:global(.pcs-renderer-cell) {
   @include themify($themes) {
     .pcs-renderer-icon svg { fill: themed('colorWarning'); }
   }

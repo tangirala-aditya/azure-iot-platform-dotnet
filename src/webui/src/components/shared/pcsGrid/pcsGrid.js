@@ -4,17 +4,20 @@ import React, { Component } from "react";
 import { AgGridReact } from "ag-grid-react";
 import * as Rx from "rxjs";
 import Config from "app.config";
-import { isFunc } from "utilities";
+import { isFunc, joinClasses } from "utilities";
 import { Indicator } from "../indicator/indicator";
 import { ROW_HEIGHT } from "components/shared/pcsGrid/pcsGridConfig";
 import { SearchInput } from "components/shared";
 
 import "../../../../node_modules/ag-grid-community/dist/styles/ag-grid.scss";
 import "../../../../node_modules/ag-grid-community/dist/styles/ag-theme-alpine/sass/ag-theme-alpine.scss";
-import "./pcsGrid.scss";
 import { Btn } from "../forms";
 import { ComponentArray } from "../componentArray/componentArray";
 import { debounceTime, filter } from "rxjs/operators";
+// import styles from "./pcsGrid.module.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./pcsGrid.module.scss"));
 
 /**
  * PcsGrid is a helper wrapper around AgGrid. The primary functionality of this wrapper
@@ -198,16 +201,16 @@ export class PcsGrid extends Component {
             },
             { rowData, pcsLoadingTemplate } = this.props,
             loadingContainer = (
-                <div className="pcs-grid-loading-container">
+                <div className={css("pcs-grid-loading-container")}>
                     {!pcsLoadingTemplate ? <Indicator /> : pcsLoadingTemplate}
                 </div>
             );
         return (
             <ComponentArray>
                 {rowData && (
-                    <div className="flex-container">
+                    <div className={css("flex-container")}>
                         {this.props.searchPlaceholder && (
-                            <div className="flex-child">
+                            <div className={css("flex-child")}>
                                 <SearchInput
                                     onChange={this.searchOnChange}
                                     placeholder={this.props.searchPlaceholder}
@@ -215,10 +218,10 @@ export class PcsGrid extends Component {
                                 />
                             </div>
                         )}
-                        <div className="flex-child">
+                        <div className={css("flex-child")}>
                             <Btn
                                 onClick={this.expandColumns}
-                                className="expand-columns"
+                                className={css("expand-columns")}
                                 icon="chevronRightMed"
                             >
                                 Expand Columns
@@ -227,11 +230,13 @@ export class PcsGrid extends Component {
                     </div>
                 )}
                 <div
-                    className={`pcs-grid-container ag-theme-alpine ${
+                    className={joinClasses(
+                        css("pcs-grid-container"),
+                        "ag-theme-alpine",
                         gridParams.suppressMovableColumns
                             ? ""
-                            : "movable-columns"
-                    }`}
+                            : css("movable-columns")
+                    )}
                     style={style}
                 >
                     {!rowData ? loadingContainer : ""}

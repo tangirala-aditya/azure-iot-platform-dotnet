@@ -40,7 +40,7 @@
 
   .wait-indicator { @include rem-fallback(margin-left, 8px); }
 
-  .summary-icon svg {
+  :global(.summary-icon) svg {
     @include square-px-rem(16px);
     @include rem-fallback(margin-left, 8px);
   }
@@ -48,7 +48,7 @@
   .device-detail {
     width: 100%;
 
-    .section-header { font-size: inherit; }
+    :global(.section-header) { font-size: inherit; }
 
     .device-detail-contents {
       display: flex;
@@ -83,10 +83,10 @@
 
     .devices-new-error { border-color: themed('colorAlert'); }
 
-    .summary-icon svg { fill: themed('colorContentText'); }
+    :global(.summary-icon) svg { fill: themed('colorContentText'); }
 
     .device-detail {
-      .section-header { color: themed('colorContentText'); }
+      :global(.section-header) { color: themed('colorContentText'); }
       .device-detail-value { color: themed('colorContentTextDim'); }
       .copy-icon svg { fill: themed('colorContentTextDim'); }
     }

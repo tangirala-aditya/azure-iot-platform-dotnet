@@ -8,7 +8,10 @@ import { joinClasses } from "utilities";
 import { Icon } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Icon";
 
 import "@microsoft/azure-iot-ux-fluent-controls/lib/components/Button";
-import "./styles/btn.scss";
+// import styles from "./styles/btn.module.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./styles/btn.module.scss"));
 
 export const Btn = (props) => {
     const { svg, icon, children, className, primary, ...btnProps } = props;
@@ -17,14 +20,18 @@ export const Btn = (props) => {
             type="button"
             {...btnProps}
             className={joinClasses(
-                "btn",
+                css("btn"),
                 className,
-                primary ? "btn-primary" : "btn-secondary"
+                primary ? css("btn-primary") : css("btn-secondary")
             )}
         >
-            {props.svg && <Svg src={props.svg} className="btn-icon" />}
-            {props.icon && <Icon icon={props.icon} className="btn-icon" />}
-            {props.children && <div className="btn-text">{props.children}</div>}
+            {props.svg && <Svg src={props.svg} className={css("btn-icon")} />}
+            {props.icon && (
+                <Icon icon={props.icon} className={css("btn-icon")} />
+            )}
+            {props.children && (
+                <div className={css("btn-text")}>{props.children}</div>
+            )}
         </button>
     );
 };

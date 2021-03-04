@@ -20,6 +20,9 @@ import { toCreateDeviceGroupRequestModel } from "services/models";
 
 import Flyout from "components/shared/flyout";
 
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../createDeviceQuery.module.scss"));
+
 const Section = Flyout.Section;
 
 // A counter for creating unique keys per new condition
@@ -304,9 +307,12 @@ class CreateDeviceQueryForm extends LinkedComponent {
 
         return (
             <form onSubmit={this.apply}>
-                <Section.Container collapsable={false} className="borderless">
+                <Section.Container
+                    collapsable={false}
+                    className={css("borderless")}
+                >
                     <Btn
-                        className="add-btn"
+                        className={css("add-btn")}
                         svg={svgs.plus}
                         onClick={this.addCondition}
                     >
@@ -393,7 +399,7 @@ class CreateDeviceQueryForm extends LinkedComponent {
                                             ariaLabel={t(
                                                 "deviceQueryConditions.type"
                                             )}
-                                            className="short"
+                                            className="small"
                                             clearable={false}
                                             searchable={false}
                                             options={typeOptions}

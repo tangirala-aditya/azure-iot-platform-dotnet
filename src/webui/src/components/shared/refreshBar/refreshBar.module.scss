@@ -9,20 +9,20 @@ $minWidthTime: 66*$grid-size;
 $minWidthEmptyTime:  33*$grid-size;
 $btn-icon-size: 4*$grid-size;
 
-.last-updated-container {
+:global(.last-updated-container) {
   display: flex;
   justify-content: flex-end;
   text-transform: uppercase;
   flex-shrink: 0;
   margin-top: 0;
 
-  .btn.refresh-btn {
+  :global(.btn).refresh-btn {
     @include rem-fallback(padding, 0px, 5px);
     @include rem-fallback(min-width, 0px);
 
     &:hover { background: none !important; }
 
-    .btn-icon { @include square-px-rem($grid-size*4); }
+    :global(.btn-icon) { @include square-px-rem($grid-size*4); }
 
     &:focus { outline: 0px; }
 
@@ -50,10 +50,10 @@ $btn-icon-size: 4*$grid-size;
       .refresh-text { color: themed('colorContentTextDim'); }
     }
 
-    .btn.refresh-btn {
+    :global(.btn).refresh-btn {
       background: none;
 
-      &.refreshing .btn-icon svg { fill: themed('colorContentText'); }
+      &.refreshing :global(.btn-icon) svg { fill: themed('colorContentText'); }
     }
   }
 }

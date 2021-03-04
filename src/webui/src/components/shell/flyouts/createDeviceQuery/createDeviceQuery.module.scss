@@ -30,6 +30,6 @@
   }
 
   @include themify($themes) {
-    .property-grid-container .grid-header .cell { color: themed('colorContentTextDim'); }
+    :global(.property-grid-container) :global(.grid-header) :global(.cell) { color: themed('colorContentTextDim'); }
   }
 }

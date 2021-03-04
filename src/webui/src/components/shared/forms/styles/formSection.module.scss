@@ -6,15 +6,15 @@
 .form-section {
   @include rem-fallback(padding-top, 32px);
 
-  .section-header { @include rem-fallback(margin-bottom, 12px); }
+  :global(.section-header) { @include rem-fallback(margin-bottom, 12px); }
 
-  .section-desc {
+  :global(.section-desc) {
     @include rem-font-size(14px);
     @include rem-fallback(margin-bottom, 16px);
   }
 
   @include themify($themes) {
-    .section-header { color: themed('colorContentText'); }
-    .section-desc { color: themed('colorContentTextDim'); }
+    :global(.section-header) { color: themed('colorContentText'); }
+    :global(.section-desc) { color: themed('colorContentTextDim'); }
   }
 }

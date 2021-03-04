@@ -9,7 +9,7 @@
   @include rem-fallback(margin-top, 16px);
   @include rem-fallback(padding-top, 28px);
 
-  .section-header { @include rem-font-size(16px); }
+  :global(.section-header) { @include rem-font-size(16px); }
 
   .summary-body {
     display: flex;
@@ -25,10 +25,10 @@
   @include themify($themes) {
     border-top-color: themed('colorContentTextDim');
 
-    .section-header { color: themed('colorContentText'); }
+    :global(.section-header) { color: themed('colorContentText'); }
 
     .summary-body {
-      .section-desc { color: themed('colorContentTextDim'); }
+      :global(.section-desc) { color: themed('colorContentTextDim'); }
       .summary-count { color: themed('colorContentText'); }
     }
   }

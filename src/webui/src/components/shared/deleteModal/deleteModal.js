@@ -12,7 +12,10 @@ import {
 import { svgs } from "utilities";
 import { toSinglePropertyDiagnosticsModel } from "services/models";
 
-import "./deleteModal.scss";
+// import styles from "./deleteModal.module.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deleteModal.module.scss"));
 
 export class DeleteModal extends Component {
     constructor(props) {
@@ -74,12 +77,12 @@ export class DeleteModal extends Component {
         return (
             <Modal
                 onClose={() => this.genericCloseClick("DeleteModal_ModalClose")}
-                className="delete-modal-container"
+                className={css("delete-modal-container")}
             >
-                <div className="delete-header-container">
-                    <div className="delete-title">{title}</div>
+                <div className={css("delete-header-container")}>
+                    <div className={css("delete-title")}>{title}</div>
                     <Btn
-                        className="delete-close-btn"
+                        className={css("delete-close-btn")}
                         title={t("modal.cancel")}
                         onClick={() =>
                             this.genericCloseClick("DeleteModal_CloseClick")
@@ -87,8 +90,8 @@ export class DeleteModal extends Component {
                         svg={svgs.x}
                     />
                 </div>
-                <div className="delete-info">{deleteInfo}</div>
-                <div className="delete-summary">
+                <div className={css("delete-info")}>{deleteInfo}</div>
+                <div className={css("delete-summary")}>
                     {!changesApplied && (
                         <BtnToolbar>
                             <Btn
@@ -113,7 +116,7 @@ export class DeleteModal extends Component {
                     {isPending && <Indicator />}
                     {changesApplied && error && (
                         <AjaxError
-                            className="delete-error"
+                            className={css("delete-error")}
                             t={t}
                             error={error}
                         />

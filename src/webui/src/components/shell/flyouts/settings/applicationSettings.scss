@@ -98,9 +98,9 @@
     }
 
     .edit-button {
-      .btn-icon { @include square-px-rem(16px); }
+      :global(.btn-icon) { @include square-px-rem(16px); }
 
-      .btn-text { @include rem-font-size(16px); }
+      :global(.btn-text) { @include rem-font-size(16px); }
     }
   }
 

@@ -26,8 +26,10 @@
   margin-top: 1.5%;
 }
 
-.download-deviceReport > .svg-container.btn-icon{
-  transform: rotate(180deg) !important;
+.download-deviceReport > .svg-container {
+  &:global(.btn-icon){
+    transform: rotate(180deg) !important;
+  }
 }
 
 

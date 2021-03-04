@@ -41,7 +41,7 @@
         @include rem-fallback(padding-bottom, 24px);
     }
 
-    .summary-icon svg {
+    :global(.summary-icon) svg {
         @include square-px-rem(16px);
         @include rem-fallback(margin-left, 8px);
     }
@@ -55,7 +55,7 @@
         }
 
         .new-package-descr svg,
-        .summary-icon svg {
+        :global(.summary-icon) svg {
             fill: themed("colorContentText");
         }
 

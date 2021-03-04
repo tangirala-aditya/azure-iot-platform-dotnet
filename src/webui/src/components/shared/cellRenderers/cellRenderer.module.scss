@@ -6,12 +6,12 @@
 
 $iconSize: 14px;
 
-.pcs-renderer-cell {
+:global(.pcs-renderer-cell) {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   height: 12*$grid-size; // fluent management-list-row-height
-  .pcs-renderer-icon {
+  :global(.pcs-renderer-icon) {
     margin-right: 10px;
 
     svg { @include square-px-rem($iconSize); }
@@ -43,7 +43,7 @@ $iconSize: 14px;
     text-overflow: ellipsis;
   }
 
-  .soft-select-link {
+  :global(.soft-select-link) {
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -69,7 +69,7 @@ $iconSize: 14px;
   }
 
   @include themify($themes) {
-    .pcs-renderer-icon {
+    :global(.pcs-renderer-icon) {
       margin-right: 10px;
 
       svg {
@@ -89,7 +89,7 @@ $iconSize: 14px;
     .pcs-renderer-text { color: themed('colorCellRendererText'); }
 
     &.highlight {
-      .pcs-renderer-icon svg {
+      :global(.pcs-renderer-icon) svg {
         fill: themed('colorCellRendererSvgFillHighlight');
 
         .disabled-icon { stroke: themed('colorCellRendererSvgFillHighlight'); }
@@ -104,12 +104,12 @@ $iconSize: 14px;
   }
 }
 
-.ag-row {
+:global(.ag-row) {
   @include themify($themes) {
 
     &.ag-row-hover,
     &.ag-row-focus {
-      .pcs-renderer-cell .pcs-renderer-icon svg .disabled-icon .cls-2 { stroke: themed('colorGridRowHoverBackground'); }
+      :global(.pcs-renderer-cell) :global(.pcs-renderer-icon) svg .disabled-icon .cls-2 { stroke: themed('colorGridRowHoverBackground'); }
     }
   }
 }

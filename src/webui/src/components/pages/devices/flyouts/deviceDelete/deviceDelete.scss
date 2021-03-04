@@ -31,7 +31,7 @@
 
   .wait-indicator { @include rem-fallback(margin-left, 8px); }
 
-  .summary-icon svg {
+  :global(.summary-icon) svg {
     @include square-px-rem(16px);
     @include rem-fallback(margin-left, 8px);
   }
@@ -52,6 +52,6 @@
       border-color: themed('colorAlert');
     }
 
-    .summary-icon svg { fill: themed('colorContentText'); }
+    :global(.summary-icon) svg { fill: themed('colorContentText'); }
   }
 }

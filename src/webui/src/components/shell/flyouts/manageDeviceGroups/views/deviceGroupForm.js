@@ -26,6 +26,9 @@ import Flyout from "components/shared/flyout";
 import { DeviceGroupTelemetryFormatContainer } from "../deviceGroupTelemetryFormat.container";
 import { DeviceGroupSupportedMethodsContainer } from "../deviceGroupSupportedMethods.container";
 
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../manageDeviceGroups.module.scss"));
+
 const Section = Flyout.Section;
 
 // A counter for creating unique keys per new condition
@@ -287,7 +290,7 @@ class DeviceGroupForm extends LinkedComponent {
                     <form onSubmit={this.apply}>
                         <Section.Container
                             collapsable={false}
-                            className="borderless"
+                            className={css("borderless")}
                         >
                             <Section.Header>
                                 {this.state.isEdit
@@ -309,7 +312,7 @@ class DeviceGroupForm extends LinkedComponent {
                                     />
                                 </FormGroup>
                                 <Btn
-                                    className="add-btn"
+                                    className={css("add-btn")}
                                     svg={svgs.plus}
                                     onClick={this.addCondition}
                                 >

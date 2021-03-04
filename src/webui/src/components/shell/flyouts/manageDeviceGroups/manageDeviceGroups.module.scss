@@ -17,9 +17,9 @@
   .device-grops-grid-container { @include rem-fallback(margin-top, 24px); }
 
   .add-btn {
-    padding-left: 10;
+    padding-left: 0;
     padding-right: 0;
-    @include rem-fallback(margin, 0px, 0px, 0px, 0px);
+    @include rem-fallback(margin, 24px, 0px, 24px, 0px);
   }
 
   .actions-button { @include rem-fallback(min-width, 110px); }
@@ -30,7 +30,7 @@
   }
 
   @include themify($themes) {
-    .property-grid-container .grid-header .cell { color: themed('colorContentTextDim'); }
+    :global(.property-grid-container) :global(.grid-header) :global(.cell) { color: themed('colorContentTextDim'); }
 
     color: themed('colorContentTextDim');
 
@@ -40,7 +40,7 @@
       border-color: themed('colorAlert');
     }
 
-    .summary-icon svg { fill: themed('colorContentText'); }
+    :global(.summary-icon) svg { fill: themed('colorContentText'); }
   }
 
   .device-group-delete-header { @include rem-fallback(padding, 12px, 0px); }
@@ -55,7 +55,7 @@
 
   .wait-indicator { @include rem-fallback(margin-left, 8px); }
 
-  .summary-icon svg {
+  :global(.summary-icon) svg {
     @include square-px-rem(16px);
     @include rem-fallback(margin-left, 8px);
   }
@@ -69,7 +69,7 @@
       border-color: themed('colorAlert');
     }
 
-    .summary-icon svg { fill: themed('colorContentText'); }
+    :global(.summary-icon) svg { fill: themed('colorContentText'); }
   }
 
   .device-group {

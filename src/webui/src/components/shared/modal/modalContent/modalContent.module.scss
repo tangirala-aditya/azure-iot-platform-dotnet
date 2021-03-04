@@ -3,7 +3,7 @@
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 .modal-container {
-  .modal-content {
+  :global(.modal-content) {
     border-style: solid;
     width: 400px;
     height: 200px;

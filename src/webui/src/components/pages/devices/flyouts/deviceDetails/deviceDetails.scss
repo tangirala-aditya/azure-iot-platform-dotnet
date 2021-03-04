@@ -8,7 +8,7 @@
 
   .pcs-grid-container { @include rem-fallback(padding, 0px, 0px, 12px, 0px); }
 
-  .flyout-section-content .section-desc {
+  .flyout-section-content :global(.section-desc) {
     @include rem-font-size(12px);
     @include rem-fallback(line-height, 15px);
     @include rem-fallback(padding, 0px, 0px, 10px, 0px);
@@ -35,7 +35,7 @@
     @include rem-fallback(border-bottom, 1px, solid);
   }
 
-  .device-properties-actions .row {
+  .device-properties-actions :global(.row) {
     border: 0;
     @include rem-fallback(font-size, 12px);
     @include rem-fallback(padding, 12px, 0px, 0px, 0px);
@@ -55,10 +55,10 @@
     .flyout-section-content {
       color: themed('colorContentText');
 
-      .section-desc { color: themed('colorContentTextDim'); }
+      :global(.section-desc) { color: themed('colorContentTextDim'); }
     }
 
-    .device-properties-actions .row { color: themed('colorContentTextDim'); }
+    .device-properties-actions :global(.row) { color: themed('colorContentTextDim'); }
 
     .device-details-deployment-contentbox,
     .device-details-deviceuploads-contentbox { border-color: themed('colorHeaderBorderColor'); }
@@ -69,7 +69,7 @@
     }
   }
 
-  .download-deviceupload > .svg-container.btn-icon{
+  .download-deviceupload > .svg-container:global(.btn-icon){
     transform: rotate(180deg);
   }
 }

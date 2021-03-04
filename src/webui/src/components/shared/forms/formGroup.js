@@ -5,7 +5,10 @@ import PropTypes from "prop-types";
 
 import { isFunc, joinClasses } from "utilities";
 
-import "./styles/formGroup.scss";
+// import styles from "./styles/formGroup.module.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./styles/formGroup.module.scss"));
 
 let idCounter = 0;
 
@@ -29,7 +32,9 @@ export class FormGroup extends Component {
             }
         );
         return (
-            <div className={joinClasses("form-group", this.props.className)}>
+            <div
+                className={joinClasses(css("form-group"), this.props.className)}
+            >
                 {childrenWithProps}
             </div>
         );

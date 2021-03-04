@@ -6,7 +6,10 @@ import { Btn, BtnToolbar, Modal, FormControl } from "components/shared";
 import { svgs } from "utilities";
 import { toSinglePropertyDiagnosticsModel } from "services/models";
 
-import "./jsonEditorModal.scss";
+// import styles from "./jsonEditorModal.module.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./jsonEditorModal.module.scss"));
 
 export class JsonEditorModal extends Component {
     constructor(props) {
@@ -39,13 +42,13 @@ export class JsonEditorModal extends Component {
                 onClose={() =>
                     this.genericCloseClick("JsonEditorModal_ModalClose")
                 }
-                className="json-editor-modal-container"
+                className={css("json-editor-modal-container")}
             >
                 <form>
-                    <div className="json-editor-header-container">
-                        <div className="json-editor-title">{title}</div>
+                    <div className={css("json-editor-header-container")}>
+                        <div className={css("json-editor-title")}>{title}</div>
                     </div>
-                    <div className="json-editor-info">
+                    <div className={css("json-editor-info")}>
                         <FormControl
                             link={jsonData}
                             type="jsoninput"
@@ -54,7 +57,7 @@ export class JsonEditorModal extends Component {
                             onChange={this.onJsonChange}
                         />
                     </div>
-                    <div className="json-editor-summary">
+                    <div className={css("json-editor-summary")}>
                         <BtnToolbar>
                             <Btn
                                 svg={svgs.cancelX}

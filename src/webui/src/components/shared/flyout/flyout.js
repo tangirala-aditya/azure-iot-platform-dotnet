@@ -4,10 +4,13 @@ import React, { Component } from "react";
 import { ContextPanel } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/ContextPanel";
 
 import { Btn } from "../forms";
-import { svgs } from "utilities";
+import { svgs, joinClasses } from "utilities";
 import { CopyModal } from "components/shared";
 
-import "./flyout.scss";
+// import styles from "./flyout.module.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./flyout.module.scss"));
 
 const closedModalState = {
     openModalName: undefined,
@@ -65,8 +68,8 @@ export class Flyout extends Component {
                 attr={{
                     container: {
                         className: expanded
-                            ? "flyout-container-md"
-                            : "flyout-container-sm",
+                            ? css("flyout-container-md")
+                            : css("flyout-container-sm"),
                     },
                     closeButton: { button: { title: t("flyout.closeTitle") } },
                     header: {
@@ -74,7 +77,7 @@ export class Flyout extends Component {
                             onExpand && (
                                 <Btn
                                     key={"expandedButton"}
-                                    className={"svg-icon"}
+                                    className={css("svg-icon")}
                                     icon={
                                         expanded ? "backToWindow" : "fullScreen"
                                     }
@@ -85,7 +88,10 @@ export class Flyout extends Component {
                                 <Btn
                                     svg={svgs.copyLink}
                                     key={"getLinkButton"}
-                                    className={"svg-icon getlink-button"}
+                                    className={joinClasses(
+                                        css("svg-icon"),
+                                        css("getlink-button")
+                                    )}
                                     onClick={this.openModal(
                                         "copy-link",
                                         flyoutLink

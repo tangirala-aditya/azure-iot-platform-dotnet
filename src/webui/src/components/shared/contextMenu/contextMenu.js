@@ -4,10 +4,13 @@ import React from "react";
 
 import { joinClasses } from "utilities";
 
-import "./contextMenu.scss";
+// import styles from "./contextMenu.module.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./contextMenu.module.scss"));
 
 export const ContextMenu = ({ children, className }) => (
-    <div className={joinClasses("context-menu-container", className)}>
+    <div className={joinClasses(css("context-menu-container"), className)}>
         {children}
     </div>
 );

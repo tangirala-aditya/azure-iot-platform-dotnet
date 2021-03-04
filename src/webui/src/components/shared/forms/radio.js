@@ -7,7 +7,10 @@ import { Svg } from "components/shared/svg/svg";
 import { FormLabel } from "./formLabel";
 import { isFunc, svgs, joinClasses } from "utilities";
 
-import "./styles/radio.scss";
+// import styles from "./styles/radio.module.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./styles/radio.module.scss"));
 
 let radioInputCnt = 0;
 
@@ -67,8 +70,8 @@ export class Radio extends Component {
         );
 
         return (
-            <div className={joinClasses("radio-container", className)}>
-                <div className="radio-input-container">
+            <div className={joinClasses(css("radio-container"), className)}>
+                <div className={css("radio-input-container")}>
                     <input
                         {...radioProps}
                         {...valueOverrides}
@@ -80,13 +83,13 @@ export class Radio extends Component {
                     <Svg
                         src={svgs.radioSelected}
                         className={joinClasses(
-                            "radio-icon",
-                            disabled ? "disabled" : ""
+                            css("radio-icon"),
+                            disabled ? css("disabled") : ""
                         )}
                         onClick={() => this.refs.radioInputElement.click()}
                     />
                 </div>
-                <div className="input-contents">{childrenWithProps}</div>
+                <div className={css("input-contents")}>{childrenWithProps}</div>
             </div>
         );
     }

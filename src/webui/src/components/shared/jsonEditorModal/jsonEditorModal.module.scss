@@ -7,7 +7,7 @@
 .json-editor-modal-container {
   @include rem-fallback(font-size, 14px);
 
-  .modal-content {
+  :global(.modal-content) {
     border-style: solid;
     width: 600px !important;
     height: 550px !important;
@@ -40,6 +40,6 @@
    }
 
   @include themify($themes) {
-    .btn-icon svg { stroke: themed('colorFlyoutText'); }
+    :global(.btn-icon) svg { stroke: themed('colorFlyoutText'); }
   }
 }

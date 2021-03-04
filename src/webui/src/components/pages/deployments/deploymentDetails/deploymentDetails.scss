@@ -78,6 +78,8 @@
   margin-top: 13px !important;
 }
 
-.download-deploymentStatus > .svg-container.btn-icon{
-  transform: rotate(180deg) !important;
+.download-deploymentStatus > .svg-container {
+  &:global(.btn-icon){
+    transform: rotate(180deg) !important;
+  }
 }

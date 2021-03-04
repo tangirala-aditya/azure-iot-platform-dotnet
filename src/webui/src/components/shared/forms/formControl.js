@@ -9,7 +9,10 @@ import { ErrorMsg } from "./errorMsg";
 import { JsonInput } from "./jsoninput";
 import { joinClasses, isFunc, Link } from "utilities";
 
-import "./styles/formControl.scss";
+// import styles from "./styles/formControl.module.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./styles/formControl.module.scss"));
 
 export class FormControl extends Component {
     constructor(props) {
@@ -85,16 +88,16 @@ export class FormControl extends Component {
                 theme,
                 id: rest.id || formGroupId,
                 className: joinClasses(
-                    "form-control",
+                    css("form-control"),
                     className,
-                    errorState || errorMsg ? "error" : ""
+                    errorState || errorMsg ? css("error") : ""
                 ),
                 onChange: this.onChange,
                 onBlur: this.onBlur,
                 ...valueOverrides,
             };
         return (
-            <div className="form-control-container">
+            <div className={css("form-control-container")}>
                 {this.selectControl(type, controlProps)}
                 {errorMsg && <ErrorMsg>{errorMsg}</ErrorMsg>}
             </div>

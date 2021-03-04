@@ -3,7 +3,10 @@
 import React from "react";
 import { joinClasses } from "utilities";
 
-import "./indicator.scss";
+// import styles from "./indicator.module.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./indicator.module.scss"));
 
 const Dot = () => (
         <div className="dot">
@@ -16,12 +19,12 @@ const Dot = () => (
 /** Creates a loading indicator */
 export const Indicator = (props) => {
     const { size, pattern, className } = props,
-        sizeClass = validSizes.has(size) ? size : "normal",
-        patternClass = validPatterns.has(pattern) ? pattern : "ring";
+        sizeClass = validSizes.has(size) ? css(size) : css("normal"),
+        patternClass = validPatterns.has(pattern) ? css(pattern) : css("ring");
     return (
         <div
             className={joinClasses(
-                "wait-indicator",
+                css("wait-indicator"),
                 sizeClass,
                 patternClass,
                 className

@@ -4,7 +4,7 @@
 @import 'src/styles/mixins';
 
 .btn.rule-status-btn {
-  .btn-icon svg {
+  :global(.btn-icon) svg {
     fill: transparent;
     @include square-px-rem(24px);
     @include rem-fallback(padding-right, 10px);
@@ -19,7 +19,7 @@
       stroke: themed('colorContextMenuBtnSvgFill');
     }
 
-    &:hover .btn-icon svg { fill: themed('colorContextMenuBg'); }
+    &:hover :global(.btn-icon) svg { fill: themed('colorContextMenuBg'); }
   }
 }
 

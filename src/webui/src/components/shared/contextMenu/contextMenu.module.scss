@@ -28,15 +28,15 @@ $headerHeight: 48px;
       display: inherit;
     }
 
-    .btn.dropdown-icon {
+    :global(.btn).dropdown-icon {
       @include rem-fallback(padding, 0px, 5px);
       @include rem-fallback(min-width, 0px);
   
-      .btn-icon { @include square-px-rem($grid-size*4); }
+      :global(.btn-icon) { @include square-px-rem($grid-size*4); }
     }
   }
 
-  .last-updated-container {
+  :global(.last-updated-container) {
     margin: 0;
     align-items: center;
     @include rem-fallback(padding, 0px, 10px);
@@ -50,7 +50,7 @@ $headerHeight: 48px;
   @include themify($themes) {
     border-bottom: 1px solid themed('colorContextMenuBorderColor');
 
-    .btn:hover {
+    :global(.btn):hover {
       background-color: themed('colorContextMenuBtnBgHover');
       color: themed('colorContextMenuBtnTextHover');
 
@@ -59,7 +59,7 @@ $headerHeight: 48px;
   }
 }
 
-.extraMenuDropdown {
+.extra-menu-dropdown {
   position: fixed;
   box-shadow: 0px 2px 10px #999999;
 
@@ -70,7 +70,7 @@ $headerHeight: 48px;
   &-option {
     display: inherit;
   
-      .btn {
+      :global(.btn) {
         justify-content: flex-start;
         width: 100%;
       }

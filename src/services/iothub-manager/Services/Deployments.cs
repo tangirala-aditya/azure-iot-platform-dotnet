@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Azure.Storage.Queues;
 using Microsoft.Azure.Devices;
@@ -60,6 +61,7 @@ namespace Mmm.Iot.IoTHubManager.Services
         private const string ReactivatedTag = "reserved.reactivated";
         private const string AppConfigTenantInfoKey = "tenant";
         private const string AppConfigPcsCollectionKey = "pcs-collection";
+        private const string DeviceDetailsQueryFormat = "select * from devices.jobs where devices.jobs.jobId = '{0}'";
         private readonly ILogger logger;
         private readonly IDeploymentEventLog deploymentLog;
         private readonly ITenantConnectionHelper tenantHelper;
@@ -244,6 +246,11 @@ namespace Mmm.Iot.IoTHubManager.Services
             var jsonResult = JsonConvert.SerializeObject(result);
             var desiredTwin = JsonConvert.DeserializeObject<Twin>(jsonResult);
 
+            var tags = new TwinCollection();
+            tags["configurations"] = new TwinCollection();
+            tags["configurations"]["applied"] = configuration.Id;
+            desiredTwin.Tags = tags;
+
             var jobId = Guid.NewGuid().ToString();
             try
             {
@@ -256,6 +263,16 @@ namespace Mmm.Iot.IoTHubManager.Services
 
             model.JobId = jobId;
             model.Id = configuration.Id;
+
+            if (model.Tags == null)
+            {
+                model.Tags = new List<string>();
+            }
+
+            model.Tags.Add(LatestTag);
+
+            // Store the deployment details in Cosmos DB
+            await this.StoreDeploymentInSecondaryStorage(model, userId);
 
             return model;
         }
@@ -361,6 +378,78 @@ namespace Mmm.Iot.IoTHubManager.Services
             }
         }
 
+        public async Task<DeploymentServiceModel> GetDeploymentDataFromJobs(string deploymentId, bool includeDeviceStatus = false, bool isLatest = true)
+        {
+            if (string.IsNullOrEmpty(deploymentId))
+            {
+                throw new ArgumentNullException(nameof(deploymentId));
+            }
+
+            DeploymentServiceModel deployment = await this.GetDeploymentFromStorageAsync(deploymentId);
+            isLatest = deployment.Tags.Contains(LatestTag);
+            if (isLatest)
+            {
+                /*var deploymentFromHub = await this.tenantHelper.GetRegistry().GetConfigurationAsync(deploymentId);
+
+                // Get the JobIds from Deployment to get the Data of Jobs.
+                var query = this.tenantHelper.GetRegistry().CreateQuery(string.Format(DeviceDetailsQueryFormat, deployment.JobId));
+
+                var deviceJobs = new List<DeviceJob>();
+                while (query.HasMoreResults)
+                {
+                    deviceJobs.AddRange(await query.GetNextAsDeviceJobAsync());
+                }
+
+                if (deploymentFromHub == null)
+                {
+                    throw new ResourceNotFoundException($"Deployment with id {deploymentId} not found.");
+                }
+
+                if (!this.CheckIfDeploymentWasMadeByRM(deploymentFromHub))
+                {
+                    throw new ResourceNotSupportedException($"Deployment with id {deploymentId}" + @" was
+                                                        created externally and therefore not supported");
+                }*/
+
+                (HashSet<string> appliedDevices, HashSet<string> targetedDevices, IDictionary<string, DeploymentStatus> deviceStatuses) = this.GetDeviceStatuses(deployment);
+
+                if (deployment.DeploymentMetrics == null)
+                {
+                    deployment.DeploymentMetrics = new DeploymentMetricsServiceModel
+                    {
+                        SystemMetrics = this.CalculateSystemMetrics(appliedDevices, targetedDevices),
+                        DeviceMetrics = this.CalculateDeviceMetrics(deviceStatuses),
+                        DeviceStatuses = deviceStatuses,
+                    };
+                }
+                else
+                {
+                    deployment.DeploymentMetrics.SystemMetrics = this.CalculateSystemMetrics(appliedDevices, targetedDevices);
+                    deployment.DeploymentMetrics.DeviceMetrics = this.CalculateDeviceMetrics(deviceStatuses);
+                    deployment.DeploymentMetrics.DeviceStatuses = deviceStatuses;
+                }
+
+                return deployment;
+            }
+            else
+            {
+                if (deployment != null && deployment.DeploymentMetrics != null)
+                {
+                    deployment.PackageContent = null;
+                    if (deployment.DeploymentMetrics.DeviceStatuses == null)
+                    {
+                        deployment.DeploymentMetrics.DeviceStatuses = new Dictionary<string, DeploymentStatus>();
+                    }
+
+                    deployment.DeploymentMetrics.DeviceMetrics = this.CalculateDeviceMetrics(deployment.DeploymentMetrics.DeviceStatuses);
+
+                    deployment.DeploymentMetrics.DeviceStatuses = includeDeviceStatus ? deployment.DeploymentMetrics.DeviceStatuses : null;
+                }
+
+                return deployment;
+            }
+        }
+
         public async Task DeleteAsync(string deploymentId, string userId, string tenantId, bool isDelete)
         {
             if (string.IsNullOrEmpty(deploymentId))
@@ -444,7 +533,7 @@ namespace Mmm.Iot.IoTHubManager.Services
 
         public async Task<DeviceServiceListModel> GetDeployedDevicesAsync(string deploymentId, string tenantId, bool isLatest = false)
         {
-            var deploymentDetails = await this.GetAsync(deploymentId, true, isLatest);
+            var deploymentDetails = await this.GetDeploymentDataFromJobs(deploymentId, true, isLatest);
 
             List<string> deviceIds = deploymentDetails?.DeploymentMetrics?.DeviceStatuses?.Keys?.ToList();
 
@@ -717,6 +806,144 @@ namespace Mmm.Iot.IoTHubManager.Services
             return deviceWithStatus;
         }
 
+        private (HashSet<string> AppliedDevices, HashSet<string> TargetedDevices, IDictionary<string, DeploymentStatus> DeviceStatuses) GetDeviceStatuses(DeploymentServiceModel deployment)
+        {
+            string deploymentType = null;
+            if (deployment.PackageType == PackageType.EdgeManifest)
+            {
+                deploymentType = PackageType.EdgeManifest.ToString();
+            }
+            else
+            {
+                deploymentType = PackageType.DeviceConfiguration.ToString();
+            }
+
+            var queries = GetQueries(deploymentType, deployment.ConfigType);
+
+            string deploymentId = deployment.Id;
+
+            var appliedDevices = this.GetDevicesInQuery(queries[QueryType.APPLIED], deploymentId);
+            var targettedDevices = this.GetTargettedDevices(deployment);
+
+            var deviceWithStatus = new Dictionary<string, DeploymentStatus>();
+
+            if (!(deployment.PackageType == PackageType.EdgeManifest) && !deployment.ConfigType.Equals(ConfigType.Firmware.ToString()))
+            {
+                foreach (var devices in appliedDevices)
+                {
+                    deviceWithStatus.Add(devices, DeploymentStatus.Unknown);
+                }
+
+                return (appliedDevices, targettedDevices, deviceWithStatus);
+            }
+
+            IDictionary<string, string> customQueries;
+            if (string.IsNullOrEmpty(deployment.PackageContent))
+            {
+                customQueries = new Dictionary<string, string>();
+            }
+            else
+            {
+                var packageConfiguration = JsonConvert.DeserializeObject<Configuration>(deployment.PackageContent);
+                customQueries = packageConfiguration.Metrics?.Queries;
+
+                if (customQueries != null)
+                {
+                    customQueries = this.SubstituteDeploymentIdIfPresent(
+                                                                        customQueries,
+                                                                        deploymentId);
+                }
+                else
+                {
+                    customQueries = new Dictionary<string, string>();
+                }
+            }
+
+            // Get reported status from custom Metrics if available otherwise use default queries
+            var successfulDevices = this.GetDevicesInQuery(customQueries.ContainsKey(SuccessQueryName) ? customQueries[SuccessQueryName] : queries[QueryType.SUCCESSFUL], deploymentId);
+            var failedDevices = this.GetDevicesInQuery(customQueries.ContainsKey(FailedQueryName) ? customQueries[FailedQueryName] : queries[QueryType.FAILED], deploymentId);
+
+            foreach (var device in appliedDevices)
+            {
+                if (successfulDevices.Contains(device))
+                {
+                    deviceWithStatus.Add(device, DeploymentStatus.Succeeded);
+                }
+                else if (failedDevices.Contains(device))
+                {
+                    deviceWithStatus.Add(device, DeploymentStatus.Failed);
+                }
+                else
+                {
+                    deviceWithStatus.Add(device, DeploymentStatus.Pending);
+                }
+            }
+
+            return (appliedDevices, targettedDevices, deviceWithStatus);
+        }
+
+        // Replaces DeploymentId, if present, in the custom metrics query
+        private IDictionary<string, string> SubstituteDeploymentIdIfPresent(
+            IDictionary<string, string> customMetrics,
+            string deploymentId)
+        {
+            const string deploymentClause = @"configurations\.\[\[.+\]\]\.status = 'Applied'"; // replace all configuration clauses in custom metrics
+            string updatedDeploymentClause = $"tags.configurations.applied='{deploymentId}'";
+            IDictionary<string, string> metrics = new Dictionary<string, string>();
+
+            foreach (KeyValuePair<string, string> query in customMetrics)
+            {
+                metrics[query.Key] = Regex.Replace(query.Value, deploymentClause, updatedDeploymentClause);
+            }
+
+            return metrics;
+        }
+
+        private HashSet<string> GetTargettedDevices(DeploymentServiceModel deployment)
+        {
+            const string queryPrefix = "SELECT * FROM Devices";
+
+            var targetCondition = QueryConditionTranslator.ToQueryString(deployment.DeviceGroupQuery);
+            if (deployment.DeviceIds != null && deployment.DeviceIds.Any())
+            {
+                string deviceIdCondition = $"({string.Join(" or ", deployment.DeviceIds.Select(v => $"deviceId = '{v}'"))})";
+                if (!string.IsNullOrWhiteSpace(targetCondition))
+                {
+                    string[] conditions = { targetCondition, deviceIdCondition };
+                    targetCondition = string.Join(" or ", conditions);
+                }
+                else
+                {
+                    targetCondition = deviceIdCondition;
+                }
+            }
+
+            var hubQuery = string.IsNullOrEmpty(targetCondition) ? queryPrefix : $"{queryPrefix} WHERE {targetCondition}";
+
+            var queryResponse = this.tenantHelper.GetRegistry().CreateQuery(hubQuery);
+            var deviceIds = new HashSet<string>();
+
+            try
+            {
+                while (queryResponse.HasMoreResults)
+                {
+                    // TODO: Add pagination with queryOptions
+                    var resultSet = queryResponse.GetNextAsJsonAsync();
+                    foreach (var result in resultSet.Result)
+                    {
+                        var deviceId = JToken.Parse(result)[DeviceIdKey];
+                        deviceIds.Add(deviceId.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, "Error getting status of devices in query {query}", hubQuery);
+            }
+
+            return deviceIds;
+        }
+
         private HashSet<string> GetDevicesInQuery(string hubQuery, string deploymentId)
         {
             var query = string.Format(hubQuery, deploymentId);
@@ -765,6 +992,22 @@ namespace Mmm.Iot.IoTHubManager.Services
                                                             item.Value == DeploymentStatus.Pending).LongCount();
 
             return deviceMetrics;
+        }
+
+        private IDictionary<string, long> CalculateSystemMetrics(
+            HashSet<string> appliedDevices, HashSet<string> targetedDevices)
+        {
+            if (appliedDevices == null && targetedDevices == null)
+            {
+                return null;
+            }
+
+            IDictionary<string, long> systemMetrics = new Dictionary<string, long>();
+
+            systemMetrics["appliedCount"] = appliedDevices != null ? appliedDevices.LongCount() : 0;
+            systemMetrics["targetedCount"] = targetedDevices != null ? targetedDevices.LongCount() : 0;
+
+            return systemMetrics;
         }
 
         private async Task StoreDeploymentInSecondaryStorage(DeploymentServiceModel deployment, string userId)

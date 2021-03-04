@@ -17,7 +17,5 @@ namespace Mmm.Iot.IoTHubManager.Services.Helpers
         string GetIotHubConnectionString();
 
         JobClient GetJobClient();
-
-        RegistryManager GetRegistryForJobs();
     }
 }

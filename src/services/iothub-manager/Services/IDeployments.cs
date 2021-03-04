@@ -39,5 +39,7 @@ namespace Mmm.Iot.IoTHubManager.Services
         Task<IEnumerable<ValueServiceModel>> GetDeploymentHistory(string collectionId, string tenantId);
 
         Task<Dictionary<string, string>> GetDeployments(string collectionId, string tenantId);
+
+        Task<DeploymentServiceModel> GetDeploymentDataFromJobs(string deploymentId, bool includeDeviceStatus = false, bool isLatest = true);
     }
 }

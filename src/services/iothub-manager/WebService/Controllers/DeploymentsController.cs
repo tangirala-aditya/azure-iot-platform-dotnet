@@ -159,6 +159,13 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             return new DeploymentApiModel(await this.deployments.GetAsync(id, includeDeviceStatus, isLatest));
         }
 
+        [HttpGet("Job/{id}")]
+        [Authorize("ReadAll")]
+        public async Task<DeploymentApiModel> GetAsyncWithJobs(string id, [FromQuery] bool includeDeviceStatus = false, [FromQuery] bool isLatest = true)
+        {
+            return new DeploymentApiModel(await this.deployments.GetDeploymentDataFromJobs(id, includeDeviceStatus, isLatest));
+        }
+
         [HttpDelete("{id}")]
         [Authorize("DeleteDeployments")]
         public async Task DeleteAsync(string id, [FromQuery] bool isDelete = true)

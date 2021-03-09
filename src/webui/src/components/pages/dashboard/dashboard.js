@@ -40,7 +40,6 @@ import {
 } from "components/shared";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
 
-import "./dashboard.scss";
 import { HttpClient } from "utilities/httpClient";
 import {
     delay,
@@ -51,6 +50,9 @@ import {
     switchMap,
     tap,
 } from "rxjs/operators";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./dashboard.module.scss"));
 
 const initialState = {
         // Telemetry data
@@ -569,9 +571,9 @@ export class Dashboard extends Component {
                         />
                     </ContextMenuAlign>
                 </ContextMenu>
-                <PageContent className="dashboard-container">
+                <PageContent className={css("dashboard-container")}>
                     <Grid>
-                        <Cell className="col-1 devices-overview-cell">
+                        <Cell className={css("col-1", "devices-overview-cell")}>
                             <OverviewPanel
                                 activeDeviceGroup={activeDeviceGroup}
                                 openWarningCount={openWarningCount}
@@ -591,7 +593,7 @@ export class Dashboard extends Component {
                                 t={t}
                             />
                         </Cell>
-                        <Cell className="col-5">
+                        <Cell className={css("col-5")}>
                             <PanelErrorBoundary
                                 msg={t("dashboard.panels.map.runtimeError")}
                             >
@@ -613,7 +615,7 @@ export class Dashboard extends Component {
                                 />
                             </PanelErrorBoundary>
                         </Cell>
-                        <Cell className="col-3">
+                        <Cell className={css("col-3")}>
                             <AlertsPanel
                                 alerts={currentActiveAlertsWithName}
                                 isPending={analyticsIsPending || rulesIsPending}
@@ -623,7 +625,7 @@ export class Dashboard extends Component {
                                 isAlertingActive={alerting.isActive}
                             />
                         </Cell>
-                        <Cell className="col-6">
+                        <Cell className={css("col-6")}>
                             <TelemetryPanel
                                 timeSeriesExplorerUrl={timeSeriesParamUrl}
                                 telemetry={telemetry}
@@ -636,7 +638,7 @@ export class Dashboard extends Component {
                                 t={t}
                             />
                         </Cell>
-                        <Cell className="col-4">
+                        <Cell className={css("col-4")}>
                             <AnalyticsPanel
                                 timeSeriesExplorerUrl={timeSeriesParamUrl}
                                 topAlerts={topAlertsWithName}
@@ -657,7 +659,7 @@ export class Dashboard extends Component {
                             />
                         </Cell>
                         {Config.showWalkthroughExamples && (
-                            <Cell className="col-4">
+                            <Cell className={css("col-4")}>
                                 <ExamplePanel t={t} />
                             </Cell>
                         )}

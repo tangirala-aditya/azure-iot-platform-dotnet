@@ -26,7 +26,7 @@
     &:hover { text-decoration: none; }
   }
 
-  .flyout-section-content { @include rem-font-size(12px); }
+  :global(.flyout-section-content) { @include rem-font-size(12px); }
 
   .simulation-toggle {
     display: flex;

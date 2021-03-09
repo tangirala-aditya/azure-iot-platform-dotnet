@@ -17,7 +17,8 @@ import { DeviceDetailsContainer } from "components/pages/devices/flyouts/deviceD
 import { toDiagnosticsModel } from "services/models";
 import { AzureMap } from "./azureMap";
 
-import "./mapPanel.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./mapPanel.module.scss"));
 
 const AzureMaps = window.atlas,
     nominalDeviceLayer = "devices-nominal-layer",
@@ -243,22 +244,25 @@ export class MapPanel extends Component {
             } = this.props,
             showOverlay = !error && isPending && mapKeyIsPending;
         return (
-            <Panel className="map-panel-container">
+            <Panel className={css("map-panel-container")}>
                 <PanelHeader>
                     <PanelHeaderLabel>
                         {t("dashboard.panels.map.header")}
                     </PanelHeaderLabel>
                 </PanelHeader>
-                <PanelContent className="map-panel-container">
+                <PanelContent className={css("map-panel-container")}>
                     <AzureMap
                         azureMapsKey={azureMapsKey}
                         onMapReady={this.onMapReady}
                     />
-                    <button className="zoom-btn zoom-in" onClick={this.zoomIn}>
+                    <button
+                        className={css("zoom-btn", "zoom-in")}
+                        onClick={this.zoomIn}
+                    >
                         +
                     </button>
                     <button
-                        className="zoom-btn zoom-out"
+                        className={css("zoom-btn", "zoom-out")}
                         onClick={this.zoomOut}
                     >
                         -

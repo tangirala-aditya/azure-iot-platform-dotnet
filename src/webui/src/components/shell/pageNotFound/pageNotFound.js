@@ -4,13 +4,14 @@ import React from "react";
 
 import { PageContent } from "components/shared";
 
-import "./pageNotFound.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./pageNotFound.module.scss"));
 
 export const PageNotFound = ({ t }) => (
-    <PageContent className="page-not-found-container">
+    <PageContent className={css("page-not-found-container")}>
         {t("pageNotFound.title")}
         <br />
         <br />
-        <span className="quote">{t("pageNotFound.message")}</span>
+        <span className={css("quote")}>{t("pageNotFound.message")}</span>
     </PageContent>
 );

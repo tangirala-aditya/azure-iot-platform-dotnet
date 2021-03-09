@@ -50,7 +50,7 @@ $zoomBtnFont: 20px;
     .popup-type { font-weight: bold; }
   }
 
-  #map { flex-grow: 1 }
+  :global(#map) { flex-grow: 1 }
 
   @include themify($themes) {
     .zoom-btn {

@@ -20,7 +20,8 @@ import {
 
 import { TelemetryChartContainer as TelemetryChart } from "./telemetryChart.container";
 
-import "./telemetryPanel.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./telemetryPanel.module.scss"));
 
 export class TelemetryPanel extends Component {
     render() {
@@ -43,7 +44,7 @@ export class TelemetryPanel extends Component {
                         {t("dashboard.panels.telemetry.header")}
                     </PanelHeaderLabel>
                 </PanelHeader>
-                <PanelContent className="telemetry-panel-container">
+                <PanelContent className={css("telemetry-panel-container")}>
                     <TelemetryChart
                         t={t}
                         telemetry={telemetry}

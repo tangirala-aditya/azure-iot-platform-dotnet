@@ -33,7 +33,7 @@
 
   button.flyout-section-header { cursor: pointer; }
 
-  .flyout-section-content {
+  :global(.flyout-section-content) {
     @include rem-fallback(padding-bottom, 24px);
     @include rem-font-size(14px);
   }

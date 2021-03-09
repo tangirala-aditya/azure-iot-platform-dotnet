@@ -10,10 +10,10 @@
   flex-flow: column nowrap;
   align-items: stretch;
 
-  .grid-container {
+  :global(.grid-container) {
     padding: 10px;
 
-    .grid-cell {
+    :global(.grid-cell) {
       min-height: 400px;
 
       &.devices-overview-cell { min-width: 314px; }

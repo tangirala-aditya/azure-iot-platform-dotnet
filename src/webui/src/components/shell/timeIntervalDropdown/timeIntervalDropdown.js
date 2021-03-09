@@ -6,7 +6,8 @@ import { SelectInput } from "@microsoft/azure-iot-ux-fluent-controls/lib/compone
 import { isFunc } from "utilities";
 import { toDiagnosticsModel } from "services/models";
 
-import "./timeIntervalDropdown.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./timeIntervalDropdown.module.scss"));
 
 const optionValues = [
     { value: "PT15M" },
@@ -61,14 +62,14 @@ export class TimeIntervalDropdown extends Component {
         return (
             <SelectInput
                 name="time-interval-dropdown"
-                className={className}
+                className={css(className)}
                 attr={{
                     select: {
-                        className: "time-interval-dropdown-select",
+                        className: css("time-interval-dropdown-select"),
                         "aria-label": this.props.t("timeInterval.ariaLabel"),
                     },
                     chevron: {
-                        className: "time-interval-dropdown-chevron",
+                        className: css("time-interval-dropdown-chevron"),
                     },
                 }}
                 options={options}

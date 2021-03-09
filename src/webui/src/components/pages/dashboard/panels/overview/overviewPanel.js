@@ -18,7 +18,8 @@ import {
     PanelError,
 } from "components/pages/dashboard/panel";
 
-import "./overviewPanel.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./overviewPanel.module.scss"));
 
 export class OverviewPanel extends Component {
     constructor(props) {
@@ -58,12 +59,12 @@ export class OverviewPanel extends Component {
                         {t("dashboard.panels.overview.header")}
                     </PanelHeaderLabel>
                 </PanelHeader>
-                <PanelContent className="device-stats-container">
-                    <div className="stat-header">{deviceGroupName}</div>
-                    <StatGroup className="stats-group">
+                <PanelContent className={css("device-stats-container")}>
+                    <div className={css("stat-header")}>{deviceGroupName}</div>
+                    <StatGroup className={css("stats-group")}>
                         {alerting.jobState === "Running" && (
                             <StatProperty
-                                className="stat-property"
+                                className={css("stat-property")}
                                 value={renderUndefined(openCriticalCount)}
                                 label={t("dashboard.panels.overview.critical")}
                                 svg={svgs.critical}
@@ -73,7 +74,7 @@ export class OverviewPanel extends Component {
                         )}
                         {alerting.jobState === "Running" && (
                             <StatProperty
-                                className="stat-property"
+                                className={css("stat-property")}
                                 value={renderUndefined(openWarningCount)}
                                 label={t("dashboard.panels.overview.warnings")}
                                 svg={svgs.warning}
@@ -82,19 +83,19 @@ export class OverviewPanel extends Component {
                             />
                         )}
                         <StatProperty
-                            className="stat-property"
+                            className={css("stat-property")}
                             value={renderUndefined(total)}
                             label={t("dashboard.panels.overview.total")}
                             size="medium"
                         />
                         <StatProperty
-                            className="stat-property"
+                            className={css("stat-property")}
                             value={renderUndefined(onlineDeviceCount)}
                             label={t("dashboard.panels.overview.connected")}
                             size="medium"
                         />
                         <StatProperty
-                            className="stat-property"
+                            className={css("stat-property")}
                             value={renderUndefined(offlineDeviceCount)}
                             label={t("dashboard.panels.overview.notConnected")}
                             size="medium"

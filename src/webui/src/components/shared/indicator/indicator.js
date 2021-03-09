@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from "react";
-import { joinClasses } from "utilities";
 
 // import styles from "./indicator.module.scss";
 
@@ -9,8 +8,8 @@ const classnames = require("classnames/bind");
 const css = classnames.bind(require("./indicator.module.scss"));
 
 const Dot = () => (
-        <div className="dot">
-            <span className="inner" />
+        <div className={css("dot")}>
+            <span className={css("inner")} />
         </div>
     ),
     validSizes = new Set(["large", "medium", "normal", "small", "mini"]),
@@ -23,8 +22,8 @@ export const Indicator = (props) => {
         patternClass = validPatterns.has(pattern) ? css(pattern) : css("ring");
     return (
         <div
-            className={joinClasses(
-                css("wait-indicator"),
+            className={css(
+                "wait-indicator",
                 sizeClass,
                 patternClass,
                 className

@@ -46,7 +46,7 @@ $font-weight-bold: 700;
     }
   }
 
-  .grid-container {
+  :global(.grid-container ){
     display: flex;
     flex-flow: column nowrap;
     flex-grow: 1;

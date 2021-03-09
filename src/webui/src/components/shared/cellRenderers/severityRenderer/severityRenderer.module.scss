@@ -3,12 +3,14 @@
 @import 'src/styles/themes';
 @import 'src/styles/mixins';
 
-:global(.pcs-renderer-cell){
-  &.severity {
-    @include themify($themes) {
-      &.info .pcs-renderer-icon svg { fill: themed('colorSystem'); }
-      &.warning .pcs-renderer-icon svg { fill: themed('colorWarning'); }
-      &.critical .pcs-renderer-icon svg { fill: themed('colorAlert'); }
+:global{
+  .pcs-renderer-cell{
+    &.severity {
+      @include themify($themes) {
+        &.info .pcs-renderer-icon svg { fill: themed('colorSystem'); }
+        &.warning .pcs-renderer-icon svg { fill: themed('colorWarning'); }
+        &.critical .pcs-renderer-icon svg { fill: themed('colorAlert'); }
+      }
     }
   }
 }

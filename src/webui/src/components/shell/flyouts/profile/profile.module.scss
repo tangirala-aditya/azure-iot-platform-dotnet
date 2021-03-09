@@ -33,29 +33,30 @@
   @include themify($themes) {
     .profile-error { border-color: themed('colorAlert'); }
   }
-}
-
-.iotHub-Name {
-  font-size: small;
-  font-family: $fontSelawikSemilight;
-  color: darkgray;
-}
-
-a > p, :global(.pcs-renderer-cell) > p {
-  word-break: break-all;
-  padding-right: 2px;
-}
-
-:global(.pcs-renderer-cell) {
-  @include themify($themes) {
-    .pcs-renderer-icon svg { fill: themed('colorWarning'); }
+  
+  .iotHub-Name {
+    font-size: small;
+    font-family: $fontSelawikSemilight;
+    color: darkgray;
   }
-  .pcs-renderer-icon {
-    margin-bottom: 4px !important;
-    margin-left: 3px !important;
-    display: inline-block !important;
+
+  a > span, :global(.pcs-renderer-cell) > span {
+    word-break: break-all;
+    padding-right: 2px;
   }
-  .current-tenant-text {
-    font-weight: 600;
+
+  :global(.pcs-renderer-cell) {
+    height: auto;
+    @include themify($themes) {
+      :global(.pcs-renderer-icon) svg { fill: themed('colorWarning'); }
+    }
+    :global(.pcs-renderer-icon) {
+      margin-bottom: 4px !important;
+      margin-left: 3px !important;
+      display: inline-block !important;
+    }
+    .current-tenant-text {
+      font-weight: 600;
+    }
   }
 }

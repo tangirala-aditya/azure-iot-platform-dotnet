@@ -24,8 +24,12 @@ import {
     Svg,
 } from "components/shared";
 
-import "./cloudToDeviceMessage.scss";
 import { map, mergeMap } from "rxjs/operators";
+
+// import "./cloudToDeviceMessage.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./cloudToDeviceMessage.module.scss"));
 
 export class CloudToDeviceMessage extends LinkedComponent {
     constructor(props) {
@@ -181,18 +185,18 @@ export class CloudToDeviceMessage extends LinkedComponent {
             >
                 <Protected permission={permissions.deleteDevices}>
                     <form
-                        className="device-c2dMessage-container"
+                        className={css("device-c2dMessage-container")}
                         onSubmit={this.sendCloudToDeviceMessage}
                     >
-                        <div className="device-c2dMessage-header">
+                        <div className={css("device-c2dMessage-header")}>
                             {t("devices.flyouts.c2dMessage.header")}
                         </div>
-                        <div className="device-c2dMessage-descr">
+                        <div className={css("device-c2dMessage-descr")}>
                             {t("devices.flyouts.c2dMessage.description")}
                         </div>
                         <FormGroup>
                             <br />
-                            <div className="help-message">
+                            <div className={css("help-message")}>
                                 {t(
                                     "devices.flyouts.c2dMessage.jsonPayloadMessage"
                                 )}
@@ -205,10 +209,10 @@ export class CloudToDeviceMessage extends LinkedComponent {
                             />
                         </FormGroup>
                         {containsSimulatedDevices && (
-                            <div className="simulated-device-selected">
+                            <div className={css("simulated-device-selected")}>
                                 <Svg
                                     src={svgs.infoBubble}
-                                    className="info-icon"
+                                    className={css("info-icon")}
                                 />
                                 {t(
                                     "devices.flyouts.c2dMessage.simulatedNotSupported"
@@ -226,7 +230,7 @@ export class CloudToDeviceMessage extends LinkedComponent {
                                 {this.state.isPending && <Indicator />}
                                 {completedSuccessfully && (
                                     <Svg
-                                        className="summary-icon"
+                                        className={css("summary-icon")}
                                         src={svgs.apply}
                                     />
                                 )}
@@ -235,7 +239,7 @@ export class CloudToDeviceMessage extends LinkedComponent {
 
                         {error && (
                             <AjaxError
-                                className="device-c2dMessage-error"
+                                className={css("device-c2dMessage-error")}
                                 t={t}
                                 error={error}
                             />

@@ -21,9 +21,12 @@ import {
     SummarySection,
     Svg,
 } from "components/shared";
-
-import "./deviceDelete.scss";
 import { map, mergeMap } from "rxjs/operators";
+
+// import "./deviceDelete.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deviceDelete.module.scss"));
 
 export class DeviceDelete extends Component {
     constructor(props) {
@@ -174,13 +177,13 @@ export class DeviceDelete extends Component {
             >
                 <Protected permission={permissions.deleteDevices}>
                     <form
-                        className="device-delete-container"
+                        className={css("device-delete-container")}
                         onSubmit={this.deleteDevices}
                     >
-                        <div className="device-delete-header">
+                        <div className={css("device-delete-header")}>
                             {t("devices.flyouts.delete.header")}
                         </div>
-                        <div className="device-delete-descr">
+                        <div className={css("device-delete-descr")}>
                             {t("devices.flyouts.delete.description")}
                         </div>
                         <Toggle
@@ -198,10 +201,10 @@ export class DeviceDelete extends Component {
                             offLabel={t("devices.flyouts.delete.confirmNo")}
                         />
                         {containsSimulatedDevices && (
-                            <div className="simulated-device-selected">
+                            <div className={css("simulated-device-selected")}>
                                 <Svg
                                     src={svgs.infoBubble}
-                                    className="info-icon"
+                                    className={css("info-icon")}
                                 />
                                 {t(
                                     "devices.flyouts.delete.simulatedNotSupported"
@@ -219,7 +222,7 @@ export class DeviceDelete extends Component {
                                 {this.state.isPending && <Indicator />}
                                 {completedSuccessfully && (
                                     <Svg
-                                        className="summary-icon"
+                                        className={css("summary-icon")}
                                         src={svgs.apply}
                                     />
                                 )}
@@ -228,7 +231,7 @@ export class DeviceDelete extends Component {
 
                         {error && (
                             <AjaxError
-                                className="device-delete-error"
+                                className={css("device-delete-error")}
                                 t={t}
                                 error={error}
                             />

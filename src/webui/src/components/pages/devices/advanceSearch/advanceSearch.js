@@ -15,8 +15,11 @@ import {
     PropertyGrid as Grid,
 } from "components/shared";
 
-import "./advanceSearch.scss";
 import { IoTHubManagerService } from "services";
+
+// import "./advanceSearch.scss"; to be removed
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./advanceSearch.module.scss"));
 
 // A counter for creating unique keys per new condition
 let conditionKey = 0;
@@ -252,7 +255,7 @@ export class AdvanceSearch extends LinkedComponent {
 
         return (
             <form onSubmit={this.apply}>
-                <div className="manage-filters-container">
+                <div className={css("manage-filters-container")}>
                     <Grid>
                         {conditionLinks.length > 0 && (
                             <Row>
@@ -272,7 +275,7 @@ export class AdvanceSearch extends LinkedComponent {
                             >
                                 <Cell className="col-1">
                                     <Btn
-                                        className="btn-icon"
+                                        className={css("btn-icon")}
                                         svg={svgs.plus}
                                         onClick={this.addCondition}
                                     />
@@ -356,17 +359,17 @@ export class AdvanceSearch extends LinkedComponent {
                         ))}
                     </Grid>
                     <Btn
-                        className="add-btn"
+                        className={css("add-btn")}
                         svg={svgs.plus}
                         onClick={this.addCondition}
                     >
                         Add a condition
                     </Btn>
-                    <div className="cancel-right-div">
+                    <div className={css("cancel-right-div")}>
                         <BtnToolbar>
                             <Btn
                                 svg={svgs.upload}
-                                className="download-deviceQueryReport"
+                                className={css("download-deviceQueryReport")}
                                 disabled={
                                     !this.state.enableDownload ||
                                     !this.formIsValid() ||

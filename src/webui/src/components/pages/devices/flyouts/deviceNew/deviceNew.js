@@ -41,8 +41,11 @@ import {
     Svg,
 } from "components/shared";
 
-import "./deviceNew.scss";
 import Config from "app.config";
+
+// import "./deviceNew.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deviceNew.module.scss"));
 
 const isIntRegex = /^-?\d*$/,
     nonInteger = (x) => !x.match(isIntRegex),
@@ -103,10 +106,10 @@ const isIntRegex = /^-?\d*$/,
         },
     },
     DeviceDetail = ({ label, value }) => (
-        <FormSection className="device-detail">
+        <FormSection className={css("device-detail")}>
             <SectionHeader>{label}</SectionHeader>
-            <div className="device-detail-contents">
-                <div className="device-detail-value">{value}</div>
+            <div className={css("device-detail-contents")}>
+                <div className={css("device-detail-value")}>{value}</div>
                 <Svg
                     className="copy-icon"
                     src={svgs.copy}
@@ -572,10 +575,10 @@ export class DeviceNew extends LinkedComponent {
             >
                 <Protected permission={permissions.createDevices}>
                     <form
-                        className="devices-new-container"
+                        className={css("devices-new-container")}
                         onSubmit={this.apply}
                     >
-                        <div className="devices-new-content">
+                        <div className={css("devices-new-content")}>
                             <FormGroup>
                                 <FormLabel>
                                     {t(deviceOptions.labelName)}
@@ -647,7 +650,9 @@ export class DeviceNew extends LinkedComponent {
                                                 "devices.flyouts.new.deviceIdExample.label"
                                             )}
                                         </FormLabel>
-                                        <div className="device-id-example">
+                                        <div
+                                            className={css("device-id-example")}
+                                        >
                                             {t(
                                                 "devices.flyouts.new.deviceIdExample.format",
                                                 { deviceName }
@@ -683,7 +688,7 @@ export class DeviceNew extends LinkedComponent {
                                                 "devices.flyouts.new.count.label"
                                             )}
                                         </FormLabel>
-                                        <div className="device-count">
+                                        <div className={css("device-count")}>
                                             {this.countLink.value}
                                         </div>
                                     </FormGroup>
@@ -702,7 +707,7 @@ export class DeviceNew extends LinkedComponent {
                                         >
                                             <FormControl
                                                 id="device-manual-id"
-                                                className="device-id"
+                                                className={css("device-id")}
                                                 link={this.deviceIdLink}
                                                 disabled={isGenerateId}
                                                 type="text"
@@ -800,7 +805,9 @@ export class DeviceNew extends LinkedComponent {
                                                     .labelName
                                             )}
                                         </Radio>
-                                        <FormGroup className="sub-settings">
+                                        <FormGroup
+                                            className={css("sub-settings")}
+                                        >
                                             <FormLabel>
                                                 {isX509
                                                     ? t(
@@ -822,7 +829,9 @@ export class DeviceNew extends LinkedComponent {
                                                 }
                                             />
                                         </FormGroup>
-                                        <FormGroup className="sub-settings">
+                                        <FormGroup
+                                            className={css("sub-settings")}
+                                        >
                                             <FormLabel>
                                                 {isX509
                                                     ? t(
@@ -858,7 +867,7 @@ export class DeviceNew extends LinkedComponent {
                                 {this.state.isPending && <Indicator />}
                                 {completedSuccessfully && (
                                     <Svg
-                                        className="summary-icon"
+                                        className={css("summary-icon")}
                                         src={svgs.apply}
                                     />
                                 )}
@@ -872,7 +881,7 @@ export class DeviceNew extends LinkedComponent {
 
                         {error && (
                             <AjaxError
-                                className="devices-new-error"
+                                className={css("devices-new-error")}
                                 t={t}
                                 error={error}
                             />

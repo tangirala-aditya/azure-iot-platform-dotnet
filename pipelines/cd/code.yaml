@@ -313,7 +313,7 @@ stages:
           applicationShortCode: $(applicationShortCode-emdDev)
           environmentCategory: $(environmentCategory-emdDev)
           imageTag: $(_imageTag)
-          blueGreen: false
+          blueGreen: true
           subscriptionId: $(subscriptionId-emdDev)
 
   - stage: emdQa

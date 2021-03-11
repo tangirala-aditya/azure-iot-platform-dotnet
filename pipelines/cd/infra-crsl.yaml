@@ -3,7 +3,12 @@ pr: none
 pool:
   vmImage: ubuntu-latest
 variables:
-  locationName: centralus
+- group: crslDev
+- group: acsDev
+- group: crslQa
+- group: crslWkbnch
+- name: locationName
+  value: centralus
 stages:
   - stage: checkParameters
     displayName: Check parameters
@@ -25,94 +30,102 @@ stages:
 
   - stage: crslDev
     displayName: CRSL dev
+    variables:
+    - group: crslDev
     dependsOn: checkParameters
     condition: eq(variables['runCrslDevStage'], 'true')
     jobs:
       - template: ../templates/jobs-deploy-infra.yaml
         parameters:
-          subscriptionName: 3M-CRSLAD16-BBIoTP-DEV
+          subscriptionName: $(subscriptionName-crslDev)
           locationName: $(locationName)
-          appInsightsLocation: eastus
-          environmentName: IoT_CRSL_Environment_Dev
-          subscriptionId: c36fb2f8-f98d-40d0-90a9-d65e93acb428
-          applicationCode: crsliot
-          applicationShortCode: crsl
-          environmentCategory: dev
-          kubernetesVersion: 1.19.3
-          sendgridEmail: aschmidt4@mmm.com
+          appInsightsLocation: $(appInsightsLocation-crslDev)
+          environmentName: $(environmentName-crslDev)
+          subscriptionId: $(subscriptionId-crslDev)
+          applicationCode: $(applicationCode-crslDev)
+          applicationShortCode: $(applicationShortCode-crslDev)
+          environmentCategory: $(environmentCategory-crslDev)
+          kubernetesVersion: $(kubernetesVersion-crslDev)
+          sendgridEmail: $(sendgridEmail-crslDev)
           aksAgentVmSize: Standard_D8_v3
-          azureDevOpsProjectId: AzurePlatform
-          testPipelineId: 453
-          runVersion: specific
+          azureDevOpsProjectId: $(azureDevOpsProjectId-crslDev)
+          testPipelineId: $(testPipelineId-crslDev)
+          runVersion: $(runVersion-crslDev)
           testPipelineRunId: $(testPipelineRunId)
-          sysAdmins: '[{"UserId": "3e30f301-4f57-4b3e-949a-3ff8e93870b5", "Name": "Viswanath Kotha CW"}, {"UserId": "00e4068a-944e-4cd2-bc2a-77b1d33a1db3", "Name": "Jonathan Asbury"}, {"UserId": "295af21b-90af-4777-b0ba-4d7f94514679", "Name": "Sean Dubiel"}, {"UserId": "534a9d20-04aa-4f42-9cf9-d82fca6cf7df", "Name": "Ragavender Basangari CW"}, {"UserId": "a2dc5d37-94cc-4fd6-91bb-8a26458d8089", "Name": "Anant Choudhari CW"}, {"UserId": "866aa8d9-a571-4b3e-8acd-de710e74342d", "Name": "Nick Gawryk"}, {"UserId": "9f8df5ac-6312-4245-be6d-ff6bb70ac1e1", "Name": "Jayasimha Nallagatla CW"}, {"UserId": "b3bbea27-2e63-4f95-8197-e9869af64b14", "Name": "Sahithi Voruganti CW"}, {"UserId": "ec9745fa-9fa9-4d35-ab55-1e3bd064c4a2", "Name": "Andrew Schmidt"}, {"UserId": "f6a7ba19-0f66-4cc6-9d15-2241f40fc122", "Name": "Joseph Bethke"}, {"UserId": "c8efa307-f285-4fb2-91ae-5d4061d2b271", "Name": "Jonathan Asbury CW"}, {"UserId": "a0ee6a74-65e7-4885-9219-d92982a7e04a", "Name": "Kyle Estes CW"}, {"UserId": "f8b35420-6ee3-4d4d-a757-e7ffe4f4f791", "Name": "Brad Murray"}, {"UserId": "1d56719e-a18f-4df9-9c60-ba4945de1fe0", "Name": "Aditya Tangirala CW"}, {"UserId": "661a049f-88a1-4535-9cc8-7611bd01a8c4", "Name": "Srikanth Pandanaboina CW"}]'
+          sysAdmins: $(sysAdmins-crslDev)
 
   - stage: acsDev
     displayName: ACS dev
+    variables:
+    - group: acsDev
     dependsOn: checkParameters
     jobs:
       - template: ../templates/jobs-deploy-infra.yaml
         parameters:
-          subscriptionName: 3M-CRSLAD16-BBIoTP-DEV
+          subscriptionName: $(subscriptionName-acsDev)
           locationName: $(locationName)
-          appInsightsLocation: eastus
-          environmentName: ACS-Environment
-          subscriptionId: c36fb2f8-f98d-40d0-90a9-d65e93acb428
-          applicationCode: acshyd
-          applicationShortCode: acs
-          environmentCategory: dev
-          kubernetesVersion: 1.19.3
-          sendgridEmail: aschmidt4@mmm.com
-          azureDevOpsProjectId: AzurePlatform
-          testPipelineId: 453
-          runVersion: specific
+          appInsightsLocation: $(appInsightsLocation-acsDev)
+          environmentName: $(environmentName-acsDev)
+          subscriptionId: $(subscriptionId-acsDev)
+          applicationCode: $(applicationCode-acsDev)
+          applicationShortCode: $(applicationShortCode-acsDev)
+          environmentCategory: $(environmentCategory-acsDev)
+          kubernetesVersion: $(kubernetesVersion-acsDev)
+          sendgridEmail: $(sendgridEmail-acsDev)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-acsDev)
+          testPipelineId: $(testPipelineId-acsDev)
+          runVersion: $(runVersion-acsDev)
           testPipelineRunId: $(testPipelineRunId)
-          sysAdmins: '[{"UserId": "3e30f301-4f57-4b3e-949a-3ff8e93870b5", "Name": "Viswanath Kotha CW"}, {"UserId": "00e4068a-944e-4cd2-bc2a-77b1d33a1db3", "Name": "Jonathan Asbury"}, {"UserId": "295af21b-90af-4777-b0ba-4d7f94514679", "Name": "Sean Dubiel"}, {"UserId": "534a9d20-04aa-4f42-9cf9-d82fca6cf7df", "Name": "Ragavender Basangari CW"}, {"UserId": "a2dc5d37-94cc-4fd6-91bb-8a26458d8089", "Name": "Anant Choudhari CW"}, {"UserId": "866aa8d9-a571-4b3e-8acd-de710e74342d", "Name": "Nick Gawryk"}, {"UserId": "9f8df5ac-6312-4245-be6d-ff6bb70ac1e1", "Name": "Jayasimha Nallagatla CW"}, {"UserId": "b3bbea27-2e63-4f95-8197-e9869af64b14", "Name": "Sahithi Voruganti CW"}, {"UserId": "ec9745fa-9fa9-4d35-ab55-1e3bd064c4a2", "Name": "Andrew Schmidt"}, {"UserId": "f6a7ba19-0f66-4cc6-9d15-2241f40fc122", "Name": "Joseph Bethke"}, {"UserId": "c8efa307-f285-4fb2-91ae-5d4061d2b271", "Name": "Jonathan Asbury CW"}, {"UserId": "a0ee6a74-65e7-4885-9219-d92982a7e04a", "Name": "Kyle Estes CW"}, {"UserId": "f8b35420-6ee3-4d4d-a757-e7ffe4f4f791", "Name": "Brad Murray"}, {"UserId": "661a049f-88a1-4535-9cc8-7611bd01a8c4", "Name": "Srikanth Pandanaboina CW"}]'
+          sysAdmins: $(sysAdmins-acsDev)
 
   - stage: crslQa
     displayName: CRSL QA
+    variables:
+    - group: crslQa
     dependsOn:
       - crslDev
     jobs:
       - template: ../templates/jobs-deploy-infra.yaml
         parameters:
-          subscriptionName: 3M-CRSLAD17-BBIoTP-QA
+          subscriptionName: $(subscriptionName-crslQa)
           locationName: $(locationName)
-          appInsightsLocation: eastus
-          environmentName: IoT_CRSL_Environment_QA
-          subscriptionId: f27c7c03-1ea8-49b8-9878-106e434b8a23
-          applicationCode: crsliot
-          applicationShortCode: crsl
-          environmentCategory: qa
-          kubernetesVersion: 1.19.3
+          appInsightsLocation: $(appInsightsLocation-crslQa)
+          environmentName: $(environmentName-crslQa)
+          subscriptionId: $(subscriptionId-crslQa)
+          applicationCode: $(applicationCode-crslQa)
+          applicationShortCode: $(applicationShortCode-crslQa)
+          environmentCategory: $(environmentCategory-crslQa)
+          kubernetesVersion: $(kubernetesVersion-crslQa)
+          sendgridEmail: $(sendgridEmail-crslQa)
           aksAgentVmSize: Standard_DS1_v2
-          sendgridEmail: aschmidt4@mmm.com
-          azureDevOpsProjectId: AzurePlatform
-          testPipelineId: 453
-          runVersion: specific
+          azureDevOpsProjectId: $(azureDevOpsProjectId-crslQa)
+          testPipelineId: $(testPipelineId-crslQa)
+          runVersion: $(runVersion-crslQa)
           testPipelineRunId: $(testPipelineRunId)
-          sysAdmins: '[{"UserId": "3e30f301-4f57-4b3e-949a-3ff8e93870b5", "Name": "Viswanath Kotha CW"}, {"UserId": "00e4068a-944e-4cd2-bc2a-77b1d33a1db3", "Name": "Jonathan Asbury"}, {"UserId": "295af21b-90af-4777-b0ba-4d7f94514679", "Name": "Sean Dubiel"}, {"UserId": "534a9d20-04aa-4f42-9cf9-d82fca6cf7df", "Name": "Ragavender Basangari CW"}, {"UserId": "a2dc5d37-94cc-4fd6-91bb-8a26458d8089", "Name": "Anant Choudhari CW"}, {"UserId": "866aa8d9-a571-4b3e-8acd-de710e74342d", "Name": "Nick Gawryk"}, {"UserId": "9f8df5ac-6312-4245-be6d-ff6bb70ac1e1", "Name": "Jayasimha Nallagatla CW"}, {"UserId": "b3bbea27-2e63-4f95-8197-e9869af64b14", "Name": "Sahithi Voruganti CW"}, {"UserId": "ec9745fa-9fa9-4d35-ab55-1e3bd064c4a2", "Name": "Andrew Schmidt"}, {"UserId": "f6a7ba19-0f66-4cc6-9d15-2241f40fc122", "Name": "Joseph Bethke"}, {"UserId": "c8efa307-f285-4fb2-91ae-5d4061d2b271", "Name": "Jonathan Asbury CW"}, {"UserId": "a0ee6a74-65e7-4885-9219-d92982a7e04a", "Name": "Kyle Estes CW"}, {"UserId": "f8b35420-6ee3-4d4d-a757-e7ffe4f4f791", "Name": "Brad Murray"}, {"UserId": "1d56719e-a18f-4df9-9c60-ba4945de1fe0", "Name": "Aditya Tangirala CW"}, {"UserId": "661a049f-88a1-4535-9cc8-7611bd01a8c4", "Name": "Srikanth Pandanaboina CW"}]'
-
+          sysAdmins: $(sysAdmins-crslQa)
+          
   - stage: crslWkbnch
     displayName: CRSL workbench
+    variables:
+    - group: crslWkbnch
     dependsOn:
       - crslQa
     jobs:
       - template: ../templates/jobs-deploy-infra.yaml
         parameters:
-          subscriptionName: 3M-CRSLAD19-BBIoTP-Prod
+          subscriptionName: $(subscriptionName-crslWkbnch)
           locationName: $(locationName)
-          appInsightsLocation: eastus
-          environmentName: IoT_CRSL_Environment_Wkbnch
-          subscriptionId: dcb37438-95ca-4a68-812d-39ce0d591df2
-          applicationCode: crsliot
-          applicationShortCode: crsl
-          environmentCategory: wkbnch
-          kubernetesVersion: 1.18.1
+          appInsightsLocation: $(appInsightsLocation-crslWkbnch)
+          environmentName: $(environmentName-crslWkbnch)
+          subscriptionId: $(subscriptionId-crslWkbnch)
+          applicationCode: $(applicationCode-crslWkbnch)
+          applicationShortCode: $(applicationShortCode-crslWkbnch)
+          environmentCategory: $(environmentCategory-crslWkbnch)
+          kubernetesVersion: $(kubernetesVersion-crslWkbnch)
+          sendgridEmail: $(sendgridEmail-crslWkbnch)
           aksAgentVmSize: Standard_DS2_v2
-          sendgridEmail: aschmidt4@mmm.com
-          azureDevOpsProjectId: AzurePlatform
-          testPipelineId: 453
-          runVersion: specific
+          azureDevOpsProjectId: $(azureDevOpsProjectId-crslWkbnch)
+          testPipelineId: $(testPipelineId-crslWkbnch)
+          runVersion: $(runVersion-crslWkbnch)
           testPipelineRunId: $(testPipelineRunId)
-          sysAdmins: '[{"UserId": "3e30f301-4f57-4b3e-949a-3ff8e93870b5", "Name": "Viswanath Kotha CW"}, {"UserId": "00e4068a-944e-4cd2-bc2a-77b1d33a1db3", "Name": "Jonathan Asbury"}, {"UserId": "295af21b-90af-4777-b0ba-4d7f94514679", "Name": "Sean Dubiel"}, {"UserId": "534a9d20-04aa-4f42-9cf9-d82fca6cf7df", "Name": "Ragavender Basangari CW"}, {"UserId": "a2dc5d37-94cc-4fd6-91bb-8a26458d8089", "Name": "Anant Choudhari CW"}, {"UserId": "866aa8d9-a571-4b3e-8acd-de710e74342d", "Name": "Nick Gawryk"}, {"UserId": "9f8df5ac-6312-4245-be6d-ff6bb70ac1e1", "Name": "Jayasimha Nallagatla CW"}, {"UserId": "b3bbea27-2e63-4f95-8197-e9869af64b14", "Name": "Sahithi Voruganti CW"}, {"UserId": "ec9745fa-9fa9-4d35-ab55-1e3bd064c4a2", "Name": "Andrew Schmidt"}, {"UserId": "f6a7ba19-0f66-4cc6-9d15-2241f40fc122", "Name": "Joseph Bethke"}, {"UserId": "c8efa307-f285-4fb2-91ae-5d4061d2b271", "Name": "Jonathan Asbury CW"}, {"UserId": "a0ee6a74-65e7-4885-9219-d92982a7e04a", "Name": "Kyle Estes CW"}, {"UserId": "f8b35420-6ee3-4d4d-a757-e7ffe4f4f791", "Name": "Brad Murray"}, {"UserId": "1d56719e-a18f-4df9-9c60-ba4945de1fe0", "Name": "Aditya Tangirala CW"}, {"UserId": "661a049f-88a1-4535-9cc8-7611bd01a8c4", "Name": "Srikanth Pandanaboina CW"}]'
+          sysAdmins: $(sysAdmins-crslWkbnch)

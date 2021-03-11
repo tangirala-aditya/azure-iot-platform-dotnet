@@ -60,7 +60,7 @@ $doublePadding: $baseContentPadding * 2;
 
     &.movable-columns :global(.ag-header-cell):not(:global(.checkbox-column)) { cursor: move; }
 
-    :global(.ag-font-style) {
+    :global(.ag-unselectable) {
       user-select: initial;
       -moz-user-select: text;
       -ms-user-select: text;

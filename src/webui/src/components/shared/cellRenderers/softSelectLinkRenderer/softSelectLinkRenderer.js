@@ -2,10 +2,8 @@
 
 import React, { Component } from "react";
 
-import { isFunc, joinClasses } from "utilities";
+import { isFunc } from "utilities";
 import { GlimmerRenderer } from "components/shared/cellRenderers";
-
-// import styles from "../cellRenderer.module.scss";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("../cellRenderer.module.scss"));
@@ -30,19 +28,17 @@ export class SoftSelectLinkRenderer extends Component {
                 {isFunc(context.onSoftSelectChange) ? (
                     <button
                         type="button"
-                        className={joinClasses(
+                        className={css(
                             "link",
-                            css("pcs-renderer-link"),
-                            css("soft-select-link")
+                            "pcs-renderer-link",
+                            "soft-select-link"
                         )}
                         onClick={this.onClick}
                     >
                         {value}
                     </button>
                 ) : (
-                    <div
-                        className={joinClasses("link", css("soft-select-link"))}
-                    >
+                    <div className={css("link", "soft-select-link")}>
                         {value}
                     </div>
                 )}

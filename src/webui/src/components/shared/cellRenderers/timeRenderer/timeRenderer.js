@@ -4,7 +4,6 @@ import React from "react";
 
 import { formatTime } from "utilities";
 import { EMPTY_FIELD_VAL } from "components/shared/pcsGrid/pcsGridConfig";
-// import styles from "../cellRenderer.module.scss";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("../cellRenderer.module.scss"));

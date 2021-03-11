@@ -69,16 +69,18 @@ $iconSize: 14px;
   }
 
   @include themify($themes) {
-    :global(.pcs-renderer-icon) {
-      margin-right: 10px;
+    :global {
+      .pcs-renderer-icon {
+        margin-right: 10px;
 
-      svg {
-        fill: themed('colorCellRendererSvgFill');
+        svg {
+          fill: themed('colorCellRendererSvgFill');
 
-        .disabled-icon {
-          stroke: themed('colorCellRendererSvgFill');
+          .disabled-icon {
+            stroke: themed('colorCellRendererSvgFill');
 
-          .cls-2 { stroke: themed('colorGridRowBackground'); }
+            .cls-2 { stroke: themed('colorGridRowBackground'); }
+          }
         }
       }
     }
@@ -104,12 +106,14 @@ $iconSize: 14px;
   }
 }
 
-:global(.ag-row) {
-  @include themify($themes) {
+:global {
+  .ag-row {
+    @include themify($themes) {
 
-    &.ag-row-hover,
-    &.ag-row-focus {
-      :global(.pcs-renderer-cell) :global(.pcs-renderer-icon) svg .disabled-icon .cls-2 { stroke: themed('colorGridRowHoverBackground'); }
+      &.ag-row-hover,
+      &.ag-row-focus {
+        .pcs-renderer-cell .pcs-renderer-icon svg .disabled-icon .cls-2 { stroke: themed('colorGridRowHoverBackground'); }
+      }
     }
   }
 }

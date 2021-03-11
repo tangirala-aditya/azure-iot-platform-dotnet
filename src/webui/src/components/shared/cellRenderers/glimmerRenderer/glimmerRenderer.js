@@ -5,8 +5,6 @@ import React from "react";
 import { svgs } from "utilities";
 import { Svg } from "components/shared/svg/svg";
 
-// import styles from "../cellRenderer.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("../cellRenderer.module.scss"));
 

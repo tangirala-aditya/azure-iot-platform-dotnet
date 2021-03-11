@@ -6,9 +6,6 @@ import Config from "app.config";
 import { Svg } from "components/shared/svg/svg";
 import { svgs, joinClasses } from "utilities";
 
-// import css from "../cellRenderer.module.scss";
-// import SeverityStyles from "./severityRenderer.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("../cellRenderer.module.scss"));
 const severityCss = classnames.bind(require("./severityRenderer.module.scss"));

@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { AgGridReact } from "ag-grid-react";
 import * as Rx from "rxjs";
 import Config from "app.config";
-import { isFunc, joinClasses } from "utilities";
+import { isFunc } from "utilities";
 import { Indicator } from "../indicator/indicator";
 import { ROW_HEIGHT } from "components/shared/pcsGrid/pcsGridConfig";
 import { SearchInput } from "components/shared";
@@ -230,13 +230,9 @@ export class PcsGrid extends Component {
                     </div>
                 )}
                 <div
-                    className={joinClasses(
-                        css("pcs-grid-container"),
-                        "ag-theme-alpine",
-                        gridParams.suppressMovableColumns
-                            ? ""
-                            : css("movable-columns")
-                    )}
+                    className={css("pcs-grid-container", "ag-theme-alpine", {
+                        "movable-columns": gridParams.suppressMovableColumns,
+                    })}
                     style={style}
                 >
                     {!rowData ? loadingContainer : ""}

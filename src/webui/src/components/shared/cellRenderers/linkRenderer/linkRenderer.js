@@ -6,8 +6,6 @@ import { NavLink } from "react-router-dom";
 import { Svg } from "components/shared/svg/svg";
 import { svgs } from "utilities";
 
-// import styles from "../cellRenderer.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("../cellRenderer.module.scss"));
 

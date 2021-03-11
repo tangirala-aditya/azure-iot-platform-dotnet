@@ -27,7 +27,7 @@
     @include rem-fallback(padding-bottom, 44px);
   }
 
-  .btn-toolbar { @include rem-fallback(padding-top, 20px); }
+  :global(.btn-toolbar) { @include rem-fallback(padding-top, 20px); }
 
   .sim-management-label-selector {
     width: 50%;

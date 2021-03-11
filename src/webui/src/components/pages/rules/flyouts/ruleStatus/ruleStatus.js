@@ -10,9 +10,10 @@ import { TelemetryService } from "services";
 import { permissions, toEditRuleRequestModel } from "services/models";
 import Flyout from "components/shared/flyout";
 import { RuleSummaryContainer as RuleSummary } from "../ruleSummary";
-
-import "./ruleStatus.scss";
 import { mergeMap, map } from "rxjs/operators";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./ruleStatus.module.scss"));
 
 export class RuleStatus extends Component {
     constructor(props) {
@@ -122,9 +123,9 @@ export class RuleStatus extends Component {
                 <Protected permission={permissions.updateRules}>
                     <form
                         onSubmit={this.changeRuleStatus}
-                        className="disable-rule-flyout-container"
+                        className={css("disable-rule-flyout-container")}
                     >
-                        <div className="padded-top-bottom">
+                        <div className={css("padded-top-bottom")}>
                             <Toggle
                                 name="rules-flyouts-status-enable"
                                 attr={{
@@ -153,7 +154,7 @@ export class RuleStatus extends Component {
 
                         {error && (
                             <AjaxError
-                                className="rule-status-error"
+                                className={css("rule-status-error")}
                                 t={t}
                                 error={error}
                             />

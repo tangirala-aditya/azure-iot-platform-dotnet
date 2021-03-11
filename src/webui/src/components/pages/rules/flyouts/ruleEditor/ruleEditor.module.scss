@@ -3,32 +3,42 @@
 @import 'src/styles/themes';
 @import 'src/styles/mixins';
 
-.disable-rule-flyout-container {
+.new-rule-flyout-container {
 
   .rule-property-container {
     border: none;
     @include rem-fallback(margin-top, 20px);
   }
 
-  .padded-top-bottom {
+  .padded-top {
     margin-left: 0px;
-    @include rem-fallback(padding, 24px, 0px);
+    padding-left: 0px;
+    @include rem-fallback(margin-top, 24px);
   }
 
-  .rule-status-error {
+  .rule-editor-error {
     border: 1px transparent solid;
     @include rem-fallback(margin, 12px, 0px);
     @include rem-fallback(padding, 16px);
   }
 
-  :global(.summary-icon) svg {
+  .summary-icon svg {
     @include square-px-rem(16px);
     @include rem-fallback(margin-left, 8px);
   }
 
-  @include themify($themes) {
-    .rule-status-error { border-color: themed('colorAlert'); }
+  .email-toggle-container {
+    display: flex;
+  }
 
-    :global(.summary-icon) svg { fill: themed('colorContentText'); }
+  @include themify($themes) {
+    .rule-editor-error { border-color: themed('colorAlert'); }
+
+    .summary-icon svg { fill: themed('colorContentText'); }
+
+    :global {
+      input.form-control,
+      textarea.form-control { color: themed('colorContentText'); }
+    }
   }
 }

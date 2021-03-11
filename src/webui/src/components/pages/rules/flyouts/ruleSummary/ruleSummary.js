@@ -14,6 +14,9 @@ import { svgs, joinClasses } from "utilities";
 import { IoTHubManagerService } from "services";
 import "./ruleSummary.scss";
 
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../ruleViewer/ruleViewer.module.scss"));
+
 const editRule = {
     id: "edit-rule-id",
     name: "Editted Rule",
@@ -103,7 +106,7 @@ export class RuleSummary extends Component {
                     </SectionDesc>
                     {includeSummaryStatus && isPending && <Indicator />}
                     {includeSummaryStatus && completedSuccessfully && (
-                        <Svg className="summary-icon" src={svgs.apply} />
+                        <Svg className={css("summary-icon")} src={svgs.apply} />
                     )}
                 </SummaryBody>
             </SummarySection>

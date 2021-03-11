@@ -36,6 +36,8 @@ import {
     Svg,
 } from "components/shared";
 import { distinct, filter, map, mergeMap, reduce } from "rxjs/operators";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deviceJobs.module.scss"));
 
 update.extend("$autoArray", (val, obj) => update(obj || [], val));
 
@@ -300,7 +302,7 @@ export class DeviceJobTags extends LinkedComponent {
 
         return (
             <form onSubmit={this.apply}>
-                <FormSection className="device-job-tags-container">
+                <FormSection className={css("device-job-tags-container")}>
                     <SectionHeader>
                         {t("devices.flyouts.jobs.tags.title")}
                     </SectionHeader>
@@ -312,7 +314,7 @@ export class DeviceJobTags extends LinkedComponent {
                         <FormLabel>
                             {t("devices.flyouts.jobs.jobName")}
                         </FormLabel>
-                        <div className="help-message">
+                        <div className={css("help-message")}>
                             {t("devices.flyouts.jobs.jobNameHelpMessage")}
                         </div>
                         <FormControl
@@ -323,7 +325,7 @@ export class DeviceJobTags extends LinkedComponent {
                         />
                     </FormGroup>
 
-                    <Grid className="data-grid">
+                    <Grid className={css("data-grid")}>
                         <GridHeader>
                             <Row>
                                 <Cell className="col-3">
@@ -337,7 +339,7 @@ export class DeviceJobTags extends LinkedComponent {
                                 </Cell>
                                 <Cell className="col-1"></Cell>
                             </Row>
-                            <Row className="action-row">
+                            <Row className={css("action-row")}>
                                 <Btn svg={svgs.plus} onClick={this.addTag}>
                                     {t("devices.flyouts.jobs.tags.add")}
                                 </Btn>
@@ -345,7 +347,7 @@ export class DeviceJobTags extends LinkedComponent {
                         </GridHeader>
                         {Object.keys(commonTags).length === 0 &&
                             summaryCount === 1 && (
-                                <div className="device-jobs-info">
+                                <div className={css("device-jobs-info")}>
                                     {t(
                                         "devices.flyouts.details.tags.noneExist"
                                     )}
@@ -353,7 +355,7 @@ export class DeviceJobTags extends LinkedComponent {
                             )}
                         {Object.keys(commonTags).length === 0 &&
                             summaryCount > 1 && (
-                                <ErrorMsg className="device-jobs-error">
+                                <ErrorMsg className={css("device-jobs-error")}>
                                     {t("devices.flyouts.jobs.tags.noneExist")}
                                 </ErrorMsg>
                             )}
@@ -368,7 +370,7 @@ export class DeviceJobTags extends LinkedComponent {
                                             <Row
                                                 className={
                                                     error
-                                                        ? "error-data-row"
+                                                        ? css("error-data-row")
                                                         : ""
                                                 }
                                             >
@@ -413,7 +415,11 @@ export class DeviceJobTags extends LinkedComponent {
                                                 </Cell>
                                             </Row>
                                             {error ? (
-                                                <Row className="error-msg-row">
+                                                <Row
+                                                    className={css(
+                                                        "error-msg-row"
+                                                    )}
+                                                >
                                                     <ErrorMsg>{error}</ErrorMsg>
                                                 </Row>
                                             ) : null}
@@ -433,7 +439,7 @@ export class DeviceJobTags extends LinkedComponent {
                             {this.state.isPending && <Indicator />}
                             {completedSuccessfully && (
                                 <Svg
-                                    className="summary-icon"
+                                    className={css("summary-icon")}
                                     src={svgs.apply}
                                 />
                             )}
@@ -442,7 +448,7 @@ export class DeviceJobTags extends LinkedComponent {
 
                     {error && (
                         <AjaxError
-                            className="device-jobs-error"
+                            className={css("device-jobs-error")}
                             t={t}
                             error={error}
                         />

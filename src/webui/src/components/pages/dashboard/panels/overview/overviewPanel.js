@@ -69,7 +69,7 @@ export class OverviewPanel extends Component {
                                 label={t("dashboard.panels.overview.critical")}
                                 svg={svgs.critical}
                                 size="medium"
-                                svgClassName="severity-critical"
+                                svgClassName={css("severity-critical")}
                             />
                         )}
                         {alerting.jobState === "Running" && (
@@ -79,7 +79,7 @@ export class OverviewPanel extends Component {
                                 label={t("dashboard.panels.overview.warnings")}
                                 svg={svgs.warning}
                                 size="medium"
-                                svgClassName="severity-warning"
+                                svgClassName={css("severity-warning")}
                             />
                         )}
                         <StatProperty

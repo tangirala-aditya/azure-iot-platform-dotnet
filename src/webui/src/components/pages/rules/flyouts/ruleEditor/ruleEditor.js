@@ -32,9 +32,10 @@ import {
     toSinglePropertyDiagnosticsModel,
 } from "services/models";
 import { RuleSummaryContainer as RuleSummary } from "../ruleSummary";
-
-import "./ruleEditor.scss";
 import { map, mergeMap } from "rxjs/operators";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./ruleEditor.module.scss"));
 
 const Section = Flyout.Section;
 
@@ -602,8 +603,11 @@ export class RuleEditor extends LinkedComponent {
             }));
 
         return (
-            <form onSubmit={this.apply} className="new-rule-flyout-container">
-                <Section.Container className="rule-property-container">
+            <form
+                onSubmit={this.apply}
+                className={css("new-rule-flyout-container")}
+            >
+                <Section.Container className={css("rule-property-container")}>
                     <Section.Content>
                         <FormGroup>
                             <FormLabel isRequired="true">
@@ -788,7 +792,7 @@ export class RuleEditor extends LinkedComponent {
                                     </FormGroup>
                                     {conditionLinks.length > 1 && (
                                         <Btn
-                                            className="padded-top"
+                                            className={css("padded-top")}
                                             svg={svgs.trash}
                                             onClick={this.deleteCondition(idx)}
                                         >
@@ -867,7 +871,7 @@ export class RuleEditor extends LinkedComponent {
                                         "rules.flyouts.ruleEditor.actions.action"
                                     )}
                                 </Section.Header>
-                                <div className="email-toggle-container">
+                                <div className={css("email-toggle-container")}>
                                     <Toggle
                                         name="rules-flyouts-enable-action"
                                         attr={{
@@ -893,7 +897,11 @@ export class RuleEditor extends LinkedComponent {
                                             <Section.Content
                                                 key={formData.actions[idx].key}
                                             >
-                                                <p className="padded-top">
+                                                <p
+                                                    className={css(
+                                                        "padded-top"
+                                                    )}
+                                                >
                                                     {t(
                                                         "rules.flyouts.ruleEditor.actions.emailAddresses"
                                                     )}
@@ -924,7 +932,11 @@ export class RuleEditor extends LinkedComponent {
                                                         "rules.flyouts.ruleEditor.actions.deleteEmail"
                                                     )}
                                                 />
-                                                <p className="padded-top">
+                                                <p
+                                                    className={css(
+                                                        "padded-top"
+                                                    )}
+                                                >
                                                     {t(
                                                         "rules.flyouts.ruleEditor.actions.emailSubject"
                                                     )}
@@ -944,7 +956,11 @@ export class RuleEditor extends LinkedComponent {
                                                         }
                                                     />
                                                 </FormGroup>
-                                                <p className="padded-top">
+                                                <p
+                                                    className={css(
+                                                        "padded-top"
+                                                    )}
+                                                >
                                                     {t(
                                                         "rules.flyouts.ruleEditor.actions.emailComments"
                                                     )}
@@ -1010,7 +1026,7 @@ export class RuleEditor extends LinkedComponent {
 
                 {error && (
                     <AjaxError
-                        className="rule-editor-error"
+                        className={css("rule-editor-error")}
                         t={t}
                         error={error}
                     />

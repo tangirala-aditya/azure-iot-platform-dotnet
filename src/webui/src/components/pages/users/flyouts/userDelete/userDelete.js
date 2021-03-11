@@ -21,9 +21,10 @@ import {
     SummarySection,
     Svg,
 } from "components/shared";
-
-import "./userDelete.scss";
 import { map, mergeMap } from "rxjs/operators";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./userDelete.module.scss"));
 
 export class UserDelete extends Component {
     constructor(props) {
@@ -162,13 +163,13 @@ export class UserDelete extends Component {
             >
                 <Protected permission={permissions.deleteDevices}>
                     <form
-                        className="device-delete-container"
+                        className={css("user-delete-container")}
                         onSubmit={this.deleteUsers}
                     >
-                        <div className="device-delete-header">
+                        <div className={css("user-delete-header")}>
                             {t("users.flyouts.delete.header")}
                         </div>
-                        <div className="device-delete-descr">
+                        <div className={css("user-delete-descr")}>
                             {t("users.flyouts.delete.description")}
                         </div>
                         <Toggle
@@ -195,7 +196,7 @@ export class UserDelete extends Component {
                                 {this.state.isPending && <Indicator />}
                                 {completedSuccessfully && (
                                     <Svg
-                                        className="summary-icon"
+                                        className={css("summary-icon")}
                                         src={svgs.apply}
                                     />
                                 )}
@@ -204,7 +205,7 @@ export class UserDelete extends Component {
 
                         {error && (
                             <AjaxError
-                                className="device-delete-error"
+                                className={css("user-delete-error")}
                                 t={t}
                                 error={error}
                             />

@@ -69,7 +69,7 @@
     }
   }
 
-  .download-deviceupload > .svg-container:global(.btn-icon){
+  .download-deviceupload > :global(.svg-container):global(.btn-icon){
     transform: rotate(180deg);
   }
 }

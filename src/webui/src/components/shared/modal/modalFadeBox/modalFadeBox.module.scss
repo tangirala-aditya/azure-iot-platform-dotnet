@@ -3,7 +3,7 @@
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
-.modal-container {
+:global(.modal-container) {
   .modal-fade-box {
     position: absolute;
     width: 100%;

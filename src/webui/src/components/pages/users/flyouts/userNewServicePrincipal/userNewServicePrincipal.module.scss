@@ -14,22 +14,24 @@
      }
   }
 
-  .form-group-label { @include rem-fallback(font-size, 16px); }
+  :global(.form-group-label) { @include rem-fallback(font-size, 16px); }
 
   .user-count { @include rem-fallback(margin-left, 20px); }
 
-  .user-id.form-control { @include rem-fallback(margin, -4px, 0px, 8px, 0px); }
+  :global {
+    .user-id.form-control { @include rem-fallback(margin, -4px, 0px, 8px, 0px); }
+  }
 
-  .radio-container {
+  :global(.radio-container) {
     margin-top: 0px;
 
-    .form-group-label { @include rem-fallback(font-size, 14px); }
+    :global(.form-group-label) { @include rem-fallback(font-size, 14px); }
   }
 
   .sub-settings {
     @include rem-fallback(margin, 0px 44px);
 
-    .form-group-label {
+    :global(.form-group-label) {
       @include rem-fallback(font-size, 14px);
       @include rem-fallback(margin, 4px, 0px);
     }
@@ -45,7 +47,7 @@
 
   .wait-indicator { @include rem-fallback(margin-left, 8px); }
 
-  :global(.summary-icon) svg {
+  .summary-icon svg {
     @include square-px-rem(16px);
     @include rem-fallback(margin-left, 8px);
   }
@@ -83,12 +85,12 @@
   @include themify($themes) {
     color: themed('colorContentTextDim');
 
-    .radio-container .form-group-label,
-    .sub-settings .form-group-label { color: themed('colorContentTextDim'); }
+    :global(.radio-container) :global(.form-group-label),
+    .sub-settings :global(.form-group-label) { color: themed('colorContentTextDim'); }
 
     .users-new-error { border-color: themed('colorAlert'); }
 
-    :global(.summary-icon) svg { fill: themed('colorContentText'); }
+    .summary-icon svg { fill: themed('colorContentText'); }
 
     .user-detail {
       :global(.section-header) { color: themed('colorContentText'); }

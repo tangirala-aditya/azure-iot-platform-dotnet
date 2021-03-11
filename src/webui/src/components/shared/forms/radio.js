@@ -18,6 +18,7 @@ export class Radio extends Component {
     constructor(props) {
         super(props);
         this.formGroupId = `radioInputId${radioInputCnt++}`;
+        this.radioInputElement = React.createRef();
     }
 
     onChange = (evt) => {
@@ -78,15 +79,12 @@ export class Radio extends Component {
                         type="radio"
                         disabled={disabled}
                         id={id || this.formGroupId}
-                        ref="radioInputElement"
+                        ref={this.radioInputElement}
                     />
                     <Svg
                         src={svgs.radioSelected}
-                        className={joinClasses(
-                            css("radio-icon"),
-                            disabled ? css("disabled") : ""
-                        )}
-                        onClick={() => this.refs.radioInputElement.click()}
+                        className={css("radio-icon", { disabled: disabled })}
+                        onClick={() => this.radioInputElement.current.click()}
                     />
                 </div>
                 <div className={css("input-contents")}>{childrenWithProps}</div>

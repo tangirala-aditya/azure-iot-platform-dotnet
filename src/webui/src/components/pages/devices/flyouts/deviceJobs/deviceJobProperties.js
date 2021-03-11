@@ -35,6 +35,8 @@ import {
     Svg,
 } from "components/shared";
 import { distinct, filter, map, mergeMap, reduce } from "rxjs/operators";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deviceJobs.module.scss"));
 
 update.extend("$autoArray", (val, obj) => update(obj || [], val));
 
@@ -446,7 +448,7 @@ export class DeviceJobProperties extends LinkedComponent {
 
         return (
             <form onSubmit={this.apply}>
-                <FormSection className="device-job-properties-container">
+                <FormSection className={css("device-job-properties-container")}>
                     <SectionHeader>
                         {t("devices.flyouts.jobs.properties.title")}
                     </SectionHeader>
@@ -458,7 +460,7 @@ export class DeviceJobProperties extends LinkedComponent {
                         <FormLabel>
                             {t("devices.flyouts.jobs.jobName")}
                         </FormLabel>
-                        <div className="help-message">
+                        <div className={css("help-message")}>
                             {t("devices.flyouts.jobs.jobNameHelpMessage")}
                         </div>
                         <FormControl
@@ -469,7 +471,7 @@ export class DeviceJobProperties extends LinkedComponent {
                         />
                     </FormGroup>
 
-                    <Grid className="data-grid">
+                    <Grid className={css("data-grid")}>
                         <GridHeader>
                             <Row>
                                 <Cell className="col-2">
@@ -491,7 +493,7 @@ export class DeviceJobProperties extends LinkedComponent {
                         </GridHeader>
                         {Object.keys(commonProperties).length === 0 &&
                             summaryCount === 1 && (
-                                <div className="device-jobs-info">
+                                <div className={css("device-jobs-info")}>
                                     {t(
                                         "devices.flyouts.details.properties.noneExist"
                                     )}
@@ -499,7 +501,7 @@ export class DeviceJobProperties extends LinkedComponent {
                             )}
                         {Object.keys(commonProperties).length === 0 &&
                             summaryCount > 1 && (
-                                <ErrorMsg className="device-jobs-error">
+                                <ErrorMsg className={css("device-jobs-error")}>
                                     {t(
                                         "devices.flyouts.jobs.properties.noneExist"
                                     )}
@@ -526,7 +528,7 @@ export class DeviceJobProperties extends LinkedComponent {
                                                 id={idx}
                                                 className={
                                                     error
-                                                        ? "error-data-row"
+                                                        ? css("error-data-row")
                                                         : ""
                                                 }
                                             >
@@ -535,7 +537,11 @@ export class DeviceJobProperties extends LinkedComponent {
                                                     &nbsp;&nbsp;&nbsp;
                                                 </Cell>
                                                 <Cell className="col-6">
-                                                    <div className="jsonValueDivMaxHeight">
+                                                    <div
+                                                        className={css(
+                                                            "jsonValueDivMaxHeight"
+                                                        )}
+                                                    >
                                                         {isJSON.value && (
                                                             <FormControl
                                                                 className="small"
@@ -585,7 +591,9 @@ export class DeviceJobProperties extends LinkedComponent {
                                                         {isJSON.value &&
                                                             !readOnly.value && (
                                                                 <Btn
-                                                                    className="linkToButton"
+                                                                    className={css(
+                                                                        "linkToButton"
+                                                                    )}
                                                                     svg={
                                                                         svgs.linkTo
                                                                     }
@@ -604,7 +612,11 @@ export class DeviceJobProperties extends LinkedComponent {
                                                 </Cell>
                                             </Row>
                                             {error ? (
-                                                <Row className="error-msg-row">
+                                                <Row
+                                                    className={css(
+                                                        "error-msg-row"
+                                                    )}
+                                                >
                                                     <ErrorMsg>{error}</ErrorMsg>
                                                 </Row>
                                             ) : null}
@@ -624,7 +636,7 @@ export class DeviceJobProperties extends LinkedComponent {
                             {this.state.isPending && <Indicator />}
                             {completedSuccessfully && (
                                 <Svg
-                                    className="summary-icon"
+                                    className={css("summary-icon")}
                                     src={svgs.apply}
                                 />
                             )}
@@ -633,7 +645,7 @@ export class DeviceJobProperties extends LinkedComponent {
 
                     {error && (
                         <AjaxError
-                            className="device-jobs-error"
+                            className={css("device-jobs-error")}
                             t={t}
                             error={error}
                         />

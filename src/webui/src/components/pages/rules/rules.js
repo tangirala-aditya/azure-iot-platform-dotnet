@@ -22,9 +22,10 @@ import { NewRuleFlyout } from "./flyouts";
 import { svgs, getDeviceGroupParam, getTenantIdParam } from "utilities";
 import { toSinglePropertyDiagnosticsModel } from "services/models";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
-
-import "./rules.scss";
 import { IdentityGatewayService } from "services";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./rules.module.scss"));
 
 const closedFlyoutState = {
     openFlyoutName: "",
@@ -197,7 +198,7 @@ export class Rules extends Component {
                     </ContextMenu>
                 )}
                 {alerting.jobState === "Running" && (
-                    <PageContent className="rules-container">
+                    <PageContent className={css("rules-container")}>
                         <PageTitle titleValue={t("rules.title")} />
                         {!!error && <AjaxError t={t} error={error} />}
                         {!error && <RulesGrid {...gridProps} />}

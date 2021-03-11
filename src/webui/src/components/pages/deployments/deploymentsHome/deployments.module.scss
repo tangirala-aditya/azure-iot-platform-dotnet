@@ -5,7 +5,7 @@
 @import 'src/styles/themes';
 
 .deployments-page-container,
-.deployments-details-container {
+:global(.deployments-details-container) {
   display: flex;
   flex-flow: column nowrap;
   padding: $baseContentPadding;

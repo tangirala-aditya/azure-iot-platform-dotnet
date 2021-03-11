@@ -18,7 +18,8 @@ import {
     Svg,
 } from "components/shared";
 
-import "./systemAdminNew.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./systemAdminNew.module.scss"));
 
 export class SystemAdminNew extends LinkedComponent {
     constructor(props) {
@@ -167,11 +168,11 @@ export class SystemAdminNew extends LinkedComponent {
                 }}
             >
                 <form
-                    className="users-new-container"
+                    className={css("users-new-container")}
                     onSubmit={this.addSystemAdmin}
                 >
                     {!changesApplied && (
-                        <div className="users-new-content">
+                        <div className={css("users-new-content")}>
                             <FormGroup>
                                 <FormLabel>
                                     {t("users.flyouts.new.systemAdmin.label")}
@@ -198,7 +199,7 @@ export class SystemAdminNew extends LinkedComponent {
 
                     {error && (
                         <AjaxError
-                            className="users-new-error"
+                            className={css("users-new-error")}
                             t={t}
                             error={error}
                         />
@@ -233,7 +234,7 @@ export class SystemAdminNew extends LinkedComponent {
                                     {this.state.isPending && <Indicator />}
                                     {completedSuccessfully && (
                                         <Svg
-                                            className="summary-icon"
+                                            className={css("summary-icon")}
                                             src={svgs.apply}
                                         />
                                     )}

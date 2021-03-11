@@ -4,14 +4,14 @@
 @import 'src/styles/themes';
 @import 'src/styles/mixins';
 
-.radio-container {
+:global(.radio-container) {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   @include rem-fallback(height, $input-height);
   @include rem-fallback(line-height, $input-height);
 
-  + .radio-container { @include rem-fallback(margin-top, 12px); }
+  + :global(.radio-container) { @include rem-fallback(margin-top, 12px); }
 
   .radio-input-container {
     @include rem-fallback(margin-left, 16px);
@@ -37,17 +37,17 @@
       .radio-icon {
         // Apply special styles to the radio button svg
         svg {
-          .outer-border {
+          :global(.outer-border) {
             stroke: themed('colorInputBorderColor');
             fill: none;
           }
 
-          .inner-circle { fill: none; }
+          :global(.inner-circle) { fill: none; }
         }
 
         &.disabled svg {
-          .inner-circle,
-          .outer-border {
+          :global(.inner-circle),
+          :global(.outer-border) {
             stroke: themed('colorInputBorderColor') !important; /* Important to override hover */
             fill: themed('colorInputBorderColor') !important;
           }
@@ -55,11 +55,11 @@
       }
 
       // Show the center circle when checked
-      > input[type=radio]:checked + .radio-icon svg .inner-circle
+      > input[type=radio]:checked + .radio-icon svg :global(.inner-circle)
       { fill: themed('colorSelectedRadioBtnCenter'); }
 
       // Highlight the radio circle border on hover when not checked
-      > input[type=radio]:not(:checked) + .radio-icon:hover svg .outer-border
+      > input[type=radio]:not(:checked) + .radio-icon:hover svg :global(.outer-border)
       { stroke: themed('colorInputBorderHoverColor'); }
 
     }
@@ -71,7 +71,7 @@
     flex-grow: 1;
     @include rem-fallback(margin-left, 10px);
 
-    > .form-group-label {
+    > :global(.form-group-label) {
       @include rem-font-size(14px);
       // If there is div content after the label, adding some padding above it
       + div { @include rem-fallback(margin-top, 12px); }

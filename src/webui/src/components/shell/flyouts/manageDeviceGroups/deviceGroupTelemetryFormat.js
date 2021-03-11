@@ -22,6 +22,8 @@ import {
 import Flyout from "components/shared/flyout";
 const Section = Flyout.Section;
 update.extend("$autoArray", (val, obj) => update(obj || [], val));
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./manageDeviceGroups.module.scss"));
 
 const initialState = {
         isPending: false,
@@ -159,7 +161,7 @@ export class DeviceGroupTelemetryFormat extends LinkedComponent {
                     {t("deviceGroupsFlyout.format.telemetryFormatHeader")}
                 </Section.Header>
                 <Section.Content>
-                    <Grid className="data-grid">
+                    <Grid className={css("data-grid")}>
                         <GridHeader>
                             <Row>
                                 <Cell className="col-3">
@@ -184,7 +186,7 @@ export class DeviceGroupTelemetryFormat extends LinkedComponent {
                                             <Row
                                                 className={
                                                     error
-                                                        ? "error-data-row"
+                                                        ? css("error-data-row")
                                                         : ""
                                                 }
                                             >
@@ -206,7 +208,9 @@ export class DeviceGroupTelemetryFormat extends LinkedComponent {
                                                 </Cell>
                                                 <Cell className="col-1">
                                                     <Btn
-                                                        className="icon-only-btn"
+                                                        className={css(
+                                                            "icon-only-btn"
+                                                        )}
                                                         svg={svgs.trash}
                                                         onClick={this.deleteTelemetry(
                                                             idx
@@ -215,7 +219,11 @@ export class DeviceGroupTelemetryFormat extends LinkedComponent {
                                                 </Cell>
                                             </Row>
                                             {error ? (
-                                                <Row className="error-msg-row">
+                                                <Row
+                                                    className={css(
+                                                        "error-msg-row"
+                                                    )}
+                                                >
                                                     <ErrorMsg>{error}</ErrorMsg>
                                                 </Row>
                                             ) : null}
@@ -223,7 +231,7 @@ export class DeviceGroupTelemetryFormat extends LinkedComponent {
                                     )
                                 )}
 
-                            <Row className="action-row">
+                            <Row className={css("action-row")}>
                                 <Btn
                                     svg={svgs.plus}
                                     onClick={this.addTelemetry}
@@ -236,7 +244,7 @@ export class DeviceGroupTelemetryFormat extends LinkedComponent {
 
                     {error && (
                         <AjaxError
-                            className="device-jobs-error"
+                            className={css("device-jobs-error")}
                             t={t}
                             error={error}
                         />

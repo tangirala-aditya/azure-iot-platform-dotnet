@@ -2,7 +2,7 @@
 
 @import 'src/styles/mixins';
 
-.btn-toolbar {
+:global(.btn-toolbar) {
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-end;

@@ -58,7 +58,7 @@ $doublePadding: $baseContentPadding * 2;
       :global(.ag-icon) { cursor: auto; }
     }
 
-    &.movable-columns :global(.ag-header-cell):not(.checkbox-column) { cursor: move; }
+    &.movable-columns :global(.ag-header-cell):not(:global(.checkbox-column)) { cursor: move; }
 
     :global(.ag-font-style) {
       user-select: initial;
@@ -74,10 +74,6 @@ $doublePadding: $baseContentPadding * 2;
         outline: none;
         border: none;
         @include rem-fallback(line-height, $rowLineHeight);
-
-        &.first-child-column {
-          @include rem-fallback(border-left, $selectedRowBorderWidth solid transparent);
-        }
       }
 
     }
@@ -168,12 +164,12 @@ $doublePadding: $baseContentPadding * 2;
   justify-content: flex-end;
 }
 
-.btn.expand-columns {
+:global(.btn).expand-columns {
   @include rem-fallback(width, 15px);
   @include rem-fallback(margin, 10px, 0px, 10px, 0px);
 
   @include themify($themes) {
-    .btn:hover {
+    :global(.btn):hover {
       background-color: themed('color-bg-content');
     }
   }

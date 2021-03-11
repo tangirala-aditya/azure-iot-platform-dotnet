@@ -3,7 +3,7 @@
 @import 'src/styles/themes';
 @import 'src/styles/mixins';
 
-.btn.rule-status-btn {
+:global(.btn).rule-status-btn {
   :global(.btn-icon) svg {
     fill: transparent;
     @include square-px-rem(24px);
@@ -12,9 +12,9 @@
 
 
   @include themify($themes) {
-    .cls-1 { stroke: themed('colorBtnSvgFillActive'); }
+    :global(.cls-1) { stroke: themed('colorBtnSvgFillActive'); }
 
-    .cls-2 {
+    :global(.cls-2) {
       fill: themed('colorContextMenuBtnSvgFill');
       stroke: themed('colorContextMenuBtnSvgFill');
     }
@@ -23,9 +23,9 @@
   }
 }
 
-.btn.enabled {
+:global(.btn).enabled {
   @include themify($themes) {
-    .cls-1 { stroke: themed('colorEnableToggleBackground'); }
+    :global(.cls-1) { stroke: themed('colorEnableToggleBackground'); }
     svg { fill: themed('colorEnableToggleBackground'); }
   }
 }

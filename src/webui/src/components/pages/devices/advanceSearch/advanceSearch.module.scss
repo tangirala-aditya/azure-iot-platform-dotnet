@@ -24,7 +24,7 @@
 
   .actions-button { @include rem-fallback(min-width, 110px); }
 
-  .btn-toolbar {
+  :global(.btn-toolbar) {
     justify-content: flex-start;
     @include rem-fallback(padding-top, 0px);
     @include rem-fallback(padding-bottom, 5px);
@@ -39,17 +39,25 @@
   @include themify($themes) {
     :global(.property-grid-container) :global(.grid-header) :global(.cell) { color: themed('colorContentTextDim'); }
   }
+
+  .cancel-right-div{
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 50%; 
+    height: 3%;
+    margin-top: 1.5%;
+  }
 }
 .width-70 {
   width: 70% !important;
 }
 
-.download-deviceQueryReport > .svg-container {
+.download-deviceQueryReport > :global(.svg-container) {
   &:global(.btn-icon){
     transform: rotate(180deg) !important;
   }
 }
 
-.btn:disabled :global(.btn-icon) {
+:global(.btn):disabled :global(.btn-icon) {
   display: inline-flex !important; 
 }

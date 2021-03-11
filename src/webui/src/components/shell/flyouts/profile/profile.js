@@ -15,14 +15,14 @@ import {
 } from "components/shared";
 import Flyout from "components/shared/flyout";
 import { Policies } from "utilities";
+import jwt_decode from "jwt-decode";
 
 import TenantGrid from "./tenantGrid";
 // import "./profile.scss";
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./profile.module.scss"));
 
-const Section = Flyout.Section,
-    jwt_decode = require("jwt-decode");
+const Section = Flyout.Section;
 export const Profile = (props) => {
     const {
             t,

@@ -3,40 +3,32 @@
 @import 'src/styles/themes';
 @import 'src/styles/mixins';
 
-.new-rule-flyout-container {
+.disable-rule-flyout-container {
 
   .rule-property-container {
     border: none;
     @include rem-fallback(margin-top, 20px);
   }
 
-  .padded-top {
+  .padded-top-bottom {
     margin-left: 0px;
-    padding-left: 0px;
-    @include rem-fallback(margin-top, 24px);
+    @include rem-fallback(padding, 24px, 0px);
   }
 
-  .rule-editor-error {
+  .rule-status-error {
     border: 1px transparent solid;
     @include rem-fallback(margin, 12px, 0px);
     @include rem-fallback(padding, 16px);
   }
 
-  :global(.summary-icon) svg {
+  .summary-icon svg {
     @include square-px-rem(16px);
     @include rem-fallback(margin-left, 8px);
   }
 
-  .email-toggle-container {
-    display: flex;
-  }
-
   @include themify($themes) {
-    .rule-editor-error { border-color: themed('colorAlert'); }
+    .rule-status-error { border-color: themed('colorAlert'); }
 
-    :global(.summary-icon) svg { fill: themed('colorContentText'); }
-
-    input.form-control,
-    textarea.form-control { color: themed('colorContentText'); }
+    .summary-icon svg { fill: themed('colorContentText'); }
   }
 }

@@ -18,8 +18,6 @@ import {
     IdentityGatewayService,
 } from "services";
 import { toDiagnosticsModel } from "services/models";
-
-import "./maintenance.scss";
 import { map, mergeMap, toArray } from "rxjs/operators";
 
 const alertSchema = new schema.Entity("alerts"),

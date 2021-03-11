@@ -41,7 +41,7 @@
         @include rem-fallback(padding-bottom, 24px);
     }
 
-    :global(.summary-icon) svg {
+    .summary-icon svg {
         @include square-px-rem(16px);
         @include rem-fallback(margin-left, 8px);
     }
@@ -55,7 +55,7 @@
         }
 
         .new-package-descr svg,
-        :global(.summary-icon) svg {
+        .summary-icon svg {
             fill: themed("colorContentText");
         }
 
@@ -65,7 +65,9 @@
     }
 }
 
-.theme-mmm .form-control-container input.form-control:disabled,
-.theme-mmm .form-control-container textarea.form-control:disabled {
-    color: #a6a6a6 !important;
+:global {
+    .theme-mmm .form-control-container input.form-control:disabled,
+    .theme-mmm .form-control-container textarea.form-control:disabled {
+        color: #a6a6a6 !important;
+    }
 }

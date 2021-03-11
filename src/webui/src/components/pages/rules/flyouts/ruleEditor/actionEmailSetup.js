@@ -12,7 +12,8 @@ import {
     ThemedSvgContainer,
 } from "components/shared";
 
-import "./actionEmailSetup.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./actionEmailSetup.module.scss"));
 
 export class ActionEmailSetup extends Component {
     constructor(props) {
@@ -73,11 +74,14 @@ export class ActionEmailSetup extends Component {
         // as if it was not cannot verify whether or not setup is complete.
         // Also only show verification of setup if setup button was clicked.
         return applicationPermissionsAssigned ? (
-            <div className="action-email-setup-container">
+            <div className={css("action-email-setup-container")}>
                 {showPending && (
-                    <div className="action-email-setup">
-                        <Indicator className="action-indicator" size="small" />
-                        <div className="info-message">
+                    <div className={css("action-email-setup")}>
+                        <Indicator
+                            className={css("action-indicator")}
+                            size="small"
+                        />
+                        <div className={css("info-message")}>
                             {t(
                                 "rules.flyouts.ruleEditor.actions.checkingEmailSetup"
                             )}
@@ -85,7 +89,7 @@ export class ActionEmailSetup extends Component {
                     </div>
                 )}
                 {showError && (
-                    <div className="action-email-setup">
+                    <div className={css("action-email-setup")}>
                         <ErrorMsg>
                             <Trans
                                 i18nKey={
@@ -107,12 +111,12 @@ export class ActionEmailSetup extends Component {
                     </div>
                 )}
                 {showSetupLink && (
-                    <div className="action-email-setup">
+                    <div className={css("action-email-setup")}>
                         <ThemedSvgContainer
-                            className="icon"
+                            className={css("icon")}
                             paths={themedPaths.infoBubble}
                         />
-                        <div className="info-message">
+                        <div className={css("info-message")}>
                             <Trans
                                 i18nKey={
                                     "rules.flyouts.ruleEditor.actions.setupEmail"
@@ -134,12 +138,12 @@ export class ActionEmailSetup extends Component {
                     </div>
                 )}
                 {showSetupIncomplete && (
-                    <div className="action-email-setup">
+                    <div className={css("action-email-setup")}>
                         <ThemedSvgContainer
-                            className="icon"
+                            className={css("icon")}
                             paths={themedPaths.infoBubble}
                         />
-                        <div className="info-message">
+                        <div className={css("info-message")}>
                             <Trans
                                 i18nKey={
                                     "rules.flyouts.ruleEditor.actions.setupEmailTimeout"
@@ -160,12 +164,12 @@ export class ActionEmailSetup extends Component {
                     </div>
                 )}
                 {showSetupComplete && (
-                    <div className="action-email-setup">
+                    <div className={css("action-email-setup")}>
                         <ThemedSvgContainer
-                            className="icon"
+                            className={css("icon")}
                             paths={themedPaths.checkmarkBubble}
                         />
-                        <div className="info-message">
+                        <div className={css("info-message")}>
                             {t(
                                 "rules.flyouts.ruleEditor.actions.emailSetupConfirmed"
                             )}

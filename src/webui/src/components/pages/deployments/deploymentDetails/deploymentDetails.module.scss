@@ -4,7 +4,7 @@
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
-.deployments-details-container {
+:global(.deployments-details-container) {
   display: flex;
   flex-flow: column nowrap;
   flex-grow: 1;
@@ -78,7 +78,7 @@
   margin-top: 13px !important;
 }
 
-.download-deploymentStatus > .svg-container {
+.download-deploymentStatus > :global(.svg-container) {
   &:global(.btn-icon){
     transform: rotate(180deg) !important;
   }

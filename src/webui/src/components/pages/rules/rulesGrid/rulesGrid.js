@@ -27,7 +27,8 @@ import {
     DeleteRuleContainer,
 } from "../flyouts";
 
-import "./rulesGrid.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./rulesGrid.module.scss"));
 
 const closedFlyoutState = {
     openFlyoutName: undefined,
@@ -60,7 +61,7 @@ export class RulesGrid extends Component {
             disable: (
                 <Protected key="disable" permission={permissions.updateRules}>
                     <Btn
-                        className="rule-status-btn"
+                        className={css("rule-status-btn")}
                         svg={svgs.disableToggle}
                         onClick={this.openStatusFlyout}
                     >
@@ -71,7 +72,7 @@ export class RulesGrid extends Component {
             enable: (
                 <Protected key="enable" permission={permissions.updateRules}>
                     <Btn
-                        className="rule-status-btn enabled"
+                        className={css("rule-status-btn", "enabled")}
                         svg={svgs.enableToggle}
                         onClick={this.openStatusFlyout}
                     >
@@ -85,7 +86,7 @@ export class RulesGrid extends Component {
                     permission={permissions.updateRules}
                 >
                     <Btn
-                        className="rule-status-btn"
+                        className={css("rule-status-btn")}
                         svg={svgs.changeStatus}
                         onClick={this.openStatusFlyout}
                     >

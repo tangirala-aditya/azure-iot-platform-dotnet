@@ -28,6 +28,8 @@ import {
     Svg,
 } from "components/shared";
 import { map, reduce } from "rxjs/operators";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deviceJobs.module.scss"));
 
 const isAlphaNumericRegex = /^[a-zA-Z0-9]*$/,
     nonAlphaNumeric = (x) => !x.match(isAlphaNumericRegex),
@@ -199,7 +201,7 @@ export class DeviceJobMethods extends LinkedComponent {
 
         return (
             <form onSubmit={this.apply}>
-                <FormSection className="device-job-Methods-container">
+                <FormSection className={css("device-job-Methods-container")}>
                     <SectionHeader>
                         {t("devices.flyouts.jobs.methods.title")}
                     </SectionHeader>
@@ -242,7 +244,7 @@ export class DeviceJobMethods extends LinkedComponent {
                         <FormLabel>
                             {t("devices.flyouts.jobs.jobName")}
                         </FormLabel>
-                        <div className="help-message">
+                        <div className={css("help-message")}>
                             {t("devices.flyouts.jobs.jobNameHelpMessage")}
                         </div>
                         <FormControl
@@ -257,7 +259,7 @@ export class DeviceJobMethods extends LinkedComponent {
                         <FormLabel>
                             {t("devices.flyouts.jobs.methods.jsonPayload")}
                         </FormLabel>
-                        <div className="help-message">
+                        <div className={css("help-message")}>
                             {t(
                                 "devices.flyouts.jobs.methods.jsonPayloadMessage"
                             )}
@@ -280,7 +282,7 @@ export class DeviceJobMethods extends LinkedComponent {
                             {this.state.isPending && <Indicator />}
                             {completedSuccessfully && (
                                 <Svg
-                                    className="summary-icon"
+                                    className={css("summary-icon")}
                                     src={svgs.apply}
                                 />
                             )}
@@ -289,7 +291,7 @@ export class DeviceJobMethods extends LinkedComponent {
 
                     {error && (
                         <AjaxError
-                            className="device-jobs-error"
+                            className={css("device-jobs-error")}
                             t={t}
                             error={error}
                         />

@@ -24,7 +24,7 @@
 
   .actions-button { @include rem-fallback(min-width, 110px); }
 
-  .btn-toolbar {
+  :global(.btn-toolbar) {
     justify-content: flex-end;
     @include rem-fallback(padding-top, 8px);
   }
@@ -40,7 +40,7 @@
       border-color: themed('colorAlert');
     }
 
-    :global(.summary-icon) svg { fill: themed('colorContentText'); }
+    .summary-icon svg { fill: themed('colorContentText'); }
   }
 
   .device-group-delete-header { @include rem-fallback(padding, 12px, 0px); }
@@ -55,7 +55,7 @@
 
   .wait-indicator { @include rem-fallback(margin-left, 8px); }
 
-  :global(.summary-icon) svg {
+  .summary-icon svg {
     @include square-px-rem(16px);
     @include rem-fallback(margin-left, 8px);
   }
@@ -69,7 +69,7 @@
       border-color: themed('colorAlert');
     }
 
-    :global(.summary-icon) svg { fill: themed('colorContentText'); }
+    .summary-icon svg { fill: themed('colorContentText'); }
   }
 
   .device-group {

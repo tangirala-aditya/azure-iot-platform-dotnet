@@ -14,7 +14,8 @@ import Flyout from "components/shared/flyout";
 import { ruleCalculations, getRuleTimePeriodLabel } from "services/models";
 import { RuleSummaryContainer as RuleSummary } from "../ruleSummary";
 
-import "./ruleViewer.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./ruleViewer.module.scss"));
 
 const Section = Flyout.Section;
 
@@ -47,32 +48,34 @@ export class RuleViewer extends Component {
             );
 
         return (
-            <div className="view-rule-flyout-container">
+            <div className={css("view-rule-flyout-container")}>
                 <Section.Container>
                     <Section.Content>
-                        <div className="rule-name">{rule.name}</div>
-                        <div className="rule-prop-value">
+                        <div className={css("rule-name")}>{rule.name}</div>
+                        <div className={css("rule-prop-value")}>
                             {rule.description}
                         </div>
 
-                        <div className="rule-prop-label">
+                        <div className={css("rule-prop-label")}>
                             {t("rules.flyouts.ruleEditor.deviceGroup")}
                         </div>
-                        <div className="rule-prop-value">
+                        <div className={css("rule-prop-value")}>
                             {this.getDeviceGroupName(rule.groupId)}
                         </div>
 
-                        <div className="rule-prop-label">
+                        <div className={css("rule-prop-label")}>
                             {t("rules.flyouts.ruleEditor.calculation")}
                         </div>
-                        <div className="rule-prop-value">{calculation}</div>
+                        <div className={css("rule-prop-value")}>
+                            {calculation}
+                        </div>
 
                         {calculation === ruleCalculations[0] && (
                             <div>
-                                <div className="rule-prop-label">
+                                <div className={css("rule-prop-label")}>
                                     {t("rules.flyouts.ruleEditor.timePeriod")}
                                 </div>
-                                <div className="rule-prop-value">
+                                <div className={css("rule-prop-value")}>
                                     {getRuleTimePeriodLabel(rule.timePeriod)}
                                 </div>
                             </div>
@@ -131,33 +134,33 @@ export class RuleViewer extends Component {
                 {rule.actions && rule.actions.length > 0 && (
                     <Section.Container collapsable={false}>
                         <Section.Content>
-                            <div className="rule-action-title">
+                            <div className={css("rule-action-title")}>
                                 {t("rules.flyouts.ruleEditor.actions.action")}
                             </div>
-                            <div className="rule-prop-label">
+                            <div className={css("rule-prop-label")}>
                                 {t(
                                     "rules.flyouts.ruleEditor.actions.emailAddresses"
                                 )}
                             </div>
-                            <div className="rule-prop-value">
+                            <div className={css("rule-prop-value")}>
                                 {rule.actions[0].parameters.recipients.join(
                                     ", "
                                 )}
                             </div>
-                            <div className="rule-prop-label">
+                            <div className={css("rule-prop-label")}>
                                 {t(
                                     "rules.flyouts.ruleEditor.actions.emailSubject"
                                 )}
                             </div>
-                            <div className="rule-prop-value">
+                            <div className={css("rule-prop-value")}>
                                 {rule.actions[0].parameters.subject}
                             </div>
-                            <div className="rule-prop-label">
+                            <div className={css("rule-prop-label")}>
                                 {t(
                                     "rules.flyouts.ruleEditor.actions.emailComments"
                                 )}
                             </div>
-                            <div className="rule-prop-value">
+                            <div className={css("rule-prop-value")}>
                                 {rule.actions[0].parameters.notes}
                             </div>
                         </Section.Content>
@@ -166,20 +169,20 @@ export class RuleViewer extends Component {
 
                 <Section.Container>
                     <Section.Content>
-                        <div className="rule-prop-label">
+                        <div className={css("rule-prop-label")}>
                             {t("rules.flyouts.ruleEditor.severityLevel")}
                         </div>
-                        <div className="rule-prop-value">
+                        <div className={css("rule-prop-value")}>
                             <SeverityRenderer
                                 value={rule.severity}
                                 context={{ t }}
                             />
                         </div>
 
-                        <div className="rule-prop-label">
+                        <div className={css("rule-prop-label")}>
                             {t("rules.flyouts.ruleEditor.ruleStatus")}
                         </div>
-                        <div className="rule-prop-value">
+                        <div className={css("rule-prop-value")}>
                             {rule.enabled
                                 ? t("rules.flyouts.ruleEditor.ruleEnabled")
                                 : t("rules.flyouts.ruleEditor.ruleDisabled")}

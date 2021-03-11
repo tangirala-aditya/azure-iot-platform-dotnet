@@ -39,10 +39,11 @@ import {
     Svg,
 } from "components/shared";
 
-import "./packageNew.scss";
 import { ConfigService } from "services";
 import { dataURLtoFile } from "utilities";
 import uuid from "uuid/v4";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./packageNew.module.scss"));
 
 const fileInputAccept = ".json,application/json",
     firmwareFileInputAccept =
@@ -564,12 +565,15 @@ export class PackageNew extends LinkedComponent {
                     this.expandFlyout();
                 }}
             >
-                <div className="new-package-content">
-                    <form className="new-package-form" onSubmit={this.apply}>
-                        <div className="new-package-header">
+                <div className={css("new-package-content")}>
+                    <form
+                        className={css("new-package-form")}
+                        onSubmit={this.apply}
+                    >
+                        <div className={css("new-package-header")}>
                             {t("packages.flyouts.new.header")}
                         </div>
-                        <div className="new-package-descr">
+                        <div className={css("new-package-descr")}>
                             {t("packages.flyouts.new.description")}
                         </div>
 
@@ -596,7 +600,11 @@ export class PackageNew extends LinkedComponent {
                                 />
                             )}
                             {completedSuccessfully && (
-                                <FormLabel className="new-package-success-labels">
+                                <FormLabel
+                                    className={css(
+                                        "new-package-success-labels"
+                                    )}
+                                >
                                     {packageType}
                                 </FormLabel>
                             )}
@@ -629,14 +637,20 @@ export class PackageNew extends LinkedComponent {
                                     /** Displays an error message if one occurs while fetching configTypes. */
                                     configTypesError && (
                                         <AjaxError
-                                            className="new-package-flyout-error"
+                                            className={css(
+                                                "new-package-flyout-error"
+                                            )}
                                             t={t}
                                             error={configTypesError}
                                         />
                                     )
                                 }
                                 {completedSuccessfully && (
-                                    <FormLabel className="new-package-success-labels">
+                                    <FormLabel
+                                        className={css(
+                                            "new-package-success-labels"
+                                        )}
+                                    >
                                         {configType}
                                     </FormLabel>
                                 )}
@@ -662,10 +676,16 @@ export class PackageNew extends LinkedComponent {
                         {!completedSuccessfully &&
                             ((configType && configType !== "Firmware") ||
                                 packageType === "EdgeManifest") && (
-                                <div className="new-package-upload-container">
+                                <div
+                                    className={css(
+                                        "new-package-upload-container"
+                                    )}
+                                >
                                     <label
                                         htmlFor="hidden-input-id"
-                                        className="new-package-browse-click"
+                                        className={css(
+                                            "new-package-browse-click"
+                                        )}
                                     >
                                         <span
                                             role="button"
@@ -683,7 +703,9 @@ export class PackageNew extends LinkedComponent {
                                         ref={(input) =>
                                             (this.inputElement = input)
                                         }
-                                        className="new-package-hidden-input"
+                                        className={css(
+                                            "new-package-hidden-input"
+                                        )}
                                         onChange={this.onFileSelected}
                                         disabled={uploadedFirmwareSuccessfully}
                                     />
@@ -693,10 +715,16 @@ export class PackageNew extends LinkedComponent {
                         {!completedSuccessfully && configType === "Firmware" && (
                             <div>
                                 {!uploadedFirmwareSuccessfully && (
-                                    <div className="new-package-upload-container">
+                                    <div
+                                        className={css(
+                                            "new-package-upload-container"
+                                        )}
+                                    >
                                         <label
                                             htmlFor="hidden-input-id"
-                                            className="new-package-browse-click"
+                                            className={css(
+                                                "new-package-browse-click"
+                                            )}
                                         >
                                             <span
                                                 role="button"
@@ -716,7 +744,9 @@ export class PackageNew extends LinkedComponent {
                                             ref={(input) =>
                                                 (this.inputElement = input)
                                             }
-                                            className="new-package-hidden-input"
+                                            className={css(
+                                                "new-package-hidden-input"
+                                            )}
                                             onChange={
                                                 this.onFirmwareFileSelected
                                             }
@@ -750,7 +780,11 @@ export class PackageNew extends LinkedComponent {
                                     />
                                 )}
                                 {completedSuccessfully && (
-                                    <FormLabel className="new-package-success-labels">
+                                    <FormLabel
+                                        className={css(
+                                            "new-package-success-labels"
+                                        )}
+                                    >
                                         {packageName}
                                     </FormLabel>
                                 )}
@@ -778,7 +812,11 @@ export class PackageNew extends LinkedComponent {
                                         />
                                     )}
                                     {completedSuccessfully && (
-                                        <FormLabel className="new-package-success-labels">
+                                        <FormLabel
+                                            className={css(
+                                                "new-package-success-labels"
+                                            )}
+                                        >
                                             {packageVersion}
                                         </FormLabel>
                                     )}
@@ -819,7 +857,7 @@ export class PackageNew extends LinkedComponent {
                             ></PillGroup>
                         </FormGroup>
 
-                        <SummarySection className="new-package-summary">
+                        <SummarySection className={css("new-package-summary")}>
                             <SummaryBody>
                                 {packageFile &&
                                     (configType !== "Firmware" ||
@@ -836,18 +874,22 @@ export class PackageNew extends LinkedComponent {
                                 {isPending && <Indicator />}
                                 {completedSuccessfully && (
                                     <Svg
-                                        className="summary-icon"
+                                        className={css("summary-icon")}
                                         src={svgs.apply}
                                     />
                                 )}
                             </SummaryBody>
                             {packageFile && (
-                                <div className="new-package-file-name">
+                                <div className={css("new-package-file-name")}>
                                     {packageFile.name}
                                 </div>
                             )}
                             {completedSuccessfully && (
-                                <div className="new-package-deployment-text">
+                                <div
+                                    className={css(
+                                        "new-package-deployment-text"
+                                    )}
+                                >
                                     <Trans
                                         i18nKey={
                                             "packages.flyouts.new.deploymentText"
@@ -873,7 +915,9 @@ export class PackageNew extends LinkedComponent {
                                 /** Displays an error message if one occurs while applying changes. */
                                 error && (
                                     <AjaxError
-                                        className="new-package-flyout-error"
+                                        className={css(
+                                            "new-package-flyout-error"
+                                        )}
                                         t={t}
                                         error={error}
                                     />
@@ -881,7 +925,7 @@ export class PackageNew extends LinkedComponent {
                             }
                             {fileError && (
                                 <AjaxError
-                                    className="new-firmware-flyout-error"
+                                    className={css("new-firmware-flyout-error")}
                                     t={t}
                                     error={fileError}
                                 />

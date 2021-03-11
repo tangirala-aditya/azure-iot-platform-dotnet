@@ -19,7 +19,8 @@ import {
     Svg,
 } from "components/shared";
 
-import "./exampleFlyout.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./exampleFlyout.module.scss"));
 
 export class ExampleFlyout extends Component {
     constructor(props) {
@@ -121,19 +122,19 @@ export class ExampleFlyout extends Component {
                  * The following is a simple empty form with buttons to do an action or close the flyout.
                  * */}
                 <form
-                    className="example-flyout-container"
+                    className={css("example-flyout-container")}
                     onSubmit={this.apply}
                 >
-                    <div className="example-flyout-header">
+                    <div className={css("example-flyout-header")}>
                         {t("walkthrough.pageWithFlyout.flyouts.example.header")}
                     </div>
-                    <div className="example-flyout-descr">
+                    <div className={css("example-flyout-descr")}>
                         {t(
                             "walkthrough.pageWithFlyout.flyouts.example.description"
                         )}
                     </div>
 
-                    <div className="form-placeholder">
+                    <div className={css("form-placeholder")}>
                         {t(
                             "walkthrough.pageWithFlyout.flyouts.example.insertFormHere"
                         )}
@@ -152,7 +153,7 @@ export class ExampleFlyout extends Component {
                             {this.state.isPending && <Indicator />}
                             {completedSuccessfully && (
                                 <Svg
-                                    className="summary-icon"
+                                    className={css("summary-icon")}
                                     src={svgs.apply}
                                 />
                             )}
@@ -162,7 +163,7 @@ export class ExampleFlyout extends Component {
                     {/** Displays an error message if one occurs while applying changes. */}
                     {error && (
                         <AjaxError
-                            className="example-flyout-error"
+                            className={css("example-flyout-error")}
                             t={t}
                             error={error}
                         />

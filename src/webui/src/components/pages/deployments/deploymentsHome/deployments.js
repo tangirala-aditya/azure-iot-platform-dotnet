@@ -34,8 +34,9 @@ import {
     BalloonAlignment,
 } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Balloon/Balloon";
 
-import "./deployments.scss";
 import { IdentityGatewayService } from "services";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deployments.module.scss"));
 
 const closedFlyoutState = { openFlyoutName: undefined };
 
@@ -247,12 +248,12 @@ export class Deployments extends Component {
                         />
                     </ContextMenuAlign>
                 </ContextMenu>
-                <PageContent className="deployments-page-container">
+                <PageContent className={css("deployments-page-container")}>
                     <PageTitle
-                        className="deployments-title"
+                        className={css("deployments-title")}
                         titleValue={t("deployments.title")}
                     />
-                    <h2 className="right-corner">
+                    <h2 className={css("right-corner")}>
                         <Balloon
                             position={BalloonPosition.Bottom}
                             align={BalloonAlignment.End}

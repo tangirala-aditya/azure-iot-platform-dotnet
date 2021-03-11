@@ -12,7 +12,8 @@ import { toEditRuleRequestModel } from "services/models";
 import Flyout from "components/shared/flyout";
 import { RuleSummaryContainer as RuleSummary } from "../ruleSummary";
 
-import "./deleteRule.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deleteRule.module.scss"));
 
 export class DeleteRule extends Component {
     constructor(props) {
@@ -139,7 +140,7 @@ export class DeleteRule extends Component {
                 <Protected permission={permissions.deleteRules}>
                     <form
                         onSubmit={this.deleteRule}
-                        className="delete-rule-flyout-container"
+                        className={css("delete-rule-flyout-container")}
                     >
                         {rule && (
                             <RuleSummary
@@ -148,12 +149,12 @@ export class DeleteRule extends Component {
                                 completedSuccessfully={completedSuccessfully}
                                 t={t}
                                 includeSummaryStatus={true}
-                                className="rule-details"
+                                className={css("rule-details")}
                             />
                         )}
                         {error && (
                             <AjaxError
-                                className="rule-delete-error"
+                                className={css("rule-delete-error")}
                                 t={t}
                                 error={error}
                             />
@@ -180,9 +181,9 @@ export class DeleteRule extends Component {
             { isPending, status, changesApplied, rule } = this.state;
         return (
             <div>
-                <div className="delete-info">
-                    <Svg className="asterisk-svg" src={svgs.error} />
-                    <div className="delete-info-text">
+                <div className={css("delete-info")}>
+                    <Svg className={css("asterisk-svg")} src={svgs.error} />
+                    <div className={css("delete-info-text")}>
                         <Trans i18nKey="rules.flyouts.deleteRule.preDeleteText">
                             keep...
                             <Link to={`/maintenance/rule/${rule.id}`}>
@@ -203,7 +204,7 @@ export class DeleteRule extends Component {
                     {!status && (
                         <Btn
                             key="disable"
-                            className="rule-status-btn"
+                            className={css("rule-status-btn")}
                             svg={svgs.disableToggle}
                             onClick={this.changeRuleStatus}
                         >
@@ -252,13 +253,16 @@ export class DeleteRule extends Component {
                 : "rules.flyouts.deleteRule.disableConfirmation";
         return (
             <div>
-                <div className="delete-confirmation">
-                    <div className="delete-confirmation-text">
+                <div className={css("delete-confirmation")}>
+                    <div className={css("delete-confirmation-text")}>
                         <Trans i18nKey={confirmationKey}>Disable</Trans>
-                        <Svg className="check-svg" src={svgs.checkmark} />
+                        <Svg
+                            className={css("check-svg")}
+                            src={svgs.checkmark}
+                        />
                     </div>
                     {ruleDeleted && (
-                        <div className="post-delete-info-text">
+                        <div className={css("post-delete-info-text")}>
                             <Trans
                                 i18nKey={
                                     "rules.flyouts.deleteRule.postDeleteText"

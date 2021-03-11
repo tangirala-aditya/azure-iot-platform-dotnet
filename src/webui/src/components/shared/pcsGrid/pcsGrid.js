@@ -231,7 +231,7 @@ export class PcsGrid extends Component {
                 )}
                 <div
                     className={css("pcs-grid-container", "ag-theme-alpine", {
-                        "movable-columns": gridParams.suppressMovableColumns,
+                        "movable-columns": !gridParams.suppressMovableColumns,
                     })}
                     style={style}
                 >

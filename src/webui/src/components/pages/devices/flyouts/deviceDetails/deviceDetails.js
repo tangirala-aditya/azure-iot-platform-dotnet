@@ -46,8 +46,6 @@ import { getEdgeAgentStatusCode } from "utilities";
 
 import { delay, map, mergeMap, switchMap, tap } from "rxjs/operators";
 
-// import "./deviceDetails.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./deviceDetails.module.scss"));
 

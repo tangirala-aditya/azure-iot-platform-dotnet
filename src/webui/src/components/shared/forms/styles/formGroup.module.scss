@@ -3,17 +3,19 @@
 @import 'src/styles/themes';
 @import 'src/styles/mixins';
 
-.form-group {
-  @include rem-font-size(14px);
-
-  :global(.form-group-label) {
-    display: block;
-    @include rem-fallback(margin-bottom, 12px);
-  }
-
-  + .form-group { @include rem-fallback(margin-top, 16px); }
-
-  @include themify($themes) {
-    :global(.form-group-label) { color: themed('colorContentText'); }
+:global {
+  .form-group {
+    @include rem-font-size(14px);
+  
+    .form-group-label {
+      display: block;
+      @include rem-fallback(margin-bottom, 12px);
+    }
+  
+    + .form-group { @include rem-fallback(margin-top, 16px); }
+  
+    @include themify($themes) {
+      .form-group-label { color: themed('colorContentText'); }
+    }
   }
 }

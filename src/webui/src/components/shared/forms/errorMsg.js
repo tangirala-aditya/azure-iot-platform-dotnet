@@ -6,8 +6,6 @@ import PropTypes from "prop-types";
 import { Svg } from "components/shared/svg/svg";
 import { joinClasses, svgs } from "utilities";
 
-// import styles from "./styles/errorMsg.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./styles/errorMsg.module.scss"));
 

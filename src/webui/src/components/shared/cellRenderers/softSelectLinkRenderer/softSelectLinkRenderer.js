@@ -38,7 +38,7 @@ export class SoftSelectLinkRenderer extends Component {
                         {value}
                     </button>
                 ) : (
-                    <div className={css("link", "soft-select-link")}>
+                    <div className={css("link", "soft-select-text")}>
                         {value}
                     </div>
                 )}

@@ -7,7 +7,7 @@
   display: flex;
   flex-flow: row wrap;
 
-  .form-group {
+  :global(.form-group) {
 
     :global(.form-group-label) { text-transform: uppercase; }
 
@@ -31,10 +31,10 @@
   }
 
   @include themify($themes) {
-    .form-group :global(.form-group-label) { color: themed('colorDurationLabelText'); }
+    :global(.form-group) :global(.form-group-label) { color: themed('colorDurationLabelText'); }
 
     .duration-colon-icon svg { fill: themed('colorInputBorderColor'); }
 
-    &.error .form-group input[type=text] { border-color: themed('colorAlert'); }
+    &.error :global(.form-group) input[type=text] { border-color: themed('colorAlert'); }
   }
 }

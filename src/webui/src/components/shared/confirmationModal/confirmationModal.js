@@ -6,8 +6,6 @@ import { Btn, BtnToolbar, Modal } from "components/shared";
 import { svgs } from "utilities";
 import { toSinglePropertyDiagnosticsModel } from "services/models";
 
-// import styles from "./confirmationModal.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./confirmationModal.module.scss"));
 

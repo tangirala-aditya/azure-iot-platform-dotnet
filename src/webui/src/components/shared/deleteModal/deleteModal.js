@@ -12,8 +12,6 @@ import {
 import { svgs } from "utilities";
 import { toSinglePropertyDiagnosticsModel } from "services/models";
 
-// import styles from "./deleteModal.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./deleteModal.module.scss"));
 

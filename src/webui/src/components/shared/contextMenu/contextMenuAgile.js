@@ -1,10 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 import React, { Component } from "react";
-import { joinClasses } from "utilities";
 import { Btn } from "components/shared";
 import { Dropdown } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Dropdown";
-
-// import styles from "./contextMenu.module.scss";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./contextMenu.module.scss"));
@@ -222,16 +219,10 @@ export class ContextMenuAgile extends Component {
             priorityChildren
         );
         return (
-            <div
-                className={joinClasses(css("context-menu-container"))}
-                ref={this.container}
-            >
+            <div className={css("context-menu-container")} ref={this.container}>
                 {priorityChildrenArray && (
                     <div
-                        className={joinClasses(
-                            css("context-menu-align-container"),
-                            css("left")
-                        )}
+                        className={css("context-menu-align-container", "left")}
                     >
                         <div
                             ref={this.priorityMenu}
@@ -242,8 +233,8 @@ export class ContextMenuAgile extends Component {
                                     .filter((x) => x)
                                     .map((item, i) => (
                                         <div
-                                            className={joinClasses(
-                                                css(`context-menu-align-item`),
+                                            className={css(
+                                                `context-menu-align-item`,
                                                 `item-${i}`
                                             )}
                                             key={`item-${i}`}
@@ -262,10 +253,8 @@ export class ContextMenuAgile extends Component {
                                         .filter((x) => x)
                                         .map((item, i) => (
                                             <div
-                                                className={joinClasses(
-                                                    css(
-                                                        `extra-menu-dropdown-option`
-                                                    ),
+                                                className={css(
+                                                    "extra-menu-dropdown-option",
                                                     `dropdown-item-${i}`
                                                 )}
                                                 key={`dropdown-item-${i}`}
@@ -301,17 +290,14 @@ export class ContextMenuAgile extends Component {
                 )}
                 {farChildren && (
                     <div
-                        className={joinClasses(
-                            css("context-menu-align-container"),
-                            css("right")
-                        )}
+                        className={css("context-menu-align-container", "right")}
                         ref={this.farMenu}
                     >
                         {farChildren.length > 0 &&
                             farChildren.map((item, i) => (
                                 <div
-                                    className={joinClasses(
-                                        css(`context-menu-align-item`),
+                                    className={css(
+                                        `context-menu-align-item`,
                                         `far-item-${i}`
                                     )}
                                     key={`far-item-${i}`}

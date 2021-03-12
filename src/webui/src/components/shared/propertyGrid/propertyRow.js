@@ -3,8 +3,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-// import { joinClasses } from "utilities";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./propertyGrid.module.scss"));
 

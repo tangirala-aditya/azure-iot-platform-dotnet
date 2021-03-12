@@ -23,8 +23,6 @@ import {
 } from "components/shared";
 import { map, mergeMap } from "rxjs/operators";
 
-// import "./deviceDelete.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./deviceDelete.module.scss"));
 

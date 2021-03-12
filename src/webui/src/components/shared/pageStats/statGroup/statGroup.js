@@ -4,8 +4,6 @@ import React from "react";
 
 import { joinClasses } from "utilities";
 
-// import styles from "./statGroup.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./statGroup.module.scss"));
 

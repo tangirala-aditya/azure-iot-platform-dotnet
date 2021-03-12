@@ -4,11 +4,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Svg } from "components/shared/svg/svg";
-import { joinClasses } from "utilities";
 import { Icon } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Icon";
 
 import "@microsoft/azure-iot-ux-fluent-controls/lib/components/Button";
-// import styles from "./styles/btn.module.scss";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./styles/btn.module.scss"));
@@ -19,11 +17,10 @@ export const Btn = (props) => {
         <button
             type="button"
             {...btnProps}
-            className={joinClasses(
-                css("btn"),
-                className,
-                primary ? css("btn-primary") : css("btn-secondary")
-            )}
+            className={css("btn", className, {
+                "btn-primary": primary,
+                "btn-secondary": !primary,
+            })}
         >
             {props.svg && <Svg src={props.svg} className={css("btn-icon")} />}
             {props.icon && (

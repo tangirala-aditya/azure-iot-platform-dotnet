@@ -7,8 +7,6 @@ import { toDiagnosticsModel } from "services/models";
 import { svgs, compareByProperty } from "utilities";
 import { ComponentArray, Btn, CopyModal } from "components/shared";
 
-// import "./deviceGroupDropdown.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./deviceGroupDropdown.module.scss"));
 

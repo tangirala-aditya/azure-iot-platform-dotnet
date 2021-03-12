@@ -3,9 +3,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { isFunc, joinClasses } from "utilities";
-
-// import styles from "./styles/formGroup.module.scss";
+import { isFunc } from "utilities";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./styles/formGroup.module.scss"));
@@ -32,9 +30,7 @@ export class FormGroup extends Component {
             }
         );
         return (
-            <div
-                className={joinClasses(css("form-group"), this.props.className)}
-            >
+            <div className={css("form-group", this.props.className)}>
                 {childrenWithProps}
             </div>
         );

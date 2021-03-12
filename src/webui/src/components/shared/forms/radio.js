@@ -5,9 +5,7 @@ import PropTypes from "prop-types";
 
 import { Svg } from "components/shared/svg/svg";
 import { FormLabel } from "./formLabel";
-import { isFunc, svgs, joinClasses } from "utilities";
-
-// import styles from "./styles/radio.module.scss";
+import { isFunc, svgs } from "utilities";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./styles/radio.module.scss"));
@@ -71,7 +69,7 @@ export class Radio extends Component {
         );
 
         return (
-            <div className={joinClasses(css("radio-container"), className)}>
+            <div className={css("radio-container", className)}>
                 <div className={css("radio-input-container")}>
                     <input
                         {...radioProps}

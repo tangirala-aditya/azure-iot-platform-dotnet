@@ -4,7 +4,7 @@
 @import 'src/styles/mixins';
 
 $errorIconSize: 10px;
-.error-message {
+:global(.error-message) {
   display: flex;
   flex-flow: row nowrap;
   flex-shrink: 0;

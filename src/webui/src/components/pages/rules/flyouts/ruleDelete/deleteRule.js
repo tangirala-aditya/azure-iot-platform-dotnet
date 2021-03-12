@@ -14,6 +14,9 @@ import { RuleSummaryContainer as RuleSummary } from "../ruleSummary";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./deleteRule.module.scss"));
+const ruleCss = classnames.bind(
+    require("../../rulesGrid/rulesGrid.module.scss")
+);
 
 export class DeleteRule extends Component {
     constructor(props) {
@@ -204,7 +207,7 @@ export class DeleteRule extends Component {
                     {!status && (
                         <Btn
                             key="disable"
-                            className={css("rule-status-btn")}
+                            className={ruleCss("rule-status-btn")}
                             svg={svgs.disableToggle}
                             onClick={this.changeRuleStatus}
                         >

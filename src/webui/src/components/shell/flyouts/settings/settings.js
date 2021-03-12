@@ -21,7 +21,6 @@ import {
     toSinglePropertyDiagnosticsModel,
 } from "services/models";
 
-// import "./settings.scss";
 import { TenantService, ConfigService, IdentityGatewayService } from "services";
 import FirmwareVariableGrid from "./firmwareVariableGrid";
 const classnames = require("classnames/bind");

@@ -43,7 +43,6 @@ import {
 
 import Config from "app.config";
 
-// import "./deviceNew.scss";
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./deviceNew.module.scss"));
 
@@ -111,7 +110,7 @@ const isIntRegex = /^-?\d*$/,
             <div className={css("device-detail-contents")}>
                 <div className={css("device-detail-value")}>{value}</div>
                 <Svg
-                    className="copy-icon"
+                    className={css("copy-icon")}
                     src={svgs.copy}
                     onClick={() => copyToClipboard(value)}
                 />

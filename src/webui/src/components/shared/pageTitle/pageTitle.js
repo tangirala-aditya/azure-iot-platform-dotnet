@@ -4,8 +4,6 @@ import React from "react";
 
 import { joinClasses } from "utilities";
 
-// import styles from "./pageTitle.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./pageTitle.module.scss"));
 

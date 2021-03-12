@@ -26,8 +26,6 @@ import {
 
 import { map, mergeMap } from "rxjs/operators";
 
-// import "./cloudToDeviceMessage.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./cloudToDeviceMessage.module.scss"));
 

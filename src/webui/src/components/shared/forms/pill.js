@@ -5,8 +5,6 @@ import PropTypes from "prop-types";
 
 import { Btn } from "components/shared";
 
-// import styles from "./styles/pill.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./styles/pill.module.scss"));
 

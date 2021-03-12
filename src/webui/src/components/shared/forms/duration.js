@@ -9,8 +9,6 @@ import { FormGroup } from "./formGroup";
 import { FormControl } from "./formControl";
 import { svgs, joinClasses, isFunc, int } from "utilities";
 
-// import styles from "./styles/duration.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./styles/duration.module.scss"));
 

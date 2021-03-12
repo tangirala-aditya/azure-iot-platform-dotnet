@@ -8,8 +8,6 @@ import { LinkedComponent } from "utilities";
 import Flyout from "components/shared/flyout";
 import CreateDeviceQueryForm from "./views/createDeviceQueryForm";
 
-// import "./createDeviceQuery.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./createDeviceQuery.module.scss"));
 

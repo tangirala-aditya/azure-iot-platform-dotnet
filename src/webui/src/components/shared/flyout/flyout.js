@@ -4,10 +4,8 @@ import React, { Component } from "react";
 import { ContextPanel } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/ContextPanel";
 
 import { Btn } from "../forms";
-import { svgs, joinClasses } from "utilities";
+import { svgs } from "utilities";
 import { CopyModal } from "components/shared";
-
-// import styles from "./flyout.module.scss";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./flyout.module.scss"));
@@ -88,9 +86,9 @@ export class Flyout extends Component {
                                 <Btn
                                     svg={svgs.copyLink}
                                     key={"getLinkButton"}
-                                    className={joinClasses(
-                                        css("svg-icon"),
-                                        css("getlink-button")
+                                    className={css(
+                                        "svg-icon",
+                                        "getlink-button"
                                     )}
                                     onClick={this.openModal(
                                         "copy-link",

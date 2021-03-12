@@ -23,8 +23,6 @@ import {
     DeviceJobPropertiesContainer,
 } from "./";
 
-// import "./deviceJobs.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./deviceJobs.module.scss"));
 

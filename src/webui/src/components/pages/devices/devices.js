@@ -26,8 +26,6 @@ import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "component
 import { svgs, getDeviceGroupParam, getTenantIdParam } from "utilities";
 import { IdentityGatewayService, IoTHubManagerService } from "services";
 
-// import "./devices.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./devices.module.scss"));
 

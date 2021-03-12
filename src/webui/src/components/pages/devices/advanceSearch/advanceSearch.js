@@ -17,7 +17,6 @@ import {
 
 import { IoTHubManagerService } from "services";
 
-// import "./advanceSearch.scss"; to be removed
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./advanceSearch.module.scss"));
 

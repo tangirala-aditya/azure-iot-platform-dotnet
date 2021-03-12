@@ -4,7 +4,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Pill } from "./pill";
-// import styles from "./styles/pillGroup.module.scss";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./styles/pillGroup.module.scss"));

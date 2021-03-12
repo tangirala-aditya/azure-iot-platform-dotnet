@@ -13,8 +13,6 @@ import {
     BalloonPosition,
 } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Balloon/Balloon";
 
-// import styles from "./timeSeriesInsightsLink.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./timeSeriesInsightsLink.module.scss"));
 

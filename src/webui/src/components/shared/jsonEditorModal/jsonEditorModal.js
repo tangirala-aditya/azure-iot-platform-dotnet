@@ -6,8 +6,6 @@ import { Btn, BtnToolbar, Modal, FormControl } from "components/shared";
 import { svgs } from "utilities";
 import { toSinglePropertyDiagnosticsModel } from "services/models";
 
-// import styles from "./jsonEditorModal.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./jsonEditorModal.module.scss"));
 

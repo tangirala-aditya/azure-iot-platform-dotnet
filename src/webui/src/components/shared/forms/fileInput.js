@@ -6,8 +6,6 @@ import PropTypes from "prop-types";
 import { Btn } from "components/shared";
 import { joinClasses, svgs } from "utilities";
 
-// import styles from "./styles/fileInput.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./styles/fileInput.module.scss"));
 

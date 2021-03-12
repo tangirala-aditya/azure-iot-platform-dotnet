@@ -18,7 +18,6 @@ import {
 import Flyout from "components/shared/flyout";
 import { CssClassApplier } from "ag-grid-community";
 
-// import "./SIMManagement.scss";
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./SIMManagement.module.scss"));
 

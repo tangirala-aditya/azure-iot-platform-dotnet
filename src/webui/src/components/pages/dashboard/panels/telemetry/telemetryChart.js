@@ -7,9 +7,10 @@ import "tsiclient";
 //import { PivotMenu } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Pivot";
 import { AdvancedPivotMenu } from "./advancedPivotMenu.js";
 import { toDiagnosticsModel } from "services/models";
-
-import "./telemetryChart.scss";
 import { filter, map, mergeMap, reduce } from "rxjs/operators";
+import "tsiclient/tsiclient.css";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./telemetryChart.module.scss"));
 var jstz = require("jstz");
 var timezone = jstz.determine().name();
 
@@ -222,13 +223,13 @@ export class TelemetryChart extends Component {
             });
 
         return (
-            <div className="telemetry-chart-container">
+            <div className={css("telemetry-chart-container")}>
                 <AdvancedPivotMenu
-                    className="options-container"
+                    className={css("options-container")}
                     links={telemetryList}
                     active={this.state.telemetryKey}
                 />
-                <div className="chart-container" id={this.chartId} />
+                <div className={css("chart-container")} id={this.chartId} />
                 <p>{`${t(
                     "dashboard.panels.telemetry.timezoneDisplay"
                 )} ${timezone}`}</p>

@@ -11,8 +11,6 @@ import {
     BalloonAlignment,
 } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Balloon/Balloon";
 
-// import styles from "./refreshBar.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./refreshBar.module.scss"));
 

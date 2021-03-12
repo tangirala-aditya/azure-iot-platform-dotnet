@@ -5,8 +5,6 @@ import React, { Component } from "react";
 import { Btn, BtnToolbar, Modal } from "components/shared";
 import { svgs, copyToClipboard } from "utilities";
 
-// import styles from "./copyModal.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./copyModal.module.scss"));
 

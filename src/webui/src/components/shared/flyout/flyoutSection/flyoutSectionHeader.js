@@ -4,8 +4,7 @@ import React from "react";
 
 import { withAccordion } from "./accordionProvider";
 import { Svg } from "components/shared/svg/svg";
-import { svgs, joinClasses } from "utilities";
-// import styles from "./flyoutSection.module.scss";
+import { svgs } from "utilities";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./flyoutSection.module.scss"));
@@ -19,7 +18,7 @@ export const FlyoutSectionHeader = withAccordion(
         accordionIsOpen,
     }) => {
         const sectionProps = {
-            className: joinClasses(css("flyout-section-header"), className),
+            className: css("flyout-section-header", className),
         };
         return accordionIsCollapsable ? (
             <button {...sectionProps} onClick={toggleAccordion}>
@@ -27,10 +26,10 @@ export const FlyoutSectionHeader = withAccordion(
                 {accordionIsCollapsable && (
                     <Svg
                         src={svgs.chevron}
-                        className={joinClasses(
-                            css("collapse-section-icon"),
-                            accordionIsOpen ? css("expanded") : css("collapsed")
-                        )}
+                        className={css("collapse-section-icon", {
+                            expanded: accordionIsOpen,
+                            collapsed: !accordionIsOpen,
+                        })}
                     />
                 )}
             </button>

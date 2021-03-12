@@ -7,9 +7,7 @@ import { Duration } from "./duration";
 import { Select } from "./select";
 import { ErrorMsg } from "./errorMsg";
 import { JsonInput } from "./jsoninput";
-import { joinClasses, isFunc, Link } from "utilities";
-
-// import styles from "./styles/formControl.module.scss";
+import { isFunc, Link } from "utilities";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./styles/formControl.module.scss"));
@@ -87,11 +85,9 @@ export class FormControl extends Component {
                 ...rest,
                 theme,
                 id: rest.id || formGroupId,
-                className: joinClasses(
-                    css("form-control"),
-                    className,
-                    errorState || errorMsg ? css("error") : ""
-                ),
+                className: css("form-control", className, {
+                    error: errorState || errorMsg,
+                }),
                 onChange: this.onChange,
                 onBlur: this.onBlur,
                 ...valueOverrides,

@@ -2,8 +2,6 @@
 
 import React from "react";
 
-// import styles from "./indicator.module.scss";
-
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./indicator.module.scss"));
 

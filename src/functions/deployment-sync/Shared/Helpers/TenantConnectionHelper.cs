@@ -37,5 +37,21 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared.Helpers
 
             return registry;
         }
+
+        public static JobClient GetJobClient(string tenantId)
+        {
+            JobClient job = null;
+
+            IoTHubConnectionHelper.CreateUsingHubConnectionString(GetIotHubConnectionString(tenantId), conn =>
+            {
+                job = JobClient.CreateFromConnectionString(conn);
+            });
+            if (job == null)
+            {
+                throw new InvalidConfigurationException($"Invalid tenant information for HubConnectionstring.");
+            }
+
+            return job;
+        }
     }
 }

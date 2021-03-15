@@ -181,6 +181,35 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
             }
         }
 
+        public async Task<List<DeploymentServiceModel>> GetDeployments(string tenantId)
+        {
+            string collectionId = "deployments";
+            var sql = CosmosOperations.GetDocumentsByCollectionId("CollectionId", collectionId);
+
+            List<Document> docs = new List<Document>();
+
+            try
+            {
+                CosmosOperations storageClient = await CosmosOperations.GetClientAsync();
+                docs = await storageClient.QueryAllDocumentsAsync(
+                   "pcs-storage",
+                   $"pcs-{tenantId}",
+                   this.DefaultQueryOptions,
+                   sql);
+
+                var result = docs == null ?
+                    new List<DeploymentServiceModel>() :
+                    docs
+                        .Select(doc => new ValueServiceModel(doc)).Select(x => JsonConvert.DeserializeObject<DeploymentServiceModel>(x.Data))
+                        .ToList();
+                return result;
+            }
+            catch (ResourceNotFoundException e)
+            {
+                throw new ResourceNotFoundException($"No records exist in CosmosDb. The CollectionId {collectionId} does not exist.", e);
+            }
+        }
+
         public async Task SaveDeploymentHistory(string tenantId, DeploymentServiceModel deploymentModel, Twin deviceTwin)
         {
             CosmosOperations storageClient = await CosmosOperations.GetClientAsync();

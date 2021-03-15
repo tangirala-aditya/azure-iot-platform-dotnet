@@ -6,13 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Storage.Queues;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.AsaManager.Services.External.IotHubManager;
 using Mmm.Iot.AsaManager.Services.Models;
 using Mmm.Iot.AsaManager.Services.Models.DeviceGroups;
+using Mmm.Iot.AsaManager.Services.Models.Storage;
 using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
+using Mmm.Iot.Common.Services.External.TableStorage;
 using Newtonsoft.Json;
 
 namespace Mmm.Iot.AsaManager.Services
@@ -21,15 +25,18 @@ namespace Mmm.Iot.AsaManager.Services
     {
         private const string CsvHeader = "DeviceId,GroupId";
         private readonly IIotHubManagerClient iotHubManager;
+        private readonly ITableStorageClient tableStorageClient;
 
         public DeviceGroupsConverter(
             IIotHubManagerClient iotHubManager,
             IBlobStorageClient blobClient,
             IStorageAdapterClient storageAdapterClient,
+            ITableStorageClient tableStorageClient,
             ILogger<DeviceGroupsConverter> log)
                 : base(blobClient, storageAdapterClient, log)
         {
             this.iotHubManager = iotHubManager;
+            this.tableStorageClient = tableStorageClient;
         }
 
         public override string Entity
@@ -123,7 +130,7 @@ namespace Mmm.Iot.AsaManager.Services
                     {
                         deviceMapping.Add(deviceGroup, new DeviceListModel()
                         {
-                        Items = completeDevicesList,
+                            Items = completeDevicesList,
                         });
                     }
                 }
@@ -164,17 +171,115 @@ namespace Mmm.Iot.AsaManager.Services
                 throw e;
             }
 
-            string blobFilePath = await this.WriteFileContentToBlobAsync(fileContent, tenantId, operationId);
+            this.WriteDataToTableStorageAndQueue(deviceMapping, tenantId);
 
+            // string blobFilePath = await this.WriteFileContentToBlobAsync(fileContent, tenantId, operationId);
             ConversionApiModel conversionResponse = new ConversionApiModel
             {
                 TenantId = tenantId,
-                BlobFilePath = blobFilePath,
+                BlobFilePath = string.Empty,
                 Entities = deviceGroups,
                 OperationId = operationId,
             };
             this.Logger.LogInformation("Successfully Completed {entity} conversion\n{model}", this.Entity, JsonConvert.SerializeObject(conversionResponse));
             return conversionResponse;
+        }
+
+        private async void WriteDataToTableStorageAndQueue(Dictionary<DeviceGroupModel, DeviceListModel> deviceMappings, string tenantId)
+        {
+            if (deviceMappings != null && deviceMappings.Keys.Count > 0)
+            {
+                List<DeviceGroupMapping> deviceGroupMappings = await this.tableStorageClient.QueryAsync($"devicegroupdevices{tenantId.Replace("-", string.Empty)}", new TableQuery<DeviceGroupMapping>());
+
+                if (deviceGroupMappings.Count > 0)
+                {
+                    var groupedDeviceGroupMapping = deviceGroupMappings.GroupBy(d => d.DeviceGroupId);
+
+                    foreach (var deviceGroupMapping in deviceMappings)
+                    {
+                        var existingDeviceGroupMappings = groupedDeviceGroupMapping.FirstOrDefault(g => g.Key == deviceGroupMapping.Key.Id);
+
+                        if (existingDeviceGroupMappings != null && existingDeviceGroupMappings.Any())
+                        {
+                            var devices = existingDeviceGroupMappings.ToList();
+
+                            IEnumerable<string> deviceIds = devices.Select(x => x.DeviceId);
+
+                            var newDeviceIds = deviceGroupMapping.Value.Items.Select(x => x.Id).Except(deviceIds);
+
+                            if (newDeviceIds != null && newDeviceIds.Count() > 0)
+                            {
+                                foreach (var newDeviceId in newDeviceIds)
+                                {
+                                    DeviceGroupMapping newdeviceGroupMapping = new DeviceGroupMapping(existingDeviceGroupMappings.Key, newDeviceId);
+                                    await this.tableStorageClient.InsertAsync($"devicegroupdevices{tenantId.Replace("-", string.Empty)}", newdeviceGroupMapping);
+                                }
+
+                                IEnumerable<List<string>> batchedData = this.SplitDevicesIntoBatches(newDeviceIds.ToList());
+                                if (batchedData != null && batchedData.Count() > 0)
+                                {
+                                    QueueClient queueClient = new QueueClient("DefaultEndpointsProtocol=https;AccountName=teststorageacsragav;AccountKey=H8b0TZ5zcHayHUtV0B3sQXVa8IQVEyRQDqWPIqrceW/sA+DbcpvBdRoSfCkaXc0fU2GIBm8wtvMJENLKK3YEqQ==;EndpointSuffix=core.windows.net", "deploymentRequests", new QueueClientOptions() { MessageEncoding = QueueMessageEncoding.Base64 });
+                                    await queueClient.CreateIfNotExistsAsync();
+
+                                    foreach (var data in batchedData)
+                                    {
+                                        // Insert into Queue
+                                        DeploymentRequest deploymentRequest = new DeploymentRequest
+                                        {
+                                            TenantId = tenantId,
+                                            DeviceGroupId = existingDeviceGroupMappings.Key,
+                                            Devices = data,
+                                        };
+
+                                        if (queueClient.Exists())
+                                        {
+                                            try
+                                            {
+                                                queueClient.SendMessage(JsonConvert.SerializeObject(deploymentRequest));
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                Console.WriteLine(ex);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    List<DeviceGroupMapping> deviceGroupMappingsToInsert = new List<DeviceGroupMapping>();
+                    foreach (var deviceMapping in deviceMappings)
+                    {
+                        if (deviceMapping.Value.Items.Count() > 0)
+                        {
+                            foreach (var item in deviceMapping.Value.Items)
+                            {
+                                DeviceGroupMapping deviceGroupMapping = new DeviceGroupMapping(deviceMapping.Key.Id, item.Id);
+                                deviceGroupMappingsToInsert.Add(deviceGroupMapping);
+                            }
+                        }
+                    }
+
+                    if (deviceGroupMappingsToInsert.Count > 0)
+                    {
+                        foreach (var deviceGroupMappingToInsert in deviceGroupMappingsToInsert)
+                        {
+                            await this.tableStorageClient.InsertAsync($"devicegroupdevices{tenantId.Replace("-", string.Empty)}", deviceGroupMappingToInsert);
+                        }
+                    }
+                }
+            }
+        }
+
+        private IEnumerable<List<string>> SplitDevicesIntoBatches(List<string> devices, int batchSize = 250)
+        {
+            for (int i = 0; i < devices.Count; i += batchSize)
+            {
+                yield return devices.GetRange(i, Math.Min(batchSize, devices.Count - i));
+            }
         }
     }
 }

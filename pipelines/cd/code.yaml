@@ -30,6 +30,7 @@ variables:
 - group: kciQa 
 - group: kciCt
 - group: kciPr
+- group: psdfireDev
 - template: ../templates/imageTagVariable.yaml
 stages:
   - stage: checkParameters
@@ -423,3 +424,21 @@ stages:
           imageTag: $(_imageTag)
           blueGreen: true
           subscriptionId: $(subscriptionId-kciPr)
+
+  - stage: psdfireDev
+    displayName: PSDFire dev
+    variables:
+    - group: psdfireDev
+    dependsOn:
+      - crslWkbnch
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-psdfireDev)
+          subscriptionName: $(subscriptionName-psdfireDev)
+          applicationCode: $(applicationCode-psdfireDev)
+          applicationShortCode: $(applicationShortCode-psdfireDev)
+          environmentCategory: $(environmentCategory-psdfireDev)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          subscriptionId: $(subscriptionId-psdfireDev)

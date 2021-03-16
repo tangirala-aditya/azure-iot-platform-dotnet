@@ -1,6 +1,6 @@
 FROM node:14-alpine as codebuilder
 WORKDIR /app
-RUN apk add --no-cache --virtual bash
+RUN apk add --no-cache bash
 RUN apk --update add python3
 RUN apk add --no-cache --virtual build-base
 RUN apk add --no-cache --virtual curl

@@ -14,7 +14,7 @@ namespace Mmm.Iot.IoTHubManager.Services
     {
         Task<DeploymentServiceModel> CreateAsync(DeploymentServiceModel model, string userId, string tenantId);
 
-        Task<DeploymentServiceModel> CreateAsyncWithJobs(DeploymentServiceModel model, string userId, string tenantId);
+        Task<DeploymentServiceModel> CreateAsyncWithJobs(DeploymentServiceModel model, string userId, string tenantId, bool isReactivation = false);
 
         Task<DeploymentServiceListModel> ListAsync();
 

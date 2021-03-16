@@ -204,7 +204,7 @@ namespace Mmm.Iot.IoTHubManager.Services
             return model;
         }
 
-        public async Task<DeploymentServiceModel> CreateAsyncWithJobs(DeploymentServiceModel model, string userId, string tenantId)
+        public async Task<DeploymentServiceModel> CreateAsyncWithJobs(DeploymentServiceModel model, string userId, string tenantId, bool isReactivation = false)
         {
             if (string.IsNullOrEmpty(model.DeviceGroupId))
             {
@@ -232,15 +232,16 @@ namespace Mmm.Iot.IoTHubManager.Services
                 throw new ArgumentNullException(ConfigurationTypeParameter);
             }
 
+            /*
             if (model.Priority < 0)
             {
                 throw new ArgumentOutOfRangeException(
                     PriorityParameter,
                     model.Priority,
                     "The priority provided should be 0 or greater");
-            }
+            }*/
 
-            var configuration = ConfigurationsHelper.ToHubConfiguration(model);
+            var configuration = ConfigurationsHelper.ToHubConfiguration(model, isReactivation);
 
             var result = JSONConverter.DotNotationToDictionary(configuration.Content.DeviceContent);
             var jsonResult = JsonConvert.SerializeObject(result);
@@ -250,6 +251,36 @@ namespace Mmm.Iot.IoTHubManager.Services
             tags["configurations"] = new TwinCollection();
             tags["configurations"]["applied"] = configuration.Id;
             desiredTwin.Tags = tags;
+
+            try
+            {
+                // Get the last active deployment and schedule for processing.
+                IEnumerable<DeploymentServiceModel> deploymentsOfDeviceGroup = null;
+                deploymentsOfDeviceGroup = await this.GetActiveDeploymentOfDeviceGroup(model.DeviceGroupId);
+
+                if (deploymentsOfDeviceGroup != null && deploymentsOfDeviceGroup.Count() > 0)
+                {
+                    var latestDeployment = deploymentsOfDeviceGroup.FirstOrDefault();
+
+                    if (latestDeployment != null && latestDeployment.Tags.Contains(LatestTag))
+                    {
+                        var deploymentDetails = await this.GetDeploymentDataFromJobs(latestDeployment.Id, true, true);
+
+                        latestDeployment.DeploymentMetrics = deploymentDetails.DeploymentMetrics;
+
+                        if (latestDeployment.Tags.Contains(LatestTag))
+                        {
+                            latestDeployment.Tags.Remove(LatestTag);
+                        }
+
+                        await this.StoreDeploymentInSecondaryStorage(latestDeployment, userId);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
             var jobId = Guid.NewGuid().ToString();
             try
@@ -462,7 +493,7 @@ namespace Mmm.Iot.IoTHubManager.Services
             {
                 if (existingDeployment != null && existingDeployment.Tags.Contains(LatestTag))
                 {
-                    var currentDeployment = await this.GetAsync(deploymentId, true, true);
+                    var currentDeployment = await this.GetDeploymentDataFromJobs(deploymentId, true, true);
 
                     if (currentDeployment != null)
                     {
@@ -470,10 +501,21 @@ namespace Mmm.Iot.IoTHubManager.Services
                     }
                 }
 
-                await this.tenantHelper.GetRegistry().RemoveConfigurationAsync(deploymentId);
+                // await this.tenantHelper.GetRegistry().RemoveConfigurationAsync(deploymentId);
 
                 // Mark the Deployment as Inactive in CosmosDb collection
                 await this.MarkDeploymentAsInactive(existingDeployment, userId, isDelete, tenantId);
+
+                // Get the last active deployment and schedule for processing.
+                IEnumerable<DeploymentServiceModel> deploymentsOfDeviceGroup = null;
+                deploymentsOfDeviceGroup = await this.GetActiveDeploymentOfDeviceGroup(existingDeployment.DeviceGroupId);
+
+                if (deploymentsOfDeviceGroup != null && deploymentsOfDeviceGroup.Count() > 0)
+                {
+                    var latestDeployment = deploymentsOfDeviceGroup.FirstOrDefault();
+
+                    await this.CreateAsyncWithJobs(latestDeployment, userId, tenantId, true);
+                }
             }
             else
             {
@@ -485,6 +527,19 @@ namespace Mmm.Iot.IoTHubManager.Services
 
             // Log a custom event to Application Insights
             this.deploymentLog.LogDeploymentDelete(deploymentId, tenantId, userId);
+        }
+
+        public async Task<IEnumerable<DeploymentServiceModel>> GetActiveDeploymentOfDeviceGroup(string deviceGroupId)
+        {
+            IEnumerable<DeploymentServiceModel> deploymentsOfDeviceGroup = null;
+            var deploymentsFromStorage = await this.GetListAsync();
+
+            if (deploymentsFromStorage != null && deploymentsFromStorage.Items?.Count > 0)
+            {
+                deploymentsOfDeviceGroup = deploymentsFromStorage.Items.Where(x => !x.Tags.Contains(DeleteTag) && !x.Tags.Contains(ReactivatedTag) && !x.Tags.Contains(InActiveTag) && x.DeviceGroupId == deviceGroupId).OrderByDescending(x => x.CreatedDateTime);
+            }
+
+            return deploymentsOfDeviceGroup;
         }
 
         public async Task<PackageApiModel> GetPackageAsync(string packageId)
@@ -526,7 +581,7 @@ namespace Mmm.Iot.IoTHubManager.Services
             // clearing out all the existing tags as we are creating new deployment with the old model (inactivated) deployment properties
             deploymentFromStorage.Tags = new List<string>();
 
-            await this.CreateAsync(deploymentFromStorage, userId, tenantId);
+            await this.CreateAsyncWithJobs(deploymentFromStorage, userId, tenantId);
 
             await this.MarkDeploymentAsActive(deploymentId, userId);
         }

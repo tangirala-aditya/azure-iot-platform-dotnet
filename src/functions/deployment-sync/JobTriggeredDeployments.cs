@@ -36,6 +36,8 @@ namespace Mmm.Iot.Functions.DeploymentSync
                         DeploymentSyncService service = new DeploymentSyncService();
 
                         deployments.AddRange(await service.GetDeployments(deploymentRequest.TenantId));
+
+                        deployments = deployments.Where(d => !d.Tags.Contains("reserved.inactive") && !d.Tags.Contains("reserved.isDeleted") && !d.Tags.Contains("reserved.reactivated")).ToList();
                     }
                     catch (Exception)
                     {
@@ -47,7 +49,7 @@ namespace Mmm.Iot.Functions.DeploymentSync
                     {
                         var deploymentToProcess = deployments.Where(d => d.DeviceGroupId == deploymentRequest.DeviceGroupId).OrderByDescending(o => o.CreatedDateTime).FirstOrDefault();
 
-                        if (deploymentToProcess != null)
+                        if (deploymentToProcess != null && deploymentToProcess.Tags.Contains("reserved.latest"))
                         {
                             var packageConfiguration = JsonConvert.DeserializeObject<Configuration>(deploymentToProcess.PackageContent);
 
@@ -65,7 +67,7 @@ namespace Mmm.Iot.Functions.DeploymentSync
                             var jobId = Guid.NewGuid().ToString();
                             try
                             {
-                                // await TenantConnectionHelper.GetJobClient(deploymentRequest.TenantId).ScheduleTwinUpdateAsync(jobId, targetCondition, desiredTwin, DateTime.UtcNow, 600);
+                                await TenantConnectionHelper.GetJobClient(deploymentRequest.TenantId).ScheduleTwinUpdateAsync(jobId, targetCondition, desiredTwin, DateTime.UtcNow, 600);
                             }
                             catch (Exception ex)
                             {

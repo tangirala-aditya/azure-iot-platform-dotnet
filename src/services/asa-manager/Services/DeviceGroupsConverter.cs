@@ -13,6 +13,7 @@ using Mmm.Iot.AsaManager.Services.External.IotHubManager;
 using Mmm.Iot.AsaManager.Services.Models;
 using Mmm.Iot.AsaManager.Services.Models.DeviceGroups;
 using Mmm.Iot.AsaManager.Services.Models.Storage;
+using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
@@ -26,17 +27,20 @@ namespace Mmm.Iot.AsaManager.Services
         private const string CsvHeader = "DeviceId,GroupId";
         private readonly IIotHubManagerClient iotHubManager;
         private readonly ITableStorageClient tableStorageClient;
+        private readonly AppConfig appConfig;
 
         public DeviceGroupsConverter(
             IIotHubManagerClient iotHubManager,
             IBlobStorageClient blobClient,
             IStorageAdapterClient storageAdapterClient,
             ITableStorageClient tableStorageClient,
-            ILogger<DeviceGroupsConverter> log)
+            ILogger<DeviceGroupsConverter> log,
+            AppConfig appConfig)
                 : base(blobClient, storageAdapterClient, log)
         {
             this.iotHubManager = iotHubManager;
             this.tableStorageClient = tableStorageClient;
+            this.appConfig = appConfig;
         }
 
         public override string Entity
@@ -173,11 +177,11 @@ namespace Mmm.Iot.AsaManager.Services
 
             this.WriteDataToTableStorageAndQueue(deviceMapping, tenantId);
 
-            // string blobFilePath = await this.WriteFileContentToBlobAsync(fileContent, tenantId, operationId);
+            string blobFilePath = await this.WriteFileContentToBlobAsync(fileContent, tenantId, operationId);
             ConversionApiModel conversionResponse = new ConversionApiModel
             {
                 TenantId = tenantId,
-                BlobFilePath = string.Empty,
+                BlobFilePath = blobFilePath,
                 Entities = deviceGroups,
                 OperationId = operationId,
             };
@@ -218,7 +222,7 @@ namespace Mmm.Iot.AsaManager.Services
                                 IEnumerable<List<string>> batchedData = this.SplitDevicesIntoBatches(newDeviceIds.ToList());
                                 if (batchedData != null && batchedData.Count() > 0)
                                 {
-                                    QueueClient queueClient = new QueueClient("DefaultEndpointsProtocol=https;AccountName=teststorageacsragav;AccountKey=H8b0TZ5zcHayHUtV0B3sQXVa8IQVEyRQDqWPIqrceW/sA+DbcpvBdRoSfCkaXc0fU2GIBm8wtvMJENLKK3YEqQ==;EndpointSuffix=core.windows.net", "deploymentRequests", new QueueClientOptions() { MessageEncoding = QueueMessageEncoding.Base64 });
+                                    QueueClient queueClient = new QueueClient(this.appConfig.Global.StorageAccountConnectionString, "devicesfordeployment", new QueueClientOptions() { MessageEncoding = QueueMessageEncoding.Base64 });
                                     await queueClient.CreateIfNotExistsAsync();
 
                                     foreach (var data in batchedData)

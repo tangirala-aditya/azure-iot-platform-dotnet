@@ -28,7 +28,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Helpers
         private const string PackageContentParameter = "packageContent";
         private const string PriorityParameter = "priority";
 
-        public static Configuration ToHubConfiguration(DeploymentServiceModel model)
+        public static Configuration ToHubConfiguration(DeploymentServiceModel model, bool isReRun = false)
         {
             var packageConfiguration = JsonConvert.DeserializeObject<Configuration>(model.PackageContent);
 
@@ -43,7 +43,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Helpers
                 throw new InvalidInputException("Deployment type does not match with package contents.");
             }
 
-            var deploymentId = Guid.NewGuid().ToString().ToLower();
+            var deploymentId = !isReRun ? Guid.NewGuid().ToString().ToLower() : model.Id.ToLower();
             var configuration = new Configuration(deploymentId);
             configuration.Content = packageConfiguration.Content;
 

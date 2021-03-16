@@ -56,12 +56,15 @@ namespace Mmm.Iot.Functions.DeploymentSync
                         if (isFirmWareUpdate)
                         {
                             message.SystemProperties.TryGetValue("iothub-connection-device-id", out object deviceId);
-                            var newTwin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
-                            var appliedConfigurations = newTwin.Configurations.Where(c => c.Value.Status.Equals(ConfigurationStatus.Applied));
-                            if (appliedConfigurations != null && appliedConfigurations.Count() > 0)
+                            message.Properties.TryGetValue("appliedConfiguration", out object appliedConfiguration);
+
+                            if (!string.IsNullOrWhiteSpace(appliedConfiguration.ToString()))
                             {
+                                var newTwin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
+
                                 DeploymentSyncService service = new DeploymentSyncService();
-                                var appliedDeploymentFromStorage = service.GetDeploymentsByIdFromStorage(Convert.ToString(tenant), appliedConfigurations.Select(ac => ac.Key).ToArray()).Result.FirstOrDefault();
+                                var appliedDeploymentFromStorage = service.GetDeploymentsByIdFromStorage(Convert.ToString(tenant), new string[] { appliedConfiguration.ToString() }).Result.FirstOrDefault();
+
                                 await service.SaveDeploymentHistory(Convert.ToString(tenant), appliedDeploymentFromStorage, newTwin);
                             }
                         }

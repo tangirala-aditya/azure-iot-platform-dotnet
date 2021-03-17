@@ -111,6 +111,9 @@ jobs:
           inlineScript: |-
             set -Eeuxo pipefail
             aksInstanceCount=`az aks list --query "[?name=='$(aksName)'] | length(@)"`
+            echo "servicePrincipalId:$servicePrincipalId"
+            echo "servicePrincipalKey:$servicePrincipalKey"
+            echo 
             if [ "$aksInstanceCount" != "0" ]
             then
               az aks update-credentials --resource-group $(resourceGroupName) --name $(aksName) --reset-service-principal --service-principal $servicePrincipalId --client-secret $servicePrincipalKey

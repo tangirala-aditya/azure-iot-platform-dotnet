@@ -17,7 +17,6 @@ import {
     PageTitle,
     Protected,
     RefreshBarContainer as RefreshBar,
-    SearchInput,
     JsonEditorModal,
 } from "components/shared";
 import { DeviceNewContainer } from "./flyouts/deviceNew";
@@ -27,7 +26,7 @@ import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "component
 import { svgs, getDeviceGroupParam, getTenantIdParam } from "utilities";
 
 import "./devices.scss";
-import { IdentityGatewayService } from "services";
+import { IdentityGatewayService, IoTHubManagerService } from "services";
 
 const closedFlyoutState = { openFlyoutName: undefined };
 
@@ -50,20 +49,22 @@ export class Devices extends Component {
     }
 
     componentWillMount() {
-        if (this.props.location.search) {
-            const tenantId = getTenantIdParam(this.props.location.search);
+        if (this.props.location && this.props.location.search) {
+            const tenantId = getTenantIdParam(this.props.location);
             this.props.checkTenantAndSwitch({
                 tenantId: tenantId,
                 redirectUrl: window.location.href,
             });
             this.setState({
-                selectedDeviceGroupId: getDeviceGroupParam(
-                    this.props.location.search
-                ),
+                selectedDeviceGroupId: getDeviceGroupParam(this.props.location),
             });
         }
 
-        if (this.props && this.props.location.pathname === "/deviceSearch") {
+        if (
+            this.props &&
+            this.props.location &&
+            this.props.location.pathname === "/deviceSearch"
+        ) {
             this.props.resetDeviceByCondition();
             this.setState({
                 isDeviceSearch: true,
@@ -94,7 +95,7 @@ export class Devices extends Component {
     }
 
     componentDidMount() {
-        if (this.state.selectedDeviceGroupId) {
+        if (this.state.selectedDeviceGroupId && this.props.location) {
             window.history.replaceState(
                 {},
                 document.title,
@@ -121,18 +122,6 @@ export class Devices extends Component {
             contextBtns,
             openFlyoutName: undefined,
         });
-
-    onGridReady = (gridReadyEvent) => (this.deviceGridApi = gridReadyEvent.api);
-
-    searchOnChange = ({ target: { value } }) => {
-        if (this.deviceGridApi) {
-            this.deviceGridApi.setQuickFilter(value);
-        }
-    };
-
-    onSearchClick = () => {
-        this.props.logEvent(toDiagnosticsModel("Devices_Search", {}));
-    };
 
     openModal = (modalName, jsonValue) => {
         this.setState({
@@ -169,7 +158,7 @@ export class Devices extends Component {
         let children = [];
 
         if (!isDeviceSearch) {
-            children.push([
+            children.push(
                 <DeviceGroupDropdown
                     updateLoadMore={this.updateLoadMoreOnDeviceGroupChange}
                     deviceGroupIdFromUrl={this.state.selectedDeviceGroupId}
@@ -177,8 +166,8 @@ export class Devices extends Component {
                 <Protected permission={permissions.updateDeviceGroups}>
                     <ManageDeviceGroupsBtn />
                 </Protected>,
-                <CreateDeviceQueryBtn />,
-            ]);
+                <CreateDeviceQueryBtn />
+            );
         }
 
         if (
@@ -232,6 +221,21 @@ export class Devices extends Component {
         this.props.cancelDeviceCalls({ makeSubsequentCalls: false });
     };
 
+    downloadFile = () => {
+        IoTHubManagerService.getDevicesReportByQuery(
+            this.props.activeDeviceGroupConditions
+        ).subscribe((response) => {
+            var blob = new Blob([response.response], {
+                type: response.response.type,
+            });
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement("a");
+            a.href = url;
+            a.download = "DevicesList.xlsx";
+            a.click();
+        });
+    };
+
     render() {
         const {
                 t,
@@ -256,6 +260,8 @@ export class Devices extends Component {
                 rowData: isDataPending ? undefined : deviceData || [],
                 onContextMenuChange: this.onContextMenuChange,
                 t: this.props.t,
+                searchPlaceholder: this.props.t("devices.searchPlaceholder"),
+                searchAreaLabel: this.props.t("devices.ariaLabel"),
             },
             newDeviceFlyoutOpen = this.state.openFlyoutName === "new-device",
             simManagementFlyoutOpen =
@@ -303,16 +309,8 @@ export class Devices extends Component {
                     />
                     {!!error && <AjaxError t={t} error={error} />}
                     {this.state.isDeviceSearch && <AdvanceSearchContainer />}
-                    <div className="search-left-div">
-                        <SearchInput
-                            onChange={this.searchOnChange}
-                            onClick={this.onSearchClick}
-                            aria-label={t("devices.ariaLabel")}
-                            placeholder={t("devices.searchPlaceholder")}
-                        />
-                    </div>
-                    <div className="cancel-right-div">
-                        {!this.state.isDeviceSearch && (
+                    {!this.state.isDeviceSearch && (
+                        <div className="cancel-right-div">
                             <Toggle
                                 attr={{
                                     button: {
@@ -325,8 +323,15 @@ export class Devices extends Component {
                                 offLabel={t("devices.loadMore")}
                                 onChange={this.switchLoadMore}
                             />
-                        )}
-                    </div>
+                            <Btn
+                                svg={svgs.upload}
+                                className="download-deviceReport"
+                                onClick={this.downloadFile}
+                            >
+                                {t("devices.downloadDeviceReport")}
+                            </Btn>
+                        </div>
+                    )}
                     {!error && (
                         <DevicesGridContainer
                             {...gridProps}

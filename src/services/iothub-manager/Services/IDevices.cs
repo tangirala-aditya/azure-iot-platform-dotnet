@@ -2,6 +2,7 @@
 // Copyright (c) 3M. All rights reserved.
 // </copyright>
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mmm.Iot.Common.Services;
 using Mmm.Iot.IoTHubManager.Services.Models;
@@ -28,8 +29,10 @@ namespace Mmm.Iot.IoTHubManager.Services
 
         Task<TwinServiceListModel> GetModuleTwinsByQueryAsync(string query, string continuationToken);
 
-        Task<TwinServiceListModel> GetDeploymentHistoryAsync(string deviceId, string tenantId);
+        Task<DeploymentHistoryListModel> GetDeploymentHistoryAsync(string deviceId, string tenantId);
 
         Task<DeviceServiceListModel> GetDeviceListAsync(string query, string continuationToken);
+
+        Task<List<DeviceReportServiceModel>> GetDeviceListForReport(string query);
     }
 }

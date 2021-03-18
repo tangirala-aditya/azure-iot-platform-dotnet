@@ -16,6 +16,7 @@ import {
 } from "components/shared";
 
 import "./advanceSearch.scss";
+import { IoTHubManagerService } from "services";
 
 // A counter for creating unique keys per new condition
 let conditionKey = 0;
@@ -49,6 +50,7 @@ export class AdvanceSearch extends LinkedComponent {
             deviceQueryConditions: [],
             isPending: false,
             error: undefined,
+            enableDownload: false,
         };
 
         // State to input links
@@ -78,11 +80,11 @@ export class AdvanceSearch extends LinkedComponent {
                             return !this.conditionIsNew(condition);
                         }
                     );
-                    this.props.fetchDevicesByCondition(
-                        rawQueryConditions.map((condition) => {
+                    this.props.fetchDevicesByCondition({
+                        data: rawQueryConditions.map((condition) => {
                             return toDeviceConditionModel(condition);
-                        })
-                    );
+                        }),
+                    });
                     resolve();
                 });
             } catch (error) {
@@ -94,6 +96,7 @@ export class AdvanceSearch extends LinkedComponent {
     apply = (event) => {
         this.props.logEvent(toDiagnosticsModel("CreateDeviceQuery_Create", {}));
         event.preventDefault();
+        this.setState({ enableDownload: true });
         this.queryDevices()
             .then(() => {
                 this.setState({ error: undefined, isPending: false });
@@ -146,6 +149,7 @@ export class AdvanceSearch extends LinkedComponent {
     onReset = () => {
         this.props.logEvent(toDiagnosticsModel("CreateDeviceQuery_Reset", {}));
         this.props.resetDeviceByCondition();
+        this.setState({ enableDownload: false });
         this.resetFlyoutAndDevices()
             .then(() => {
                 this.setState({ error: undefined, isPending: false });
@@ -178,6 +182,29 @@ export class AdvanceSearch extends LinkedComponent {
         ) {
             this.state.deviceQueryConditions[key].value = "";
         }
+    };
+
+    downloadFile = () => {
+        const rawQueryConditions = this.state.deviceQueryConditions.filter(
+            (condition) => {
+                return !this.conditionIsNew(condition);
+            }
+        );
+
+        IoTHubManagerService.getDevicesReportByQuery(
+            rawQueryConditions.map((condition) => {
+                return toDeviceConditionModel(condition);
+            })
+        ).subscribe((response) => {
+            var blob = new Blob([response.response], {
+                type: response.response.type,
+            });
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement("a");
+            a.href = url;
+            a.download = "FilteredDevicesList.xlsx";
+            a.click();
+        });
     };
 
     render() {
@@ -352,6 +379,21 @@ export class AdvanceSearch extends LinkedComponent {
                     </Btn>
                     <div className="cancel-right-div">
                         <BtnToolbar>
+                            <Btn
+                                svg={svgs.upload}
+                                className="download-deviceQueryReport"
+                                disabled={
+                                    !this.state.enableDownload ||
+                                    !this.formIsValid() ||
+                                    conditionHasErrors ||
+                                    this.state.isPending ||
+                                    this.state.deviceQueryConditions.length ===
+                                        0
+                                }
+                                onClick={this.downloadFile}
+                            >
+                                {t("devices.downloadDeviceReport")}
+                            </Btn>
                             <Btn
                                 primary
                                 disabled={

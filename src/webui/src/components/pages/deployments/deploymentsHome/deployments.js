@@ -56,16 +56,14 @@ export class Deployments extends Component {
     }
 
     componentWillMount() {
-        if (this.props.location.search) {
-            const tenantId = getTenantIdParam(this.props.location.search);
+        if (this.props.location && this.props.location.search) {
+            const tenantId = getTenantIdParam(this.props.location);
             this.props.checkTenantAndSwitch({
                 tenantId: tenantId,
                 redirectUrl: window.location.href,
             });
             this.setState({
-                selectedDeviceGroupId: getDeviceGroupParam(
-                    this.props.location.search
-                ),
+                selectedDeviceGroupId: getDeviceGroupParam(this.props.location),
             });
         }
         IdentityGatewayService.VerifyAndRefreshCache();
@@ -82,7 +80,7 @@ export class Deployments extends Component {
     }
 
     componentDidMount() {
-        if (this.state.selectedDeviceGroupId) {
+        if (this.state.selectedDeviceGroupId && this.props.location) {
             window.history.replaceState(
                 {},
                 document.title,
@@ -103,9 +101,14 @@ export class Deployments extends Component {
 
     getDefaultFlyout(rowData) {
         const { location } = this.props;
-        const deploymentId = getParamByName(location.search, "deploymentId"),
+        const deploymentId = getParamByName(location, "deploymentId"),
             deployment = rowData.find((dep) => dep.id === deploymentId);
-        if (location.search && !this.state.deployment && deployment) {
+        if (
+            location &&
+            location.search &&
+            !this.state.deployment &&
+            deployment
+        ) {
             this.setState({
                 deployment: deployment,
                 relatedDeployments: rowData.filter(
@@ -113,7 +116,7 @@ export class Deployments extends Component {
                         x.deviceGroupId === deployment.deviceGroupId &&
                         x.id !== deployment.id
                 ),
-                openFlyoutName: getFlyoutNameParam(location.search),
+                openFlyoutName: getFlyoutNameParam(location),
                 flyoutLink: window.location.href + location.search,
             });
             this.selectRows(deploymentId);
@@ -128,7 +131,9 @@ export class Deployments extends Component {
     }
 
     closeFlyout = () => {
-        this.props.location.search = undefined;
+        if (this.props.location && this.props.location.search) {
+            this.props.location.search = undefined;
+        }
         this.setState(closedFlyoutState);
     };
 
@@ -247,10 +252,10 @@ export class Deployments extends Component {
                         className="deployments-title"
                         titleValue={t("deployments.title")}
                     />
-                    <h1 className="right-corner">
+                    <h2 className="right-corner">
                         <Balloon
                             position={BalloonPosition.Bottom}
-                            align={BalloonAlignment.Center}
+                            align={BalloonAlignment.End}
                             tooltip={
                                 <div>
                                     Number of Active deployments associated with
@@ -263,7 +268,7 @@ export class Deployments extends Component {
                         /
                         <Balloon
                             position={BalloonPosition.Bottom}
-                            align={BalloonAlignment.Center}
+                            align={BalloonAlignment.End}
                             tooltip={
                                 <div>
                                     Number of Active deployments associated with
@@ -279,7 +284,7 @@ export class Deployments extends Component {
                         /
                         <Balloon
                             position={BalloonPosition.Bottom}
-                            align={BalloonAlignment.Center}
+                            align={BalloonAlignment.End}
                             tooltip={
                                 <div>
                                     Total number of deployments available in IOT
@@ -291,7 +296,7 @@ export class Deployments extends Component {
                                 allActiveDeployments.filter((x) => x.isActive)
                                     .length}
                         </Balloon>
-                    </h1>
+                    </h2>
                     {!!error && <AjaxError t={t} error={error} />}
                     {!error && <DeploymentsGrid {...gridProps} />}
                     {this.state.openFlyoutName === "newDeployment" && (

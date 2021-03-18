@@ -5,8 +5,10 @@
         "profile": "Profile",
         "more": "More",
         "getStarted": "Get started",
-        "documentation": "Documentation",
-        "sendSuggestion": "Send a suggestion"
+        "iotAcceleratorDocumentation": "IoT Accelerator Documentation",
+        "publicDocumentation": "Public Documentation",
+        "innerSourceDocumentation": "InnerSource Documentation",
+        "devopsDocumentation": "Devops Documentation"
     },
     "globalNav": {
         "expand": "Expand Side Navigation",
@@ -79,7 +81,7 @@
     },
     "deviceGroupDropDown": {
         "ariaLabel": "Device group",
-        "modals" : {
+        "modals": {
             "copyLink": {
                 "contextMenuName": "Copy Link",
                 "title": "Copy Link"
@@ -166,13 +168,15 @@
                     },
                     "deployment": {
                         "id": "When deploying your package, this value will be replaced by the ID of your deployment"
-                    }
+                    },
+                    "uniqueId":"Parent only. UniqueId used to attach to a Firmware Package creation."
                 }
             }
         }
     },
     "helpFlyout": {
-        "title": "Documentation"
+        "platformTitle": "Platform Documentation",
+        "microsoftTitle": "Microsoft Documentation"
     },
     "profileFlyout": {
         "title": "User Profile",
@@ -414,6 +418,7 @@
         "refresh": "Refresh",
         "deviceSearchTitle": "Device Search",
         "deviceSearchTitleDescription": "Search across all devices.",
+        "downloadDeviceReport": "Download",
         "showTelemetry": "Show telemetry",
         "returnToDevices": "Devices",
         "loadMore": "Load more",
@@ -493,9 +498,9 @@
                     "title": "Device Deployments",
                     "description": "Deployment History of device",
                     "noneExist": "No history present for this device",
-                    "firmwareVersion" : "Firmware Version",
-                    "startDate": "Start Date Time",
-                    "endDate": "End Date Time"
+                    "deploymentName": "Deployment name",
+                    "firmwareVersion": "Firmware Version",
+                    "date": "Date"
                 }
             },
             "delete": {
@@ -949,6 +954,7 @@
                 "name": "Name",
                 "deploymentStatus": "Deployment Status",
                 "firmware": "Firmware",
+                "previousFirmware": "Previous Firmware",
                 "lastMessage": "Last Message",
                 "start": "Start",
                 "end": "End"
@@ -1067,13 +1073,13 @@
         "firmware": "Firmware",
         "custom": "Custom"
     },
-  "modal": {
-    "delete": "Delete",
-    "cancel": "Cancel",
-    "close": "Close",
-    "copy": "Copy",
-    "ok": "Ok"
-  },
+    "modal": {
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "close": "Close",
+        "copy": "Copy",
+        "ok": "Ok"
+    },
     "walkthrough": {
         "tabs": {
             "dashboard": "Dashboard",

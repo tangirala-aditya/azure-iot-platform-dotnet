@@ -43,22 +43,20 @@ export class Summary extends Component {
     }
 
     componentWillMount() {
-        if (this.props.location.search) {
-            const tenantId = getTenantIdParam(this.props.location.search);
+        if (this.props.location && this.props.location.search) {
+            const tenantId = getTenantIdParam(this.props.location);
             this.props.checkTenantAndSwitch({
                 tenantId: tenantId,
                 redirectUrl: window.location.href,
             });
             this.setState({
-                selectedDeviceGroupId: getDeviceGroupParam(
-                    this.props.location.search
-                ),
+                selectedDeviceGroupId: getDeviceGroupParam(this.props.location),
             });
         }
     }
 
     componentDidMount() {
-        if (this.state.selectedDeviceGroupId) {
+        if (this.state.selectedDeviceGroupId && this.props.location) {
             window.history.replaceState(
                 {},
                 document.title,
@@ -121,7 +119,7 @@ export class Summary extends Component {
                                     label={this.props.t(
                                         "maintenance.openAlerts"
                                     )}
-                                    size="large"
+                                    size="medium"
                                 />
                             </StatGroup>
                         )}
@@ -151,7 +149,7 @@ export class Summary extends Component {
                                     this.props.failedJobsCount
                                 )}
                                 label={this.props.t("maintenance.failedJobs")}
-                                size="large"
+                                size="medium"
                             />
                         </StatGroup>
                         <StatGroup>

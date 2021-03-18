@@ -17,7 +17,6 @@ import {
     PageTitle,
     Protected,
     RefreshBarContainer as RefreshBar,
-    SearchInput,
 } from "components/shared";
 import { NewRuleFlyout } from "./flyouts";
 import { svgs, getDeviceGroupParam, getTenantIdParam } from "utilities";
@@ -56,16 +55,14 @@ export class Rules extends Component {
     }
 
     componentWillMount() {
-        if (this.props.location.search) {
-            const tenantId = getTenantIdParam(this.props.location.search);
+        if (this.props.location && this.props.location.search) {
+            const tenantId = getTenantIdParam(this.props.location);
             this.props.checkTenantAndSwitch({
                 tenantId: tenantId,
                 redirectUrl: window.location.href,
             });
             this.setState({
-                selectedDeviceGroupId: getDeviceGroupParam(
-                    this.props.location.search
-                ),
+                selectedDeviceGroupId: getDeviceGroupParam(this.props.location),
             });
         }
         IdentityGatewayService.VerifyAndRefreshCache();
@@ -91,7 +88,7 @@ export class Rules extends Component {
     }
 
     componentDidMount() {
-        if (this.state.selectedDeviceGroupId) {
+        if (this.state.selectedDeviceGroupId && this.props.location) {
             window.history.replaceState(
                 {},
                 document.title,
@@ -112,12 +109,6 @@ export class Rules extends Component {
     };
 
     onGridReady = (gridReadyEvent) => (this.rulesGridApi = gridReadyEvent.api);
-
-    searchOnChange = ({ target: { value } }) => {
-        if (this.rulesGridApi) {
-            this.rulesGridApi.setQuickFilter(value);
-        }
-    };
 
     onContextMenuChange = (contextBtns) => this.setState({ contextBtns });
 
@@ -209,11 +200,6 @@ export class Rules extends Component {
                     <PageContent className="rules-container">
                         <PageTitle titleValue={t("rules.title")} />
                         {!!error && <AjaxError t={t} error={error} />}
-                        <SearchInput
-                            onChange={this.searchOnChange}
-                            placeholder={t("rules.searchPlaceholder")}
-                            aria-label={t("rules.ariaLabel")}
-                        />
                         {!error && <RulesGrid {...gridProps} />}
                         {this.state.openFlyoutName === "newRule" && (
                             <NewRuleFlyout

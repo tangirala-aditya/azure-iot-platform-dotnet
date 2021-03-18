@@ -486,7 +486,7 @@ export class RuleDetails extends Component {
                                         </div>
                                     </div>
                                     <div className={css("rule-stat-cell")}>
-                                        <div className="rule-stat-header">
+                                        <div className={css("rule-stat-header")}>
                                             {t("maintenance.acknowledged")}
                                         </div>
                                         <div className={css("rule-stat-value")}>
@@ -496,7 +496,7 @@ export class RuleDetails extends Component {
                                         </div>
                                     </div>
                                     <div className={css("rule-stat-cell")}>
-                                        <div className="rule-stat-header">
+                                        <div className={css("rule-stat-header")}>
                                             {t("maintenance.closed")}
                                         </div>
                                         <div className={css("rule-stat-value")}>
@@ -504,7 +504,7 @@ export class RuleDetails extends Component {
                                         </div>
                                     </div>
                                     <div className={css("rule-stat-cell")}>
-                                        <div className="rule-stat-header">
+                                        <div className={css("rule-stat-header")}>
                                             {t("maintenance.lastEvent")}
                                         </div>
                                         <div className={css("rule-stat-value")}>

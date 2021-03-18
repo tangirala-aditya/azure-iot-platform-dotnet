@@ -333,7 +333,7 @@ export class AdvanceSearch extends LinkedComponent {
                                                 "deviceQueryConditions.valuePlaceholder"
                                             )}
                                             link={condition.value}
-                                            className="width-70"
+                                            className={css("width-70")}
                                         />
                                     )}
                                     {this.state.deviceQueryConditions[idx]

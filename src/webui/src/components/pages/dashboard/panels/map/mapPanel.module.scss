@@ -66,9 +66,9 @@ $zoomBtnFont: 20px;
       color: themed('color-text-rest');
       background-color: themed('color-bg-balloon');
       border-color: themed('color-border-controls');
-      &.nominal { border-color: themed('colorGridSelectedRowBorder'); }
-      &.warning { border-color: themed('colorWarning'); }
-      &.alert { border-color: themed('colorAlert'); }
+      &:global(.nominal) { border-color: themed('colorGridSelectedRowBorder'); }
+      &:global(.warning) { border-color: themed('colorWarning'); }
+      &:global(.alert) { border-color: themed('colorAlert'); }
     }
   }
 }

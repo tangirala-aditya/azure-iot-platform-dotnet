@@ -12,10 +12,10 @@ import {
 } from "components/shared";
 import { svgs, joinClasses } from "utilities";
 import { IoTHubManagerService } from "services";
-import "./ruleSummary.scss";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("../ruleViewer/ruleViewer.module.scss"));
+const ruleSummaryCss = classnames.bind(require("./ruleSummary.module.scss"));
 
 const editRule = {
     id: "edit-rule-id",
@@ -95,7 +95,7 @@ export class RuleSummary extends Component {
         return (
             <SummarySection
                 key={rule.id}
-                className={joinClasses("padded-bottom", className)}
+                className={joinClasses(ruleSummaryCss("padded-bottom"), className)}
             >
                 {includeRuleInfo && <SectionHeader>{rule.name}</SectionHeader>}
                 {includeRuleInfo && <FormLabel>{rule.description}</FormLabel>}

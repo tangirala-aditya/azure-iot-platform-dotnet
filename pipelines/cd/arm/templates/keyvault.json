@@ -24,6 +24,9 @@
       "enableSoftDelete": {
         "type": "bool"
     },
+    "enablePurgeProtection": {
+      "type": "bool"    
+    },  
     "softDeleteRetentionInDays": {
        "type": "int"
     }

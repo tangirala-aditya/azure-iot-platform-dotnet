@@ -23,9 +23,6 @@
       },
       "enableSoftDelete": {
         "type": "bool"
-    },
-    "enablePurgeProtection": {
-      "type": "bool"    
     },  
     "softDeleteRetentionInDays": {
        "type": "int"
@@ -49,7 +46,6 @@
           "tenantId": "[subscription().tenantId]",
           "enableSoftDelete": "[parameters('enableSoftDelete')]",
           "softDeleteRetentionInDays": "[parameters('softDeleteRetentionInDays')]",
-          "enablePurgeProtection": "[parameters('enablePurgeProtection')]",
           "accessPolicies": [
             {
               "condition": "[not(empty(parameters('userObjId')))]",

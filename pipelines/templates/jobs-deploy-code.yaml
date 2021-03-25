@@ -98,7 +98,7 @@ jobs:
             helmVersion: $(helmVersion)
             imageTag: ${{parameters.imageTag}}
 
-      - ${{ if eq(variables['parameters.blueGreen'], 'true')] }}:
+      - ${{ if eq(variables['parameters.blueGreen'], 'true') }}:
         - template: steps-deploy-blue-green-service.yaml
           parameters:
             aksName: $(aksName)

@@ -85,7 +85,7 @@ jobs:
           echo "blueGreen: ${{parameters.blueGreen}}"
         displayName: Print job variables
 
-      - ${{ if $[eq(variables['parameters.blueGreen'], 'false')] }}:
+      - ${{ if [eq(variables['parameters.blueGreen'], 'false')] }}:
          
         - template: steps-deploy-individual-service.yaml
           parameters:
@@ -98,7 +98,7 @@ jobs:
             helmVersion: $(helmVersion)
             imageTag: ${{parameters.imageTag}}
 
-      - ${{ if $[eq(variables['parameters.blueGreen'], 'true')] }}:
+      - ${{ if [eq(variables['parameters.blueGreen'], 'true')] }}:
         - template: steps-deploy-blue-green-service.yaml
           parameters:
             aksName: $(aksName)

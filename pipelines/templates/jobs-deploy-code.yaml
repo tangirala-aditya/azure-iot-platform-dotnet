@@ -85,23 +85,7 @@ jobs:
           echo "blueGreen: ${{parameters.blueGreen}}"
         displayName: Print job variables
 
-      - ${{ if eq('false',variables['parameters.blueGreen']) }}: 
-        - template: steps-deploy-individual-service.yaml
-          parameters:
-            aksName: $(aksName)
-            resourceGroupName: $(resourceGroupName)
-            subscriptionName: ${{parameters.subscriptionName}}
-            serviceName: $(serviceName)
-            servicePort: $(servicePort)
-            serviceProbesEnabled: $(serviceProbesEnabled)
-            helmVersion: $(helmVersion)
-            imageTag: ${{parameters.imageTag}}
-
-        - script: |-
-            echo "blueGreen: ${{parameters.blueGreen}}"
-          displayName: Info on BlueGreen variable
-
-      - ${{ if eq('true',variables['parameters.blueGreen']) }}:
+      - ${{ if eq(true,variables['parameters.blueGreen']) }}:
         - template: steps-deploy-blue-green-service.yaml
           parameters:
             aksName: $(aksName)
@@ -118,6 +102,24 @@ jobs:
         - script: |-
             echo "blueGreen: ${{parameters.blueGreen}}"
           displayName: Print job variables
+
+      - ${{ if eq(false,variables['parameters.blueGreen']) }}: 
+        - template: steps-deploy-individual-service.yaml
+          parameters:
+            aksName: $(aksName)
+            resourceGroupName: $(resourceGroupName)
+            subscriptionName: ${{parameters.subscriptionName}}
+            serviceName: $(serviceName)
+            servicePort: $(servicePort)
+            serviceProbesEnabled: $(serviceProbesEnabled)
+            helmVersion: $(helmVersion)
+            imageTag: ${{parameters.imageTag}}
+
+        - script: |-
+            echo "blueGreen: ${{parameters.blueGreen}}"
+          displayName: Info on BlueGreen variable
+
+
 
   - job: addKey
     displayName: Update Application Configuration with BuildNumber

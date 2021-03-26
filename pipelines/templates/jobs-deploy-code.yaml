@@ -13,7 +13,7 @@ jobs:
     displayName: Deploy
     variables: 
       - name: blueGreen
-        value: $[eq('yes', 'yes')]
+        value: $[eq(variables['blueGreen-acsDev'], 'yes')]
     steps:
 
       - ${{ if eq(variables['blueGreen'],false) }}:
@@ -30,7 +30,7 @@ jobs:
               echo "blueGreen": $(blueGreen)
               echo "go to  individual services..."
 
-      - ${{ if eq(variables['blueGreen'],false) }}:
+      - ${{ if eq(variables['blueGreen'],true) }}:
         - task: AzureCLI@2
           inputs:
             azureSubscription: ${{parameters.subscriptionName}}

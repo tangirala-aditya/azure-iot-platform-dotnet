@@ -13,7 +13,7 @@ jobs:
     displayName: Deploy
     steps:
 
-      - ${{ if eq(parameters.blueGreen,false) }}:
+      - ${{ if eq(parameters.blueGreen,'false') }}:
         - task: AzureCLI@2
           inputs:
             azureSubscription: ${{parameters.subscriptionName}}
@@ -24,7 +24,7 @@ jobs:
               set -Eeuxo pipefail
               echo "blueGreen":$(blueGreen-acsDev)
 
-      - ${{ if eq(parameters.blueGreen,true) }}:
+      - ${{ if eq(parameters.blueGreen,'true') }}:
         - task: AzureCLI@2
           inputs:
             azureSubscription: ${{parameters.subscriptionName}}
@@ -34,7 +34,17 @@ jobs:
             inlineScript: |-
               set -Eeuxo pipefail
               echo "blueGreen":$(blueGreen-acsDev)
-                
+      
+
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          addSpnToEnvironment: true
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            set -Eeuxo pipefail
+            echo "non-blueGreen":$(blueGreen-acsDev)
 
 
 

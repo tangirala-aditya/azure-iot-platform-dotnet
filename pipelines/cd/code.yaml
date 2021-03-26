@@ -17,8 +17,7 @@ stages:
     displayName: ACS dev
     variables:
     - group: acsDev
-    dependsOn:
-      - checkParameters
+    
     jobs:
       - template: ../templates/jobs-deploy-code.yaml
         parameters:

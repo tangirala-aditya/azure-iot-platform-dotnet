@@ -101,7 +101,8 @@ jobs:
             type: blue
 
         - script: |-
-            echo "blueGreen: ${{blueGreen-acsDev}}"
+            echo $(blueGreen-acsDev)
+            echo "should be true"
           displayName: Info on BlueGreen variable
 
       - ${{ if eq(false,variables['blueGreen-acsDev']) }}:
@@ -118,7 +119,8 @@ jobs:
             imageTag: ${{parameters.imageTag}}
 
         - script: |-
-            echo "blueGreen: ${{blueGreen-acsDev}}"
+            echo $(blueGreen-acsDev)
+            echo "should be false"
           displayName: Info on BlueGreen variable
 
 

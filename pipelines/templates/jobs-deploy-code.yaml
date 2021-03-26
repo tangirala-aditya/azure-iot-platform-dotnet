@@ -99,9 +99,7 @@ jobs:
             helmVersion: $(helmVersion)
             imageTag: ${{parameters.imageTag}}
             type: blue
-        - script: |-
-            echo "blueGreen: ${{parameters.blueGreen}}"
-          displayName: Print job variables
+
 
       - ${{ if eq(false,variables['parameters.blueGreen']) }}: 
         # - template: steps-deploy-individual-service.yaml

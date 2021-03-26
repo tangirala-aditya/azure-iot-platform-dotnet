@@ -55,6 +55,7 @@ jobs:
             set -Eeuxo pipefail
             echo "non-blueGreen":$(blueGreen-acsDev)
             echo "non-blueGreen":${{parameters.blueGreen}}
+            echo "blueGreen": $(blueGreen) 
 
                       
 

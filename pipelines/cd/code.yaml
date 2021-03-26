@@ -97,7 +97,6 @@ stages:
           applicationShortCode: $(applicationShortCode-acsDev)
           environmentCategory: $(environmentCategory-acsDev)
           imageTag: $(_imageTag)
-          blueGreen: $(blueGreen-acsDev)
           subscriptionId: $(subscriptionId-acsDev)
 
   - stage: crslQa

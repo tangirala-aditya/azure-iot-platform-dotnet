@@ -14,7 +14,6 @@ jobs:
     steps:
 
       - ${{ if eq(false,variables['parameters.blueGreen']) }}:
-
         - task: AzureCLI@2
           inputs:
             azureSubscription: ${{parameters.subscriptionName}}
@@ -25,7 +24,7 @@ jobs:
               set -Eeuxo pipefail
               echo "blueGreen-falsecheck":$(blueGreen-acsDev)
               echo "blueGreen-falsecheck":${{parameters.blueGreen}}
-
+              echo "go to  individual services..."
 
       - ${{ if eq(true,variables['parameters.blueGreen']) }}:
         - task: AzureCLI@2
@@ -37,7 +36,9 @@ jobs:
             inlineScript: |-
               set -Eeuxo pipefail
               echo "blueGreen-truecheck":$(blueGreen-acsDev)
-              echo "blueGreen-truecheck":${{parameters.blueGreen}}      
+              echo "blueGreen-truecheck":${{parameters.blueGreen}} 
+              echo "go to  bluegreen services..."
+
 
       - task: AzureCLI@2
         inputs:

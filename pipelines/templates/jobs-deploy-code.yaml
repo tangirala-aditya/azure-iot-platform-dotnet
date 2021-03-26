@@ -13,7 +13,7 @@ jobs:
     displayName: Deploy
     steps:
 
-      - ${{ if eq(variables['parameters.blueGreen'],'no') }}:
+      - ${{ if eq(variables['blueGreen-acsDev'],'no') }}:
         - task: AzureCLI@2
           inputs:
             azureSubscription: ${{parameters.subscriptionName}}
@@ -26,7 +26,7 @@ jobs:
               echo "blueGreen-falsecheck":${{parameters.blueGreen}}
               echo "go to  individual services..."
 
-      - ${{ if eq(variables['parameters.blueGreen'],'yes') }}:
+      - ${{ if eq(variables['blueGreen-acsDev'],'yes') }}:
         - task: AzureCLI@2
           inputs:
             azureSubscription: ${{parameters.subscriptionName}}

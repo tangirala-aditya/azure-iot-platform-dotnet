@@ -86,11 +86,6 @@ jobs:
         displayName: Print job variables
 
       - ${{ if eq(false,variables['parameters.blueGreen']) }}: 
-
-        - script: |-
-            echo "blueGreen: ${{parameters.blueGreen}}"
-          displayName: Print job variables
-
         - template: steps-deploy-individual-service.yaml
           parameters:
             aksName: $(aksName)
@@ -102,11 +97,11 @@ jobs:
             helmVersion: $(helmVersion)
             imageTag: ${{parameters.imageTag}}
 
-      - ${{ if eq(true,variables['parameters.blueGreen']) }}:
         - script: |-
             echo "blueGreen: ${{parameters.blueGreen}}"
-          displayName: Print job variables
-                
+          displayName: Info on BlueGreen variable
+
+      - ${{ if eq(true,variables['parameters.blueGreen']) }}:
         - template: steps-deploy-blue-green-service.yaml
           parameters:
             aksName: $(aksName)
@@ -120,7 +115,9 @@ jobs:
             helmVersion: $(helmVersion)
             imageTag: ${{parameters.imageTag}}
             type: blue
-
+        - script: |-
+            echo "blueGreen: ${{parameters.blueGreen}}"
+          displayName: Print job variables
 
   - job: addKey
     displayName: Update Application Configuration with BuildNumber

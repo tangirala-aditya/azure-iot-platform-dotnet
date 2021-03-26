@@ -100,7 +100,6 @@ jobs:
             imageTag: ${{parameters.imageTag}}
             type: blue
 
-
       - ${{ if eq(false,variables['parameters.blueGreen']) }}: 
         # - template: steps-deploy-individual-service.yaml
         #   parameters:

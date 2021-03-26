@@ -13,7 +13,7 @@ jobs:
     displayName: Deploy
     steps:
 
-      - ${{ if eq(parameters.blueGreen,'false') }}:
+      - ${{ if eq(false,variables['parameters.blueGreen']) }}:
         - task: AzureCLI@2
           inputs:
             azureSubscription: ${{parameters.subscriptionName}}
@@ -24,7 +24,7 @@ jobs:
               set -Eeuxo pipefail
               echo "blueGreen":$(blueGreen-acsDev)
 
-      - ${{ if eq(parameters.blueGreen,'true') }}:
+      - ${{ if eq(true,variables['parameters.blueGreen']) }}:
         - task: AzureCLI@2
           inputs:
             azureSubscription: ${{parameters.subscriptionName}}

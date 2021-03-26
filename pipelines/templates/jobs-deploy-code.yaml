@@ -23,6 +23,8 @@ jobs:
             inlineScript: |-
               set -Eeuxo pipefail
               echo "blueGreen-falsecheck":$(blueGreen-acsDev)
+              echo "blueGreen-falsecheck":${{parameters.blueGreen}}
+
 
       - ${{ if eq(true,variables['parameters.blueGreen']) }}:
         - task: AzureCLI@2
@@ -34,7 +36,7 @@ jobs:
             inlineScript: |-
               set -Eeuxo pipefail
               echo "blueGreen-truecheck":$(blueGreen-acsDev)
-      
+              echo "blueGreen-truecheck":${{parameters.blueGreen}}      
 
       - task: AzureCLI@2
         inputs:
@@ -45,6 +47,8 @@ jobs:
           inlineScript: |-
             set -Eeuxo pipefail
             echo "non-blueGreen":$(blueGreen-acsDev)
+            echo "non-blueGreen":${{parameters.blueGreen}}
+                      
 
 
 

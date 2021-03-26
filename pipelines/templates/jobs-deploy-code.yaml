@@ -13,7 +13,7 @@ jobs:
     displayName: Deploy
     variables: 
       - name: blueGreen
-        value: $[eq(variables['blueGreen-acsDev'], 'yes')]
+        value: $[eq('yes', 'yes')]
     steps:
 
       - ${{ if eq(variables['blueGreen'],false) }}:

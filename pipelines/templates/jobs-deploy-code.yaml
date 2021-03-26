@@ -50,6 +50,8 @@ jobs:
             set -Eeuxo pipefail
             echo "non-blueGreen":$(blueGreen-acsDev)
             echo "non-blueGreen":${{parameters.blueGreen}}
+            echo "false": eq(false,variables['parameters.blueGreen'])
+            echo "true": eq(true,variables['parameters.blueGreen'])
                       
 
 

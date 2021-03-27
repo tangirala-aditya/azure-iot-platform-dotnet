@@ -21,8 +21,9 @@ jobs:
 
     steps:
 
-      - ${{ if eq(variables['blueGreen'],'True') }}:
+      # - ${{ if eq(variables['blueGreen'],'True') }}:
         - task: AzureCLI@2
+          condition: eq(variables['blueGreen'],'True')
           inputs:
             azureSubscription: ${{parameters.subscriptionName}}
             addSpnToEnvironment: true
@@ -35,8 +36,9 @@ jobs:
               echo "blueGreen": $(blueGreen)
               echo "go to  individual services..."
 
-      - ${{ if eq(variables['blueGreen'],'False') }}:
+      # - ${{ if eq(variables['blueGreen'],'False') }}:
         - task: AzureCLI@2
+          condition: eq(variables['blueGreen'],'False')
           inputs:
             azureSubscription: ${{parameters.subscriptionName}}
             addSpnToEnvironment: true

@@ -16,7 +16,7 @@ jobs:
         value: $[eq(variables['blueGreen-acsDev'], 'yes')]
     steps:
 
-      - $[ if eq(variables['blueGreen-acsDev'],no) ]:
+      - ${{ if eq(variables['blueGreen'],false) }}:
         - task: AzureCLI@2
           inputs:
             azureSubscription: ${{parameters.subscriptionName}}
@@ -30,7 +30,7 @@ jobs:
               echo "blueGreen": $(blueGreen)
               echo "go to  individual services..."
 
-      - $[ if eq(variables['blueGreen-acsDev'],yes) ]:
+      - ${{ if eq(variables['blueGreen'],true) }}:
         - task: AzureCLI@2
           inputs:
             azureSubscription: ${{parameters.subscriptionName}}
@@ -44,7 +44,6 @@ jobs:
               echo "blueGreen": $(blueGreen) 
               echo "go to  bluegreen services..."
 
-
       - task: AzureCLI@2
         inputs:
           azureSubscription: ${{parameters.subscriptionName}}
@@ -55,7 +54,10 @@ jobs:
             set -Eeuxo pipefail
             echo "non-blueGreen":$(blueGreen-acsDev)
             echo "non-blueGreen":${{parameters.blueGreen}}
-            echo "blueGreen": $(blueGreen) 
+            echo "blueGreen": $(blueGreen)
+            echo "should be equated to false:",$[eq(variables['blueGreen'],false)]
+            echo "should be equated to true:",$[eq(variables['blueGreen'],true)]
+             
 
                       
 

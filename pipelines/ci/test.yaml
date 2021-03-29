@@ -269,8 +269,9 @@ stages:
               artifact: $(webuiArtifactName)
               path: $(Build.SourcesDirectory)/$(webuiArtifactName)
 
-          - task: WhiteSource Bolt@19
-            displayName: 'WhiteSource Bolt'
+- task: WhiteSource@21
+  inputs:
+    cwd: '$(System.DefaultWorkingDirectory)'
 
   - stage: listCommitsSinceLastRelease
     displayName: List commits since last release

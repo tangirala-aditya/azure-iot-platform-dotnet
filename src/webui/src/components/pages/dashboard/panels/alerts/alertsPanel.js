@@ -58,8 +58,9 @@ export class AlertsPanel extends Component {
                 rowData: alerts,
                 suppressFlyouts: true,
                 domLayout: "autoHeight",
-                immutableData: false,
+                immutableData: true,
                 t,
+                getRowNodeId: ({ ruleId }) => ruleId,
             },
             showOverlay = isPending && !alerts.length;
         return (

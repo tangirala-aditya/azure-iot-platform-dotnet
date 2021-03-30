@@ -74,7 +74,9 @@ export class SIMManagement extends LinkedComponent {
                 <div className={CssClassApplier("sim-management-container")}>
                     <Protected permission={permissions.updateSIMManagement}>
                         <div className={css("sim-management-selector")}>
-                            <div className={css("sim-management-label-selector")}>
+                            <div
+                                className={css("sim-management-label-selector")}
+                            >
                                 {t("devices.flyouts.SIMManagement.provider")}
                             </div>
                             <div className={css("sim-management-dropdown")}>

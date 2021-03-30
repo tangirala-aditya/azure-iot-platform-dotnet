@@ -534,7 +534,6 @@ export class Dashboard extends Component {
             },
             {}
         );
-
         return (
             <ComponentArray>
                 <ContextMenu>

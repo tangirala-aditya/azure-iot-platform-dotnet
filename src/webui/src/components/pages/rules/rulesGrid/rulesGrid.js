@@ -333,8 +333,8 @@ export class RulesGrid extends Component {
             getSoftSelectId: this.getSoftSelectId,
             softSelectId: this.state.softSelectedRuleId || {},
             immutableData: true,
-            ...this.props, // Allow default property overrides
             getRowNodeId: ({ id }) => id,
+            ...this.props, // Allow default property overrides
             context: {
                 t: this.props.t,
                 deviceGroups: this.props.deviceGroups,

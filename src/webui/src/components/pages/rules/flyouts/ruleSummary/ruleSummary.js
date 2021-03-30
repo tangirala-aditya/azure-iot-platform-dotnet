@@ -95,7 +95,10 @@ export class RuleSummary extends Component {
         return (
             <SummarySection
                 key={rule.id}
-                className={joinClasses(ruleSummaryCss("padded-bottom"), className)}
+                className={joinClasses(
+                    ruleSummaryCss("padded-bottom"),
+                    className
+                )}
             >
                 {includeRuleInfo && <SectionHeader>{rule.name}</SectionHeader>}
                 {includeRuleInfo && <FormLabel>{rule.description}</FormLabel>}

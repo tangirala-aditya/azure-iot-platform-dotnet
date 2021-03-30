@@ -463,7 +463,7 @@ export class RuleDetails extends Component {
                     <PageTitle titleValue={alertName} />
                     {!this.props.error ? (
                         <div>
-                            <div className={css("header-container")}>
+                            <div className={maintenanceCss("header-container")}>
                                 <div className={css("rule-stat-container")}>
                                     <div className={css("rule-stat-cell")}>
                                         <div
@@ -486,7 +486,9 @@ export class RuleDetails extends Component {
                                         </div>
                                     </div>
                                     <div className={css("rule-stat-cell")}>
-                                        <div className={css("rule-stat-header")}>
+                                        <div
+                                            className={css("rule-stat-header")}
+                                        >
                                             {t("maintenance.acknowledged")}
                                         </div>
                                         <div className={css("rule-stat-value")}>
@@ -496,7 +498,9 @@ export class RuleDetails extends Component {
                                         </div>
                                     </div>
                                     <div className={css("rule-stat-cell")}>
-                                        <div className={css("rule-stat-header")}>
+                                        <div
+                                            className={css("rule-stat-header")}
+                                        >
                                             {t("maintenance.closed")}
                                         </div>
                                         <div className={css("rule-stat-value")}>
@@ -504,7 +508,9 @@ export class RuleDetails extends Component {
                                         </div>
                                     </div>
                                     <div className={css("rule-stat-cell")}>
-                                        <div className={css("rule-stat-header")}>
+                                        <div
+                                            className={css("rule-stat-header")}
+                                        >
                                             {t("maintenance.lastEvent")}
                                         </div>
                                         <div className={css("rule-stat-value")}>
@@ -644,7 +650,7 @@ export class RuleDetails extends Component {
                                             )}
                                         </h4>
                                         <div
-                                            className={css(
+                                            className={maintenanceCss(
                                                 "details-chart-container"
                                             )}
                                         >

@@ -277,7 +277,7 @@ stages:
           applicationShortCode: $(applicationShortCode-psdStg)
           environmentCategory: $(environmentCategory-psdStg)
           imageTag: $(_imageTag)
-          blueGreen: false
+          blueGreen: true
           subscriptionId: $(subscriptionId-psdStg)
 
   - stage: psdProd

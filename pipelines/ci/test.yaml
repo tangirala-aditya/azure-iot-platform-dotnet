@@ -382,10 +382,6 @@ stages:
 
   - stage: cleanup
     displayName: Cleanup
-    dependsOn:
-      - functionalTest
-      - enumerateDependencies
-      - deployServices
     condition: and(succeededOrFailed(), eq(variables['runCleanupStage'], 'true'))
     jobs:
       - job: getPipelineVariables

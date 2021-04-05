@@ -332,14 +332,16 @@ stages:
               path: $(Build.SourcesDirectory)
 
           - task: AntiMalware@3
+            displayName: Scan for malware
             inputs:
               InputType: 'Basic'
-              ScanType: 'FullSystemScan'
+              ScanType: 'CustomScan'
+              FileDirPath: '$(Build.SourcesDirectory)'
               EnableServices: true
               SupportLogOnError: true
               TreatSignatureUpdateFailureAs: 'Warning'
               SignatureFreshness: 'UpToDate'
-              TreatStaleSignatureAs: 'Error'
+              TreatStaleSignatureAs: 'Warning'
 
           - task: CredScan@2
             displayName: Scan for credentials

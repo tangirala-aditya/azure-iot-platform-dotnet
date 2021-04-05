@@ -347,26 +347,15 @@ stages:
               toolMajorVersion: 'V2'
               verboseOutput: true
 
-
-          - task: RoslynAnalyzers@2
-            inputs:
-              userProvideBuildInfo: 'auto'
-
-          - task: BinSkim@3
-            inputs:
-              InputType: 'CommandLine'
-              arguments: 'analyze $(Build.StagingDirectory)\* --recurse --verbose ; analyze *.dll *.exe --recurse --verbose'
-
-
           - task: SdtReport@1
             displayName: Generate report
             inputs:
               AllTools: true
-              BinSkim: true
+              BinSkim: false
               BinSkimBreakOn: Error
               CredScan: true
               MSRD: false
-              RoslynAnalyzers: true
+              RoslynAnalyzers: falses
               RoslynAnalyzersBreakOn: Error
               TSLint: false
               ToolLogsNotFoundAction: Standard

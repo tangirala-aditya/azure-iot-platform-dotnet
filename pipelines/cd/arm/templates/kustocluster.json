@@ -4,7 +4,7 @@
     "parameters": {
         "kustoClusterName": {
             "type": "string",
-            "defaultValue": "crsl-kusto-cluster",
+            "defaultValue": "crslkustocluster",
             "metadata": {
                 "description": "Name of the cluster to create"
             }

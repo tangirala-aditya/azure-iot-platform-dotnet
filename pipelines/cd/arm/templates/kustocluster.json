@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "accountName": {
+        "kustoClusterName": {
             "type": "string",
             "defaultValue": "crsl-kusto-cluster",
             "metadata": {
@@ -20,7 +20,7 @@
     "variables": {},
     "resources": [
         {
-            "name": "[parameters('accountName')]",
+            "name": "[parameters('kustoClusterName')]",
             "type": "Microsoft.Kusto/clusters",
             "sku": {
                 "name": "Standard_D13_v2",
@@ -30,7 +30,7 @@
             "apiVersion": "2019-09-07",
             "location": "[parameters('location')]",
             "tags": {
-                "[concat('hidden-related:', resourceId('Microsoft.Kusto/clusters', parameters('accountName')))]": "Resource",
+                "[concat('hidden-related:', resourceId('Microsoft.Kusto/clusters', parameters('kustoClusterName')))]": "Resource",
                 "displayName": "kustoCluster"
             },
             "properties": {

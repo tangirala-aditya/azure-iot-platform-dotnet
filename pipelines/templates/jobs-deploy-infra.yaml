@@ -640,7 +640,7 @@ jobs:
           templateLocation: Linked artifact
           csmFile: $(armTemplatesDirectory)/cosmosdb.json
           csmParametersFile: $(armParametersDirectory)/cosmosdb.json
-          overrideParameters: -accountName $(cosmosDbAccountName) -location ${{parameters.locationName}} -primaryRegion ${{parameters.locationName}} -databaseName $(cosmosDbName)
+          overrideParameters: -kustoClusterName $(cosmosDbAccountName) -location ${{parameters.locationName}} -primaryRegion ${{parameters.locationName}} -databaseName $(cosmosDbName)
           deploymentMode: Incremental
 
       - template: steps-delete-oldest-deployment.yaml
@@ -742,7 +742,7 @@ jobs:
             az appconfig kv set --key Global:SubscriptionId                       --value ${{parameters.subscriptionId}} --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:StorageAccount:Name                  --value $(storageAccountName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:CosmosDb:AccountName                 --value $(cosmosDbAccountName) --name $(appConfigurationName) --yes
-            az appconfig kv set --key Global:DataExplorer:Name             --value $(dataExplorerClusterName) --name $(appConfigurationName) --yes
+            az appconfig kv set --key Global:DataExplorer:Name                    --value $(dataExplorerClusterName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:EventHub:Name                        --value $(eventHubName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:EventHub:RootKey                     --value $(az eventhubs namespace authorization-rule keys list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --name RootManageSharedAccessKey --query primaryKey --output tsv) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:InviteFromEmail                      --value $(inviteEmail) --name $(appConfigurationName) --yes

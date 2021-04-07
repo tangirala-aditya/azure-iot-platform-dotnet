@@ -640,7 +640,7 @@ jobs:
           templateLocation: Linked artifact
           csmFile: $(armTemplatesDirectory)/cosmosdb.json
           csmParametersFile: $(armParametersDirectory)/cosmosdb.json
-          overrideParameters: -kustoClusterName $(cosmosDbAccountName) -location ${{parameters.locationName}} -primaryRegion ${{parameters.locationName}} -databaseName $(cosmosDbName)
+          overrideParameters: -accountName $(cosmosDbAccountName) -location ${{parameters.locationName}} -primaryRegion ${{parameters.locationName}} -databaseName $(cosmosDbName)
           deploymentMode: Incremental
 
       - template: steps-delete-oldest-deployment.yaml
@@ -681,7 +681,7 @@ jobs:
           templateLocation: Linked artifact
           csmFile: $(armTemplatesDirectory)/kustocluster.json
           csmParametersFile: $(armParametersDirectory)/kustocluster.json
-          overrideParameters: -accountName $(dataExplorerClusterName) -location ${{parameters.locationName}}
+          overrideParameters: -kustoClusterName $(dataExplorerClusterName) -location ${{parameters.locationName}}
           deploymentMode: Incremental
 
       - template: steps-delete-oldest-deployment.yaml

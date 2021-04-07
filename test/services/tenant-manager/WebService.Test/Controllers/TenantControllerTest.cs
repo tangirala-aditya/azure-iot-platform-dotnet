@@ -100,12 +100,12 @@ namespace Mmm.Iot.TenantManager.WebService.Test.Controllers
 
             if (expectException)
             {
-                this.mockTenantContainer.Setup(x => x.CreateTenantAsync(It.IsAny<string>(), It.IsAny<string>()))
+                this.mockTenantContainer.Setup(x => x.CreateTenantAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                                                 .ThrowsAsync(new Exception());
             }
             else
             {
-                this.mockTenantContainer.Setup(x => x.CreateTenantAsync(It.IsAny<string>(), It.IsAny<string>()))
+                this.mockTenantContainer.Setup(x => x.CreateTenantAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                                                 .ReturnsAsync(tenantModel);
             }
 

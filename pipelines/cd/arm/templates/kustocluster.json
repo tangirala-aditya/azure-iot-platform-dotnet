@@ -32,9 +32,6 @@
             "tags": {
                 "[concat('hidden-related:', resourceId('Microsoft.Kusto/clusters', parameters('kustoClusterName')))]": "Resource",
                 "displayName": "kustoCluster"
-            },
-            "properties": {
-                "engineType": "V3"
             }
         }
     ]

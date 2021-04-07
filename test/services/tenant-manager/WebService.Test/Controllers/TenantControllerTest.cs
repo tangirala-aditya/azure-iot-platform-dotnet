@@ -43,6 +43,7 @@ namespace Mmm.Iot.TenantManager.WebService.Test.Controllers
             this.mockHttpContext.Setup(m => m.Request).Returns(this.mockHttpRequest.Object);
             this.claims = new List<Claim>();
             this.claims.Add(new Claim("sub", "Admin"));
+            this.claims.Add(new Claim("name", "Admin"));
             this.controller = new TenantController(this.mockTenantContainer.Object, this.mockLogger.Object)
             {
                 ControllerContext = new ControllerContext()

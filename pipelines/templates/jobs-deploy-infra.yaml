@@ -88,6 +88,8 @@ jobs:
           echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
           echo "variable: resourceGroupName: $(resourceGroupName)"
           echo "variable: storageAccountName: $(storageAccountName)"
+          echo "variable: dataExplorerClusterPartialName: $(dataExplorerClusterPartialName)"
+          echo "variable: dataExplorerClusterName: $(dataExplorerClusterName)"
         displayName: Print variables
 
   - job: resourceGroup
@@ -647,6 +649,47 @@ jobs:
           deploymentPartialName: $(cosmosDbAccountPartialName)
           resourceGroupName: $(resourceGroupName)
 
+  - job: dataExplorer
+    displayName: Provision Azure Data Explorer Cluster
+    dependsOn:
+      - resourceGroup
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+
+      - template: apply-arm-tags.yaml
+        parameters:
+          environment: ${{parameters.environmentName}}
+
+      - task: AzureResourceGroupDeployment@2
+        displayName: Provision Azure Data Explorer Cluster
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          action: Create Or Update Resource Group
+          resourceGroupName: $(resourceGroupName)
+          location: ${{parameters.locationName}}
+          templateLocation: Linked artifact
+          csmFile: $(armTemplatesDirectory)/kustocluster.json
+          csmParametersFile: $(armParametersDirectory)/kustocluster.json
+          overrideParameters: -accountName $(dataExplorerClusterName) -location ${{parameters.locationName}}
+          deploymentMode: Incremental
+
+      - template: steps-delete-oldest-deployment.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          deploymentPartialName: $(dataExplorerClusterPartialName)
+          resourceGroupName: $(resourceGroupName)
+
   - job: populateAppConfiguration
     displayName: Populate App Configuration
     dependsOn:
@@ -699,6 +742,7 @@ jobs:
             az appconfig kv set --key Global:SubscriptionId                       --value ${{parameters.subscriptionId}} --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:StorageAccount:Name                  --value $(storageAccountName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:CosmosDb:AccountName                 --value $(cosmosDbAccountName) --name $(appConfigurationName) --yes
+            az appconfig kv set --key Global:DataExplorer:Name             --value $(dataExplorerClusterName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:EventHub:Name                        --value $(eventHubName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:EventHub:RootKey                     --value $(az eventhubs namespace authorization-rule keys list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --name RootManageSharedAccessKey --query primaryKey --output tsv) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:InviteFromEmail                      --value $(inviteEmail) --name $(appConfigurationName) --yes
@@ -730,6 +774,7 @@ jobs:
       - eventHub
       - maps
       - cosmosDb
+      - dataExplorer
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

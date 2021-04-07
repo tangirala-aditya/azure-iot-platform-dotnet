@@ -1,0 +1,41 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "accountName": {
+            "type": "string",
+            "defaultValue": "crsl-kusto-cluster",
+            "metadata": {
+                "description": "Name of the cluster to create"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "name": "[parameters('accountName')]",
+            "type": "Microsoft.Kusto/clusters",
+            "sku": {
+                "name": "Standard_D13_v2",
+                "tier": "Standard",
+                "capacity": 2
+            },
+            "apiVersion": "2019-09-07",
+            "location": "[parameters('location')]",
+            "tags": {
+                "[concat('hidden-related:', resourceId('Microsoft.Kusto/clusters', parameters('accountName')))]": "Resource",
+                "displayName": "kustoCluster"
+            },
+            "properties": {
+                "engineType": "V3"
+            }
+        }
+    ]
+}

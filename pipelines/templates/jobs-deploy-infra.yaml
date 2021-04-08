@@ -15,7 +15,6 @@ parameters:
   testPipelineId:
   runVersion:
   testPipelineRunId:
-  appInsightsLocation: eastus
 
 jobs:
   - template: get-approval.yaml

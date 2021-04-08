@@ -91,6 +91,20 @@ stages:
                 exit 1
               fi
 
+              echo "AKS agent VM size: '$(aksAgentVmSize)'"
+              if [ -z "$(aksAgentVmSize)" ]
+              then
+                echo "A value for the 'aksAgentVmSize' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "AppInsights Location Name: '$(appInsightsLocation)'"
+              if [ -z "$(appInsightsLocation)" ]
+              then
+                echo "A value for the 'appInsightsLocation' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
               echo "TestPipelineRunId: '$(testPipelineRunId)'"
               if [ -z "$(testPipelineRunId)" ]
               then

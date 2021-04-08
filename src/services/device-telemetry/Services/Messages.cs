@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Mmm.Iot.Common.Services;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
+using Mmm.Iot.Common.Services.External.ADE;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.CosmosDb;
 using Mmm.Iot.Common.Services.External.TimeSeries;
@@ -33,6 +34,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services
         private readonly ILogger logger;
         private readonly IStorageClient storageClient;
         private readonly ITimeSeriesClient timeSeriesClient;
+        private readonly IADEClient adeClient;
         private readonly AppConfig config;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IAppConfigurationClient appConfigurationClient;
@@ -45,12 +47,14 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             AppConfig config,
             IStorageClient storageClient,
             ITimeSeriesClient timeSeriesClient,
+            IADEClient adeClient,
             ILogger<Messages> logger,
             IHttpContextAccessor contextAccessor,
             IAppConfigurationClient appConfigurationClient)
         {
             this.storageClient = storageClient;
             this.timeSeriesClient = timeSeriesClient;
+            this.adeClient = adeClient;
             this.timeSeriesEnabled = config.DeviceTelemetryService.Messages.TelemetryStorageType.Equals(
                 TsiStorageTypeKey, StringComparison.OrdinalIgnoreCase);
             this.documentClient = storageClient.GetDocumentClient();
@@ -84,8 +88,10 @@ namespace Mmm.Iot.DeviceTelemetry.Services
                 InputValidator.Validate(device);
             }
 
-            return this.timeSeriesEnabled ?
-                await this.GetListFromTimeSeriesAsync(from, to, order, skip, limit, devices) :
+            bool dataFromADE = true;
+
+            return dataFromADE ? await this.GetDatafromADE(from, to, order, skip, limit, devices) :
+                this.timeSeriesEnabled ? await this.GetListFromTimeSeriesAsync(from, to, order, skip, limit, devices) :
                 await this.GetListFromCosmosDbAsync(from, to, order, skip, limit, devices);
         }
 
@@ -178,6 +184,17 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             string[] devices)
         {
             return await this.timeSeriesClient.QueryEventsAsync(from, to, order, skip, limit, devices);
+        }
+
+        private async Task<MessageList> GetDatafromADE(
+            DateTimeOffset? from,
+            DateTimeOffset? to,
+            string order,
+            int skip,
+            int limit,
+            string[] devices)
+        {
+            return await this.adeClient.QueryADEDb(from, to, order, skip, limit, devices);
         }
 
         private async Task<MessageList> GetListFromCosmosDbAsync(

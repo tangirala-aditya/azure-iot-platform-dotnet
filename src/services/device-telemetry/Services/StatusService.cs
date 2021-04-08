@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using Mmm.Iot.Common.Services;
 using Mmm.Iot.Common.Services.Config;
+using Mmm.Iot.Common.Services.External.ADE;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.AsaManager;
 using Mmm.Iot.Common.Services.External.CosmosDb;
@@ -20,6 +21,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             AppConfig config,
             IStorageClient storageClient,
             ITimeSeriesClient timeSeriesClient,
+            IADEClient adeClient,
             IAsaManagerClient asaManager,
             IStorageAdapterClient storageAdapter,
             IAppConfigurationClient appConfig)

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
+using Mmm.Iot.Common.Services.External.ADE;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.CosmosDb;
 using Mmm.Iot.Common.Services.External.TimeSeries;
@@ -26,6 +27,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services.Test
 
         private readonly Mock<IStorageClient> storageClient;
         private readonly Mock<ITimeSeriesClient> timeSeriesClient;
+        private readonly Mock<IADEClient> adeClient;
         private readonly Mock<ILogger<Messages>> logger;
         private readonly Mock<IHttpContextAccessor> httpContextAccessor;
         private readonly Mock<IAppConfigurationClient> appConfigHelper;
@@ -46,6 +48,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services.Test
             };
             this.storageClient = new Mock<IStorageClient>();
             this.timeSeriesClient = new Mock<ITimeSeriesClient>();
+            this.adeClient = new Mock<IADEClient>();
             this.httpContextAccessor = new Mock<IHttpContextAccessor>();
             this.appConfigHelper = new Mock<IAppConfigurationClient>();
             this.logger = new Mock<ILogger<Messages>>();
@@ -53,6 +56,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services.Test
                 servicesConfig,
                 this.storageClient.Object,
                 this.timeSeriesClient.Object,
+                this.adeClient.Object,
                 this.logger.Object,
                 this.httpContextAccessor.Object,
                 this.appConfigHelper.Object);

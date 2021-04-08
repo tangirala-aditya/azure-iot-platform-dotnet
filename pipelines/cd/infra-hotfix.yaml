@@ -108,7 +108,7 @@ stages:
         parameters:
           subscriptionName: $(subscriptionName)
           locationName: $(locationName)
-          appInsightsLocation: westeurope
+          appInsightsLocation: $(appInsightsLocation)
           environmentName: $(environmentName)
           subscriptionId: $(subscriptionId)
           applicationCode: $(applicationCode)

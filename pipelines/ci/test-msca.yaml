@@ -323,6 +323,7 @@ stages:
               ScanType: 'CustomScan'
               FileDirPath: '$(Build.SourcesDirectory)'
               EnableServices: true
+              DisableRemediation: false
               SupportLogOnError: true
               TreatSignatureUpdateFailureAs: 'Warning'
               SignatureFreshness: 'UpToDate'

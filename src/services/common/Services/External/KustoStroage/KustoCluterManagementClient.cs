@@ -123,9 +123,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
         {
             try
             {
-                await this.client.DataConnections.CreateOrUpdateAsync(
-                        this.config.Global.ResourceGroup,
-                        this.config.Global.DataExplorer.Name,
+                await this.CreateOrUpdateDataConnection(
                         databaseName,
                         dataConnectName,
                         new EventHubDataConnection(
@@ -135,7 +133,37 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
                             tableName: tableName,
                             mappingRuleName: tableMappingName,
                             dataFormat: "JSON",
-                            compression: "None"));
+                            compression: "None",
+                            eventSystemProperties: new List<string>()
+                            {
+                            "iothub-connection-device-id",
+                            }));
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task AddIoTHubDataConnectionAsync(string dataConnectName, string databaseName, string tableName, string tableMappingName, string iotHubName, string iotHubConsumerGroup)
+        {
+            try
+            {
+                await this.CreateOrUpdateDataConnection(
+                        databaseName,
+                        dataConnectName,
+                        new IotHubDataConnection(
+                            $"/subscriptions/{this.config.Global.SubscriptionId}/resourceGroups/{this.config.Global.ResourceGroup}/providers/Microsoft.Devices/IotHubs/{iotHubName}",
+                            iotHubConsumerGroup,
+                            sharedAccessPolicyName: "iothubforread",
+                            location: this.config.Global.Location,
+                            tableName: tableName,
+                            mappingRuleName: tableMappingName,
+                            dataFormat: "JSON",
+                            eventSystemProperties: new List<string>()
+                            {
+                            "iothub-connection-device-id",
+                            }));
             }
             catch (Exception e)
             {
@@ -159,6 +187,16 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
 
                 this.disposedValue = true;
             }
+        }
+
+        private async Task CreateOrUpdateDataConnection(string databaseName, string dataConnectName, DataConnection dataConnection)
+        {
+            await this.client.DataConnections.CreateOrUpdateAsync(
+                        this.config.Global.ResourceGroup,
+                        this.config.Global.DataExplorer.Name,
+                        databaseName,
+                        dataConnectName,
+                        dataConnection);
         }
     }
 }

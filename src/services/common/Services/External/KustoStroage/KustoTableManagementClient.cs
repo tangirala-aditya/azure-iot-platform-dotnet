@@ -32,7 +32,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
 
         public Task<StatusResultServiceModel> StatusAsync()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public ICslAdminProvider GetKustoAdminClient()

@@ -329,12 +329,12 @@ stages:
               SignatureFreshness: 'UpToDate'
               TreatStaleSignatureAs: 'Warning'
 
-          - task: BinSkim@3
-            inputs:
-              InputType: 'Basic'
-              Function: 'analyze'
-              AnalyzeTarget: '$(publishedFilesArtifactName)\src\services\**\*.exe;$(publishedFilesArtifactName)\src\services\**\*.dll'
-              AnalyzeVerbose: true
+          # - task: BinSkim@3
+          #   inputs:
+          #     InputType: 'Basic'
+          #     Function: 'analyze'
+          #     AnalyzeTarget: '$(publishedFilesArtifactName)\src\services\**\*.exe;$(publishedFilesArtifactName)\src\services\**\*.dll'
+          #     AnalyzeVerbose: true
           - task: CredScan@2
             displayName: Scan for credentials
             inputs:

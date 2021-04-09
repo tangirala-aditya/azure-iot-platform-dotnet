@@ -332,7 +332,7 @@ stages:
             inputs:
               InputType: 'Basic'
               Function: 'analyze'
-              AnalyzeTarget: '$(publishedFilesArtifactName)\.nuget\**\*.dll;$(publishedFilesArtifactName)\.nuget\**\*.exe;$(publishedFilesArtifactName)\src\services\**\*.exe;$(publishedFilesArtifactName)\src\services\**\*.dll;$(publishedFilesArtifactName)\test\services\**\*.dll;$(publishedFilesArtifactName)\test\services\**\*.exe;$(publishedFilesArtifactName)\src\functions\**\*.dll;$(publishedFilesArtifactName)\src\functions\**\*.exe'
+              AnalyzeTarget: '$(publishedFilesArtifactName)\src\services\**\*.exe;$(publishedFilesArtifactName)\src\services\**\*.dll'
               AnalyzeVerbose: true
           - task: CredScan@2
             displayName: Scan for credentials

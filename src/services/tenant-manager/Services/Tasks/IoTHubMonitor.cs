@@ -23,6 +23,7 @@ using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.Azure;
 using Mmm.Iot.Common.Services.External.BlobStorage;
+using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.Services.External.TableStorage;
 using Mmm.Iot.TenantManager.Services.Models;
 
@@ -37,14 +38,18 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
         private IAzureManagementClient azureManagementClient;
         private IAppConfigurationClient appConfigurationClient;
         private AppConfig config;
+        private IKustoCluterManagementClient kustoCluterManagementClient;
+        private IKustoTableManagementClient kustoTableManagementClient;
 
-        public IoTHubMonitor(ITableStorageClient tableStorageClient, IBlobStorageClient blobStorageClient, IAzureManagementClient azureManagementClient, IAppConfigurationClient appConfigurationClient, AppConfig config)
+        public IoTHubMonitor(ITableStorageClient tableStorageClient, IBlobStorageClient blobStorageClient, IAzureManagementClient azureManagementClient, IAppConfigurationClient appConfigurationClient, AppConfig config, IKustoCluterManagementClient kustoCluterManagementClient, IKustoTableManagementClient kustoTableManagementClient)
         {
             this.tableStorageClient = tableStorageClient;
             this.blobStorageClient = blobStorageClient;
             this.azureManagementClient = azureManagementClient;
             this.appConfigurationClient = appConfigurationClient;
             this.config = config;
+            this.kustoCluterManagementClient = kustoCluterManagementClient;
+            this.kustoTableManagementClient = kustoTableManagementClient;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -136,46 +141,17 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                                 Console.WriteLine("Creating a DB in Data Explorer");
 
-                                var authenticationContext = new AuthenticationContext($"https://login.windows.net/{this.config.Global.AzureActiveDirectory.TenantId}");
-                                var credential = new ClientCredential(
-                                    this.config.Global.AzureActiveDirectory.AppId,
-                                    this.config.Global.AzureActiveDirectory.AppSecret);
-
-                                var result = await authenticationContext.AcquireTokenAsync(resource: "https://management.core.windows.net/", clientCredential: credential);
-
-                                var credentials = new TokenCredentials(result.AccessToken, result.AccessTokenType);
-
-                                var kustoManagementClient = new KustoManagementClient(credentials)
-                                {
-                                    SubscriptionId = this.config.Global.SubscriptionId,
-                                };
-
-                                var hotCachePeriod = new TimeSpan(0, 0, 0, 0);
                                 var softDeletePeriod = new TimeSpan(60, 0, 0, 0);
-                                var databaseName = item.TenantId;
-                                var database = new ReadWriteDatabase(
-                                    location: this.config.Global.Location,
-                                    softDeletePeriod: softDeletePeriod,
-                                    hotCachePeriod: hotCachePeriod);
+                                var databaseName = $"IoT-{item.TenantId}";
 
-                                await kustoManagementClient.Databases.CreateOrUpdateAsync(
-                                    this.config.Global.ResourceGroup,
-                                    this.config.Global.DataExplorer.Name,
-                                    databaseName,
-                                    database);
-
-                                _ = kustoManagementClient.Databases.Get(this.config.Global.ResourceGroup, this.config.Global.DataExplorer.Name, databaseName) as ReadWriteDatabase;
+                                await this.kustoCluterManagementClient.CreatedDBInCluterAsync(databaseName, softDeletePeriod);
 
                                 Console.WriteLine($"Created a {item.TenantId} DB in Data Explorer");
 
                                 Console.WriteLine($"Creating telemetry table and mapping in {item.TenantId} DB in Data Explorer");
 
-                                var kustoUri = $"https://{this.config.Global.DataExplorer.Name}.{this.config.Global.Location}.kusto.windows.net/";
-
-                                var kustoConnectionStringBuilder = new KustoConnectionStringBuilder(kustoUri).WithAadUserPromptAuthentication(this.config.Global.AzureActiveDirectory.TenantId);
-
                                 var tableName = "telemetry";
-                                var tableMappingName = "Events_CSV_Mapping";
+                                var tableMappingName = "TelemetryEvents_JSON_Mapping";
                                 var tableSchema = new[]
                                 {
                                     Tuple.Create("deviceId", "System.String"),
@@ -187,37 +163,15 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                     new ColumnMapping() { ColumnName = "telemetry", ColumnType = "dynamic", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$" } } },
                                 };
 
-                                using (var kustoClient = KustoClientFactory.CreateCslAdminProvider(kustoConnectionStringBuilder))
-                                {
-                                    var command =
-                                        CslCommandGenerator.GenerateTableCreateCommand(
-                                            tableName,
-                                            tableSchema);
+                                this.kustoTableManagementClient.CreateTable(tableName, tableSchema, databaseName);
 
-                                    kustoClient.ExecuteControlCommand(databaseName, command);
+                                this.kustoTableManagementClient.CreateTableMapping(tableMappingName, mappingSchema, tableName, databaseName);
 
-                                    command = CslCommandGenerator.GenerateTableMappingCreateCommand(
-                                        Kusto.Data.Ingestion.IngestionMappingKind.Json,
-                                        tableName,
-                                        tableMappingName,
-                                        mappingSchema);
+                                string dataConnectName = "telemetryDataConnect";
+                                string eventHubName = "telemetry";
+                                string eventHubConsumerGroup = "$Default";
 
-                                    kustoClient.ExecuteControlCommand(databaseName, command);
-                                }
-
-                                await kustoManagementClient.DataConnections.CreateOrUpdateAsync(
-                                    this.config.Global.ResourceGroup,
-                                    this.config.Global.DataExplorer.Name,
-                                    databaseName,
-                                    "telemetryDataConnect", // Add a tenentid to connection name
-                                    new EventHubDataConnection(
-                                        $"/subscriptions/{this.config.Global.SubscriptionId}/resourceGroups/{this.config.Global.ResourceGroup}/providers/Microsoft.EventHub/namespaces/{this.config.Global.EventHub.Name}/eventhubs/telemetry",
-                                        "$Default",
-                                        location: this.config.Global.Location,
-                                        tableName: tableName,
-                                        mappingRuleName: tableMappingName,
-                                        dataFormat: "JSON",
-                                        compression: "None"));
+                                await this.kustoCluterManagementClient.AddEventHubDataConnectionAsync(dataConnectName, databaseName, tableName, tableMappingName, eventHubName, eventHubConsumerGroup);
                             }
                         }
                         catch (Microsoft.Azure.Management.IotHub.Models.ErrorDetailsException e)

@@ -328,6 +328,8 @@ stages:
               SignatureFreshness: 'UpToDate'
               TreatStaleSignatureAs: 'Warning'
 
+
+
           - task: CredScan@2
             displayName: Scan for credentials
             inputs:
@@ -342,7 +344,7 @@ stages:
               BinSkimBreakOn: Error
               CredScan: true
               MSRD: false
-              RoslynAnalyzers: falses
+              RoslynAnalyzers: false
               RoslynAnalyzersBreakOn: Error
               TSLint: false
               ToolLogsNotFoundAction: Standard

@@ -55,6 +55,7 @@ namespace Mmm.Iot.Common.Services
             builder.RegisterType<StorageClient>().As<IStorageClient>().SingleInstance();
             builder.RegisterType<AsaManagerClient>().As<IAsaManagerClient>().SingleInstance();
             builder.RegisterType<TimeSeriesClient>().As<ITimeSeriesClient>().SingleInstance();
+            builder.RegisterType<KustoQueryClient>().As<IKustoQueryClient>().SingleInstance();
             builder.RegisterType<CloudTableClientFactory>().As<ICloudTableClientFactory>().SingleInstance();
             builder.RegisterType<TableStorageClient>().As<ITableStorageClient>().SingleInstance();
             builder.RegisterType<AzureManagementClientFactory>().As<IAzureManagementClientFactory>().SingleInstance();

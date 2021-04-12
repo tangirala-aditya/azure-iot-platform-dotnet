@@ -810,7 +810,7 @@ jobs:
             az keyvault secret set --vault-name $(keyVaultName) --name 'Global--CosmosDb--DocumentDbAuthKey' --value $cosmosDBAuthKey
             az keyvault secret set --vault-name $(keyVaultName) --name 'Global--CosmosDb--DocumentDbConnectionString' --value $cosmosDBConnection
 
-            // TODO
+            // TODO TESTING
             kustoUri=$(az kusto clustor show -g $(resourceGroupName) -n $(dataExplorerClusterName) | jq -r ".documentEndpoint")
             kustoConnection="Data Source=$(kustoUri);Database=NetDefaultDB;Fed=True;AppClientId=$(servicePrincipalId);AppKey=$(servicePrincipalKey);Authority Id=$(tenantId)"
             az keyvault secret set --vault-name $(keyVaultName) --name 'Global--kusto--ConnectionString' --value $kustoConnection

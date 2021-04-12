@@ -156,11 +156,13 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                 {
                                     Tuple.Create("deviceId", "System.String"),
                                     Tuple.Create("telemetry", "System.Object"),
+                                    Tuple.Create("stimeStamp", "System.String"),
                                 };
                                 var mappingSchema = new ColumnMapping[]
                                 {
                                     new ColumnMapping() { ColumnName = "deviceId", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.iothub-connection-device-id" } } },
                                     new ColumnMapping() { ColumnName = "telemetry", ColumnType = "dynamic", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$" } } },
+                                    new ColumnMapping() { ColumnName = "timeStamp", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.iothub-enqueuedtime" } } },
                                 };
 
                                 this.kustoTableManagementClient.CreateTable(tableName, tableSchema, databaseName);

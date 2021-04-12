@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Kusto.Data;
 using Kusto.Data.Common;
 using Kusto.Data.Net.Client;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
@@ -33,41 +34,6 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
         public Task<StatusResultServiceModel> StatusAsync()
         {
             return null;
-        }
-
-        public ICslAdminProvider GetKustoAdminClient()
-        {
-            if (this.client == null)
-            {
-                try
-                {
-                    var kustoUri = $"https://{this.config.Global.DataExplorer.Name}.{this.config.Global.Location}.kusto.windows.net/";
-
-                    var kustoConnectionStringBuilder = new KustoConnectionStringBuilder(kustoUri)
-                        .WithAadApplicationKeyAuthentication(
-                        applicationClientId: this.config.Global.AzureActiveDirectory.AppId,
-                        applicationKey: this.config.Global.AzureActiveDirectory.AppSecret,
-                        authority: this.config.Global.AzureActiveDirectory.TenantId);
-
-                    this.client = KustoClientFactory.CreateCslAdminProvider(kustoConnectionStringBuilder);
-                }
-                catch (Exception e)
-                {
-                    var msg = "Unable to retrieve kusto with Active Directory properties" +
-                          $"'{this.config.Global.AzureActiveDirectory.AppId}'," +
-                          $"'{this.config.Global.AzureActiveDirectory.AppSecret}' and" +
-                          $"'{this.config.Global.AzureActiveDirectory.TenantId}'.";
-                    throw new InvalidConfigurationException(msg, e);
-                }
-
-                if (this.client == null)
-                {
-                    // this.logger.LogError(new Exception(errorMessage), errorMessage);
-                    throw new InvalidConfigurationException("Could not connect to kusto client");
-                }
-            }
-
-            return this.client;
         }
 
         public void CreateTable(string tableName, IEnumerable<Tuple<string, string>> rowFields, string databaseName)
@@ -120,6 +86,41 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
 
                 this.disposedValue = true;
             }
+        }
+
+        private ICslAdminProvider GetKustoAdminClient()
+        {
+            if (this.client == null)
+            {
+                try
+                {
+                    var kustoUri = $"https://{this.config.Global.DataExplorer.Name}.{this.config.Global.Location}.kusto.windows.net/";
+
+                    var kustoConnectionStringBuilder = new KustoConnectionStringBuilder(kustoUri)
+                        .WithAadApplicationKeyAuthentication(
+                        applicationClientId: this.config.Global.AzureActiveDirectory.AppId,
+                        applicationKey: this.config.Global.AzureActiveDirectory.AppSecret,
+                        authority: this.config.Global.AzureActiveDirectory.TenantId);
+
+                    this.client = KustoClientFactory.CreateCslAdminProvider(kustoConnectionStringBuilder);
+                }
+                catch (Exception e)
+                {
+                    var msg = "Unable to retrieve kusto with Active Directory properties" +
+                          $"'{this.config.Global.AzureActiveDirectory.AppId}'," +
+                          $"'{this.config.Global.AzureActiveDirectory.AppSecret}' and" +
+                          $"'{this.config.Global.AzureActiveDirectory.TenantId}'.";
+                    throw new InvalidConfigurationException(msg, e);
+                }
+
+                if (this.client == null)
+                {
+                    // this.logger.LogError(new Exception(errorMessage), errorMessage);
+                    throw new InvalidConfigurationException("Could not connect to kusto client");
+                }
+            }
+
+            return this.client;
         }
     }
 }

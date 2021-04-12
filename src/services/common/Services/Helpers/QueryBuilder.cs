@@ -336,6 +336,79 @@ namespace Mmm.Iot.Common.Services.Helpers
             return new SqlQuerySpec(queryBuilder.ToString(), sqlParameterCollection);
         }
 
+        public static (string Query, Dictionary<string, object> QueryParameter) GetKustoQuery(
+            string tableName,
+            DateTimeOffset? from,
+            string fromProperty,
+            DateTimeOffset? to,
+            string toProperty,
+            string order,
+            string orderProperty,
+            int skip,
+            int limit,
+            string[] devices,
+            string devicesProperty)
+        {
+            ValidateInput(ref tableName);
+            ValidateInput(ref fromProperty);
+            ValidateInput(ref toProperty);
+            ValidateInput(ref order);
+            ValidateInput(ref orderProperty);
+            for (int i = 0; i < devices.Length; i++)
+            {
+                ValidateInput(ref devices[i]);
+            }
+
+            ValidateInput(ref devicesProperty);
+
+            var queryParameterCollection = new Dictionary<string, object>();
+
+            var queryBuilder = new StringBuilder("@tableName");
+            queryParameterCollection.Add("@tableName", tableName);
+
+            if (devices.Length > 0)
+            {
+                var devicesParameters = devices.Select((value, index) => new KeyValuePair<string, object>($"@devicesParameterName{index}", value));
+
+                queryBuilder.Append($" | where @devicesProperty in ({string.Join(",", devicesParameters.Select(p => p.Key))})");
+                queryParameterCollection.Add("@devicesProperty", devicesProperty);
+                foreach (var p in devicesParameters)
+                {
+                    queryParameterCollection.Add(p.Key, p.Value);
+                }
+            }
+
+            if (from.HasValue)
+            {
+                // TODO: left operand is never null
+                DateTimeOffset fromDate = from ?? default(DateTimeOffset);
+                queryBuilder.Append(" | where @fromProperty >= " + fromDate.ToString());
+                queryParameterCollection.Add("@fromProperty", fromProperty);
+            }
+
+            if (to.HasValue)
+            {
+                // TODO: left operand is never null
+                DateTimeOffset toDate = to ?? default(DateTimeOffset);
+                queryBuilder.Append(" and @toProperty <= " + toDate.ToString());
+                queryParameterCollection.Add("@toProperty", toProperty);
+            }
+
+            if (order == null || string.Equals(order, "desc", StringComparison.OrdinalIgnoreCase))
+            {
+                queryBuilder.Append(" | top @top by @orderProperty desc");
+            }
+            else
+            {
+                queryBuilder.Append(" | top @top by @orderProperty asc");
+            }
+
+            queryParameterCollection.Add("@top", skip + limit);
+            queryParameterCollection.Add("@orderProperty", orderProperty);
+
+            return (queryBuilder.ToString(), queryParameterCollection);
+        }
+
         // Check illegal characters in input
         private static void ValidateInput(ref string input)
         {

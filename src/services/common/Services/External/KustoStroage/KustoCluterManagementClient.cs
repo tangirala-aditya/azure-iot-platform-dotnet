@@ -137,6 +137,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
                             eventSystemProperties: new List<string>()
                             {
                             "iothub-connection-device-id",
+                            "iothub-enqueuedtime",
                             }));
             }
             catch (Exception e)
@@ -163,6 +164,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
                             eventSystemProperties: new List<string>()
                             {
                             "iothub-connection-device-id",
+                            "iothub-enqueuedtime",
                             }));
             }
             catch (Exception e)

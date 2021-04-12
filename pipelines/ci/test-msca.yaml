@@ -328,14 +328,22 @@ stages:
           #     TreatSignatureUpdateFailureAs: 'Warning'
           #     SignatureFreshness: 'UpToDate'
           #     TreatStaleSignatureAs: 'Warning'
-
-          - task: BinSkim@3
+          - task: MSBuild@1
             inputs:
-              InputType: 'Basic'
-              Function: 'analyze'
-              AnalyzeTarget: '$(Build.ArtifactStagingDirectory)\src\services\**\*.dll;$(Build.ArtifactStagingDirectory)\src\services\**\*.exe'
-              AnalyzeSymPath: '$(Build.ArtifactStagingDirectory)\**\bin\**\*.pdb'
-              AnalyzeVerbose: true
+              solution: '**/*.sln'
+              restoreNugetPackages: true
+
+          - task: RoslynAnalyzers@2
+            inputs:
+              userProvideBuildInfo: 'auto'
+
+          # - task: BinSkim@3
+          #   inputs:
+          #     InputType: 'Basic'
+          #     Function: 'analyze'
+          #     AnalyzeTarget: '$(Build.ArtifactStagingDirectory)\src\services\**\*.dll;$(Build.ArtifactStagingDirectory)\src\services\**\*.exe'
+          #     AnalyzeSymPath: '$(Build.ArtifactStagingDirectory)\**\bin\**\*.pdb'
+          #     AnalyzeVerbose: true
           # - task: CredScan@2
           #   displayName: Scan for credentials
           #   inputs:

@@ -331,10 +331,8 @@ stages:
 
           - task: BinSkim@3
             inputs:
-              InputType: 'Basic'
-              Function: 'analyze'
-              AnalyzeTarget: '$(Build.ArtifactStagingDirectory)\src\services\**\*.exe;$(Build.ArtifactStagingDirectory)\src\services\**\*.dll'
-              AnalyzeVerbose: true
+              InputType: 'CommandLine'
+              arguments: 'analyze $(Build.SourcesDirectory)\**\* --recurse --verbose'
           # - task: CredScan@2
           #   displayName: Scan for credentials
           #   inputs:

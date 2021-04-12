@@ -316,38 +316,38 @@ stages:
               artifact: $(publishedFilesArtifactName)
               path: $(Build.SourcesDirectory)
 
-          - task: AntiMalware@3
-            displayName: Scan for malware
-            inputs:
-              InputType: 'Basic'
-              ScanType: 'CustomScan'
-              FileDirPath: '$(Build.SourcesDirectory)'
-              EnableServices: true
-              DisableRemediation: false
-              SupportLogOnError: true
-              TreatSignatureUpdateFailureAs: 'Warning'
-              SignatureFreshness: 'UpToDate'
-              TreatStaleSignatureAs: 'Warning'
-
-          # - task: BinSkim@3
+          # - task: AntiMalware@3
+          #   displayName: Scan for malware
           #   inputs:
           #     InputType: 'Basic'
-          #     Function: 'analyze'
-          #     AnalyzeTarget: '$(publishedFilesArtifactName)\src\services\**\*.exe;$(publishedFilesArtifactName)\src\services\**\*.dll'
-          #     AnalyzeVerbose: true
-          - task: CredScan@2
-            displayName: Scan for credentials
+          #     ScanType: 'CustomScan'
+          #     FileDirPath: '$(Build.SourcesDirectory)'
+          #     EnableServices: true
+          #     DisableRemediation: false
+          #     SupportLogOnError: true
+          #     TreatSignatureUpdateFailureAs: 'Warning'
+          #     SignatureFreshness: 'UpToDate'
+          #     TreatStaleSignatureAs: 'Warning'
+
+          - task: BinSkim@3
             inputs:
-              toolMajorVersion: 'V2'
-              verboseOutput: true
+              InputType: 'Basic'
+              Function: 'analyze'
+              AnalyzeTarget: '$(Build.ArtifactStagingDirectory)\src\services\**\*.exe;$(Build.ArtifactStagingDirectory)\src\services\**\*.dll'
+              AnalyzeVerbose: true
+          # - task: CredScan@2
+          #   displayName: Scan for credentials
+          #   inputs:
+          #     toolMajorVersion: 'V2'
+          #     verboseOutput: true
 
           - task: SdtReport@1
             displayName: Generate report
             inputs:
               AllTools: true
-              BinSkim: false
+              BinSkim: true
               BinSkimBreakOn: Error
-              CredScan: true
+              CredScan: false
               MSRD: false
               RoslynAnalyzers: false
               RoslynAnalyzersBreakOn: Error

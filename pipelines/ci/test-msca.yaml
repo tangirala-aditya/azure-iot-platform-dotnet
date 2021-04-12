@@ -331,7 +331,6 @@ stages:
           - task: MSBuild@1
             inputs:
               solution: '**/*.sln'
-              restoreNugetPackages: true
 
           - task: RoslynAnalyzers@2
             inputs:

@@ -316,38 +316,45 @@ stages:
               artifact: $(publishedFilesArtifactName)
               path: $(Build.SourcesDirectory)
 
-          - task: AntiMalware@3
-            displayName: Scan for malware
+          # - task: AntiMalware@3
+          #   displayName: Scan for malware
+          #   inputs:
+          #     InputType: 'Basic'
+          #     ScanType: 'CustomScan'
+          #     FileDirPath: '$(Build.SourcesDirectory)'
+          #     EnableServices: true
+          #     DisableRemediation: false
+          #     SupportLogOnError: true
+          #     TreatSignatureUpdateFailureAs: 'Warning'
+          #     SignatureFreshness: 'UpToDate'
+          #     TreatStaleSignatureAs: 'Warning'
+
+          - task: RoslynAnalyzers@2
             inputs:
-              InputType: 'Basic'
-              ScanType: 'CustomScan'
-              FileDirPath: '$(Build.SourcesDirectory)'
-              EnableServices: true
-              DisableRemediation: false
-              SupportLogOnError: true
-              TreatSignatureUpdateFailureAs: 'Warning'
-              SignatureFreshness: 'UpToDate'
-              TreatStaleSignatureAs: 'Warning'
+              userProvideBuildInfo: 'msBuildInfo'
+              msBuildVersion: '16.0'
+              msBuildArchitecture: 'x86'
 
           # - task: BinSkim@3
           #   inputs:
           #     InputType: 'Basic'
           #     Function: 'analyze'
-          #     AnalyzeTarget: '$(publishedFilesArtifactName)\src\services\**\*.exe;$(publishedFilesArtifactName)\src\services\**\*.dll'
+          #     AnalyzeTarget: '$(Build.ArtifactStagingDirectory)\src\services\**\*.dll;$(Build.ArtifactStagingDirectory)\src\services\**\*.exe'
+          #     AnalyzeSymPath: '$(Build.ArtifactStagingDirectory)\**\bin\**\*.pdb'
           #     AnalyzeVerbose: true
-          - task: CredScan@2
-            displayName: Scan for credentials
-            inputs:
-              toolMajorVersion: 'V2'
-              verboseOutput: true
+          # - task: CredScan@2
+          #   displayName: Scan for credentials
+          #   inputs:
+          #     toolMajorVersion: 'V2'
+          #     verboseOutput: true
 
           - task: SdtReport@1
             displayName: Generate report
             inputs:
               AllTools: true
-              BinSkim: false
+              BinSkim: true
               BinSkimBreakOn: Error
-              CredScan: true
+              CredScan: false
               MSRD: false
               RoslynAnalyzers: false
               RoslynAnalyzersBreakOn: Error
@@ -424,32 +431,3 @@ stages:
               kubernetesCluster: $(aksName)
               command: delete
               arguments: namespace $(kubernetesNamespace) --now=true --ignore-not-found=true
-
-      - job: removeAuthenticationCallbackUrl
-        displayName: Remove auth callback URL
-        pool:
-          vmImage: windows-latest
-        steps:
-          - checkout: none
-
-          - task: PowerShell@2
-            displayName: Remove auth callback URL
-            inputs:
-              targetType: inline
-              script: |-
-                Install-Module AzureAD -Force
-                $password = ConvertTo-SecureString -String '$(azureAdB2cTenantPassword)' -AsPlainText -Force
-                $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList '$(azureAdB2cTenantUsername)', $password
-                $azContext = Connect-AzureAD -TenantId $(azureAdB2cAppRegistrationTenantId) -Credential $credential
-                if ($azContext.TenantId -ne '$(azureAdB2cAppRegistrationTenantId)') {
-                  throw 'You are not connected to the right tenant'
-                }
-
-                $app = Get-AzureADMSApplication -Filter "DisplayName eq '$(azureAdB2cAppRegistrationNameTest)'"
-                $replyUrls = $app.web.RedirectUris
-                Write-Host $replyUrls
-                if ($replyUrls.Contains('$(authenticationCallbackUrl)'))
-                {
-                  $replyUrls.Remove('$(authenticationCallbackUrl)')
-                  Set-AzureADMSApplication -ObjectId $app.Id -Web @{ RedirectUris = $replyUrls }
-                }

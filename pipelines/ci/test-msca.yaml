@@ -334,7 +334,6 @@ stages:
               userProvideBuildInfo: 'msBuildInfo'
               msBuildVersion: '16.0'
               msBuildArchitecture: 'x86'
-              msBuildCommandline: 'dotnet restore   --force  --no-cache --no-dependencies  --packages .nuget  --runtime $(dotnetProductionRuntimeId)'
 
           # - task: BinSkim@3
           #   inputs:

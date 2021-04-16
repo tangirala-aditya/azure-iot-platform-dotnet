@@ -1,7 +1,7 @@
 trigger: none
 
 pool:
-  vmImage: ubuntu-20.10
+  vmImage: ubuntu-latest
 variables:
   - template: ../templates/variables-all.yaml
   - name: buildId
@@ -148,7 +148,6 @@ stages:
               --no-dependencies
               --packages .nuget
               --runtime $(dotnetProductionRuntimeId)
-              /p:TargetLatestRuntimePatch=false
             displayName: Restore dependencies
 
           - script: >-

@@ -180,6 +180,7 @@ stages:
             artifact: $(publishedFilesArtifactName)
             displayName: Publish services artifacts
 
+
       - job: functionBuild
         displayName: Build Functions
         pool:
@@ -222,41 +223,97 @@ stages:
             artifact: $(functionsArtifactName)
             displayName: Publish Azure Functions artifacts
 
-  # - stage: whiteSourceBolt
-  #   displayName: WhiteSource Bolt
-  #   dependsOn:
-  #     - build
-  #     - buildFrontEndContainers
-  #   jobs:
-  #     - job: whiteSourceBolt
-  #       displayName: WhiteSource Bolt
-  #       steps:
-  #         - checkout: none
+  - stage: buildFrontEndContainers
+    displayName: Build front-end containers
+    dependsOn: []
+    jobs:
+      - job: lintWebuiCode
+        displayName: Lint webui code
+        steps:
+          - checkout: self
+            displayName: Checkout repository
 
-  #         - task: DownloadPipelineArtifact@2
-  #           displayName: Download service artifacts
-  #           inputs:
-  #             source: current
-  #             artifact: $(publishedFilesArtifactName)
-  #             path: $(Build.SourcesDirectory)/$(publishedFilesArtifactName)
+          - task: NodeTool@0
+            inputs:
+              versionSpec: 10.14.1
 
-  #         - task: DownloadPipelineArtifact@2
-  #           displayName: Download functions artifacts
-  #           inputs:
-  #             source: current
-  #             artifact: $(functionsArtifactName)
-  #             path: $(Build.SourcesDirectory)/$(functionsArtifactName)
+          - pwsh: |-
+              npm install
+              npm run lint
+            displayName: npm run lint
+            workingDirectory: src/webui
 
-  #         - task: DownloadPipelineArtifact@2
-  #           displayName: Download webui artifacts
-  #           inputs:
-  #             source: current
-  #             artifact: $(webuiArtifactName)
-  #             path: $(Build.SourcesDirectory)/$(webuiArtifactName)
+          - task: CopyFiles@2
+            displayName: Prepare services artifacts
+            inputs:
+              contents: |
+                src/webui/**/*
+              targetFolder: $(webuiArtifactName)
+              cleanTargetFolder: true
 
-  #         - task: WhiteSource@21
-  #           inputs:
-  #             cwd: '$(System.DefaultWorkingDirectory)'
+          - publish: $(webuiArtifactName)
+            artifact: $(webuiArtifactName)
+            displayName: Publish services artifacts
+
+      - job: buildFrontEndContainers
+        displayName: Build front-end containers
+        dependsOn: []
+        strategy:
+          matrix:
+            reverse-proxy:
+              serviceName: reverse-proxy
+            webui:
+              serviceName: webui
+        steps:
+          - checkout: self
+            displayName: Checkout repository
+
+          - task: Docker@2
+            displayName: Build and push container
+            inputs:
+              containerRegistry: $(dockerHubServiceConnectionName)
+              repository: $(dockerHubRepositoryName)/$(serviceName)
+              command: buildAndPush
+              dockerfile: src/$(serviceName)/$(dockerfile)
+              buildContext: src/$(serviceName)
+              tags: |-
+                $(Build.BuildId)
+                $(Build.SourceVersion)
+
+  - stage: whiteSourceBolt
+    displayName: WhiteSource Bolt
+    dependsOn:
+      - build
+      - buildFrontEndContainers
+    jobs:
+      - job: whiteSourceBolt
+        displayName: WhiteSource Bolt
+        steps:
+          - checkout: none
+          - task: DownloadPipelineArtifact@2
+            displayName: Download service artifacts
+            inputs:
+              source: current
+              artifact: $(publishedFilesArtifactName)
+              path: $(Build.SourcesDirectory)/$(publishedFilesArtifactName)
+
+          - task: DownloadPipelineArtifact@2
+            displayName: Download functions artifacts
+            inputs:
+              source: current
+              artifact: $(functionsArtifactName)
+              path: $(Build.SourcesDirectory)/$(functionsArtifactName)
+
+          - task: DownloadPipelineArtifact@2
+            displayName: Download webui artifacts
+            inputs:
+              source: current
+              artifact: $(webuiArtifactName)
+              path: $(Build.SourcesDirectory)/$(webuiArtifactName)
+
+          - task: WhiteSource@21
+            inputs:
+              cwd: '$(Build.SourcesDirectory)'
 
   - stage: listCommitsSinceLastRelease
     displayName: List commits since last release
@@ -296,81 +353,81 @@ stages:
             artifact: $(commitsSinceLastReleaseArtifactName)
             displayName: Publish list of commits since last release
 
-  - stage: microsoftSecurityCodeAnalysis
-    displayName: Microsoft Security Code Analysis
-    dependsOn:
-      - build
-    jobs:
-      - job: microsoftSecurityCodeAnalysis
-        displayName: Microsoft Security Code Analysis
-        pool:
-          vmImage: windows-latest
-        steps:
-          - checkout: self
-            displayName: Checkout repository
+  # - stage: microsoftSecurityCodeAnalysis
+  #   displayName: Microsoft Security Code Analysis
+  #   dependsOn:
+  #     - build
+  #   jobs:
+  #     - job: microsoftSecurityCodeAnalysis
+  #       displayName: Microsoft Security Code Analysis
+  #       pool:
+  #         vmImage: windows-latest
+  #       steps:
+  #         - checkout: self
+  #           displayName: Checkout repository
 
-          - task: DownloadPipelineArtifact@2
-            displayName: Download artifacts
-            inputs:
-              source: current
-              artifact: $(publishedFilesArtifactName)
-              path: $(Build.SourcesDirectory)
+  #         - task: DownloadPipelineArtifact@2
+  #           displayName: Download artifacts
+  #           inputs:
+  #             source: current
+  #             artifact: $(publishedFilesArtifactName)
+  #             path: $(Build.SourcesDirectory)
 
-          # - task: AntiMalware@3
-          #   displayName: Scan for malware
-          #   inputs:
-          #     InputType: 'Basic'
-          #     ScanType: 'CustomScan'
-          #     FileDirPath: '$(Build.SourcesDirectory)'
-          #     EnableServices: true
-          #     DisableRemediation: false
-          #     SupportLogOnError: true
-          #     TreatSignatureUpdateFailureAs: 'Warning'
-          #     SignatureFreshness: 'UpToDate'
-          #     TreatStaleSignatureAs: 'Warning'
+  #         # - task: AntiMalware@3
+  #         #   displayName: Scan for malware
+  #         #   inputs:
+  #         #     InputType: 'Basic'
+  #         #     ScanType: 'CustomScan'
+  #         #     FileDirPath: '$(Build.SourcesDirectory)'
+  #         #     EnableServices: true
+  #         #     DisableRemediation: false
+  #         #     SupportLogOnError: true
+  #         #     TreatSignatureUpdateFailureAs: 'Warning'
+  #         #     SignatureFreshness: 'UpToDate'
+  #         #     TreatStaleSignatureAs: 'Warning'
 
 
-          - task: MSBuild@1
-            inputs:
-              solution: '**/*.sln'
-              clean: true
-          - task: RoslynAnalyzers@2
-            inputs:
-              userProvideBuildInfo: 'auto'
+  #         - task: MSBuild@1
+  #           inputs:
+  #             solution: '**/*.sln'
+  #             clean: true
+  #         - task: RoslynAnalyzers@2
+  #           inputs:
+  #             userProvideBuildInfo: 'auto'
 
-          # - task: BinSkim@3
-          #   inputs:
-          #     InputType: 'Basic'
-          #     Function: 'analyze'
-          #     AnalyzeTarget: '$(Build.ArtifactStagingDirectory)\src\services\**\*.dll;$(Build.ArtifactStagingDirectory)\src\services\**\*.exe'
-          #     AnalyzeSymPath: '$(Build.ArtifactStagingDirectory)\**\bin\**\*.pdb'
-          #     AnalyzeVerbose: true
-          # - task: CredScan@2
-          #   displayName: Scan for credentials
-          #   inputs:
-          #     toolMajorVersion: 'V2'
-          #     verboseOutput: true
+  #         # - task: BinSkim@3
+  #         #   inputs:
+  #         #     InputType: 'Basic'
+  #         #     Function: 'analyze'
+  #         #     AnalyzeTarget: '$(Build.ArtifactStagingDirectory)\src\services\**\*.dll;$(Build.ArtifactStagingDirectory)\src\services\**\*.exe'
+  #         #     AnalyzeSymPath: '$(Build.ArtifactStagingDirectory)\**\bin\**\*.pdb'
+  #         #     AnalyzeVerbose: true
+  #         # - task: CredScan@2
+  #         #   displayName: Scan for credentials
+  #         #   inputs:
+  #         #     toolMajorVersion: 'V2'
+  #         #     verboseOutput: true
 
-          - task: SdtReport@1
-            displayName: Generate report
-            inputs:
-              AllTools: true
-              BinSkim: true
-              BinSkimBreakOn: Error
-              CredScan: false
-              MSRD: false
-              RoslynAnalyzers: false
-              RoslynAnalyzersBreakOn: Error
-              TSLint: false
-              ToolLogsNotFoundAction: Standard
+  #         - task: SdtReport@1
+  #           displayName: Generate report
+  #           inputs:
+  #             AllTools: true
+  #             BinSkim: true
+  #             BinSkimBreakOn: Error
+  #             CredScan: false
+  #             MSRD: false
+  #             RoslynAnalyzers: false
+  #             RoslynAnalyzersBreakOn: Error
+  #             TSLint: false
+  #             ToolLogsNotFoundAction: Standard
 
-          - task: PublishSecurityAnalysisLogs@2
-            displayName: Publish report
-            inputs:
-              ArtifactName: CodeAnalysisLogs
-              ArtifactType: Container
-              AllTools: true
-              ToolLogsNotFoundAction: Standard
+  #         - task: PublishSecurityAnalysisLogs@2
+  #           displayName: Publish report
+  #           inputs:
+  #             ArtifactName: CodeAnalysisLogs
+  #             ArtifactType: Container
+  #             AllTools: true
+  #             ToolLogsNotFoundAction: Standard
 
 
   - stage: cleanup

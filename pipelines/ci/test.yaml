@@ -270,8 +270,9 @@ stages:
               artifact: $(webuiArtifactName)
               path: $(Build.SourcesDirectory)/$(webuiArtifactName)
 
-          - task: whitesource.whiteSource-bolt-v2.bolt.wss.WhiteSource@21
-            displayName: 'WhiteSource Bolt'
+          - task: WhiteSource@21
+            inputs:
+              cwd: '$(Build.SourcesDirectory)'
 
   - stage: listCommitsSinceLastRelease
     displayName: List commits since last release

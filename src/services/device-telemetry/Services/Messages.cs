@@ -216,6 +216,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             var results = await this.kustoQueryClient.QueryAsync<TelemetryModel>(database, query, queryParameter);
 
             HashSet<string> properties = new HashSet<string>();
+            var messages = new List<Message>();
 
             foreach (var result in results)
             {
@@ -236,19 +237,13 @@ namespace Mmm.Iot.DeviceTelemetry.Services
                         properties.Add(key);
                     }
                 }
-            }
 
-            var messages = new List<Message>();
-
-            foreach (var result in results)
-            {
-                var message = new Message
+                messages.Add(new Message
                 {
                     DeviceId = result.DeviceId.ToString(),
                     Time = result.TimeStamp,
-                    Data = JObject.Parse(result.Data.ToString()),
-                };
-                messages.Add(message);
+                    Data = data,
+                });
             }
 
             return new MessageList(messages, new List<string>(properties));
@@ -281,6 +276,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             var results = await this.kustoQueryClient.QueryAsync<TelemetryModel>(database, query, queryParameter);
 
             HashSet<string> properties = new HashSet<string>();
+            var messages = new List<Message>();
 
             foreach (var result in results)
             {
@@ -301,19 +297,13 @@ namespace Mmm.Iot.DeviceTelemetry.Services
                         properties.Add(key);
                     }
                 }
-            }
 
-            var messages = new List<Message>();
-
-            foreach (var result in results)
-            {
-                var message = new Message
+                messages.Add(new Message
                 {
                     DeviceId = result.DeviceId.ToString(),
                     Time = result.TimeStamp,
-                    Data = JObject.Parse(result.Data.ToString()),
-                };
-                messages.Add(message);
+                    Data = data,
+                });
             }
 
             return new MessageList(messages, new List<string>(properties));

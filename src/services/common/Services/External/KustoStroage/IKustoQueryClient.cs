@@ -15,4 +15,5 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             string dataBaseName,
             string query,
             Dictionary<string, string> queryParameter);
+    }
 }

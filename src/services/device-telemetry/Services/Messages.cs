@@ -15,6 +15,7 @@ using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.CosmosDb;
 using Mmm.Iot.Common.Services.External.KustoStorage;
+using Mmm.Iot.Common.Services.External.KustoStroage;
 using Mmm.Iot.Common.Services.External.TimeSeries;
 using Mmm.Iot.Common.Services.Helpers;
 using Newtonsoft.Json.Linq;
@@ -88,12 +89,15 @@ namespace Mmm.Iot.DeviceTelemetry.Services
                 InputValidator.Validate(device);
             }
 
-            // TODO
-            bool dataFromADE = true;
-
-            return dataFromADE ? await this.GetListFromKustoAsync(from, to, order, skip, limit, devices) :
-                this.timeSeriesEnabled ? await this.GetListFromTimeSeriesAsync(from, to, order, skip, limit, devices) :
-                await this.GetListFromCosmosDbAsync(from, to, order, skip, limit, devices);
+            switch (this.config.DeviceTelemetryService.Messages.TelemetryStorageType)
+            {
+                case "tsi":
+                    return await this.GetListFromTimeSeriesAsync(from, to, order, skip, limit, devices);
+                case "ade":
+                    return await this.GetListFromKustoAsync(from, to, order, skip, limit, devices);
+                default:
+                    return await this.GetListFromCosmosDbAsync(from, to, order, skip, limit, devices);
+            }
         }
 
         public async Task<MessageList> ListTopDeviceMessagesAsync(
@@ -101,9 +105,16 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             string deviceId)
         {
             InputValidator.Validate(deviceId);
-            return this.timeSeriesEnabled ?
-                await this.GetListFromTimeSeriesAsync(limit, deviceId) :
-                await this.GetListFromCosmosDbAsync(limit, deviceId);
+
+            switch (this.config.DeviceTelemetryService.Messages.TelemetryStorageType)
+            {
+                case "tsi":
+                    return await this.GetListFromTimeSeriesAsync(limit, deviceId);
+                case "ade":
+                    return await this.GetListFromKustoAsync(limit, deviceId);
+                default:
+                    return await this.GetListFromCosmosDbAsync(limit, deviceId);
+            }
         }
 
         private async Task<MessageList> GetListFromCosmosDbAsync(
@@ -188,6 +199,62 @@ namespace Mmm.Iot.DeviceTelemetry.Services
         }
 
         private async Task<MessageList> GetListFromKustoAsync(
+            int limit,
+            string deviceId)
+        {
+            // TODO
+            string database = this.httpContextAccessor.HttpContext.Request.GetTenant();
+
+            (string query, Dictionary<string, string> queryParameter) = QueryBuilder.GetTopDeviceMessagesKustoQuery(
+                "telemetry",
+                limit,
+                "desc",
+                "timeStamp",
+                deviceId,
+                "deviceId");
+
+            var results = await this.kustoQueryClient.QueryAsync<TelemetryModel>(database, query, queryParameter);
+
+            HashSet<string> properties = new HashSet<string>();
+
+            foreach (var result in results)
+            {
+                JObject data = new JObject();
+
+                // Extract all the telemetry data and types
+                var jsonDoc = JObject.Parse(result.Data.ToString());
+
+                foreach (var item in jsonDoc)
+                {
+                    // Ignore fields that werent sent by device (system fields)"
+                    if (!item.Key.StartsWith("_") && !item.Key.StartsWith("iothub-") && item.Key != "id" && item.Key != "deviceId")
+                    {
+                        string key = item.Key.ToString();
+                        data.Add(key, item.Value);
+
+                        // Telemetry types auto-discovery magic through union of all keys
+                        properties.Add(key);
+                    }
+                }
+            }
+
+            var messages = new List<Message>();
+
+            foreach (var result in results)
+            {
+                var message = new Message
+                {
+                    DeviceId = result.DeviceId.ToString(),
+                    Time = result.TimeStamp,
+                    Data = JObject.Parse(result.Data.ToString()),
+                };
+                messages.Add(message);
+            }
+
+            return new MessageList(messages, new List<string>(properties));
+        }
+
+        private async Task<MessageList> GetListFromKustoAsync(
             DateTimeOffset? from,
             DateTimeOffset? to,
             string order,
@@ -195,7 +262,61 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             int limit,
             string[] devices)
         {
-            return await this.kustoQueryClient.QueryAsync(from, to, order, skip, limit, devices);
+            // TODO
+            string database = this.httpContextAccessor.HttpContext.Request.GetTenant();
+
+            (string query, Dictionary<string, string> queryParameter) = QueryBuilder.GetKustoQuery(
+                "telemetry",
+                from,
+                "timeStamp",
+                to,
+                "timeStamp",
+                order,
+                "timeStamp",
+                skip,
+                limit,
+                devices,
+                "deviceId");
+
+            var results = await this.kustoQueryClient.QueryAsync<TelemetryModel>(database, query, queryParameter);
+
+            HashSet<string> properties = new HashSet<string>();
+
+            foreach (var result in results)
+            {
+                JObject data = new JObject();
+
+                // Extract all the telemetry data and types
+                var jsonDoc = JObject.Parse(result.Data.ToString());
+
+                foreach (var item in jsonDoc)
+                {
+                    // Ignore fields that werent sent by device (system fields)"
+                    if (!item.Key.StartsWith("_") && !item.Key.StartsWith("iothub-") && item.Key != "id" && item.Key != "deviceId")
+                    {
+                        string key = item.Key.ToString();
+                        data.Add(key, item.Value);
+
+                        // Telemetry types auto-discovery magic through union of all keys
+                        properties.Add(key);
+                    }
+                }
+            }
+
+            var messages = new List<Message>();
+
+            foreach (var result in results)
+            {
+                var message = new Message
+                {
+                    DeviceId = result.DeviceId.ToString(),
+                    Time = result.TimeStamp,
+                    Data = JObject.Parse(result.Data.ToString()),
+                };
+                messages.Add(message);
+            }
+
+            return new MessageList(messages, new List<string>(properties));
         }
 
         private async Task<MessageList> GetListFromCosmosDbAsync(

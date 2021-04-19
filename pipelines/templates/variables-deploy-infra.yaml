@@ -13,6 +13,8 @@ variables:
     value: pipelines/cd/arm
   - name: cosmosDbName
     value: iot
+  - name: telemetryStorageType
+    value: ade
   - name: crslPlatformKeyVault
     value: crsliot-platform-akv
   - name: defaultSasKeyName

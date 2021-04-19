@@ -104,6 +104,13 @@ stages:
                 echo "A value for the 'appInsightsLocation' variable must be provided" > /dev/stderr
                 exit 1
               fi
+
+              echo "HelmVersionV3: '$(helmVersionV3)'"
+              if [ -z "$(helmVersionV3)" ]
+              then
+                echo "A value for the 'helmVersionV3' variable must be provided" > /dev/stderr
+                exit 1
+              fi
             displayName: Check parameters
 
   - stage: deployInfrastructure
@@ -111,7 +118,29 @@ stages:
     dependsOn:
       - checkParameters
     jobs:
+
+    - ${{ if eq(variables['helmVersionV3'], false) }}:
       - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation)
+          environmentName: $(environmentName)
+          subscriptionId: $(subscriptionId)
+          applicationCode: $(applicationCode)
+          applicationShortCode: $(applicationShortCode)
+          environmentCategory: $(environmentCategory)
+          kubernetesVersion: $(kubernetesVersion)
+          sendgridEmail: $(sendGridEmail)
+          sysAdmins: $(sysAdmins)
+          aksAgentVmSize: $(aksAgentVmSize)
+          azureDevOpsProjectId: AzurePlatform
+          testPipelineId: 453
+          runVersion: specific
+          testPipelineRunId: $(testPipelineRunId)
+
+    - ${{ if eq(variables['helmVersionV3'], true) }}:
+      - template: ../templates/jobs-deploy-infra-v3.yaml
         parameters:
           subscriptionName: $(subscriptionName)
           locationName: $(locationName)

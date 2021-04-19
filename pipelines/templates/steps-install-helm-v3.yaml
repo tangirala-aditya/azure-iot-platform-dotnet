@@ -1,0 +1,12 @@
+parameters:
+  helmVersion:
+  subscriptionName:
+  resourceGroupName:
+  aksName:
+  kubernetesNamespace:
+
+steps:
+  - task: HelmInstaller@1
+    displayName: Install Helm
+    inputs:
+      helmVersionToInstall: $(helmVersionV3)

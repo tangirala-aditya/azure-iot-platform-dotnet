@@ -1242,7 +1242,6 @@ jobs:
               # Use Helm to deploy an NGINX ingress controller
               helm upgrade ingress-controller stable/nginx-ingress \
                   --install \
-                  --force \
                   --namespace ingress-basic \
                   --set controller.replicaCount=2 \
                   --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \

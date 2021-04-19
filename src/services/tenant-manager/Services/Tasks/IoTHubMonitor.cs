@@ -170,10 +170,10 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                 this.kustoTableManagementClient.CreateTableMapping(tableMappingName, mappingSchema, tableName, databaseName);
 
                                 string dataConnectName = $"telemetryDataConnect-{item.TenantId}";
-                                string eventHubName = "telemetry";
-                                string eventHubConsumerGroup = "$Default";
+                                string iotHubName = iothub.Name;
+                                string iotHubConsumerGroup = "$Default";
 
-                                await this.kustoCluterManagementClient.AddEventHubDataConnectionAsync(dataConnectName, databaseName, tableName, tableMappingName, eventHubName, eventHubConsumerGroup);
+                                await this.kustoCluterManagementClient.AddIoTHubDataConnectionAsync(dataConnectName, databaseName, tableName, tableMappingName, iotHubName, iotHubConsumerGroup);
                             }
                         }
                         catch (Microsoft.Azure.Management.IotHub.Models.ErrorDetailsException e)

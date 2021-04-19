@@ -203,7 +203,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             string deviceId)
         {
             // TODO
-            string database = this.httpContextAccessor.HttpContext.Request.GetTenant();
+            string database = $"IoT-{this.httpContextAccessor.HttpContext.Request.GetTenant()}";
 
             (string query, Dictionary<string, string> queryParameter) = QueryBuilder.GetTopDeviceMessagesKustoQuery(
                 "telemetry",
@@ -258,7 +258,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             string[] devices)
         {
             // TODO
-            string database = this.httpContextAccessor.HttpContext.Request.GetTenant();
+            string database = $"IoT-{this.httpContextAccessor.HttpContext.Request.GetTenant()}";
 
             (string query, Dictionary<string, string> queryParameter) = QueryBuilder.GetKustoQuery(
                 "telemetry",

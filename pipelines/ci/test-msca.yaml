@@ -140,6 +140,12 @@ stages:
         steps:
           - checkout: self
             displayName: Checkout repository
+          
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'runtime'
+              version: '3.1.14'
+              includePreviewVersions: true
 
           - script: >-
               dotnet restore
@@ -148,6 +154,7 @@ stages:
               --no-dependencies
               --packages .nuget
               --runtime $(dotnetProductionRuntimeId)
+              /p:TargetLatestRuntimePatch=true
             displayName: Restore dependencies
 
           - script: >-
@@ -234,6 +241,12 @@ stages:
             value: "[Mmm.*.Test*]*%2C[Mmm.*.WebService]*Startup%2C[Mmm.*.WebService]*Program%2C[*]Mmm.Iot.Common.Services.Config.*%2C[*]*DependencyResolution*%2C[*]Mmm.*Model*"
         steps:
           - checkout: none
+
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'runtime'
+              version: '3.1.14'
+              includePreviewVersions: true
 
           - task: DownloadPipelineArtifact@2
             displayName: Download artifacts

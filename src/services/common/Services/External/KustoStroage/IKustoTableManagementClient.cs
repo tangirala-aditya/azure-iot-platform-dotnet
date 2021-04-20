@@ -14,5 +14,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
         void CreateTable(string tableName, IEnumerable<Tuple<string, string>> rowFields, string databaseName);
 
         void CreateTableMapping(string tableMappingName, IEnumerable<ColumnMapping> mapping, string tableName, string databaseName);
+
+        void EnableStreamingIngestionPolicyToTable(string tableName, string databaseName);
     }
 }

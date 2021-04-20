@@ -156,7 +156,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
                         new IotHubDataConnection(
                             $"/subscriptions/{this.config.Global.SubscriptionId}/resourceGroups/{this.config.Global.ResourceGroup}/providers/Microsoft.Devices/IotHubs/{iotHubName}",
                             iotHubConsumerGroup,
-                            sharedAccessPolicyName: "iothubforread",
+                            sharedAccessPolicyName: "iothubowner",
                             location: this.config.Global.Location,
                             tableName: tableName,
                             mappingRuleName: tableMappingName,

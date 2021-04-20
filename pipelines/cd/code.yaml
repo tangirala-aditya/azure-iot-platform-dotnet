@@ -103,7 +103,7 @@ stages:
           environmentCategory: $(environmentCategory-acsDev)
           imageTag: $(_imageTag)
           blueGreen: true
-          helmVersionV3: false
+          helmVersionV3: true
           subscriptionId: $(subscriptionId-acsDev)
 
   - stage: crslQa

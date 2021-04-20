@@ -144,7 +144,8 @@ stages:
           - task: UseDotNet@2
             inputs:
               packageType: 'sdk'
-              version: '3.1.14'
+              version: '3.1.x'
+              includePreviewVersions: true
 
           - script: >-
               dotnet restore
@@ -201,7 +202,8 @@ stages:
           - task: UseDotNet@2
             inputs:
               packageType: 'sdk'
-              version: '3.1.14'
+              version: '3.1.x'
+              includePreviewVersions: true
           - script: >-
               dotnet restore
               --force
@@ -248,7 +250,8 @@ stages:
           - task: UseDotNet@2
             inputs:
               packageType: 'sdk'
-              version: '3.1.14'
+              version: '3.1.x'
+              includePreviewVersions: true
 
           - task: DownloadPipelineArtifact@2
             displayName: Download artifacts

@@ -116,7 +116,7 @@ stages:
   - stage: deployInfrastructure
     displayName: Deploy infrastructure
     dependsOn:
-      - checkParameter
+      - checkParameters
     condition: and(true,eq(variables.helmVersionV3,false))
     jobs:
       - template: ../templates/jobs-deploy-infra.yaml
@@ -141,7 +141,7 @@ stages:
   - stage: deployInfrastructureHelmV3
     displayName: Deploy helm v3 infrastructure
     dependsOn:
-      - checkParameter
+      - checkParameters
     condition: and(true,eq(variables.helmVersionV3,true))
     jobs:
       - template: ../templates/jobs-deploy-infra-v3.yaml

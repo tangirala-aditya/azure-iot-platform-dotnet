@@ -143,9 +143,8 @@ stages:
           
           - task: UseDotNet@2
             inputs:
-              packageType: 'runtime'
+              packageType: 'sdk'
               version: '3.1.14'
-              includePreviewVersions: true
 
           - script: >-
               dotnet restore
@@ -199,6 +198,10 @@ stages:
           - checkout: self
             displayName: Checkout repository
 
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '3.1.14'
           - script: >-
               dotnet restore
               --force
@@ -244,9 +247,8 @@ stages:
 
           - task: UseDotNet@2
             inputs:
-              packageType: 'runtime'
+              packageType: 'sdk'
               version: '3.1.14'
-              includePreviewVersions: true
 
           - task: DownloadPipelineArtifact@2
             displayName: Download artifacts

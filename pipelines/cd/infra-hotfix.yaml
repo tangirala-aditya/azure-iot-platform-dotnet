@@ -116,10 +116,9 @@ stages:
   - stage: deployInfrastructure
     displayName: Deploy infrastructure
     dependsOn:
-      - checkParameters
+      - checkParameter
+    condition: and(true,eq(variables.helmVersionV3,false))
     jobs:
-
-    - ${{ if eq(variables['helmVersionV3'], false) }}:
       - template: ../templates/jobs-deploy-infra.yaml
         parameters:
           subscriptionName: $(subscriptionName)
@@ -139,7 +138,12 @@ stages:
           runVersion: specific
           testPipelineRunId: $(testPipelineRunId)
 
-    - ${{ if eq(variables['helmVersionV3'], true) }}:
+  - stage: deployInfrastructureHelmV3
+    displayName: Deploy helm v3 infrastructure
+    dependsOn:
+      - checkParameter
+    condition: and(true,eq(variables.helmVersionV3,true))
+    jobs:
       - template: ../templates/jobs-deploy-infra-v3.yaml
         parameters:
           subscriptionName: $(subscriptionName)

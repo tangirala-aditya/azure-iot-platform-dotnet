@@ -222,142 +222,142 @@ stages:
             artifact: $(functionsArtifactName)
             displayName: Publish Azure Functions artifacts
 
-  - stage: unitTest
-    displayName: Unit test
-    dependsOn:
-      - build
-    jobs:
-      - job: unitTest
-        displayName: Unit test
-        variables:
-          - name: excludeFromCodeCoverage
-            value: "[Mmm.*.Test*]*%2C[Mmm.*.WebService]*Startup%2C[Mmm.*.WebService]*Program%2C[*]Mmm.Iot.Common.Services.Config.*%2C[*]*DependencyResolution*%2C[*]Mmm.*Model*"
-        steps:
-          - checkout: none
-
-          - task: DownloadPipelineArtifact@2
-            displayName: Download artifacts
-            inputs:
-              source: current
-              artifact: $(publishedFilesArtifactName)
-              path: $(Build.SourcesDirectory)
-
-          - task: DotNetCoreCLI@2
-            displayName: Run unit tests
-            inputs:
-              command: test
-              workingDirectory: $(Build.SourcesDirectory)
-              arguments: >-
-                --no-build
-                --configuration $(dotnetBuildConfiguration)
-                --runtime $(dotnetProductionRuntimeId)
-                --logger trx
-                /p:CollectCoverage=true
-                /p:CoverletOutputFormat=cobertura
-                "/p:Exclude=\"$(excludeFromCodeCoverage)\""
-
-          - script: |-
-              dotnet tool install --tool-path ./reportgenerator-tool dotnet-reportgenerator-globaltool
-              ./reportgenerator-tool/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:. -reporttypes:"Cobertura"
-            displayName: Generate coverage report
-
-          - task: PublishCodeCoverageResults@1
-            displayName: Publish test coverage
-            inputs:
-              codeCoverageTool: Cobertura
-              summaryFileLocation: Cobertura.xml
-
-  # - stage: buildFrontEndContainers
-  #   displayName: Build front-end containers
-  #   dependsOn: []
-  #   jobs:
-  #     - job: lintWebuiCode
-  #       displayName: Lint webui code
-  #       steps:
-  #         - checkout: self
-  #           displayName: Checkout repository
-
-  #         - task: NodeTool@0
-  #           inputs:
-  #             versionSpec: 10.14.1
-
-  #         - pwsh: |-
-  #             npm install
-  #             npm run lint
-  #           displayName: npm run lint
-  #           workingDirectory: src/webui
-
-  #         - task: CopyFiles@2
-  #           displayName: Prepare services artifacts
-  #           inputs:
-  #             contents: |
-  #               src/webui/**/*
-  #             targetFolder: $(webuiArtifactName)
-  #             cleanTargetFolder: true
-
-  #         - publish: $(webuiArtifactName)
-  #           artifact: $(webuiArtifactName)
-  #           displayName: Publish services artifacts
-
-  #     - job: buildFrontEndContainers
-  #       displayName: Build front-end containers
-  #       dependsOn: []
-  #       strategy:
-  #         matrix:
-  #           reverse-proxy:
-  #             serviceName: reverse-proxy
-  #           webui:
-  #             serviceName: webui
-  #       steps:
-  #         - checkout: self
-  #           displayName: Checkout repository
-
-  #         - task: Docker@2
-  #           displayName: Build and push container
-  #           inputs:
-  #             containerRegistry: $(dockerHubServiceConnectionName)
-  #             repository: $(dockerHubRepositoryName)/$(serviceName)
-  #             command: buildAndPush
-  #             dockerfile: src/$(serviceName)/$(dockerfile)
-  #             buildContext: src/$(serviceName)
-  #             tags: |-
-  #               $(Build.BuildId)
-  #               $(Build.SourceVersion)
-
-  # - stage: whiteSourceBolt
-  #   displayName: WhiteSource Bolt
+  # - stage: unitTest
+  #   displayName: Unit test
   #   dependsOn:
   #     - build
-  #     - buildFrontEndContainers
   #   jobs:
-  #     - job: whiteSourceBolt
-  #       displayName: WhiteSource Bolt
+  #     - job: unitTest
+  #       displayName: Unit test
+  #       variables:
+  #         - name: excludeFromCodeCoverage
+  #           value: "[Mmm.*.Test*]*%2C[Mmm.*.WebService]*Startup%2C[Mmm.*.WebService]*Program%2C[*]Mmm.Iot.Common.Services.Config.*%2C[*]*DependencyResolution*%2C[*]Mmm.*Model*"
   #       steps:
   #         - checkout: none
+
   #         - task: DownloadPipelineArtifact@2
-  #           displayName: Download service artifacts
+  #           displayName: Download artifacts
   #           inputs:
   #             source: current
   #             artifact: $(publishedFilesArtifactName)
-  #             path: $(Build.SourcesDirectory)/$(publishedFilesArtifactName)
+  #             path: $(Build.SourcesDirectory)
 
-  #         - task: DownloadPipelineArtifact@2
-  #           displayName: Download functions artifacts
+  #         - task: DotNetCoreCLI@2
+  #           displayName: Run unit tests
   #           inputs:
-  #             source: current
-  #             artifact: $(functionsArtifactName)
-  #             path: $(Build.SourcesDirectory)/$(functionsArtifactName)
+  #             command: test
+  #             workingDirectory: $(Build.SourcesDirectory)
+  #             arguments: >-
+  #               --no-build
+  #               --configuration $(dotnetBuildConfiguration)
+  #               --runtime $(dotnetProductionRuntimeId)
+  #               --logger trx
+  #               /p:CollectCoverage=true
+  #               /p:CoverletOutputFormat=cobertura
+  #               "/p:Exclude=\"$(excludeFromCodeCoverage)\""
 
-  #         - task: DownloadPipelineArtifact@2
-  #           displayName: Download webui artifacts
-  #           inputs:
-  #             source: current
-  #             artifact: $(webuiArtifactName)
-  #             path: $(Build.SourcesDirectory)/$(webuiArtifactName)
+  #         - script: |-
+  #             dotnet tool install --tool-path ./reportgenerator-tool dotnet-reportgenerator-globaltool
+  #             ./reportgenerator-tool/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:. -reporttypes:"Cobertura"
+  #           displayName: Generate coverage report
 
-  #         - task: WhiteSource@21
+  #         - task: PublishCodeCoverageResults@1
+  #           displayName: Publish test coverage
   #           inputs:
-  #             cwd: '$(Build.SourcesDirectory)'
+  #             codeCoverageTool: Cobertura
+  #             summaryFileLocation: Cobertura.xml
+
+  - stage: buildFrontEndContainers
+    displayName: Build front-end containers
+    dependsOn: []
+    jobs:
+      - job: lintWebuiCode
+        displayName: Lint webui code
+        steps:
+          - checkout: self
+            displayName: Checkout repository
+
+          - task: NodeTool@0
+            inputs:
+              versionSpec: 10.14.1
+
+          - pwsh: |-
+              npm install
+              npm run lint
+            displayName: npm run lint
+            workingDirectory: src/webui
+
+          - task: CopyFiles@2
+            displayName: Prepare services artifacts
+            inputs:
+              contents: |
+                src/webui/**/*
+              targetFolder: $(webuiArtifactName)
+              cleanTargetFolder: true
+
+          - publish: $(webuiArtifactName)
+            artifact: $(webuiArtifactName)
+            displayName: Publish services artifacts
+
+      - job: buildFrontEndContainers
+        displayName: Build front-end containers
+        dependsOn: []
+        strategy:
+          matrix:
+            reverse-proxy:
+              serviceName: reverse-proxy
+            webui:
+              serviceName: webui
+        steps:
+          - checkout: self
+            displayName: Checkout repository
+
+          - task: Docker@2
+            displayName: Build and push container
+            inputs:
+              containerRegistry: $(dockerHubServiceConnectionName)
+              repository: $(dockerHubRepositoryName)/$(serviceName)
+              command: buildAndPush
+              dockerfile: src/$(serviceName)/$(dockerfile)
+              buildContext: src/$(serviceName)
+              tags: |-
+                $(Build.BuildId)
+                $(Build.SourceVersion)
+
+  - stage: whiteSourceBolt
+    displayName: WhiteSource Bolt
+    dependsOn:
+      - build
+      - buildFrontEndContainers
+    jobs:
+      - job: whiteSourceBolt
+        displayName: WhiteSource Bolt
+        steps:
+          - checkout: none
+          - task: DownloadPipelineArtifact@2
+            displayName: Download service artifacts
+            inputs:
+              source: current
+              artifact: $(publishedFilesArtifactName)
+              path: $(Build.SourcesDirectory)/$(publishedFilesArtifactName)
+
+          - task: DownloadPipelineArtifact@2
+            displayName: Download functions artifacts
+            inputs:
+              source: current
+              artifact: $(functionsArtifactName)
+              path: $(Build.SourcesDirectory)/$(functionsArtifactName)
+
+          - task: DownloadPipelineArtifact@2
+            displayName: Download webui artifacts
+            inputs:
+              source: current
+              artifact: $(webuiArtifactName)
+              path: $(Build.SourcesDirectory)/$(webuiArtifactName)
+
+          - task: WhiteSource@21
+            inputs:
+              cwd: '$(System.DefaultWorkingDirectory)'
 
   - stage: listCommitsSinceLastRelease
     displayName: List commits since last release

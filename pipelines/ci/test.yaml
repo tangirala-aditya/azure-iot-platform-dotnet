@@ -402,6 +402,12 @@ stages:
               artifact: $(publishedFilesArtifactName)
               path: $(Build.SourcesDirectory)
 
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '3.1.x'
+              includePreviewVersions: true
+              
           - task: DotNetCoreCLI@2
             displayName: Run unit tests
             inputs:

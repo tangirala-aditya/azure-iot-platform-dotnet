@@ -71,4 +71,4 @@ stages:
           environmentCategory: $(environmentCategory)
           imageTag: $(imageTag)
           blueGreen: true
-          helmVersionV3: false
+          helmVersionV3: true

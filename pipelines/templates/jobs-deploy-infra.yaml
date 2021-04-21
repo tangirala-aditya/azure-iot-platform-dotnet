@@ -682,7 +682,7 @@ jobs:
           templateLocation: Linked artifact
           csmFile: $(armTemplatesDirectory)/kustocluster.json
           csmParametersFile: $(armParametersDirectory)/kustocluster.json
-          overrideParameters: -kustoClusterName $(dataExplorerClusterName) -location ${{parameters.locationName}} -principalIdForCluster ${{parameters.aadSGId}}} -tenantIdForClusterPrincipal $(tenantId)
+          overrideParameters: -kustoClusterName $(dataExplorerClusterName) -location ${{parameters.locationName}} -principalIdForCluster ${{parameters.aadSGId}} -tenantIdForClusterPrincipal $(tenantId)
           deploymentMode: Incremental
 
       - template: steps-delete-oldest-deployment.yaml

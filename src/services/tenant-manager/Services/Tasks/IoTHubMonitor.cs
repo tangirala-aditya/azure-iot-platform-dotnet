@@ -169,7 +169,9 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                                 this.kustoTableManagementClient.CreateTableMapping(tableMappingName, mappingSchema, tableName, databaseName);
 
-                                string dataConnectName = $"telemetryDataConnect-{item.TenantId}";
+                                this.kustoTableManagementClient.EnableStreamingIngestionPolicyToTable(tableName, databaseName);
+
+                                string dataConnectName = $"telemetryDataConnect-{item.TenantId.Substring(0, 5)}";
                                 string iotHubName = iothub.Name;
                                 string iotHubConsumerGroup = "$Default";
 

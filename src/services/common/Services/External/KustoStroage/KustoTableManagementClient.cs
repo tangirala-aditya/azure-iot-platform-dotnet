@@ -70,6 +70,20 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             }
         }
 
+        public void EnableStreamingIngestionPolicyToTable(string tableName, string databaseName)
+        {
+            try
+            {
+                var command = CslCommandGenerator.GenerateTableAlterStreamingIngestionPolicyCommand(tableName, true);
+
+                this.client.ExecuteControlCommand(databaseName, command);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public void Dispose()
         {
             this.Dispose(true);

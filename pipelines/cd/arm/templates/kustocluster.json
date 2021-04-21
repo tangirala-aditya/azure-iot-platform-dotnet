@@ -15,6 +15,39 @@
             "metadata": {
                 "description": "Location for all resources."
             }
+        },
+        "clusterPrincipalAssignmentName": {
+            "type": "string",
+            "defaultValue": "principalAssignment",
+            "metadata": {
+                "description": "Specifies the name of the principal assignment"
+            }
+        },
+        "principalIdForCluster": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the principal id. It can be user email, application (client) ID, security group name"
+            }
+        },
+        "roleForClusterPrincipal": {
+            "type": "string",
+            "defaultValue": "AllDatabasesAdmin",
+            "metadata": {
+                "description": "Specifies the cluster principal role. It can be 'AllDatabasesAdmin', 'AllDatabasesViewer'"
+            }
+        },
+        "tenantIdForClusterPrincipal": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the tenantId of the principal"
+            }
+        },
+        "principalTypeForCluster": {
+            "type": "string",
+            "defaultValue": "Group",
+            "metadata": {
+                "description": "Specifies the principal type. It can be 'User', 'App', 'Group'"
+            }
         }
     },
     "variables": {},
@@ -35,6 +68,17 @@
             "tags": {
                 "[concat('hidden-related:', resourceId('Microsoft.Kusto/clusters', parameters('kustoClusterName')))]": "Resource",
                 "displayName": "kustoCluster"
+            }
+        },
+        {
+            "type": "Microsoft.Kusto/Clusters/principalAssignments",
+            "apiVersion": "2020-09-18",
+            "name": "[concat(parameters('kustoClusterName'), '/', parameters('clusterPrincipalAssignmentName'))]",
+            "properties": {
+                "principalId": "[parameters('principalIdForCluster')]",
+                "role": "[parameters('roleForClusterPrincipal')]",
+                "tenantId": "[parameters('tenantIdForClusterPrincipal')]",
+                "principalType": "[parameters('principalTypeForCluster')]"
             }
         }
     ]

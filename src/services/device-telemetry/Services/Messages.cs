@@ -233,14 +233,13 @@ namespace Mmm.Iot.DeviceTelemetry.Services
                         string key = item.Key.ToString();
                         data.Add(key, item.Value);
 
-                        // Telemetry types auto-discovery magic through union of all keys
                         properties.Add(key);
                     }
                 }
 
                 messages.Add(new Message
                 {
-                    DeviceId = result.DeviceId.ToString(),
+                    DeviceId = result.DeviceId,
                     Time = result.TimeStamp,
                     Data = data,
                 });
@@ -293,14 +292,13 @@ namespace Mmm.Iot.DeviceTelemetry.Services
                         string key = item.Key.ToString();
                         data.Add(key, item.Value);
 
-                        // Telemetry types auto-discovery magic through union of all keys
                         properties.Add(key);
                     }
                 }
 
                 messages.Add(new Message
                 {
-                    DeviceId = result.DeviceId.ToString(),
+                    DeviceId = result.DeviceId,
                     Time = result.TimeStamp,
                     Data = data,
                 });

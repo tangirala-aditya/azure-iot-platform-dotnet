@@ -3,6 +3,11 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "kustoClusterName": { "value": "crslkustocluster" },
-        "location": { "value": "" }
+        "location": { "value": "" },
+        "clusterPrincipalAssignmentName": { "value": "principalAssignment" },
+        "principalIdForCluster": { "value": "" },
+        "roleForClusterPrincipal": { "value": "AllDatabasesAdmin" },
+        "tenantIdForClusterPrincipal": { "value": "" },
+        "principalTypeForCluster": { "value": "App" }
     }
 }

@@ -4,7 +4,7 @@
     "parameters": {
         "kustoClusterName": { "value": "crslkustocluster" },
         "location": { "value": "" },
-        "clusterPrincipalAssignmentName": { "value": "principalAssignment" },
+        "clusterPrincipalAssignmentName": { "value": "PrincipalAssignments" },
         "principalIdForCluster": { "value": "" },
         "roleForClusterPrincipal": { "value": "AllDatabasesAdmin" },
         "tenantIdForClusterPrincipal": { "value": "" },

@@ -1,20 +1,4 @@
-trigger:
-  batch: true
-  branches:
-    include:
-      - master
-pr:
-  autoCancel: true
-  branches:
-    include:
-    - master
-schedules:
-  - cron: 0 6 * * *
-    displayName: Daily midnight (CST) build
-    branches:
-      include:
-        - master
-    always: true
+trigger: none
 pool:
   vmImage: ubuntu-latest
 variables:

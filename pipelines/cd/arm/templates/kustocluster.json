@@ -44,7 +44,7 @@
         },
         "principalTypeForCluster": {
             "type": "string",
-            "defaultValue": "App",
+            "defaultValue": "Group",
             "metadata": {
                 "description": "Specifies the principal type. It can be 'User', 'App', 'Group'"
             }

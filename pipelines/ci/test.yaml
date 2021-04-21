@@ -156,6 +156,12 @@ stages:
           - checkout: self
             displayName: Checkout repository
 
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '3.1.x'
+              includePreviewVersions: true
+
           - script: >-
               dotnet restore
               --force
@@ -206,6 +212,12 @@ stages:
         steps:
           - checkout: self
             displayName: Checkout repository
+
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '3.1.x'
+              includePreviewVersions: true
 
           - script: >-
               dotnet restore
@@ -310,108 +322,115 @@ stages:
             artifact: $(commitsSinceLastReleaseArtifactName)
             displayName: Publish list of commits since last release
 
-  # - stage: microsoftSecurityCodeAnalysis
-  #   displayName: Microsoft Security Code Analysis
-  #   dependsOn:
-  #     - build
-  #   jobs:
-  #     - job: microsoftSecurityCodeAnalysis
-  #       displayName: Microsoft Security Code Analysis
-  #       pool:
-  #         vmImage: windows-latest
-  #       steps:
-  #         - checkout: self
-  #           displayName: Checkout repository
+  - stage: microsoftSecurityCodeAnalysis
+    displayName: Microsoft Security Code Analysis
+    dependsOn:
+      - build
+    jobs:
+      - job: microsoftSecurityCodeAnalysis
+        displayName: Microsoft Security Code Analysis
+        pool:
+          vmImage: windows-latest
+        steps:
+          - checkout: self
+            displayName: Checkout repository
 
-  #         - task: DownloadPipelineArtifact@2
-  #           displayName: Download artifacts
-  #           inputs:
-  #             source: current
-  #             artifact: $(publishedFilesArtifactName)
-  #             path: $(Build.SourcesDirectory)
+          - task: DownloadPipelineArtifact@2
+            displayName: Download artifacts
+            inputs:
+              source: current
+              artifact: $(publishedFilesArtifactName)
+              path: $(Build.SourcesDirectory)
 
-  #         - task: AntiMalware@3
-  #           displayName: Scan for malware
-  #           inputs:
-  #             InputType: 'Basic'
-  #             ScanType: 'CustomScan'
-  #             FileDirPath: '$(Build.SourcesDirectory)'
-  #             EnableServices: true
-  #             SupportLogOnError: true
-  #             TreatSignatureUpdateFailureAs: 'Warning'
-  #             SignatureFreshness: 'UpToDate'
-  #             TreatStaleSignatureAs: 'Warning'
+          - task: AntiMalware@3
+            displayName: Scan for malware
+            inputs:
+              InputType: 'Basic'
+              ScanType: 'CustomScan'
+              FileDirPath: '$(Build.SourcesDirectory)'
+              EnableServices: true
+              SupportLogOnError: true
+              TreatSignatureUpdateFailureAs: 'Warning'
+              SignatureFreshness: 'UpToDate'
+              TreatStaleSignatureAs: 'Warning'
 
-  #         - task: CredScan@2
-  #           displayName: Scan for credentials
-  #           inputs:
-  #             verboseOutput: true
+          - task: CredScan@2
+            displayName: Scan for credentials
+            inputs:
+              verboseOutput: true
 
-  #         - task: SdtReport@1
-  #           displayName: Generate report
-  #           inputs:
-  #             AllTools: false
-  #             BinSkim: true
-  #             BinSkimBreakOn: Error
-  #             CredScan: true
-  #             MSRD: false
-  #             RoslynAnalyzers: false
-  #             RoslynAnalyzersBreakOn: Error
-  #             TSLint: false
-  #             ToolLogsNotFoundAction: Standard
+          - task: SdtReport@1
+            displayName: Generate report
+            inputs:
+              AllTools: false
+              BinSkim: true
+              BinSkimBreakOn: Error
+              CredScan: true
+              MSRD: false
+              RoslynAnalyzers: false
+              RoslynAnalyzersBreakOn: Error
+              TSLint: false
+              ToolLogsNotFoundAction: Standard
 
-  #         - task: PublishSecurityAnalysisLogs@2
-  #           displayName: Publish report
-  #           inputs:
-  #             ArtifactName: CodeAnalysisLogs
-  #             ArtifactType: Container
-  #             AllTools: true
-  #             ToolLogsNotFoundAction: Standard
+          - task: PublishSecurityAnalysisLogs@2
+            displayName: Publish report
+            inputs:
+              ArtifactName: CodeAnalysisLogs
+              ArtifactType: Container
+              AllTools: true
+              ToolLogsNotFoundAction: Standard
 
-  # - stage: unitTest
-  #   displayName: Unit test
-  #   dependsOn:
-  #     - build
-  #   jobs:
-  #     - job: unitTest
-  #       displayName: Unit test
-  #       variables:
-  #         - name: excludeFromCodeCoverage
-  #           value: "[Mmm.*.Test*]*%2C[Mmm.*.WebService]*Startup%2C[Mmm.*.WebService]*Program%2C[*]Mmm.Iot.Common.Services.Config.*%2C[*]*DependencyResolution*%2C[*]Mmm.*Model*"
-  #       steps:
-  #         - checkout: none
+  - stage: unitTest
+    displayName: Unit test
+    dependsOn:
+      - build
+    jobs:
+      - job: unitTest
+        displayName: Unit test
+        variables:
+          - name: excludeFromCodeCoverage
+            value: "[Mmm.*.Test*]*%2C[Mmm.*.WebService]*Startup%2C[Mmm.*.WebService]*Program%2C[*]Mmm.Iot.Common.Services.Config.*%2C[*]*DependencyResolution*%2C[*]Mmm.*Model*"
+        steps:
+          - checkout: none
 
-  #         - task: DownloadPipelineArtifact@2
-  #           displayName: Download artifacts
-  #           inputs:
-  #             source: current
-  #             artifact: $(publishedFilesArtifactName)
-  #             path: $(Build.SourcesDirectory)
+          - task: DownloadPipelineArtifact@2
+            displayName: Download artifacts
+            inputs:
+              source: current
+              artifact: $(publishedFilesArtifactName)
+              path: $(Build.SourcesDirectory)
 
-  #         - task: DotNetCoreCLI@2
-  #           displayName: Run unit tests
-  #           inputs:
-  #             command: test
-  #             workingDirectory: $(Build.SourcesDirectory)
-  #             arguments: >-
-  #               --no-build
-  #               --configuration $(dotnetBuildConfiguration)
-  #               --runtime $(dotnetProductionRuntimeId)
-  #               --logger trx
-  #               /p:CollectCoverage=true
-  #               /p:CoverletOutputFormat=cobertura
-  #               "/p:Exclude=\"$(excludeFromCodeCoverage)\""
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '3.1.x'
+              includePreviewVersions: true
 
-  #         - script: |-
-  #             dotnet tool install --tool-path ./reportgenerator-tool dotnet-reportgenerator-globaltool
-  #             ./reportgenerator-tool/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:. -reporttypes:"Cobertura"
-  #           displayName: Generate coverage report
 
-  #         - task: PublishCodeCoverageResults@1
-  #           displayName: Publish test coverage
-  #           inputs:
-  #             codeCoverageTool: Cobertura
-  #             summaryFileLocation: Cobertura.xml
+          - task: DotNetCoreCLI@2
+            displayName: Run unit tests
+            inputs:
+              command: test
+              workingDirectory: $(Build.SourcesDirectory)
+              arguments: >-
+                --no-build
+                --configuration $(dotnetBuildConfiguration)
+                --runtime $(dotnetProductionRuntimeId)
+                --logger trx
+                /p:CollectCoverage=true
+                /p:CoverletOutputFormat=cobertura
+                "/p:Exclude=\"$(excludeFromCodeCoverage)\""
+
+          - script: |-
+              dotnet tool install --tool-path ./reportgenerator-tool dotnet-reportgenerator-globaltool
+              ./reportgenerator-tool/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:. -reporttypes:"Cobertura"
+            displayName: Generate coverage report
+
+          - task: PublishCodeCoverageResults@1
+            displayName: Publish test coverage
+            inputs:
+              codeCoverageTool: Cobertura
+              summaryFileLocation: Cobertura.xml
 
   - stage: buildFrontEndContainers
     displayName: Build front-end containers

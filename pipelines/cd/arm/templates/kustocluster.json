@@ -71,7 +71,7 @@
             }
         },
         {
-            "type": "Microsoft.Kusto/Clusters/principalAssignments",
+            "type": "Microsoft.Kusto/Clusters/PrincipalAssignments",
             "apiVersion": "2020-09-18",
             "name": "[concat(parameters('kustoClusterName'), '/', parameters('clusterPrincipalAssignmentName'))]",
             "properties": {

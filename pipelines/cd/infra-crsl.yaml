@@ -53,7 +53,6 @@ stages:
           runVersion: $(runVersion-crslDev)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-crslDev)
-                    aadSGId: $(aadSGId-crslDev)
 
   - stage: acsDev
     displayName: ACS dev

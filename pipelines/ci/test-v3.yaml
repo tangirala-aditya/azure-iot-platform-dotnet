@@ -1046,6 +1046,8 @@ stages:
     dependsOn:
       - deployIngress
       - deployServices
+      - deployIngressV3
+      - deployServicesV3
     jobs:
       - job: enumerateDependencies
         displayName: Enumerate dependencies
@@ -1290,9 +1292,8 @@ stages:
   - stage: cleanupV3
     displayName: Cleanup
     dependsOn:
-      - functionalTest
       - enumerateDependencies
-      - deployServices
+      - deployServicesV3
     condition: and(succeededOrFailed(), eq(variables['runCleanupStage'], 'true'))
     jobs:
       - job: getPipelineVariables

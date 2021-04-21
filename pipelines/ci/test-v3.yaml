@@ -666,7 +666,7 @@ stages:
           - checkout: self
             displayName: Checkout repository
 
-          - template: ../templates/steps-install-v3.yaml
+          - template: ../templates/steps-install-helm-v3.yaml
             parameters:
               helmVersion: $(helmVersionV3)
               subscriptionName: $(subscriptionName)

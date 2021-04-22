@@ -142,7 +142,7 @@ jobs:
     displayName: Provision AKS
     dependsOn:
       - resourceGroup
-    condition: and(false , ${{parameters.helmVersionV3}} )  
+    condition: and(true,eq(${{parameters.helmVersionV3}},'false'))  
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -273,7 +273,7 @@ jobs:
     displayName: Provision AKS V3
     dependsOn:
       - resourceGroup
-    condition: and( true , ${{parameters.helmVersionV3}} )
+    condition: and(true,eq(${{parameters.helmVersionV3}},'true'))
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -1330,7 +1330,7 @@ jobs:
     displayName: Create K8s ingress
     dependsOn:
       - aks
-    condition: and( false , ${{parameters.helmVersionV3}} )  
+    condition: and(true,eq(${{parameters.helmVersionV3}},'false'))  
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -1478,7 +1478,7 @@ jobs:
     displayName: Create K8s ingress V3
     dependsOn:
       - aks
-    condition: and( true , ${{parameters.helmVersionV3}} )
+    condition: and(true,eq(${{parameters.helmVersionV3}},'true'))
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

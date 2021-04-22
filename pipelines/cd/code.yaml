@@ -102,7 +102,7 @@ stages:
           applicationShortCode: $(applicationShortCode-acsDev)
           environmentCategory: $(environmentCategory-acsDev)
           imageTag: $(_imageTag)
-          blueGreen: false
+          blueGreen: true
           helmVersionV3: false
           subscriptionId: $(subscriptionId-acsDev)
 

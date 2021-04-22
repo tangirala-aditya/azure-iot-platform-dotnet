@@ -47,8 +47,12 @@ variables:
     value: Dockerfile
   - name: mmmIotPlatformServicesHelmChartName
     value: mmm-iot-platform-services
+  - name: mmmIotPlatformServicesHelmV3ChartName
+    value: mmm-iot-platform-services-v3    
   - name: mmmIotPlatformIngressHelmChartName
     value: mmm-iot-platform-ingress
+  - name: mmmIotPlatformIngressHelmV3ChartName
+    value: mmm-iot-platform-ingress-v3
   - name: publishedFilesArtifactName
     value: publishFiles
   - name: functionsArtifactName
@@ -401,6 +405,12 @@ stages:
               artifact: $(publishedFilesArtifactName)
               path: $(Build.SourcesDirectory)
 
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '3.1.x'
+              includePreviewVersions: true
+
           - task: DotNetCoreCLI@2
             displayName: Run unit tests
             inputs:
@@ -657,7 +667,7 @@ stages:
                 }
 
   - stage: deployIngressV3
-    displayName: Deploy ingress
+    displayName: Deploy ingress V3
     dependsOn: []
     jobs:
       - job: deployIngressV3
@@ -828,7 +838,7 @@ stages:
                 az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(mmmIotPlatformServicesHelmChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
   - stage: deployServicesV3
-    displayName: Deploy services
+    displayName: Deploy services V3
     dependsOn:
       - buildFrontEndContainers
       - buildServiceContainers
@@ -1290,7 +1300,7 @@ stages:
                   Set-AzureADMSApplication -ObjectId $app.Id -Web @{ RedirectUris = $replyUrls }
                 }
   - stage: cleanupV3
-    displayName: Cleanup
+    displayName: Cleanup V3
     dependsOn:
       - enumerateDependencies
       - deployServicesV3

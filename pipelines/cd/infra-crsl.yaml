@@ -77,7 +77,7 @@ stages:
           runVersion: $(runVersion-acsDev)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-acsDev)
-          helmVersionV3: false
+          helmVersionV3: true
 
   - stage: crslQa
     displayName: CRSL QA

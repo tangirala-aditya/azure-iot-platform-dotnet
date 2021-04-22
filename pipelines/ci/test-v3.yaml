@@ -857,7 +857,7 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |-
                 set -Eeuxo pipefail
-                appConfigurationConnectionString=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefixV3)$(tableStorageAppConfigurationConnectionStringRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+                appConfigurationConnectionString=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(tableStorageAppConfigurationConnectionStringRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
                 echo "##vso[task.setvariable variable=appConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
 
       - job: deployServicesV3
@@ -872,7 +872,7 @@ stages:
 
           - template: ../templates/steps-install-helm-v3.yaml
             parameters:
-              helmVersion: $(helmVersion)
+              helmVersion: $(helmVersionV3)
               subscriptionName: $(subscriptionName)
               resourceGroupName: $(resourceGroupName)
               aksName: $(aksName)
@@ -903,7 +903,7 @@ stages:
               releaseName: $(mmmIotPlatformServicesHelmV3ChartReleaseName)
               valueFile: $(mmmIotPlatformServicesHelmChartValuesFile)
               arguments: >-
-                --set secrets.globalsecrets.Global__ClientAuth__Jwt__AuthIssuer=https://$(testPipelineFqdn)/auth
+                --set secrets.globalsecrets.Global__ClientAuth__Jwt__AuthIssuer=https://$(testPipelineFqdnV3)/auth
                 --set secrets.globalsecrets.AppConfigurationConnectionString=$(appConfigurationConnectionString)
                 --set secrets.globalsecrets.Global__AzureB2cBaseUri=https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_testpolicy&client_id=$(azureAdB2cAppRegistrationClientIdTest)&nonce=defaultNonce&redirect_uri=https%3A%2F%2Flocalhost%3A44367%2Fconnect%2Fcallback&scope=openid&response_type=id_token&prompt=login&response_mode=form_post
                 --timeout $(helmV3InstallTimeoutInSeconds)

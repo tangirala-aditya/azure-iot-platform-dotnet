@@ -136,4 +136,4 @@ stages:
           testPipelineId: 453
           runVersion: specific
           testPipelineRunId: $(testPipelineRunId)
-          helmVersionV3: $(helmVersionV3)
+          helmVersionV3: false

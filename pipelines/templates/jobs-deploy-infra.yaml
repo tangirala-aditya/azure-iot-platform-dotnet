@@ -1478,7 +1478,7 @@ jobs:
     displayName: Create K8s ingress V3
     dependsOn:
       - aksV3
-    condition: and(true,eq(variables.parameters.helmVersionV3,'true'))
+    condition: and(true,eq(variables.parameters.helmVersionV3,true))
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

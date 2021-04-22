@@ -152,9 +152,10 @@ jobs:
           inlineScript: |-
             set -Eeuxo pipefail
             az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-
+            
             helm3 uninstall cert-manager --namespace cert-manager           
-            kubectl delete crds --all
+            kubectl get Issuers,ClusterIssuers,Certificates,CertificateRequests,Orders,Challenges --all-namespaces
+            kubectl delete -f https://raw.githubusercontent.com/jetstack/cert-manager/v$(certManagerVersion)/deploy/manifests/00-crds.yaml
             kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.crds.yaml
             helm3 repo remove stable
             helm3 repo add "stable" "https://charts.helm.sh/stable" --force-update

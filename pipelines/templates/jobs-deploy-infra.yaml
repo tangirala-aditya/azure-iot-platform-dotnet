@@ -269,7 +269,7 @@ jobs:
               labels:
                 cert-manager.io/disable-validation: "true"
 
-  - job: aks
+  - job: aksV3
     displayName: Provision AKS V3
     dependsOn:
       - resourceGroup
@@ -1474,10 +1474,10 @@ jobs:
                       servicePort: 10080
                     path: /(.*)
 
-  - job: ingress
+  - job: ingressV3
     displayName: Create K8s ingress V3
     dependsOn:
-      - aks
+      - aksV3
     condition: and(true,eq(variables.parameters.helmVersionV3,'true'))
     variables:
       - template: variables-deploy-infra.yaml

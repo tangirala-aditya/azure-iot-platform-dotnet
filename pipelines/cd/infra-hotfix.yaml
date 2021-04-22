@@ -117,7 +117,6 @@ stages:
     displayName: Deploy infrastructure
     dependsOn:
       - checkParameters
-    condition: and(true,eq(variables.helmVersionV3,false))
     jobs:
       - template: ../templates/jobs-deploy-infra.yaml
         parameters:
@@ -137,28 +136,4 @@ stages:
           testPipelineId: 453
           runVersion: specific
           testPipelineRunId: $(testPipelineRunId)
-
-  - stage: deployInfrastructureHelmV3
-    displayName: Deploy helm v3 infrastructure
-    dependsOn:
-      - checkParameters
-    condition: and(true,eq(variables.helmVersionV3,true))
-    jobs:
-      - template: ../templates/jobs-deploy-infra-v3.yaml
-        parameters:
-          subscriptionName: $(subscriptionName)
-          locationName: $(locationName)
-          appInsightsLocation: $(appInsightsLocation)
-          environmentName: $(environmentName)
-          subscriptionId: $(subscriptionId)
-          applicationCode: $(applicationCode)
-          applicationShortCode: $(applicationShortCode)
-          environmentCategory: $(environmentCategory)
-          kubernetesVersion: $(kubernetesVersion)
-          sendgridEmail: $(sendGridEmail)
-          sysAdmins: $(sysAdmins)
-          aksAgentVmSize: $(aksAgentVmSize)
-          azureDevOpsProjectId: AzurePlatform
-          testPipelineId: 453
-          runVersion: specific
-          testPipelineRunId: $(testPipelineRunId)
+          helmVersionV3: $(helmVersionV3)

@@ -957,7 +957,6 @@ stages:
       - deployIngress
       - deployServices
       - addAuthenticationCallbackUrl
-      - authenticationCallbackUrlV3
     jobs:
       - job: addFunctionalTestAccount
         displayName: Add Functional Test Account
@@ -1385,7 +1384,7 @@ stages:
     dependsOn:
       - enumerateDependencies
       - deployServicesV3
-      - FunctionalTest
+      - functionalTest
     condition: and(succeededOrFailed(), eq(variables['runCleanupStage'], 'true'))
     jobs:
       - job: getPipelineVariables

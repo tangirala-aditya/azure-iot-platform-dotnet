@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "kustoClusterName": { "value": "crslkustocluster" },
-        "location": { "value": "us-east" },
+        "location": { "value": "eastus2" },
         "clusterPrincipalAssignmentName": { "value": "PrincipalAssignments" },
         "principalIdForCluster": { "value": "" },
         "roleForClusterPrincipal": { "value": "AllDatabasesAdmin" },

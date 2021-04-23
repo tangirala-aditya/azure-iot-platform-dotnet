@@ -53,6 +53,7 @@ stages:
           runVersion: $(runVersion-crslDev)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-crslDev)
+          aadSGId: $(aadSGId-crslDev)
 
   - stage: acsDev
     displayName: ACS dev
@@ -77,6 +78,7 @@ stages:
           runVersion: $(runVersion-acsDev)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-acsDev)
+          aadSGId: $(aadSGId-acsDev)
 
   - stage: crslQa
     displayName: CRSL QA
@@ -103,6 +105,7 @@ stages:
           runVersion: $(runVersion-crslQa)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-crslQa)
+          aadSGId: $(aadSGId-crslQa)
           
   - stage: crslWkbnch
     displayName: CRSL workbench
@@ -129,3 +132,4 @@ stages:
           runVersion: $(runVersion-crslWkbnch)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-crslWkbnch)
+          aadSGId: $(aadSGId-crslWkbnch)

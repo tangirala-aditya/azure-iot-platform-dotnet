@@ -18,6 +18,7 @@ using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.Services.External.KustoStroage;
 using Mmm.Iot.Common.Services.External.TimeSeries;
 using Mmm.Iot.Common.Services.Helpers;
+using Mmm.Iot.Common.Services.Models;
 using Newtonsoft.Json.Linq;
 
 namespace Mmm.Iot.DeviceTelemetry.Services
@@ -91,9 +92,9 @@ namespace Mmm.Iot.DeviceTelemetry.Services
 
             switch (this.config.DeviceTelemetryService.Messages.TelemetryStorageType)
             {
-                case "tsi":
+                case TelemetryStorageTypeConstants.Tsi:
                     return await this.GetListFromTimeSeriesAsync(from, to, order, skip, limit, devices);
-                case "ade":
+                case TelemetryStorageTypeConstants.Ade:
                     return await this.GetListFromKustoAsync(from, to, order, skip, limit, devices);
                 default:
                     return await this.GetListFromCosmosDbAsync(from, to, order, skip, limit, devices);
@@ -108,9 +109,9 @@ namespace Mmm.Iot.DeviceTelemetry.Services
 
             switch (this.config.DeviceTelemetryService.Messages.TelemetryStorageType)
             {
-                case "tsi":
+                case TelemetryStorageTypeConstants.Tsi:
                     return await this.GetListFromTimeSeriesAsync(limit, deviceId);
-                case "ade":
+                case TelemetryStorageTypeConstants.Ade:
                     return await this.GetListFromKustoAsync(limit, deviceId);
                 default:
                     return await this.GetListFromCosmosDbAsync(limit, deviceId);

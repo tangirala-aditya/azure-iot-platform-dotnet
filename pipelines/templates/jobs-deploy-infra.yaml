@@ -15,6 +15,7 @@ parameters:
   testPipelineId:
   runVersion:
   testPipelineRunId:
+  aadSGId:
 
 jobs:
   - template: get-approval.yaml
@@ -681,7 +682,7 @@ jobs:
           templateLocation: Linked artifact
           csmFile: $(armTemplatesDirectory)/kustocluster.json
           csmParametersFile: $(armParametersDirectory)/kustocluster.json
-          overrideParameters: -kustoClusterName $(dataExplorerClusterName) -location ${{parameters.locationName}} -principalIdForCluster ${servicePrincipalId) -tenantIdForClusterPrincipal $(tenantId)
+          overrideParameters: -kustoClusterName $(dataExplorerClusterName) -location ${{parameters.locationName}} -principalIdForCluster ${{parameters.aadSGId}} -tenantIdForClusterPrincipal $(tenantId)
           deploymentMode: Incremental
 
       - template: steps-delete-oldest-deployment.yaml

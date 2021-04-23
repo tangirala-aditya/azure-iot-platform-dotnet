@@ -8,6 +8,6 @@
         "principalIdForCluster": { "value": "" },
         "roleForClusterPrincipal": { "value": "AllDatabasesAdmin" },
         "tenantIdForClusterPrincipal": { "value": "" },
-        "principalTypeForCluster": { "value": "App" }
+        "principalTypeForCluster": { "value": "Group" }
     }
 }

@@ -122,3 +122,4 @@ stages:
           testPipelineId: 453
           runVersion: specific
           testPipelineRunId: $(testPipelineRunId)
+          aadSGId: $(aadSGId)

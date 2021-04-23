@@ -34,6 +34,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services
                 { "Asa Manager", asaManager },
                 { "Time Series", timeSeriesClient },
                 { "App Config", appConfig },
+                { "Azure Data Explorer", adeClient },
             };
         }
 

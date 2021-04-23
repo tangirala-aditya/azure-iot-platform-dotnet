@@ -11,6 +11,7 @@ using Kusto.Data;
 using Kusto.Data.Common;
 using Kusto.Data.Net.Client;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Azure.Management.Kusto;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
@@ -33,7 +34,6 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
         private readonly string applicationId;
         private readonly string applicationSecret;
         private readonly string tenant;
-        private readonly bool? kustoEnabled = null;
         private readonly ILogger logger;
         private ICslQueryProvider client;
         private AppConfig config;
@@ -47,21 +47,20 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             this.applicationId = config.Global.AzureActiveDirectory.AppId;
             this.applicationSecret = config.Global.AzureActiveDirectory.AppSecret;
             this.tenant = config.Global.AzureActiveDirectory.TenantId;
-            if (!string.IsNullOrEmpty(config.DeviceTelemetryService.Messages.TelemetryStorageType))
-            {
-                this.kustoEnabled = config.DeviceTelemetryService.Messages.TelemetryStorageType.Equals(ADEStorageTypeKey, StringComparison.OrdinalIgnoreCase);
-            }
-            else
-            {
-                this.kustoEnabled = null;
-            }
-
             this.client = this.GetKustoQueryClient();
         }
 
-        public Task<StatusResultServiceModel> StatusAsync()
+        public KustoQueryClient(
+            AppConfig config,
+            ILogger<KustoQueryClient> logger,
+            ICslQueryProvider kustQueryClient)
         {
-            return null;
+            this.logger = logger;
+            this.config = config;
+            this.applicationId = config.Global.AzureActiveDirectory.AppId;
+            this.applicationSecret = config.Global.AzureActiveDirectory.AppSecret;
+            this.tenant = config.Global.AzureActiveDirectory.TenantId;
+            this.client = kustQueryClient;
         }
 
         public async Task<List<TDestination>> QueryAsync<TDestination>(
@@ -99,7 +98,23 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             }
         }
 
-        public ICslQueryProvider GetKustoQueryClient()
+        public async Task<StatusResultServiceModel> StatusAsync()
+        {
+            try
+            {
+                var result = this.client.IsDefined();
+                await Task.CompletedTask; // Just to keep the signature async, later this should be replaced with more robust status check
+
+                // If the call above does not fail then return a healthy status
+                return new StatusResultServiceModel(result, result ? "Alive and well!" : "Undefined KustoQueryClient");
+            }
+            catch (Exception e)
+            {
+                return new StatusResultServiceModel(false, $"Kusto Query status check failed: {e.Message}");
+            }
+        }
+
+        private ICslQueryProvider GetKustoQueryClient()
         {
             if (this.client == null)
             {

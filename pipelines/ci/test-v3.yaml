@@ -33,10 +33,16 @@ variables:
     value: "$(buildIdV3):"    
   - name: kubernetesNamespaceWasCreatedRowKey
     value: kubernetesNamespaceWasCreated
+  - name: kubernetesV3NamespaceWasCreatedRowKey
+    value: kubernetesV3NamespaceWasCreated    
   - name: mmmIotPlatformServicesHelmChartWasInstalledRowKey
     value: mmmIotPlatformServicesHelmChartWasInstalled
   - name: mmmIotPlatformIngressHelmChartWasInstalledRowKey
     value: mmmIotPlatformIngressHelmChartWasInstalled
+  - name: mmmIotPlatformServicesHelmV3ChartWasInstalledRowKey
+    value: mmmIotPlatformServicesHelmV3ChartWasInstalled
+  - name: mmmIotPlatformIngressHelmV3ChartWasInstalledRowKey
+    value: mmmIotPlatformIngressHelmV3ChartWasInstalled    
   - name: tableStorageAppConfigurationConnectionStringRowKey
     value: appConfigurationConnectionString
   - name: kubernetesNamespace
@@ -721,7 +727,7 @@ stages:
                   kubectl create namespace $(kubernetesNamespaceV3) --output json
                 }
 
-                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefixV3)$(kubernetesNamespaceWasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefixV3)$(kubernetesV3NamespaceWasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
           - template: ../templates/steps-install-helm-v3.yaml
             parameters:
@@ -765,7 +771,7 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |-
                 set -Eeuxo pipefail
-                az storage entity insert --entity PartitionKey=$(tableStoragePartitionV3) RowKey=$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefixV3)$(mmmIotPlatformIngressHelmV3ChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
           - task: AzureCLI@2
             displayName: Configure DNS
@@ -943,7 +949,7 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |-
                 set -Eeuxo pipefail
-                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefixV3)$(mmmIotPlatformServicesHelmChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefixV3)$(mmmIotPlatformServicesHelmV3ChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
   - stage: functionalTest
     displayName: Functional tests
@@ -1396,12 +1402,12 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
-                kubernetesNamespaceWasCreated=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefixV3)$(kubernetesNamespaceWasCreatedRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
-                echo "##vso[task.setvariable variable=kubernetesNamespaceWasCreated;isOutput=true]$kubernetesNamespaceWasCreated"
-                mmmIotPlatformServicesHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefixV3)$(mmmIotPlatformServicesHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
-                echo "##vso[task.setvariable variable=mmmIotPlatformServicesHelmChartWasInstalled;isOutput=true]$mmmIotPlatformServicesHelmChartWasInstalled"
-                mmmIotPlatformIngressHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefixV3)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
-                echo "##vso[task.setvariable variable=mmmIotPlatformIngressHelmChartWasInstalled;isOutput=true]$mmmIotPlatformIngressHelmChartWasInstalled"
+                kubernetesNamespaceV3WasCreated=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefixV3)$(kubernetesNamespaceV3WasCreatedRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+                echo "##vso[task.setvariable variable=kubernetesNamespaceV3WasCreated;isOutput=true]$kubernetesNamespaceV3WasCreated"
+                mmmIotPlatformServicesHelmV3ChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefixV3)$(mmmIotPlatformServicesHelmV3ChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+                echo "##vso[task.setvariable variable=mmmIotPlatformServicesHelmV3ChartWasInstalled;isOutput=true]$mmmIotPlatformServicesHelmV3ChartWasInstalled"
+                mmmIotPlatformIngressHelmV3ChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefixV3)$(mmmIotPlatformIngressHelmV3ChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+                echo "##vso[task.setvariable variable=mmmIotPlatformIngressHelmV3ChartWasInstalled;isOutput=true]$mmmIotPlatformIngressHelmV3ChartWasInstalled"
 
       - job: deleteDnsRecordSet
         displayName: Delete DNS record set
@@ -1426,7 +1432,7 @@ stages:
         displayName: Uninstall services Helm chart
         dependsOn:
           - getPipelineVariables
-        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.mmmIotPlatformServicesHelmChartWasInstalled'], 'true'), not(failed()))
+        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.mmmIotPlatformServicesHelmV3ChartWasInstalled'], 'true'), not(failed()))
         steps:
           - checkout: none
 
@@ -1453,7 +1459,7 @@ stages:
         displayName: Uninstall ingress Helm chart
         dependsOn:
           - getPipelineVariables
-        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.mmmIotPlatformIngressHelmChartWasInstalled'], 'true'), not(failed()))
+        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.mmmIotPlatformIngressHelmV3ChartWasInstalled'], 'true'), not(failed()))
         steps:
           - checkout: none
 
@@ -1480,7 +1486,7 @@ stages:
         displayName: Delete namespace
         dependsOn:
           - getPipelineVariables
-        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesNamespaceWasCreated'], 'true'), not(failed()))
+        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesV3NamespaceWasCreated'], 'true'), not(failed()))
         steps:
           - checkout: none
 

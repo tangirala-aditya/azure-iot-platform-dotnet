@@ -1345,6 +1345,15 @@ jobs:
       - checkout: self
         displayName: Checkout repository
 
+
+      - task: Bash@3
+        displayName: Display values of helmVersionV3
+        inputs:
+          targetType: inline
+          script: |-
+            echo "parameters.helmVersionV3": ${{parameters.helmVersionV3}}
+            echo "helmVersionV3 in variables.all": ${{parameters.helmVersionV3}}
+
       - task: HelmInstaller@1
         displayName: Install Helm
         inputs:
@@ -1500,6 +1509,7 @@ jobs:
           script: |-
             echo "parameters.helmVersionV3": ${{parameters.helmVersionV3}}
             echo "helmVersionV3 in variables.all": ${{parameters.helmVersionV3}}
+
       - task: HelmInstaller@1
         displayName: Install Helm
         inputs:

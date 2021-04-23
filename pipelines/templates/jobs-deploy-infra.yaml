@@ -1352,7 +1352,7 @@ jobs:
           targetType: inline
           script: |-
             echo "parameters.helmVersionV3": ${{parameters.helmVersionV3}}
-            echo "helmVersionV3 in variables.all": ${{parameters.helmVersionV3}}
+            echo "helmVersionV3 in variables.all": $(helmVersionV3)
 
       - task: HelmInstaller@1
         displayName: Install Helm

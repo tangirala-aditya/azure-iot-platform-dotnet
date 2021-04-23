@@ -83,6 +83,9 @@ jobs:
           echo "servicePort: $(servicePort)"
           echo "serviceProbesEnabled: $(serviceProbesEnabled)"
           echo "blueGreen: ${{parameters.blueGreen}}"
+          echo "helmVersionV3: ${{parameters.helmVersionV3}}"
+          echo "helmVersionV3invariable.all": $(helmVersionV3)"
+
         displayName: Print job variables
 
 

@@ -575,6 +575,33 @@ stages:
                   $replyUrls.Add('$(authenticationCallbackUrl)')
                   Set-AzureADMSApplication -ObjectId $app.Id -Web @{ RedirectUris = $replyUrls }
                 }
+      - job: addAuthenticationCallbackUrlV3
+        displayName: Add auth callback URL for V3
+        pool:
+          vmImage: windows-latest
+        steps:
+          - checkout: none
+
+          - task: PowerShell@2
+            displayName: Add auth callback URL for V3
+            inputs:
+              targetType: inline
+              script: |-
+                Install-Module AzureAD -Force
+                $password = ConvertTo-SecureString -String '$(azureAdB2cTenantPassword)' -AsPlainText -Force
+                $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList '$(azureAdB2cTenantUsername)', $password
+                $azContext = Connect-AzureAD -TenantId $(azureAdB2cAppRegistrationTenantId) -Credential $credential
+                if ($azContext.TenantId -ne '$(azureAdB2cAppRegistrationTenantId)') {
+                  throw 'You are not connected to the right tenant'
+                }
+
+                $app = Get-AzureADMSApplication -Filter "DisplayName eq '$(azureAdB2cAppRegistrationNameTest)'"
+                $replyUrls = $app.web.RedirectUris
+                if (!$replyUrls.Contains('$(authenticationCallbackUrlV3)'))
+                {
+                  $replyUrls.Add('$(authenticationCallbackUrlV3)')
+                  Set-AzureADMSApplication -ObjectId $app.Id -Web @{ RedirectUris = $replyUrls }
+                }
 
   - stage: deployIngress
     displayName: Deploy ingress
@@ -924,6 +951,7 @@ stages:
       - deployIngress
       - deployServices
       - addAuthenticationCallbackUrl
+      - authenticationCallbackUrlV3
     jobs:
       - job: addFunctionalTestAccount
         displayName: Add Functional Test Account
@@ -1029,6 +1057,53 @@ stages:
                 kubectl get pods -n $(kubernetesNamespace)
                 kubectl wait pods --for=condition=Ready --selector app.kubernetes.io/name=webui -n $(kubernetesNamespace)
                 kubectl wait pods --for=condition=Ready --timeout=500s --selector app.kubernetes.io/name=reverse-proxy -n $(kubernetesNamespace)
+
+          - task: DotNetCoreCLI@2
+            displayName: Run functional tests
+            continueOnError: true
+            inputs:
+              command: test
+              arguments: >-
+                --configuration $(dotnetBuildConfiguration)
+                --logger trx
+                --filter 'Category!=Flaky'
+
+          - bash: |
+              if [ -d $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshots ]; then
+                echo "##vso[task.setvariable variable=testResultFileExists]true"
+              fi
+
+          - publish: $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshots
+            artifact: UITestScreenshots
+            displayName: Publish UI Test screenshots artifacts
+            condition: eq(variables.testResultFileExists, 'true')
+            continueOnError: true
+
+      - job: functionalTestV3
+        displayName: Functional test V3
+        dependsOn:
+          - getPipelineVariables
+        variables:
+          SerenityBaseUrl: https://$(testPipelineFqdnV3)
+          AppConfigurationConnectionString: $[dependencies.getPipelineVariables.outputs['getPipelineVariables.appConfigurationConnectionString']]
+          SerenityTenantId: $(serenityDevTenantId)
+        steps:
+          - checkout: azure-iot-functional-tests
+            displayName: Checkout repository
+
+          - task: AzureCLI@2
+            displayName: Wait for webui pod to be ready
+            name: getPipelineVariables
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |-
+                set -Eeuxo pipefail
+                az aks get-credentials --name $(aksName) --resource-group $(resourceGroupName) --overwrite-existing
+                kubectl get pods -n $(kubernetesNamespaceV3)
+                kubectl wait pods --for=condition=Ready --selector app.kubernetes.io/name=webui -n $(kubernetesNamespaceV3)
+                kubectl wait pods --for=condition=Ready --timeout=500s --selector app.kubernetes.io/name=reverse-proxy -n $(kubernetesNamespaceV3)
 
           - task: DotNetCoreCLI@2
             displayName: Run functional tests

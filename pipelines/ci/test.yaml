@@ -1130,7 +1130,7 @@ stages:
                 echo "##vso[task.setvariable variable=testResultV3FileExists]true"
               fi
           - publish: $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshotsV3
-            artifact: UITestScreenshots
+            artifact: UITestScreenshotsV3
             displayName: Publish UI Test screenshots artifacts
             condition: eq(variables.testResultV3FileExists, 'true')
             continueOnError: true

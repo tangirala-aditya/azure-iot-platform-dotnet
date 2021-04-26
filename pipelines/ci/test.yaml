@@ -49,8 +49,8 @@ variables:
     value: "$(buildIdV3):"  
   - name: kubernetesNamespaceWasCreatedRowKey
     value: kubernetesNamespaceWasCreated
-  - name: kubernetesV3NamespaceWasCreatedRowKey
-    value: kubernetesV3NamespaceWasCreated
+  - name: kubernetesNamespaceV3WasCreatedRowKey
+    value: kubernetesNamespaceV3WasCreated
   - name: mmmIotPlatformServicesHelmChartWasInstalledRowKey
     value: mmmIotPlatformServicesHelmChartWasInstalled
   - name: mmmIotPlatformIngressHelmChartWasInstalledRowKey
@@ -741,7 +741,7 @@ stages:
                 if (!$namespaceAlreadyExists) {
                   kubectl create namespace $(kubernetesNamespaceV3) --output json
                 }
-                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefixV3)$(kubernetesV3NamespaceWasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefixV3)$(kubernetesNamespaceV3WasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
           - template: ../templates/steps-install-helm-v3.yaml
 

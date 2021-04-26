@@ -93,7 +93,7 @@ variables:
     value: ingress-$(buildId)
   - name: mmmIotPlatformServicesHelmV3ChartReleaseName
     value: services-$(buildIdV3)
-- name: mmmIotPlatformIngressHelmV3ChartReleaseName
+  - name: mmmIotPlatformIngressHelmV3ChartReleaseName
     value: ingress-$(buildIdV3) 
   - name: serenityDevTenantId
     value: 01881b16-2c18-49b5-b6c0-645a30866896

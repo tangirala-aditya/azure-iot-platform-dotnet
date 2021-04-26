@@ -174,53 +174,56 @@ stages:
                 src/functions/**/*
               targetFolder: $(publishedFilesArtifactName)
               cleanTargetFolder: true
+          - task: WhiteSource@21
+            inputs:
+              cwd: '$(System.DefaultWorkingDirectory)'
 
           - publish: $(publishedFilesArtifactName)
             artifact: $(publishedFilesArtifactName)
             displayName: Publish services artifacts
 
 
-      - job: functionBuild
-        displayName: Build Functions
-        pool:
-          vmImage: 'vs2017-win2016'
-        dependsOn:
-          - preBuild
-        variables:
-          AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
-        steps:
-          - checkout: self
-            displayName: Checkout repository
+      # - job: functionBuild
+      #   displayName: Build Functions
+      #   pool:
+      #     vmImage: 'vs2017-win2016'
+      #   dependsOn:
+      #     - preBuild
+      #   variables:
+      #     AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
+      #   steps:
+      #     - checkout: self
+      #       displayName: Checkout repository
 
-          - script: >-
-              dotnet restore
-              --force
-              --no-cache
-              --no-dependencies
-              --packages .nuget
-              /p:TargetLatestRuntimePatch=true
-            displayName: Restore dependencies
+      #     - script: >-
+      #         dotnet restore
+      #         --force
+      #         --no-cache
+      #         --no-dependencies
+      #         --packages .nuget
+      #         /p:TargetLatestRuntimePatch=true
+      #       displayName: Restore dependencies
 
-          - script: >-
-              dotnet publish
-              --self-contained false
-              --no-restore
-              --no-dependencies
-              --configuration $(dotnetBuildConfiguration)
-              /p:TargetLatestRuntimePatch=true
-            displayName: Build assemblies
+      #     - script: >-
+      #         dotnet publish
+      #         --self-contained false
+      #         --no-restore
+      #         --no-dependencies
+      #         --configuration $(dotnetBuildConfiguration)
+      #         /p:TargetLatestRuntimePatch=true
+      #       displayName: Build assemblies
 
-          - task: CopyFiles@2
-            displayName: Prepare Azure Functions artifacts
-            inputs:
-              contents: |
-                src/functions/**/*
-              targetFolder: $(functionsArtifactName)
-              cleanTargetFolder: true
+      #     - task: CopyFiles@2
+      #       displayName: Prepare Azure Functions artifacts
+      #       inputs:
+      #         contents: |
+      #           src/functions/**/*
+      #         targetFolder: $(functionsArtifactName)
+      #         cleanTargetFolder: true
 
-          - publish: $(functionsArtifactName)
-            artifact: $(functionsArtifactName)
-            displayName: Publish Azure Functions artifacts
+      #     - publish: $(functionsArtifactName)
+      #       artifact: $(functionsArtifactName)
+      #       displayName: Publish Azure Functions artifacts
 
   # - stage: unitTest
   #   displayName: Unit test
@@ -267,135 +270,132 @@ stages:
   #             codeCoverageTool: Cobertura
   #             summaryFileLocation: Cobertura.xml
 
-  - stage: buildFrontEndContainers
-    displayName: Build front-end containers
-    dependsOn: []
-    jobs:
-      - job: lintWebuiCode
-        displayName: Lint webui code
-        steps:
-          - checkout: self
-            displayName: Checkout repository
+  # - stage: buildFrontEndContainers
+  #   displayName: Build front-end containers
+  #   dependsOn: []
+  #   jobs:
+  #     - job: lintWebuiCode
+  #       displayName: Lint webui code
+  #       steps:
+  #         - checkout: self
+  #           displayName: Checkout repository
 
-          - task: NodeTool@0
-            inputs:
-              versionSpec: 10.14.1
+  #         - task: NodeTool@0
+  #           inputs:
+  #             versionSpec: 10.14.1
 
-          - pwsh: |-
-              npm install
-              npm run lint
-            displayName: npm run lint
-            workingDirectory: src/webui
+  #         - pwsh: |-
+  #             npm install
+  #             npm run lint
+  #           displayName: npm run lint
+  #           workingDirectory: src/webui
 
-          - task: CopyFiles@2
-            displayName: Prepare services artifacts
-            inputs:
-              contents: |
-                src/webui/**/*
-              targetFolder: $(webuiArtifactName)
-              cleanTargetFolder: true
+  #         - task: CopyFiles@2
+  #           displayName: Prepare services artifacts
+  #           inputs:
+  #             contents: |
+  #               src/webui/**/*
+  #             targetFolder: $(webuiArtifactName)
+  #             cleanTargetFolder: true
 
-          - publish: $(webuiArtifactName)
-            artifact: $(webuiArtifactName)
-            displayName: Publish services artifacts
+  #         - publish: $(webuiArtifactName)
+  #           artifact: $(webuiArtifactName)
+  #           displayName: Publish services artifacts
 
-      - job: buildFrontEndContainers
-        displayName: Build front-end containers
-        dependsOn: []
-        strategy:
-          matrix:
-            reverse-proxy:
-              serviceName: reverse-proxy
-            webui:
-              serviceName: webui
-        steps:
-          - checkout: self
-            displayName: Checkout repository
+  #     - job: buildFrontEndContainers
+  #       displayName: Build front-end containers
+  #       dependsOn: []
+  #       strategy:
+  #         matrix:
+  #           reverse-proxy:
+  #             serviceName: reverse-proxy
+  #           webui:
+  #             serviceName: webui
+  #       steps:
+  #         - checkout: self
+  #           displayName: Checkout repository
 
-          - task: Docker@2
-            displayName: Build and push container
-            inputs:
-              containerRegistry: $(dockerHubServiceConnectionName)
-              repository: $(dockerHubRepositoryName)/$(serviceName)
-              command: buildAndPush
-              dockerfile: src/$(serviceName)/$(dockerfile)
-              buildContext: src/$(serviceName)
-              tags: |-
-                $(Build.BuildId)
-                $(Build.SourceVersion)
+  #         - task: Docker@2
+  #           displayName: Build and push container
+  #           inputs:
+  #             containerRegistry: $(dockerHubServiceConnectionName)
+  #             repository: $(dockerHubRepositoryName)/$(serviceName)
+  #             command: buildAndPush
+  #             dockerfile: src/$(serviceName)/$(dockerfile)
+  #             buildContext: src/$(serviceName)
+  #             tags: |-
+  #               $(Build.BuildId)
+  #               $(Build.SourceVersion)
 
-  - stage: whiteSourceBolt
-    displayName: WhiteSource Bolt
-    dependsOn:
-      - build
-      - buildFrontEndContainers
-    jobs:
-      - job: whiteSourceBolt
-        displayName: WhiteSource Bolt
-        steps:
-          - checkout: none
-          - task: DownloadPipelineArtifact@2
-            displayName: Download service artifacts
-            inputs:
-              source: current
-              artifact: $(publishedFilesArtifactName)
-              path: $(Build.SourcesDirectory)/$(publishedFilesArtifactName)
+  # - stage: whiteSourceBolt
+  #   displayName: WhiteSource Bolt
+  #   dependsOn:
+  #     - build
+  #     - buildFrontEndContainers
+  #   jobs:
+  #     - job: whiteSourceBolt
+  #       displayName: WhiteSource Bolt
+  #       steps:
+  #         - checkout: none
+  #         - task: DownloadPipelineArtifact@2
+  #           displayName: Download service artifacts
+  #           inputs:
+  #             source: current
+  #             artifact: $(publishedFilesArtifactName)
+  #             path: $(Build.SourcesDirectory)/$(publishedFilesArtifactName)
 
-          - task: DownloadPipelineArtifact@2
-            displayName: Download functions artifacts
-            inputs:
-              source: current
-              artifact: $(functionsArtifactName)
-              path: $(Build.SourcesDirectory)/$(functionsArtifactName)
+  #         - task: DownloadPipelineArtifact@2
+  #           displayName: Download functions artifacts
+  #           inputs:
+  #             source: current
+  #             artifact: $(functionsArtifactName)
+  #             path: $(Build.SourcesDirectory)/$(functionsArtifactName)
 
-          - task: DownloadPipelineArtifact@2
-            displayName: Download webui artifacts
-            inputs:
-              source: current
-              artifact: $(webuiArtifactName)
-              path: $(Build.SourcesDirectory)/$(webuiArtifactName)
+  #         - task: DownloadPipelineArtifact@2
+  #           displayName: Download webui artifacts
+  #           inputs:
+  #             source: current
+  #             artifact: $(webuiArtifactName)
+  #             path: $(Build.SourcesDirectory)/$(webuiArtifactName)
 
-          - task: WhiteSource@21
-            inputs:
-              cwd: '$(System.DefaultWorkingDirectory)'
 
-  - stage: listCommitsSinceLastRelease
-    displayName: List commits since last release
-    dependsOn: []
-    jobs:
-      - job: listCommitsSinceLastRelease
-        displayName: List commits since last release
-        steps:
-          - checkout: self
-            displayName: Checkout repository
+  # - stage: listCommitsSinceLastRelease
+  #   displayName: List commits since last release
+  #   dependsOn: []
+  #   jobs:
+  #     - job: listCommitsSinceLastRelease
+  #       displayName: List commits since last release
+  #       steps:
+  #         - checkout: self
+  #           displayName: Checkout repository
 
-          - template: ../templates/print-build-variables.yaml
+  #         - template: ../templates/print-build-variables.yaml
 
-          - template: ../templates/print-agent-variables.yaml
+  #         - template: ../templates/print-agent-variables.yaml
 
-          - template: ../templates/print-system-variables.yaml
+  #         - template: ../templates/print-system-variables.yaml
 
-          - template: ../templates/print-common-variables.yaml
+  #         - template: ../templates/print-common-variables.yaml
 
-          - pwsh: |-
-              if (!(Test-Path $(commitsSinceLastReleaseArtifactName))) {
-                New-Item $(commitsSinceLastReleaseArtifactName) -Type Directory
-              }
+  #         - pwsh: |-
+  #             if (!(Test-Path $(commitsSinceLastReleaseArtifactName))) {
+  #               New-Item $(commitsSinceLastReleaseArtifactName) -Type Directory
+  #             }
 
-              $previousReleaseTag = git for-each-ref --sort=-creatordate --format '%(tag)' refs/tags | ? {$_.trim() -ne "" } |
-                Select-Object -First 1
-              $logFilePath = (Join-Path $(commitsSinceLastReleaseArtifactName) git-log.txt)
-              "Commits since ${previousReleaseTag}:" | Set-Content $logFilePath
-              Write-Output "previousReleaseTag: $previousReleaseTag"
-              Write-Output 'Build.SourceVersion: $(Build.SourceVersion)'
-              git log --oneline --no-decorate --topo-order ^$previousReleaseTag $(Build.SourceVersion) |
-                Tee-Object $logFilePath -Append
+  #             $previousReleaseTag = git for-each-ref --sort=-creatordate --format '%(tag)' refs/tags | ? {$_.trim() -ne "" } |
+  #               Select-Object -First 1
+  #             $logFilePath = (Join-Path $(commitsSinceLastReleaseArtifactName) git-log.txt)
+  #             "Commits since ${previousReleaseTag}:" | Set-Content $logFilePath
+  #             Write-Output "previousReleaseTag: $previousReleaseTag"
+  #             Write-Output 'Build.SourceVersion: $(Build.SourceVersion)'
+  #             git log --oneline --no-decorate --topo-order ^$previousReleaseTag $(Build.SourceVersion) |
+  #               Tee-Object $logFilePath -Append
 
-            displayName: List commits since last release
+  #           displayName: List commits since last release
 
-          - publish: $(commitsSinceLastReleaseArtifactName)
-            artifact: $(commitsSinceLastReleaseArtifactName)
-            displayName: Publish list of commits since last release
+  #         - publish: $(commitsSinceLastReleaseArtifactName)
+  #           artifact: $(commitsSinceLastReleaseArtifactName)
+  #           displayName: Publish list of commits since last release
 
   # - stage: microsoftSecurityCodeAnalysis
   #   displayName: Microsoft Security Code Analysis
@@ -474,64 +474,64 @@ stages:
   #             ToolLogsNotFoundAction: Standard
 
 
-  - stage: cleanup
-    displayName: Cleanup
-    condition: and(succeededOrFailed(), eq(variables['runCleanupStage'], 'true'))
-    jobs:
-      - job: getPipelineVariables
-        displayName: Get pipeline variables
-        dependsOn: []
-        steps:
-          - checkout: none
+  # - stage: cleanup
+  #   displayName: Cleanup
+  #   condition: and(succeededOrFailed(), eq(variables['runCleanupStage'], 'true'))
+  #   jobs:
+  #     - job: getPipelineVariables
+  #       displayName: Get pipeline variables
+  #       dependsOn: []
+  #       steps:
+  #         - checkout: none
 
-          - task: AzureCLI@2
-            displayName: Get pipeline variables
-            name: getPipelineVariables
-            inputs:
-              azureSubscription: $(subscriptionName)
-              scriptType: bash
-              scriptLocation: inlineScript
-              inlineScript: |-
-                kubernetesNamespaceWasCreated=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(kubernetesNamespaceWasCreatedRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
-                echo "##vso[task.setvariable variable=kubernetesNamespaceWasCreated;isOutput=true]$kubernetesNamespaceWasCreated"
-                mmmIotPlatformServicesHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(mmmIotPlatformServicesHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
-                echo "##vso[task.setvariable variable=mmmIotPlatformServicesHelmChartWasInstalled;isOutput=true]$mmmIotPlatformServicesHelmChartWasInstalled"
-                mmmIotPlatformIngressHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
-                echo "##vso[task.setvariable variable=mmmIotPlatformIngressHelmChartWasInstalled;isOutput=true]$mmmIotPlatformIngressHelmChartWasInstalled"
+  #         - task: AzureCLI@2
+  #           displayName: Get pipeline variables
+  #           name: getPipelineVariables
+  #           inputs:
+  #             azureSubscription: $(subscriptionName)
+  #             scriptType: bash
+  #             scriptLocation: inlineScript
+  #             inlineScript: |-
+  #               kubernetesNamespaceWasCreated=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(kubernetesNamespaceWasCreatedRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+  #               echo "##vso[task.setvariable variable=kubernetesNamespaceWasCreated;isOutput=true]$kubernetesNamespaceWasCreated"
+  #               mmmIotPlatformServicesHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(mmmIotPlatformServicesHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+  #               echo "##vso[task.setvariable variable=mmmIotPlatformServicesHelmChartWasInstalled;isOutput=true]$mmmIotPlatformServicesHelmChartWasInstalled"
+  #               mmmIotPlatformIngressHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+  #               echo "##vso[task.setvariable variable=mmmIotPlatformIngressHelmChartWasInstalled;isOutput=true]$mmmIotPlatformIngressHelmChartWasInstalled"
 
-      - job: deleteDnsRecordSet
-        displayName: Delete DNS record set
-        dependsOn: []
-        steps:
-          - checkout: none
+  #     - job: deleteDnsRecordSet
+  #       displayName: Delete DNS record set
+  #       dependsOn: []
+  #       steps:
+  #         - checkout: none
 
-          - task: AzureCLI@2
-            displayName: Delete DNS record set
-            name: deleteDnsRecordSet
-            inputs:
-              azureSubscription: $(subscriptionName)
-              scriptType: pscore
-              scriptLocation: inlineScript
-              inlineScript: |-
-                $recordSetCount = az network dns record-set a list --zone-name $(testPipelineDomain) --resource-group $(resourceGroupName) --query '[?name==`$(buildId)`] | length(@)'
-                if ($recordSetCount -gt 0) {
-                  az network dns record-set a delete --name $(buildId) --zone-name $(testPipelineDomain) --resource-group $(resourceGroupName) --yes
-                }
+  #         - task: AzureCLI@2
+  #           displayName: Delete DNS record set
+  #           name: deleteDnsRecordSet
+  #           inputs:
+  #             azureSubscription: $(subscriptionName)
+  #             scriptType: pscore
+  #             scriptLocation: inlineScript
+  #             inlineScript: |-
+  #               $recordSetCount = az network dns record-set a list --zone-name $(testPipelineDomain) --resource-group $(resourceGroupName) --query '[?name==`$(buildId)`] | length(@)'
+  #               if ($recordSetCount -gt 0) {
+  #                 az network dns record-set a delete --name $(buildId) --zone-name $(testPipelineDomain) --resource-group $(resourceGroupName) --yes
+  #               }
 
-      - job: deleteNamespace
-        displayName: Delete namespace
-        dependsOn:
-          - getPipelineVariables
-        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesNamespaceWasCreated'], 'true'), not(failed()))
-        steps:
-          - checkout: none
+  #     - job: deleteNamespace
+  #       displayName: Delete namespace
+  #       dependsOn:
+  #         - getPipelineVariables
+  #       condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesNamespaceWasCreated'], 'true'), not(failed()))
+  #       steps:
+  #         - checkout: none
 
-          - task: Kubernetes@1
-            displayName: Delete namespace
-            inputs:
-              connectionType: Azure Resource Manager
-              azureSubscriptionEndpoint: $(subscriptionName)
-              azureResourceGroup: $(resourceGroupName)
-              kubernetesCluster: $(aksName)
-              command: delete
-              arguments: namespace $(kubernetesNamespace) --now=true --ignore-not-found=true
+  #         - task: Kubernetes@1
+  #           displayName: Delete namespace
+  #           inputs:
+  #             connectionType: Azure Resource Manager
+  #             azureSubscriptionEndpoint: $(subscriptionName)
+  #             azureResourceGroup: $(resourceGroupName)
+  #             kubernetesCluster: $(aksName)
+  #             command: delete
+  #             arguments: namespace $(kubernetesNamespace) --now=true --ignore-not-found=true

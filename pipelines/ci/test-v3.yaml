@@ -1121,14 +1121,14 @@ stages:
                 --filter 'Category!=Flaky'
 
           - bash: |
-              if [ -d $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshots ]; then
-                echo "##vso[task.setvariable variable=testResultFileExists]true"
+              if [ -d $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshotsV3 ]; then
+                echo "##vso[task.setvariable variable=testResultV3FileExists]true"
               fi
 
-          - publish: $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshots
+          - publish: $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshotsV3
             artifact: UITestScreenshots
             displayName: Publish UI Test screenshots artifacts
-            condition: eq(variables.testResultFileExists, 'true')
+            condition: eq(variables.testResultV3FileExists, 'true')
             continueOnError: true
 
   - stage: enumerateDependencies

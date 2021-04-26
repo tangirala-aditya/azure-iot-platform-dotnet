@@ -5,6 +5,7 @@
     "dependencies": {
         "@angular/common": "^8.2.2",
         "@angular/core": "^8.2.2",
+        "@fluentui/react": "^8.12.1",
         "@microsoft/azure-iot-ux-fluent-controls": "file:azure-iot-ux-fluent-controls",
         "@microsoft/azure-iot-ux-fluent-css": "file:azure-iot-ux-fluent-css",
         "adal-angular": "1.0.17",

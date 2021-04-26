@@ -17,7 +17,6 @@ import Flyout from "components/shared/flyout";
 import { Policies } from "utilities";
 import jwt_decode from "jwt-decode";
 import { MessageBar } from "@fluentui/react";
-import { Spinner, SpinnerSize } from "@fluentui/react/lib/Spinner";
 
 import TenantGrid from "./tenantGrid";
 const classnames = require("classnames/bind");
@@ -217,11 +216,6 @@ export class Profile extends React.Component {
                                                     .disableCreateTenant && (
                                                     <MessageBar>
                                                         Tenant creation started
-                                                        <Spinner
-                                                            size={
-                                                                SpinnerSize.xSmall
-                                                            }
-                                                        />
                                                     </MessageBar>
                                                 )}
                                             </Cell>

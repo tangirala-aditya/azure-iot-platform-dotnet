@@ -24,6 +24,10 @@ import "./polyfills";
 // Include base page css
 import "./index.scss";
 
+// Initialize fluentui icons
+import { initializeIcons } from "@fluentui/react/lib/Icons";
+initializeIcons();
+
 // AuthService.login();
 // const store = Config.showWalkthroughExamples
 //   ? configureWalkthroughStore()

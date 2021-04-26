@@ -150,19 +150,19 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                                 Console.WriteLine($"Creating telemetry table and mapping in {item.TenantId} DB in Data Explorer");
 
-                                var tableName = "telemetry";
+                                var tableName = "Telemetry";
                                 var tableMappingName = $"TelemetryEvents_JSON_Mapping-{item.TenantId}";
                                 var tableSchema = new[]
                                 {
-                                    Tuple.Create("deviceId", "System.String"),
-                                    Tuple.Create("data", "System.Object"),
-                                    Tuple.Create("timeStamp", "System.Datetime"),
+                                    Tuple.Create("DeviceId", "System.String"),
+                                    Tuple.Create("Data", "System.Object"),
+                                    Tuple.Create("TimeStamp", "System.Datetime"),
                                 };
                                 var mappingSchema = new ColumnMapping[]
                                 {
-                                    new ColumnMapping() { ColumnName = "deviceId", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.iothub-connection-device-id" } } },
-                                    new ColumnMapping() { ColumnName = "data", ColumnType = "dynamic", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$" } } },
-                                    new ColumnMapping() { ColumnName = "timeStamp", ColumnType = "datetime", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.iothub-enqueuedtime" } } },
+                                    new ColumnMapping() { ColumnName = "DeviceId", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.iothub-connection-device-id" } } },
+                                    new ColumnMapping() { ColumnName = "Data", ColumnType = "dynamic", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$" } } },
+                                    new ColumnMapping() { ColumnName = "TimeStamp", ColumnType = "datetime", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.iothub-enqueuedtime" } } },
                                 };
 
                                 this.kustoTableManagementClient.CreateTable(tableName, tableSchema, databaseName);
@@ -171,7 +171,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                                 this.kustoTableManagementClient.EnableStreamingIngestionPolicyToTable(tableName, databaseName);
 
-                                string dataConnectName = $"telemetryDataConnect-{item.TenantId.Substring(0, 5)}";
+                                string dataConnectName = $"TelemetryDataConnect-{item.TenantId.Substring(0, 8)}";
                                 string iotHubName = iothub.Name;
                                 string iotHubConsumerGroup = "$Default";
 

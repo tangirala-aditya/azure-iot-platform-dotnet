@@ -128,7 +128,7 @@ jobs:
               greenServiceName: $(serviceName)-green
               servicePort: $(servicePort)
               serviceProbesEnabled: $(serviceProbesEnabled)
-              helmVersion: $(helmVersionV3)
+              helmVersion: $(helmVersion3)
               imageTag: ${{parameters.imageTag}}
               type: blue
 
@@ -141,7 +141,7 @@ jobs:
               serviceName: $(serviceName)
               servicePort: $(servicePort)
               serviceProbesEnabled: $(serviceProbesEnabled)
-              helmVersion: $(helmVersion)
+              helmVersion: $(helmVersion3)
               imageTag: ${{parameters.imageTag}}              
 
 

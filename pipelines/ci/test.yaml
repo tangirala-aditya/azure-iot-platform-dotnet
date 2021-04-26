@@ -745,7 +745,7 @@ stages:
 
           - template: ../templates/steps-install-helm-v3.yaml
             parameters:
-              helmVersion: $(helmVersionV3)
+              helmVersion: $(helmVersion3)
               subscriptionName: $(subscriptionName)
               resourceGroupName: $(resourceGroupName)
               aksName: $(aksName)
@@ -914,7 +914,7 @@ stages:
 
           - template: ../templates/steps-install-helm-v3.yaml
             parameters:
-              helmVersion: $(helmVersionV3)
+              helmVersion: $(helmVersion3)
               subscriptionName: $(subscriptionName)
               resourceGroupName: $(resourceGroupName)
               aksName: $(aksName)
@@ -1211,7 +1211,7 @@ stages:
 
           - template: ../templates/steps-install-helm-v3.yaml
             parameters:
-              helmVersion: $(helmVersionV3)
+              helmVersion: $(helmVersion3)
               subscriptionName: $(subscriptionName)
               resourceGroupName: $(resourceGroupName)
               aksName: $(aksName)
@@ -1468,7 +1468,7 @@ stages:
 
           - template: ../templates/steps-install-helm-v3.yaml
             parameters:
-              helmVersion: $(helmVersionV3)
+              helmVersion: $(helmVersion3)
               subscriptionName: $(subscriptionName)
               resourceGroupName: $(resourceGroupName)
               aksName: $(aksName)

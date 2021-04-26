@@ -16,243 +16,297 @@ import {
 import Flyout from "components/shared/flyout";
 import { Policies } from "utilities";
 import jwt_decode from "jwt-decode";
+import { MessageBar } from "@fluentui/react";
+import { Spinner, SpinnerSize } from "@fluentui/react/lib/Spinner";
 
 import TenantGrid from "./tenantGrid";
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./profile.module.scss"));
 
 const Section = Flyout.Section;
-export const Profile = (props) => {
-    const {
-            t,
-            user,
-            logout,
-            switchTenant,
-            createTenant,
-            tenants,
-            fetchTenants,
-            onClose,
-            deleteTenantThenSwitch,
-            updateTenant,
-            currentTenant,
-            isSystemAdmin,
-        } = props,
-        roleArray = Array.from(user.roles).map(
-            (r) =>
-                Policies.filter((p) => p.Role.toLowerCase() === r).concat({
-                    DisplayName: "No Roles",
-                })[0].DisplayName
-        ),
-        permissionArray = Array.from(user.permissions);
+export class Profile extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            disableCreateTenant: false,
+        };
+    }
 
-    return (
-        <Flyout.Container
-            header={t("profileFlyout.title")}
-            t={t}
-            onClose={onClose}
-        >
-            <div className={css("profile-container")}>
-                {!user && (
-                    <div className={css("profile-container")}>
-                        <ErrorMsg className={css("profile-error")}>
-                            {t("profileFlyout.noUser")}
-                        </ErrorMsg>
-                        <Trans i18nKey={"profileFlyout.description"}>
-                            <Hyperlink
-                                href={
-                                    Config.contextHelpUrls.rolesAndPermissions
-                                }
-                                target="_blank"
-                            >
-                                {t("profileFlyout.learnMore")}
-                            </Hyperlink>
-                            about roles and permisions
-                        </Trans>
-                    </div>
-                )}
-                {user && (
-                    <div className={css("profile-container")}>
-                        <div className={css("profile-header")}>
-                            <h2>{user.email}</h2>
-                            <Grid className={css("profile-header-grid")}>
-                                <Row>
-                                    <Cell className="col-7">
-                                        <Trans
-                                            i18nKey={
-                                                "profileFlyout.description"
-                                            }
-                                        >
-                                            <Hyperlink
-                                                href={
-                                                    Config.contextHelpUrls
-                                                        .rolesAndPermissions
-                                                }
-                                                target="_blank"
-                                            >
-                                                {t("profileFlyout.learnMore")}
-                                            </Hyperlink>
-                                            about roles and permisions
-                                        </Trans>
-                                    </Cell>
-                                    <Cell className="col-3">
-                                        <Btn primary={true} onClick={logout}>
-                                            {t("profileFlyout.logout")}
-                                        </Btn>
-                                    </Cell>
-                                </Row>
-                            </Grid>
+    createTenantOnClick = () => {
+        this.setState({ disableCreateTenant: true });
+        const { createTenant, fetchTenants } = this.props;
+
+        createTenant().subscribe(
+            (r) => {
+                this.setState({ disableCreateTenant: false });
+                fetchTenants();
+            },
+            (error) => {
+                this.setState({ disableCreateTenant: false });
+                alert("An error ocurred while creating tenant.");
+            }
+        );
+    };
+    render() {
+        const {
+                t,
+                user,
+                logout,
+                switchTenant,
+                // createTenant,
+                tenants,
+                fetchTenants,
+                onClose,
+                deleteTenantThenSwitch,
+                updateTenant,
+                currentTenant,
+                isSystemAdmin,
+            } = this.props,
+            roleArray = Array.from(user.roles).map(
+                (r) =>
+                    Policies.filter((p) => p.Role.toLowerCase() === r).concat({
+                        DisplayName: "No Roles",
+                    })[0].DisplayName
+            ),
+            permissionArray = Array.from(user.permissions);
+
+        return (
+            <Flyout.Container
+                header={t("profileFlyout.title")}
+                t={t}
+                onClose={onClose}
+            >
+                <div className={css("profile-container")}>
+                    {!user && (
+                        <div className={css("profile-container")}>
+                            <ErrorMsg className={css("profile-error")}>
+                                {t("profileFlyout.noUser")}
+                            </ErrorMsg>
+                            <Trans i18nKey={"profileFlyout.description"}>
+                                <Hyperlink
+                                    href={
+                                        Config.contextHelpUrls
+                                            .rolesAndPermissions
+                                    }
+                                    target="_blank"
+                                >
+                                    {t("profileFlyout.learnMore")}
+                                </Hyperlink>
+                                about roles and permisions
+                            </Trans>
                         </div>
-
-                        <Section.Container>
-                            <Section.Header>
-                                {t("profileFlyout.tenants.tenantHeader")}
-                            </Section.Header>
-                            <Section.Content>
-                                <div className={css("pcs-renderer-cell")}>
-                                    <div className={css("current-tenant-text")}>
-                                        {currentTenant && currentTenant !== ""
-                                            ? "Current: " + currentTenant
-                                            : ""}
-                                    </div>
-                                </div>
-                                {
-                                    /* Create the list of available tenants if there are any */
-                                    !tenants || tenants.length === 0 ? (
-                                        t("profileFlyout.tenants.noTenant")
-                                    ) : (
-                                        <Grid>
-                                            <Row>
-                                                <Cell>
-                                                    {t(
-                                                        "profileFlyout.tenants.tenantNameColumn"
-                                                    )}
-                                                </Cell>
-                                                <Cell>
-                                                    {t(
-                                                        "profileFlyout.tenants.tenantRoleColumn"
-                                                    )}
-                                                </Cell>
-                                                <Cell>
-                                                    {t(
-                                                        "profileFlyout.tenants.tenantActionColumn"
-                                                    )}
-                                                </Cell>
-                                            </Row>
-                                            <TenantGrid
-                                                updateTenant={updateTenant}
-                                                fetchTenants={fetchTenants}
-                                                currentTenant={currentTenant}
-                                                switchTenant={switchTenant}
-                                                deleteTenantThenSwitch={
-                                                    deleteTenantThenSwitch
-                                                }
-                                                tenants={tenants}
-                                                t={t}
-                                                isSystemAdmin={isSystemAdmin}
-                                            ></TenantGrid>
-                                        </Grid>
-                                    )
-                                }
-                                {isSystemAdmin && (
-                                    <Grid>
-                                        <Cell id="create-tenant-cell">
-                                            <Btn
-                                                className={css(
-                                                    "create-tenant-button"
-                                                )}
-                                                primary={true}
-                                                onClick={() =>
-                                                    createTenant().subscribe(
-                                                        (r) => fetchTenants()
-                                                    )
+                    )}
+                    {user && (
+                        <div className={css("profile-container")}>
+                            <div className={css("profile-header")}>
+                                <h2>{user.email}</h2>
+                                <Grid className={css("profile-header-grid")}>
+                                    <Row>
+                                        <Cell className="col-7">
+                                            <Trans
+                                                i18nKey={
+                                                    "profileFlyout.description"
                                                 }
                                             >
-                                                {t(
-                                                    "profileFlyout.tenants.createTenant"
-                                                )}
+                                                <Hyperlink
+                                                    href={
+                                                        Config.contextHelpUrls
+                                                            .rolesAndPermissions
+                                                    }
+                                                    target="_blank"
+                                                >
+                                                    {t(
+                                                        "profileFlyout.learnMore"
+                                                    )}
+                                                </Hyperlink>
+                                                about roles and permisions
+                                            </Trans>
+                                        </Cell>
+                                        <Cell className="col-3">
+                                            <Btn
+                                                primary={true}
+                                                onClick={logout}
+                                            >
+                                                {t("profileFlyout.logout")}
                                             </Btn>
                                         </Cell>
-                                    </Grid>
-                                )}
-                            </Section.Content>
-                        </Section.Container>
+                                    </Row>
+                                </Grid>
+                            </div>
 
-                        <Section.Container>
-                            <Section.Header>
-                                {t("profileFlyout.roles")}
-                            </Section.Header>
-                            <Section.Content>
-                                {roleArray.length === 0 ? (
-                                    t("profileFlyout.noRoles")
-                                ) : (
-                                    <Grid>
-                                        {roleArray.map((roleName, idx) => (
-                                            <Row key={idx}>
-                                                <Cell>{roleName}</Cell>
-                                            </Row>
-                                        ))}
-                                    </Grid>
-                                )}
-                            </Section.Content>
-                        </Section.Container>
-
-                        <Section.Container>
-                            <Section.Header>
-                                {t("profileFlyout.permissions")}
-                            </Section.Header>
-                            <Section.Content>
-                                {permissionArray.length === 0 ? (
-                                    t("profileFlyout.noPermissions")
-                                ) : (
-                                    <Grid>
-                                        {permissionArray.map(
-                                            (permissionName, idx) => (
-                                                <Row key={idx}>
+                            <Section.Container>
+                                <Section.Header>
+                                    {t("profileFlyout.tenants.tenantHeader")}
+                                </Section.Header>
+                                <Section.Content>
+                                    <div className={css("pcs-renderer-cell")}>
+                                        <div
+                                            className={css(
+                                                "current-tenant-text"
+                                            )}
+                                        >
+                                            {currentTenant &&
+                                            currentTenant !== ""
+                                                ? "Current: " + currentTenant
+                                                : ""}
+                                        </div>
+                                    </div>
+                                    {
+                                        /* Create the list of available tenants if there are any */
+                                        !tenants || tenants.length === 0 ? (
+                                            t("profileFlyout.tenants.noTenant")
+                                        ) : (
+                                            <Grid>
+                                                <Row>
                                                     <Cell>
-                                                        {getEnumTranslation(
-                                                            t,
-                                                            "permissions",
-                                                            permissionName
+                                                        {t(
+                                                            "profileFlyout.tenants.tenantNameColumn"
+                                                        )}
+                                                    </Cell>
+                                                    <Cell>
+                                                        {t(
+                                                            "profileFlyout.tenants.tenantRoleColumn"
+                                                        )}
+                                                    </Cell>
+                                                    <Cell>
+                                                        {t(
+                                                            "profileFlyout.tenants.tenantActionColumn"
                                                         )}
                                                     </Cell>
                                                 </Row>
-                                            )
-                                        )}
-                                    </Grid>
-                                )}
-                            </Section.Content>
-                        </Section.Container>
-                        {global.DeploymentConfig.developmentMode ? (
-                            <Section.Container>
-                                <Section.Header>
-                                    Development Variables
-                                </Section.Header>
-                                <Section.Content>
-                                    <Grid>
-                                        id_token: <br />
-                                        {user.token}
-                                    </Grid>
-                                    <Grid>
-                                        payload: <br />
-                                        {JSON.stringify(
-                                            jwt_decode(user.token),
-                                            null,
-                                            2
-                                        )}
-                                    </Grid>
+                                                <TenantGrid
+                                                    updateTenant={updateTenant}
+                                                    fetchTenants={fetchTenants}
+                                                    currentTenant={
+                                                        currentTenant
+                                                    }
+                                                    switchTenant={switchTenant}
+                                                    deleteTenantThenSwitch={
+                                                        deleteTenantThenSwitch
+                                                    }
+                                                    tenants={tenants}
+                                                    t={t}
+                                                    isSystemAdmin={
+                                                        isSystemAdmin
+                                                    }
+                                                ></TenantGrid>
+                                            </Grid>
+                                        )
+                                    }
+                                    {isSystemAdmin && (
+                                        <Grid>
+                                            <Cell id="create-tenant-cell">
+                                                <Btn
+                                                    className={css(
+                                                        "create-tenant-button"
+                                                    )}
+                                                    primary={true}
+                                                    disabled={
+                                                        this.state
+                                                            .disableCreateTenant
+                                                    }
+                                                    onClick={
+                                                        this.createTenantOnClick
+                                                    }
+                                                >
+                                                    {t(
+                                                        "profileFlyout.tenants.createTenant"
+                                                    )}
+                                                </Btn>
+                                                {this.state
+                                                    .disableCreateTenant && (
+                                                    <MessageBar>
+                                                        Tenant creation started
+                                                        <Spinner
+                                                            size={
+                                                                SpinnerSize.xSmall
+                                                            }
+                                                        />
+                                                    </MessageBar>
+                                                )}
+                                            </Cell>
+                                        </Grid>
+                                    )}
                                 </Section.Content>
                             </Section.Container>
-                        ) : (
-                            ""
-                        )}
-                        <BtnToolbar>
-                            <Btn svg={svgs.cancelX} onClick={onClose}>
-                                {t("profileFlyout.close")}
-                            </Btn>
-                        </BtnToolbar>
-                    </div>
-                )}
-            </div>
-        </Flyout.Container>
-    );
-};
+
+                            <Section.Container>
+                                <Section.Header>
+                                    {t("profileFlyout.roles")}
+                                </Section.Header>
+                                <Section.Content>
+                                    {roleArray.length === 0 ? (
+                                        t("profileFlyout.noRoles")
+                                    ) : (
+                                        <Grid>
+                                            {roleArray.map((roleName, idx) => (
+                                                <Row key={idx}>
+                                                    <Cell>{roleName}</Cell>
+                                                </Row>
+                                            ))}
+                                        </Grid>
+                                    )}
+                                </Section.Content>
+                            </Section.Container>
+
+                            <Section.Container>
+                                <Section.Header>
+                                    {t("profileFlyout.permissions")}
+                                </Section.Header>
+                                <Section.Content>
+                                    {permissionArray.length === 0 ? (
+                                        t("profileFlyout.noPermissions")
+                                    ) : (
+                                        <Grid>
+                                            {permissionArray.map(
+                                                (permissionName, idx) => (
+                                                    <Row key={idx}>
+                                                        <Cell>
+                                                            {getEnumTranslation(
+                                                                t,
+                                                                "permissions",
+                                                                permissionName
+                                                            )}
+                                                        </Cell>
+                                                    </Row>
+                                                )
+                                            )}
+                                        </Grid>
+                                    )}
+                                </Section.Content>
+                            </Section.Container>
+                            {global.DeploymentConfig.developmentMode ? (
+                                <Section.Container>
+                                    <Section.Header>
+                                        Development Variables
+                                    </Section.Header>
+                                    <Section.Content>
+                                        <Grid>
+                                            id_token: <br />
+                                            {user.token}
+                                        </Grid>
+                                        <Grid>
+                                            payload: <br />
+                                            {JSON.stringify(
+                                                jwt_decode(user.token),
+                                                null,
+                                                2
+                                            )}
+                                        </Grid>
+                                    </Section.Content>
+                                </Section.Container>
+                            ) : (
+                                ""
+                            )}
+                            <BtnToolbar>
+                                <Btn svg={svgs.cancelX} onClick={onClose}>
+                                    {t("profileFlyout.close")}
+                                </Btn>
+                            </BtnToolbar>
+                        </div>
+                    )}
+                </div>
+            </Flyout.Container>
+        );
+    }
+}

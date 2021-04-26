@@ -1460,7 +1460,7 @@ stages:
         displayName: Delete namespace
         dependsOn:
           - getPipelineVariables
-        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesV3NamespaceWasCreated'], 'true'), not(failed()))
+        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesNamespaceV3WasCreated'], 'true'), not(failed()))
         steps:
           - checkout: none
 

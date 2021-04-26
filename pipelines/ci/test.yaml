@@ -744,18 +744,13 @@ stages:
                 az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefixV3)$(kubernetesV3NamespaceWasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
           - template: ../templates/steps-install-helm-v3.yaml
-            parameters:
-              helmVersion: $(helmVersion3)
-              subscriptionName: $(subscriptionName)
-              resourceGroupName: $(resourceGroupName)
-              aksName: $(aksName)
-              kubernetesNamespace: $(kubernetesNamespaceV3)
 
           - script: |-
               set -Eeuxo pipefail
               cd charts/$(mmmIotPlatformIngressHelmV3ChartName)
-              helm dependency update 
+              helm dependency update             
             displayName: Update helm local dependencies
+
           - task: HelmDeploy@0
             displayName: Install ingress HelmV3 chart
             inputs:
@@ -913,12 +908,6 @@ stages:
             displayName: Checkout repository
 
           - template: ../templates/steps-install-helm-v3.yaml
-            parameters:
-              helmVersion: $(helmVersion3)
-              subscriptionName: $(subscriptionName)
-              resourceGroupName: $(resourceGroupName)
-              aksName: $(aksName)
-              kubernetesNamespace: $(kubernetesNamespaceV3)
 
           - script: |-
               set -Eeuxo pipefail
@@ -1210,12 +1199,6 @@ stages:
                   Set-Content (Join-Path $(dependenciesReportArtifactName) helm.txt)
 
           - template: ../templates/steps-install-helm-v3.yaml
-            parameters:
-              helmVersion: $(helmVersion3)
-              subscriptionName: $(subscriptionName)
-              resourceGroupName: $(resourceGroupName)
-              aksName: $(aksName)
-              kubernetesNamespace: $(kubernetesNamespaceV3)
 
           - task: AzureCLI@2
             displayName: Enumerate HelmV3 chart dependencies
@@ -1440,12 +1423,6 @@ stages:
           - checkout: none
 
           - template: ../templates/steps-install-helm-v3.yaml
-            parameters:
-              helmVersion: $(helmVersion)
-              subscriptionName: $(subscriptionName)
-              resourceGroupName: $(resourceGroupName)
-              aksName: $(aksName)
-              kubernetesNamespace: $(kubernetesNamespaceV3)
 
           - task: HelmDeploy@0
             displayName: Uninstall services Helm chart
@@ -1467,12 +1444,6 @@ stages:
           - checkout: none
 
           - template: ../templates/steps-install-helm-v3.yaml
-            parameters:
-              helmVersion: $(helmVersion3)
-              subscriptionName: $(subscriptionName)
-              resourceGroupName: $(resourceGroupName)
-              aksName: $(aksName)
-              kubernetesNamespace: $(kubernetesNamespaceV3)
 
           - task: HelmDeploy@0
             displayName: Uninstall ingress Helm chart

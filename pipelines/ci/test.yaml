@@ -742,9 +742,10 @@ stages:
                   kubectl create namespace $(kubernetesNamespaceV3) --output json
                 }
                 az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefixV3)$(kubernetesV3NamespaceWasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+
           - template: ../templates/steps-install-helm-v3.yaml
             parameters:
-              helmVersion: $(helmVersion)
+              helmVersion: $(helmVersionV3)
               subscriptionName: $(subscriptionName)
               resourceGroupName: $(resourceGroupName)
               aksName: $(aksName)

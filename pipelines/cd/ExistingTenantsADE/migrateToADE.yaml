@@ -187,7 +187,7 @@ stages:
           #       Write-Host $(servicePrincipalKey)
           #       Write-Host $(tenantId)
           - powershell: ls
-            workingDirectory: pipelines/cd/ExistingTenantsADE
+            workingDirectory: $(System.DefaultWorkingDirectory)
             displayName: 'PowerShell Script yes wd'
 
           - powershell: ls

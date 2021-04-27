@@ -5,7 +5,8 @@ parameters:
   subscriptionId:
   applicationCode:
   applicationShortCode:
-  environmentCategory: 
+  environmentCategory:
+  environmentName:
 
 jobs:
   - template: get-approval.yaml

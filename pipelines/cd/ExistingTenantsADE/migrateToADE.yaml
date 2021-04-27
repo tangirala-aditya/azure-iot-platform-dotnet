@@ -70,7 +70,7 @@ stages:
     dependsOn:
       - checkParameters
     jobs:
-      - template: pipelines\templates\get-approval.yaml
+      - template: ..\templates\get-approval.yaml
         parameters:
           environmentName: $(environmentName)
 
@@ -79,7 +79,7 @@ stages:
         dependsOn:
           - getApproval
         variables:
-          - template: pipelines\templates\variables-deploy-infra.yaml
+          - template: ..\templates\variables-deploy-infra.yaml
             parameters:
               subscriptionName: $(subscriptionName)
               locationName: $(locationName)
@@ -91,7 +91,7 @@ stages:
         steps:
           - checkout: none
 
-          - template: pipelines\templates\print-pipeline-resource-variables.yaml
+          - template: ..\templates\print-pipeline-resource-variables.yaml
             parameters:
               pipelineResourceName: test
 
@@ -151,7 +151,7 @@ stages:
         dependsOn:
           - printVariables
         variables:
-          - template: pipelines\templates\variables-deploy-infra.yaml
+          - template: ..\templates\variables-deploy-infra.yaml
             parameters:
               subscriptionName: $(subscriptionName)
               locationName: $(locationName)
@@ -192,7 +192,7 @@ stages:
             inputs:
               azureSubscription: $(subscriptionName)
               ScriptType: FilePath
-              ScriptPath: pipelines/cd/ExistingTenantsADE/ExistingTenantsADE.ps1
+              ScriptPath: ExistingTenantsADE.ps1
               ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroup $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId)
               azurePowerShellVersion: LatestVersion
               workingDirectory: $(System.DefualtWorkingDirectory)

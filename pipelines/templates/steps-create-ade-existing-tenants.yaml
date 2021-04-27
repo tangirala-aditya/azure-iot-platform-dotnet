@@ -4,17 +4,9 @@ parameters:
   environmentName:
   subscriptionId:
   applicationCode:
-  applicationShortCode:
-  appInsightsLocation: 
+  applicationShortCode: 
   environmentCategory:
-  kubernetesVersion:
-  sendgridEmail:
-  aksAgentVmSize: Standard_DS2_v2
-  sysAdmins:
-  azureDevOpsProjectId:
-  testPipelineId:
-  runVersion:
-  testPipelineRunId:
+
 
 jobs:
   - template: get-approval.yaml

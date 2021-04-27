@@ -91,11 +91,10 @@ jobs:
         displayName: Print variables
 
 
-- job: someName
+  - job: someName
     displayName: something
     dependsOn:
-      - appConfiguration
-      - aks
+      - printVariables
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

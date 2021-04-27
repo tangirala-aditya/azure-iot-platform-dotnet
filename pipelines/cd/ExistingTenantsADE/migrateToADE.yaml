@@ -70,7 +70,7 @@ stages:
     dependsOn:
       - checkParameters
     jobs:
-      - template: ../templates/get-approval.yaml
+      - template: ../../templates/get-approval.yaml
         parameters:
           environmentName: $(environmentName)
 
@@ -79,7 +79,7 @@ stages:
         dependsOn:
           - getApproval
         variables:
-          - template: ../templates/variables-deploy-infra.yaml
+          - template: ../../templates/variables-deploy-infra.yaml
             parameters:
               subscriptionName: $(subscriptionName)
               locationName: $(locationName)
@@ -91,7 +91,7 @@ stages:
         steps:
           - checkout: none
 
-          - template: ../templates/print-pipeline-resource-variables.yaml
+          - template: ../../templates/print-pipeline-resource-variables.yaml
             parameters:
               pipelineResourceName: test
 
@@ -151,7 +151,7 @@ stages:
         dependsOn:
           - printVariables
         variables:
-          - template: ../templates/variables-deploy-infra.yaml
+          - template: ../../templates/variables-deploy-infra.yaml
             parameters:
               subscriptionName: $(subscriptionName)
               locationName: $(locationName)

@@ -85,6 +85,8 @@ jobs:
 
   - job: testCLIPowershell
     displayName: testing CLI and Powershell
+    pool:
+      vmImage: windows-latest
     dependsOn:
       - printVariables
     variables:
@@ -112,7 +114,7 @@ jobs:
             echo "##vso[task.setvariable variable=TestVar]JustForTest"
           addSpnToEnvironment: true
 
-      - task: AzurePowerShell@5
+      - task: AzurePowerShell@3
         displayName: Verify the ServicePrincipalId, Keys and TenantId
         inputs:
           azureSubscription: ${{parameters.subscriptionName}}
@@ -132,3 +134,4 @@ jobs:
           ScriptPath: pipelines/cd/ExistingTenantsADE/ExistingTenantsADE.ps1
           ScriptArguments: -applicationCode ${{parameters.applicationCode}} -environmentCategory ${{parameters.environmentCategory}} -resourceGroup $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId)
           azurePowerShellVersion: LatestVersion
+          workingDirectory: $(System.DefualtWorkingDirectory)

@@ -161,7 +161,8 @@ stages:
               applicationShortCode: $(applicationShortCode)
               environmentCategory: $(environmentCategory)
         steps:
-          - checkout: none
+          - checkout: self
+            displayName: Checkout repository
 
           - task: AzureCLI@2
             displayName: Get and set the ServicePrincipalId, Keys and TenantId

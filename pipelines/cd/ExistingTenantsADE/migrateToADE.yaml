@@ -180,11 +180,19 @@ stages:
           #   inputs:
           #     azureSubscription: $(subscriptionName)
           #     azurePowerShellVersion: latestVersion
+          #     workingDirectory: pipelines/cd/ExistingTenantsADE
           #     scriptType: inlineScript
           #     inline: |-
-          #       Write-Host $(servicePrincipalId)
+          #       ls
           #       Write-Host $(servicePrincipalKey)
           #       Write-Host $(tenantId)
+          - powershell: ls
+            workingDirectory: pipelines/cd/ExistingTenantsADE
+            displayName: 'PowerShell Script yes wd'
+
+          - powershell: ls
+            displayName: 'PowerShell Script no wd'  
+
             
 
           - task: AzurePowerShell@3
@@ -192,6 +200,7 @@ stages:
             inputs:
               azureSubscription: $(subscriptionName)
               ScriptType: FilePath
-              ScriptPath: pipelines/cd/ExistingTenantsADE/ExistingTenantsADE.ps1
+              workingDirectory: pipelines/cd/ExistingTenantsADE
+              ScriptPath: .\ExistingTenantsADE.ps1
               ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroup $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId)
               azurePowerShellVersion: LatestVersion

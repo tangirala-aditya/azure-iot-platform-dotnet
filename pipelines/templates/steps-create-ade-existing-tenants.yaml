@@ -108,10 +108,10 @@ jobs:
           scriptType: bash
           inlineScript: |-
             echo "im in here in bash"
-            echo "##vso[task.setvariable variable=servicePrincipalId;]$env:servicePrincipalId"
-            echo "##vso[task.setvariable variable=servicePrincipalKey;]$env:servicePrincipalKey"
-            echo "##vso[task.setvariable variable=tenantId;]$env:tenantId"
-            echo "##vso[task.setvariable variable=TestVar;]JustForTest"
+
+            echo "##vso[task.setvariable variable=servicePrincipalId]$servicePrincipalId"
+            echo "##vso[task.setvariable variable=servicePrincipalKey]$servicePrincipalKey"
+            echo "##vso[task.setvariable variable=TestVar]JustForTest"
           addSpnToEnvironment: true
 
       - task: AzurePowerShell@5
@@ -124,7 +124,7 @@ jobs:
             Write-Host "hey there"
             Write-Host $env:servicePrincipalId
             Write-Host $env:servicePrincipalKey
-            Write-Host $env:tenantId
+            Write-Host $(tenantId)
             Write-Host $env:TestVar
         
 

@@ -175,16 +175,16 @@ stages:
                 echo "##vso[task.setvariable variable=TestVar]JustForTest"
               addSpnToEnvironment: true
 
-          - task: AzurePowerShell@3
-            displayName: Verify the ServicePrincipalId, Keys and TenantId
-            inputs:
-              azureSubscription: $(subscriptionName)
-              azurePowerShellVersion: latestVersion
-              scriptType: inlineScript
-              inline: |-
-                Write-Host $(servicePrincipalId)
-                Write-Host $(servicePrincipalKey)
-                Write-Host $(tenantId)
+          # - task: AzurePowerShell@3
+          #   displayName: Verify the ServicePrincipalId, Keys and TenantId
+          #   inputs:
+          #     azureSubscription: $(subscriptionName)
+          #     azurePowerShellVersion: latestVersion
+          #     scriptType: inlineScript
+          #     inline: |-
+          #       Write-Host $(servicePrincipalId)
+          #       Write-Host $(servicePrincipalKey)
+          #       Write-Host $(tenantId)
             
 
           - task: AzurePowerShell@3
@@ -192,7 +192,7 @@ stages:
             inputs:
               azureSubscription: $(subscriptionName)
               ScriptType: FilePath
-              ScriptPath: ExistingTenantsADE.ps1
+              ScriptPath: ./ExistingTenantsADE.ps1
               ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroup $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId)
               azurePowerShellVersion: LatestVersion
               workingDirectory: $(System.DefualtWorkingDirectory)

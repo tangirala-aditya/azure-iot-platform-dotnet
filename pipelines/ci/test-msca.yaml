@@ -330,7 +330,6 @@ stages:
     displayName: WhiteSource Bolt
     dependsOn:
       - build
-      - buildFrontEndContainers
     jobs:
       - job: whiteSourceBolt
         displayName: WhiteSource Bolt

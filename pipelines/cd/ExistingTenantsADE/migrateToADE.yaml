@@ -176,26 +176,6 @@ stages:
                 echo "##vso[task.setvariable variable=TestVar]JustForTest"
               addSpnToEnvironment: true
 
-          # - task: AzurePowerShell@3
-          #   displayName: Verify the ServicePrincipalId, Keys and TenantId
-          #   inputs:
-          #     azureSubscription: $(subscriptionName)
-          #     azurePowerShellVersion: latestVersion
-          #     workingDirectory: pipelines/cd/ExistingTenantsADE
-          #     scriptType: inlineScript
-          #     inline: |-
-          #       ls
-          #       Write-Host $(servicePrincipalKey)
-          #       Write-Host $(tenantId)
-          - powershell: ls
-            workingDirectory: $(System.DefaultWorkingDirectory)/pipelines/cd/ExistingTenantsADE/
-            displayName: 'PowerShell Script yes wd'
-
-          - powershell: ls
-            displayName: 'PowerShell Script no wd'  
-
-            
-
           - task: AzurePowerShell@3
             displayName: Create database, tables, mapping, queries and data connection.
             inputs:

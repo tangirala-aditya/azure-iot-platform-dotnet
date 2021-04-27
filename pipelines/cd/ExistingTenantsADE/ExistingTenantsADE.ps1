@@ -19,11 +19,11 @@ try {
      Write-Host $storageAccountName
      
      #remove and reisntall pkmngr and install packages
-     # Unregister-PackageSource -Name nuget.org
-     # Register-PackageSource -Name nuget.org -Location https://www.nuget.org/api/v2 -ProviderName NuGet
+     Unregister-PackageSource -Name nuget.org
+     Register-PackageSource -Name nuget.org -Location https://www.nuget.org/api/v2 -ProviderName NuGet
      Install-Module -Name Az.Kusto -Force
      Install-Module -Name AzTable -Force
-     # Install-Package Microsoft.Azure.Kusto.Tools -RequiredVersion 5.1.0 -Destination . -Force
+     Install-Package Microsoft.Azure.Kusto.Tools -RequiredVersion 5.1.0 -Destination . -Force
      ls
      Write-Host "Installed Kusto, AzTable and Kusto.Tools successfully."
 
@@ -57,7 +57,7 @@ try {
 
           $connStr = "Data Source=" + $clusterURI + ";Initial Catalog=" + $databaseName + ";Application Client Id=" + $servicePrincipalId + ";Application Key=" + $servicePrincipalKey + ";AAD Federated Security=True;dSTS Federated Security=False;Authority Id=" + $tenantId
           Write-Host $connStr
-          # Microsoft.Azure.Kusto.Tools.5.1.0\Tools\Kusto.Cli.exe $connStr -script:".\pipelines\cd\ExistingTenantsADE\script.txt"
+          Microsoft.Azure.Kusto.Tools.5.1.0\Tools\Kusto.Cli.exe $connStr -script:".\pipelines\cd\ExistingTenantsADE\script.txt"
           Write-Host "Executed the Kusto Script!"
 
           #REVERT change the names in the script fiel for mapping Name

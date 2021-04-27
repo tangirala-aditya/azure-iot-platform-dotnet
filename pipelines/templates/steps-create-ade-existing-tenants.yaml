@@ -101,38 +101,34 @@ jobs:
       - checkout: none
 
       - task: AzureCLI@2
-        displayName: Update the service principal key for AKS
+        displayName: Get and set the ServicePrincipalId, Keys and TenantId
         inputs:
           azureSubscription: ${{parameters.subscriptionName}}
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-            echo "im in here in bash"
-
             echo "##vso[task.setvariable variable=servicePrincipalId]$servicePrincipalId"
             echo "##vso[task.setvariable variable=servicePrincipalKey]$servicePrincipalKey"
             echo "##vso[task.setvariable variable=TestVar]JustForTest"
           addSpnToEnvironment: true
 
       - task: AzurePowerShell@5
-        displayName: Add System Administrators
+        displayName: Verify the ServicePrincipalId, Keys and TenantId
         inputs:
           azureSubscription: ${{parameters.subscriptionName}}
           azurePowerShellVersion: latestVersion
           scriptType: inlineScript
           inline: |-
-            Write-Host "hey there"
             Write-Host $(servicePrincipalId)
             Write-Host $(servicePrincipalKey)
             Write-Host $(tenantId)
-            Write-Host $(TestVar)
         
 
       - task: AzurePowerShell@3
-        displayName: Create certificate and connections on Azure Automation Account
+        displayName: Create database, tables, mapping, queries and data connection.
         inputs:
           azureSubscription: ${{parameters.subscriptionName}}
           ScriptType: FilePath
-          ScriptPath: pipelines/cd/ExistingTenantsADE/ExistingTenantsADEyyyyyy.ps1
-          ScriptArguments: -servicePrincipalId $(automationName) -servicePrincipalKey $(resourceGroupName) -tenantId $(tenantId)
+          ScriptPath: pipelines/cd/ExistingTenantsADE/ExistingTenantsADE.ps1
+          ScriptArguments: -applicationCode ${{parameters.applicationCode}} -environmentCategory ${{parameters.environmentCategory}} -resourceGroup $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId)
           azurePowerShellVersion: LatestVersion

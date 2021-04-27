@@ -1,0 +1,14 @@
+.create table Telemetry (DeviceId:string, Data:dynamic, TimeStamp:datetime)
+.create table Telemetry ingestion json mapping 'TelemetryEvents_JSON_Mapping-aa1b1d9b-797f-4bf4-b0ff-96a09f2701b6' '[{"column":"DeviceId","path":"$.humidity","datatype":"string"},{"column":"temperature","path":"$.temperature","datatype":"real"}]'
+.alter table Telemetry policy streamingingestion enable
+
+
+
+
+
+
+
+
+
+
+

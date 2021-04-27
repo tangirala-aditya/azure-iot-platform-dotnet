@@ -1,12 +1,3 @@
-parameters:
-  subscriptionName:
-  locationName:
-  environmentName:
-  subscriptionId:
-  applicationCode:
-  applicationShortCode:
-  environmentCategory:
-
 jobs:
   - template: get-approval.yaml
     parameters:

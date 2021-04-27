@@ -122,10 +122,10 @@ jobs:
           scriptType: inlineScript
           inline: |-
             Write-Host "hey there"
-            Write-Host $env:servicePrincipalId
-            Write-Host $env:servicePrincipalKey
+            Write-Host $(servicePrincipalId)
+            Write-Host $(servicePrincipalKey)
             Write-Host $(tenantId)
-            Write-Host $env:TestVar
+            Write-Host $(TestVar)
         
 
       - task: AzurePowerShell@3

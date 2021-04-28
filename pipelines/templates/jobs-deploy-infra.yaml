@@ -1463,6 +1463,7 @@ jobs:
         inputs:
           helmVersionToInstall: $(helmVersion3)
 
+
       - task: AzureCLI@2
         displayName: Install K8s Ingress Controller
         inputs:

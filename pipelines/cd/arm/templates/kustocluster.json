@@ -56,7 +56,7 @@
             "name": "[parameters('kustoClusterName')]",
             "type": "Microsoft.Kusto/Clusters",
             "sku": {
-                "name": "Standard_L8s_v2",
+                "name": "Standard_D11_v2",
                 "tier": "Standard",
                 "capacity": 2
             },

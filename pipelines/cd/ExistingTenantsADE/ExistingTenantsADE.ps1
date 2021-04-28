@@ -48,6 +48,7 @@ try {
           Write-Host $clusterURI
           $clusterLocation = (Get-AzKustoCluster -Name $clusterName -ResourceGroupName $resourceGroupName).Location
           Write-Host $clusterLocation
+          ##checkif already exixst and write code
           New-AzKustoDatabase -ResourceGroupName $resourceGroupName -ClusterName $clusterName -Name $databaseName -SoftDeletePeriod 30:00:00:00 -HotCachePeriod 0:00:00:00 -Kind ReadWrite -Location $clusterLocation
           Get-AzKustoDatabase -ClusterName $clusterName -ResourceGroupName $resourceGroupName -Name $databaseName  
 
@@ -74,6 +75,7 @@ try {
           Write-Host $clusterName
           Write-Host $resourceGroupName
           
+          ##checkif already exixst and write code
           New-AzKustoDataConnection -ResourceGroupName $resourceGroupName -ClusterName $clusterName -DatabaseName $databaseName -DataConnectionName $dataconnectionName -Kind "IotHub" -IotHubResourceId $IotHubResourceId -SharedAccessPolicyName "iothubowner" -DataFormat "JSON" -ConsumerGroup '$Default' -TableName "Telemetry" -MappingRuleName $newMappingName -Location $clusterLocation
 
           Write-Host "Created DataConenction!"

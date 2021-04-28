@@ -77,6 +77,8 @@ variables:
     value: ingress-$(buildId) 
   - name: serenityDevTenantId
     value: 45c0bd89-ff0a-4fce-9b2a-3f8380b6ea55
+  - name: testPipelineDomain
+    value: iot.cld.3m.com
   - name: testPipelineFqdn
     value: $(buildId).$(testPipelineDomain) 
   - name: tagsFile
@@ -744,6 +746,8 @@ stages:
     displayName: Functional tests
     dependsOn:
       - addAuthenticationCallbackUrl
+      - deployServicesV3
+      - deployIngressV3
     jobs:
       - job: addFunctionalTestAccount
         displayName: Add Functional Test Account
@@ -942,9 +946,9 @@ stages:
   - stage: cleanupV3
     displayName: Cleanup V3
     dependsOn:
-      - enumerateDependencies
-      - deployServicesV3
       - functionalTest
+      - deployServicesV3
+      - enumerateDependencies
     condition: and(succeededOrFailed(), eq(variables['runCleanupStage'], 'true'))
     jobs:
       - job: getPipelineVariables

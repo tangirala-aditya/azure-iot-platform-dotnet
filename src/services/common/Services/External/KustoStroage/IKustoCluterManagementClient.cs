@@ -16,5 +16,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
         Task AddEventHubDataConnectionAsync(string dataConnectName, string databaseName, string tableName, string tableMappingName, string eventHubName, string eventHubConsumerGroup);
 
         Task AddIoTHubDataConnectionAsync(string dataConnectName, string databaseName, string tableName, string tableMappingName, string iotHubName, string iotHubConsumerGroup);
+
+        Task DeleteDatabaseAsync(string databaseName);
     }
 }

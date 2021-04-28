@@ -21,13 +21,6 @@ stages:
                 exit 1
               fi
 
-              echo "Location name: '$(locationName)'"
-              if [ -z "$(locationName)" ]
-              then
-                echo "A value for the 'locationName' variable must be provided" > /dev/stderr
-                exit 1
-              fi
-
               echo "Environment name: '$(environmentName)'"
               if [ -z "$(environmentName)" ]
               then
@@ -82,7 +75,6 @@ stages:
           - template: ../../templates/variables-deploy-infra.yaml
             parameters:
               subscriptionName: $(subscriptionName)
-              locationName: $(locationName)
               environmentName: $(environmentName)
               subscriptionId: $(subscriptionId)
               applicationCode: $(applicationCode)
@@ -97,7 +89,6 @@ stages:
 
           - script: |-
               echo "parameter: subscriptionName: $(subscriptionName)"
-              echo "parameter: locationName: $(locationName)"
               echo "parameter: appInsightsLocation: $(appInsightsLocation)"
               echo "parameter: environmentName: $(environmentName)"
               echo "parameter: subscriptionId: $(subscriptionId)"
@@ -154,7 +145,6 @@ stages:
           - template: ../../templates/variables-deploy-infra.yaml
             parameters:
               subscriptionName: $(subscriptionName)
-              locationName: $(locationName)
               environmentName: $(environmentName)
               subscriptionId: $(subscriptionId)
               applicationCode: $(applicationCode)

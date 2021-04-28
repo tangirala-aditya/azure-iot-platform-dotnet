@@ -18,7 +18,7 @@ try {
      Install-Module -Name AzTable -Force
      Install-Package Microsoft.Azure.Kusto.Tools -RequiredVersion 5.1.0 -Destination . -Force
 
-     Write-Host "Installed Kusto, AzTable and Kusto.Tools successfully."
+     Write-Host "############## Installed Kusto, AzTable and Kusto.Tools successfully."
 
      $cloudTable = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context
      $tableObject = (Get-AzStorageTable -Name "tenant" -Context $cloudTable).CloudTable
@@ -26,7 +26,7 @@ try {
 
      Foreach ($iotHub in $iotHubArray) {  
           $IotHubName = $iotHub.IotHubName
-          write-host("############## Creating required for $IotHubName.")
+          Write-host("############## Creating required for $IotHubName.")
           #create and check db 
           $databaseName = "IoT-" + $iotHub.TenantId
           $mappingName = "'TelemetryEvents_JSON_Mapping-" + $iotHub.TenantId + "'"
@@ -39,32 +39,33 @@ try {
           if ((Test-AzKustoDatabaseNameAvailability -ResourceGroupName $ResourceGroupName -ClusterName $clusterName -Name $databaseName -Type Microsoft.Kusto/Clusters/Databases).NameAvailable) {
                New-AzKustoDatabase -ResourceGroupName $resourceGroupName -ClusterName $clusterName -Name $databaseName -SoftDeletePeriod 30:00:00:00 -HotCachePeriod 0:00:00:00 -Kind ReadWrite -Location $clusterLocation
                Write-Host "############## Created DataBase $databaseName."
+               Get-AzKustoDatabase -ClusterName $clusterName -ResourceGroupName $resourceGroupName -Name $databaseName  
+
+               #change the names in the script file for mapping Name
+               (Get-Content -path .\pipelines\cd\ExistingTenantsADE\script.txt -Raw) -replace 'MAPPINGNAME', $mappingName | Set-Content -Path .\pipelines\cd\ExistingTenantsADE\script.txt -ErrorAction Stop
+               Write-Host "############## Changed the path in the script file!"
+
+               $connStr = "Data Source=" + $clusterURI + ";Initial Catalog=" + $databaseName + ";Application Client Id=" + $servicePrincipalId + ";Application Key=" + $servicePrincipalKey + ";AAD Federated Security=True;dSTS Federated Security=False;Authority Id=" + $tenantId
+               Write-Host $connStr
+               Microsoft.Azure.Kusto.Tools.5.1.0\Tools\Kusto.Cli.exe $connStr -script:".\pipelines\cd\ExistingTenantsADE\script.txt"
+               Write-Host "############## Executed the Kusto Script."
+
+               #REVERT change the names in the script file for mapping Name
+               (Get-Content -path .\pipelines\cd\ExistingTenantsADE\script.txt -Raw) -replace $mappingName, 'MAPPINGNAME' | Set-Content -Path .\pipelines\cd\ExistingTenantsADE\script.txt -ErrorAction Stop
+               Write-Host "############## Reverted the change in the script file."
           }
           else {
                write-host("############## There is already a Database with the Name $databaseName.")
           }
-          Get-AzKustoDatabase -ClusterName $clusterName -ResourceGroupName $resourceGroupName -Name $databaseName  
 
-          #change the names in the script file for mapping Name
-          (Get-Content -path .\pipelines\cd\ExistingTenantsADE\script.txt -Raw) -replace 'MAPPINGNAME', $mappingName | Set-Content -Path .\pipelines\cd\ExistingTenantsADE\script.txt -ErrorAction Stop
-          Write-Host "############## Changed the path in the script file!"
-
-          $connStr = "Data Source=" + $clusterURI + ";Initial Catalog=" + $databaseName + ";Application Client Id=" + $servicePrincipalId + ";Application Key=" + $servicePrincipalKey + ";AAD Federated Security=True;dSTS Federated Security=False;Authority Id=" + $tenantId
-          Write-Host $connStr
-          Microsoft.Azure.Kusto.Tools.5.1.0\Tools\Kusto.Cli.exe $connStr -script:".\pipelines\cd\ExistingTenantsADE\script.txt"
-          Write-Host "############## Executed the Kusto Script!"
-
-          #REVERT change the names in the script file for mapping Name
-          (Get-Content -path .\pipelines\cd\ExistingTenantsADE\script.txt -Raw) -replace $mappingName, 'MAPPINGNAME' | Set-Content -Path .\pipelines\cd\ExistingTenantsADE\script.txt -ErrorAction Stop
-          Write-Host "############## Reverted the change in the script file!"
-
-          Write-Host $dataConMappingName
-          Write-Host $clusterLocation
-          Write-Host $IotHubResourceId
-          Write-Host $dataconnectionName
-          Write-Host $databaseName
-          Write-Host $clusterName
-          Write-Host $resourceGroupName
+          #Printing the variables
+          Write-Host "dataConMappingName: $dataConMappingName"
+          Write-Host "clusterLocation: $clusterLocation"
+          Write-Host "IotHubResourceId: $IotHubResourceId"
+          Write-Host "dataconnectionName: $dataconnectionName"
+          Write-Host "databaseName: $databaseName"
+          Write-Host "clusterName: $clusterName"
+          Write-Host "resourceGroupName: $resourceGroupName"
 
           #Data Connection
           ##checking if Name exists.
@@ -79,6 +80,6 @@ try {
 }
 
 catch {
-     Write-Host("An Error occured")
+     Write-Host("An Error occured.")
      Write-Host($_)
 }

@@ -76,7 +76,7 @@ try {
           Write-Host $resourceGroupName
           
           ##checkif already exixst and write code
-          New-AzKustoDataConnection -ResourceGroupName $resourceGroupName -ClusterName $clusterName -DatabaseName $databaseName -DataConnectionName $dataconnectionName -Kind "IotHub" -IotHubResourceId $IotHubResourceId -SharedAccessPolicyName "iothubowner" -DataFormat "JSON" -ConsumerGroup '$Default' -TableName "Telemetry" -MappingRuleName $newMappingName -Location $clusterLocation
+          New-AzKustoDataConnection -ResourceGroupName $resourceGroupName -ClusterName $clusterName -DatabaseName $databaseName -DataConnectionName $dataconnectionName -Location $clusterLocation -Kind "IotHub" -IotHubResourceId $IotHubResourceId -SharedAccessPolicyName "iothubowner" -DataFormat "JSON" -ConsumerGroup '$Default' -TableName "Telemetry" -MappingRuleName $newMappingName -EventSystemProperty "iothub-connection-device-id", "iothub-enqueuedtime"
 
           Write-Host "Created DataConenction!"
      }   

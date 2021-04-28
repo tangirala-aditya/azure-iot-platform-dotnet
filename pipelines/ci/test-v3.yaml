@@ -19,8 +19,8 @@ pool:
   vmImage: ubuntu-latest
 variables:
   - template: ../templates/variables-all.yaml
-  - name: buildIdV3
-    value: build-helmv3-$(Build.BuildId)  
+  - name: buildId
+    value: build-$(Build.BuildId)  
   - name: applicationCode
     value: acshyd
   - name: applicationShortCode
@@ -41,25 +41,27 @@ variables:
     value: pipeline
   - name: tableStoragePartition
     value: test
-  - name: tableStorageRowKeyPrefixV3
-    value: "$(buildIdV3):"  
-  - name: kubernetesNamespaceV3WasCreatedRowKey
-    value: kubernetesNamespaceV3WasCreated
-  - name: mmmIotPlatformServicesHelmV3ChartWasInstalledRowKey
-    value: mmmIotPlatformServicesHelmV3ChartWasInstalled
-  - name: mmmIotPlatformIngressHelmV3ChartWasInstalledRowKey
-    value: mmmIotPlatformIngressHelmV3ChartWasInstalled 
+  - name: tableStorageRowKeyPrefix
+    value: "$(buildId):"  
+  - name: kubernetesNamespaceWasCreatedRowKey
+    value: kubernetesNamespaceWasCreated
+  - name: mmmIotPlatformServicesHelmChartWasInstalledRowKey
+    value: mmmIotPlatformServicesHelmChartWasInstalled
+  - name: mmmIotPlatformIngressHelmChartWasInstalledRowKey
+    value: mmmIotPlatformIngressHelmChartWasInstalled 
   - name: tableStorageAppConfigurationConnectionStringRowKey
     value: appConfigurationConnectionString
-  - name: kubernetesNamespaceV3
-    value: $(buildIdV3)
+  - name: kubernetesNamespace
+    value: $(buildId)
   - name: dockerfile
     value: Dockerfile
-  - name: mmmIotPlatformServicesHelmV3ChartName
+  - name: helmVersion
+    value: $(helmVersion3)
+  - name: mmmIotPlatformServicesHelmChartName
     value: mmm-iot-platform-services-v3 
-  - name: mmmIotPlatformIngressHelmV3ChartName
+  - name: mmmIotPlatformIngressHelmChartName
     value: mmm-iot-platform-ingress-v3
-  - name: helmV3InstallTimeoutInSeconds
+  - name: helmInstallTimeoutInSeconds
     value: 1000s    
   - name: publishedFilesArtifactName
     value: publishFiles
@@ -69,18 +71,18 @@ variables:
     value: webuiFiles
   - name: mmmIotPlatformServicesHelmChartValuesFile
     value: pipelines/ci/mmm-iot-platform-chart-values.yaml
-  - name: mmmIotPlatformServicesHelmV3ChartReleaseName
-    value: services-$(buildIdV3)
-  - name: mmmIotPlatformIngressHelmV3ChartReleaseName
-    value: ingress-$(buildIdV3) 
+  - name: mmmIotPlatformServicesHelmChartReleaseName
+    value: services-$(buildId)
+  - name: mmmIotPlatformIngressHelmChartReleaseName
+    value: ingress-$(buildId) 
   - name: serenityDevTenantId
     value: 45c0bd89-ff0a-4fce-9b2a-3f8380b6ea55
-  - name: testPipelineFqdnV3
-    value: $(buildIdV3).$(testPipelineDomain) 
+  - name: testPipelineFqdn
+    value: $(buildId).$(testPipelineDomain) 
   - name: tagsFile
     value: pipelines/cd/arm/tagging/IoT_CRSL_Environment_Dev.json
-  - name: authenticationCallbackUrlV3
-    value: https://$(testPipelineFqdnV3)/auth/connect/callback 
+  - name: authenticationCallbackUrl
+    value: https://$(testPipelineFqdn)/auth/connect/callback 
   - name: azureAdB2cAppRegistrationTenantId
     value: aaf9651a-6274-4039-8020-6578ad0d9261
   - name: azureAdB2cAppRegistrationNameProd
@@ -97,7 +99,7 @@ variables:
     value: dependenciesReport
   - name: commitsSinceLastReleaseArtifactName
     value: commitsSinceLastRelease
-  - name: testResultV3FileExists
+  - name: testResultFileExists
     value: false
   - name: testAccountAdmin
     value: a05e1a04-31bf-4219-9c1b-b7fa7bfedbfc
@@ -564,9 +566,9 @@ stages:
                 }
                 $app = Get-AzureADMSApplication -Filter "DisplayName eq '$(azureAdB2cAppRegistrationNameTest)'"
                 $replyUrls = $app.web.RedirectUris
-                if (!$replyUrls.Contains('$(authenticationCallbackUrlV3)'))
+                if (!$replyUrls.Contains('$(authenticationCallbackUrl)'))
                 {
-                  $replyUrls.Add('$(authenticationCallbackUrlV3)')
+                  $replyUrls.Add('$(authenticationCallbackUrl)')
                   Set-AzureADMSApplication -ObjectId $app.Id -Web @{ RedirectUris = $replyUrls }
                 }
 
@@ -593,17 +595,19 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |-
                 az aks get-credentials --name $(aksName) --resource-group $(resourceGroupName) --overwrite-existing
-                $namespaceAlreadyExists = $Null -ne (kubectl get namespaces $(kubernetesNamespaceV3) --output json --ignore-not-found)
+                $namespaceAlreadyExists = $Null -ne (kubectl get namespaces $(kubernetesNamespace) --output json --ignore-not-found)
                 if (!$namespaceAlreadyExists) {
-                  kubectl create namespace $(kubernetesNamespaceV3) --output json
+                  kubectl create namespace $(kubernetesNamespace) --output json
                 }
-                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefixV3)$(kubernetesNamespaceV3WasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(kubernetesNamespaceWasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
           - template: ../templates/steps-install-helm-v3.yaml
+            parameters:
+              helmVersion: $(helmVersion)
 
           - script: |-
               set -Eeuxo pipefail
-              cd charts/$(mmmIotPlatformIngressHelmV3ChartName)
+              cd charts/$(mmmIotPlatformIngressHelmChartName)
               helm dependency update             
             displayName: Update helm local dependencies
 
@@ -615,16 +619,16 @@ stages:
               azureResourceGroup: $(resourceGroupName)
               kubernetesCluster: $(aksName)
               useClusterAdmin: false
-              namespace: $(kubernetesNamespaceV3)
+              namespace: $(kubernetesNamespace)
               command: install
-              chartName: charts/$(mmmIotPlatformIngressHelmV3ChartName)
-              releaseName: $(mmmIotPlatformIngressHelmV3ChartReleaseName)
+              chartName: charts/$(mmmIotPlatformIngressHelmChartName)
+              releaseName: $(mmmIotPlatformIngressHelmChartReleaseName)
               arguments: >-
-                --set nginx-ingress.controller.ingressClass=$(buildIdV3)
+                --set nginx-ingress.controller.ingressClass=$(buildId)
                 --set domain=$(testPipelineDomain)
-                --set subdomain=$(buildIdV3)
+                --set subdomain=$(buildId)
                 --set letsEncryptEnvironment=staging
-                --timeout $(helmV3InstallTimeoutInSeconds)
+                --timeout $(helmInstallTimeoutInSeconds)
                 --wait
 
           - task: AzureCLI@2
@@ -635,7 +639,7 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |-
                 set -Eeuxo pipefail
-                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefixV3)$(mmmIotPlatformIngressHelmV3ChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
           - task: AzureCLI@2
             displayName: Configure DNS
@@ -646,16 +650,16 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |-
                 az aks get-credentials --name $(aksName) --resource-group $(resourceGroupName) --overwrite-existing
-                $ingressControllerIpAddress = kubectl get services --namespace $(kubernetesNamespaceV3) --selector=app=nginx-ingress,component=controller --output=jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}'
+                $ingressControllerIpAddress = kubectl get services --namespace $(kubernetesNamespace) --selector=app=nginx-ingress,component=controller --output=jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}'
                 $tagsHashtable = Get-Content $(tagsFile) | ConvertFrom-Json -Depth 100 -AsHashtable
                 $tags = ($tagsHashtable.Keys | ForEach-Object { "$_=`"$($tagsHashtable[$_])`"" }) -join ','
                 az network dns zone create --name $(testPipelineDomain) --resource-group $(resourceGroupName) --if-none-match --tags $tags
-                az network dns record-set a add-record --record-set-name $(buildIdV3) --resource-group $(resourceGroupName) --zone-name $(testPipelineDomain) --ipv4-address $ingressControllerIpAddress --if-none-match
-                $certificateIsReady = kubectl get certificates --namespace $(kubernetesNamespaceV3) --output jsonpath="{.items[0].status.conditions[?(@.type=='Ready')].status}"
+                az network dns record-set a add-record --record-set-name $(buildId) --resource-group $(resourceGroupName) --zone-name $(testPipelineDomain) --ipv4-address $ingressControllerIpAddress --if-none-match
+                $certificateIsReady = kubectl get certificates --namespace $(kubernetesNamespace) --output jsonpath="{.items[0].status.conditions[?(@.type=='Ready')].status}"
                 while ([System.String]::IsNullOrEmpty($certificateIsready) -or 'true' -ne  $certificateIsReady.ToLower()) {
                   Write-Host Waiting for certificate to be ready...
                   Start-Sleep -Seconds 10
-                  $certificateIsReady = kubectl get certificates --namespace $(kubernetesNamespaceV3) --output jsonpath="{.items[0].status.conditions[?(@.type=='Ready')].status}"
+                  $certificateIsReady = kubectl get certificates --namespace $(kubernetesNamespace) --output jsonpath="{.items[0].status.conditions[?(@.type=='Ready')].status}"
                 }
 
   - stage: deployServicesV3
@@ -692,6 +696,8 @@ stages:
             displayName: Checkout repository
 
           - template: ../templates/steps-install-helm-v3.yaml
+            parameters:
+              helmVersion: $(helmVersion)
 
           - script: |-
               set -Eeuxo pipefail
@@ -700,7 +706,7 @@ stages:
 
           - script: |-
               set -Eeuxo pipefail
-              cd charts/$(mmmIotPlatformServicesHelmV3ChartName)
+              cd charts/$(mmmIotPlatformServicesHelmChartName)
               helm dependency update 
             displayName: Update helm local dependencies
 
@@ -712,16 +718,16 @@ stages:
               azureResourceGroup: $(resourceGroupName)
               kubernetesCluster: $(aksName)
               useClusterAdmin: true
-              namespace: $(kubernetesNamespaceV3)
+              namespace: $(kubernetesNamespace)
               command: 'install'
-              chartName: charts/$(mmmIotPlatformServicesHelmV3ChartName)
-              releaseName: $(mmmIotPlatformServicesHelmV3ChartReleaseName)
+              chartName: charts/$(mmmIotPlatformServicesHelmChartName)
+              releaseName: $(mmmIotPlatformServicesHelmChartReleaseName)
               valueFile: $(mmmIotPlatformServicesHelmChartValuesFile)
               arguments: >-
-                --set secrets.globalsecrets.Global__ClientAuth__Jwt__AuthIssuer=https://$(testPipelineFqdnV3)/auth
+                --set secrets.globalsecrets.Global__ClientAuth__Jwt__AuthIssuer=https://$(testPipelineFqdn)/auth
                 --set secrets.globalsecrets.AppConfigurationConnectionString=$(appConfigurationConnectionString)
                 --set secrets.globalsecrets.Global__AzureB2cBaseUri=https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_testpolicy&client_id=$(azureAdB2cAppRegistrationClientIdTest)&nonce=defaultNonce&redirect_uri=https%3A%2F%2Flocalhost%3A44367%2Fconnect%2Fcallback&scope=openid&response_type=id_token&prompt=login&response_mode=form_post
-                --timeout $(helmV3InstallTimeoutInSeconds)
+                --timeout $(helmInstallTimeoutInSeconds)
                 --wait
 
           - task: AzureCLI@2
@@ -732,7 +738,7 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |-
                 set -Eeuxo pipefail
-                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefixV3)$(mmmIotPlatformServicesHelmV3ChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(mmmIotPlatformServicesHelmChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
   - stage: functionalTest
     displayName: Functional tests
@@ -825,7 +831,7 @@ stages:
         dependsOn:
           - getPipelineVariables
         variables:
-          SerenityBaseUrl: https://$(testPipelineFqdnV3)
+          SerenityBaseUrl: https://$(testPipelineFqdn)
           AppConfigurationConnectionString: $[dependencies.getPipelineVariables.outputs['getPipelineVariables.appConfigurationConnectionString']]
           SerenityTenantId: $(serenityDevTenantId)
         steps:
@@ -842,9 +848,9 @@ stages:
               inlineScript: |-
                 set -Eeuxo pipefail
                 az aks get-credentials --name $(aksName) --resource-group $(resourceGroupName) --overwrite-existing
-                kubectl get pods -n $(kubernetesNamespaceV3)
-                kubectl wait pods --for=condition=Ready --selector app.kubernetes.io/name=webui -n $(kubernetesNamespaceV3)
-                kubectl wait pods --for=condition=Ready --timeout=500s --selector app.kubernetes.io/name=reverse-proxy -n $(kubernetesNamespaceV3)
+                kubectl get pods -n $(kubernetesNamespace)
+                kubectl wait pods --for=condition=Ready --selector app.kubernetes.io/name=webui -n $(kubernetesNamespace)
+                kubectl wait pods --for=condition=Ready --timeout=500s --selector app.kubernetes.io/name=reverse-proxy -n $(kubernetesNamespace)
 
           - task: DotNetCoreCLI@2
             displayName: Run functional tests
@@ -857,12 +863,12 @@ stages:
                 --filter 'Category!=Flaky'
           - bash: |
               if [ -d $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshotsV3 ]; then
-                echo "##vso[task.setvariable variable=testResultV3FileExists]true"
+                echo "##vso[task.setvariable variable=testResultFileExists]true"
               fi
           - publish: $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshotsV3
             artifact: UITestScreenshotsV3
             displayName: Publish UI Test screenshots artifacts
-            condition: eq(variables.testResultV3FileExists, 'true')
+            condition: eq(variables.testResultFileExists, 'true')
             continueOnError: true
 
   - stage: enumerateDependencies
@@ -912,15 +918,9 @@ stages:
                   Sort-Object |
                   Set-Content (Join-Path $(dependenciesReportArtifactName) npm.txt)
 
-          - template: ../templates/steps-install-helm.yaml
-            parameters:
-              helmVersion: $(helmVersion2)
-              subscriptionName: $(subscriptionName)
-              resourceGroupName: $(resourceGroupName)
-              aksName: $(aksName)
-              kubernetesNamespace: $(kubernetesNamespace)
-
           - template: ../templates/steps-install-helm-v3.yaml
+            parameters:
+              helmVersion: $(helmVersion)
 
           - task: AzureCLI@2
             displayName: Enumerate HelmV3 chart dependencies
@@ -930,7 +930,7 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |-
                 az aks get-credentials --name $(aksName) --resource-group $(resourceGroupName) --overwrite-existing
-                helm list --output json --all --namespace $(kubernetesNamespaceV3) |
+                helm list --output json --all --namespace $(kubernetesNamespace) |
                   ConvertFrom-Json -Depth 100 |
                   Select-Object -ExpandProperty Chart -Unique |
                   Where-Object { $_ -notmatch 'mmm-iot' } |
@@ -963,12 +963,12 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
-                kubernetesNamespaceV3WasCreated=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefixV3)$(kubernetesNamespaceV3WasCreatedRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
-                echo "##vso[task.setvariable variable=kubernetesNamespaceV3WasCreated;isOutput=true]$kubernetesNamespaceV3WasCreated"
-                mmmIotPlatformServicesHelmV3ChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefixV3)$(mmmIotPlatformServicesHelmV3ChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
-                echo "##vso[task.setvariable variable=mmmIotPlatformServicesHelmV3ChartWasInstalled;isOutput=true]$mmmIotPlatformServicesHelmV3ChartWasInstalled"
-                mmmIotPlatformIngressHelmV3ChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefixV3)$(mmmIotPlatformIngressHelmV3ChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
-                echo "##vso[task.setvariable variable=mmmIotPlatformIngressHelmV3ChartWasInstalled;isOutput=true]$mmmIotPlatformIngressHelmV3ChartWasInstalled"
+                kubernetesNamespaceWasCreated=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(kubernetesNamespaceWasCreatedRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+                echo "##vso[task.setvariable variable=kubernetesNamespaceWasCreated;isOutput=true]$kubernetesNamespaceWasCreated"
+                mmmIotPlatformServicesHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(mmmIotPlatformServicesHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+                echo "##vso[task.setvariable variable=mmmIotPlatformServicesHelmChartWasInstalled;isOutput=true]$mmmIotPlatformServicesHelmChartWasInstalled"
+                mmmIotPlatformIngressHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+                echo "##vso[task.setvariable variable=mmmIotPlatformIngressHelmChartWasInstalled;isOutput=true]$mmmIotPlatformIngressHelmChartWasInstalled"
 
       - job: deleteDnsRecordSet
         displayName: Delete DNS record set
@@ -984,20 +984,22 @@ stages:
               scriptType: pscore
               scriptLocation: inlineScript
               inlineScript: |-
-                $recordSetCount = az network dns record-set a list --zone-name $(testPipelineDomain) --resource-group $(resourceGroupName) --query '[?name==`$(buildIdV3)`] | length(@)'
+                $recordSetCount = az network dns record-set a list --zone-name $(testPipelineDomain) --resource-group $(resourceGroupName) --query '[?name==`$(buildId)`] | length(@)'
                 if ($recordSetCount -gt 0) {
-                  az network dns record-set a delete --name $(buildIdV3) --zone-name $(testPipelineDomain) --resource-group $(resourceGroupName) --yes
+                  az network dns record-set a delete --name $(buildId) --zone-name $(testPipelineDomain) --resource-group $(resourceGroupName) --yes
                 }
 
       - job: uninstallServicesChart
         displayName: Uninstall services Helm chart
         dependsOn:
           - getPipelineVariables
-        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.mmmIotPlatformServicesHelmV3ChartWasInstalled'], 'true'), not(failed()))
+        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.mmmIotPlatformServicesHelmChartWasInstalled'], 'true'), not(failed()))
         steps:
           - checkout: none
 
           - template: ../templates/steps-install-helm-v3.yaml
+            parameters:
+              helmVersion: $(helmVersion)
 
           - task: HelmDeploy@0
             displayName: Uninstall services Helm chart
@@ -1008,17 +1010,19 @@ stages:
               kubernetesCluster: $(aksName)
               useClusterAdmin: false
               command: uninstall
-              arguments: --namespace $(kubernetesNamespaceV3) $(mmmIotPlatformServicesHelmV3ChartReleaseName)
+              arguments: --namespace $(kubernetesNamespace) $(mmmIotPlatformServicesHelmChartReleaseName)
 
       - job: uninstallIngressChart
         displayName: Uninstall ingress Helm chart
         dependsOn:
           - getPipelineVariables
-        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.mmmIotPlatformIngressHelmV3ChartWasInstalled'], 'true'), not(failed()))
+        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.mmmIotPlatformIngressHelmChartWasInstalled'], 'true'), not(failed()))
         steps:
           - checkout: none
 
           - template: ../templates/steps-install-helm-v3.yaml
+            parameters:
+              helmVersion: $(helmVersion)
 
           - task: HelmDeploy@0
             displayName: Uninstall ingress Helm chart
@@ -1029,13 +1033,13 @@ stages:
               kubernetesCluster: $(aksName)
               useClusterAdmin: false
               command: uninstall
-              arguments: --namespace $(kubernetesNamespaceV3)  $(mmmIotPlatformIngressHelmV3ChartReleaseName)
+              arguments: --namespace $(kubernetesNamespace)  $(mmmIotPlatformIngressHelmChartReleaseName)
 
       - job: deleteNamespace
         displayName: Delete namespace
         dependsOn:
           - getPipelineVariables
-        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesNamespaceV3WasCreated'], 'true'), not(failed()))
+        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesNamespaceWasCreated'], 'true'), not(failed()))
         steps:
           - checkout: none
 
@@ -1047,4 +1051,4 @@ stages:
               azureResourceGroup: $(resourceGroupName)
               kubernetesCluster: $(aksName)
               command: delete
-              arguments: namespace $(kubernetesNamespaceV3) --now=true --ignore-not-found=true
+              arguments: namespace $(kubernetesNamespace) --now=true --ignore-not-found=true

@@ -5,7 +5,7 @@ parameters:
   serviceName:
   servicePort:
   serviceProbesEnabled:
-  helmVersion2:
+  helmVersion:
   imageTag:
 
 steps:
@@ -16,7 +16,7 @@ steps:
       echo "serviceName: ${{parameters.serviceName}}"
       echo "servicePort: ${{parameters.servicePort}}"
       echo "serviceProbesEnabled: ${{parameters.serviceProbesEnabled}}"
-      echo "helmVersion: ${{parameters.helmVersion2}}"
+      echo "helmVersion: ${{parameters.helmVersion}}"
     displayName: Print step variables
   - checkout: self
     displayName: Checkout repository
@@ -24,7 +24,7 @@ steps:
   - task: HelmInstaller@1
     displayName: Install Helm
     inputs:
-      helmVersionToInstall: ${{parameters.helmVersion2}}
+      helmVersionToInstall: ${{parameters.helmVersion}}
 
   - task: HelmDeploy@0
     displayName: Initialize Helm

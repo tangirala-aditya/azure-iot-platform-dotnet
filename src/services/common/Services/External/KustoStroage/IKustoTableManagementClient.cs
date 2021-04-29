@@ -9,7 +9,7 @@ using Kusto.Data.Common;
 
 namespace Mmm.Iot.Common.Services.External.KustoStorage
 {
-    public interface IKustoTableManagementClient : IStatusOperation
+    public interface IKustoTableManagementClient
     {
         void CreateTable(string tableName, IEnumerable<Tuple<string, string>> rowFields, string databaseName);
 

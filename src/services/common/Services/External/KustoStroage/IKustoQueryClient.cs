@@ -9,7 +9,7 @@ using Mmm.Iot.Common.Services.External.TimeSeries;
 
 namespace Mmm.Iot.Common.Services.External.KustoStorage
 {
-    public interface IKustoQueryClient : IStatusOperation
+    public interface IKustoQueryClient
     {
         Task<List<TDestination>> QueryAsync<TDestination>(
             string dataBaseName,

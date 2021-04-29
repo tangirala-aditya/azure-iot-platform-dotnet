@@ -10,6 +10,7 @@ using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.CosmosDb;
+using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.Services.External.TableStorage;
 using Mmm.Iot.TenantManager.Services.External;
 using Mmm.Iot.TenantManager.Services.Helpers;
@@ -36,6 +37,7 @@ namespace Mmm.Iot.TenantManager.Services
         private readonly ITableStorageClient tableStorageClient;
         private readonly IAppConfigurationClient appConfigClient;
         private readonly IBlobStorageClient blobStorageClient;
+        private readonly IKustoCluterManagementClient kustoCluterManagementClient;
 
         private readonly Dictionary<string, string> tenantCollections = new Dictionary<string, string>
         {
@@ -56,6 +58,7 @@ namespace Mmm.Iot.TenantManager.Services
         private string dpsNameFormat = "dps-{0}";  // format with a guid
         private string streamAnalyticsNameFormat = "sa-{0}";  // format with a guide
         private string appConfigCollectionKeyFormat = "tenant:{0}:{1}-collection";  // format with a guid and collection name
+        private string kustoDBFormat = "IoT-{0}";  // format with a guid
 
         public TenantContainer(
             ILogger<TenantContainer> logger,
@@ -65,7 +68,8 @@ namespace Mmm.Iot.TenantManager.Services
             IIdentityGatewayClient identityGatewayClient,
             IDeviceGroupsConfigClient deviceGroupConfigClient,
             IAppConfigurationClient appConfigHelper,
-            IBlobStorageClient blobStorageClient)
+            IBlobStorageClient blobStorageClient,
+            IKustoCluterManagementClient kustoCluterManagementClient)
         {
             this.logger = logger;
             this.runbookHelper = runbookHelper;
@@ -75,6 +79,7 @@ namespace Mmm.Iot.TenantManager.Services
             this.deviceGroupClient = deviceGroupConfigClient;
             this.appConfigClient = appConfigHelper;
             this.blobStorageClient = blobStorageClient;
+            this.kustoCluterManagementClient = kustoCluterManagementClient;
         }
 
         public async Task<bool> TenantIsReadyAsync(string tenantId)
@@ -369,6 +374,19 @@ namespace Mmm.Iot.TenantManager.Services
                     this.logger.LogInformation(e, $"Unable to delete blob container {containerName} for tenant {tenantId}.");
                     deletionRecord[deletionRecordValue] = false;
                 }
+            }
+
+            // Delete Database from kusto
+            string kustoDatabase = string.Format(this.kustoDBFormat, tenantId);
+            try
+            {
+                await this.kustoCluterManagementClient.DeleteDatabaseAsync(kustoDatabase);
+                deletionRecord["KustoDatabase"] = true;
+            }
+            catch (Exception e)
+            {
+                deletionRecord["KustoDatabase"] = false;
+                this.logger.LogInformation(e, "An error occurred while deleting the {kustoDatabase} kusto database for tenant {tenantId}", kustoDatabase, tenantId);
             }
 
             return new DeleteTenantModel(tenantId, deletionRecord, ensureFullyDeployed);

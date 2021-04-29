@@ -77,7 +77,8 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             }
             catch (Exception e)
             {
-                throw e;
+                this.logger.LogError(e, "Error Creating kusto database {database}", databaseName);
+                throw;
             }
         }
 
@@ -104,14 +105,12 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
                 }
                 catch (Exception e)
                 {
-                    var msg = "Unable to retrieve kusto with Active Directory properties" +
-                          $"'{this.config.Global.AzureActiveDirectory.AppId}', '{this.config.Global.AzureActiveDirectory.AppSecret}' and '{this.config.Global.AzureActiveDirectory.TenantId}'.";
+                    var msg = "Unable to retrieve kusto with Active Directory properties";
                     throw new InvalidConfigurationException(msg, e);
                 }
 
                 if (this.client == null)
                 {
-                    // this.logger.LogError(new Exception(errorMessage), errorMessage);
                     throw new InvalidConfigurationException("Could not connect to kusto client");
                 }
             }
@@ -142,7 +141,8 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             }
             catch (Exception e)
             {
-                throw e;
+                this.logger.LogError(e, "Error Creating EventHub Data Connection from kusto database {database}, IotHub {iothub}", databaseName, eventHubName);
+                throw;
             }
         }
 
@@ -169,7 +169,34 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             }
             catch (Exception e)
             {
-                throw e;
+                this.logger.LogError(e, "Error Creating IoTHub Data Connection from kusto database {database}, IotHub {iothub}", databaseName, iotHubName);
+                throw;
+            }
+        }
+
+        public async Task DeleteDatabaseAsync(string databaseName)
+        {
+            ReadWriteDatabase result = null;
+
+            try
+            {
+                result = await this.client.Databases.GetAsync(
+                                    this.config.Global.ResourceGroup,
+                                    this.config.Global.DataExplorer.Name,
+                                    databaseName) as ReadWriteDatabase;
+
+                if (result != null && result.Name.Contains(databaseName, StringComparison.OrdinalIgnoreCase))
+                {
+                    await this.client.Databases.DeleteAsync(
+                                        this.config.Global.ResourceGroup,
+                                        this.config.Global.DataExplorer.Name,
+                                        databaseName);
+                }
+            }
+            catch (Exception e)
+            {
+                this.logger.LogError(e, "Unable to Delete kusto database {database}", databaseName);
+                throw;
             }
         }
 

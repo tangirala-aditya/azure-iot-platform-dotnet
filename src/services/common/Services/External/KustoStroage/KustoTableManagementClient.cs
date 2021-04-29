@@ -132,10 +132,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
                 }
                 catch (Exception e)
                 {
-                    var msg = "Unable to retrieve kusto with Active Directory properties" +
-                          $"'{this.config.Global.AzureActiveDirectory.AppId}'," +
-                          $"'{this.config.Global.AzureActiveDirectory.AppSecret}' and" +
-                          $"'{this.config.Global.AzureActiveDirectory.TenantId}'.";
+                    var msg = "Unable to retrieve kusto with Active Directory properties";
                     throw new InvalidConfigurationException(msg, e);
                 }
 

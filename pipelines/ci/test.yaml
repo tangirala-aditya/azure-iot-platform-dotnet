@@ -634,8 +634,8 @@ stages:
                 $ingressControllerIpAddress = kubectl get services --namespace $(kubernetesNamespace) --selector=app=nginx-ingress,component=controller --output=jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}'
                 $tagsHashtable = Get-Content $(tagsFile) | ConvertFrom-Json -Depth 100 -AsHashtable
                 $tags = ($tagsHashtable.Keys | ForEach-Object { "$_=`"$($tagsHashtable[$_])`"" }) -join ','
-                az network dns zone create --name $(testPipelineDomain) --resource-group $(resourceGroupName) --if-none-match --tags $tags
-                az network dns record-set a add-record --record-set-name $(buildId) --resource-group $(resourceGroupName) --zone-name $(testPipelineDomain) --ipv4-address $ingressControllerIpAddress --if-none-match
+                az network dns zone create --name $(testPipelineDomain) --resource-group "rg-iot-crsl-dev" --if-none-match --tags $tags
+                az network dns record-set a add-record --record-set-name $(buildId) --resource-group "rg-iot-crsl-dev" --zone-name $(testPipelineDomain) --ipv4-address $ingressControllerIpAddress --if-none-match
                 $certificateIsReady = kubectl get certificates --namespace $(kubernetesNamespace) --output jsonpath="{.items[0].status.conditions[?(@.type=='Ready')].status}"
                 while ([System.String]::IsNullOrEmpty($certificateIsready) -or 'true' -ne  $certificateIsReady.ToLower()) {
                   Write-Host Waiting for certificate to be ready...

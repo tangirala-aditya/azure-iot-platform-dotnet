@@ -54,9 +54,9 @@
     "resources": [
         {
             "name": "[parameters('kustoClusterName')]",
-            "type": "Microsoft.Kusto/clusters",
+            "type": "Microsoft.Kusto/Clusters",
             "sku": {
-                "name": "Standard_L8s_v2",
+                "name": "Standard_D11_v2",
                 "tier": "Standard",
                 "capacity": 2
             },
@@ -74,6 +74,9 @@
             "type": "Microsoft.Kusto/Clusters/PrincipalAssignments",
             "apiVersion": "2020-09-18",
             "name": "[concat(parameters('kustoClusterName'), '/', parameters('clusterPrincipalAssignmentName'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Kusto/Clusters', parameters('kustoClusterName'))]"
+            ],
             "properties": {
                 "principalId": "[parameters('principalIdForCluster')]",
                 "role": "[parameters('roleForClusterPrincipal')]",

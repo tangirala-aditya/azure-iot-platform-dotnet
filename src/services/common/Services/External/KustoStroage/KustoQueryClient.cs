@@ -64,7 +64,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
         }
 
         public async Task<List<TDestination>> QueryAsync<TDestination>(
-            string dataBaseName,
+            string databaseName,
             string query,
             Dictionary<string, string> queryParameter)
         {
@@ -81,7 +81,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
 
                 clientRequestProperties.ClientRequestId = Guid.NewGuid().ToString();
 
-                var result = await Task.FromResult(this.client.ExecuteQuery(dataBaseName, query, clientRequestProperties));
+                var result = await Task.FromResult(this.client.ExecuteQuery(databaseName, query, clientRequestProperties));
 
                 var resultList = result.ToJObjects().ToList();
                 var queryResults = new List<TDestination>();
@@ -94,7 +94,8 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             }
             catch (Exception e)
             {
-                throw e;
+                this.logger.LogError(e, "Error reading from kusto database {database}", databaseName);
+                throw;
             }
         }
 

@@ -432,7 +432,7 @@ namespace Mmm.Iot.Common.Services.Helpers
 
             if (!string.IsNullOrEmpty(deviceId))
             {
-                queryBuilder.Append($" | where {devicesProperty} = deviceParameter");
+                queryBuilder.Append($" | where {devicesProperty} == deviceParameter");
                 queryParameterCollection.Add("deviceParameter", deviceId);
                 queryParameterBuilder.Append("deviceParameter:string,");
             }

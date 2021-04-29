@@ -21,7 +21,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             AppConfig config,
             IStorageClient storageClient,
             ITimeSeriesClient timeSeriesClient,
-            IKustoQueryClient adeClient,
+            IKustoCluterManagementClient adeClient,
             IAsaManagerClient asaManager,
             IStorageAdapterClient storageAdapter,
             IAppConfigurationClient appConfig)

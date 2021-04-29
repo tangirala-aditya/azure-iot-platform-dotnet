@@ -11,7 +11,6 @@ using Kusto.Data;
 using Kusto.Data.Common;
 using Kusto.Data.Net.Client;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Azure.Management.Kusto;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
@@ -96,22 +95,6 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             {
                 this.logger.LogError(e, "Error reading from kusto database {database}", databaseName);
                 throw;
-            }
-        }
-
-        public async Task<StatusResultServiceModel> StatusAsync()
-        {
-            try
-            {
-                var result = this.client.IsDefined();
-                await Task.CompletedTask; // Just to keep the signature async, later this should be replaced with more robust status check
-
-                // If the call above does not fail then return a healthy status
-                return new StatusResultServiceModel(result, result ? "Alive and well!" : "Undefined KustoQueryClient");
-            }
-            catch (Exception e)
-            {
-                return new StatusResultServiceModel(false, $"Kusto Query status check failed: {e.Message}");
             }
         }
 

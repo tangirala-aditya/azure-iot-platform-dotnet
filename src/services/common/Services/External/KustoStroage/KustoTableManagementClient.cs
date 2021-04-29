@@ -10,7 +10,6 @@ using Kusto.Data;
 using Kusto.Data.Common;
 using Kusto.Data.Net.Client;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
@@ -77,22 +76,6 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             catch (Exception e)
             {
                 throw e;
-            }
-        }
-
-        public async Task<StatusResultServiceModel> StatusAsync()
-        {
-            try
-            {
-                var result = this.client.IsDefined();
-                await Task.CompletedTask; // Just to keep the signature async, later this should be replaced with more robust status check
-
-                // If the call above does not fail then return a healthy status
-                return new StatusResultServiceModel(result, result ? "Alive and well!" : "Undefined KustoTableClient");
-            }
-            catch (Exception e)
-            {
-                return new StatusResultServiceModel(false, $"Kusto Table status check failed: {e.Message}");
             }
         }
 

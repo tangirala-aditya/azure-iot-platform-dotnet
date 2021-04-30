@@ -207,12 +207,12 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             string database = $"IoT-{this.httpContextAccessor.HttpContext.Request.GetTenant()}";
 
             (string query, Dictionary<string, string> queryParameter) = QueryBuilder.GetTopDeviceMessagesKustoQuery(
-                "telemetry",
+                "Telemetry",
                 limit,
                 "desc",
-                "timeStamp",
+                "TimeStamp",
                 deviceId,
-                "deviceId");
+                "DeviceId");
 
             var results = await this.kustoQueryClient.QueryAsync<TelemetryModel>(database, query, queryParameter);
 
@@ -261,17 +261,17 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             string database = $"IoT-{this.httpContextAccessor.HttpContext.Request.GetTenant()}";
 
             (string query, Dictionary<string, string> queryParameter) = QueryBuilder.GetKustoQuery(
-                "telemetry",
+                "Telemetry",
                 from,
-                "timeStamp",
+                "TimeStamp",
                 to,
-                "timeStamp",
+                "TimeStamp",
                 order,
-                "timeStamp",
+                "TimeStamp",
                 skip,
                 limit,
                 devices,
-                "deviceId");
+                "DeviceId");
 
             var results = await this.kustoQueryClient.QueryAsync<TelemetryModel>(database, query, queryParameter);
 

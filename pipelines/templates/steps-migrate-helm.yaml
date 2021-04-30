@@ -163,3 +163,14 @@ jobs:
             helm3 repo update
             helm3 upgrade cert-manager jetstack/cert-manager   --namespace cert-manager  --version v1.1.0  --create-namespace --install
 
+      - task: Kubernetes@1
+        displayName: Create Cluster Issuer
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          useConfigurationFile: true
+          configuration: charts/ingress/cluster-issuer-prod.yaml
+

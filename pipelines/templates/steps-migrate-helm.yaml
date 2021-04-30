@@ -163,8 +163,10 @@ jobs:
             helm3 repo update
             helm3 upgrade cert-manager jetstack/cert-manager   --namespace cert-manager  --version v1.1.0  --create-namespace --install
 
-  - job: migratehelmversion
+  - job: Create a Cluster Issuer
     displayName: Migrate Helm v2 to v3
+    dependsOn: 
+      - migratehelmversion
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

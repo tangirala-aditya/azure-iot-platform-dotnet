@@ -1360,15 +1360,6 @@ jobs:
               exit 64
             fi
 
-      # - task: AzureCLI@2
-      #   displayName: Add DNS record
-      #   inputs:
-      #     azureSubscription: ${{parameters.subscriptionName}}
-      #     scriptLocation: scriptPath
-      #     scriptType: bash
-      #     scriptPath: charts/ingress/ip.sh
-      #     arguments: $(aksName) $(resourceGroupName)
-
       - task: Bash@3
         displayName: Install jetstack Helm repository
         inputs:

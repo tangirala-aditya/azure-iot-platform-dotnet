@@ -140,7 +140,7 @@ jobs:
               az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
               echo "y" | helm3 2to3 cleanup --dry-run
               echo "y" | helm3 2to3 cleanup
-              
+
       - task: AzureCLI@2
         displayName: Upgrade cert-manager
         inputs:
@@ -153,6 +153,8 @@ jobs:
             
             helm3 uninstall cert-manager --namespace cert-manager           
             kubectl get Issuers,ClusterIssuers,Certificates,CertificateRequests,Orders,Challenges --all-namespaces
+            challengeToBePatched = $(kubectl get Challenges -o=jsonpath='{.items[0].metadata.name}')
+            kubectl patch $challengeToBePatched --type=merge --patch '{"metadata":{"finalizers":[]}}'
             kubectl delete -f https://raw.githubusercontent.com/jetstack/cert-manager/v$(certManagerVersion)/deploy/manifests/00-crds.yaml
             kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.crds.yaml
             helm3 repo remove stable

@@ -102,8 +102,8 @@ stages:
           applicationShortCode: $(applicationShortCode-acsDev)
           environmentCategory: $(environmentCategory-acsDev)
           imageTag: $(_imageTag)
-          blueGreen: true
-          isHelmVersion3: false          
+          blueGreen: false
+          isHelmVersion3: true          
           subscriptionId: $(subscriptionId-acsDev)
 
   - stage: crslQa

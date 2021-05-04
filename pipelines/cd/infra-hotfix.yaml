@@ -97,6 +97,13 @@ stages:
                 echo "A value for the 'testPipelineRunId' variable must be provided" > /dev/stderr
                 exit 1
               fi
+
+              echo "telemetryStorageType: '$(telemetryStorageType)'"
+              if [ -z "$(testPipelineRunId)" || ${testPipelineRunId,,} == 'ade' || ${testPipelineRunId,,}  == 'cosmosdb' || ${testPipelineRunId,,}  == 'tsi' ]
+              then
+                echo "A value for the 'telemetryStorageType' variable must be provided and allowed values are ade, cosmosdb and tsi" > /dev/stderr
+                exit 1
+              fi
             displayName: Check parameters
 
   - stage: deployInfrastructure

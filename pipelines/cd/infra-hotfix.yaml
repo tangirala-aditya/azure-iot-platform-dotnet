@@ -98,10 +98,10 @@ stages:
                 exit 1
               fi
 
-              echo "appInsightsLocation: '$(appInsightsLocation)'"
-              if [ -z "$(appInsightsLocation)" ]
+              echo "telemetryStorageType: '$(telemetryStorageType)'"
+              if [ -z "$(telemetryStorageType)" ] || [ ${telemetryStorageType,,} == 'ade' ] || [ ${telemetryStorageType,,}  == 'cosmosdb' ] || [ ${telemetryStorageType,,}  == 'tsi' ]
               then
-                echo "A value for the 'appInsightsLocation' variable must be provided" > /dev/stderr
+                echo "A value for the 'telemetryStorageType' variable must be provided and allowed values are ade, cosmosdb and tsi" > /dev/stderr
                 exit 1
               fi
             displayName: Check parameters
@@ -130,3 +130,4 @@ stages:
           runVersion: specific
           testPipelineRunId: $(testPipelineRunId)
           aadSGId: $(aadSGId)
+          telemetryStorageType: $(telemetryStorageType)

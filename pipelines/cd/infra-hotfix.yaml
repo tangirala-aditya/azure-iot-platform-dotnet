@@ -123,3 +123,4 @@ stages:
           runVersion: specific
           testPipelineRunId: $(testPipelineRunId)
           aadSGId: $(aadSGId)
+          telemetryStorageType: $(telemetryStorageType)

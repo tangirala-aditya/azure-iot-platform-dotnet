@@ -54,6 +54,7 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-crslDev)
           aadSGId: $(aadSGId-crslDev)
+          telemetryStorageType: $(telemetryStorageType-crslDev)
 
   - stage: acsDev
     displayName: ACS dev
@@ -79,6 +80,7 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-acsDev)
           aadSGId: $(aadSGId-acsDev)
+          telemetryStorageType: $(telemetryStorageType-acsDev)
 
   - stage: crslQa
     displayName: CRSL QA
@@ -106,6 +108,7 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-crslQa)
           aadSGId: $(aadSGId-crslQa)
+          telemetryStorageType: $(telemetryStorageType-crslQa)
           
   - stage: crslWkbnch
     displayName: CRSL workbench
@@ -133,3 +136,4 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-crslWkbnch)
           aadSGId: $(aadSGId-crslWkbnch)
+          telemetryStorageType: $(telemetryStorageType-crslWkbnch)

@@ -16,6 +16,7 @@ parameters:
   runVersion:
   testPipelineRunId:
   aadSGId:
+  telemetryStorageType:
 
 jobs:
   - template: get-approval.yaml
@@ -652,6 +653,7 @@ jobs:
 
   - job: dataExplorer
     displayName: Provision Azure Data Explorer Cluster
+    condition: and(succeeded(), eq('${{parameters.telemetryStorageType}}', 'ade'))
     dependsOn:
       - resourceGroup
     variables:
@@ -690,6 +692,33 @@ jobs:
           subscriptionName: ${{parameters.subscriptionName}}
           deploymentPartialName: $(dataExplorerClusterPartialName)
           resourceGroupName: $(resourceGroupName)
+
+  - job: deleteDataExplorer
+    displayName: Delete not used Data Explorer 
+    condition: and(succeeded(), ne('${{parameters.telemetryStorageType}}', 'ade'))
+    dependsOn:
+      - resourceGroup
+    steps:
+      - checkout: none
+
+      - task: AzureCLI@2
+        displayName: Check and Remove Data Explorer
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          addSpnToEnvironment: true
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            az extension add -n kusto
+            clusterList=$(az kusto cluster list --resource-group $(resourceGroupName))
+            if [ -n $clusterList[0] && $clusterList[0].name == $(dataExplorerClusterName) ]
+            then
+                  az kusto cluster delete \
+                    --cluster-name $(dataExplorerClusterName) \
+                    --resource-group $(resourceGroupName)
+            else
+                  echo "Azure Data Explorer does not exists "
+            fi
 
   - job: populateAppConfiguration
     displayName: Populate App Configuration
@@ -749,7 +778,7 @@ jobs:
             az appconfig kv set --key Global:InviteFromEmail                      --value $(inviteEmail) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:EventHubNamespaceName  --value $(eventHubName) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:AutomationAccountName  --value $(automationName) --name $(appConfigurationName) --yes
-            az appconfig kv set --key DeviceTelemetryService:Messages:TelemetryStorageType  --value $(telemetryStorageType) --name $(appConfigurationName) --yes
+            az appconfig kv set --key DeviceTelemetryService:Messages:TelemetryStorageType  --value ${{parameters.telemetryStorageType}} --name $(appConfigurationName) --yes
             appInsightKey=$(az resource show -g $(resourceGroupName) -n $(appInsightsName) --resource-type "Microsoft.Insights/components" --query properties.InstrumentationKey --output tsv)
             az appconfig kv set --key Global:InstrumentationKey --value $appInsightKey --name $(appConfigurationName) --yes
 
@@ -921,6 +950,12 @@ jobs:
                 "BatchThreshold"="12" \
                 "BatchWriteDelay"="85" \
               --resource-group $(resourceGroupName)
+            if [ tolower('${{parameters.telemetryStorageType}}') == tolower('ade') ]
+            then
+                az functionapp config appsettings set --name $devicetwinPropfn \
+                --resource-group $(resourceGroupName) \
+                --settings AzureWebJobs.DeviceTelemetry.Disabled=true
+            fi
 
   - job: function2
     displayName: Create App Config Function

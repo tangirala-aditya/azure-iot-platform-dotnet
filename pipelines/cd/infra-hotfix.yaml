@@ -99,7 +99,7 @@ stages:
               fi
 
               echo "telemetryStorageType: '$(telemetryStorageType)'"
-              if [ -z "$(testPipelineRunId)" ] || [ ${testPipelineRunId,,} == 'ade' ] || [ ${testPipelineRunId,,}  == 'cosmosdb' ] || [ ${testPipelineRunId,,}  == 'tsi' ]
+              if [ -z "$(telemetryStorageType)" ] || [ ${telemetryStorageType,,} == 'ade' ] || [ ${telemetryStorageType,,}  == 'cosmosdb' ] || [ ${telemetryStorageType,,}  == 'tsi' ]
               then
                 echo "A value for the 'telemetryStorageType' variable must be provided and allowed values are ade, cosmosdb and tsi" > /dev/stderr
                 exit 1

@@ -720,7 +720,7 @@ jobs:
           scriptType: bash
           inlineScript: |-
             clusterList=$(az kusto cluster list --resource-group $(resourceGroupName))
-            if [ -n $clusterList[0] && $clusterList[0].name == $(dataExplorerClusterName) ]
+            if [ -n $clusterList[0] ] && [ $clusterList[0].name == $(dataExplorerClusterName) ]
             then
                   az kusto cluster delete --cluster-name $(dataExplorerClusterName) --resource-group $(resourceGroupName)
             else

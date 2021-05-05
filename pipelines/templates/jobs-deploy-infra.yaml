@@ -960,7 +960,7 @@ jobs:
                 "BatchWriteDelay"="85" \
               --resource-group $(resourceGroupName)
             telemetryStorageType=${{parameters.telemetryStorageType}}
-            if [ ${telemetryStorageType,,} == true ]
+            if [ $telemetryStorageType ]
             then
                 az functionapp config appsettings set --name $devicetwinPropfn \
                 --resource-group $(resourceGroupName) \

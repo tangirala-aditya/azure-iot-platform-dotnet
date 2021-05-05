@@ -56,6 +56,12 @@ stages:
                 echo "A value for the 'environmentCategory' variable must be provided" > /dev/stderr
                 exit 1
               fi
+              echo "telemetryStorageType: '$(telemetryStorageType)'"
+              if [ -z "$(telemetryStorageType)" ]
+              then
+                echo "A value for the 'telemetryStorageType' variable must be provided" > /dev/stderr
+                exit 1
+              fi              
       
             displayName: Check parameters
 
@@ -64,7 +70,7 @@ stages:
     dependsOn:
       - checkParameters
     jobs:
-      - template: ../templates/steps-migrate-helm.yaml
+      - template: ../templates/steps-ade-test.yaml
         parameters:
           subscriptionName: $(subscriptionName)
           locationName: $(locationName)
@@ -73,3 +79,4 @@ stages:
           applicationCode: $(applicationCode)
           applicationShortCode: $(applicationShortCode)
           environmentCategory: $(environmentCategory)
+          telemetryStorageType: $(telemetryStorageType)

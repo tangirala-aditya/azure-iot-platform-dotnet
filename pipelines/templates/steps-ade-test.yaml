@@ -47,11 +47,12 @@ jobs:
           echo "##vso[task.setvariable variable=storageType;isOutput=true]${{parameters.telemetryStorageType}}"
         displayName: Print variables
 
+
   - job: migratehelmversion
     displayName: Migrate Helm v2 to v3
     dependsOn:
        - printVariables
-    condition: and(true,eq($[dependencies.preBuild.outputs['printVariables.storageType']],'ade'))
+    condition: and(true,eq(dependencies.printVariables.outputs['printVariables.storageType'],'ade'))
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

@@ -696,7 +696,7 @@ jobs:
 
   - job: deleteDataExplorer
     displayName: Delete not used Data Explorer
-    condition: eq( $[variables.parameters.telemetryStorageType] , 'ade')
+    condition: eq( variables['parameters.telemetryStorageType'] , 'ade')
     dependsOn:
       - resourceGroup
     variables:

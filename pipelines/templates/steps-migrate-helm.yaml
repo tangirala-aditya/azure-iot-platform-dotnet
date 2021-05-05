@@ -157,9 +157,9 @@ jobs:
               then
                   echo "clusterissuer is present in the aks cluster"
               fi
-            helm3 repo remove stable
-            helm3 repo add "stable" "https://charts.helm.sh/stable" --force-update
-            helm3 repo add jetstack https://charts.jetstack.io
+            helm repo remove stable
+            helm repo add "stable" "https://charts.helm.sh/stable" --force-update
+            helm repo add jetstack https://charts.jetstack.io
 
   # - job: clusterissuer
   #   displayName: Create a Cluster Issuer

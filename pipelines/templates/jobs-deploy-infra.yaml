@@ -95,6 +95,11 @@ jobs:
           echo "parameter: telemetryStorageType: ${{parameters.telemetryStorageType}}"
         displayName: Print variables
 
+  - job: toggleTelemetryStorage
+    steps:
+    - bash: echo "##vso[task.setvariable variable=toggleTelemetryStorageValue;isOutput=true]${{parameters.telemetryStorageType}}"
+      name: toggleTelemetryStorageName
+
   - job: resourceGroup
     displayName: Provision resource group
     dependsOn:
@@ -654,9 +659,11 @@ jobs:
 
   - job: dataExplorer
     displayName: Provision Azure Data Explorer Cluster
-    condition: and(true, eq('${{ parameters.telemetryStorageType }}', 'ade'))
+    # condition: and(true, eq('${{ parameters.telemetryStorageType }}', 'ade'))
+    condition: and(succeeded(), eq(dependencies.toggleTelemetryStorage.outputs['toggleTelemetryStorageName.toggleTelemetryStorageValue'], 'ade'))
     dependsOn:
       - resourceGroup
+      - toggleTelemetryStorage
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -696,9 +703,11 @@ jobs:
 
   - job: deleteDataExplorer
     displayName: Delete not used Data Explorer 
-    condition: and(true, ne('${{ parameters.telemetryStorageType }}', 'ade'))
+    # condition: and(true, ne('${{ parameters.telemetryStorageType }}', 'ade'))
+    condition: and(succeeded(), ne(dependencies.toggleTelemetryStorage.outputs['toggleTelemetryStorageName.toggleTelemetryStorageValue'], 'ade'))
     dependsOn:
       - resourceGroup
+      - toggleTelemetryStorage
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

@@ -131,4 +131,4 @@ stages:
           runVersion: specific
           testPipelineRunId: $(testPipelineRunId)
           aadSGId: $(aadSGId)
-          telemetryStorageType: true
+          telemetryStorageType: "ade"

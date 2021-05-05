@@ -654,7 +654,7 @@ jobs:
 
   - job: dataExplorer
     displayName: Provision Azure Data Explorer Cluster
-    condition: eq('${{ parameters.telemetryStorageType }}', true)
+    condition: eq('${{ parameters.telemetryStorageType }}', 'ade')
     dependsOn:
       - resourceGroup
     variables:
@@ -696,7 +696,7 @@ jobs:
 
   - job: deleteDataExplorer
     displayName: Delete not used Data Explorer 
-    condition: ne('${{ parameters.telemetryStorageType }}', false)
+    condition: eq('${{ parameters.telemetryStorageType }}', 'ade')
     dependsOn:
       - resourceGroup
     variables:
@@ -723,7 +723,7 @@ jobs:
               clusterName=$(az kusto cluster list --resource-group $(resourceGroupName) | jq -r .[0].name)
               if [ -n "$clusterName" ] && [ "$clusterName" == "$(dataExplorerClusterName)" ]
               then
-                    az kusto cluster delete -n $(dataExplorerClusterName) -g $(resourceGroupName)
+                    az kusto cluster delete -n $(dataExplorerClusterName) -g $(resourceGroupName) --yes
               else
                     echo "Azure Data Explorer does not exists"
               fi
@@ -787,7 +787,7 @@ jobs:
             az appconfig kv set --key Global:InviteFromEmail                      --value $(inviteEmail) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:EventHubNamespaceName  --value $(eventHubName) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:AutomationAccountName  --value $(automationName) --name $(appConfigurationName) --yes
-            az appconfig kv set --key DeviceTelemetryService:Messages:TelemetryStorageType  --value "ade" --name $(appConfigurationName) --yes
+            az appconfig kv set --key DeviceTelemetryService:Messages:TelemetryStorageType  --value ${telemetryStorageType,,} --name $(appConfigurationName) --yes
             appInsightKey=$(az resource show -g $(resourceGroupName) -n $(appInsightsName) --resource-type "Microsoft.Insights/components" --query properties.InstrumentationKey --output tsv)
             az appconfig kv set --key Global:InstrumentationKey --value $appInsightKey --name $(appConfigurationName) --yes
 
@@ -960,7 +960,7 @@ jobs:
                 "BatchWriteDelay"="85" \
               --resource-group $(resourceGroupName)
             telemetryStorageType=${{parameters.telemetryStorageType}}
-            if [ $telemetryStorageType ]
+            if [ ${telemetryStorageType,,} == "ade"  ]
             then
                 az functionapp config appsettings set --name $devicetwinPropfn \
                 --resource-group $(resourceGroupName) \

@@ -25,7 +25,6 @@ using Mmm.Iot.Common.Services.External.Azure;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.Services.External.TableStorage;
-using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.TenantManager.Services.Models;
 
 namespace Mmm.Iot.TenantManager.Services.Tasks
@@ -140,46 +139,43 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                 item.IsIotHubDeployed = true;
                                 await this.tableStorageClient.InsertOrReplaceAsync<TenantModel>("tenant", item);
 
-                                if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
+                                Console.WriteLine("Creating a DB in Data Explorer");
+
+                                var softDeletePeriod = new TimeSpan(60, 0, 0, 0);
+                                var databaseName = $"IoT-{item.TenantId}";
+
+                                await this.kustoCluterManagementClient.CreatedDBInCluterAsync(databaseName, softDeletePeriod);
+
+                                Console.WriteLine($"Created a {item.TenantId} DB in Data Explorer");
+
+                                Console.WriteLine($"Creating telemetry table and mapping in {item.TenantId} DB in Data Explorer");
+
+                                var tableName = "Telemetry";
+                                var tableMappingName = $"TelemetryEvents_JSON_Mapping-{item.TenantId}";
+                                var tableSchema = new[]
                                 {
-                                    Console.WriteLine("Creating a DB in Data Explorer");
-
-                                    var softDeletePeriod = new TimeSpan(60, 0, 0, 0);
-                                    var databaseName = $"IoT-{item.TenantId}";
-
-                                    await this.kustoCluterManagementClient.CreatedDBInCluterAsync(databaseName, softDeletePeriod);
-
-                                    Console.WriteLine($"Created a {item.TenantId} DB in Data Explorer");
-
-                                    Console.WriteLine($"Creating telemetry table and mapping in {item.TenantId} DB in Data Explorer");
-
-                                    var tableName = "Telemetry";
-                                    var tableMappingName = $"TelemetryEvents_JSON_Mapping-{item.TenantId}";
-                                    var tableSchema = new[]
-                                    {
                                     Tuple.Create("DeviceId", "System.String"),
                                     Tuple.Create("Data", "System.Object"),
                                     Tuple.Create("TimeStamp", "System.Datetime"),
-                                    };
-                                    var mappingSchema = new ColumnMapping[]
-                                    {
+                                };
+                                var mappingSchema = new ColumnMapping[]
+                                {
                                     new ColumnMapping() { ColumnName = "DeviceId", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.iothub-connection-device-id" } } },
                                     new ColumnMapping() { ColumnName = "Data", ColumnType = "dynamic", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$" } } },
                                     new ColumnMapping() { ColumnName = "TimeStamp", ColumnType = "datetime", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.iothub-enqueuedtime" } } },
-                                    };
+                                };
 
-                                    this.kustoTableManagementClient.CreateTable(tableName, tableSchema, databaseName);
+                                this.kustoTableManagementClient.CreateTable(tableName, tableSchema, databaseName);
 
-                                    this.kustoTableManagementClient.CreateTableMapping(tableMappingName, mappingSchema, tableName, databaseName);
+                                this.kustoTableManagementClient.CreateTableMapping(tableMappingName, mappingSchema, tableName, databaseName);
 
-                                    this.kustoTableManagementClient.EnableStreamingIngestionPolicyToTable(tableName, databaseName);
+                                this.kustoTableManagementClient.EnableStreamingIngestionPolicyToTable(tableName, databaseName);
 
-                                    string dataConnectName = $"TelemetryDataConnect-{item.TenantId.Substring(0, 8)}";
-                                    string iotHubName = iothub.Name;
-                                    string iotHubConsumerGroup = "$Default";
+                                string dataConnectName = $"TelemetryDataConnect-{item.TenantId.Substring(0, 8)}";
+                                string iotHubName = iothub.Name;
+                                string iotHubConsumerGroup = "$Default";
 
-                                    await this.kustoCluterManagementClient.AddIoTHubDataConnectionAsync(dataConnectName, databaseName, tableName, tableMappingName, iotHubName, iotHubConsumerGroup);
-                                }
+                                await this.kustoCluterManagementClient.AddIoTHubDataConnectionAsync(dataConnectName, databaseName, tableName, tableMappingName, iotHubName, iotHubConsumerGroup);
                             }
                         }
                         catch (Microsoft.Azure.Management.IotHub.Models.ErrorDetailsException e)

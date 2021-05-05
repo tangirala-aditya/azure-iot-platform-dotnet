@@ -655,8 +655,8 @@ jobs:
   - ${{ if eq(parameters.telemetryStorageType, 'ade') }}:
     - job: dataExplorer
       displayName: Provision Azure Data Explorer Cluster
-      # dependsOn:
-      #  - resourceGroup
+      dependsOn:
+        - resourceGroup
       variables:
         - template: variables-deploy-infra.yaml
           parameters:
@@ -697,8 +697,8 @@ jobs:
   - ${{ if ne(parameters.telemetryStorageType, 'ade') }}:
     - job: deleteDataExplorer
       displayName: Delete not used Data Explorer 
-      # dependsOn:
-      #  - resourceGroup
+      dependsOn:
+        - resourceGroup
       variables:
         - template: variables-deploy-infra.yaml
           parameters:

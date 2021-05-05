@@ -652,7 +652,7 @@ jobs:
           deploymentPartialName: $(cosmosDbAccountPartialName)
           resourceGroupName: $(resourceGroupName)
 
-  - $[ if eq(parameters.telemetryStorageType, 'ade') ]:
+  - ${{ if eq(parameters.telemetryStorageType, 'ade') }}:
     - job: dataExplorer
       displayName: Provision Azure Data Explorer Cluster
       dependsOn:
@@ -694,39 +694,39 @@ jobs:
             deploymentPartialName: $(dataExplorerClusterPartialName)
             resourceGroupName: $(resourceGroupName)
 
-  - $[ if ne( parameters.telemetryStorageType, 'ade') ]:
-    - job: deleteDataExplorer
-      displayName: Delete not used Data Explorer 
-      dependsOn:
-        - resourceGroup
-      variables:
-        - template: variables-deploy-infra.yaml
-          parameters:
-            subscriptionName: ${{parameters.subscriptionName}}
-            locationName: ${{parameters.locationName}}
-            environmentName: ${{parameters.environmentName}}
-            subscriptionId: ${{parameters.subscriptionId}}
-            applicationCode: ${{parameters.applicationCode}}
-            applicationShortCode: ${{parameters.applicationShortCode}}
-            environmentCategory: ${{parameters.environmentCategory}}
-      steps:
-        - checkout: none
-    
-        - task: AzureCLI@2
-          displayName: Check and Remove Data Explorer
-          inputs:
-            azureSubscription: ${{parameters.subscriptionName}}
-            addSpnToEnvironment: true
-            scriptLocation: inlineScript
-            scriptType: bash
-            inlineScript: |-
-                clusterName=$(az kusto cluster list --resource-group $(resourceGroupName) | jq -r .[0].name)
-                if [ -n "$clusterName" ] && [ "$clusterName" == "$(dataExplorerClusterName)" ]
-                then
-                      az kusto cluster delete -n $(dataExplorerClusterName) -g $(resourceGroupName) --yes
-                else
-                      echo "Azure Data Explorer does not exists"
-                fi
+  - job: deleteDataExplorer
+    displayName: Delete not used Data Explorer
+    condition: eq( $[variables.parameters.telemetryStorageType] , 'ade')
+    dependsOn:
+      - resourceGroup
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: none
+  
+      - task: AzureCLI@2
+        displayName: Check and Remove Data Explorer
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          addSpnToEnvironment: true
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+              clusterName=$(az kusto cluster list --resource-group $(resourceGroupName) | jq -r .[0].name)
+              if [ -n "$clusterName" ] && [ "$clusterName" == "$(dataExplorerClusterName)" ]
+              then
+                    az kusto cluster delete -n $(dataExplorerClusterName) -g $(resourceGroupName) --yes
+              else
+                    echo "Azure Data Explorer does not exists"
+              fi
 
   - job: populateAppConfiguration
     displayName: Populate App Configuration

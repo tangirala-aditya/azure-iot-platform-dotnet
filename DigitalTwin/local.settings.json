@@ -1,0 +1,17 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+        "TelemetryEventHubConnectionString": "Endpoint=sb://mmmdigitaltwin.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=dZGBRyMarifC08BFsiRY4Q22Vh7MICK3XIhheMTDTaA=",
+        "LifecycleEventHubConnectionString": "Endpoint=sb://mmmdigitaltwin.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=dZGBRyMarifC08BFsiRY4Q22Vh7MICK3XIhheMTDTaA=",
+        "DeviceStreamConsumerGroup": "localdev",
+        "ActionsEventHubConnectionString": "Endpoint=sb://acsagic-eventhub-dev.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=ydJFuqVHlz69gduOJWaog8IEXghiNY1ky+BKGYkh0hg=",
+        "ActionsEventHubConsumerGroup": "localdev",
+        "DigitalTwinInstanceUrl": "https://mmmcrsldigitaltwin.api.wcus.digitaltwins.azure.net",
+        "TenantId": "7896c5aa-71b4-47c3-98d4-e707bdd7462f",
+        "ClientId": "ef6d39b9-2e5d-4767-b118-0fd69259c8bc",
+        "ClientSecret": "1Yy~z1KMIa_r8l-7ZDLdYMTJDx.982qmE-",
+        "AzureQueueConnectionString": "DefaultEndpointsProtocol=https;AccountName=adtexplorerstorey5ht7q;AccountKey=J0b5mo/WfNIMx2jNq4pfKOqocFK9zjWZbZE24Sq8b39N+3vlHjwclNwvR6YZ4IvYJvG0X/F0Q6F+/X1M/0RSnw==;EndpointSuffix=core.windows.net"
+    }
+}

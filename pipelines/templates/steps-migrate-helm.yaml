@@ -152,13 +152,13 @@ jobs:
             az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
                       
             kubectl get Issuers,ClusterIssuers,Certificates,CertificateRequests,Orders,Challenges --all-namespaces
-            certificateToBePatched=$(kubectl get certificates -o=jsonpath='{.items[0].metadata.name}')            
-              if [ -n $certificateToBePatched ]
+            challengeToBePatched=$(kubectl get challenge -o=jsonpath='{.items[0].metadata.name}')            
+              if [ -n $challengeToBePatched ]
               then
-                  echo "clusterissuer is present in the aks cluster"
+                  echo "challenge is present in the aks cluster"
               fi
             helm repo remove stable
-            helm repo add "stable" "https://charts.helm.sh/stable" --force-update
+            helm repo add "stable" "https://charts.helm.sh/stable" 
             helm repo add jetstack https://charts.jetstack.io
 
   # - job: clusterissuer

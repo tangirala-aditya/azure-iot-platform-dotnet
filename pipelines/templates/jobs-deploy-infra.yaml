@@ -652,7 +652,7 @@ jobs:
           deploymentPartialName: $(cosmosDbAccountPartialName)
           resourceGroupName: $(resourceGroupName)
 
-  - ${{ if eq(parameters.telemetryStorageType, 'ade') }}:
+  - ${{ if eq( ${{ parameters.telemetryStorageType }}, 'ade') }}:
     - job: dataExplorer
       displayName: Provision Azure Data Explorer Cluster
       dependsOn:
@@ -693,7 +693,8 @@ jobs:
             subscriptionName: ${{parameters.subscriptionName}}
             deploymentPartialName: $(dataExplorerClusterPartialName)
             resourceGroupName: $(resourceGroupName)
-  - ${{ if ne(parameters.telemetryStorageType, 'ade') }}:
+
+  - ${{ if ne( ${{ parameters.telemetryStorageType }}, 'ade') }}:
     - job: deleteDataExplorer
       displayName: Delete not used Data Explorer 
       dependsOn:

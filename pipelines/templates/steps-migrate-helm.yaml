@@ -152,8 +152,8 @@ jobs:
             az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
                       
             kubectl get Issuers,ClusterIssuers,Certificates,CertificateRequests,Orders,Challenges --all-namespaces
-            challengeToBePatched=$(kubectl get challenge -o=jsonpath='{.items[0].metadata.name}')            
-              if [ -n $challengeToBePatched ]
+            challengeToBePatched=$(kubectl get challenges --output json | jq -j '.items | length')            
+              if [ $challengeToBePatched -gt 0 ]
               then
                   echo "challenge is present in the aks cluster"
               fi

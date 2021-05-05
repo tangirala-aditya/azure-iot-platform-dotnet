@@ -654,7 +654,7 @@ jobs:
 
   - job: dataExplorer
     displayName: Provision Azure Data Explorer Cluster
-    condition: eq('$(telemetryStorageType)', "ade")
+    condition: eq($(telemetryStorageType), "ade")
     dependsOn:
       - resourceGroup
     variables:
@@ -696,7 +696,7 @@ jobs:
 
   - job: deleteDataExplorer
     displayName: Delete not used Data Explorer 
-    condition: ne('$(telemetryStorageType)', "ade")
+    condition: ne($(telemetryStorageType), "ade")
     dependsOn:
       - resourceGroup
     variables:

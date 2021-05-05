@@ -98,6 +98,13 @@ stages:
                 exit 1
               fi
 
+              #echo "TestPipelineRunId: '$(aadSGId)'"
+              #if [ -z "$(aadSGId)" ]
+              #then
+              #  echo "A value for the 'aadSGId' variable must be provided" > /dev/stderr
+              #  exit 1
+              #fi
+
               telemetryStorageType=$(telemetryStorageType)
               echo "telemetryStorageType: $telemetryStorageType"
               if [ -z $telemetryStorageType ] || [ ${telemetryStorageType,,} != 'ade' ] && [ ${telemetryStorageType,,} != 'cosmosdb' ] && [ ${telemetryStorageType,,} != 'tsi' ]

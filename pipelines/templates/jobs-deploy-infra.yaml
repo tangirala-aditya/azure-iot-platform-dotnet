@@ -720,7 +720,7 @@ jobs:
           environmentCategory: ${{parameters.environmentCategory}}
     steps:
       - checkout: none
-
+  
       - task: AzureCLI@2
         displayName: Check and Remove Data Explorer
         inputs:
@@ -730,9 +730,9 @@ jobs:
           scriptType: bash
           inlineScript: |-
               clusterName=$(az kusto cluster list --resource-group $(resourceGroupName) | jq -r .[0].name)
-              if [[ -n $clusterName ]] && [[ $clusterName == $(dataExplorerClusterName) ]]
+              if [ -n "$clusterName" ] && [ "$clusterName" == "$(dataExplorerClusterName)" ]
               then
-                    az kusto cluster delete --cluster-name $(dataExplorerClusterName) --resource-group $(resourceGroupName)
+                    az kusto cluster delete -n $(dataExplorerClusterName) -g $(resourceGroupName) --yes
               else
                     echo "Azure Data Explorer does not exists"
               fi
@@ -822,7 +822,6 @@ jobs:
       - eventHub
       - maps
       - cosmosDb
-      - dataExplorer
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -969,7 +968,7 @@ jobs:
                 "BatchWriteDelay"="85" \
               --resource-group $(resourceGroupName)
             telemetryStorageType=${{parameters.telemetryStorageType}}
-            if [ ${telemetryStorageType,,} == "ade" ]
+            if [ ${telemetryStorageType,,} == "ade"  ]
             then
                 az functionapp config appsettings set --name $devicetwinPropfn \
                 --resource-group $(resourceGroupName) \

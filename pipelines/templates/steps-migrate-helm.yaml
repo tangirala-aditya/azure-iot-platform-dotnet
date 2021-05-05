@@ -153,7 +153,7 @@ jobs:
                       
             kubectl get Issuers,ClusterIssuers,Certificates,CertificateRequests,Orders,Challenges --all-namespaces
             clusterissuerToBePatched=$(kubectl get clusterissuer -o=jsonpath='{.items[0].metadata.name}')            
-              if [ -n $challengeToBePatched ]
+              if [ -n $clusterissuerToBePatched ]
               then
                   echo "clusterissuer is present in the aks cluster"
               fi

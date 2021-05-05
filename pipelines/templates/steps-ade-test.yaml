@@ -44,7 +44,7 @@ jobs:
           echo "parameter: environmentCategory: ${{parameters.environmentCategory}}"
           echo "variable: aksName: $(aksName)"
           echo "variable: resourceGroupName: $(resourceGroupName)"
-          echo "##vso[task.setvariable variable=storageType;isOutput=true]${{parameters.environmentCategory}}"
+          echo "##vso[task.setvariable variable=storageType;isOutput=true]${{parameters.telemetryStorageType}}"
         displayName: Print variables
 
   - job: migratehelmversion

@@ -50,9 +50,10 @@ jobs:
 
   - job: migratehelmversion
     displayName: Migrate Helm v2 to v3
+    condition: and(succeeded(),eq(dependencies.printVariables.outputs['printVariables.storageType'],'ade'))
     dependsOn:
        - printVariables
-    condition: and(succeeded(),eq(dependencies.printVariables.outputs['printVariables.storageType'],'ade'))
+
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -105,13 +106,13 @@ jobs:
 
   - job: A
     steps:
-    - bash: echo "##vso[task.setvariable variable=shouldrun;isOutput=true]true"
+    - bash: echo "##vso[task.setvariable variable=shouldrun;isOutput=true]${{parameters.locationName}}"
     # or on Windows:
     # - script: echo ##vso[task.setvariable variable=shouldrun;isOutput=true]true
       name: printvar
 
   - job: B
-    condition: and(succeeded(), eq(dependencies.A.outputs['printvar.shouldrun'], 'true'))
+    condition: and(succeeded(), eq(dependencies.A.outputs['printvar.shouldrun'], 'centralus'))
     dependsOn: A
     steps:
     - script: echo hello from B

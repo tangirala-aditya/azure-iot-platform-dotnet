@@ -152,8 +152,8 @@ jobs:
             az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
                       
             kubectl get Issuers,ClusterIssuers,Certificates,CertificateRequests,Orders,Challenges --all-namespaces
-            clusterissuerToBePatched=$(kubectl get clusterissuer -o=jsonpath='{.items[0].metadata.name}')            
-              if [ -n $clusterissuerToBePatched ]
+            certificateToBePatched=$(kubectl get certificates -o=jsonpath='{.items[0].metadata.name}')            
+              if [ -n $certificateToBePatched ]
               then
                   echo "clusterissuer is present in the aks cluster"
               fi

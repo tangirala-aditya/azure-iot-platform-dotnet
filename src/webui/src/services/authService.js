@@ -36,6 +36,10 @@ export class AuthService {
             loadUserInfo: false,
         };
         AuthService._userManager = new UserManager(AuthService.settings);
+        AuthService._userManager.events.addAccessTokenExpiring(function(){
+            console.log("token expiring...");
+            // AuthService._userManager.signinRedirect();
+        });
     }
 
     static isInvitation(hash) {

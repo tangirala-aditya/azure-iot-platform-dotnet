@@ -112,7 +112,7 @@ jobs:
       name: printvar
 
   - job: B
-    condition: and(succeeded(), eq(dependencies.A.outputs['printvar.shouldrun'], 'centralus'))
+    condition: and(succeeded(), eq(dependencies.A.outputs['printvar.shouldrun'], 'central'))
     dependsOn: A
     steps:
     - script: echo hello from B

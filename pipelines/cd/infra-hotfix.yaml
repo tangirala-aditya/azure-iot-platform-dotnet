@@ -98,13 +98,20 @@ stages:
                 exit 1
               fi
 
-              #telemetryStorageType=$(telemetryStorageType)
-              #echo "telemetryStorageType: $telemetryStorageType"
-              #if [ -z $telemetryStorageType ] || [ ${telemetryStorageType,,} != 'ade' ] && [ ${telemetryStorageType,,} != 'cosmosdb' ] && [ ${telemetryStorageType,,} != 'tsi' ]
+              #echo "TestPipelineRunId: '$(aadSGId)'"
+              #if [ -z "$(aadSGId)" ]
               #then
-              #  echo "A value for the 'telemetryStorageType' variable must be provided and allowed values are ade, cosmosdb and tsi" > /dev/stderr
+              #  echo "A value for the 'aadSGId' variable must be provided" > /dev/stderr
               #  exit 1
               #fi
+
+              telemetryStorageType=$(telemetryStorageType)
+              echo "telemetryStorageType: $telemetryStorageType"
+              if [ -z $telemetryStorageType ] || [ ${telemetryStorageType,,} != 'ade' ] && [ ${telemetryStorageType,,} != 'cosmosdb' ] && [ ${telemetryStorageType,,} != 'tsi' ]
+              then
+                echo "A value for the 'telemetryStorageType' variable must be provided and allowed values are ade, cosmosdb and tsi" > /dev/stderr
+                exit 1
+              fi
             displayName: Check parameters
 
   - stage: deployInfrastructure
@@ -131,4 +138,4 @@ stages:
           runVersion: specific
           testPipelineRunId: $(testPipelineRunId)
           aadSGId: $(aadSGId)
-          telemetryStorageType: "ade"
+          telemetryStorageType: $(telemetryStorageType)

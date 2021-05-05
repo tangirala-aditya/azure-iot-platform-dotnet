@@ -6,12 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.CosmosDb;
 using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.Services.External.TableStorage;
+using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.TenantManager.Services.External;
 using Mmm.Iot.TenantManager.Services.Helpers;
 using Mmm.Iot.TenantManager.Services.Models;
@@ -38,6 +40,7 @@ namespace Mmm.Iot.TenantManager.Services
         private readonly IAppConfigurationClient appConfigClient;
         private readonly IBlobStorageClient blobStorageClient;
         private readonly IKustoCluterManagementClient kustoCluterManagementClient;
+        private readonly AppConfig config;
 
         private readonly Dictionary<string, string> tenantCollections = new Dictionary<string, string>
         {
@@ -69,7 +72,8 @@ namespace Mmm.Iot.TenantManager.Services
             IDeviceGroupsConfigClient deviceGroupConfigClient,
             IAppConfigurationClient appConfigHelper,
             IBlobStorageClient blobStorageClient,
-            IKustoCluterManagementClient kustoCluterManagementClient)
+            IKustoCluterManagementClient kustoCluterManagementClient,
+            AppConfig config)
         {
             this.logger = logger;
             this.runbookHelper = runbookHelper;
@@ -80,6 +84,7 @@ namespace Mmm.Iot.TenantManager.Services
             this.appConfigClient = appConfigHelper;
             this.blobStorageClient = blobStorageClient;
             this.kustoCluterManagementClient = kustoCluterManagementClient;
+            this.config = config;
         }
 
         public async Task<bool> TenantIsReadyAsync(string tenantId)
@@ -377,16 +382,19 @@ namespace Mmm.Iot.TenantManager.Services
             }
 
             // Delete Database from kusto
-            string kustoDatabase = string.Format(this.kustoDBFormat, tenantId);
-            try
+            if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
             {
-                await this.kustoCluterManagementClient.DeleteDatabaseAsync(kustoDatabase);
-                deletionRecord["KustoDatabase"] = true;
-            }
-            catch (Exception e)
-            {
-                deletionRecord["KustoDatabase"] = false;
-                this.logger.LogInformation(e, "An error occurred while deleting the {kustoDatabase} kusto database for tenant {tenantId}", kustoDatabase, tenantId);
+                string kustoDatabase = string.Format(this.kustoDBFormat, tenantId);
+                try
+                {
+                    await this.kustoCluterManagementClient.DeleteDatabaseAsync(kustoDatabase);
+                    deletionRecord["KustoDatabase"] = true;
+                }
+                catch (Exception e)
+                {
+                    deletionRecord["KustoDatabase"] = false;
+                    this.logger.LogInformation(e, "An error occurred while deleting the {kustoDatabase} kusto database for tenant {tenantId}", kustoDatabase, tenantId);
+                }
             }
 
             return new DeleteTenantModel(tenantId, deletionRecord, ensureFullyDeployed);

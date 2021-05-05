@@ -52,7 +52,7 @@ jobs:
     displayName: Migrate Helm v2 to v3
     dependsOn:
        - printVariables
-    condition: and(true,eq(dependencies.printVariables.outputs['printVariables.storageType'],'ade'))
+    condition: and(succeeded(),eq(dependencies.printVariables.outputs['printVariables.storageType'],'ade'))
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

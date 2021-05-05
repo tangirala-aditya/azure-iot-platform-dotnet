@@ -654,7 +654,7 @@ jobs:
 
   - job: dataExplorer
     displayName: Provision Azure Data Explorer Cluster
-    condition: and(succeeded(), eq('${{parameters.telemetryStorageType}}', 'ade'))
+    condition: and(true, eq('${{ parameters.telemetryStorageType }}', 'ade'))
     dependsOn:
       - resourceGroup
     variables:
@@ -696,7 +696,7 @@ jobs:
 
   - job: deleteDataExplorer
     displayName: Delete not used Data Explorer 
-    condition: and(succeeded(), ne('${{parameters.telemetryStorageType}}', 'ade'))
+    condition: and(true, ne('${{ parameters.telemetryStorageType }}', 'ade'))
     dependsOn:
       - resourceGroup
     variables:
@@ -720,13 +720,13 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-            clusterList=$(az kusto cluster list --resource-group $(resourceGroupName))
-            if [ -n $clusterList[0] ] && [ $clusterList[0].name == $(dataExplorerClusterName) ]
-            then
-                  az kusto cluster delete --cluster-name $(dataExplorerClusterName) --resource-group $(resourceGroupName)
-            else
-                  echo "Azure Data Explorer does not exists "
-            fi
+              clusterName=$(az kusto cluster list --resource-group $(resourceGroupName) | jq -r .[0].name)
+              if [[ -n $clusterName ]] && [[ $clusterName == $(dataExplorerClusterName) ]]
+              then
+                    az kusto cluster delete --cluster-name $(dataExplorerClusterName) --resource-group $(resourceGroupName)
+              else
+                    echo "Azure Data Explorer does not exists"
+              fi
 
   - job: populateAppConfiguration
     displayName: Populate App Configuration

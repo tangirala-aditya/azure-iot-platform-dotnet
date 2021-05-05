@@ -6,6 +6,7 @@ parameters:
   applicationCode:
   applicationShortCode: 
   environmentCategory:
+  telemetryStorageType:
 
 jobs:
   - template: get-approval.yaml

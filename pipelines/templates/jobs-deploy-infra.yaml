@@ -696,7 +696,7 @@ jobs:
 
   - job: deleteDataExplorer
     displayName: Delete not used Data Explorer 
-    condition: and(true, eq(${{ parameters.telemetryStorageType }}, 'ade'))
+    condition: and(true, ne(${{ parameters.telemetryStorageType }}, 'ade'))
     dependsOn:
       - resourceGroup
     variables:

@@ -700,8 +700,8 @@ jobs:
           deploymentPartialName: $(dataExplorerClusterPartialName)
           resourceGroupName: $(resourceGroupName)
 
-  - job: deleteDataExplorer
-    displayName: Delete not used Data Explorer
+  - job: removeDataExplorer
+    displayName: Remove not in use Azure Data Explorer
     condition: and(succeeded(), ne(dependencies.toggleTelemetryStorage.outputs['toggleTelemetryStorageName.toggleTelemetryStorageValue'], 'ade'))
     dependsOn:
       - resourceGroup

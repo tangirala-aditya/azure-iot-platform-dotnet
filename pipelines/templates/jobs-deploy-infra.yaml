@@ -659,7 +659,6 @@ jobs:
 
   - job: dataExplorer
     displayName: Provision Azure Data Explorer Cluster
-    # condition: and(true, eq('${{ parameters.telemetryStorageType }}', 'ade'))
     condition: and(succeeded(), eq(dependencies.toggleTelemetryStorage.outputs['toggleTelemetryStorageName.toggleTelemetryStorageValue'], 'ade'))
     dependsOn:
       - resourceGroup
@@ -677,11 +676,11 @@ jobs:
     steps:
       - checkout: self
         displayName: Checkout repository
-
+  
       - template: apply-arm-tags.yaml
         parameters:
           environment: ${{parameters.environmentName}}
-
+  
       - task: AzureResourceGroupDeployment@2
         displayName: Provision Azure Data Explorer Cluster
         inputs:
@@ -694,7 +693,7 @@ jobs:
           csmParametersFile: $(armParametersDirectory)/kustocluster.json
           overrideParameters: -kustoClusterName $(dataExplorerClusterName) -location ${{parameters.locationName}} -principalIdForCluster ${{parameters.aadSGId}} -tenantIdForClusterPrincipal $(tenantId)
           deploymentMode: Incremental
-
+  
       - template: steps-delete-oldest-deployment.yaml
         parameters:
           subscriptionName: ${{parameters.subscriptionName}}
@@ -702,8 +701,7 @@ jobs:
           resourceGroupName: $(resourceGroupName)
 
   - job: deleteDataExplorer
-    displayName: Delete not used Data Explorer 
-    # condition: and(true, ne('${{ parameters.telemetryStorageType }}', 'ade'))
+    displayName: Delete not used Data Explorer
     condition: and(succeeded(), ne(dependencies.toggleTelemetryStorage.outputs['toggleTelemetryStorageName.toggleTelemetryStorageValue'], 'ade'))
     dependsOn:
       - resourceGroup
@@ -973,6 +971,10 @@ jobs:
                 az functionapp config appsettings set --name $devicetwinPropfn \
                 --resource-group $(resourceGroupName) \
                 --settings AzureWebJobs.DeviceTelemetry.Disabled=true
+            else
+                az functionapp config appsettings set --name $devicetwinPropfn \
+                --resource-group $(resourceGroupName) \
+                --settings AzureWebJobs.DeviceTelemetry.Disabled=false
             fi
 
   - job: function2

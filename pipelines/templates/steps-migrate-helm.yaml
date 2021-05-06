@@ -150,11 +150,14 @@ jobs:
           inlineScript: |-
             set -Eeuxo pipefail
             az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
-            
+            isChallengePresent=$(kubectl get challenge --output json | jq -j '.items | length')            
+            if [ $isChallengePresent -gt 0 ]
+            then
+                challengeToBePatched = $(kubectl get Challenges -o=jsonpath='{.items[0].metadata.name}')
+                kubectl patch $challengeToBePatched --type=merge --patch '{"metadata":{"finalizers":[]}}'                 
+            fi
             helm3 uninstall cert-manager --namespace cert-manager           
             kubectl get Issuers,ClusterIssuers,Certificates,CertificateRequests,Orders,Challenges --all-namespaces
-            challengeToBePatched = $(kubectl get Challenges -o=jsonpath='{.items[0].metadata.name}')
-            kubectl patch $challengeToBePatched --type=merge --patch '{"metadata":{"finalizers":[]}}'
             kubectl delete -f https://raw.githubusercontent.com/jetstack/cert-manager/v$(certManagerVersion)/deploy/manifests/00-crds.yaml
             kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.crds.yaml
             helm3 repo remove stable

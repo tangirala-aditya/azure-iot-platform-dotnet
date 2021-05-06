@@ -70,7 +70,7 @@ stages:
     dependsOn:
       - checkParameters
     jobs:
-      - template: ../templates/steps-ade-test.yaml
+      - template: ../templates/steps-migrate-helm.yaml
         parameters:
           subscriptionName: $(subscriptionName)
           locationName: $(locationName)

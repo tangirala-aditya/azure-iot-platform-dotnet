@@ -92,7 +92,13 @@ jobs:
           echo "variable: storageAccountName: $(storageAccountName)"
           echo "variable: dataExplorerClusterPartialName: $(dataExplorerClusterPartialName)"
           echo "variable: dataExplorerClusterName: $(dataExplorerClusterName)"
+          echo "parameter: telemetryStorageType: ${{parameters.telemetryStorageType}}"
         displayName: Print variables
+
+  - job: toggleTelemetryStorage
+    steps:
+    - bash: echo "##vso[task.setvariable variable=toggleTelemetryStorageValue;isOutput=true]${{parameters.telemetryStorageType}}"
+      name: toggleTelemetryStorageName
 
   - job: resourceGroup
     displayName: Provision resource group
@@ -653,9 +659,10 @@ jobs:
 
   - job: dataExplorer
     displayName: Provision Azure Data Explorer Cluster
-    condition: and(succeeded(), eq('${{parameters.telemetryStorageType}}', 'ade'))
+    condition: and(succeeded(), eq(dependencies.toggleTelemetryStorage.outputs['toggleTelemetryStorageName.toggleTelemetryStorageValue'], 'ade'))
     dependsOn:
       - resourceGroup
+      - toggleTelemetryStorage
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -669,11 +676,11 @@ jobs:
     steps:
       - checkout: self
         displayName: Checkout repository
-
+  
       - template: apply-arm-tags.yaml
         parameters:
           environment: ${{parameters.environmentName}}
-
+  
       - task: AzureResourceGroupDeployment@2
         displayName: Provision Azure Data Explorer Cluster
         inputs:
@@ -686,18 +693,19 @@ jobs:
           csmParametersFile: $(armParametersDirectory)/kustocluster.json
           overrideParameters: -kustoClusterName $(dataExplorerClusterName) -principalIdForCluster ${{parameters.aadSGId}} -tenantIdForClusterPrincipal $(tenantId)
           deploymentMode: Incremental
-
+  
       - template: steps-delete-oldest-deployment.yaml
         parameters:
           subscriptionName: ${{parameters.subscriptionName}}
           deploymentPartialName: $(dataExplorerClusterPartialName)
           resourceGroupName: $(resourceGroupName)
 
-  - job: deleteDataExplorer
-    displayName: Delete not used Data Explorer 
-    condition: and(succeeded(), ne('${{parameters.telemetryStorageType}}', 'ade'))
+  - job: removeDataExplorer
+    displayName: Remove not in use Azure Data Explorer
+    condition: and(succeeded(), ne(dependencies.toggleTelemetryStorage.outputs['toggleTelemetryStorageName.toggleTelemetryStorageValue'], 'ade'))
     dependsOn:
       - resourceGroup
+      - toggleTelemetryStorage
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -710,7 +718,7 @@ jobs:
           environmentCategory: ${{parameters.environmentCategory}}
     steps:
       - checkout: none
-
+  
       - task: AzureCLI@2
         displayName: Check and Remove Data Explorer
         inputs:
@@ -719,13 +727,13 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-            clusterList=$(az kusto cluster list --resource-group $(resourceGroupName))
-            if [ -n $clusterList[0] ] && [ $clusterList[0].name == $(dataExplorerClusterName) ]
-            then
-                  az kusto cluster delete --cluster-name $(dataExplorerClusterName) --resource-group $(resourceGroupName)
-            else
-                  echo "Azure Data Explorer does not exists "
-            fi
+              clusterName=$(az kusto cluster list --resource-group $(resourceGroupName) | jq -r .[0].name)
+              if [ -n "$clusterName" ] && [ "$clusterName" == "$(dataExplorerClusterName)" ]
+              then
+                    az kusto cluster delete -n $(dataExplorerClusterName) -g $(resourceGroupName) --yes
+              else
+                    echo "Azure Data Explorer does not exists"
+              fi
 
   - job: populateAppConfiguration
     displayName: Populate App Configuration
@@ -812,7 +820,6 @@ jobs:
       - eventHub
       - maps
       - cosmosDb
-      - dataExplorer
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -959,11 +966,15 @@ jobs:
                 "BatchWriteDelay"="85" \
               --resource-group $(resourceGroupName)
             telemetryStorageType=${{parameters.telemetryStorageType}}
-            if [ ${telemetryStorageType,,} == "ade" ]
+            if [ ${telemetryStorageType,,} == "ade"  ]
             then
                 az functionapp config appsettings set --name $devicetwinPropfn \
                 --resource-group $(resourceGroupName) \
                 --settings AzureWebJobs.DeviceTelemetry.Disabled=true
+            else
+                az functionapp config appsettings set --name $devicetwinPropfn \
+                --resource-group $(resourceGroupName) \
+                --settings AzureWebJobs.DeviceTelemetry.Disabled=false
             fi
 
   - job: function2

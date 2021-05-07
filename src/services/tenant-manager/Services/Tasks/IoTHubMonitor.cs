@@ -39,17 +39,15 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
         private IAzureManagementClient azureManagementClient;
         private IAppConfigurationClient appConfigurationClient;
         private AppConfig config;
-        private IKustoCluterManagementClient kustoCluterManagementClient;
         private IKustoTableManagementClient kustoTableManagementClient;
 
-        public IoTHubMonitor(ITableStorageClient tableStorageClient, IBlobStorageClient blobStorageClient, IAzureManagementClient azureManagementClient, IAppConfigurationClient appConfigurationClient, AppConfig config, IKustoCluterManagementClient kustoCluterManagementClient, IKustoTableManagementClient kustoTableManagementClient)
+        public IoTHubMonitor(ITableStorageClient tableStorageClient, IBlobStorageClient blobStorageClient, IAzureManagementClient azureManagementClient, IAppConfigurationClient appConfigurationClient, AppConfig config, IKustoTableManagementClient kustoTableManagementClient)
         {
             this.tableStorageClient = tableStorageClient;
             this.blobStorageClient = blobStorageClient;
             this.azureManagementClient = azureManagementClient;
             this.appConfigurationClient = appConfigurationClient;
             this.config = config;
-            this.kustoCluterManagementClient = kustoCluterManagementClient;
             this.kustoTableManagementClient = kustoTableManagementClient;
         }
 
@@ -147,7 +145,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                     var softDeletePeriod = new TimeSpan(60, 0, 0, 0);
                                     var databaseName = $"IoT-{item.TenantId}";
 
-                                    await this.kustoCluterManagementClient.CreatedDBInCluterAsync(databaseName, softDeletePeriod);
+                                    await this.azureManagementClient.KustoClusterManagementClient.CreatedDBInClusterAsync(databaseName, softDeletePeriod);
 
                                     Console.WriteLine($"Created a {item.TenantId} DB in Data Explorer");
 
@@ -178,7 +176,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                     string iotHubName = iothub.Name;
                                     string iotHubConsumerGroup = "$Default";
 
-                                    await this.kustoCluterManagementClient.AddIoTHubDataConnectionAsync(dataConnectName, databaseName, tableName, tableMappingName, iotHubName, iotHubConsumerGroup);
+                                    await this.azureManagementClient.KustoClusterManagementClient.AddIoTHubDataConnectionAsync(dataConnectName, databaseName, tableName, tableMappingName, iotHubName, iotHubConsumerGroup);
                                 }
                             }
                         }

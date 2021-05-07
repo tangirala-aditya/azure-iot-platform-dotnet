@@ -80,7 +80,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
 
                 clientRequestProperties.ClientRequestId = Guid.NewGuid().ToString();
 
-                var result = await Task.FromResult(this.client.ExecuteQuery(databaseName, query, clientRequestProperties));
+                var result = await this.client.ExecuteQueryAsync(databaseName, query, clientRequestProperties);
 
                 var resultList = result.ToJObjects().ToList();
                 var queryResults = new List<TDestination>();

@@ -14,5 +14,7 @@ namespace Mmm.Iot.Common.Services.External.Azure
         IoTHubManagementClient CreateIoTHubManagementClient();
 
         AsaManagementClient CreateAsaManagementClient();
+
+        KustoClusterManagementClient CreateKustoClusterManagementClient();
     }
 }

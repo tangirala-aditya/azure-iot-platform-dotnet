@@ -1,4 +1,4 @@
-// <copyright file="IKustoCluterManagementClient.cs" company="3M">
+// <copyright file="IKustoClusterManagementClient.cs" company="3M">
 // Copyright (c) 3M. All rights reserved.
 // </copyright>
 
@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mmm.Iot.Common.Services.External.KustoStorage
+namespace Mmm.Iot.Common.Services.External.Azure
 {
-    public interface IKustoCluterManagementClient : IStatusOperation
+    public interface IKustoClusterManagementClient : IStatusOperation
     {
-        Task CreatedDBInCluterAsync(string databaseName, TimeSpan softDeletePeriod, TimeSpan? hotCachePeriod = null);
+        Task CreatedDBInClusterAsync(string databaseName, TimeSpan softDeletePeriod, TimeSpan? hotCachePeriod = null);
 
         Task AddEventHubDataConnectionAsync(string dataConnectName, string databaseName, string tableName, string tableMappingName, string eventHubName, string eventHubConsumerGroup);
 

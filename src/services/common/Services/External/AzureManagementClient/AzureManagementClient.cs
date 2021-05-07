@@ -40,6 +40,7 @@ namespace Mmm.Iot.Common.Services.External.Azure
             this.IotHubManagementClient = clientFactory.CreateIoTHubManagementClient();
             this.DpsManagmentClient = new DpsManagementClient(this.rmClient, this.config);
             this.AsaManagementClient = clientFactory.CreateAsaManagementClient();
+            this.KustoClusterManagementClient = clientFactory.CreateKustoClusterManagementClient();
         }
 
         public IoTHubManagementClient IotHubManagementClient { get; }
@@ -47,6 +48,8 @@ namespace Mmm.Iot.Common.Services.External.Azure
         public DpsManagementClient DpsManagmentClient { get; }
 
         public AsaManagementClient AsaManagementClient { get; }
+
+        public KustoClusterManagementClient KustoClusterManagementClient { get; }
 
         public async Task<StatusResultServiceModel> StatusAsync()
         {

@@ -4,6 +4,7 @@
 
 using System;
 using Microsoft.Azure.Management.IotHub;
+using Microsoft.Azure.Management.Kusto;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
 using Microsoft.Azure.Management.StreamAnalytics;
@@ -63,6 +64,11 @@ namespace Mmm.Iot.Common.Services.External.Azure
         public AsaManagementClient CreateAsaManagementClient()
         {
             return new AsaManagementClient(new StreamAnalyticsManagementClient(this.AzureCredentials), this.config);
+        }
+
+        public KustoClusterManagementClient CreateKustoClusterManagementClient()
+        {
+            return new KustoClusterManagementClient(new KustoManagementClient(this.AzureCredentials), this.config);
         }
     }
 }

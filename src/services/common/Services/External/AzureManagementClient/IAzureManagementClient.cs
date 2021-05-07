@@ -21,6 +21,8 @@ namespace Mmm.Iot.Common.Services.External.Azure
 
         AsaManagementClient AsaManagementClient { get; }
 
+        KustoClusterManagementClient KustoClusterManagementClient { get; }
+
         Task DeployTemplateAsync(string template, string resourceGroup = null, string deploymentName = null);
     }
 }

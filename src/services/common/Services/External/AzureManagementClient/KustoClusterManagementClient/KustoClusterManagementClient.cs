@@ -1,4 +1,4 @@
-// <copyright file="KustoCluterManagementClient.cs" company="3M">
+// <copyright file="KustoClusterManagementClient.cs" company="3M">
 // Copyright (c) 3M. All rights reserved.
 // </copyright>
 
@@ -6,61 +6,48 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Azure.Management.Kusto;
 using Microsoft.Azure.Management.Kusto.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Rest;
+using Microsoft.Rest.Azure;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.Models;
 
-namespace Mmm.Iot.Common.Services.External.KustoStorage
+namespace Mmm.Iot.Common.Services.External.Azure
 {
-    public class KustoCluterManagementClient : IKustoCluterManagementClient, IDisposable
+    public class KustoClusterManagementClient : IKustoClusterManagementClient
     {
-        private readonly ILogger logger;
         private AppConfig config;
-        private IKustoManagementClient client;
-        private bool disposedValue = false;
+        private KustoManagementClient client;
 
-        public KustoCluterManagementClient(AppConfig config, ILogger<KustoCluterManagementClient> logger)
+        public KustoClusterManagementClient(KustoManagementClient client, AppConfig config)
         {
+            this.client = client;
             this.config = config;
-            this.logger = logger;
-            this.client = this.GetKustoClusterClient();
+            this.client.SubscriptionId = this.config.Global.SubscriptionId;
         }
 
         public async Task<StatusResultServiceModel> StatusAsync()
         {
-            var result = new StatusResultServiceModel(false, "kusto check failed");
-
             try
             {
-                Cluster response = null;
-                if (this.client != null)
-                {
-                    // make generic call to see if kusto Manage client can be reached
-                    response = await this.client.Clusters.GetAsync(
-                        this.config.Global.ResourceGroup,
-                        this.config.Global.DataExplorer.Name);
-                }
+                var result = this.client.IsDefined();
+                await Task.CompletedTask; // Just to keep the signature async, later this should be replaced with more robust status check
 
-                if (response != null)
-                {
-                    result.IsHealthy = true;
-                    result.Message = "Alive and Well!";
-                }
+                // If the call above does not fail then return a healthy status
+                return new StatusResultServiceModel(result, result ? "Alive and well!" : "Undefined KustoClusterManagementClient");
             }
             catch (Exception e)
             {
-                this.logger.LogInformation(e, result.Message);
+                return new StatusResultServiceModel(false, $"Kusto Cluster status check failed: {e.Message}");
             }
-
-            return result;
         }
 
-        public async Task CreatedDBInCluterAsync(string databaseName, TimeSpan softDeletePeriod, TimeSpan? hotCachePeriod = null)
+        public async Task CreatedDBInClusterAsync(string databaseName, TimeSpan softDeletePeriod, TimeSpan? hotCachePeriod = null)
         {
             try
             {
@@ -75,47 +62,15 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
                     databaseName,
                     database);
             }
-            catch (Exception e)
+            catch (CloudException e)
             {
-                this.logger.LogError(e, "Error Creating kusto database {database}", databaseName);
-                throw;
+                if (e.Body.Code == "ResourceNotFound")
+                {
+                    throw new ResourceNotFoundException($"Error Creating kusto database {databaseName}");
+                }
+
+                throw e;
             }
-        }
-
-        public IKustoManagementClient GetKustoClusterClient()
-        {
-            if (this.client == null)
-            {
-                try
-                {
-                    var authenticationContext = new AuthenticationContext($"https://login.windows.net/{this.config.Global.AzureActiveDirectory.TenantId}");
-
-                    var credential = new ClientCredential(
-                        this.config.Global.AzureActiveDirectory.AppId,
-                        this.config.Global.AzureActiveDirectory.AppSecret);
-
-                    var result = authenticationContext.AcquireTokenAsync(resource: "https://management.core.windows.net/", clientCredential: credential).Result;
-
-                    var credentials = new TokenCredentials(result.AccessToken, result.AccessTokenType);
-
-                    this.client = new KustoManagementClient(credentials)
-                    {
-                        SubscriptionId = this.config.Global.SubscriptionId,
-                    };
-                }
-                catch (Exception e)
-                {
-                    var msg = "Unable to retrieve kusto with Active Directory properties";
-                    throw new InvalidConfigurationException(msg, e);
-                }
-
-                if (this.client == null)
-                {
-                    throw new InvalidConfigurationException("Could not connect to kusto client");
-                }
-            }
-
-            return this.client;
         }
 
         public async Task AddEventHubDataConnectionAsync(string dataConnectName, string databaseName, string tableName, string tableMappingName, string eventHubName, string eventHubConsumerGroup)
@@ -139,10 +94,14 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
                             "iothub-enqueuedtime",
                             }));
             }
-            catch (Exception e)
+            catch (CloudException e)
             {
-                this.logger.LogError(e, "Error Creating EventHub Data Connection from kusto database {database}, IotHub {iothub}", databaseName, eventHubName);
-                throw;
+                if (e.Body.Code == "ResourceNotFound")
+                {
+                    throw new ResourceNotFoundException($"Error Creating EventHub Data Connection from kusto database {databaseName}, IotHub {eventHubName}");
+                }
+
+                throw e;
             }
         }
 
@@ -167,10 +126,14 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
                             "iothub-enqueuedtime",
                             }));
             }
-            catch (Exception e)
+            catch (CloudException e)
             {
-                this.logger.LogError(e, "Error Creating IoTHub Data Connection from kusto database {database}, IotHub {iothub}", databaseName, iotHubName);
-                throw;
+                if (e.Body.Code == "ResourceNotFound")
+                {
+                    throw new ResourceNotFoundException($"Error Creating IoTHub Data Connection from kusto database {databaseName}, IotHub {iotHubName}");
+                }
+
+                throw e;
             }
         }
 
@@ -193,28 +156,14 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
                                         databaseName);
                 }
             }
-            catch (Exception e)
+            catch (CloudException e)
             {
-                this.logger.LogError(e, "Unable to Delete kusto database {database}", databaseName);
-                throw;
-            }
-        }
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposedValue)
-            {
-                if (disposing)
+                if (e.Body.Code == "ResourceNotFound")
                 {
-                    this.client.Dispose();
+                    throw new ResourceNotFoundException($"Unable to Delete kusto database {databaseName}");
                 }
 
-                this.disposedValue = true;
+                throw e;
             }
         }
 

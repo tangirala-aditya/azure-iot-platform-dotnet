@@ -60,8 +60,8 @@ namespace Mmm.Iot.Common.Services.Test
             var query = this.rand.NextString();
             var queryParameter = new Dictionary<string, string>();
             this.mockKustoQueryClient
-                .Setup(x => x.ExecuteQuery(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ClientRequestProperties>()))
-                .Returns(dataReader.Object);
+                .Setup(x => x.ExecuteQueryAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ClientRequestProperties>()))
+                .Returns(Task.FromResult(dataReader.Object));
 
             // act
             var result = await this.client.QueryAsync<TelemetryModel>(DatabaseName, query, queryParameter);

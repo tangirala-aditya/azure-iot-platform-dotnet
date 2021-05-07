@@ -21,7 +21,6 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             AppConfig config,
             IStorageClient storageClient,
             ITimeSeriesClient timeSeriesClient,
-            IKustoCluterManagementClient adeClient,
             IAsaManagerClient asaManager,
             IStorageAdapterClient storageAdapter,
             IAppConfigurationClient appConfig)
@@ -34,7 +33,6 @@ namespace Mmm.Iot.DeviceTelemetry.Services
                 { "Asa Manager", asaManager },
                 { "Time Series", timeSeriesClient },
                 { "App Config", appConfig },
-                { "Azure Data Explorer", adeClient },
             };
         }
 

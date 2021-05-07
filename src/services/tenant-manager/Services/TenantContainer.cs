@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
+using Mmm.Iot.Common.Services.External.Azure;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.CosmosDb;
 using Mmm.Iot.Common.Services.External.KustoStorage;
@@ -39,8 +40,8 @@ namespace Mmm.Iot.TenantManager.Services
         private readonly ITableStorageClient tableStorageClient;
         private readonly IAppConfigurationClient appConfigClient;
         private readonly IBlobStorageClient blobStorageClient;
-        private readonly IKustoCluterManagementClient kustoCluterManagementClient;
         private readonly AppConfig config;
+        private readonly IAzureManagementClient azureManagementClient;
 
         private readonly Dictionary<string, string> tenantCollections = new Dictionary<string, string>
         {
@@ -72,8 +73,8 @@ namespace Mmm.Iot.TenantManager.Services
             IDeviceGroupsConfigClient deviceGroupConfigClient,
             IAppConfigurationClient appConfigHelper,
             IBlobStorageClient blobStorageClient,
-            IKustoCluterManagementClient kustoCluterManagementClient,
-            AppConfig config)
+            AppConfig config,
+            IAzureManagementClient azureManagementClient)
         {
             this.logger = logger;
             this.runbookHelper = runbookHelper;
@@ -83,8 +84,8 @@ namespace Mmm.Iot.TenantManager.Services
             this.deviceGroupClient = deviceGroupConfigClient;
             this.appConfigClient = appConfigHelper;
             this.blobStorageClient = blobStorageClient;
-            this.kustoCluterManagementClient = kustoCluterManagementClient;
             this.config = config;
+            this.azureManagementClient = azureManagementClient;
         }
 
         public async Task<bool> TenantIsReadyAsync(string tenantId)
@@ -387,7 +388,7 @@ namespace Mmm.Iot.TenantManager.Services
                 string kustoDatabase = string.Format(this.kustoDBFormat, tenantId);
                 try
                 {
-                    await this.kustoCluterManagementClient.DeleteDatabaseAsync(kustoDatabase);
+                    await this.azureManagementClient.KustoClusterManagementClient.DeleteDatabaseAsync(kustoDatabase);
                     deletionRecord["KustoDatabase"] = true;
                 }
                 catch (Exception e)

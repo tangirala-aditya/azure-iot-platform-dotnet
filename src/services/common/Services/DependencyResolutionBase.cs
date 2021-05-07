@@ -62,7 +62,6 @@ namespace Mmm.Iot.Common.Services
             builder.RegisterType<AzureManagementClient>().As<IAzureManagementClient>().SingleInstance();
             builder.RegisterType<BlobStorageClient>().As<IBlobStorageClient>().SingleInstance();
             builder.RegisterType<KustoTableManagementClient>().As<IKustoTableManagementClient>().SingleInstance();
-            builder.RegisterType<KustoCluterManagementClient>().As<IKustoCluterManagementClient>().SingleInstance();
             this.SetupCustomRules(builder);
             var container = builder.Build();
             Factory.RegisterContainer(container);

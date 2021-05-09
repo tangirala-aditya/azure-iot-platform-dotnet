@@ -11,7 +11,7 @@ namespace Mmm.Iot.Common.Services.External.Azure
 {
     public interface IKustoClusterManagementClient : IStatusOperation
     {
-        Task CreatedDBInClusterAsync(string databaseName, TimeSpan softDeletePeriod, TimeSpan? hotCachePeriod = null);
+        Task CreateDBInClusterAsync(string databaseName, TimeSpan softDeletePeriod, TimeSpan? hotCachePeriod = null);
 
         Task AddEventHubDataConnectionAsync(string dataConnectName, string databaseName, string tableName, string tableMappingName, string eventHubName, string eventHubConsumerGroup);
 

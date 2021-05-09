@@ -145,7 +145,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                     var softDeletePeriod = new TimeSpan(60, 0, 0, 0);
                                     var databaseName = $"IoT-{item.TenantId}";
 
-                                    await this.azureManagementClient.KustoClusterManagementClient.CreatedDBInClusterAsync(databaseName, softDeletePeriod);
+                                    await this.azureManagementClient.KustoClusterManagementClient.CreateDBInClusterAsync(databaseName, softDeletePeriod);
 
                                     Console.WriteLine($"Created a {item.TenantId} DB in Data Explorer");
 

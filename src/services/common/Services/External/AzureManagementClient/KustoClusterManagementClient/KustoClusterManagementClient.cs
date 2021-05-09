@@ -47,7 +47,7 @@ namespace Mmm.Iot.Common.Services.External.Azure
             }
         }
 
-        public async Task CreatedDBInClusterAsync(string databaseName, TimeSpan softDeletePeriod, TimeSpan? hotCachePeriod = null)
+        public async Task CreateDBInClusterAsync(string databaseName, TimeSpan softDeletePeriod, TimeSpan? hotCachePeriod = null)
         {
             try
             {

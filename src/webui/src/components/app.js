@@ -18,6 +18,7 @@ import {
 import {
     DashboardContainer,
     DevicesRouter,
+    DevicesRouter2,
     UsersContainer,
     RulesContainer,
     MaintenanceContainer,
@@ -53,6 +54,13 @@ class App extends Component {
                     svg: svgs.tabs.dashboard,
                     labelId: "tabs.dashboard",
                     component: DashboardContainer,
+                },
+                {
+                    to: "/devices2",
+                    exact: false,
+                    svg: svgs.tabs.devices2,
+                    labelId: "tabs.devices2",
+                    component: DevicesRouter2,
                 },
                 {
                     to: "/devices",

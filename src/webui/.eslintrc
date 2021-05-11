@@ -3,6 +3,7 @@
     "plugins": ["prettier","react-hooks"],
     "rules": {
         "prettier/prettier": "error",
+        "endOfLine": 0,
         "no-unused-vars": "error",
         "eqeqeq": "error",
         "react-hooks/rules-of-hooks": "error",

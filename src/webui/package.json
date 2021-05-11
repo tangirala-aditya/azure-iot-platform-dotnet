@@ -5,6 +5,7 @@
     "dependencies": {
         "@angular/common": "^8.2.2",
         "@angular/core": "^8.2.2",
+        "@fluentui/react": "^8.14.2",
         "@microsoft/azure-iot-ux-fluent-controls": "file:azure-iot-ux-fluent-controls",
         "@microsoft/azure-iot-ux-fluent-css": "file:azure-iot-ux-fluent-css",
         "adal-angular": "1.0.17",
@@ -55,7 +56,8 @@
         "typescript": "3.4.3"
     },
     "scripts": {
-        "start": "./node_modules/.bin/eslint . && react-scripts start",
+        "start": "react-scripts start",
+        "startX": "./node_modules/.bin/eslint . && react-scripts start",
         "build": "GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true react-scripts build",
         "lint": "./node_modules/.bin/eslint .",
         "test": "react-scripts test",
@@ -69,3 +71,4 @@
         "not op_mini all"
     ]
 }
+ 

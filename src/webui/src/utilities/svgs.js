@@ -53,6 +53,7 @@ import StarIconPath from "assets/icons/star.svg";
 import SimulatedDeviceIconPath from "assets/icons/simulatedDevice.svg";
 import TabDashboardIconPath from "assets/icons/tabDashboard.svg";
 import TabDevicesIconPath from "assets/icons/tabDevices.svg";
+import TabDevicesIconPath2 from "assets/icons/simulatedDevice.svg";
 import TabDeploymentsIconPath from "assets/icons/tabDeployments.svg";
 import TabMaintenanceIconPath from "assets/icons/tabMaintenance.svg";
 import TabRulesIconPath from "assets/icons/tabRules.svg";
@@ -68,6 +69,7 @@ export const svgs = {
     tabs: {
         dashboard: TabDashboardIconPath,
         devices: TabDevicesIconPath,
+        devices2: TabDevicesIconPath2,
         devicesSearch: SearchIconPath,
         deployments: TabDeploymentsIconPath,
         maintenance: TabMaintenanceIconPath,

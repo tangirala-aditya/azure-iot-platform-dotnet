@@ -26,6 +26,7 @@
     "tabs": {
         "dashboard": "Dashboard",
         "devices": "Device Explorer",
+        "devices2": "Devices",
         "users": "User Management",
         "rules": "Rules",
         "maintenance": "Maintenance",

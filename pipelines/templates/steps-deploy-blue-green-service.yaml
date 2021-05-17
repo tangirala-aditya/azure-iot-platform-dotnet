@@ -52,7 +52,6 @@ steps:
         fi 
         echo "_ $type _ Here is the type value"
 
-
   - task: HelmInstaller@1
     displayName: Install Helm
     inputs:
@@ -70,21 +69,21 @@ steps:
       arguments: --force-upgrade
 
 
-  - task: HelmDeploy@0
-    displayName: Upgrading the service for first time
-    inputs:
-      connectionType: Azure Resource Manager
-      azureSubscription: ${{parameters.subscriptionName}}
-      azureResourceGroup: ${{parameters.resourceGroupName}}
-      kubernetesCluster: ${{parameters.aksName}}
-      namespace: default
-      command: upgrade
-      chartType: FilePath
-      chartPath: charts/mmm-iot-service-blue-green
-      releaseName: ${{parameters.serviceName}}
-      force: true
-      install: true
-      overrideValues: nameOverride=${{parameters.serviceName}},service.port=${{parameters.servicePort}},type=${{parameters.type}},deployment.enabled=false,service.enabled=true
+  # - task: HelmDeploy@0
+  #   displayName: Upgrading the service for first time
+  #   inputs:
+  #     connectionType: Azure Resource Manager
+  #     azureSubscription: ${{parameters.subscriptionName}}
+  #     azureResourceGroup: ${{parameters.resourceGroupName}}
+  #     kubernetesCluster: ${{parameters.aksName}}
+  #     namespace: default
+  #     command: upgrade
+  #     chartType: FilePath
+  #     chartPath: charts/mmm-iot-service-blue-green
+  #     releaseName: ${{parameters.serviceName}}
+  #     force: true
+  #     install: true
+  #     overrideValues: nameOverride=${{parameters.serviceName}},service.port=${{parameters.servicePort}},type=${{parameters.type}},deployment.enabled=false,service.enabled=true
 
   - task: HelmDeploy@0
     displayName: Creation Blue application deployment

@@ -87,12 +87,7 @@ namespace Mmm.Iot.Common.Services.External.Azure
                             tableName: tableName,
                             mappingRuleName: tableMappingName,
                             dataFormat: "JSON",
-                            compression: "None",
-                            eventSystemProperties: new List<string>()
-                            {
-                            "iothub-connection-device-id",
-                            "iothub-enqueuedtime",
-                            }));
+                            compression: "None"));
             }
             catch (CloudException e)
             {

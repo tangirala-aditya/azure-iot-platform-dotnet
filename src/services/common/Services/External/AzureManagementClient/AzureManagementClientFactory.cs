@@ -3,12 +3,14 @@
 // </copyright>
 
 using System;
+using Microsoft.Azure.Management.EventHub;
 using Microsoft.Azure.Management.IotHub;
 using Microsoft.Azure.Management.Kusto;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
 using Microsoft.Azure.Management.StreamAnalytics;
 using Mmm.Iot.Common.Services.Config;
+using Mmm.Iot.Common.Services.External.EventHub;
 
 namespace Mmm.Iot.Common.Services.External.Azure
 {
@@ -69,6 +71,11 @@ namespace Mmm.Iot.Common.Services.External.Azure
         public KustoClusterManagementClient CreateKustoClusterManagementClient()
         {
             return new KustoClusterManagementClient(new KustoManagementClient(this.AzureCredentials), this.config);
+        }
+
+        public EventHubsManagementClient CreateEventHubsManagementClient()
+        {
+            return new EventHubsManagementClient(new EventHubManagementClient(this.AzureCredentials) { SubscriptionId = this.config.Global.SubscriptionId }, this.config);
         }
     }
 }

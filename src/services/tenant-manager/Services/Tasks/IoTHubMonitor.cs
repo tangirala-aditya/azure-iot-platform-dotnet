@@ -140,6 +140,8 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                                 if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
                                 {
+                                    this.azureManagementClient.EventHubsManagementClient.CreateEventHub(this.config.Global.EventHub.Name, $"{item.TenantId}-telemetry");
+
                                     Console.WriteLine("Creating a DB in Data Explorer");
 
                                     var softDeletePeriod = new TimeSpan(60, 0, 0, 0);
@@ -161,9 +163,9 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                     };
                                     var mappingSchema = new ColumnMapping[]
                                     {
-                                    new ColumnMapping() { ColumnName = "DeviceId", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.iothub-connection-device-id" } } },
-                                    new ColumnMapping() { ColumnName = "Data", ColumnType = "dynamic", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$" } } },
-                                    new ColumnMapping() { ColumnName = "TimeStamp", ColumnType = "datetime", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.iothub-enqueuedtime" } } },
+                                    new ColumnMapping() { ColumnName = "DeviceId", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.deviceId" } } },
+                                    new ColumnMapping() { ColumnName = "Data", ColumnType = "dynamic", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.data" } } },
+                                    new ColumnMapping() { ColumnName = "TimeStamp", ColumnType = "datetime", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.dateTimeReceived" } } },
                                     };
 
                                     this.kustoTableManagementClient.CreateTable(tableName, tableSchema, databaseName);
@@ -174,9 +176,10 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                                     string dataConnectName = $"TelemetryDataConnect-{item.TenantId.Substring(0, 8)}";
                                     string iotHubName = iothub.Name;
+
                                     string iotHubConsumerGroup = "$Default";
 
-                                    await this.azureManagementClient.KustoClusterManagementClient.AddIoTHubDataConnectionAsync(dataConnectName, databaseName, tableName, tableMappingName, iotHubName, iotHubConsumerGroup);
+                                    await this.azureManagementClient.KustoClusterManagementClient.AddEventHubDataConnectionAsync(dataConnectName, databaseName, tableName, tableMappingName, $"{item.TenantId}-telemetry", iotHubConsumerGroup);
                                 }
                             }
                         }

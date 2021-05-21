@@ -18,6 +18,7 @@ using Microsoft.Rest.Azure;
 using Microsoft.Rest.ClientRuntime;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
+using Mmm.Iot.Common.Services.External.EventHub;
 using Mmm.Iot.Common.Services.External.TableStorage;
 using Mmm.Iot.Common.Services.Models;
 using Newtonsoft.Json.Linq;
@@ -41,6 +42,7 @@ namespace Mmm.Iot.Common.Services.External.Azure
             this.DpsManagmentClient = new DpsManagementClient(this.rmClient, this.config);
             this.AsaManagementClient = clientFactory.CreateAsaManagementClient();
             this.KustoClusterManagementClient = clientFactory.CreateKustoClusterManagementClient();
+            this.EventHubsManagementClient = clientFactory.CreateEventHubsManagementClient();
         }
 
         public IoTHubManagementClient IotHubManagementClient { get; }
@@ -50,6 +52,8 @@ namespace Mmm.Iot.Common.Services.External.Azure
         public AsaManagementClient AsaManagementClient { get; }
 
         public KustoClusterManagementClient KustoClusterManagementClient { get; }
+
+        public EventHubsManagementClient EventHubsManagementClient { get; }
 
         public async Task<StatusResultServiceModel> StatusAsync()
         {

@@ -24,22 +24,47 @@ export const TitleBar = () => {
     { text: 'Devices', key: 'Devices', as: ''},
     { text: 'HoboMX', key: 'HoboMX', isCurrentItem: true, as: '' },
   ];
+
+  
 */
   const labelStyles = {
     root: { marginTop: 10 },
   };
   
-  const breadcrumContainerStyle = {
+
+
+
+  /*
+   const breadcrumContainerStyle = {
     marginTop: 12,
     marginLeft: 5,
     textDecoration: 'none',
   }
-
-  const breadcrumStyle = {
+   const breadcrumStyle = {
     color: 'rgb(50, 49, 48)',
     fontSize: '12px',
     fontWeight: 400
   }
+
+    //  <span><a href='#' alt="return to devices groups" style={breadcrumStyle}> Devices</a> </span><span style={{paddingLeft:4, paddingRight: 4}}> \ </span><span><a style={breadcrumStyle} href='#' alt="return to device list"> Hobo Mx </a> </span>      
+
+    
+  */
+
+  const navStyles = {
+    root: {      
+      color: 'rgb(50, 49, 48)',
+      display: 'flex',
+      fontSize: '12px',
+      fontWeight: 400
+    },
+  };
+
+  const stackTokens = {
+    childrenGap: 5,
+    padding: 10,
+  };
+
 
   return (
     <>
@@ -47,11 +72,17 @@ export const TitleBar = () => {
       <div style={imageContainerStyle}>
         <div className="icon icon-dialShape3" style={imageStyle}></div>
       </div>
-      <div>
-        <div style={breadcrumContainerStyle}>
-          <span><a href='#' alt="return to devices groups" style={breadcrumStyle}> Devices</a> \ </span><span><a style={breadcrumStyle} href='#' alt="return to device list"> Hobo Mx </a> </span>      
-        </div>
-        <div style={labelStyle}>HoboMx-100-v2-X</div>
+      <div style={{wdith:"100%"}}>
+          <div style={{wdith:"100%"}}>
+            <Stack horizontal tokens={stackTokens}>
+              <Stack.Item align="stretch" styles={navStyles}>
+                <span>Get values from above</span>
+              </Stack.Item>
+              <Stack.Item align="end" styles={navStyles}>
+                <span style={{width:"100%",textAlign:"right"}}>Test</span></Stack.Item>
+              </Stack>
+            <div style={labelStyle}>HoboMx-100-v2-X</div>
+          </div>
       </div>
       
     </Stack>

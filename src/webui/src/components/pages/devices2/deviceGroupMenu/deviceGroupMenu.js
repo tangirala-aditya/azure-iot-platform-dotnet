@@ -76,10 +76,10 @@ export const DeviceGroupMenu = ({ open, children }) => {
                 <Stack >      
                     <Stack tokens={verticalGapStackTokens}>
                         <DeviceGroupLink name="All Items"/>
-                        <DeviceGroupLink name="Item 2" select={true} />
-                        <DeviceGroupLink name="Item 3" />                   
-                        <DeviceGroupLink name="Item 4" />
-                        <DeviceGroupLink name="Item 5" />
+                        <DeviceGroupLink name="TMicroelectronics" select={true} />
+                        <DeviceGroupLink name="NXP" />                   
+                        <DeviceGroupLink name="Renesas" />
+                        <DeviceGroupLink name="Microchip" />
                     </Stack>
                 </Stack>
             </div>

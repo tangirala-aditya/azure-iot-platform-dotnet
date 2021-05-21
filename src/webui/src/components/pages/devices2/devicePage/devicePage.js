@@ -1,15 +1,18 @@
-import * as React from 'react';
+import React from 'react';
 import {TitleBar} from './titleBar';
 
-const pageStyle = {
-    width: "100%",
-    height: "100%",
-};
+
 
 export const DevicePage = ({ open, children }) => {
     
+    
+    const divStyle = {
+        marginTop: 30,
+        marginLeft: 40,
+    }
     return(
-    <div style={pageStyle}>
+    <div style={divStyle}>
         <TitleBar />
+        
     </div>);
 }

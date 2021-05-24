@@ -174,5 +174,5 @@ stages:
               ScriptType: FilePath
               workingDirectory: $(System.DefaultWorkingDirectory)
               ScriptPath: pipelines/cd/ExistingTenantsADE/ExistingTenantsADE.ps1
-              ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroup $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId)
+              ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroup $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId) -subscriptionId $(subscriptionId)
               azurePowerShellVersion: LatestVersion

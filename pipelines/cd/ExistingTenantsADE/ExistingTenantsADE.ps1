@@ -4,7 +4,8 @@
      [string] $resourceGroup,
      [string] $servicePrincipalId, 
      [string] $servicePrincipalKey, 
-     [string] $tenantId
+     [string] $tenantId,
+     [string] $subscriptionId,     
 )
 
 
@@ -27,7 +28,7 @@ try {
      $tableObject = (Get-AzStorageTable -Name "tenant" -Context $cloudTable).CloudTable
      $iotHubArray = (Get-AzTableRow -table $tableObject -CustomFilter 'IsIotHubDeployed eq true')
      $location = (Get-AzResourceGroup -Name $resourceGroupName | Select-Object location).location 
-
+     az account set --subscription $subscriptionId
 
 
      Foreach ($iotHub in $iotHubArray) {

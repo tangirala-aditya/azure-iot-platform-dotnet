@@ -7,12 +7,12 @@
      [string] $tenantId
 )
 
- 
 
 try {       
      $resourceGroupName = $resourceGroup
      $clusterName = $applicationCode + "kusto" + $environmentCategory
      $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
+     $appConfigurationName=$applicationCode + "-appconfig-" + $environmentCategory
      [PSCustomObject[]] $eventhubConnectionStrings=@()
      
      #remove and reisntall pkmngr and install packages
@@ -38,12 +38,13 @@ try {
           New-AzEventHubNamespace -ResourceGroupName $resourceGroupName -Name $eventhubNamespace -Location "centralus"                   
           #Place the EventHub Namespace primary connectionstting => appConfiguration
           $connectionString=Get-AzEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -AuthorizationRuleName RootManageSharedAccessKey
-          $eventhubConnectionStrings+= @{key="tenant:$iotTenantId​:telemetryHubConn";value=$connectionString.PrimaryConnectionString}
+          az appconfig kv set --name $appConfigurationName --key "tenant:$iotTenantId​:telemetryHubConn" --value $connectionString.PrimaryConnectionString  --yes
+          #$eventhubConnectionStrings+= @{key="tenant:$iotTenantId​:telemetryHubConn";value=$connectionString.PrimaryConnectionString}
           #create a EventHub in that eventhub namespace
           New-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName -MessageRetentionInDays 1 
 
 
-		  $eventHubResourceId = (Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName).Id
+		$eventHubResourceId = (Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName).Id
           $IotHubName = $iotHub.IotHubName
           Write-host("############## Creating required for $IotHubName.")
           #create and check db 
@@ -100,7 +101,9 @@ try {
           }
      }
      # Set the connectionstring variable out variable in order use that in another task in pipeline
-     Write-Output ("##vso[task.setvariable variable=eventhubConnectionStrings;]$eventhubConnectionStrings")   
+     #Write-Output ("##vso[task.setvariable variable=eventhubConnectionStrings;]$eventhubConnectionStrings")
+
+     #Write-Output "##vso[task.setvariable variable=eventhubConnectionStrings;isOutput=true]$eventhubConnectionStrings"   
 }
 
  

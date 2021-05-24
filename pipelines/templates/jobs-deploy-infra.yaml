@@ -1251,8 +1251,8 @@ jobs:
           functionName: deployment-sync
           appNamePartial: iotdeploymentfuncapp
           appName: ${{parameters.applicationCode}}-$(appNamePartial)-${{parameters.environmentCategory}}
-        batch-processor:
-          functionName: batch-processor
+        telemetry-processor:
+          functionName: telemetry-processor
           appNamePartial: batchprocessorfuncapp
           appName: ${{parameters.applicationCode}}-$(appNamePartial)-${{parameters.environmentCategory}}
 

@@ -109,7 +109,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Functions", "src\functions\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Functions", "src\functions\rule-actions\Functions.csproj", "{6ADC0874-B6F1-4175-A865-9332458AF29E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Functions", "src\functions\TelemetryProcessor\Functions.csproj", "{E20FBD4C-F318-4412-AC77-3C229BC74B5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Functions", "src\functions\telemetry-processor\Functions.csproj", "{E20FBD4C-F318-4412-AC77-3C229BC74B5B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "telemetry-processor", "telemetry-processor", "{EE52AF4D-1FE4-467A-ADE1-3544DB476E44}"
 EndProject

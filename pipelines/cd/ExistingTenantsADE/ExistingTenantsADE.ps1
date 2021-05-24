@@ -31,13 +31,14 @@ try {
 
 
      Foreach ($iotHub in $iotHubArray) {
-          $eventhubNamespace="telemetry-eventhub-" + $tenantId.SubString(0,8)
-          $eventhubName="$tenantId-telemetry"
+          $iotTenantId=$iotHub.TenantId
+          $eventhubNamespace="telemetry-eventhub-" + $iotTenantId.SubString(0,8)
+          $eventhubName="$iotTenantId-telemetry"
           # create EventHub Name space
           New-AzEventHubNamespace -ResourceGroupName $resourceGroupName -Name $eventhubNamespace -Location "centralus"                   
           #Place the EventHub Namespace primary connectionstting => appConfiguration
           $connectionString=Get-AzEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -AuthorizationRuleName RootManageSharedAccessKey
-          $eventhubConnectionStrings+= @{key="tenant:$tenantId​:telemetryHubConn";value=$connectionString.PrimaryConnectionString}
+          $eventhubConnectionStrings+= @{key="tenant:$iotTenantId​:telemetryHubConn";value=$connectionString.PrimaryConnectionString}
           #create a EventHub in that eventhub namespace
           New-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName -MessageRetentionInDays 1 
 

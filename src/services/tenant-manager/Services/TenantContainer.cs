@@ -63,6 +63,7 @@ namespace Mmm.Iot.TenantManager.Services
         private string streamAnalyticsNameFormat = "sa-{0}";  // format with a guide
         private string appConfigCollectionKeyFormat = "tenant:{0}:{1}-collection";  // format with a guid and collection name
         private string kustoDBFormat = "IoT-{0}";  // format with a guid
+        private string eventHubNamespaceFormat = "telemetry-eventhub-{0}";
 
         public TenantContainer(
             ILogger<TenantContainer> logger,
@@ -394,7 +395,19 @@ namespace Mmm.Iot.TenantManager.Services
                 catch (Exception e)
                 {
                     deletionRecord["KustoDatabase"] = false;
-                    this.logger.LogInformation(e, "An error occurred while deleting the {kustoDatabase} kusto database for tenant {tenantId}", kustoDatabase, tenantId);
+                    this.logger.LogInformation(e, $"An error occurred while deleting the {kustoDatabase} kusto database for tenant {tenantId}", kustoDatabase, tenantId);
+                }
+
+                string eventHubNamespace = string.Format(this.eventHubNamespaceFormat, tenantId.Substring(0, 8));
+                try
+                {
+                    await this.azureManagementClient.EventHubsManagementClient.DeleteEventHubNameSpace(eventHubNamespace);
+                    deletionRecord["EventHubNameSpace"] = true;
+                }
+                catch (Exception e)
+                {
+                    deletionRecord["EventHubNameSpace"] = false;
+                    this.logger.LogInformation(e, $"An error occurred while deleting the {eventHubNamespace} EventHub NameSpace for tenant {tenantId}", eventHubNamespace, tenantId);
                 }
             }
 

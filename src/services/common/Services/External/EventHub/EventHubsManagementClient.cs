@@ -74,5 +74,15 @@ namespace Mmm.Iot.Common.Services.External.EventHub
 
             return result.PrimaryConnectionString;
         }
+
+        public async Task DeleteEventHubNameSpace(string namespaceName, string resourceGroupName = null)
+        {
+            if (resourceGroupName == null)
+            {
+                resourceGroupName = this.appConfig.Global.ResourceGroup;
+            }
+
+            await this.eventHubManagementClient.Namespaces.DeleteAsync(resourceGroupName, namespaceName);
+        }
     }
 }

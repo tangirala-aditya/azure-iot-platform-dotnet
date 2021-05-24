@@ -34,7 +34,7 @@ try {
           $iotTenantId=$iotHub.TenantId
           $eventhubNamespace="telemetry-eventhub-" + $iotTenantId.SubString(0,8)
           $eventhubName="$iotTenantId-telemetry"
-          if(Test-AzEventHubName -ResourceGroupName $resourceGroupName -Namespace $eventhubNamespace){
+          if(Test-AzEventHubName -Namespace $eventhubNamespace){
                Write-Host "############## EventHub NameSpace Already $eventhubNamespace." 
           }
           else {

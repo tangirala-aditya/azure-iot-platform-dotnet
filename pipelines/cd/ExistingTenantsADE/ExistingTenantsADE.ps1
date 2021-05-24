@@ -30,7 +30,7 @@ try {
      $location = (Get-AzResourceGroup -Name $resourceGroupName | Select-Object location).location 
      az cloud set -n AzureCloud
      az login --service-principal -u $servicePrincipalId --password $servicePrincipalKey --tenant $tenantId --allow-no-subscriptions
-
+     az account set --subscription $subscriptionId
 
 
      Foreach ($iotHub in $iotHubArray) {
@@ -48,6 +48,7 @@ try {
           az appconfig kv set --name $appConfigurationName --key "tenant:$iotTenantId​:telemetryHubConn" --value $connectionString.PrimaryConnectionString  --yes
           $isEventHubExists=Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName
           if($isEventHubExists  -eq $null){
+               Write-Host "############## Creating EventHub $eventhubName" 
                New-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName -MessageRetentionInDays 1
           }
           else { 

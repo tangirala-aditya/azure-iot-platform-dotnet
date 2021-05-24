@@ -176,17 +176,3 @@ stages:
               ScriptPath: pipelines/cd/ExistingTenantsADE/ExistingTenantsADE.ps1
               ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroup $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId)
               azurePowerShellVersion: LatestVersion
-
-          - task: AzureCLI@2
-            displayName: Populate eventhub connectionstrings in appconfig
-            inputs:
-              azureSubscription: $(subscriptionName)
-              addSpnToEnvironment: true
-              scriptLocation: inlineScript
-              scriptType: bash
-              inlineScript: |-
-                set -Eeuxo pipefail    
-                for connString in $(existingTenants.eventhubConnectionStrings)   
-                do
-                   az appconfig kv set --name $(appConfigurationName) --key $connString.key --value $connString.value  --yes
-                done

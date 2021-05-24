@@ -27,6 +27,7 @@ try {
      $cloudTable = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context
      $tableObject = (Get-AzStorageTable -Name "tenant" -Context $cloudTable).CloudTable
      $iotHubArray = (Get-AzTableRow -table $tableObject -CustomFilter 'IsIotHubDeployed eq true')
+     $location = (Get-AzResourceGroup -Name $resourceGroupName | Select-Object location).location 
 
 
 
@@ -34,16 +35,19 @@ try {
           $iotTenantId=$iotHub.TenantId
           $eventhubNamespace="telemetry-eventhub-" + $iotTenantId.SubString(0,8)
           $eventhubName="$iotTenantId-telemetry"
-          # create EventHub Name space
-          New-AzEventHubNamespace -ResourceGroupName $resourceGroupName -Name $eventhubNamespace -Location "centralus"                   
+          if(Test-AzEventHubName -ResourceGroupName $resourceGroupName -Namespace $eventhubNamespace){
+               Write-Host "############## EventHub NameSpace Already $eventhubNamespace." 
+          }
+          else{
+          New-AzEventHubNamespace -ResourceGroupName $resourceGroupName -Name $eventhubNamespace -Location $location                   
+          }
           #Place the EventHub Namespace primary connectionstting => appConfiguration
           $connectionString=Get-AzEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -AuthorizationRuleName RootManageSharedAccessKey
           az appconfig kv set --name $appConfigurationName --key "tenant:$iotTenantId​:telemetryHubConn" --value $connectionString.PrimaryConnectionString  --yes
-          #$eventhubConnectionStrings+= @{key="tenant:$iotTenantId​:telemetryHubConn";value=$connectionString.PrimaryConnectionString}
-          #create a EventHub in that eventhub namespace
-          New-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName -MessageRetentionInDays 1 
-
-
+          $isEventHubExists=Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName
+          if($isEventHubExists  -eq $null){
+               New-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName -MessageRetentionInDays 1
+          }
 		$eventHubResourceId = (Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName).Id
           $IotHubName = $iotHub.IotHubName
           Write-host("############## Creating required for $IotHubName.")
@@ -100,10 +104,7 @@ try {
                write-host("############## There is already a Data conection with the Name $dataconnectionName.")
           }
      }
-     # Set the connectionstring variable out variable in order use that in another task in pipeline
-     #Write-Output ("##vso[task.setvariable variable=eventhubConnectionStrings;]$eventhubConnectionStrings")
-
-     #Write-Output "##vso[task.setvariable variable=eventhubConnectionStrings;isOutput=true]$eventhubConnectionStrings"   
+ 
 }
 
  

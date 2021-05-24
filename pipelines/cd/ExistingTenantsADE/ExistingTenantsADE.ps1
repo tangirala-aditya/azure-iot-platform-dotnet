@@ -13,7 +13,6 @@ try {
      $clusterName = $applicationCode + "kusto" + $environmentCategory
      $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
      $appConfigurationName=$applicationCode + "-appconfig-" + $environmentCategory
-     [PSCustomObject[]] $eventhubConnectionStrings=@()
      
      #remove and reisntall pkmngr and install packages
      Register-PackageSource -Name MyNuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet
@@ -38,7 +37,7 @@ try {
           if(Test-AzEventHubName -ResourceGroupName $resourceGroupName -Namespace $eventhubNamespace){
                Write-Host "############## EventHub NameSpace Already $eventhubNamespace." 
           }
-          else{
+          else {
           New-AzEventHubNamespace -ResourceGroupName $resourceGroupName -Name $eventhubNamespace -Location $location                   
           }
           #Place the EventHub Namespace primary connectionstting => appConfiguration
@@ -47,6 +46,9 @@ try {
           $isEventHubExists=Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName
           if($isEventHubExists  -eq $null){
                New-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName -MessageRetentionInDays 1
+          }
+          else { 
+               Write-Host "############## EventHub Already exists $eventhubName." 
           }
 		$eventHubResourceId = (Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName).Id
           $IotHubName = $iotHub.IotHubName

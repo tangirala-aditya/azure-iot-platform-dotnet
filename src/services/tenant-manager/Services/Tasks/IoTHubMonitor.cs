@@ -140,7 +140,14 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                                 if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    this.azureManagementClient.EventHubsManagementClient.CreateEventHub(this.config.Global.EventHub.Name, $"{item.TenantId}-telemetry");
+                                    string telemetryEventHubNameSpace = $"telemetry-eventhub-{item.TenantId.Substring(0, 8)}";
+                                    await this.azureManagementClient.EventHubsManagementClient.CreateNamespace(telemetryEventHubNameSpace);
+
+                                    string nameSpaceConnString = await this.azureManagementClient.EventHubsManagementClient.GetPrimaryConnectionString(telemetryEventHubNameSpace);
+
+                                    await this.appConfigurationClient.SetValueAsync($"tenant:{item.TenantId}:telemetryHubConn", nameSpaceConnString);
+
+                                    this.azureManagementClient.EventHubsManagementClient.CreateEventHub(telemetryEventHubNameSpace, $"{item.TenantId}-telemetry");
 
                                     Console.WriteLine("Creating a DB in Data Explorer");
 
@@ -177,9 +184,9 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                     string dataConnectName = $"TelemetryDataConnect-{item.TenantId.Substring(0, 8)}";
                                     string iotHubName = iothub.Name;
 
-                                    string iotHubConsumerGroup = "$Default";
+                                    string consumerGroup = "$Default";
 
-                                    await this.azureManagementClient.KustoClusterManagementClient.AddEventHubDataConnectionAsync(dataConnectName, databaseName, tableName, tableMappingName, $"{item.TenantId}-telemetry", iotHubConsumerGroup);
+                                    await this.azureManagementClient.KustoClusterManagementClient.AddEventHubDataConnectionAsync(dataConnectName, databaseName, tableName, tableMappingName, telemetryEventHubNameSpace, $"{item.TenantId}-telemetry", consumerGroup);
                                 }
                             }
                         }

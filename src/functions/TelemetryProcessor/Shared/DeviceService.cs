@@ -19,7 +19,7 @@ namespace Mmm.Iot.Functions.TelemetryProcessor.Shared
     {
         private bool success = true;
 
-        public async Task ProcessTelemetryAsync(EventData[] source, ILogger log, EventHubHelper eventHubHelper, int batchThreshold = 12, int batchWriteDelay = 85)
+        public async Task ProcessTelemetryAsync(EventData[] source, ILogger log, AppConfigHelper configHelper, int batchThreshold = 12, int batchWriteDelay = 85)
         {
             if (batchThreshold <= 0)
             {
@@ -44,6 +44,8 @@ namespace Mmm.Iot.Functions.TelemetryProcessor.Shared
                 }
 
                 var telemetryTimestamp = new TelemetryTimestamp(Convert.ToDateTime(dateTimeReceived));
+                var connectionString = await configHelper.GetValueByKey($"tenant:{tenant}:telemetryHubConn");
+                EventHubHelper eventHubHelper = new EventHubHelper(connectionString);
 
                 bool isBatchedTelemetry = false;
                 if (eventData.Properties.TryGetValue(DeviceTelemetryKeyConstants.BatchedTelemetry, out object isBatchedValue))

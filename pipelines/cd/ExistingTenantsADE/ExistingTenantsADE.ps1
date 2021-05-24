@@ -7,10 +7,13 @@
      [string] $tenantId
 )
 
-try {
+ 
+
+try {       
      $resourceGroupName = $resourceGroup
      $clusterName = $applicationCode + "kusto" + $environmentCategory
      $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
+     [PSCustomObject[]] $eventhubConnectionStrings=@()
      
      #remove and reisntall pkmngr and install packages
      Register-PackageSource -Name MyNuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet
@@ -20,11 +23,26 @@ try {
 
      Write-Host "############## Installed Kusto, AzTable and Kusto.Tools successfully."
 
+
      $cloudTable = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context
      $tableObject = (Get-AzStorageTable -Name "tenant" -Context $cloudTable).CloudTable
      $iotHubArray = (Get-AzTableRow -table $tableObject -CustomFilter 'IsIotHubDeployed eq true')
 
-     Foreach ($iotHub in $iotHubArray) {  
+
+
+     Foreach ($iotHub in $iotHubArray) {
+          $eventhubNamespace="telemetry-eventhub-" + $tenantId.SubString(0,8)
+          $eventhubName="$tenantId-telemetry"
+          # create EventHub Name space
+          New-AzEventHubNamespace -ResourceGroupName $resourceGroupName -Name $eventhubNamespace -Location "centralus"                   
+          #Place the EventHub Namespace primary connectionstting => appConfiguration
+          $connectionString=Get-AzEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -AuthorizationRuleName RootManageSharedAccessKey
+          $eventhubConnectionStrings+= @{key="tenant:$tenantId​:telemetryHubConn";value=$connectionString.PrimaryConnectionString}
+          #create a EventHub in that eventhub namespace
+          New-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName -MessageRetentionInDays 1 
+
+
+		  $eventHubResourceId = (Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName).Id
           $IotHubName = $iotHub.IotHubName
           Write-host("############## Creating required for $IotHubName.")
           #create and check db 
@@ -58,6 +76,8 @@ try {
                write-host("############## There is already a Database with the Name $databaseName.")
           }
 
+ 
+
           #Printing the variables
           Write-Host "dataConMappingName: $dataConMappingName"
           Write-Host "clusterLocation: $clusterLocation"
@@ -66,20 +86,54 @@ try {
           Write-Host "databaseName: $databaseName"
           Write-Host "clusterName: $clusterName"
           Write-Host "resourceGroupName: $resourceGroupName"
+ 
 
           #Data Connection
           ##checking if Name exists.
           if ((Test-AzKustoDataConnectionNameAvailability -ClusterName $clusterName -DatabaseName $databaseName -ResourceGroupName $resourceGroupName -Name $dataconnectionName -Type Microsoft.Kusto/Clusters/Databases/dataConnections).NameAvailable) {
-               New-AzKustoDataConnection -ResourceGroupName $resourceGroupName -ClusterName $clusterName -DatabaseName $databaseName -DataConnectionName $dataconnectionName -Location $clusterLocation -Kind "IotHub" -IotHubResourceId $IotHubResourceId -SharedAccessPolicyName "iothubowner" -DataFormat "JSON" -ConsumerGroup '$Default' -TableName "Telemetry" -MappingRuleName $dataConMappingName -EventSystemProperty "iothub-connection-device-id", "iothub-enqueuedtime"
+               New-AzKustoDataConnection -ResourceGroupName $resourceGroupName -ClusterName $clusterName -DatabaseName $databaseName -DataConnectionName $dataconnectionName -Location $clusterLocation -Kind "EventHub" -EventHubResourceId $eventHubResourceId -DataFormat "JSON" -ConsumerGroup '$Default' -TableName "Telemetry" -MappingRuleName $dataConMappingName
                Write-Host "############## Created Data Connection."
           }
           else {
                write-host("############## There is already a Data conection with the Name $dataconnectionName.")
           }
-     }   
+     }
+     # Set the connectionstring variable out variable in order use that in another task in pipeline
+     Write-Output ("##vso[task.setvariable variable=eventhubConnectionStrings;]$eventhubConnectionStrings")   
 }
+
+ 
 
 catch {
      Write-Host("An Error occured.")
      Write-Host($_)
 }
+
+
+
+#add name parameter(name: sample) to task which the powershell is present
+#add the below task after the powershell task and refer that name parameter in order refer the output variable in powershell task
+
+- task: AzureCLI@2
+  displayName: Populate eventhub connectionstrings in appconfig
+  inputs:
+   azureSubscription: ${{parameters.subscriptionName}}
+   addSpnToEnvironment: true
+   scriptLocation: inlineScript
+   scriptType: bash
+   inlineScript: |-
+     set -Eeuxo pipefail    
+     for $connString in $(sample.eventhubConnectionStrings)   
+     do
+     az appconfig kv set --name $(appConfigurationName) --key $connString.key --value $connString.value  --yes
+     done
+
+    
+
+
+
+
+
+
+
+

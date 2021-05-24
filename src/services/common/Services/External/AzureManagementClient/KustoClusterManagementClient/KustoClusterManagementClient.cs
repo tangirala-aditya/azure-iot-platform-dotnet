@@ -73,7 +73,7 @@ namespace Mmm.Iot.Common.Services.External.Azure
             }
         }
 
-        public async Task AddEventHubDataConnectionAsync(string dataConnectName, string databaseName, string tableName, string tableMappingName, string eventHubName, string eventHubConsumerGroup)
+        public async Task AddEventHubDataConnectionAsync(string dataConnectName, string databaseName, string tableName, string tableMappingName, string eventHubNamespace, string eventHubName, string eventHubConsumerGroup)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace Mmm.Iot.Common.Services.External.Azure
                         databaseName,
                         dataConnectName,
                         new EventHubDataConnection(
-                            $"/subscriptions/{this.config.Global.SubscriptionId}/resourceGroups/{this.config.Global.ResourceGroup}/providers/Microsoft.EventHub/namespaces/{this.config.Global.EventHub.Name}/eventhubs/{eventHubName}",
+                            $"/subscriptions/{this.config.Global.SubscriptionId}/resourceGroups/{this.config.Global.ResourceGroup}/providers/Microsoft.EventHub/namespaces/{eventHubNamespace}/eventhubs/{eventHubName}",
                             eventHubConsumerGroup,
                             location: this.config.Global.Location,
                             tableName: tableName,

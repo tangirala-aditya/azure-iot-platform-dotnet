@@ -1144,13 +1144,91 @@ jobs:
                 "DeploymentsDatabaseId"="pcs-storage" \
               --resource-group $(resourceGroupName)
 
+  - job: function5
+    displayName: Create Batch Telemetry Function
+    dependsOn:
+      - appInsights
+      - storageAccount
+      - populateKeyVault
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+
+      - template: apply-arm-tags.yaml
+        parameters:
+          environment: ${{parameters.environmentName}}
+
+      - task: AzureResourceGroupDeployment@2
+        displayName: Create Batch Telemetry Function
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          action: Create Or Update Resource Group
+          resourceGroupName: $(resourceGroupName)
+          location: ${{parameters.locationName}}
+          templateLocation: Linked artifact
+          csmFile: $(armTemplatesDirectory)/functions.json
+          csmParametersFile: $(armParametersDirectory)/functions.json
+          overrideParameters: -functionAppName ${{parameters.applicationCode}}-batchprocessorfuncapp-${{parameters.environmentCategory}} -appInsightsLocation ${{parameters.appInsightsLocation}} -appInsightsName $(appInsightsName) -storageAccountName $(storageAccountName) -runtime dotnet -funcVersion ~3
+          deploymentMode: Incremental
+          deploymentName: batchprocessorfuncapp-$(Build.BuildId)
+          addSpnToEnvironment: true
+
+      - template: steps-delete-oldest-deployment.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          deploymentPartialName: $(functionApp5PartialName)
+          resourceGroupName: $(resourceGroupName)
+
+      - task: AzureCLI@2
+        displayName: Set app settings for Batch Telemetry Function
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            batchProcessorfn=${{parameters.applicationCode}}-batchprocessorfuncapp-${{parameters.environmentCategory}}
+            telemetryEvConn=$(az keyvault secret show --name "TenantManagerService--TelemetryEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
+            storageAccountConn=$(az keyvault secret show --name "Global--StorageAccountConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            az functionapp config appsettings set --name $batchProcessorfn \
+              --settings \
+                "TelemetryEventHubConnectionString"="$telemetryEvConn" \
+                "DeviceStreamConsumerGroup"="devicestream" \
+                "BatchThreshold"="12" \
+                "BatchWriteDelay"="85" \
+                "AppConfigConnectionString"="$appConfigurationConnectionString" \
+              --resource-group $(resourceGroupName)
+            telemetryStorageType=$(telemetryStorageType)
+            if [ ${telemetryStorageType,,} == "ade"  ]
+            then
+                az functionapp config appsettings set --name $batchProcessorfn \
+                --resource-group $(resourceGroupName) \
+                --settings AzureWebJobs.BatchTelemetryProcessor.Disabled=false
+            else
+                az functionapp config appsettings set --name $batchProcessorfn \
+                --resource-group $(resourceGroupName) \
+                --settings AzureWebJobs.BatchTelemetryProcessor.Disabled=true
+            fi
+
+
   - job: deployFunctions
     displayName: Deploy functions
     dependsOn:
       - function1
       - function2
       - function3
-      - function4     
+      - function4
+      - function5      
     pool:
       vmImage: windows-latest
     variables:
@@ -1172,6 +1250,10 @@ jobs:
         deployment-sync:
           functionName: deployment-sync
           appNamePartial: iotdeploymentfuncapp
+          appName: ${{parameters.applicationCode}}-$(appNamePartial)-${{parameters.environmentCategory}}
+        batch-processor:
+          functionName: batch-processor
+          appNamePartial: batchprocessorfuncapp
           appName: ${{parameters.applicationCode}}-$(appNamePartial)-${{parameters.environmentCategory}}
 
     steps:

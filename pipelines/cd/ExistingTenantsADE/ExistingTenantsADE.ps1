@@ -111,22 +111,7 @@ catch {
 
 
 
-#add name parameter(name: sample) to task which the powershell is present
-#add the below task after the powershell task and refer that name parameter in order refer the output variable in powershell task
 
-- task: AzureCLI@2
-  displayName: Populate eventhub connectionstrings in appconfig
-  inputs:
-   azureSubscription: ${{parameters.subscriptionName}}
-   addSpnToEnvironment: true
-   scriptLocation: inlineScript
-   scriptType: bash
-   inlineScript: |-
-     set -Eeuxo pipefail    
-     for $connString in $(sample.eventhubConnectionStrings)   
-     do
-     az appconfig kv set --name $(appConfigurationName) --key $connString.key --value $connString.value  --yes
-     done
 
     
 

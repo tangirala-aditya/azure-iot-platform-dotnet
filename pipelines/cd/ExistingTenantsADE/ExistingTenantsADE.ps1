@@ -19,7 +19,7 @@ try {
      Register-PackageSource -Name MyNuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet
      Install-Module -Name Az.Kusto -Force
      Install-Module -Name AzTable -Force
-     Install-Package Microsoft.Azure.Kusto.Tools -RequiredVersion 5.1.0 -Destination . -Force
+     Install-Package Microsoft.Azure.Kusto.Tools -RequiredVersion 5.1.0 -Source MyNuGet -Destination . -Force
 
      Write-Host "############## Installed Kusto, AzTable and Kusto.Tools successfully."
 

@@ -28,18 +28,20 @@ try {
      $tableObject = (Get-AzStorageTable -Name "tenant" -Context $cloudTable).CloudTable
      $iotHubArray = (Get-AzTableRow -table $tableObject -CustomFilter 'IsIotHubDeployed eq true')
      $location = (Get-AzResourceGroup -Name $resourceGroupName | Select-Object location).location 
-     az account set --subscription $subscriptionId
+     az cloud set -n AzureCloud
+     az login --service-principal -u $servicePrincipalId --password $servicePrincipalKey --tenant $tenantId --allow-no-subscriptions
+
 
 
      Foreach ($iotHub in $iotHubArray) {
           $iotTenantId=$iotHub.TenantId
           $eventhubNamespace="telemetry-eventhub-" + $iotTenantId.SubString(0,8)
           $eventhubName="$iotTenantId-telemetry"
-          if(Test-AzEventHubName -Namespace $eventhubNamespace){
-               Write-Host "############## EventHub NameSpace Already $eventhubNamespace." 
+          if((Test-AzEventHubName -Namespace $eventhubNamespace).NameAvailable){
+               New-AzEventHubNamespace -ResourceGroupName $resourceGroupName -Name $eventhubNamespace -Location $location                   
           }
           else {
-          New-AzEventHubNamespace -ResourceGroupName $resourceGroupName -Name $eventhubNamespace -Location $location                   
+               Write-Host "############## EventHub NameSpace Already $eventhubNamespace." 
           }
           #Place the EventHub Namespace primary connectionstting => appConfiguration
           $connectionString=Get-AzEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -AuthorizationRuleName RootManageSharedAccessKey

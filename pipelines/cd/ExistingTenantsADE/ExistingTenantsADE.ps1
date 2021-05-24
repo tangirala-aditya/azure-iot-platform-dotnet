@@ -5,7 +5,7 @@
      [string] $servicePrincipalId, 
      [string] $servicePrincipalKey, 
      [string] $tenantId,
-     [string] $subscriptionId,     
+     [string] $subscriptionId     
 )
 
 

@@ -186,7 +186,7 @@ stages:
               scriptType: bash
               inlineScript: |-
                 set -Eeuxo pipefail    
-                for $connString in $(existingTenants.eventhubConnectionStrings)   
+                for connString in $(existingTenants.eventhubConnectionStrings)   
                 do
                    az appconfig kv set --name $(appConfigurationName) --key $connString.key --value $connString.value  --yes
                 done

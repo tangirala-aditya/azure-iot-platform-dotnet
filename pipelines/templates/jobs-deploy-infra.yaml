@@ -982,6 +982,7 @@ jobs:
                 "SendGridApiKey"="$sendGridApiKey" \
                 "ActionsEventHubConsumerGroup"="alertingactions" \
               --resource-group $(resourceGroupName)
+
   - job: function4
     displayName: Create azure iot Deployment Function
     dependsOn:
@@ -1051,13 +1052,75 @@ jobs:
                 "DeploymentsDatabaseId"="pcs-storage" \
               --resource-group $(resourceGroupName)
 
+  - job: function5
+    displayName: Create Resource Collector Function
+    dependsOn:
+      - appInsights
+      - storageAccount
+      - populateKeyVault
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+
+      - template: apply-arm-tags.yaml
+        parameters:
+          environment: ${{parameters.environmentName}}
+
+      - task: AzureResourceGroupDeployment@2
+        displayName: Create Resource Collector Azure Function
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          action: Create Or Update Resource Group
+          resourceGroupName: $(resourceGroupName)
+          location: ${{parameters.locationName}}
+          templateLocation: Linked artifact
+          csmFile: $(armTemplatesDirectory)/functions.json
+          csmParametersFile: $(armParametersDirectory)/functions.json
+          overrideParameters: -functionAppName ${{parameters.applicationCode}}-resourcecollectorfuncapp-${{parameters.environmentCategory}} -appInsightsName $(appInsightsName) -appInsightsLocation ${{parameters.appInsightsLocation}} -storageAccountName $(storageAccountName) -runtime dotnet -funcVersion ~3
+          deploymentMode: Incremental
+          deploymentName: resourcecollectorfuncapp-$(Build.BuildId)
+          addSpnToEnvironment: true
+
+      - template: steps-delete-oldest-deployment.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          deploymentPartialName: resourcecollectorfuncapp
+          resourceGroupName: $(resourceGroupName)
+
+      - task: AzureCLI@2
+        displayName: Set app settings for Resource Collector Azure Function
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            functionName=${{parameters.applicationCode}}-resourcecollectorfuncapp-${{parameters.environmentCategory}}
+            cosmosDbConn=$(az keyvault secret show --name "Global--CosmosDb--DocumentDbConnectionString" --vault-name $(keyVaultName) | grep value | awk -F '\"' '{print $4}')
+            az functionapp config appsettings set --name $functionName \
+              --settings \
+                "CosmosDbConnectionString"="$cosmosDbConn" \
+              --resource-group $(resourceGroupName)
+
+
+
   - job: deployFunctions
     displayName: Deploy functions
     dependsOn:
       - function1
       - function2
       - function3
-      - function4     
+      - function4
+      - function5     
     pool:
       vmImage: windows-latest
     variables:
@@ -1079,6 +1142,10 @@ jobs:
         deployment-sync:
           functionName: deployment-sync
           appNamePartial: iotdeploymentfuncapp
+          appName: ${{parameters.applicationCode}}-$(appNamePartial)-${{parameters.environmentCategory}}
+        resource-data-collector:
+          functionName: resource-data-collector
+          appNamePartial: resourcecollectorfuncapp
           appName: ${{parameters.applicationCode}}-$(appNamePartial)-${{parameters.environmentCategory}}
 
     steps:

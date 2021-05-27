@@ -31,8 +31,6 @@ stages:
     displayName: CRSL dev
     variables:
     - group: crslDev
-    dependsOn:
-      - checkParameters
     jobs:
       - template: ../templates/steps-to-audit-helm-migration.yaml
         parameters:

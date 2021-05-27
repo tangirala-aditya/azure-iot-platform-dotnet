@@ -6,7 +6,7 @@ resources:
       source: azure-iot-platform-dotnet.ci.test-v3
       trigger:
         branches:
-          - master          
+          - test-code-pipeline-trigger          
 pool:
   vmImage: ubuntu-latest
 variables:

@@ -46,8 +46,6 @@ stages:
     displayName: ACS dev
     variables:
     - group: acsDev
-    dependsOn:
-      - checkParameters
     jobs:
       - template: ../templates/steps-to-audit-helm-migration.yaml
         parameters:

@@ -4289,6 +4289,30 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/SendGrid/send-grid.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/SendGrid/send-grid.html",
+          "hash": "xpZGznSH6Eemz3M1zG1SdOpqbsqB2iGXolLjsvfjm2s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Guides/UserManagement/SendGrid/sender-identity.md",
+      "output": {
+        ".html": {
+          "relative_path": "Guides/UserManagement/SendGrid/sender-identity.html",
+          "hash": "ulDRD7Q31ghPgXanC7/uAbrB9gcbz9OUvozcVhvsQrk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Guides/UserManagement/Storage/entities.md",
       "output": {
         ".html": {
@@ -4340,18 +4364,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Guides/UserManagement/send-grid.md",
-      "output": {
-        ".html": {
-          "relative_path": "Guides/UserManagement/send-grid.html",
-          "hash": "uSj8EFeTtRoKISTxT04gp3uyI6nxS2YVKl/xswPmvIs="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Guides/UserManagement/user-registration-apis.md",
       "output": {
         ".html": {
@@ -4386,7 +4398,7 @@
       "output": {
         ".html": {
           "relative_path": "Guides/toc.html",
-          "hash": "Qcw/5iRM78In59uKl0YCRyB2S5SNqB8QE918HKNuPGI="
+          "hash": "RVSO64jIYdNThNUEV7TFpIc4EeUgzzF/5GK2M8qOsU0="
         }
       },
       "is_incremental": false,
@@ -7233,6 +7245,61 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/user-management/sendgrid-newSingleSender-modal.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/sendgrid-newSingleSender-modal.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/sendgrid-newSingleSender.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/sendgrid-newSingleSender.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/sendgrid-singleSender-resend.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/sendgrid-singleSender-resend.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/sendgrid-singleSender-verified.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/sendgrid-singleSender-verified.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/user-management/sendgrid-singleSender.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/user-management/sendgrid-singleSender.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/user-management/user-added-successfully-with-service-principal.PNG",
       "output": {
         "resource": {
@@ -7529,7 +7596,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 306,
+          "total_file_count": 307,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

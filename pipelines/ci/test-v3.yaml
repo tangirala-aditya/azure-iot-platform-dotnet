@@ -574,95 +574,95 @@ stages:
                   Set-AzureADMSApplication -ObjectId $app.Id -Web @{ RedirectUris = $replyUrls }
                 }
 
-  # - stage: deployIngressV3
-  #   displayName: Deploy ingress V3
-  #   dependsOn: []
-  #   jobs:
-  #     - job: deployIngressV3
-  #       displayName: Deploy ingress V3
-  #       steps:
-  #         - checkout: self
-  #           displayName: Checkout repository
+  - stage: deployIngressV3
+    displayName: Deploy ingress V3
+    dependsOn: []
+    jobs:
+      - job: deployIngressV3
+        displayName: Deploy ingress V3
+        steps:
+          - checkout: self
+            displayName: Checkout repository
 
-  #         - task: KubectlInstaller@0
-  #           displayName: Install kubectl
-  #           inputs:
-  #             kubectlVersion: 1.18.2
+          - task: KubectlInstaller@0
+            displayName: Install kubectl
+            inputs:
+              kubectlVersion: 1.18.2
 
-  #         - task: AzureCLI@2
-  #           displayName: Create namespace
-  #           inputs:
-  #             azureSubscription: $(subscriptionName)
-  #             scriptType: pscore
-  #             scriptLocation: inlineScript
-  #             inlineScript: |-
-  #               az aks get-credentials --name $(aksName) --resource-group $(resourceGroupName) --overwrite-existing
-  #               $namespaceAlreadyExists = $Null -ne (kubectl get namespaces $(kubernetesNamespace) --output json --ignore-not-found)
-  #               if (!$namespaceAlreadyExists) {
-  #                 kubectl create namespace $(kubernetesNamespace) --output json
-  #               }
-  #               az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(kubernetesNamespaceWasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+          - task: AzureCLI@2
+            displayName: Create namespace
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                az aks get-credentials --name $(aksName) --resource-group $(resourceGroupName) --overwrite-existing
+                $namespaceAlreadyExists = $Null -ne (kubectl get namespaces $(kubernetesNamespace) --output json --ignore-not-found)
+                if (!$namespaceAlreadyExists) {
+                  kubectl create namespace $(kubernetesNamespace) --output json
+                }
+                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(kubernetesNamespaceWasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
-  #         - template: ../templates/steps-install-helm-v3.yaml
-  #           parameters:
-  #             helmVersion: $(helmVersion)
+          - template: ../templates/steps-install-helm-v3.yaml
+            parameters:
+              helmVersion: $(helmVersion)
 
-  #         - script: |-
-  #             set -Eeuxo pipefail
-  #             cd charts/$(mmmIotPlatformIngressHelmChartName)
-  #             helm dependency update             
-  #           displayName: Update helm local dependencies
+          - script: |-
+              set -Eeuxo pipefail
+              cd charts/$(mmmIotPlatformIngressHelmChartName)
+              helm dependency update             
+            displayName: Update helm local dependencies
 
-  #         - task: HelmDeploy@0
-  #           displayName: Install ingress HelmV3 chart
-  #           inputs:
-  #             connectionType: Azure Resource Manager
-  #             azureSubscriptionEndpoint: $(subscriptionName)
-  #             azureResourceGroup: $(resourceGroupName)
-  #             kubernetesCluster: $(aksName)
-  #             useClusterAdmin: false
-  #             namespace: $(kubernetesNamespace)
-  #             command: install
-  #             chartName: charts/$(mmmIotPlatformIngressHelmChartName)
-  #             releaseName: $(mmmIotPlatformIngressHelmChartReleaseName)
-  #             arguments: >-
-  #               --set nginx-ingress.controller.ingressClass=$(buildId)
-  #               --set domain=$(testPipelineDomain)
-  #               --set subdomain=$(buildId)
-  #               --set letsEncryptEnvironment=staging
-  #               --timeout $(helmInstallTimeoutInSeconds)
-  #               --wait
+          - task: HelmDeploy@0
+            displayName: Install ingress HelmV3 chart
+            inputs:
+              connectionType: Azure Resource Manager
+              azureSubscriptionEndpoint: $(subscriptionName)
+              azureResourceGroup: $(resourceGroupName)
+              kubernetesCluster: $(aksName)
+              useClusterAdmin: false
+              namespace: $(kubernetesNamespace)
+              command: install
+              chartName: charts/$(mmmIotPlatformIngressHelmChartName)
+              releaseName: $(mmmIotPlatformIngressHelmChartReleaseName)
+              arguments: >-
+                --set nginx-ingress.controller.ingressClass=$(buildId)
+                --set domain=$(testPipelineDomain)
+                --set subdomain=$(buildId)
+                --set letsEncryptEnvironment=staging
+                --timeout $(helmInstallTimeoutInSeconds)
+                --wait
 
-  #         - task: AzureCLI@2
-  #           displayName: Note ingress HelmV3 chart was installed
-  #           inputs:
-  #             azureSubscription: $(subscriptionName)
-  #             scriptType: bash
-  #             scriptLocation: inlineScript
-  #             inlineScript: |-
-  #               set -Eeuxo pipefail
-  #               az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+          - task: AzureCLI@2
+            displayName: Note ingress HelmV3 chart was installed
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |-
+                set -Eeuxo pipefail
+                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
-  #         - task: AzureCLI@2
-  #           displayName: Configure DNS
-  #           name: configureDns
-  #           inputs:
-  #             azureSubscription: $(subscriptionName)
-  #             scriptType: pscore
-  #             scriptLocation: inlineScript
-  #             inlineScript: |-
-  #               az aks get-credentials --name $(aksName) --resource-group $(resourceGroupName) --overwrite-existing
-  #               $ingressControllerIpAddress = kubectl get services --namespace $(kubernetesNamespace) --selector=app=nginx-ingress,component=controller --output=jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}'
-  #               $tagsHashtable = Get-Content $(tagsFile) | ConvertFrom-Json -Depth 100 -AsHashtable
-  #               $tags = ($tagsHashtable.Keys | ForEach-Object { "$_=`"$($tagsHashtable[$_])`"" }) -join ','
-  #               az network dns zone create --name $(testPipelineDomain) --resource-group $(resourceGroupName) --if-none-match --tags $tags
-  #               az network dns record-set a add-record --record-set-name $(buildId) --resource-group $(resourceGroupName) --zone-name $(testPipelineDomain) --ipv4-address $ingressControllerIpAddress --if-none-match
-  #               $certificateIsReady = kubectl get certificates --namespace $(kubernetesNamespace) --output jsonpath="{.items[0].status.conditions[?(@.type=='Ready')].status}"
-  #               while ([System.String]::IsNullOrEmpty($certificateIsready) -or 'true' -ne  $certificateIsReady.ToLower()) {
-  #                 Write-Host Waiting for certificate to be ready...
-  #                 Start-Sleep -Seconds 10
-  #                 $certificateIsReady = kubectl get certificates --namespace $(kubernetesNamespace) --output jsonpath="{.items[0].status.conditions[?(@.type=='Ready')].status}"
-  #               }
+          - task: AzureCLI@2
+            displayName: Configure DNS
+            name: configureDns
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                az aks get-credentials --name $(aksName) --resource-group $(resourceGroupName) --overwrite-existing
+                $ingressControllerIpAddress = kubectl get services --namespace $(kubernetesNamespace) --selector=app=nginx-ingress,component=controller --output=jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}'
+                $tagsHashtable = Get-Content $(tagsFile) | ConvertFrom-Json -Depth 100 -AsHashtable
+                $tags = ($tagsHashtable.Keys | ForEach-Object { "$_=`"$($tagsHashtable[$_])`"" }) -join ','
+                az network dns zone create --name $(testPipelineDomain) --resource-group $(resourceGroupName) --if-none-match --tags $tags
+                az network dns record-set a add-record --record-set-name $(buildId) --resource-group $(resourceGroupName) --zone-name $(testPipelineDomain) --ipv4-address $ingressControllerIpAddress --if-none-match
+                $certificateIsReady = kubectl get certificates --namespace $(kubernetesNamespace) --output jsonpath="{.items[0].status.conditions[?(@.type=='Ready')].status}"
+                while ([System.String]::IsNullOrEmpty($certificateIsready) -or 'true' -ne  $certificateIsReady.ToLower()) {
+                  Write-Host Waiting for certificate to be ready...
+                  Start-Sleep -Seconds 10
+                  $certificateIsReady = kubectl get certificates --namespace $(kubernetesNamespace) --output jsonpath="{.items[0].status.conditions[?(@.type=='Ready')].status}"
+                }
 
   - stage: deployServicesV3
     displayName: Deploy services V3
@@ -971,24 +971,24 @@ stages:
                 mmmIotPlatformIngressHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
                 echo "##vso[task.setvariable variable=mmmIotPlatformIngressHelmChartWasInstalled;isOutput=true]$mmmIotPlatformIngressHelmChartWasInstalled"
 
-      # - job: deleteDnsRecordSet
-      #   displayName: Delete DNS record set
-      #   dependsOn: []
-      #   steps:
-      #     - checkout: none
+      - job: deleteDnsRecordSet
+        displayName: Delete DNS record set
+        dependsOn: []
+        steps:
+          - checkout: none
 
-      #     - task: AzureCLI@2
-      #       displayName: Delete DNS record set
-      #       name: deleteDnsRecordSet
-      #       inputs:
-      #         azureSubscription: $(subscriptionName)
-      #         scriptType: pscore
-      #         scriptLocation: inlineScript
-      #         inlineScript: |-
-      #           $recordSetCount = az network dns record-set a list --zone-name $(testPipelineDomain) --resource-group $(resourceGroupName) --query '[?name==`$(buildId)`] | length(@)'
-      #           if ($recordSetCount -gt 0) {
-      #             az network dns record-set a delete --name $(buildId) --zone-name $(testPipelineDomain) --resource-group $(resourceGroupName) --yes
-      #           }
+          - task: AzureCLI@2
+            displayName: Delete DNS record set
+            name: deleteDnsRecordSet
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                $recordSetCount = az network dns record-set a list --zone-name $(testPipelineDomain) --resource-group $(resourceGroupName) --query '[?name==`$(buildId)`] | length(@)'
+                if ($recordSetCount -gt 0) {
+                  az network dns record-set a delete --name $(buildId) --zone-name $(testPipelineDomain) --resource-group $(resourceGroupName) --yes
+                }
 
       - job: uninstallServicesChart
         displayName: Uninstall services Helm chart
@@ -1013,28 +1013,28 @@ stages:
               command: uninstall
               arguments: --namespace $(kubernetesNamespace) $(mmmIotPlatformServicesHelmChartReleaseName)
 
-      # - job: uninstallIngressChart
-      #   displayName: Uninstall ingress Helm chart
-      #   dependsOn:
-      #     - getPipelineVariables
-      #   condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.mmmIotPlatformIngressHelmChartWasInstalled'], 'true'), not(failed()))
-      #   steps:
-      #     - checkout: none
+      - job: uninstallIngressChart
+        displayName: Uninstall ingress Helm chart
+        dependsOn:
+          - getPipelineVariables
+        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.mmmIotPlatformIngressHelmChartWasInstalled'], 'true'), not(failed()))
+        steps:
+          - checkout: none
 
-      #     - template: ../templates/steps-install-helm-v3.yaml
-      #       parameters:
-      #         helmVersion: $(helmVersion)
+          - template: ../templates/steps-install-helm-v3.yaml
+            parameters:
+              helmVersion: $(helmVersion)
 
-      #     - task: HelmDeploy@0
-      #       displayName: Uninstall ingress Helm chart
-      #       inputs:
-      #         connectionType: Azure Resource Manager
-      #         azureSubscriptionEndpoint: $(subscriptionName)
-      #         azureResourceGroup: $(resourceGroupName)
-      #         kubernetesCluster: $(aksName)
-      #         useClusterAdmin: false
-      #         command: uninstall
-      #         arguments: --namespace $(kubernetesNamespace)  $(mmmIotPlatformIngressHelmChartReleaseName)
+          - task: HelmDeploy@0
+            displayName: Uninstall ingress Helm chart
+            inputs:
+              connectionType: Azure Resource Manager
+              azureSubscriptionEndpoint: $(subscriptionName)
+              azureResourceGroup: $(resourceGroupName)
+              kubernetesCluster: $(aksName)
+              useClusterAdmin: false
+              command: uninstall
+              arguments: --namespace $(kubernetesNamespace)  $(mmmIotPlatformIngressHelmChartReleaseName)
 
       - job: deleteNamespace
         displayName: Delete namespace

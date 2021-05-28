@@ -46,7 +46,7 @@ class Calendar extends React.Component {
         this.onKeyDown = this.onKeyDown.bind(this);
         this.setContainerRef = this.setContainerRef.bind(this);
     }
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         const date = this.state.currentDate.copy();
         let update = false;
         if (newProps.year !== this.props.year && newProps.year > 0) {

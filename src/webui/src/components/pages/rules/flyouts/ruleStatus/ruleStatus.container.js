@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { RuleStatus } from "./ruleStatus";
 import { redux as rulesRedux } from "store/reducers/rulesReducer";
 
@@ -10,6 +10,6 @@ const mapDispatchToProps = (dispatch) => ({
     modifyRules: (rules) => dispatch(rulesRedux.actions.modifyRules(rules)),
 });
 
-export const RuleStatusContainer = withNamespaces()(
+export const RuleStatusContainer = withTranslation()(
     connect(null, mapDispatchToProps)(RuleStatus)
 );

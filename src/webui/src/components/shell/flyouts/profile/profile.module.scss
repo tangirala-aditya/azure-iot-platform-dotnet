@@ -1,0 +1,62 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.profile-container {
+  @include rem-font-size(14px);
+
+  .profile-header {
+    @include rem-fallback(margin-bottom, 24px);
+
+    .profile-header-grid {
+      @include rem-fallback(padding, 0px);
+
+      :global(.row) {
+        @include rem-fallback(padding, 0px);
+
+        :global(.cell) { display: inline !important; }
+      }
+    }
+  }
+
+  .profile-error {
+    border: 1px transparent solid;
+    @include rem-fallback(margin, 12px, 0px);
+    @include rem-fallback(padding, 16px);
+  }
+
+  .create-tenant-button {
+    margin-top: 20px;
+  }
+
+  @include themify($themes) {
+    .profile-error { border-color: themed('colorAlert'); }
+  }
+  
+  .iotHub-Name {
+    font-size: small;
+    font-family: $fontSelawikSemilight;
+    color: darkgray;
+  }
+
+  a > span, :global(.pcs-renderer-cell) > span {
+    word-break: break-all;
+    padding-right: 2px;
+  }
+
+  :global(.pcs-renderer-cell) {
+    height: auto;
+    @include themify($themes) {
+      :global(.pcs-renderer-icon) svg { fill: themed('colorWarning'); }
+    }
+    :global(.pcs-renderer-icon) {
+      margin-bottom: 4px !important;
+      margin-left: 3px !important;
+      display: inline-block !important;
+    }
+    .current-tenant-text {
+      font-weight: 600;
+    }
+  }
+}

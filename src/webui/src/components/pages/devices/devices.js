@@ -24,9 +24,10 @@ import { AdvanceSearchContainer } from "./advanceSearch";
 import { SIMManagementContainer } from "./flyouts/SIMManagement";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
 import { svgs, getDeviceGroupParam, getTenantIdParam } from "utilities";
-
-import "./devices.scss";
 import { IdentityGatewayService, IoTHubManagerService } from "services";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./devices.module.scss"));
 
 const closedFlyoutState = { openFlyoutName: undefined };
 
@@ -48,7 +49,7 @@ export class Devices extends Component {
         this.props.updateCurrentWindow("Devices");
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (this.props.location && this.props.location.search) {
             const tenantId = getTenantIdParam(this.props.location);
             this.props.checkTenantAndSwitch({
@@ -78,7 +79,7 @@ export class Devices extends Component {
         IdentityGatewayService.VerifyAndRefreshCache();
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.isPending &&
             nextProps.isPending !== this.props.isPending
@@ -294,7 +295,7 @@ export class Devices extends Component {
                     ]}
                     priorityChildren={this.priorityChildren()}
                 />
-                <PageContent className="devices-container">
+                <PageContent className={css("devices-container")}>
                     <PageTitle
                         titleValue={
                             !this.state.isDeviceSearch
@@ -310,7 +311,7 @@ export class Devices extends Component {
                     {!!error && <AjaxError t={t} error={error} />}
                     {this.state.isDeviceSearch && <AdvanceSearchContainer />}
                     {!this.state.isDeviceSearch && (
-                        <div className="cancel-right-div">
+                        <div className={css("cancel-right-div")}>
                             <Toggle
                                 attr={{
                                     button: {
@@ -325,7 +326,7 @@ export class Devices extends Component {
                             />
                             <Btn
                                 svg={svgs.upload}
-                                className="download-deviceReport"
+                                className={css("download-deviceReport")}
                                 onClick={this.downloadFile}
                             >
                                 {t("devices.downloadDeviceReport")}

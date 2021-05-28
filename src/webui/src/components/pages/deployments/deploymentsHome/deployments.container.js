@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { Deployments } from "./deployments";
 import {
@@ -42,6 +42,6 @@ const mapStateToProps = (state) => ({
             dispatch(appRedux.actions.checkTenantAndSwitch(payload)),
     });
 
-export const DeploymentsContainer = withNamespaces()(
+export const DeploymentsContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(Deployments)
 );

@@ -1,11 +1,18 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import "rxjs";
-import { Observable } from "rxjs";
+import { of } from "rxjs";
 import moment from "moment";
 import { schema, normalize } from "normalizr";
 import update from "immutability-helper";
 import { createSelector } from "reselect";
+import { ofType } from "redux-observable";
+import {
+    map,
+    distinctUntilChanged,
+    mergeMap,
+    catchError,
+} from "rxjs/operators";
 import {
     redux as appRedux,
     getActiveDeviceGroupConditions,
@@ -27,9 +34,7 @@ import {
 
 // ========================= Epics - START
 const handleError = (fromAction) => (error) =>
-    Observable.of(
-        redux.actions.registerError(fromAction.type, { error, fromAction })
-    );
+    of(redux.actions.registerError(fromAction.type, { error, fromAction }));
 
 let cToken = null;
 
@@ -39,8 +44,8 @@ export const epics = createEpicScenario({
         type: "DEVICES_FETCH",
         epic: (fromAction, store) => {
             const rawConditions = getActiveDeviceGroupConditions(
-                    store.getState()
-                ).concat(getActiveDeviceQueryConditions(store.getState())),
+                    store.value
+                ).concat(getActiveDeviceQueryConditions(store.value)),
                 conditions = rawConditions.filter((condition) => {
                     return (
                         !!condition.key &&
@@ -48,24 +53,22 @@ export const epics = createEpicScenario({
                         !!condition.value
                     );
                 });
-            return IoTHubManagerService.getDevices(conditions)
-                .map((response) => {
+            return IoTHubManagerService.getDevices(conditions).pipe(
+                map((response) => {
                     cToken = response.continuationToken;
                     return response.items;
-                })
-                .map(toActionCreator(redux.actions.updateDevices, fromAction))
-                .flatMap((action) => {
+                }),
+                map(toActionCreator(redux.actions.updateDevices, fromAction)),
+                mergeMap((action) => {
                     const actions = [];
                     actions.push(action);
-                    if (
-                        cToken &&
-                        store.getState().devices.makeCTokenDeviceCalls
-                    ) {
+                    if (cToken && store.value.devices.makeCTokenDeviceCalls) {
                         actions.push(epics.actions.fetchDevicesByCToken());
                     }
                     return actions;
-                })
-                .catch(handleError(fromAction));
+                }),
+                catchError(handleError(fromAction))
+            );
         },
     },
 
@@ -75,8 +78,8 @@ export const epics = createEpicScenario({
         epic: (fromAction, store) => {
             if (cToken) {
                 const rawConditions = getActiveDeviceGroupConditions(
-                        store.getState()
-                    ).concat(getActiveDeviceQueryConditions(store.getState())),
+                        store.value
+                    ).concat(getActiveDeviceQueryConditions(store.value)),
                     conditions = rawConditions.filter((condition) => {
                         return (
                             !!condition.key &&
@@ -84,26 +87,27 @@ export const epics = createEpicScenario({
                             !!condition.value
                         );
                     });
-                return IoTHubManagerService.getDevices(conditions, cToken)
-                    .map((response) => {
+                return IoTHubManagerService.getDevices(conditions, cToken).pipe(
+                    map((response) => {
                         cToken = response.continuationToken;
                         return response.items;
-                    })
-                    .map(
+                    }),
+                    map(
                         toActionCreator(redux.actions.insertDevices, fromAction)
-                    )
-                    .flatMap((action) => {
+                    ),
+                    mergeMap((action) => {
                         const actions = [];
                         actions.push(action);
                         if (
                             cToken &&
-                            store.getState().devices.makeCTokenDeviceCalls
+                            store.value.devices.makeCTokenDeviceCalls
                         ) {
                             actions.push(epics.actions.fetchDevicesByCToken());
                         }
                         return actions;
-                    })
-                    .catch(handleError(fromAction));
+                    }),
+                    catchError(handleError(fromAction))
+                );
             }
             return [];
         },
@@ -113,19 +117,22 @@ export const epics = createEpicScenario({
     fetchDevicesByCondition: {
         type: "DEVICES_FETCH_BY_CONDITION",
         epic: (fromAction) => {
-            return IoTHubManagerService.getDevices(fromAction.payload.data)
-                .map((response) => {
+            return IoTHubManagerService.getDevices(
+                fromAction.payload.data
+            ).pipe(
+                map((response) => {
                     return response.items;
-                })
-                .map(
+                }),
+                map(
                     toActionCreator(
                         fromAction.payload.insertIntoGrid
                             ? redux.actions.insertDevices
                             : redux.actions.updateDevicesByCondition,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction));
+                ),
+                catchError(handleError(fromAction))
+            );
         },
     },
 
@@ -135,29 +142,31 @@ export const epics = createEpicScenario({
         epic: (fromAction) =>
             IoTHubManagerService.getModulesByQuery(
                 `"deviceId IN ['${fromAction.payload}'] AND moduleId = '$edgeAgent'"`
-            )
-                .map(([edgeAgent]) => edgeAgent)
-                .map(
+            ).pipe(
+                map(([edgeAgent]) => edgeAgent),
+                map(
                     toActionCreator(
                         redux.actions.updateModuleStatus,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /* Update the devices if the selected device group changes */
     refreshDevices: {
         type: "DEVICES_REFRESH",
         rawEpic: ($actions) =>
-            $actions
-                .ofType(appRedux.actionTypes.updateActiveDeviceGroup)
-                .map(({ payload }) => payload)
-                .distinctUntilChanged()
-                .flatMap((_) => [
+            $actions.pipe(
+                ofType(appRedux.actionTypes.updateActiveDeviceGroup),
+                map(({ payload }) => payload),
+                distinctUntilChanged(),
+                mergeMap((_) => [
                     epics.actions.fetchDevices(),
                     epics.actions.fetchDeviceStatistics(),
-                ]),
+                ])
+            ),
     },
 
     /** Loads the device statistics */
@@ -165,8 +174,8 @@ export const epics = createEpicScenario({
         type: "DEVICE_STATISTICS_FETCH",
         epic: (fromAction, store) => {
             const rawConditions = getActiveDeviceGroupConditions(
-                    store.getState()
-                ).concat(getActiveDeviceQueryConditions(store.getState())),
+                    store.value
+                ).concat(getActiveDeviceQueryConditions(store.value)),
                 conditions = rawConditions.filter((condition) => {
                     return (
                         !!condition.key &&
@@ -174,14 +183,15 @@ export const epics = createEpicScenario({
                         !!condition.value
                     );
                 });
-            return IoTHubManagerService.getDeviceStatistics(conditions)
-                .map(
+            return IoTHubManagerService.getDeviceStatistics(conditions).pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateDeviceStatistics,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction));
+                ),
+                catchError(handleError(fromAction))
+            );
         },
     },
 });

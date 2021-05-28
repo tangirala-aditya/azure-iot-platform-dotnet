@@ -2,10 +2,9 @@
 
 import React from "react";
 
-import { joinClasses } from "utilities";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./panel.module.scss"));
 
 export const PanelOverlay = ({ children, className }) => (
-    <div className={joinClasses("panel-overlay-container", className)}>
-        {children}
-    </div>
+    <div className={css("panel-overlay-container", className)}>{children}</div>
 );

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import {
     redux as appRedux,
     getActiveDeviceGroup,
@@ -68,6 +68,6 @@ const mapStateToProps = (state) => ({
             dispatch(appRedux.actions.checkTenantAndSwitch(payload)),
     });
 
-export const DashboardContainer = withNamespaces()(
+export const DashboardContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(Dashboard)
 );

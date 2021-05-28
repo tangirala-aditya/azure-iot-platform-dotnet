@@ -27,7 +27,7 @@ export class RuleDetailsFlyout extends Component {
         this.expandFlyout = this.expandFlyout.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.props.ruleId !== nextProps.ruleId) {
             this.setState({ isEditable: false });
         }

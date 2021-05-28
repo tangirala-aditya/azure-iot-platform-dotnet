@@ -44,6 +44,13 @@ export const userColumnDefs = {
 /** Given a user object, extract and return the user Id */
 export const getSoftSelectId = ({ Id, name }) => Id + name;
 
+/** Default column definitions*/
+export const defaultColDef = {
+    sortable: true,
+    lockPinned: true,
+    resizable: true,
+};
+
 /** Shared user grid AgGrid properties */
 export const defaultUserGridProps = {
     enableColResize: true,

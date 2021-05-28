@@ -8,7 +8,9 @@ import Section from "./flyoutSection";
 export * from "./flyout";
 export * from "./flyoutSection";
 
-export default {
+var flyoutObject = {
     Container: Flyout,
     Section: Section,
 };
+
+export default flyoutObject;

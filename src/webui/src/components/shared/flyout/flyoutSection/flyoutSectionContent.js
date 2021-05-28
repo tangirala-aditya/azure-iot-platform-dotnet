@@ -3,11 +3,13 @@
 import React from "react";
 
 import { AccordionCollapsableContent } from "./accordionProvider";
-import { joinClasses } from "utilities";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./flyoutSection.module.scss"));
 
 export const FlyoutSectionContent = ({ className, children }) => (
     <AccordionCollapsableContent>
-        <div className={joinClasses("flyout-section-content", className)}>
+        <div className={css("flyout-section-content", className)}>
             {children}
         </div>
     </AccordionCollapsableContent>

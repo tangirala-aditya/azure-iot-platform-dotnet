@@ -4,6 +4,10 @@ import React from "react";
 import { AlertGrid } from "components/pages/maintenance/grids";
 import { AjaxError } from "components/shared";
 
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./summary.module.scss"));
+const maintenanceCss = classnames.bind(require("../maintenance.module.scss"));
+
 export const Notifications = ({
     isPending,
     alerts,
@@ -19,11 +23,17 @@ export const Notifications = ({
     };
     return !error ? (
         !isPending && alerts.length === 0 ? (
-            <div className="no-data-msg">{props.t("maintenance.noData")}</div>
+            <div className={css("no-data-msg")}>
+                {props.t("maintenance.noData")}
+            </div>
         ) : (
             <AlertGrid {...gridProps} />
         )
     ) : (
-        <AjaxError t={props.t} error={error} className="padded-error" />
+        <AjaxError
+            t={props.t}
+            error={error}
+            className={maintenanceCss("padded-error")}
+        />
     );
 };

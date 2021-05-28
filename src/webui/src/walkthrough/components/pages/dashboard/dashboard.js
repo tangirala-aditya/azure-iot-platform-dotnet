@@ -7,7 +7,8 @@ import { Grid, Cell } from "components/pages/dashboard/grid";
 import { ExamplePanel } from "./panels";
 import { ContextMenu, PageContent } from "components/shared";
 
-import "./dashboard.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./dashboard.module.scss"));
 
 const initialState = {};
 
@@ -25,7 +26,10 @@ export class Dashboard extends Component {
             <ContextMenu key="context-menu">
                 {/** Add context buttons here... as needed for your dashboard. In this example, there are none. */}
             </ContextMenu>,
-            <PageContent className="dashboard-container" key="page-content">
+            <PageContent
+                className={css("dashboard-container")}
+                key="page-content"
+            >
                 <Grid>
                     <Cell className="col-4">
                         <ExamplePanel t={t} />

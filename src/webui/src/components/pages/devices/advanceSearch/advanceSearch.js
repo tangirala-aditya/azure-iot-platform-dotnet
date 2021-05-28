@@ -15,8 +15,10 @@ import {
     PropertyGrid as Grid,
 } from "components/shared";
 
-import "./advanceSearch.scss";
 import { IoTHubManagerService } from "services";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./advanceSearch.module.scss"));
 
 // A counter for creating unique keys per new condition
 let conditionKey = 0;
@@ -125,38 +127,23 @@ export class AdvanceSearch extends LinkedComponent {
         );
     };
 
-    resetFlyoutAndDevices = () => {
-        return new Promise((resolve, reject) => {
-            const resetConditions = [newCondition()];
-            try {
-                this.setState(
-                    {
-                        deviceQueryConditions: resetConditions,
-                        error: undefined,
-                        isPending: true,
-                    },
-                    () => {
-                        this.render();
-                        resolve();
-                    }
-                );
-            } catch (error) {
-                reject(error);
+    resetDeviceCondition = () => {
+        this.setState(
+            {
+                deviceQueryConditions: [newCondition()],
+                error: undefined,
+            },
+            () => {
+                this.render();
             }
-        });
+        );
     };
 
     onReset = () => {
         this.props.logEvent(toDiagnosticsModel("CreateDeviceQuery_Reset", {}));
         this.props.resetDeviceByCondition();
         this.setState({ enableDownload: false });
-        this.resetFlyoutAndDevices()
-            .then(() => {
-                this.setState({ error: undefined, isPending: false });
-            })
-            .catch((error) => {
-                this.setState({ error: error, isPending: false });
-            });
+        this.resetDeviceCondition();
     };
 
     operatorOptionArr = (options, key) => {
@@ -267,7 +254,7 @@ export class AdvanceSearch extends LinkedComponent {
 
         return (
             <form onSubmit={this.apply}>
-                <div className="manage-filters-container">
+                <div className={css("manage-filters-container")}>
                     <Grid>
                         {conditionLinks.length > 0 && (
                             <Row>
@@ -287,7 +274,7 @@ export class AdvanceSearch extends LinkedComponent {
                             >
                                 <Cell className="col-1">
                                     <Btn
-                                        className="btn-icon"
+                                        className={css("btn-icon")}
                                         svg={svgs.plus}
                                         onClick={this.addCondition}
                                     />
@@ -346,7 +333,7 @@ export class AdvanceSearch extends LinkedComponent {
                                                 "deviceQueryConditions.valuePlaceholder"
                                             )}
                                             link={condition.value}
-                                            className="width-70"
+                                            className={css("width-70")}
                                         />
                                     )}
                                     {this.state.deviceQueryConditions[idx]
@@ -371,17 +358,17 @@ export class AdvanceSearch extends LinkedComponent {
                         ))}
                     </Grid>
                     <Btn
-                        className="add-btn"
+                        className={css("add-btn")}
                         svg={svgs.plus}
                         onClick={this.addCondition}
                     >
                         Add a condition
                     </Btn>
-                    <div className="cancel-right-div">
+                    <div className={css("cancel-right-div")}>
                         <BtnToolbar>
                             <Btn
                                 svg={svgs.upload}
-                                className="download-deviceQueryReport"
+                                className={css("download-deviceQueryReport")}
                                 disabled={
                                     !this.state.enableDownload ||
                                     !this.formIsValid() ||

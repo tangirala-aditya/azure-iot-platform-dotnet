@@ -9,7 +9,8 @@ import { FormGroup } from "./formGroup";
 import { FormControl } from "./formControl";
 import { svgs, joinClasses, isFunc, int } from "utilities";
 
-import "./styles/duration.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./styles/duration.module.scss"));
 
 export class Duration extends Component {
     static defaultProps = { type: "text" };
@@ -30,7 +31,7 @@ export class Duration extends Component {
     }
 
     // TODO: Update the props to accept h, m, seconds, or value
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const ms = (nextProps.value && nextProps.value.ms) || 0;
         this.setState(this.convertMsToUnits(ms));
     }
@@ -97,7 +98,10 @@ export class Duration extends Component {
             { hours, minutes, seconds } = this.state;
         return (
             <div
-                className={joinClasses("duration-control-container", className)}
+                className={joinClasses(
+                    css("duration-control-container"),
+                    className
+                )}
             >
                 <FormGroup>
                     <FormLabel>HH</FormLabel>
@@ -107,7 +111,7 @@ export class Duration extends Component {
                         value={this.format(hours)}
                     />
                 </FormGroup>
-                <Svg path={svgs.colon} className="duration-colon-icon" />
+                <Svg src={svgs.colon} className={css("duration-colon-icon")} />
                 <FormGroup>
                     <FormLabel>MM</FormLabel>
                     <FormControl
@@ -116,7 +120,7 @@ export class Duration extends Component {
                         value={this.format(minutes)}
                     />
                 </FormGroup>
-                <Svg path={svgs.colon} className="duration-colon-icon" />
+                <Svg src={svgs.colon} className={css("duration-colon-icon")} />
                 <FormGroup>
                     <FormLabel>SS</FormLabel>
                     <FormControl

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { DeploymentDetails } from "./deploymentDetails";
 import {
@@ -51,6 +51,6 @@ const mapStateToProps = (state) => ({
             dispatch(appEpics.actions.logEvent(diagnosticsModel)),
     });
 
-export const DeploymentDetailsContainer = withNamespaces()(
+export const DeploymentDetailsContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(DeploymentDetails)
 );

@@ -4,6 +4,7 @@ import { permissions } from "services/models";
 import {
     packagesColumnDefs,
     defaultPackagesGridProps,
+    defaultColDef,
 } from "./packagesGridConfig";
 import { Btn, ComponentArray, PcsGrid, Protected } from "components/shared";
 import { isFunc, translateColumnDefs, svgs } from "utilities";
@@ -159,12 +160,11 @@ export class PackagesGrid extends Component {
             /* Grid Properties */
             ...defaultPackagesGridProps,
             columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
+            defaultColDef: defaultColDef,
             sizeColumnsToFit: true,
-            deltaRowDataMode: true,
+            immutableData: true,
             ...this.props, // Allow default property overrides
             getRowNodeId: ({ id }) => id,
-            enableSorting: true,
-            unSortIcon: true,
             onHardSelectChange: this.onHardSelectChange,
             context: {
                 t: this.props.t,

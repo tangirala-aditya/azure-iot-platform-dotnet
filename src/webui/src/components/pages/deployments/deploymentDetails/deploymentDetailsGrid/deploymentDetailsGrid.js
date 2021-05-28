@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import {
     deploymentDetailsColumnDefs,
     defaultDeploymentDetailsGridProps,
+    defaultColDef,
 } from "./deploymentDetailsGridConfig";
 import { translateColumnDefs, isFunc } from "utilities";
 import { PcsGrid, ComponentArray } from "components/shared";
@@ -77,6 +78,7 @@ export class DeploymentDetailsGrid extends Component {
                 t: this.props.t,
             },
             rowData: this.props.deployedDevices,
+            defaultColDef: defaultColDef,
             getRowNodeId: ({ id }) => id,
             columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
             getSoftSelectId: this.getSoftSelectId,

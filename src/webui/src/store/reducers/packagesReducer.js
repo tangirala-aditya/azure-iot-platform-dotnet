@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import "rxjs";
-import { Observable } from "rxjs";
+import { of } from "rxjs";
 import moment from "moment";
 import { schema, normalize } from "normalizr";
 import update from "immutability-helper";
 import { createSelector } from "reselect";
 import { ConfigService } from "services";
+import { ofType } from "redux-observable";
+import { map, distinctUntilChanged, catchError } from "rxjs/operators";
 
 import { getActiveDeviceGroupId, redux as appRedux } from "./appReducer";
 import {
@@ -24,67 +26,71 @@ import {
 
 // ========================= Epics - START
 const handleError = (fromAction) => (error) =>
-    Observable.of(
-        redux.actions.registerError(fromAction.type, { error, fromAction })
-    );
+    of(redux.actions.registerError(fromAction.type, { error, fromAction }));
 
 export const epics = createEpicScenario({
     /** Loads Packages*/
     fetchPackages: {
         type: "PACKAGES_FETCH",
         epic: (fromAction, store) =>
-            ConfigService.getPackages(getActiveDeviceGroupId(store.getState()))
-                .map(toActionCreator(redux.actions.updatePackages, fromAction))
-                .catch(handleError(fromAction)),
+            ConfigService.getPackages(getActiveDeviceGroupId(store.value)).pipe(
+                map(toActionCreator(redux.actions.updatePackages, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Loads filtered Packages*/
     fetchFilteredPackages: {
         type: "PACKAGES_FILTERED_FETCH",
         epic: (fromAction, store) =>
             ConfigService.getFilteredPackages(
-                getActiveDeviceGroupId(store.getState()),
+                getActiveDeviceGroupId(store.value),
                 fromAction.payload.packageType,
                 fromAction.payload.configType
-            )
-                .map(toActionCreator(redux.actions.updatePackages, fromAction))
-                .catch(handleError(fromAction)),
+            ).pipe(
+                map(toActionCreator(redux.actions.updatePackages, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Create a new package */
     createPackage: {
         type: "PACKAGES_CREATE",
         epic: (fromAction) =>
-            ConfigService.createPackage(fromAction.payload)
-                .map(toActionCreator(redux.actions.insertPackage, fromAction))
-                .catch(handleError(fromAction)),
+            ConfigService.createPackage(fromAction.payload).pipe(
+                map(toActionCreator(redux.actions.insertPackage, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Delete package */
     deletePackage: {
         type: "PACKAGES_DELETE",
         epic: (fromAction) =>
-            ConfigService.deletePackage(fromAction.payload)
-                .map(toActionCreator(redux.actions.deletePackage, fromAction))
-                .catch(handleError(fromAction)),
+            ConfigService.deletePackage(fromAction.payload).pipe(
+                map(toActionCreator(redux.actions.deletePackage, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Gets configuration types*/
     fetchConfigTypes: {
         type: "PACKAGES_CONFIG_TYPE_FETCH",
         epic: (fromAction) =>
-            ConfigService.getConfigTypes()
-                .map(
+            ConfigService.getConfigTypes().pipe(
+                map(
                     toActionCreator(redux.actions.updateConfigTypes, fromAction)
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /* Update the devices if the selected device group changes */
     refreshPackages: {
         type: "PACKAGES_REFRESH",
         rawEpic: ($actions) =>
-            $actions
-                .ofType(appRedux.actionTypes.updateActiveDeviceGroup)
-                .map(({ payload }) => payload)
-                .distinctUntilChanged()
-                .map((_) => epics.actions.fetchPackages()),
+            $actions.pipe(
+                ofType(appRedux.actionTypes.updateActiveDeviceGroup),
+                map(({ payload }) => payload),
+                distinctUntilChanged(),
+                map((_) => epics.actions.fetchPackages())
+            ),
     },
 });
 // ========================= Epics - END

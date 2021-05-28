@@ -4,14 +4,15 @@ import React, { Component } from "react";
 import moment from "moment";
 import { Btn } from "components/shared";
 import { toDiagnosticsModel } from "services/models";
-import { svgs, DEFAULT_TIME_FORMAT } from "utilities";
+import { svgs, DEFAULT_TIME_FORMAT, joinClasses } from "utilities";
 import {
     Balloon,
     BalloonPosition,
     BalloonAlignment,
 } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Balloon/Balloon";
 
-import "./refreshBar.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./refreshBar.module.scss"));
 
 export class RefreshBar extends Component {
     refresh = () => {
@@ -23,8 +24,8 @@ export class RefreshBar extends Component {
         const { t, isPending, time, isShowIconOnly } = this.props;
         if (isPending || time) {
             return (
-                <span className="time">
-                    <span className="refresh-text">
+                <span className={css("time")}>
+                    <span className={css("refresh-text")}>
                         {t("refreshBar.lastRefreshed")}
                         {isShowIconOnly ? (
                             <>
@@ -37,7 +38,7 @@ export class RefreshBar extends Component {
                     {!isPending ? (
                         moment(time).format(DEFAULT_TIME_FORMAT)
                     ) : (
-                        <span className="empty-text"></span>
+                        <span className={css("empty-time")}></span>
                     )}
                 </span>
             );
@@ -48,7 +49,7 @@ export class RefreshBar extends Component {
     render() {
         const { t, isPending, isShowIconOnly } = this.props;
         return (
-            <div className="last-updated-container">
+            <div className={css("last-updated-container")}>
                 {isShowIconOnly ? (
                     <Balloon
                         position={BalloonPosition.Bottom}
@@ -58,9 +59,10 @@ export class RefreshBar extends Component {
                         <Btn
                             svg={svgs.refresh}
                             aria-label={t("refreshBar.ariaLabel")}
-                            className={`refresh-btn ${
-                                isPending ? "refreshing" : ""
-                            }`}
+                            className={joinClasses(
+                                css("refresh-btn"),
+                                isPending ? css("refreshing") : ""
+                            )}
                             onClick={this.refresh}
                         />
                     </Balloon>
@@ -70,9 +72,10 @@ export class RefreshBar extends Component {
                         <Btn
                             svg={svgs.refresh}
                             aria-label={t("refreshBar.ariaLabel")}
-                            className={`refresh-btn ${
-                                isPending ? "refreshing" : ""
-                            }`}
+                            className={joinClasses(
+                                css("refresh-btn"),
+                                isPending ? css("refreshing") : ""
+                            )}
                             onClick={this.refresh}
                         />
                     </>

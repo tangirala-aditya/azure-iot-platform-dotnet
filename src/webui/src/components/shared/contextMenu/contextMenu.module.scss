@@ -1,0 +1,79 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+$headerHeight: 48px;
+
+.context-menu-container {
+  display: flex;
+  flex-flow: row nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end; // Move buttons to the right of the context menu
+  @include rem-fallback(height, $headerHeight);
+
+  .context-menu-align-container {
+    display: flex;
+    flex-grow: 1;
+
+    &.left { justify-content: flex-start; }
+
+    &.right { 
+      justify-content: flex-end;
+      flex-grow: 0; 
+    }
+
+    .context-menu-align-item {
+      flex-shrink: 0;
+      display: inherit;
+    }
+
+    :global(.btn).dropdown-icon {
+      @include rem-fallback(padding, 0px, 5px);
+      @include rem-fallback(min-width, 0px);
+  
+      :global(.btn-icon) { @include square-px-rem($grid-size*4); }
+    }
+  }
+
+  :global(.last-updated-container) {
+    margin: 0;
+    align-items: center;
+    @include rem-fallback(padding, 0px, 10px);
+  }
+
+  // buttons in the context menu should be centered vertically:
+  :global(.btn) {
+    height: 100%;
+  }
+
+  @include themify($themes) {
+    border-bottom: 1px solid themed('colorContextMenuBorderColor');
+
+    :global(.btn):hover {
+      background-color: themed('colorContextMenuBtnBgHover');
+      color: themed('colorContextMenuBtnTextHover');
+
+      svg { fill: themed('colorContextMenuBtnSvgFill'); }
+    }
+  }
+}
+
+.extra-menu-dropdown {
+  position: fixed;
+  box-shadow: 0px 2px 10px #999999;
+
+  @include themify($themes) {
+
+  background-color: themed('colorHeaderDropdown');
+  
+  &-option {
+    display: inherit;
+  
+      :global(.btn) {
+        justify-content: flex-start;
+        width: 100%;
+      }
+    }
+  }
+}

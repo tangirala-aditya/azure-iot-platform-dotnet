@@ -11,6 +11,10 @@ import {
     Protected,
     FormControl,
 } from "components/shared";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./profile.module.scss"));
+
 class TenantGrid extends React.Component {
     constructor(props) {
         super(props);
@@ -68,12 +72,12 @@ class TenantGrid extends React.Component {
                 {!this.state.isEdit && (
                     <Cell>
                         {tenant.displayName === this.props.currentTenant ? (
-                            <div className="pcs-renderer-cell">
+                            <div className={css("pcs-renderer-cell")}>
                                 <span>
                                     {tenant.displayName}
                                     <Svg
-                                        path={svgs.star}
-                                        className="pcs-renderer-icon"
+                                        src={svgs.star}
+                                        className={css("pcs-renderer-icon")}
                                     />
                                 </span>
                             </div>
@@ -87,18 +91,20 @@ class TenantGrid extends React.Component {
                                 <span>{tenant.displayName}</span>
                             </a>
                         )}
-                        <span className="iotHub-Name">{tenant.iotHubName}</span>
+                        <span className={css("iotHub-Name")}>
+                            {tenant.iotHubName}
+                        </span>
                     </Cell>
                 )}
                 {this.state.isEdit && this.state.tenantId !== tenant.id && (
                     <Cell>
                         {tenant.displayName === this.props.currentTenant ? (
-                            <div className="pcs-renderer-cell">
+                            <div className={css("pcs-renderer-cell")}>
                                 <span>
                                     {tenant.displayName}{" "}
                                     <Svg
-                                        path={svgs.star}
-                                        className="pcs-renderer-icon"
+                                        src={svgs.star}
+                                        className={css("pcs-renderer-icon")}
                                     />{" "}
                                 </span>
                             </div>
@@ -112,7 +118,9 @@ class TenantGrid extends React.Component {
                                 <span>{tenant.displayName} </span>
                             </a>
                         )}
-                        <span className="iotHub-Name">{tenant.iotHubName}</span>
+                        <span className={css("iotHub-Name")}>
+                            {tenant.iotHubName}
+                        </span>
                     </Cell>
                 )}
                 {this.state.isEdit && this.state.tenantId === tenant.id && (
@@ -122,7 +130,9 @@ class TenantGrid extends React.Component {
                             type="text"
                             onChange={this.handleChange}
                         />
-                        <span className="iotHub-Name">{tenant.iotHubName}</span>
+                        <span className={css("iotHub-Name")}>
+                            {tenant.iotHubName}
+                        </span>
                     </div>
                 )}
                 <Cell>{tenant.role}</Cell>
@@ -132,7 +142,7 @@ class TenantGrid extends React.Component {
                     this.props.tenants.length > 1 ? (
                         <Protected permission={permissions.deleteTenant}>
                             <Btn
-                                className="delete-tenant-button"
+                                className={css("delete-tenant-button")}
                                 primary={true}
                                 onClick={() =>
                                     this.props.deleteTenantThenSwitch(

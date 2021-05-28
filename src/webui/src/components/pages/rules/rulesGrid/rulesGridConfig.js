@@ -19,24 +19,20 @@ export const rulesColumnDefs = {
         headerName: "rules.grid.ruleName",
         field: "name",
         sort: "asc",
-        filter: "text",
         cellRendererFramework: SoftSelectLinkRenderer,
     },
     description: {
         headerName: "rules.grid.description",
         field: "description",
-        filter: "text",
     },
     severity: {
         headerName: "rules.grid.severity",
         field: "severity",
-        filter: "text",
         cellRendererFramework: SeverityRenderer,
     },
     severityIconOnly: {
         headerName: "rules.grid.severity",
         field: "severity",
-        filter: "text",
         cellRendererFramework: (props) => (
             <SeverityRenderer {...props} iconOnly={true} />
         ),
@@ -44,7 +40,6 @@ export const rulesColumnDefs = {
     filter: {
         headerName: "rules.grid.deviceGroup",
         field: "groupId",
-        filter: "text",
         valueFormatter: ({ value, context: { deviceGroups } }) => {
             if (!deviceGroups) {
                 return value;
@@ -59,26 +54,22 @@ export const rulesColumnDefs = {
     trigger: {
         headerName: "rules.grid.trigger",
         field: "sortableConditions",
-        filter: "text",
         cellClass: "capitalize-cell",
     },
     notificationType: {
         headerName: "rules.grid.notificationType",
         field: "type",
-        filter: "text",
         valueFormatter: ({ value, context: { t } }) =>
             value || t("rules.grid.maintenanceLog"),
     },
     status: {
         headerName: "rules.grid.status",
         field: "status",
-        filter: "text",
         cellRendererFramework: RuleStatusRenderer,
     },
     alertStatus: {
         headerName: "rules.grid.status",
         field: "status",
-        filter: "text",
         cellClass: "capitalize-cell",
     },
     lastTrigger: {
@@ -95,6 +86,13 @@ export const rulesColumnDefs = {
             <LinkRenderer {...props} to={`/maintenance/rule/${props.value}`} />
         ),
     },
+};
+
+/** Default column definitions*/
+export const defaultColDef = {
+    sortable: true,
+    lockPinned: true,
+    resizable: true,
 };
 
 export const defaultRulesGridProps = {

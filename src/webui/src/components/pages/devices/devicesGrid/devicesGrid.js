@@ -3,7 +3,11 @@
 import React, { Component } from "react";
 import { permissions, toDiagnosticsModel } from "services/models";
 import { Btn, ComponentArray, PcsGrid, Protected } from "components/shared";
-import { deviceColumnDefs, defaultDeviceGridProps } from "./devicesGridConfig";
+import {
+    deviceColumnDefs,
+    defaultDeviceGridProps,
+    defaultColDef,
+} from "./devicesGridConfig";
 import { DeviceDeleteContainer } from "../flyouts/deviceDelete";
 import { DeviceJobsContainer } from "../flyouts/deviceJobs";
 import { DeviceDetailsContainer } from "../flyouts/deviceDetails";
@@ -50,38 +54,32 @@ export class DevicesGrid extends Component {
             deviceColumnDefs.status,
             deviceColumnDefs.lastConnection,
         ];
-
-        this.contextBtns = (
-            <ComponentArray>
-                <Protected permission={permissions.createJobs}>
-                    <Btn
-                        svg={svgs.reconfigure}
-                        onClick={this.openFlyout("jobs")}
-                    >
-                        {props.t("devices.flyouts.jobs.title")}
-                    </Btn>
-                </Protected>
-                <Protected permission={permissions.deleteDevices}>
-                    <Btn svg={svgs.trash} onClick={this.openFlyout("delete")}>
-                        {props.t("devices.flyouts.delete.title")}
-                    </Btn>
-                </Protected>
-                <Protected permission={permissions.sendC2DMessage}>
-                    <Btn
-                        svg={svgs.email}
-                        onClick={this.openFlyout("c2dmessage")}
-                    >
-                        {props.t("devices.flyouts.c2dMessage.sendMessage")}
-                    </Btn>
-                </Protected>
-                <Btn icon="areaChart" onClick={this.goToTelemetryScreen}>
-                    {props.t("devices.showTelemetry")}
-                </Btn>
-            </ComponentArray>
-        );
     }
 
-    componentWillMount() {
+    contextBtns = () => (
+        <ComponentArray>
+            <Protected permission={permissions.createJobs}>
+                <Btn svg={svgs.reconfigure} onClick={this.openFlyout("jobs")}>
+                    {this.props.t("devices.flyouts.jobs.title")}
+                </Btn>
+            </Protected>
+            <Protected permission={permissions.deleteDevices}>
+                <Btn svg={svgs.trash} onClick={this.openFlyout("delete")}>
+                    {this.props.t("devices.flyouts.delete.title")}
+                </Btn>
+            </Protected>
+            <Protected permission={permissions.sendC2DMessage}>
+                <Btn svg={svgs.email} onClick={this.openFlyout("c2dmessage")}>
+                    {this.props.t("devices.flyouts.c2dMessage.sendMessage")}
+                </Btn>
+            </Protected>
+            <Btn icon="areaChart" onClick={this.goToTelemetryScreen}>
+                {this.props.t("devices.showTelemetry")}
+            </Btn>
+        </ComponentArray>
+    );
+
+    UNSAFE_componentWillMount() {
         if (
             this.props &&
             this.props.location &&
@@ -103,7 +101,7 @@ export class DevicesGrid extends Component {
         }
     };
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.state.flyoutOpened === false) {
             this.setState({ flyoutOpened: true });
             this.getDefaultFlyout(nextProps.rowData);
@@ -315,7 +313,7 @@ export class DevicesGrid extends Component {
         const { onContextMenuChange, onHardSelectChange } = this.props;
         if (isFunc(onContextMenuChange)) {
             onContextMenuChange(
-                selectedDevices.length > 0 ? this.contextBtns : null
+                selectedDevices.length > 0 ? this.contextBtns() : null
             );
         }
         if (isFunc(onHardSelectChange)) {
@@ -339,13 +337,12 @@ export class DevicesGrid extends Component {
             ...defaultDeviceGridProps,
             onFirstDataRendered: this.onFirstDataRendered,
             columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
+            defaultColDef: defaultColDef,
             sizeColumnsToFit: true,
             getSoftSelectId: this.getSoftSelectId,
             softSelectId: this.state.softSelectedDeviceId || {},
             ...this.props, // Allow default property overrides
-            deltaRowDataMode: true,
-            enableSorting: true,
-            unSortIcon: true,
+            immutableData: true,
             getRowNodeId: ({ id }) => id,
             context: {
                 t: this.props.t,

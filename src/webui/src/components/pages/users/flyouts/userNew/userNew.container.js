@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { UserNew } from "./userNew";
 import {
     epics as usersEpics,
@@ -19,6 +19,6 @@ const mapStateToProps = (state) => ({}),
             dispatch(appEpics.actions.logEvent(diagnosticsModel)),
     });
 
-export const UserNewContainer = withNamespaces()(
+export const UserNewContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(UserNew)
 );

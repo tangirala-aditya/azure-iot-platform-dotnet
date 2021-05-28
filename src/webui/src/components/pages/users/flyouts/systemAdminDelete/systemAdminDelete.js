@@ -19,7 +19,8 @@ import {
     Svg,
 } from "components/shared";
 
-import "./../userDelete/userDelete.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./systemAdminDelete.module.scss"));
 
 export class SystemAdminDelete extends LinkedComponent {
     constructor(props) {
@@ -77,10 +78,10 @@ export class SystemAdminDelete extends LinkedComponent {
         IdentityGatewayService.deleteSystemAdmin(
             this.state.formData.userId
         ).subscribe(
-            function (deletedUserId) {
+            (deletedUserId) => {
                 this.props.deleteUsers([deletedUserId]);
                 this.props.getAllSystemAdmins();
-            }.bind(this),
+            },
             (error) =>
                 this.setState({
                     error,
@@ -145,7 +146,7 @@ export class SystemAdminDelete extends LinkedComponent {
                 }}
             >
                 <form
-                    className="device-delete-container"
+                    className={css("sysadmin-delete-container")}
                     onSubmit={this.deleteUsers}
                 >
                     {!changesApplied && (
@@ -176,8 +177,8 @@ export class SystemAdminDelete extends LinkedComponent {
                                     {this.state.isPending && <Indicator />}
                                     {completedSuccessfully && (
                                         <Svg
-                                            className="summary-icon"
-                                            path={svgs.apply}
+                                            className={css("summary-icon")}
+                                            src={svgs.apply}
                                         />
                                     )}
                                 </SummaryBody>
@@ -191,7 +192,7 @@ export class SystemAdminDelete extends LinkedComponent {
                     )}
                     {error && (
                         <AjaxError
-                            className="device-delete-error"
+                            className={css("sysadmin-delete-error")}
                             t={t}
                             error={error}
                         />

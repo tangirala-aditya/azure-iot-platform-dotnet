@@ -2,8 +2,9 @@
 
 import React from "react";
 
-import "./grid.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./grid.module.scss"));
 
 export const Grid = ({ children }) => (
-    <div className="grid-container">{children}</div>
+    <div className={css("grid-container")}>{children}</div>
 );

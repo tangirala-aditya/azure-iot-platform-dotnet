@@ -6,7 +6,8 @@ import PropTypes from "prop-types";
 import { Btn } from "components/shared";
 import { joinClasses, svgs } from "utilities";
 
-import "./styles/fileInput.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./styles/fileInput.module.scss"));
 
 export class FileInput extends Component {
     constructor(props) {
@@ -26,17 +27,17 @@ export class FileInput extends Component {
     render() {
         const { t, className, accept, onChange } = this.props;
         return (
-            <div className={joinClasses(className, "file-upload")}>
+            <div className={joinClasses(className, css("file-upload"))}>
                 <Btn
                     primary={true}
-                    className="upload-btn"
+                    className={css("upload-btn")}
                     svg={svgs.upload}
                     onClick={this.clickFileInput}
                 >
                     {t("fileInput.upload")}
                 </Btn>
                 <input
-                    className="input-file"
+                    className={css("input-file")}
                     ref={this.setFileInputRef}
                     type="file"
                     accept={accept}

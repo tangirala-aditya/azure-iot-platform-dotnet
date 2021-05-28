@@ -3,13 +3,14 @@
 import React from "react";
 
 import { Svg } from "components/shared";
-import { svgs, joinClasses } from "utilities";
+import { svgs } from "utilities";
 
-import "./searchInput.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./searchInput.module.scss"));
 
 export const SearchInput = ({ children, className, ...rest }) => (
-    <div className={joinClasses("context-menu-search-input", className)}>
-        <Svg path={svgs.search} className="search-icon" />
-        <input className="search-text-box" {...rest} type="text" />
+    <div className={css("context-menu-search-input", className)}>
+        <Svg src={svgs.search} className={css("search-icon")} />
+        <input className={css("search-text-box")} {...rest} type="text" />
     </div>
 );

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import {
     deploymentsColumnDefs,
     defaultDeploymentsGridProps,
+    defaultColDef,
 } from "./deploymentsGridConfig";
 import { Btn, PcsGrid, ComponentArray } from "components/shared";
 import { isFunc, translateColumnDefs, svgs } from "utilities";
@@ -108,6 +109,7 @@ export class DeploymentsGrid extends Component {
             /* Grid Properties */
             ...defaultDeploymentsGridProps,
             columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
+            defaultColDef: defaultColDef,
             ...this.props, // Allow default property overrides
             getRowNodeId: ({ id }) => id,
             onHardSelectChange: this.onHardSelectChange,

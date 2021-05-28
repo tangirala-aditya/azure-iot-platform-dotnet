@@ -8,10 +8,14 @@ import rootReducer from "./rootReducer";
 
 export function configureStore() {
     // Initialize the redux-observable epics
-    const epicMiddleware = createEpicMiddleware(rootEpic);
+    const epicMiddleware = createEpicMiddleware();
+
     // Initialize the redux store with middleware
-    return createStore(
+    const store = createStore(
         rootReducer,
         composeWithDevTools(applyMiddleware(epicMiddleware))
     );
+
+    epicMiddleware.run(rootEpic);
+    return store;
 }

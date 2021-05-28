@@ -21,9 +21,10 @@ import {
     SummarySection,
     Svg,
 } from "components/shared";
-
-import "./userNew.scss";
 import { Policies } from "utilities";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./userNew.module.scss"));
 
 const isEmailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     emailAddress = (x) => x.match(isEmailRegex),
@@ -129,12 +130,12 @@ export class UserNew extends LinkedComponent {
                 this.state.formData.email,
                 this.state.formData.role
             ).subscribe(
-                function (user) {
+                (user) => {
                     this.setState({
                         successCount: this.state.successCount + 1,
                     });
                     this.props.insertUsers(user);
-                }.bind(this),
+                },
                 (error) =>
                     this.setState({
                         error,
@@ -197,10 +198,10 @@ export class UserNew extends LinkedComponent {
             >
                 <Protected permission={permissions.inviteUsers}>
                     <form
-                        className="users-new-container"
+                        className={css("users-new-container")}
                         onSubmit={this.invite}
                     >
-                        <div className="users-new-content">
+                        <div className={css("users-new-content")}>
                             <FormGroup>
                                 <FormLabel>
                                     {t(userOptions.labelName)}
@@ -234,7 +235,7 @@ export class UserNew extends LinkedComponent {
 
                         {error && (
                             <AjaxError
-                                className="users-new-error"
+                                className={css("users-new-error")}
                                 t={t}
                                 error={error}
                             />
@@ -271,8 +272,8 @@ export class UserNew extends LinkedComponent {
                                         {this.state.isPending && <Indicator />}
                                         {completedSuccessfully && (
                                             <Svg
-                                                className="summary-icon"
-                                                path={svgs.apply}
+                                                className={css("summary-icon")}
+                                                src={svgs.apply}
                                             />
                                         )}
                                     </SummaryBody>

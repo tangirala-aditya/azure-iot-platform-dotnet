@@ -2,12 +2,11 @@
 
 import React from "react";
 
-import { joinClasses } from "utilities";
-
-import "./grid.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./grid.module.scss"));
 
 export const Cell = ({ className, children }) => (
-    <div className={joinClasses("grid-cell", className)}>
-        <div className="grid-cell-contents">{children}</div>
+    <div className={css("grid-cell", className)}>
+        <div className={css("grid-cell-contents")}>{children}</div>
     </div>
 );

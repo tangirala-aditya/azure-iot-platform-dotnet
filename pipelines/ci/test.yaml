@@ -436,7 +436,7 @@ stages:
 
           - task: NodeTool@0
             inputs:
-              versionSpec: 10.14.1
+              versionSpec: 14.16.0
 
           - pwsh: |-
               npm install

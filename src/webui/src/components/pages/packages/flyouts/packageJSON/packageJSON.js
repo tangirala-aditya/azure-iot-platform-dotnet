@@ -4,8 +4,10 @@ import React from "react";
 import { LinkedComponent, svgs, copyToClipboard } from "utilities";
 import { Btn, Flyout, FormControl } from "components/shared";
 
-import "../packageNew/packageNew.scss";
 import "./packageJSON.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../packageNew/packageNew.module.scss"));
 
 export class PackageJSON extends LinkedComponent {
     constructor(props) {
@@ -23,7 +25,7 @@ export class PackageJSON extends LinkedComponent {
         this.props.onClose();
     };
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.packageJson !== this.props.packageJson) {
             var jsonData = JSON.parse(nextProps.packageJson);
             this.state = {
@@ -81,8 +83,8 @@ export class PackageJSON extends LinkedComponent {
                     <div>
                         <h4>Package JSON</h4>
                     </div>
-                    <div className="new-package-content">
-                        <form className="new-package-form">
+                    <div className={css("new-package-content")}>
+                        <form className={css("new-package-form")}>
                             <FormControl
                                 link={this.packageJsonLink}
                                 type="jsoninput"

@@ -22,7 +22,7 @@ export const packagesColumnDefs = {
         lockPosition: checkboxColumn.lockPosition,
         cellClass: checkboxColumn.cellClass,
         headerClass: checkboxColumn.headerClass,
-        suppressResize: checkboxColumn.suppressResize,
+        resizable: checkboxColumn.resizable,
         checkboxSelection: checkboxColumn.checkboxSelection,
         headerCheckboxSelection: checkboxColumn.headerCheckboxSelection,
         headerCheckboxSelectionFilteredOnly:
@@ -87,6 +87,13 @@ export const packagesColumnDefs = {
         field: "lastModifiedBy",
         valueFormatter: ({ value }) => checkForEmpty(value),
     },
+};
+
+/** Default column definitions*/
+export const defaultColDef = {
+    sortable: true,
+    lockPinned: true,
+    resizable: true,
 };
 
 export const defaultPackagesGridProps = {

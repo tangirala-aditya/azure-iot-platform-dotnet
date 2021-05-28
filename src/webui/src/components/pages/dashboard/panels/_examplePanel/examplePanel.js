@@ -9,7 +9,8 @@ import {
     PanelContent,
 } from "components/pages/dashboard/panel";
 
-import "./examplePanel.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./examplePanel.module.scss"));
 
 export class ExamplePanel extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ export class ExamplePanel extends Component {
                         {t("examples.panel.header")}
                     </PanelHeaderLabel>
                 </PanelHeader>
-                <PanelContent className="example-panel-container">
+                <PanelContent className={css("example-panel-container")}>
                     {t("examples.panel.panelBody")}
                 </PanelContent>
             </Panel>

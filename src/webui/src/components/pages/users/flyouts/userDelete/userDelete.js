@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
-import { Observable } from "rxjs";
+import { from } from "rxjs";
 import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle";
 
 import { IdentityGatewayService } from "services";
@@ -21,8 +21,10 @@ import {
     SummarySection,
     Svg,
 } from "components/shared";
+import { map, mergeMap } from "rxjs/operators";
 
-import "./userDelete.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./userDelete.module.scss"));
 
 export class UserDelete extends Component {
     constructor(props) {
@@ -45,7 +47,7 @@ export class UserDelete extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.users &&
             (this.props.users || []).length !== nextProps.users.length
@@ -80,17 +82,22 @@ export class UserDelete extends Component {
         event.preventDefault();
         this.setState({ isPending: true, error: null });
 
-        this.subscription = Observable.from(this.state.users)
-            .flatMap(
-                ({ id }) => IdentityGatewayService.deleteUser(id).map(() => id) // On success return id
+        this.subscription = from(this.state.users)
+            .pipe(
+                mergeMap(
+                    ({ id }) =>
+                        IdentityGatewayService.deleteUser(id).pipe(
+                            map(() => id)
+                        ) // On success return id
+                )
             )
             .subscribe(
-                function (deletedUserId) {
+                (deletedUserId) => {
                     this.setState({
                         successCount: this.state.successCount + 1,
                     });
                     this.props.deleteUsers([deletedUserId]);
-                }.bind(this),
+                },
                 (error) =>
                     this.setState({
                         error,
@@ -156,13 +163,13 @@ export class UserDelete extends Component {
             >
                 <Protected permission={permissions.deleteDevices}>
                     <form
-                        className="device-delete-container"
+                        className={css("user-delete-container")}
                         onSubmit={this.deleteUsers}
                     >
-                        <div className="device-delete-header">
+                        <div className={css("user-delete-header")}>
                             {t("users.flyouts.delete.header")}
                         </div>
-                        <div className="device-delete-descr">
+                        <div className={css("user-delete-descr")}>
                             {t("users.flyouts.delete.description")}
                         </div>
                         <Toggle
@@ -189,8 +196,8 @@ export class UserDelete extends Component {
                                 {this.state.isPending && <Indicator />}
                                 {completedSuccessfully && (
                                     <Svg
-                                        className="summary-icon"
-                                        path={svgs.apply}
+                                        className={css("summary-icon")}
+                                        src={svgs.apply}
                                     />
                                 )}
                             </SummaryBody>
@@ -198,7 +205,7 @@ export class UserDelete extends Component {
 
                         {error && (
                             <AjaxError
-                                className="device-delete-error"
+                                className={css("user-delete-error")}
                                 t={t}
                                 error={error}
                             />

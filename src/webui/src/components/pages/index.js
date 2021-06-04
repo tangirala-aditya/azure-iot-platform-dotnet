@@ -3,7 +3,6 @@
 // Exports the app page components
 export * from "./dashboard/dashboard.container";
 export * from "./devices/devicesRouter";
-export * from "./devices2/devicesRouter2";
 export * from "./users/users.container";
 export * from "./rules/rules.container";
 export * from "./maintenance/maintenance.container";

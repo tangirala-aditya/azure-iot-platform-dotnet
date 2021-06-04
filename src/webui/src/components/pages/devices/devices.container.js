@@ -2,7 +2,7 @@
 
 import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
-import { Devices } from "./devices";
+import  Devices  from "./devices";
 import {
     epics as devicesEpics,
     redux as devicesRedux,

@@ -18,7 +18,6 @@ import {
 import {
     DashboardContainer,
     DevicesRouter,
-    DevicesRouter2,
     UsersContainer,
     RulesContainer,
     MaintenanceContainer,
@@ -26,6 +25,9 @@ import {
     DeploymentsRouter,
 } from "./pages";
 import { IdentityGatewayService } from "services";
+import { initializeIcons } from '@fluentui/font-icons-mdl2';
+
+initializeIcons();
 
 class App extends Component {
     constructor(props) {
@@ -56,12 +58,21 @@ class App extends Component {
                     component: DashboardContainer,
                 },
                 {
-                    to: "/devices2",
+                    to: "/devices",
                     exact: false,
-                    svg: svgs.tabs.devices2,
+                    svg: svgs.tabs.devices,
                     labelId: "tabs.devices2",
-                    component: DevicesRouter2,
+                    component: DevicesRouter,
                 },
+                {
+                    to: "/device-groups",
+                    exact: false,
+                    svg: svgs.tabs.deviceGroup,
+                    //labelId: "tabs.devices",
+                    labelId: "Device Groups", // TODO: Add Label across languages
+                    component: DevicesRouter,
+                },
+                /*
                 {
                     to: "/devices",
                     exact: false,
@@ -76,6 +87,7 @@ class App extends Component {
                     labelId: "Device Search",
                     component: DevicesRouter,
                 },
+                */
                 {
                     to: "/users",
                     exact: true,

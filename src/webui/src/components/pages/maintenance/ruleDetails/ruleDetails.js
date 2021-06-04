@@ -25,7 +25,7 @@ import {
     getDeviceGroupParam,
     getTenantIdParam,
 } from "utilities";
-import { DevicesGridContainer } from "components/pages/devices/devicesGrid/devicesGrid.container";
+import { DevicesGridContainer } from "components/pages/devicesOriginal/devicesGrid/devicesGrid.container";
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from "components/shell/deviceGroupDropdown";
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from "components/shell/manageDeviceGroupsBtn";
 import { TimeIntervalDropdownContainer as TimeIntervalDropdown } from "components/shell/timeIntervalDropdown";

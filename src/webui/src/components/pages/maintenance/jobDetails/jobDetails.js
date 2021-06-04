@@ -12,7 +12,7 @@ import {
     PageTitle,
     RefreshBarContainer as RefreshBar,
 } from "components/shared";
-import { DevicesGridContainer } from "components/pages/devices/devicesGrid/devicesGrid.container";
+import { DevicesGridContainer } from "components/pages/devicesOriginal/devicesGrid/devicesGrid.container";
 import { JobGrid, JobStatusGrid } from "components/pages/maintenance/grids";
 import { TimeIntervalDropdownContainer as TimeIntervalDropdown } from "components/shell/timeIntervalDropdown";
 

@@ -1,354 +1,80 @@
-// Copyright (c) Microsoft. All rights reserved.
+// Copyright (c) 3M. All rights reserved.
+import React from "react";
+import {DeviceGroupMenu} from "./deviceGroupMenu/deviceGroupMenu"
+import {DeviceListPage} from "./deviceListPage/deviceListPage"
+import {DevicePage} from "./devicePage/devicePage";
+import { Stack, } from '@fluentui/react/lib/Stack';
+import DataDeviceGroups from './cache/deviceGroups';
+import DataDevices from './cache/devices';
+import DataGroupedDevices from './cache/groupedDevices';
 
-import React, { Component } from "react";
-import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle";
 
-import { permissions, toDiagnosticsModel } from "services/models";
-import { DevicesGridContainer } from "./devicesGrid";
-import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from "components/shell/deviceGroupDropdown";
-import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from "components/shell/manageDeviceGroupsBtn";
-import { ResetActiveDeviceQueryBtnContainer as ResetActiveDeviceQueryBtn } from "components/shell/resetActiveDeviceQueryBtn";
-import {
-    AjaxError,
-    Btn,
-    ComponentArray,
-    ContextMenuAgile,
-    PageContent,
-    PageTitle,
-    Protected,
-    RefreshBarContainer as RefreshBar,
-    JsonEditorModal,
-} from "components/shared";
-import { DeviceNewContainer } from "./flyouts/deviceNew";
-import { AdvanceSearchContainer } from "./advanceSearch";
-import { SIMManagementContainer } from "./flyouts/SIMManagement";
-import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
-import { svgs, getDeviceGroupParam, getTenantIdParam } from "utilities";
-import { IdentityGatewayService, IoTHubManagerService } from "services";
+export class Devices extends React.Component {
 
-const classnames = require("classnames/bind");
-const css = classnames.bind(require("./devices.module.scss"));
+    
 
-const closedFlyoutState = { openFlyoutName: undefined };
-
-const closedModalState = {
-    openModalName: undefined,
-};
-
-export class Devices extends Component {
     constructor(props) {
         super(props);
+
+        const currentDeviceGroup = DataDeviceGroups[0];  // TODO: handle null and empty        
+        var currentDevices = this.getDeviceMatch(currentDeviceGroup);
+
         this.state = {
-            ...closedFlyoutState,
-            contextBtns: null,
-            selectedDeviceGroupId: undefined,
-            loadMore: props.loadMoreState,
-            isDeviceSearch: false,
+            isOpenDeviceGroup: true,
+            deviceGroups: DataDeviceGroups,
+            currentDeviceGroup: currentDeviceGroup,            
+            devices: currentDevices,
+            currentDevice: null,
+            //...closedFlyoutState,
+            //contextBtns: null,
+            //selectedDeviceGroupId: undefined,
+            //loadMore: props.loadMoreState,
+            //isDeviceSearch: false,
         };
 
         this.props.updateCurrentWindow("Devices");
     }
 
-    UNSAFE_componentWillMount() {
-        if (this.props.location && this.props.location.search) {
-            const tenantId = getTenantIdParam(this.props.location);
-            this.props.checkTenantAndSwitch({
-                tenantId: tenantId,
-                redirectUrl: window.location.href,
-            });
-            this.setState({
-                selectedDeviceGroupId: getDeviceGroupParam(this.props.location),
-            });
-        }
+    getDeviceMatch(deviceGroup) {     
 
-        if (
-            this.props &&
-            this.props.location &&
-            this.props.location.pathname === "/deviceSearch"
-        ) {
-            this.props.resetDeviceByCondition();
-            this.setState({
-                isDeviceSearch: true,
-            });
-        } else {
-            this.setState({
-                isDeviceSearch: false,
-            });
-        }
+        const devicesInGroup = DataGroupedDevices[deviceGroup.id];    
 
-        IdentityGatewayService.VerifyAndRefreshCache();
+        return DataDevices.filter(function(device){
+            return devicesInGroup.devices.some(function(deviceId){
+                return device.deviceId === deviceId;                
+            })
+        })      
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        if (
-            nextProps.isPending &&
-            nextProps.isPending !== this.props.isPending
-        ) {
-            // If the grid data refreshes, hide most flyouts and deselect soft selections
-            switch (this.state.openFlyoutName) {
-                case "create-device-query":
-                    // leave this flyout open even on grid refresh
-                    break;
-                default:
-                    this.setState(closedFlyoutState);
-            }
-        }
+    onDeviceGroupChange = (deviceGroup) => {             
+        
+        var currentDevices = this.getDeviceMatch(deviceGroup);
+        this.setState({currentDeviceGroup: deviceGroup, devices: currentDevices});
+        // great article on state and spreading: https://blog.logrocket.com/a-guide-to-usestate-in-react-ecb9952e406c/#howtoupdatestateinanestedobjectinreactwithhooks        
     }
 
-    componentDidMount() {
-        if (this.state.selectedDeviceGroupId && this.props.location) {
-            window.history.replaceState(
-                {},
-                document.title,
-                this.props.location.pathname
-            );
-        }
+    onOpenDevicePage = (deviceId) => {        
+        const device = DataDevices.find(d => {return d.deviceId === deviceId});  
+        this.setState({currentDevice: device})
     }
 
-    closeFlyout = () => this.setState(closedFlyoutState);
+    onCloseDevicePage = () => {
 
-    openSIMManagement = () =>
-        this.setState({ openFlyoutName: "sim-management" });
-    openNewDeviceFlyout = () => {
-        this.setState({ openFlyoutName: "new-device" });
-        this.props.logEvent(toDiagnosticsModel("Devices_NewClick", {}));
-    };
-    openCloudToDeviceFlyout = () => {
-        this.setState({ openFlyoutName: "c2d-message" });
-        this.props.logEvent(toDiagnosticsModel("Devices_C2DClick", {}));
-    };
-
-    onContextMenuChange = (contextBtns) =>
-        this.setState({
-            contextBtns,
-            openFlyoutName: undefined,
-        });
-
-    openModal = (modalName, jsonValue) => {
-        this.setState({
-            openModalName: modalName,
-            modalJson: jsonValue,
-        });
-    };
-
-    closeModal = () => this.setState(closedModalState);
-
-    getOpenModal = () => {
-        const { t, theme, logEvent } = this.props;
-        if (this.state.openModalName === "json-editor") {
-            return (
-                <JsonEditorModal
-                    t={t}
-                    title={t(
-                        "devices.flyouts.details.properties.editPropertyValue"
-                    )}
-                    onClose={this.closeModal}
-                    jsonData={this.state.modalJson}
-                    logEvent={logEvent}
-                    theme={theme ? theme : "light"}
-                />
-            );
-        }
-        return null;
-    };
-
-    priorityChildren = () => {
-        const { t } = this.props;
-        const { isDeviceSearch } = this.state;
-
-        let children = [];
-
-        if (!isDeviceSearch) {
-            children.push(
-                <DeviceGroupDropdown
-                    updateLoadMore={this.updateLoadMoreOnDeviceGroupChange}
-                    deviceGroupIdFromUrl={this.state.selectedDeviceGroupId}
-                />,
-                <Protected permission={permissions.updateDeviceGroups}>
-                    <ManageDeviceGroupsBtn />
-                </Protected>,
-                <CreateDeviceQueryBtn />
-            );
-        }
-
-        if (
-            !isDeviceSearch &&
-            this.props.activeDeviceQueryConditions.length !== 0
-        ) {
-            children.push(<ResetActiveDeviceQueryBtn />);
-        }
-
-        if (
-            this.state.contextBtns &&
-            this.state.contextBtns.props.children.length > 0
-        ) {
-            children = children.concat(this.state.contextBtns.props.children);
-        }
-
-        children.push(
-            <Protected permission={permissions.updateSIMManagement}>
-                <Btn svg={svgs.simmanagement} onClick={this.openSIMManagement}>
-                    {t("devices.flyouts.SIMManagement.title")}
-                </Btn>
-            </Protected>
-        );
-
-        return children;
-    };
-
-    switchLoadMore = (value) => {
-        if (!value) {
-            this.setState({ loadMore: false });
-            return this.props.cancelDeviceCalls({
-                makeSubsequentCalls: false,
-            });
-        } else {
-            this.setState({ loadMore: true });
-            this.props.cancelDeviceCalls({
-                makeSubsequentCalls: true,
-            });
-            return this.props.fetchDevicesByCToken();
-        }
-    };
-
-    refreshDevices = () => {
-        this.setState({ loadMore: false });
-        this.props.cancelDeviceCalls({ makeSubsequentCalls: false });
-        return this.props.fetchDevices();
-    };
-
-    updateLoadMoreOnDeviceGroupChange = () => {
-        this.setState({ loadMore: false });
-        this.props.cancelDeviceCalls({ makeSubsequentCalls: false });
-    };
-
-    downloadFile = () => {
-        IoTHubManagerService.getDevicesReportByQuery(
-            this.props.activeDeviceGroupConditions
-        ).subscribe((response) => {
-            var blob = new Blob([response.response], {
-                type: response.response.type,
-            });
-            let url = window.URL.createObjectURL(blob);
-            let a = document.createElement("a");
-            a.href = url;
-            a.download = "DevicesList.xlsx";
-            a.click();
-        });
-    };
+    }
 
     render() {
-        const {
-                t,
-                devices,
-                deviceGroupError,
-                deviceError,
-                isPending,
-                devicesByCondition,
-                devicesByConditionError,
-                isDevicesByConditionPanding,
-                lastUpdated,
-                routeProps,
-            } = this.props,
-            { isDeviceSearch } = this.state,
-            deviceData = isDeviceSearch ? devicesByCondition : devices,
-            dataError = isDeviceSearch ? devicesByConditionError : deviceError,
-            isDataPending = isDeviceSearch
-                ? isDevicesByConditionPanding
-                : isPending,
-            gridProps = {
-                onGridReady: this.onGridReady,
-                rowData: isDataPending ? undefined : deviceData || [],
-                onContextMenuChange: this.onContextMenuChange,
-                t: this.props.t,
-                searchPlaceholder: this.props.t("devices.searchPlaceholder"),
-                searchAreaLabel: this.props.t("devices.ariaLabel"),
-            },
-            newDeviceFlyoutOpen = this.state.openFlyoutName === "new-device",
-            simManagementFlyoutOpen =
-                this.state.openFlyoutName === "sim-management",
-            error = deviceGroupError || dataError;
+
+        if(this.state.currentDevice){
+            return (<DevicePage {...this.state} onClose={this.onCloseDevicePage} />);
+        }
 
         return (
-            <ComponentArray>
-                <ContextMenuAgile
-                    farChildren={[
-                        <Protected permission={permissions.createDevices}>
-                            {!this.state.isDeviceSearch && (
-                                <Btn
-                                    svg={svgs.plus}
-                                    onClick={this.openNewDeviceFlyout}
-                                >
-                                    {t("devices.flyouts.new.contextMenuName")}
-                                </Btn>
-                            )}
-                        </Protected>,
-                        !this.state.isDeviceSearch && (
-                            <RefreshBar
-                                refresh={this.refreshDevices}
-                                time={lastUpdated}
-                                isPending={isPending}
-                                t={t}
-                                isShowIconOnly={true}
-                            />
-                        ),
-                    ]}
-                    priorityChildren={this.priorityChildren()}
-                />
-                <PageContent className={css("devices-container")}>
-                    <PageTitle
-                        titleValue={
-                            !this.state.isDeviceSearch
-                                ? t("devices.title")
-                                : t("devices.deviceSearchTitle")
-                        }
-                        descriptionValue={
-                            !this.state.isDeviceSearch
-                                ? t("devices.titleDescription")
-                                : t("devices.deviceSearchTitleDescription")
-                        }
-                    />
-                    {!!error && <AjaxError t={t} error={error} />}
-                    {this.state.isDeviceSearch && <AdvanceSearchContainer />}
-                    {!this.state.isDeviceSearch && (
-                        <div className={css("cancel-right-div")}>
-                            <Toggle
-                                attr={{
-                                    button: {
-                                        "aria-label": t("devices.loadMore"),
-                                        type: "button",
-                                    },
-                                }}
-                                on={this.state.loadMore}
-                                onLabel={t("devices.loadMore")}
-                                offLabel={t("devices.loadMore")}
-                                onChange={this.switchLoadMore}
-                            />
-                            <Btn
-                                svg={svgs.upload}
-                                className={css("download-deviceReport")}
-                                onClick={this.downloadFile}
-                            >
-                                {t("devices.downloadDeviceReport")}
-                            </Btn>
-                        </div>
-                    )}
-                    {!error && (
-                        <DevicesGridContainer
-                            {...gridProps}
-                            {...routeProps}
-                            openPropertyEditorModal={this.openModal}
-                        />
-                    )}
-                    {newDeviceFlyoutOpen && (
-                        <DeviceNewContainer onClose={this.closeFlyout} />
-                    )}
-                    {simManagementFlyoutOpen && (
-                        <SIMManagementContainer onClose={this.closeFlyout} />
-                    )}
-                </PageContent>
-                {this.getOpenModal()}
-            </ComponentArray>
+                <Stack horizontal style={{width: "100%", height: "100%"}}>
+                <DeviceGroupMenu {...this.state} onChange={this.onDeviceGroupChange} />
+                <DeviceListPage {...this.state} onOpenDevicePage={this.onOpenDevicePage} />
+            </Stack>
         );
     }
+
 }
+export default Devices;

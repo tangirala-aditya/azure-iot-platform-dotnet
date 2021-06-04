@@ -8,7 +8,7 @@ import {
 } from "./deploymentDetailsGridConfig";
 import { translateColumnDefs, isFunc } from "utilities";
 import { PcsGrid, ComponentArray } from "components/shared";
-import { DeviceDetailsContainer } from "components/pages/devices/flyouts";
+import { DeviceDetailsContainer } from "components/pages/devicesOriginal/flyouts";
 import { toSinglePropertyDiagnosticsModel } from "services/models";
 
 const closedFlyoutState = {

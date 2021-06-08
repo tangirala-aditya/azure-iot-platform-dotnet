@@ -30,7 +30,8 @@
         "rules": "Rules",
         "maintenance": "Maintenance",
         "packages": "Packages",
-        "deployments": "Deployments"
+        "deployments": "Deployments",
+        "dataexplorer":"Data Explorer"
     },
     "errorFormat": "Error: {{message}}",
     "edgeAgentStatus": {

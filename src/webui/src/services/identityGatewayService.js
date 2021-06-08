@@ -95,4 +95,10 @@ export class IdentityGatewayService {
                 }
             });
     }
+
+    static getAccessTokenForADX() {
+        return HttpClient.get("https://localhost:3501/kusto/token").pipe(
+            map((setting) => setting)
+        );
+    }
 }

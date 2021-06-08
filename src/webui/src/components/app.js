@@ -23,6 +23,7 @@ import {
     MaintenanceContainer,
     PackagesContainer,
     DeploymentsRouter,
+    DataExplorerContainer,
 } from "./pages";
 import { IdentityGatewayService } from "services";
 
@@ -102,6 +103,14 @@ class App extends Component {
                     svg: svgs.tabs.maintenance,
                     labelId: "tabs.maintenance",
                     component: MaintenanceContainer,
+                },
+                ,
+                {
+                    to: "/dataexplorer",
+                    exact: false,
+                    svg: svgs.tabs.maintenance,
+                    labelId: "tabs.dataexplorer",
+                    component: DataExplorerContainer,
                 },
             ],
             crumbsConfig = [

@@ -2,10 +2,8 @@
 // Copyright (c) 3M. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Mmm.Iot.Common.Services.External.TimeSeries;
 
 namespace Mmm.Iot.Common.Services.External.KustoStorage
 {

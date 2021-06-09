@@ -10,20 +10,9 @@ using Kusto.Cloud.Platform.Data;
 using Kusto.Data;
 using Kusto.Data.Common;
 using Kusto.Data.Net.Client;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Management.Kusto;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Microsoft.Rest;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
-using Mmm.Iot.Common.Services.External.KustoStroage;
-using Mmm.Iot.Common.Services.External.TimeSeries;
-using Mmm.Iot.Common.Services.Helpers;
-using Mmm.Iot.Common.Services.Http;
-using Mmm.Iot.Common.Services.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Mmm.Iot.Common.Services.External.KustoStorage
 {

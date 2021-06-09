@@ -4,16 +4,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using Kusto.Data;
 using Kusto.Data.Common;
 using Kusto.Data.Net.Client;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
-using Mmm.Iot.Common.Services.Models;
 
 namespace Mmm.Iot.Common.Services.External.KustoStorage
 {

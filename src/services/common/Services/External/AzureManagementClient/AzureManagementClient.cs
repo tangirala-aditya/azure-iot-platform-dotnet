@@ -3,23 +3,13 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Azure.Management.Fluent;
-using Microsoft.Azure.Management.IotHub;
-using Microsoft.Azure.Management.IotHub.Models;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
-using Microsoft.Azure.Management.ResourceManager.Models;
-using Microsoft.Rest.Azure;
-using Microsoft.Rest.ClientRuntime;
 using Mmm.Iot.Common.Services.Config;
-using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.EventHub;
-using Mmm.Iot.Common.Services.External.TableStorage;
 using Mmm.Iot.Common.Services.Models;
 using Newtonsoft.Json.Linq;
 using DeploymentMode = Microsoft.Azure.Management.ResourceManager.Fluent.Models.DeploymentMode;

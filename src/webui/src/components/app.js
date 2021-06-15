@@ -25,6 +25,8 @@ import {
     DeploymentsRouter,
 } from "./pages";
 import { IdentityGatewayService } from "services";
+import { initializeIcons } from "@fluentui/font-icons-mdl2";
+initializeIcons();
 
 class App extends Component {
     constructor(props) {

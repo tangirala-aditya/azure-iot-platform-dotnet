@@ -25,10 +25,10 @@ namespace Mmm.Iot.Functions.TelemetryProcessor
             {
                 options.Connect(Environment.GetEnvironmentVariable("AppConfigConnectionString"))
 
-                       // Load all keys that start with `TestApp:`
+                       // Load all keys that start with `tenant:`
                        .Select("tenant:*")
 
-                       // Configure to reload configuration if the registered 'Sentinel' key is modified
+                       // Configure to reload configuration if the registered 'tenant:latestTelemetryHubConnection' key is modified
                        .ConfigureRefresh(refreshOptions =>
                           refreshOptions.Register("tenant:latestTelemetryHubConnection", refreshAll: true));
             });

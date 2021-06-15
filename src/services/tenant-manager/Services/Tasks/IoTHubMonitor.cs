@@ -147,6 +147,10 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                                     await this.appConfigurationClient.SetValueAsync($"tenant:{item.TenantId}:telemetryHubConn", nameSpaceConnString);
 
+                                    // Set the Refresh Key to new connectionstring so the functions can update
+                                    // values from AppConfiguration
+                                    await this.appConfigurationClient.SetValueAsync($"tenant:latestTelemetryHubConnection", nameSpaceConnString);
+
                                     this.azureManagementClient.EventHubsManagementClient.CreateEventHub(telemetryEventHubNameSpace, $"{item.TenantId}-telemetry");
 
                                     Console.WriteLine("Creating a DB in Data Explorer");

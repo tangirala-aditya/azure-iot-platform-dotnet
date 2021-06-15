@@ -43,6 +43,7 @@ try {
           #Place the EventHub Namespace primary connectionstting => appConfiguration
           $connectionString=Get-AzEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -AuthorizationRuleName RootManageSharedAccessKey
           az appconfig kv set --name $appConfigurationName --key "tenant:$iotTenantId​:telemetryHubConn" --value $connectionString.PrimaryConnectionString  --yes
+		  az appconfig kv set --name $appConfigurationName --key "tenant:latestTelemetryHubConnection" --value $connectionString.PrimaryConnectionString  --yes
           $isEventHubExists=Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName
           if($isEventHubExists  -eq $null){
                New-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventhubName -MessageRetentionInDays 1

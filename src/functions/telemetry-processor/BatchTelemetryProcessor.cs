@@ -3,25 +3,37 @@
 // </copyright>
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.Functions.TelemetryProcessor.Helpers;
 using Mmm.Iot.Functions.TelemetryProcessor.Shared;
 
 namespace Mmm.Iot.Functions.TelemetryProcessor
 {
-    public static class BatchTelemetryProcessor
+    public class BatchTelemetryProcessor
     {
+        private readonly IConfiguration configuration;
+        private readonly IConfigurationRefresher configurationRefresher;
+
+        public BatchTelemetryProcessor(IConfiguration configuration, IConfigurationRefresherProvider refresherProvider)
+        {
+            this.configuration = configuration;
+            this.configurationRefresher = refresherProvider.Refreshers.First();
+        }
+
         [FunctionName("BatchTelemetryProcessor")]
-        public static async Task Run([EventHubTrigger("telemetry", Connection = "TelemetryEventHubConnectionString", ConsumerGroup = "%DeviceStreamConsumerGroup%")] EventData[] events, ILogger log)
+        public async Task Run([EventHubTrigger("telemetry", Connection = "TelemetryEventHubConnectionString", ConsumerGroup = "%DeviceStreamConsumerGroup%")] EventData[] events, ILogger log)
         {
             try
             {
                 var batchThreshold = Convert.ToInt32(Environment.GetEnvironmentVariable("BatchThreshold", EnvironmentVariableTarget.Process));
                 var batchWriteDelay = Convert.ToInt32(Environment.GetEnvironmentVariable("BatchWriteDelay", EnvironmentVariableTarget.Process));
-                AppConfigHelper configHelper = new AppConfigHelper(Environment.GetEnvironmentVariable("AppConfigConnectionString", EnvironmentVariableTarget.Process));
+                AppConfigHelper configHelper = new AppConfigHelper(this.configuration, this.configurationRefresher);
 
                 DeviceService deviceService = new DeviceService();
                 await deviceService.ProcessTelemetryAsync(

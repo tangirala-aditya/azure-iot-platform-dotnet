@@ -1,0 +1,75 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+$heightOfGradient: 8px;
+$maxScrollableHeight: 268px;
+$scrollbarWidth: 4px;
+
+:global(.property-grid-container) {
+  display: flex;
+  flex-flow: column wrap;
+  position: relative;
+  @include rem-fallback(padding-left, 8px);
+
+  :global(.grid-header) {
+    @include rem-font-size($font-size-small);
+  }
+
+  :global(.grid-header) :global(.cell) {
+    font-family: $fontSelawikBold;
+    text-transform: uppercase;
+    @include rem-fallback(font-size, 10px);
+    @include rem-fallback(padding-top, 4px);
+  }
+
+  .grid-scrollable {
+    overflow-y: auto;
+    @include rem-fallback(max-height, $maxScrollableHeight);
+  }
+
+  :global(.row) {
+    display: flex;
+    flex-direction: row;
+    @include rem-fallback(padding, 16px, 0px, 16px, 8px);
+
+    :global(.cell) {
+      display: flex;
+      flex-basis: 50%;
+      flex-grow: 1;
+      flex-direction: column;
+
+      &:global(.col-1) { flex-basis: 10%; }
+      &:global(.col-2) { flex-basis: 20%; }
+      &:global(.col-3) { flex-basis: 30%; }
+      &:global(.col-4) { flex-basis: 40%; }
+      &:global(.col-5) { flex-basis: 50%; }
+      &:global(.col-6) { flex-basis: 60%; }
+      &:global(.col-7) { flex-basis: 70%; }
+      &:global(.col-8) { flex-basis: 80%; }
+      &:global(.col-9) { flex-basis: 90%; }
+    }
+  }
+
+  @include themify($themes) {
+    :global(.grid-header) {
+      border-bottom: 1px solid themed('colorPropertyGridBorder');
+
+      :global(.row) :global(.cell) { color: themed('colorContentTextDim'); }
+    }
+
+    :global(.row) {
+      border-bottom: 1px solid themed('colorPropertyGridBorder');
+
+      &:last-child { border-bottom: none; }
+
+      :global(.cell) { color: themed('colorContentText'); }
+    }
+
+    .grid-scrollable:after {
+        @include linear-gradient(themed('colorFlyoutBackground'), 0.25, themed('colorFlyoutBackground'), 1);
+        border-bottom: 1px solid themed('colorPropertyGridBottomBorder');
+    }
+  }
+}

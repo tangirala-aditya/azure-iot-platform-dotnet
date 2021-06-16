@@ -144,5 +144,6 @@ stages:
           testPipelineId: 453
           runVersion: specific
           testPipelineRunId: $(testPipelineRunId)
+          isHelmVersion3: false
           aadSGId: $(aadSGId)
           telemetryStorageType: $(telemetryStorageType)

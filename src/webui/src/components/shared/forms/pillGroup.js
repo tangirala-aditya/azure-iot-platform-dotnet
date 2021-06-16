@@ -4,10 +4,12 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Pill } from "./pill";
-import "./styles/pillGroup.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./styles/pillGroup.module.scss"));
 
 export const PillGroup = ({ pills, onSvgClick, svg, altSvgText }) => (
-    <div className="pill-group">
+    <div className={css("pill-group")}>
         {pills.map((pill, idx) => (
             <Pill
                 key={idx}

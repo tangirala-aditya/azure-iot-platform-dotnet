@@ -16,7 +16,10 @@ import Flyout from "components/shared/flyout";
 import Config from "app.config";
 import { toDiagnosticsModel } from "services/models";
 
-import "./applicationSettings.scss";
+// import "./applicationSettings.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./applicationSettings.module.scss"));
 
 const Section = Flyout.Section;
 
@@ -36,7 +39,7 @@ export class ApplicationSettings extends Component {
         };
     }
 
-    renderSvgLogo = (logo) => <Svg path={logo} className="logo-svg" />;
+    renderSvgLogo = (logo) => <Svg src={logo} className={css("logo-svg")} />;
 
     onApplicationNameInputClick = () => {
         this.props.logEvent(toDiagnosticsModel("Settings_NameUpdated", {}));
@@ -56,70 +59,75 @@ export class ApplicationSettings extends Component {
                 ? "file-name-valid"
                 : "file-name-invalid";
         return (
-            <div className="upload-logo-name-container">
-                <div className="upload-logo-container">
-                    <div className="image-preview">
+            <div className={css("upload-logo-name-container")}>
+                <div className={css("upload-logo-container")}>
+                    <div className={css("image-preview")}>
                         {isDefaultLogo ? (
                             this.renderSvgLogo(currentLogo)
                         ) : (
                             <img
-                                className="logo-img"
+                                className={css("logo-img")}
                                 src={previewLogo}
                                 alt={t("applicationSettings.previewLogo")}
                             />
                         )}
                     </div>
-                    <div className="replace-logo">
+                    <div className={css("replace-logo")}>
                         {t("applicationSettings.replaceLogo")}
                     </div>
-                    <div className="upload-btn-container">
+                    <div className={css("upload-btn-container")}>
                         <FileInput
-                            className="upload-button"
+                            className={css("upload-button")}
                             onChange={this.onUpload}
                             accept={Config.validExtensions}
                             label={t("applicationSettings.upload")}
                             t={t}
                         />
-                        <div className="file-upload-feedback">
+                        <div className={css("file-upload-feedback")}>
                             {isValidFile ? (
                                 <Svg
-                                    className="checkmark"
-                                    path={svgs.checkmark}
+                                    className={css("checkmark")}
+                                    src={svgs.checkmark}
                                     alt={t("applicationSettings.checkmark")}
                                 />
                             ) : (
                                 newLogoName && (
                                     <Svg
-                                        className="invalid-file-x"
-                                        path={svgs.x}
+                                        className={css("invalid-file-x")}
+                                        src={svgs.x}
                                         alt={t("applicationSettings.error")}
                                     />
                                 )
                             )}
                         </div>
-                        <div className={fileNameClass}>{newLogoName}</div>
+                        <div className={css(fileNameClass)}>{newLogoName}</div>
                     </div>
                     {!isValidFile && newLogoName && (
-                        <div className="upload-error-message">
+                        <div className={css("upload-error-message")}>
                             <Svg
-                                className="upload-error-asterisk"
-                                path={svgs.error}
+                                className={css("upload-error-asterisk")}
+                                src={svgs.error}
                                 alt={t("applicationSettings.error")}
                             />
                             {t("applicationSettings.uploadError")}
                         </div>
                     )}
-                    <Section.Content className="platform-section-description show-line-breaks">
+                    <Section.Content
+                        className={css(
+                            "platform-section-description",
+                            "show-line-breaks"
+                        )}
+                    >
                         {t("applicationSettings.logoDescription")}
                     </Section.Content>
                 </div>
-                <FormGroup className="name-input-container">
-                    <FormLabel className="section-subtitle">
+                <FormGroup className={css("name-input-container")}>
+                    <FormLabel className={css("section-subtitle")}>
                         {t("applicationSettings.applicationName")}
                     </FormLabel>
                     <FormControl
                         type="text"
-                        className="name-input long"
+                        className={css("name-input", "long")}
                         placeholder={t(currentApplicationName)}
                         link={applicationNameLink}
                         onClick={this.onApplicationNameInputClick}
@@ -139,7 +147,7 @@ export class ApplicationSettings extends Component {
                 edit,
             } = this.state;
         return (
-            <Section.Container className="setting-section">
+            <Section.Container className={css("setting-section")}>
                 <Section.Header>
                     {t("applicationSettings.nameAndLogo")}
                 </Section.Header>
@@ -149,7 +157,7 @@ export class ApplicationSettings extends Component {
                 <Section.Content>
                     {edit ? (
                         validating ? (
-                            <div className="upload-logo-name-container">
+                            <div className={css("upload-logo-name-container")}>
                                 <Indicator size="small" />
                             </div>
                         ) : (
@@ -157,14 +165,14 @@ export class ApplicationSettings extends Component {
                         )
                     ) : (
                         <div>
-                            <div className="current-logo-container">
-                                <div className="current-logo-name">
-                                    <div className="current-logo">
+                            <div className={css("current-logo-container")}>
+                                <div className={css("current-logo-name")}>
+                                    <div className={css("current-logo")}>
                                         {isDefaultLogo ? (
                                             this.renderSvgLogo(currentLogo)
                                         ) : (
                                             <img
-                                                className="current-logo"
+                                                className={css("current-logo")}
                                                 src={currentLogo}
                                                 alt={t(
                                                     "applicationSettings.currentLogo"
@@ -172,16 +180,16 @@ export class ApplicationSettings extends Component {
                                             />
                                         )}
                                     </div>
-                                    <div className="name-container">
+                                    <div className={css("name-container")}>
                                         {t(currentApplicationName)}
                                     </div>
                                 </div>
-                                <div className="edit-button-div">
+                                <div className={css("edit-button-div")}>
                                     <Btn
                                         type="button"
                                         svg={svgs.edit}
                                         onClick={this.enableEdit}
-                                        className="edit-button"
+                                        className={css("edit-button")}
                                     >
                                         {t("applicationSettings.edit")}
                                     </Btn>

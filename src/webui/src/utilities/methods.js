@@ -100,9 +100,9 @@ export const camelCaseReshape = (response, model) => {
 export const translateColumnDefs = (t, columnDefs) => {
     return columnDefs.map((columnDef) => {
         if (columnDef.valueFormatter) {
-            columnDef.tooltip = columnDef.valueFormatter;
+            columnDef.tooltipValueGetter = columnDef.valueFormatter;
         } else if (columnDef.cellRendererFramework) {
-            columnDef.tooltip = tooltipRenderer;
+            columnDef.tooltipValueGetter = tooltipRenderer;
         } else {
             columnDef.tooltipField = columnDef.field;
         }

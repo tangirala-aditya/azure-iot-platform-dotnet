@@ -1,10 +1,10 @@
-FROM node:11-alpine as codebuilder
+FROM node:14-alpine as codebuilder
 WORKDIR /app
-RUN apk add --no-cache --virtual bash
+RUN apk add --no-cache bash
 RUN apk --update add python3
-RUN apk add --no-cache --virtual build-base
-RUN apk add --no-cache --virtual curl
-RUN apk add --no-cache --virtual jq
+RUN apk add --no-cache build-base
+RUN apk add --no-cache curl
+RUN apk add --no-cache jq
 
 RUN apk update
 RUN apk add bash py3-pip

@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from "react";
-
-import { joinClasses } from "utilities";
 import { Svg } from "components/shared";
-import "./statProperty.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./statProperty.module.scss"));
 
 const validSizes = new Set(["large", "medium", "small", "normal"]);
 
@@ -19,15 +19,12 @@ export const StatProperty = ({
 }) => {
     const sizeClass = validSizes.has(size) ? size : "normal";
     return (
-        <div className={joinClasses("stat-property", className)}>
-            <div className={joinClasses("stat-value", sizeClass)}>{value}</div>
+        <div className={css("stat-property", className)}>
+            <div className={css("stat-value", sizeClass)}>{value}</div>
             {svg && (
-                <Svg
-                    path={svg}
-                    className={joinClasses("stat-icon", svgClassName)}
-                />
+                <Svg src={svg} className={css("stat-icon", svgClassName)} />
             )}
-            <div className="stat-label">{label}</div>
+            <div className={css("stat-label")}>{label}</div>
         </div>
     );
 };

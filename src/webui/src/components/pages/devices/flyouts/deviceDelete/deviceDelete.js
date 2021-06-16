@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
-import { Observable } from "rxjs";
+import { from } from "rxjs";
 import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle";
 
 import { IoTHubManagerService } from "services";
@@ -21,8 +21,10 @@ import {
     SummarySection,
     Svg,
 } from "components/shared";
+import { map, mergeMap } from "rxjs/operators";
 
-import "./deviceDelete.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deviceDelete.module.scss"));
 
 export class DeviceDelete extends Component {
     constructor(props) {
@@ -46,7 +48,7 @@ export class DeviceDelete extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.devices &&
             (this.props.devices || []).length !== nextProps.devices.length
@@ -87,9 +89,11 @@ export class DeviceDelete extends Component {
         event.preventDefault();
         this.setState({ isPending: true, error: null });
 
-        this.subscription = Observable.from(this.state.physicalDevices)
-            .flatMap(({ id }) =>
-                IoTHubManagerService.deleteDevice(id).map(() => id)
+        this.subscription = from(this.state.physicalDevices)
+            .pipe(
+                mergeMap(({ id }) =>
+                    IoTHubManagerService.deleteDevice(id).pipe(map(() => id))
+                )
             )
             .subscribe(
                 (deletedDeviceId) => {
@@ -171,13 +175,13 @@ export class DeviceDelete extends Component {
             >
                 <Protected permission={permissions.deleteDevices}>
                     <form
-                        className="device-delete-container"
+                        className={css("device-delete-container")}
                         onSubmit={this.deleteDevices}
                     >
-                        <div className="device-delete-header">
+                        <div className={css("device-delete-header")}>
                             {t("devices.flyouts.delete.header")}
                         </div>
-                        <div className="device-delete-descr">
+                        <div className={css("device-delete-descr")}>
                             {t("devices.flyouts.delete.description")}
                         </div>
                         <Toggle
@@ -195,10 +199,10 @@ export class DeviceDelete extends Component {
                             offLabel={t("devices.flyouts.delete.confirmNo")}
                         />
                         {containsSimulatedDevices && (
-                            <div className="simulated-device-selected">
+                            <div className={css("simulated-device-selected")}>
                                 <Svg
-                                    path={svgs.infoBubble}
-                                    className="info-icon"
+                                    src={svgs.infoBubble}
+                                    className={css("info-icon")}
                                 />
                                 {t(
                                     "devices.flyouts.delete.simulatedNotSupported"
@@ -216,8 +220,8 @@ export class DeviceDelete extends Component {
                                 {this.state.isPending && <Indicator />}
                                 {completedSuccessfully && (
                                     <Svg
-                                        className="summary-icon"
-                                        path={svgs.apply}
+                                        className={css("summary-icon")}
+                                        src={svgs.apply}
                                     />
                                 )}
                             </SummaryBody>
@@ -225,7 +229,7 @@ export class DeviceDelete extends Component {
 
                         {error && (
                             <AjaxError
-                                className="device-delete-error"
+                                className={css("device-delete-error")}
                                 t={t}
                                 error={error}
                             />

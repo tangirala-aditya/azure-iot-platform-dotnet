@@ -11,7 +11,8 @@ import {
 } from "components/shared";
 import { ExampleGrid } from "./exampleGrid";
 
-import "./pageWithGrid.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./pageWithGrid.module.scss"));
 
 export class PageWithGrid extends Component {
     constructor(props) {
@@ -46,7 +47,7 @@ export class PageWithGrid extends Component {
         return (
             <ComponentArray>
                 <ContextMenu>{this.state.contextBtns}</ContextMenu>
-                <PageContent className="page-with-grid-container">
+                <PageContent className={css("page-with-grid-container")}>
                     <RefreshBar
                         refresh={fetchData}
                         time={lastUpdated}

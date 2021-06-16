@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from "react";
-import { Observable } from "rxjs";
+import { of } from "rxjs";
 import update from "immutability-helper";
 
 import { LinkedComponent } from "utilities";
@@ -22,6 +22,8 @@ import {
 import Flyout from "components/shared/flyout";
 const Section = Flyout.Section;
 update.extend("$autoArray", (val, obj) => update(obj || [], val));
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./manageDeviceGroups.module.scss"));
 
 const initialState = {
         isPending: false,
@@ -51,7 +53,7 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.methods &&
             (this.state.methods || []).length !== nextProps.methods.length
@@ -73,13 +75,12 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
         if (this.populateStateSubscription) {
             this.populateStateSubscription.unsubscribe();
         }
-        this.populateStateSubscription = Observable.of(methods).subscribe(
-            (methods) =>
-                this.setState(
-                    update(this.state, {
-                        methods: { $set: methods },
-                    })
-                )
+        this.populateStateSubscription = of(methods).subscribe((methods) =>
+            this.setState(
+                update(this.state, {
+                    methods: { $set: methods },
+                })
+            )
         );
     }
 
@@ -153,7 +154,7 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
                     )}
                 </Section.Header>
                 <Section.Content>
-                    <Grid className="data-grid">
+                    <Grid className={css("data-grid")}>
                         <GridHeader>
                             <Row>
                                 <Cell className="col-3">
@@ -172,7 +173,7 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
                                             <Row
                                                 className={
                                                     error
-                                                        ? "error-data-row"
+                                                        ? css("error-data-row")
                                                         : ""
                                                 }
                                             >
@@ -185,7 +186,9 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
                                                 </Cell>
                                                 <Cell className="col-1">
                                                     <Btn
-                                                        className="icon-only-btn"
+                                                        className={css(
+                                                            "icon-only-btn"
+                                                        )}
                                                         svg={svgs.trash}
                                                         onClick={this.deleteMethod(
                                                             idx
@@ -194,7 +197,11 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
                                                 </Cell>
                                             </Row>
                                             {error ? (
-                                                <Row className="error-msg-row">
+                                                <Row
+                                                    className={css(
+                                                        "error-msg-row"
+                                                    )}
+                                                >
                                                     <ErrorMsg>{error}</ErrorMsg>
                                                 </Row>
                                             ) : null}
@@ -202,7 +209,7 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
                                     )
                                 )}
 
-                            <Row className="action-row">
+                            <Row className={css("action-row")}>
                                 <Btn svg={svgs.plus} onClick={this.addMethod}>
                                     {t(
                                         "deviceGroupsFlyout.supportedMethods.add"
@@ -214,7 +221,7 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
 
                     {error && (
                         <AjaxError
-                            className="device-jobs-error"
+                            className={css("device-jobs-error")}
                             t={t}
                             error={error}
                         />

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 import "react-app-polyfill/stable";
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -56,11 +56,17 @@ AuthService.onLoad(() => {
 
     // Create the React app
     ReactDOM.render(
-        <Provider store={store}>
-            <Router>
-                {Config.showWalkthroughExamples ? <WalkthroughApp /> : <App />}
-            </Router>
-        </Provider>,
+        <Suspense fallback={null}>
+            <Provider store={store}>
+                <Router>
+                    {Config.showWalkthroughExamples ? (
+                        <WalkthroughApp />
+                    ) : (
+                        <App />
+                    )}
+                </Router>
+            </Provider>
+        </Suspense>,
         document.getElementById("root")
     );
 

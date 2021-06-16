@@ -3,6 +3,9 @@
 import React from "react";
 import { JobGrid } from "components/pages/maintenance/grids";
 import { AjaxError } from "components/shared";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./summary.module.scss"));
+const maintenanceCss = classnames.bind(require("../maintenance.module.scss"));
 
 export const Jobs = ({ isPending, jobs, history, error, ...props }) => {
     const gridProps = {
@@ -13,11 +16,17 @@ export const Jobs = ({ isPending, jobs, history, error, ...props }) => {
     };
     return !error ? (
         !isPending && jobs.length === 0 ? (
-            <div className="no-data-msg">{props.t("maintenance.noData")}</div>
+            <div className={css("no-data-msg")}>
+                {props.t("maintenance.noData")}
+            </div>
         ) : (
             <JobGrid {...gridProps} />
         )
     ) : (
-        <AjaxError t={props.t} error={error} className="padded-error" />
+        <AjaxError
+            t={props.t}
+            error={error}
+            className={maintenanceCss("padded-error")}
+        />
     );
 };

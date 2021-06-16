@@ -21,9 +21,10 @@ import {
     toSinglePropertyDiagnosticsModel,
 } from "services/models";
 
-import "./settings.scss";
 import { TenantService, ConfigService, IdentityGatewayService } from "services";
 import FirmwareVariableGrid from "./firmwareVariableGrid";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./settings.module.scss"));
 
 const Section = Flyout.Section;
 
@@ -96,11 +97,11 @@ export class Settings extends LinkedComponent {
         this.expandFlyout = this.expandFlyout.bind(this);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
     }
 
-    componentWillReceiveProps({
+    UNSAFE_componentWillReceiveProps({
         isSimulationEnabled,
         setLogoPending,
         setLogoError,
@@ -513,17 +514,19 @@ export class Settings extends LinkedComponent {
                 }}
             >
                 <form onSubmit={this.apply}>
-                    <div className="settings-workflow-container">
+                    <div className={css("settings-workflow-container")}>
                         <Section.Container collapsable={false}>
-                            <Section.Content className="diagnostics-content">
+                            <Section.Content
+                                className={css("diagnostics-content")}
+                            >
                                 {getDiagnosticsError ? (
-                                    <div className="toggle">
+                                    <div className={css("toggle")}>
                                         {t(
                                             "settingsFlyout.diagnosticsLoadError"
                                         )}
                                     </div>
                                 ) : (
-                                    <div className="toggle">
+                                    <div className={css("toggle")}>
                                         <Toggle
                                             name="settings-diagnostics-opt-in"
                                             attr={{
@@ -554,12 +557,14 @@ export class Settings extends LinkedComponent {
                         </Section.Container>
                         <Section.Container
                             collapsable={false}
-                            className="app-version"
+                            className={css("app-version")}
                         >
                             <Section.Header>
                                 {t("settingsFlyout.version", { version })}
                             </Section.Header>
-                            <Section.Content className="release-and-privacy-notes">
+                            <Section.Content
+                                className={css("release-and-privacy-notes")}
+                            >
                                 <a
                                     href={releaseNotesUrl}
                                     target="_blank"
@@ -569,7 +574,7 @@ export class Settings extends LinkedComponent {
                                 </a>
                                 <a
                                     href={Config.serviceUrls.privacy}
-                                    className="privacy-link"
+                                    className={css("privacy-link")}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
@@ -582,18 +587,22 @@ export class Settings extends LinkedComponent {
                         <Protected permission={permissions.enableAlerting}>
                             <Section.Container
                                 collapsable={false}
-                                className="app-alerting"
+                                className={css("app-alerting")}
                             >
                                 <Section.Header>
                                     {t("settingsFlyout.alerting")}:{" "}
                                     {alertingState}
                                 </Section.Header>
-                                <Section.Content className="release-notes">
+                                <Section.Content
+                                    className={css("release-notes")}
+                                >
                                     {t("settingsFlyout.alertingDescription")}
                                     <br></br>
                                     <br></br>
                                     <Toggle
-                                        className="alerting-toggle-button"
+                                        className={css(
+                                            "alerting-toggle-button"
+                                        )}
                                         name={t(
                                             "settingsFlyout.alertingToggle"
                                         )}
@@ -623,7 +632,9 @@ export class Settings extends LinkedComponent {
                             </Section.Container>
                         </Protected>
                         <Protected permission={permissions.createPackages}>
-                            <Section.Container className="firmware-edit-container">
+                            <Section.Container
+                                className={css("firmware-edit-container")}
+                            >
                                 <Section.Header>
                                     {t("settingsFlyout.firmware.name")}
                                 </Section.Header>
@@ -638,7 +649,9 @@ export class Settings extends LinkedComponent {
                                                 onClick={
                                                     this.enableFirmwareEdit
                                                 }
-                                                className="firmware-edit-button"
+                                                className={css(
+                                                    "firmware-edit-button"
+                                                )}
                                             >
                                                 {t(
                                                     "settingsFlyout.firmware.edit"
@@ -646,7 +659,11 @@ export class Settings extends LinkedComponent {
                                             </Btn>
                                         </BtnToolbar>
                                     ) : (
-                                        <div className="firmware-edit-container">
+                                        <div
+                                            className={css(
+                                                "firmware-edit-container"
+                                            )}
+                                        >
                                             <Section.Container closed={true}>
                                                 <Section.Header>
                                                     {t(
@@ -678,7 +695,9 @@ export class Settings extends LinkedComponent {
                                                         this
                                                             .setFirmwareDefaultSetting
                                                     }
-                                                    className="firmware-save-button"
+                                                    className={css(
+                                                        "firmware-save-button"
+                                                    )}
                                                     disabled={
                                                         firmwareSettingPending ||
                                                         firmwareSettingError
@@ -697,7 +716,9 @@ export class Settings extends LinkedComponent {
                                                     onClick={
                                                         this.disableFirmwareEdit
                                                     }
-                                                    className="firmware-cancel-button"
+                                                    className={css(
+                                                        "firmware-cancel-button"
+                                                    )}
                                                 >
                                                     {t(
                                                         "settingsFlyout.firmware.cancel"
@@ -709,22 +730,28 @@ export class Settings extends LinkedComponent {
                                 </Section.Content>
                             </Section.Container>
                         </Protected>
-                        <Section.Container className="simulation-toggle-container">
+                        <Section.Container
+                            className={css("simulation-toggle-container")}
+                        >
                             <Section.Header>
                                 {t("settingsFlyout.simulationData")}{" "}
                             </Section.Header>
-                            <Section.Content className="simulation-description">
+                            <Section.Content
+                                className={css("simulation-description")}
+                            >
                                 {t("settingsFlyout.simulationDescription")}
                                 {getSimulationError ? (
-                                    <div className="simulation-toggle">
+                                    <div className={css("simulation-toggle")}>
                                         {t(
                                             "settingsFlyout.simulationLoadError"
                                         )}
                                     </div>
                                 ) : (
-                                    <div className="simulation-toggle">
+                                    <div className={css("simulation-toggle")}>
                                         <Toggle
-                                            className="simulation-toggle-button"
+                                            className={css(
+                                                "simulation-toggle-button"
+                                            )}
                                             name={t(
                                                 "settingsFlyout.simulationToggle"
                                             )}
@@ -770,7 +797,7 @@ export class Settings extends LinkedComponent {
                                         this,
                                         nextTheme1
                                     )}
-                                    className="toggle-theme-btn"
+                                    className={css("toggle-theme-btn")}
                                 >
                                     {t("settingsFlyout.switchTheme1", {
                                         nextTheme1,
@@ -782,7 +809,7 @@ export class Settings extends LinkedComponent {
                                         this,
                                         nextTheme2
                                     )}
-                                    className="toggle-theme-btn"
+                                    className={css("toggle-theme-btn")}
                                 >
                                     {t("settingsFlyout.switchTheme2", {
                                         nextTheme2,
@@ -796,21 +823,21 @@ export class Settings extends LinkedComponent {
                             {...this.props}
                         />
                         {toggledSimulation && simulationToggleError && (
-                            <div className="toggle-error">
+                            <div className={css("toggle-error")}>
                                 {t("settingsFlyout.toggleError")}
                             </div>
                         )}
                         {madeLogoUpdate && setLogoError && (
-                            <div className="set-logo-error">
+                            <div className={css("set-logo-error")}>
                                 {t("settingsFlyout.setLogoError")}
                             </div>
                         )}
-                        <div className="btn-container">
+                        <div className={css("btn-container")}>
                             {!loading && hasChanged && (
                                 <Btn
                                     type="submit"
                                     primary={true}
-                                    className="apply-button"
+                                    className={css("apply-button")}
                                 >
                                     {t("settingsFlyout.apply")}
                                 </Btn>
@@ -822,7 +849,7 @@ export class Settings extends LinkedComponent {
                                     this,
                                     "Settings_Close_Click"
                                 )}
-                                className="close-button"
+                                className={css("close-button")}
                             >
                                 {hasChanged
                                     ? t("settingsFlyout.cancel")

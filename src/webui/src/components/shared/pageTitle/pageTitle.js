@@ -4,7 +4,8 @@ import React from "react";
 
 import { joinClasses } from "utilities";
 
-import "./pageTitle.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./pageTitle.module.scss"));
 
 /** A presentational component containing the title for a page */
 export const PageTitle = ({
@@ -14,8 +15,8 @@ export const PageTitle = ({
     hearderClassName,
     descriptionClassName,
 }) => (
-    <div className={joinClasses("page-title", className)}>
-        <h1 className={joinClasses("page-title-header", hearderClassName)}>
+    <div className={joinClasses(css("page-title"), className)}>
+        <h1 className={joinClasses(css("page-title-header"), hearderClassName)}>
             {titleValue}
         </h1>
         {descriptionValue && (

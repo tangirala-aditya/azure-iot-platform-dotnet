@@ -13,7 +13,8 @@ import {
     BalloonPosition,
 } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Balloon/Balloon";
 
-import "./timeSeriesInsightsLink.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./timeSeriesInsightsLink.module.scss"));
 
 export class TimeSeriesInsightsLink extends Component {
     onClick = () => {
@@ -24,7 +25,7 @@ export class TimeSeriesInsightsLink extends Component {
         const { t, href } = this.props;
 
         return (
-            <div className="time-series-explorer-container">
+            <div className={css("time-series-explorer-container")}>
                 <Hyperlink href={href} onClick={this.onClick} target="_blank">
                     {t("timeSeriesInsights.explore")}
                 </Hyperlink>

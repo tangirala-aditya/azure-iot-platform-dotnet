@@ -38,7 +38,7 @@ const preserveCamelCase = (input) => {
     return input;
 };
 
-export default (input, options) => {
+var camelCase = (input, options) => {
     options = Object.assign(
         {
             pascalCase: false,
@@ -83,3 +83,5 @@ export default (input, options) => {
 
     return postProcess(input);
 };
+
+export default camelCase;

@@ -10,7 +10,8 @@ import {
     PanelContent,
 } from "components/pages/dashboard/panel";
 
-import "./examplePanel.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./examplePanel.module.scss"));
 
 export class ExamplePanel extends Component {
     constructor(props) {
@@ -29,7 +30,7 @@ export class ExamplePanel extends Component {
                         {t("walkthrough.dashboard.panels.example.header")}
                     </PanelHeaderLabel>
                 </PanelHeader>
-                <PanelContent className="example-panel-container">
+                <PanelContent className={css("example-panel-container")}>
                     {t("walkthrough.dashboard.panels.example.panelBody")}
                 </PanelContent>
             </Panel>

@@ -21,6 +21,7 @@ export const deviceColumnDefs = {
         field: "id",
         sort: "asc",
         cellRendererFramework: SoftSelectLinkRenderer,
+        suppressSizeToFit: true,
     },
     isSimulated: {
         headerName: "devices.grid.simulated",
@@ -52,7 +53,15 @@ export const deviceColumnDefs = {
         headerName: "devices.grid.lastConnection",
         field: "lastActivity",
         cellRendererFramework: TimeRenderer,
+        suppressSizeToFit: true,
     },
+};
+
+/** Default column definitions*/
+export const defaultColDef = {
+    sortable: true,
+    lockPinned: true,
+    resizable: true,
 };
 
 /** Given a device object, extract and return the device Id */

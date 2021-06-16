@@ -5,9 +5,10 @@ import PropTypes from "prop-types";
 
 import { Svg } from "components/shared/svg/svg";
 import { FormLabel } from "./formLabel";
-import { isFunc, svgs, joinClasses } from "utilities";
+import { isFunc, svgs } from "utilities";
 
-import "./styles/radio.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./styles/radio.module.scss"));
 
 let radioInputCnt = 0;
 
@@ -15,6 +16,7 @@ export class Radio extends Component {
     constructor(props) {
         super(props);
         this.formGroupId = `radioInputId${radioInputCnt++}`;
+        this.radioInputElement = React.createRef();
     }
 
     onChange = (evt) => {
@@ -67,26 +69,23 @@ export class Radio extends Component {
         );
 
         return (
-            <div className={joinClasses("radio-container", className)}>
-                <div className="radio-input-container">
+            <div className={css("radio-container", className)}>
+                <div className={css("radio-input-container")}>
                     <input
                         {...radioProps}
                         {...valueOverrides}
                         type="radio"
                         disabled={disabled}
                         id={id || this.formGroupId}
-                        ref="radioInputElement"
+                        ref={this.radioInputElement}
                     />
                     <Svg
-                        path={svgs.radioSelected}
-                        className={joinClasses(
-                            "radio-icon",
-                            disabled ? "disabled" : ""
-                        )}
-                        onClick={() => this.refs.radioInputElement.click()}
+                        src={svgs.radioSelected}
+                        className={css("radio-icon", { disabled: disabled })}
+                        onClick={() => this.radioInputElement.current.click()}
                     />
                 </div>
-                <div className="input-contents">{childrenWithProps}</div>
+                <div className={css("input-contents")}>{childrenWithProps}</div>
             </div>
         );
     }

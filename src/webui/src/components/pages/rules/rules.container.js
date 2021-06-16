@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { Rules } from "./rules";
 import {
     epics as rulesEpics,
@@ -51,6 +51,6 @@ const mapStateToProps = (state) => ({
             dispatch(appRedux.actions.checkTenantAndSwitch(payload)),
     });
 
-export const RulesContainer = withNamespaces()(
+export const RulesContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(Rules)
 );

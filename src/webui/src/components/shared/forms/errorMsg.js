@@ -6,13 +6,14 @@ import PropTypes from "prop-types";
 import { Svg } from "components/shared/svg/svg";
 import { joinClasses, svgs } from "utilities";
 
-import "./styles/errorMsg.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./styles/errorMsg.module.scss"));
 
 export const ErrorMsg = (props) => {
     const { children, className } = props;
     return (
-        <div className={joinClasses("error-message", className)}>
-            <Svg path={svgs.error} className="error-icon" />
+        <div className={joinClasses(css("error-message"), className)}>
+            <Svg src={svgs.error} className={css("error-icon")} />
             {children}
         </div>
     );

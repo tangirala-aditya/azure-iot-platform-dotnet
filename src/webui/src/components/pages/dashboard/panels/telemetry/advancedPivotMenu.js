@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { PivotMenu } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Pivot";
-import "./advancedPivotMenu.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./advancedPivotMenu.module.scss"));
 
 export class AdvancedPivotMenu extends React.Component {
     constructor(props) {
@@ -19,19 +20,21 @@ export class AdvancedPivotMenu extends React.Component {
         this.checkButtons(this.refs.offsetWidth, this.refs.scrollWidth);
     }
 
-    componentWillReceiveProps(nextprops) {
-        var target = ReactDOM.findDOMNode(this).querySelectorAll(
-            "[class^=Pivot_pivot-menu]"
-        );
-        if (target) {
-            setTimeout(
-                () =>
-                    this.setState({
-                        showSliderIcons:
-                            this.refs.offsetWidth - 80 <= target[0].offsetWidth,
-                    }),
-                100
+    componentDidUpdate(prevProps) {
+        if (this.props.links !== prevProps.links) {
+            var target = ReactDOM.findDOMNode(this).querySelectorAll(
+                "[class^=Pivot_pivot-menu]"
             );
+            if (target) {
+                const offsetWidth = this.refs.offsetWidth;
+                const targetOffSetWidth = target[0].offsetWidth;
+                const showSliderIcons = offsetWidth - 80 <= targetOffSetWidth;
+                if (this.state.showSliderIcons !== showSliderIcons) {
+                    this.setState({
+                        showSliderIcons,
+                    });
+                }
+            }
         }
     }
 
@@ -71,29 +74,29 @@ export class AdvancedPivotMenu extends React.Component {
         const { showSliderIcons } = { ...this.state };
         return (
             <div
-                className="slider-container"
+                className={css("slider-container")}
                 ref={(el) => {
                     this.refs = el;
                 }}
             >
                 {showSliderIcons && (
                     <div
-                        className={`btnSlider btnSliderLeft ${
-                            this.state.prevDisable ? "disableSlider" : ""
-                        }`}
+                        className={css("btnSlider", "btnSliderLeft", {
+                            disableSlider: this.state.prevDisable,
+                        })}
                         onClick={this.slideLeft.bind(this)}
                     >
                         {"<"}
                     </div>
                 )}
-                <div className="slider-wrapper">
+                <div className={css("slider-wrapper")}>
                     <PivotMenu {...this.props} />
                 </div>
                 {showSliderIcons && (
                     <div
-                        className={`btnSlider btnSliderRight ${
-                            this.state.nextDisable ? "disableSlider" : ""
-                        }`}
+                        className={css("btnSlider", "btnSliderRight", {
+                            disableSlider: this.state.nextDisable,
+                        })}
                         onClick={this.slideRight.bind(this)}
                     >
                         {">"}

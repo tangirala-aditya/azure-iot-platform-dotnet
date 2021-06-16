@@ -3,9 +3,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { isFunc, joinClasses } from "utilities";
+import { isFunc } from "utilities";
 
-import "./styles/formGroup.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./styles/formGroup.module.scss"));
 
 let idCounter = 0;
 
@@ -29,7 +30,7 @@ export class FormGroup extends Component {
             }
         );
         return (
-            <div className={joinClasses("form-group", this.props.className)}>
+            <div className={css("form-group", this.props.className)}>
                 {childrenWithProps}
             </div>
         );

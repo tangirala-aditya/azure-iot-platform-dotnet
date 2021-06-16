@@ -1,0 +1,35 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.sysadmin-delete-container {
+  @include rem-font-size(14px);
+
+  .sysadmin-delete-header { @include rem-fallback(padding, 12px, 0px); }
+
+  .sysadmin-delete-error {
+    border: 1px transparent solid;
+    @include rem-fallback(margin, 12px, 0px);
+    @include rem-fallback(padding, 16px);
+  }
+
+  :global(.wait-indicator) { @include rem-fallback(margin-left, 8px); }
+
+  .summary-icon svg {
+    @include square-px-rem(16px);
+    @include rem-fallback(margin-left, 8px);
+  }
+
+  @include themify($themes) {
+    color: themed('colorContentTextDim');
+
+    .sysadmin-delete-header { color: themed('colorContentText'); }
+
+    .sysadmin-delete-error {
+      border-color: themed('colorAlert');
+    }
+
+    .summary-icon svg { fill: themed('colorContentText'); }
+  }
+}

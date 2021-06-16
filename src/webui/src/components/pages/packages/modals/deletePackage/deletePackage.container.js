@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { DeleteModal } from "components/shared";
 import {
     getDeletePackageError,
@@ -23,6 +23,6 @@ const mapStateToProps = (state) => ({
             dispatch(appEpics.actions.logEvent(diagnosticsModel)),
     });
 
-export const PackageDeleteContainer = withNamespaces()(
+export const PackageDeleteContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(DeleteModal)
 );

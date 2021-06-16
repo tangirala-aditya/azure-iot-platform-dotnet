@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { DeploymentStatus } from "./deploymentStatus";
 import {
     getDeleteDeploymentError,
@@ -34,6 +34,6 @@ const mapStateToProps = (state) => ({
             dispatch(appEpics.actions.logEvent(diagnosticsModel)),
     });
 
-export const DeploymentStatusContainer = withNamespaces()(
+export const DeploymentStatusContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(DeploymentStatus)
 );

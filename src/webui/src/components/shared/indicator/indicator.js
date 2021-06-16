@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from "react";
-import { joinClasses } from "utilities";
 
-import "./indicator.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./indicator.module.scss"));
 
 const Dot = () => (
-        <div className="dot">
-            <span className="inner" />
+        <div className={css("dot")}>
+            <span className={css("inner")} />
         </div>
     ),
     validSizes = new Set(["large", "medium", "normal", "small", "mini"]),
@@ -16,11 +16,11 @@ const Dot = () => (
 /** Creates a loading indicator */
 export const Indicator = (props) => {
     const { size, pattern, className } = props,
-        sizeClass = validSizes.has(size) ? size : "normal",
-        patternClass = validPatterns.has(pattern) ? pattern : "ring";
+        sizeClass = validSizes.has(size) ? css(size) : css("normal"),
+        patternClass = validPatterns.has(pattern) ? css(pattern) : css("ring");
     return (
         <div
-            className={joinClasses(
+            className={css(
                 "wait-indicator",
                 sizeClass,
                 patternClass,

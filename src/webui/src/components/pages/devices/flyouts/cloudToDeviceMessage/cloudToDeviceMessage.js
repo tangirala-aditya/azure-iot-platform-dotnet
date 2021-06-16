@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from "react";
-import { Observable } from "rxjs";
+import { from } from "rxjs";
 
 import { LinkedComponent } from "utilities";
 import { IoTHubManagerService } from "services";
@@ -24,7 +24,10 @@ import {
     Svg,
 } from "components/shared";
 
-import "./cloudToDeviceMessage.scss";
+import { map, mergeMap } from "rxjs/operators";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./cloudToDeviceMessage.module.scss"));
 
 export class CloudToDeviceMessage extends LinkedComponent {
     constructor(props) {
@@ -57,7 +60,7 @@ export class CloudToDeviceMessage extends LinkedComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.devices &&
             (this.props.devices || []).length !== nextProps.devices.length
@@ -98,12 +101,14 @@ export class CloudToDeviceMessage extends LinkedComponent {
         event.preventDefault();
         this.setState({ isPending: true, error: null });
 
-        this.subscription = Observable.from(this.state.physicalDevices)
-            .flatMap(({ id }) =>
-                IoTHubManagerService.sendCloudToDeviceMessages(
-                    id,
-                    JSON.stringify(this.state.jsonPayload.jsObject)
-                ).map(() => id)
+        this.subscription = from(this.state.physicalDevices)
+            .pipe(
+                mergeMap(({ id }) =>
+                    IoTHubManagerService.sendCloudToDeviceMessages(
+                        id,
+                        JSON.stringify(this.state.jsonPayload.jsObject)
+                    ).pipe(map(() => id))
+                )
             )
             .subscribe(
                 (sentDeviceId) => {
@@ -178,18 +183,18 @@ export class CloudToDeviceMessage extends LinkedComponent {
             >
                 <Protected permission={permissions.deleteDevices}>
                     <form
-                        className="device-c2dMessage-container"
+                        className={css("device-c2dMessage-container")}
                         onSubmit={this.sendCloudToDeviceMessage}
                     >
-                        <div className="device-c2dMessage-header">
+                        <div className={css("device-c2dMessage-header")}>
                             {t("devices.flyouts.c2dMessage.header")}
                         </div>
-                        <div className="device-c2dMessage-descr">
+                        <div className={css("device-c2dMessage-descr")}>
                             {t("devices.flyouts.c2dMessage.description")}
                         </div>
                         <FormGroup>
                             <br />
-                            <div className="help-message">
+                            <div className={css("help-message")}>
                                 {t(
                                     "devices.flyouts.c2dMessage.jsonPayloadMessage"
                                 )}
@@ -202,10 +207,10 @@ export class CloudToDeviceMessage extends LinkedComponent {
                             />
                         </FormGroup>
                         {containsSimulatedDevices && (
-                            <div className="simulated-device-selected">
+                            <div className={css("simulated-device-selected")}>
                                 <Svg
-                                    path={svgs.infoBubble}
-                                    className="info-icon"
+                                    src={svgs.infoBubble}
+                                    className={css("info-icon")}
                                 />
                                 {t(
                                     "devices.flyouts.c2dMessage.simulatedNotSupported"
@@ -223,8 +228,8 @@ export class CloudToDeviceMessage extends LinkedComponent {
                                 {this.state.isPending && <Indicator />}
                                 {completedSuccessfully && (
                                     <Svg
-                                        className="summary-icon"
-                                        path={svgs.apply}
+                                        className={css("summary-icon")}
+                                        src={svgs.apply}
                                     />
                                 )}
                             </SummaryBody>
@@ -232,7 +237,7 @@ export class CloudToDeviceMessage extends LinkedComponent {
 
                         {error && (
                             <AjaxError
-                                className="device-c2dMessage-error"
+                                className={css("device-c2dMessage-error")}
                                 t={t}
                                 error={error}
                             />

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { DeviceTelemetry } from "./deviceTelemetry";
 import {
@@ -22,6 +22,6 @@ const mapStateToProps = (state) => ({
             dispatch(appRedux.actions.updateTimeInterval(timeInterval)),
     });
 
-export const DeviceTelemetryContainer = withNamespaces()(
+export const DeviceTelemetryContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(DeviceTelemetry)
 );

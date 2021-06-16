@@ -19,10 +19,12 @@ import { UserNewContainer } from "./flyouts/userNew";
 import { UserNewServicePrincipalContainer } from "./flyouts/userNewServicePrincipal/userNewServicePrincipal.container";
 import { svgs } from "utilities";
 
-import "./users.scss";
 import { SystemAdminNewContainer } from "./flyouts/systemAdminNew";
 import { SystemAdminDeleteContainer } from "./flyouts/systemAdminDelete";
 import { IdentityGatewayService } from "services";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./users.module.scss"));
 
 const closedFlyoutState = { openFlyoutName: undefined };
 
@@ -37,11 +39,11 @@ export class Users extends Component {
         this.props.updateCurrentWindow("Users");
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.isPending &&
             nextProps.isPending !== this.props.isPending
@@ -159,7 +161,7 @@ export class Users extends Component {
                         />
                     </ContextMenuAlign>
                 </ContextMenu>
-                <PageContent className="users-container">
+                <PageContent className={css("users-container")}>
                     <PageTitle titleValue={t("users.title")} />
                     {!!error && <AjaxError t={t} error={error} />}
                     {!error && <UsersGridContainer {...gridProps} />}

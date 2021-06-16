@@ -22,6 +22,13 @@ export const exampleColumnDefs = {
 /** Given an example object, extract and return the device Id */
 export const getSoftSelectId = ({ id }) => id;
 
+/** Default column definitions*/
+export const defaultColDef = {
+    sortable: true,
+    lockPinned: true,
+    resizable: true,
+};
+
 /** Shared example grid AgGrid properties */
 export const defaultExampleGridProps = {
     enableColResize: true,

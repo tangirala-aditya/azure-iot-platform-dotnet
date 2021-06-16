@@ -144,7 +144,7 @@ class NumberInput extends React.Component {
             this.props.onChange(this.getValue(this.state.value));
         }
     }
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         if (this.props.initialValue !== newProps.initialValue) {
             this.setState(this.getInitialState(newProps.initialValue));
         }

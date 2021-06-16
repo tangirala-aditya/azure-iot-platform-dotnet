@@ -33,7 +33,7 @@ class App extends Component {
         this.state = { openFlyout: "" };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
     }
 

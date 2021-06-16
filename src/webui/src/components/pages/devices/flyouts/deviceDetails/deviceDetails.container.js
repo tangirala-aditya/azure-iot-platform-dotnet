@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { DeviceDetails } from "./deviceDetails";
 import {
     redux as appRedux,
@@ -57,6 +57,6 @@ const mapStateToProps = (state, props) => ({
             dispatch(appRedux.actions.updateTimeInterval(timeInterval)),
     });
 
-export const DeviceDetailsContainer = withNamespaces()(
+export const DeviceDetailsContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(DeviceDetails)
 );

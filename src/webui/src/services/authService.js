@@ -2,10 +2,12 @@
 
 import Config from "app.config";
 import { UserManager, WebStorageStateStore } from "oidc-client";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { HttpClient } from "utilities/httpClient";
 import { toUserModel, authDisabledUser } from "./models";
 import { Policies } from "utilities";
+import { map } from "rxjs/operators";
+import jwt_decode from "jwt-decode";
 
 export class AuthService {
     static authContext; // Created on AuthService.initialize()
@@ -108,9 +110,11 @@ export class AuthService {
         }
 
         if (AuthService._userManager.getUser()) {
-            Observable.of({ Name: "Temp Name", Email: "temp.name@contoso.com" })
-                .map((data) =>
-                    data ? { Name: data.Name, Email: data.Email } : null
+            of({ Name: "Temp Name", Email: "temp.name@contoso.com" })
+                .pipe(
+                    map((data) =>
+                        data ? { Name: data.Name, Email: data.Email } : null
+                    )
                 )
                 .subscribe(callback);
         } else {
@@ -149,10 +153,10 @@ export class AuthService {
     /** Returns a the current user */
     static getCurrentUser() {
         if (AuthService.isDisabled()) {
-            return Observable.of(authDisabledUser);
+            return of(authDisabledUser);
         }
 
-        return Observable.create((observer) => {
+        return new Observable((observer) => {
             return AuthService._userManager.getUser().then((user) => {
                 if (user) {
                     // Following two should be Arrays but claims will return a string if only one value.
@@ -207,19 +211,33 @@ export class AuthService {
     }
 
     /**
+     * Returns true if the token is not expired. Else, it returns false and enforces Logout.
+     */
+    static checkTokenValidity(token) {
+        if (token) {
+            const decodedToken = jwt_decode(token);
+            return (
+                decodedToken && decodedToken.exp * 1000 > new Date().getTime()
+            );
+        }
+        return false;
+    }
+
+    /**
      * Acquires token from the cache if it is not expired.
      * Otherwise sends request to AAD to obtain a new token.
      */
     static getAccessToken() {
         if (AuthService.isDisabled()) {
-            return Observable.of("client-auth-disabled");
+            return of("client-auth-disabled");
         }
 
-        return Observable.create((observer) => {
+        return new Observable((observer) => {
             return AuthService._userManager.getUser().then((user) => {
-                if (user) {
+                if (user && this.checkTokenValidity(user.id_token)) {
                     observer.next(user.id_token);
                 } else {
+                    this.logout(); //Logging out because The User obj is empty.
                     console.log(
                         "Authentication Error while Aquiring Access Token"
                     );

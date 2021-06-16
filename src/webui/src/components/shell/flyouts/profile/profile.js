@@ -15,12 +15,13 @@ import {
 } from "components/shared";
 import Flyout from "components/shared/flyout";
 import { Policies } from "utilities";
+import jwt_decode from "jwt-decode";
 
-import "./profile.scss";
 import TenantGrid from "./tenantGrid";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./profile.module.scss"));
 
-const Section = Flyout.Section,
-    jwt_decode = require("jwt-decode");
+const Section = Flyout.Section;
 export const Profile = (props) => {
     const {
             t,
@@ -50,10 +51,10 @@ export const Profile = (props) => {
             t={t}
             onClose={onClose}
         >
-            <div className="profile-container">
+            <div className={css("profile-container")}>
                 {!user && (
-                    <div className="profile-container">
-                        <ErrorMsg className="profile-error">
+                    <div className={css("profile-container")}>
+                        <ErrorMsg className={css("profile-error")}>
                             {t("profileFlyout.noUser")}
                         </ErrorMsg>
                         <Trans i18nKey={"profileFlyout.description"}>
@@ -70,10 +71,10 @@ export const Profile = (props) => {
                     </div>
                 )}
                 {user && (
-                    <div className="profile-container">
-                        <div className="profile-header">
+                    <div className={css("profile-container")}>
+                        <div className={css("profile-header")}>
                             <h2>{user.email}</h2>
-                            <Grid className="profile-header-grid">
+                            <Grid className={css("profile-header-grid")}>
                                 <Row>
                                     <Cell className="col-7">
                                         <Trans
@@ -107,54 +108,58 @@ export const Profile = (props) => {
                                 {t("profileFlyout.tenants.tenantHeader")}
                             </Section.Header>
                             <Section.Content>
-                                <div className="pcs-renderer-cell">
-                                    <div className="current-tenant-text">
+                                <div className={css("pcs-renderer-cell")}>
+                                    <div className={css("current-tenant-text")}>
                                         {currentTenant && currentTenant !== ""
                                             ? "Current: " + currentTenant
                                             : ""}
                                     </div>
                                 </div>
-                                {/* Create the list of available tenants if there are any */
-                                !tenants || tenants.length === 0 ? (
-                                    t("profileFlyout.tenants.noTenant")
-                                ) : (
-                                    <Grid>
-                                        <Row>
-                                            <Cell>
-                                                {t(
-                                                    "profileFlyout.tenants.tenantNameColumn"
-                                                )}
-                                            </Cell>
-                                            <Cell>
-                                                {t(
-                                                    "profileFlyout.tenants.tenantRoleColumn"
-                                                )}
-                                            </Cell>
-                                            <Cell>
-                                                {t(
-                                                    "profileFlyout.tenants.tenantActionColumn"
-                                                )}
-                                            </Cell>
-                                        </Row>
-                                        <TenantGrid
-                                            updateTenant={updateTenant}
-                                            fetchTenants={fetchTenants}
-                                            currentTenant={currentTenant}
-                                            switchTenant={switchTenant}
-                                            deleteTenantThenSwitch={
-                                                deleteTenantThenSwitch
-                                            }
-                                            tenants={tenants}
-                                            t={t}
-                                            isSystemAdmin={isSystemAdmin}
-                                        ></TenantGrid>
-                                    </Grid>
-                                )}
+                                {
+                                    /* Create the list of available tenants if there are any */
+                                    !tenants || tenants.length === 0 ? (
+                                        t("profileFlyout.tenants.noTenant")
+                                    ) : (
+                                        <Grid>
+                                            <Row>
+                                                <Cell>
+                                                    {t(
+                                                        "profileFlyout.tenants.tenantNameColumn"
+                                                    )}
+                                                </Cell>
+                                                <Cell>
+                                                    {t(
+                                                        "profileFlyout.tenants.tenantRoleColumn"
+                                                    )}
+                                                </Cell>
+                                                <Cell>
+                                                    {t(
+                                                        "profileFlyout.tenants.tenantActionColumn"
+                                                    )}
+                                                </Cell>
+                                            </Row>
+                                            <TenantGrid
+                                                updateTenant={updateTenant}
+                                                fetchTenants={fetchTenants}
+                                                currentTenant={currentTenant}
+                                                switchTenant={switchTenant}
+                                                deleteTenantThenSwitch={
+                                                    deleteTenantThenSwitch
+                                                }
+                                                tenants={tenants}
+                                                t={t}
+                                                isSystemAdmin={isSystemAdmin}
+                                            ></TenantGrid>
+                                        </Grid>
+                                    )
+                                }
                                 {isSystemAdmin && (
                                     <Grid>
                                         <Cell id="create-tenant-cell">
                                             <Btn
-                                                className="create-tenant-button"
+                                                className={css(
+                                                    "create-tenant-button"
+                                                )}
                                                 primary={true}
                                                 onClick={() =>
                                                     createTenant().subscribe(

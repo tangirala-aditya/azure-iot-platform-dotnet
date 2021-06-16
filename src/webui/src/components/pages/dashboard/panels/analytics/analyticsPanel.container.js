@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { AnalyticsPanel } from "./analyticsPanel";
 import { getEntities as getRuleEntities } from "store/reducers/rulesReducer";
 import { getEntities as getDeviceEntities } from "store/reducers/devicesReducer";
@@ -12,6 +12,6 @@ const mapStateToProps = (state) => ({
     devices: getDeviceEntities(state),
 });
 
-export const AnalyticsPanelContainer = withNamespaces()(
+export const AnalyticsPanelContainer = withTranslation()(
     connect(mapStateToProps, null)(AnalyticsPanel)
 );

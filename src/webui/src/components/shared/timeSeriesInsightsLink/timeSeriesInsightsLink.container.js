@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 import { epics } from "store/reducers/appReducer";
 import { TimeSeriesInsightsLink } from "./timeSeriesInsightsLink";
@@ -11,6 +11,6 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(epics.actions.logEvent(diagnosticsModel)),
 });
 
-export const TimeSeriesInsightsLinkContainer = withNamespaces()(
+export const TimeSeriesInsightsLinkContainer = withTranslation()(
     connect(null, mapDispatchToProps)(TimeSeriesInsightsLink)
 );

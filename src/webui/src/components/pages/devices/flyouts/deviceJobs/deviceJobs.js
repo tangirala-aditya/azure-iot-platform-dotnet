@@ -23,7 +23,8 @@ import {
     DeviceJobPropertiesContainer,
 } from "./";
 
-import "./deviceJobs.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deviceJobs.module.scss"));
 
 export class DeviceJobs extends LinkedComponent {
     constructor(props) {
@@ -99,9 +100,9 @@ export class DeviceJobs extends LinkedComponent {
                 flyoutLink={flyoutLink}
             >
                 <Protected permission={permissions.createJobs}>
-                    <div className="device-jobs-container">
+                    <div className={css("device-jobs-container")}>
                         {devices.length === 0 && (
-                            <ErrorMsg className="device-jobs-error">
+                            <ErrorMsg className={css("device-jobs-error")}>
                                 {t("devices.flyouts.jobs.noDevices")}
                             </ErrorMsg>
                         )}

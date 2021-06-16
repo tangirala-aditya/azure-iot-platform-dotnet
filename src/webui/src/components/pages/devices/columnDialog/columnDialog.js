@@ -1,177 +1,116 @@
-import * as React from "react";
-import { Dialog, DialogType, DialogFooter } from "@fluentui/react/lib/Dialog";
-import { PrimaryButton, DefaultButton } from "@fluentui/react/lib/Button";
-import { Stack } from "@fluentui/react/lib/Stack";
-import { ContextualMenu } from "@fluentui/react/lib/ContextualMenu";
-import { Label } from "@fluentui/react/lib/Label";
-import { IconButton } from "@fluentui/react/lib/Button";
+import * as React from 'react';
+import { useId, useBoolean } from '@fluentui/react-hooks';
 import {
-    ResizeGroupDirection,
-    ResizeGroup,
-    OverflowSet,
-    DirectionalHint,
-    createArray,
-} from "@fluentui/react";
-import { CommandBarButton } from "@fluentui/react/lib/Button";
+  getTheme,
+  mergeStyleSets,
+  FontWeights,
+  ContextualMenu,
+  Modal,
+} from '@fluentui/react';
+import {
+    PrimaryButton, 
+    DefaultButton,
+    IconButton,
+} from "@fluentui/react/lib/Button";
+import  ColumnMapper  from './columnMapper';
+import { DialogFooter } from "@fluentui/react/lib/Dialog";
 
-const AddItem = () => (
-    <IconButton
-        iconProps={{ iconName: "ChevronRight" }}
-        title="Add Item"
-        ariaLabel="Add Item"
-    />
-);
-const buttonStyles = {
-    root: {
-        paddingBottom: 10,
-        paddingTop: 10,
-        width: 100,
-    },
-};
-
-//const exampleHeight = "40vh";
-//const resizeRootClassName = mergeStyles({ height: exampleHeight });
-
-const onRenderOverflowButton = (overflowItems) => (
-  <CommandBarButton
-    role="menuitem"
-    styles={buttonStyles}
-    menuIconProps={{ iconName: 'ChevronRight' }}
-    menuProps={{ items: overflowItems, directionalHint: DirectionalHint.rightCenter }}
-  />
-);
-const RemoveItem = () => (
-    <IconButton
-        iconProps={{ iconName: "ChevronLeft" }}
-        title="Remove Item"
-        ariaLabel="Remove Item"
-    />
-);
-
-const onRenderItem = (item) => (
-    <CommandBarButton
-        role="menuitem"
-        text={item.name}
-        iconProps={{ iconName: item.icon }}
-        onClick={item.onClick}
-        checked={item.checked}
-        styles={buttonStyles}
-    />
-);
-//ChevronLeft
-//<i class="ms-Icon ms-Icon--ChevronLeft" aria-hidden="true"></i>
-//import { useBoolean } from "@fluentui/react-hooks";
-
-const dragOptions = {
-    moveMenuItemText: "Move",
-    closeMenuItemText: "Close",
-    menu: ContextualMenu,
-};
-const modalPropsStyles = { main: { maxWidth: 1200, width: "800px" } };
-const dialogContentProps = {
-    type: DialogType.normal,
-    title: "Column options",
-};
-
-
-const onRenderData = (data) => (
-  <OverflowSet
-    role="menubar"
-    vertical
-    items={data.primary}
-    overflowItems={data.overflow.length ? data.overflow : null}
-    onRenderItem={onRenderItem}
-    onRenderOverflowButton={onRenderOverflowButton}
-  />
-);
-
-const onReduceData = (currentData) => {
-  if (currentData.primary.length === 0) {
-    return undefined;
-  }
-  const overflow = [...currentData.primary.slice(-1), ...currentData.overflow];
-  const primary = currentData.primary.slice(0, -1);
-  return { primary, overflow };
-};
-
-
-const generateData = (count, cachingEnabled, checked) => {
-    const icons = ["Add", "Share", "Upload"];
-    let cacheKey = "";
-    const dataItems = createArray(count, (index) => {
-        cacheKey = cacheKey + `item${index}`;
-        return {
-            key: `item${index}`,
-            name: `Item ${index}`,
-            icon: icons[index % icons.length],
-            checked: checked,
-        };
-    });
-    let result = {
-        primary: dataItems,
-        overflow: [],
-    };
-    if (cachingEnabled) {
-        result = { ...result, cacheKey };
-    }
-    return result;
-};
-
-const dataToRender = generateData(8, false, false);
-
-const stackStyles = {
-  root: {
-    height: 250,
-  },
-};
 
 export const ColumnDialog = (props) => {
-    //const [hideDialog, { toggle: toggleHideDialog }] = useBoolean(true);
-    const isDraggable = true;    
-    const modalProps = React.useMemo(
-        () => ({
-            isBlocking: true,
-            styles: modalPropsStyles,
-            dragOptions: dragOptions,
-        }),
-        [isDraggable]
-    );
+    const [
+        isModalOpen,
+        { setTrue: showModal, setFalse: hideModal },
+    ] = useBoolean(props.show);
+
+    // Normally the drag options would be in a constant, but here the toggle can modify keepInBounds
+    const dragOptions = {
+        moveMenuItemText: "Move",
+        closeMenuItemText: "Close",
+        menu: ContextualMenu,
+    };
+
+    
+
+    // Use useId() to ensure that the IDs are unique on the page.
+    // (It's also okay to use plain strings and manually ensure uniqueness.)
+    const titleId = useId("title");
 
     return (
-        <>
-            <Dialog
-                hidden={!props.show}
-                onDismiss={props.toggle}
-                dialogContentProps={dialogContentProps}
-                modalProps={modalProps}
+        <div>
+            <DefaultButton onClick={showModal} text="Open Modal" />
+            <Modal
+                titleAriaId={titleId}
+                isOpen={isModalOpen}
+                onDismiss={hideModal}
+                isBlocking={true}
+                containerClassName={contentStyles.container}
+                dragOptions={dragOptions}
             >
-                <Stack horizontal >
-                    <Stack.Item>
-                        <Label>Available columns</Label>
-                        <ResizeGroup
-                            role="tabpanel"
-                            aria-label="Vertical Resize Group with an Overflow Set"
-                            direction={ResizeGroupDirection.vertical}
-                            data={dataToRender}
-                            onReduceData={onReduceData}
-                            onRenderData={onRenderData}
-                        />
-                    </Stack.Item>
-                    <Stack.Item styles={{ stackStyles }}>
-                        <Stack verticalAlign="center" styles={{ stackStyles }}>
-                            <AddItem />
-                            <RemoveItem />
-                        </Stack>
-                    </Stack.Item>
-                    <Stack.Item>
-                        <Label>Selected columns</Label>
-                    </Stack.Item>
-                </Stack>
-                <DialogFooter>
-                    <PrimaryButton onClick={props.toggle} text="OK" />
-                    <DefaultButton onClick={props.toggle} text="Cancel" />
-                </DialogFooter>
-            </Dialog>
-        </>
+                <div className={contentStyles.header}>
+                    <span id={titleId}>Column Options</span>
+                    <IconButton
+                        styles={iconButtonStyles}
+                        iconProps={cancelIcon}
+                        ariaLabel="Close popup modal"
+                        onClick={hideModal}
+                    />
+                </div>
+                <div className={contentStyles.body}>
+                    <ColumnMapper
+                        options={props.columnOptions}
+                        onChange={props.onColumnChange}
+                    />
+                    <DialogFooter>
+                        <PrimaryButton onClick={props.toggle} text="OK" />
+                        <DefaultButton onClick={props.toggle} text="Cancel" />
+                    </DialogFooter>
+                </div>
+            </Modal>
+        </div>
     );
+};
+
+const cancelIcon= { iconName: "Cancel" };
+
+const theme = getTheme();
+const contentStyles = mergeStyleSets({
+    container: {
+        display: "flex",
+        flexFlow: "column nowrap",
+        alignItems: "stretch",
+        width: "700px",
+    },
+    header: [
+        theme.fonts.xLarge,
+        {
+            flex: "1 1 auto",
+            color: theme.palette.neutralPrimary,
+            display: "flex",
+            alignItems: "center",
+            fontWeight: FontWeights.semibold,
+            padding: "12px 12px 14px 24px",
+        },
+    ],
+    body: {
+        flex: "4 4 auto",
+        padding: "0 24px 24px 24px",        
+        overflowY: "hidden",
+        selectors: {
+            p: { margin: "14px 0" },
+            "p:first-child": { marginTop: 0 },
+            "p:last-child": { marginBottom: 0 },
+        },
+    },
+});
+
+const iconButtonStyles = {
+    root: {
+        color: theme.palette.neutralPrimary,
+        marginLeft: "auto",
+        marginTop: "4px",
+        marginRight: "2px",
+    },
+    rootHovered: {
+        color: theme.palette.neutralDark,
+    },
 };

@@ -36,6 +36,28 @@ const closedFlyoutState = { openFlyoutName: undefined };
 const closedModalState = {
     openModalName: undefined,
 };
+const ColumnOptions = [
+    {
+        label: "Earth",
+        options: [{ value: "luna", label: "Moon" }],
+    },
+    {
+        label: "Mars",
+        options: [
+            { value: "phobos", label: "Phobos" },
+            { value: "deimos", label: "Deimos" },
+        ],
+    },
+    {
+        label: "Jupiter",
+        options: [
+            { value: "io", label: "Io" },
+            { value: "europa", label: "Europa" },
+            { value: "ganymede", label: "Ganymede" },
+            { value: "callisto", label: "Callisto" },
+        ],
+    },
+];
 
 export class Devices extends Component {
     constructor(props) {
@@ -47,9 +69,14 @@ export class Devices extends Component {
             selectedDeviceGroupId: undefined,
             loadMore: props.loadMoreState,
             isDeviceSearch: false,
+            selectedColumns: []
         };
 
         this.props.updateCurrentWindow("Devices");
+    }
+
+    onColumnChange(selected) {
+        this.setState({ selected });
     }
 
     UNSAFE_componentWillMount() {
@@ -224,7 +251,7 @@ export class Devices extends Component {
         this.setState({ loadMore: false });
         this.props.cancelDeviceCalls({ makeSubsequentCalls: false });
     };
-    
+
     toggleColumnDialog = () => {
         const { showColumnDialog } = this.state;
         this.setState({ showColumnDialog: !showColumnDialog });
@@ -306,6 +333,8 @@ export class Devices extends Component {
                 <ColumnDialog
                     show={showColumnDialog}
                     toggle={this.toggleColumnDialog}
+                    columnOptions={ColumnOptions}
+                    onColumnChange={this.onColumnChange}
                 />
                 <PageContent className={css("devices-container")}>
                     <PageTitle

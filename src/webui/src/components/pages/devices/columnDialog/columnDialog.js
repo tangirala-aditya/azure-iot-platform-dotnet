@@ -61,7 +61,26 @@ export const ColumnDialog = (props) => {
                         onChange={props.onColumnChange}
                     />
                     <DialogFooter>
-                        <PrimaryButton onClick={props.toggle} text="OK" />
+                        <PrimaryButton
+                            onClick={props.toggle}
+                            text="OK"
+                            styles={{
+                                root: {
+                                    color: "#fff",
+                                    backgroundColor: "#f00",
+                                    selectors: {
+                                        ":hover": {
+                                            backgroundColor: "#8d8989",
+                                            color: "#030303",
+                                        },
+                                        ":hover .childElement": {
+                                            backgroundColor: "#8d8989",
+                                            color: "#030303",
+                                        },
+                                    },
+                                },
+                            }}
+                        />
                         <DefaultButton onClick={props.toggle} text="Cancel" />
                     </DialogFooter>
                 </div>

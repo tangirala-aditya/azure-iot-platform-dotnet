@@ -17,6 +17,7 @@ parameters:
   testPipelineRunId:
   isHelmVersion3:
   aadSGId:
+  telemetryStorageType:
 
 jobs:
   - template: get-approval.yaml

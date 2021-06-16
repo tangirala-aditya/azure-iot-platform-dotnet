@@ -55,7 +55,7 @@ stages:
           sysAdmins: $(sysAdmins-crslDev)
           isHelmVersion3: true
           aadSGId: $(aadSGId-crslDev)
-          telemetryStorageType: ade
+          telemetryStorageType: $(telemetryStorageType-crslDev)
 
   - stage: acsDev
     displayName: ACS dev

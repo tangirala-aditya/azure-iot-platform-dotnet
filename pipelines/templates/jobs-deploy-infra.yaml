@@ -356,6 +356,20 @@ jobs:
           deploymentPartialName: $(aksPartialName)
           resourceGroupName: $(resourceGroupName)
 
+      - task: AzureCLI@2
+        displayName: Enable Azure Policy Add-on in AKS Cluster
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            set -Eeuxo pipefail
+            az provider register --namespace Microsoft.PolicyInsights
+            az aks enable-addons --addons azure-policy --name $(aksName) --resource-group $(resourceGroupName)
+            kubectl get pods -n gatekeeper-system
+            kubectl get pods -n kube-system
+            az aks show --query addonProfiles.azurepolicy -g $(resourceGroupName) -n $(aksName)
+
       - task: Kubernetes@1
         displayName: Install the K8s Custom Resource Definition
         inputs:

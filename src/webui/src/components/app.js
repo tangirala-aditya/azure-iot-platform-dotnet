@@ -25,6 +25,8 @@ import {
     DeploymentsRouter,
 } from "./pages";
 import { IdentityGatewayService } from "services";
+//import { ColumnMappingContainer } from "./pages/columnmapping/columnmapping.container";
+import { ColumnMappingsRouter } from "./pages/columnmapping/columnmapping.router";
 
 class App extends Component {
     constructor(props) {
@@ -102,6 +104,13 @@ class App extends Component {
                     svg: svgs.tabs.maintenance,
                     labelId: "tabs.maintenance",
                     component: MaintenanceContainer,
+                },
+                {
+                    to: "/columnMapping",
+                    exact: false,
+                    svg: svgs.tabs.maintenance,
+                    labelId: "tabs.maintenance",
+                    component: ColumnMappingsRouter,
                 },
             ],
             crumbsConfig = [

@@ -25,8 +25,24 @@ export const toDeviceGroupModel = function (deviceGroup = {}) {
     deviceGroup["isPinned"] = deviceGroup.isPinned || false;
     deviceGroup["sortOrder"] = deviceGroup.sortOrder || 0;
     deviceGroup["supportedMethods"] = deviceGroup.supportedMethods || [];
+    deviceGroup["MappingId"] = "Default";
     return deviceGroup;
 };
+
+export const toColumnMapping = function (columnMapping = {}) {
+    columnMapping = camelCaseReshape(columnMapping, {
+        name: "id",
+        eTag: "eTag",
+        createdBy: "createdBy",
+        createdDate: "createdDate",
+        columnMappingDefinitions: "mapping",
+    });
+
+    return columnMapping;
+};
+
+export const toColumnMappings = (response = {}) =>
+    response.map(toColumnMapping);
 
 export const toDeviceConditionModel = (condition = {}) => ({
     key: condition.field,

@@ -57,6 +57,7 @@ export const epics = createEpicScenario({
         type: "APP_INITIALIZE",
         epic: () => [
             epics.actions.fetchUser(),
+            epics.actions.fetchColumnMappings(),
             epics.actions.fetchDeviceGroups(),
             epics.actions.fetchLogo(),
             epics.actions.fetchReleaseInformation(),
@@ -190,6 +191,20 @@ export const epics = createEpicScenario({
                     actions.push(epics.actions.fetchSelectedDeviceGroup());
                     return actions;
                 }),
+                catchError(handleError(fromAction))
+            ),
+    },
+
+    fetchColumnMappings: {
+        type: "APP_COLUMN_MAPPINGS_GETCH",
+        epic: (fromAction, store) =>
+            ConfigService.getColumnMappings().pipe(
+                map(
+                    toActionCreator(
+                        redux.actions.updateColumnMappings,
+                        fromAction
+                    )
+                ),
                 catchError(handleError(fromAction))
             ),
     },
@@ -349,6 +364,8 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
     deviceGroupListSchema = new schema.Array(deviceGroupSchema),
     actionSettingsSchema = new schema.Entity("actionSettings"),
     actionSettingsListSchema = new schema.Array(actionSettingsSchema),
+    columnMappingSchema = new schema.Entity("columnMappings"),
+    columnMappingListSchema = new schema.Array(columnMappingSchema),
     // ========================= Schemas - END
 
     // ========================= Reducers - START
@@ -438,6 +455,14 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
         } = normalize(payload, deviceGroupListSchema);
         return update(state, {
             deviceGroups: { $merge: deviceGroups },
+        });
+    },
+    updateColumnMappingsReducer = (state, { payload }) => {
+        const {
+            entities: { columnMappings },
+        } = normalize(payload, columnMappingListSchema);
+        return update(state, {
+            columnMappings: { $set: columnMappings },
         });
     },
     updateSolutionSettingsReducer = (state, { payload, fromAction }) =>
@@ -591,6 +616,10 @@ export const redux = createReducerScenario({
         type: "APP_ACTIVE_DEVICE_GROUP_UPDATE",
         reducer: updateActiveDeviceGroupsReducer,
     },
+    updateColumnMappings: {
+        type: "APP_COLUMN_MAPPINGS_GETCH",
+        reducer: updateColumnMappingsReducer,
+    },
     changeTheme: { type: "APP_CHANGE_THEME", reducer: updateThemeReducer },
     registerError: { type: "APP_REDUCER_ERROR", reducer: errorReducer },
     updateLogo: { type: "APP_UPDATE_LOGO", reducer: logoReducer },
@@ -679,6 +708,23 @@ export const getActiveDeviceGroupConditions = createSelector(
     getActiveDeviceGroup,
     (activeDeviceGroup) => (activeDeviceGroup || {}).conditions
 );
+export const getActiveDeviceGroupMappingId = createSelector(
+    getActiveDeviceGroup,
+    (activeDeviceGroup) => (activeDeviceGroup || {}).MappingId
+);
+export const getColumnMappings = (state) =>
+    getAppReducer(state).columnMappings || [];
+export const getActiveDeviceGroupMapping = createSelector(
+    getColumnMappings,
+    getActiveDeviceGroupMappingId,
+    (mappings, mappingId) => mappings[mappingId]
+);
+export const getColumnMappingsList = createSelector(
+    getColumnMappings,
+    (columnMappings) =>
+        Object.keys(columnMappings).map((id) => columnMappings[id])
+);
+
 export const getLogo = (state) => getAppReducer(state).logo;
 export const getName = (state) => getAppReducer(state).name;
 export const isDefaultLogo = (state) => getAppReducer(state).isDefaultLogo;

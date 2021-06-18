@@ -40,6 +40,7 @@ namespace Mmm.Iot.Config.Services
         public const string DateFormat = "yyyy-MM-dd'T'HH:mm:sszzz";
         public const string AppInsightDateFormat = "yyyy-MM-dd HH:mm:ss";
         public const string SoftwarePackageStore = "software-package";
+        public const string ColumnMappingsCollectionId = "columnmappings";
         private readonly IStorageAdapterClient client;
         private readonly IAsaManagerClient asaManager;
         private readonly AppConfig config;
@@ -472,6 +473,33 @@ namespace Mmm.Iot.Config.Services
             return this.CreatePackageServiceModel(response);
         }
 
+        public async Task<IEnumerable<ColumnMappingServiceModel>> GetColumnMappingsAsync()
+        {
+            var response = await this.client.GetAllAsync(ColumnMappingsCollectionId);
+            return response.Items
+                .Select(this.CreateColumnMappingServiceModel);
+        }
+
+        public async Task<ColumnMappingServiceModel> AddColumnMappingAsync(ColumnMappingServiceModel columnMapping, string userId)
+        {
+            AuditHelper.AddAuditingData(columnMapping, userId);
+
+            var value = JsonConvert.SerializeObject(
+                columnMapping,
+                Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                });
+
+            var response = await this.client.CreateAsync(ColumnMappingsCollectionId, value);
+
+            // Setting the columnmapping id before logging
+            columnMapping.Id = response.Key;
+
+            return this.CreateColumnMappingServiceModel(response);
+        }
+
         private string GetBlobSasUri(CloudBlobClient cloudBlobClient, string containerName, string blobName, string timeoutDuration)
         {
             string[] time = timeoutDuration.Split(':');
@@ -559,6 +587,19 @@ namespace Mmm.Iot.Config.Services
             {
                 return packages;
             }
+        }
+
+        private ColumnMappingServiceModel CreateColumnMappingServiceModel(ValueApiModel input)
+        {
+            var output = JsonConvert.DeserializeObject<ColumnMappingServiceModel>(input.Data);
+            output.Id = input.Key;
+            output.ETag = input.ETag;
+            if (output.Tags == null)
+            {
+                output.Tags = new List<string>();
+            }
+
+            return output;
         }
     }
 }

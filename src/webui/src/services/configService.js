@@ -17,6 +17,8 @@ import {
     toNewFirmwareUploadRequestModel,
     toFirmwareModel,
     backupDefaultFirmwareModel,
+    toColumnMappings,
+    toColumnMapping,
 } from "./models";
 import { throwError, EMPTY, of } from "rxjs";
 import { catchError, map } from "rxjs/operators";
@@ -31,6 +33,19 @@ export class ConfigService {
         return HttpClient.get(`${ENDPOINT}devicegroups`).pipe(
             map(toDeviceGroupsModel)
         );
+    }
+
+    static getColumnMappings() {
+        return HttpClient.get("https://localhost:2001/columnmapping").pipe(
+            map(toColumnMappings)
+        );
+    }
+
+    static createColumnMappings(id, payload) {
+        return HttpClient.put(
+            `https://localhost:2001/columnmapping/${id}`,
+            payload
+        ).pipe(map(toColumnMapping));
     }
 
     /** Creates a new device group */

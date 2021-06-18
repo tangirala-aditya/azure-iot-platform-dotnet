@@ -26,7 +26,7 @@ const ENDPOINT = Config.serviceUrls.iotHubManager;
 /** Contains methods for calling the Device service */
 export class IoTHubManagerService {
     /** Returns a list of devices */
-    static getDevices(conditions = [], cToken = null) {
+    static getDevices(conditions = [], mappings = [], cToken = null) {
         var options = {};
         if (cToken) {
             options.headers = {
@@ -38,7 +38,7 @@ export class IoTHubManagerService {
         return HttpClient.get(
             `${ENDPOINT}devices?query=${query}`,
             options
-        ).pipe(map(toDevicesModel));
+        ).pipe(map((response) => toDevicesModel(response, mappings)));
     }
 
     /** Returns a list of all modules message schema fields */

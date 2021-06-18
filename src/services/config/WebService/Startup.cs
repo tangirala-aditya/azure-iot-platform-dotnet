@@ -44,6 +44,7 @@ namespace Mmm.Iot.Config.WebService
             services.AddApplicationInsightsTelemetryProcessor<HealthProbeTelemetryProcessor>();
             services.AddMvc().AddControllersAsServices().AddNewtonsoftJson();
             services.AddHttpContextAccessor();
+            services.AddCors();
             this.ApplicationContainer = new DependencyResolution().Setup(services, this.Configuration);
             return new AutofacServiceProvider(this.ApplicationContainer);
         }
@@ -62,6 +63,7 @@ namespace Mmm.Iot.Config.WebService
                 c.RoutePrefix = string.Empty;
             });
             SetupTelemetry(app, config);
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseMiddleware<AuthMiddleware>();
             app.UseEndpoints(endpoints =>
             {

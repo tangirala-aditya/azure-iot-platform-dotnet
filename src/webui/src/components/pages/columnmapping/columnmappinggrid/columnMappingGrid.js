@@ -28,7 +28,7 @@ export class ColumnMappingsGrid extends Component {
 
         // Default user grid columns
         this.columnDefs = [
-            columnMappingGridColumnDefs.id,
+            columnMappingGridColumnDefs.name,
             columnMappingGridColumnDefs.createdBy,
             columnMappingGridColumnDefs.createdDate,
         ];

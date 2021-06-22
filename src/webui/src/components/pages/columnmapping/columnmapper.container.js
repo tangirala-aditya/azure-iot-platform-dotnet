@@ -10,7 +10,7 @@ import {
 } from "store/reducers/appReducer";
 
 const mapStateToProps = (state, props) => ({
-        columnMapping: getColumnMappingById(state, props.mappingName),
+        columnMapping: getColumnMappingById(state, props.mappingId),
         defaultColumnMapping: getDefaultColumnMapping(state),
     }),
     mapDispatchToProps = (dispatch) => ({

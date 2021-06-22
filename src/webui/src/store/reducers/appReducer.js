@@ -724,7 +724,7 @@ export const getColumnMappingsList = createSelector(
     (columnMappings) =>
         Object.keys(columnMappings)
             .filter(function (elem) {
-                //return false for the element that matches both the name and the id
+                //return false for the element that matches Default
                 return elem !== "Default";
             })
             .map((id) => columnMappings[id])

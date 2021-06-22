@@ -14,14 +14,14 @@ export class ColumnMappingNew extends LinkedComponent {
     constructor(props) {
         super(props);
         this.state = {
-            mappingName: this.props.isEdit ? this.props.match.params.name : "",
+            mappingId: this.props.isEdit ? this.props.match.params.id : "",
         };
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {}
 
     render() {
-        const { mappingName } = this.state;
+        const { mappingId } = this.state;
         return (
             <PageContent
                 className={`${columnMappingCss("mapping-container")}  ${css(
@@ -34,7 +34,7 @@ export class ColumnMappingNew extends LinkedComponent {
                         descriptionValue="Map the Device Properties to Columns for displaying in Grid"
                     />
                     <ColumnMapperContainer
-                        mappingName={mappingName}
+                        mappingId={mappingId}
                         {...this.props}
                     />
                 </div>

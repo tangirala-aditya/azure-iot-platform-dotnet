@@ -17,9 +17,10 @@ import {
     redux as appRedux,
     getActiveDeviceGroupConditions,
     getActiveDeviceQueryConditions,
-    getColumnMappings,
+    //getColumnMappings,
     getActiveDeviceGroupMapping,
     getActiveDeviceGroupMappingId,
+    getDefaultColumnMapping,
 } from "./appReducer";
 import { IoTHubManagerService } from "services";
 import {
@@ -49,6 +50,11 @@ export const epics = createEpicScenario({
             const activeDeviceGroupMappings = getActiveDeviceGroupMapping(
                 store.value
             );
+            const defaultColumnMappings = getDefaultColumnMapping(store.value);
+            const columnMappings = [
+                ...((activeDeviceGroupMappings || {}).mapping || []),
+                ...((defaultColumnMappings || {}).mapping || []),
+            ];
             const rawConditions = getActiveDeviceGroupConditions(
                     store.value
                 ).concat(getActiveDeviceQueryConditions(store.value)),
@@ -59,8 +65,8 @@ export const epics = createEpicScenario({
                         !!condition.value
                     );
                 });
-            const columnMappings = getColumnMappings(store.value);
-            console.log(columnMappings);
+            // const columnMappings = getColumnMappings(store.value);
+            console.log("ColumnMappings", columnMappings);
 
             console.log(activeDeviceGroupMappings);
             const activeDeviceGroupMappingId = getActiveDeviceGroupMappingId(
@@ -70,7 +76,7 @@ export const epics = createEpicScenario({
 
             return IoTHubManagerService.getDevices(
                 conditions,
-                (activeDeviceGroupMappings || {}).mapping
+                columnMappings
             ).pipe(
                 map((response) => {
                     cToken = response.continuationToken;

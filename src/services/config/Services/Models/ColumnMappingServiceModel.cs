@@ -19,6 +19,8 @@ namespace Mmm.Iot.Config.Services.Models
 
         public string ETag { get; set; }
 
+        public bool IsDefault { get; set; }
+
         public IList<string> Tags { get; set; }
     }
 }

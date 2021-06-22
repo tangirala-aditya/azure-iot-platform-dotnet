@@ -32,7 +32,8 @@ export const toDeviceGroupModel = function (deviceGroup = {}) {
 
 export const toColumnMapping = function (columnMapping = {}) {
     columnMapping = camelCaseReshape(columnMapping, {
-        name: "id",
+        id: "id",
+        name: "name",
         eTag: "eTag",
         createdBy: "createdBy",
         createdDate: "createdDate",

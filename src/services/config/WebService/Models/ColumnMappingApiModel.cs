@@ -35,6 +35,8 @@ namespace Mmm.Iot.Config.WebService.Models
 
         public string ETag { get; set; }
 
+        public bool IsDefault { get; set; }
+
         public ColumnMappingServiceModel ToServiceModel()
         {
             return new ColumnMappingServiceModel
@@ -43,6 +45,7 @@ namespace Mmm.Iot.Config.WebService.Models
                 ColumnMappingDefinitions = this.ColumnMappingDefinitions,
                 ETag = this.ETag,
                 Id = this.Id,
+                IsDefault = this.IsDefault,
             };
         }
     }

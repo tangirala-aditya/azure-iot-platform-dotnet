@@ -20,12 +20,13 @@ export const toDeviceGroupModel = function (deviceGroup = {}) {
         isPinned: "isPinned",
         sortOrder: "sortOrder",
         supportedMethods: "supportedMethods",
+        mappingId: "mappingId",
     });
     deviceGroup["telemetryFormat"] = deviceGroup.telemetryFormat || [];
     deviceGroup["isPinned"] = deviceGroup.isPinned || false;
     deviceGroup["sortOrder"] = deviceGroup.sortOrder || 0;
     deviceGroup["supportedMethods"] = deviceGroup.supportedMethods || [];
-    deviceGroup["MappingId"] = "Default";
+    deviceGroup["mappingId"] = "Default";
     return deviceGroup;
 };
 
@@ -42,7 +43,7 @@ export const toColumnMapping = function (columnMapping = {}) {
 };
 
 export const toColumnMappings = (response = {}) =>
-    response.map(toColumnMapping);
+    getItems(response).map(toColumnMapping);
 
 export const toDeviceConditionModel = (condition = {}) => ({
     key: condition.field,

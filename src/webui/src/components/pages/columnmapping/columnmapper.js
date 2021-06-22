@@ -3,7 +3,6 @@
 import React, { Fragment } from "react";
 
 import { toDiagnosticsModel } from "services/models";
-import { toDeviceConditionModel } from "services/models/configModels.js";
 import { svgs, LinkedComponent, Validator } from "utilities";
 import {
     AjaxError,
@@ -14,9 +13,15 @@ import {
     PropertyCell as Cell,
     PropertyGrid as Grid,
 } from "components/shared";
+import { ConfigService, IoTHubManagerService } from "services";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./columnMapping.scss"));
+
+const toOption = (value, label) => ({
+    label: label || value,
+    value,
+});
 
 // A counter for creating unique keys per new condition
 let conditionKey = 0;
@@ -24,6 +29,7 @@ let conditionKey = 0;
 const newColumnMapping = () => ({
     name: undefined,
     mapping: undefined,
+    cellRenderer: undefined,
     description: "",
     key: conditionKey++, // Used by react to track the rendered elements
 });
@@ -33,10 +39,6 @@ export class ColumnMapper extends LinkedComponent {
         super(props);
         this.state = {
             mappingOptions: [
-                {
-                    label: "Id",
-                    value: "id",
-                },
                 {
                     label: "lastActivity",
                     value: "lastActivity",
@@ -70,36 +72,32 @@ export class ColumnMapper extends LinkedComponent {
                     value: "authentication",
                 },
             ],
-            statusOptions: [
-                { label: "Online", value: "Connected" },
-                { label: "Offline", value: "Disconnected" },
+            rendererOptions: [
+                { label: "SimulatedRenderer", value: "IsSimulatedRenderer" },
+                {
+                    label: "ConnectionStatusRenderer",
+                    value: "ConnectionStatusRenderer",
+                },
+                { label: "TimeRenderer", value: "TimeRenderer" },
+                { label: "DefaultRenderer", value: "DefaultRenderer" },
             ],
-            mappingName: this.props.isEdit
-                ? this.props.match.params.name
-                : this.props.isDefault
-                ? "Default"
-                : "",
+            mappingName: this.props.mappingName || "",
             isEdit: this.props.isEdit || false,
             isDefault: this.props.isDefault || false,
-            columnMappings: this.props.isEdit
-                ? (
-                      this.props.columnMappings[this.props.match.params.name] ||
-                      {}
-                  ).mapping || []
-                : this.props.isDefault
-                ? (this.props.columnMappings["Default"] || {}).mapping || []
-                : [],
+            isAdd: this.props.isAdd || false,
+            mappingId: (this.props.columnMapping || {}).id,
+            eTag: (this.props.columnMapping || {}).eTag,
+            columnMappings: (this.props.columnMapping || {}).mapping || [],
             defaultColumnMappings:
-                (this.props.columnMappings["Default"] || {}).mapping || [],
+                (this.props.defaultColumnMapping || {}).mapping || [],
             isPending: false,
             error: undefined,
         };
-
+        console.log(this.state.columnMappings);
         // State to input links
         this.mappingsLink = this.linkTo("columnMappings");
         this.defaultMappingsLink = this.linkTo("defaultColumnMappings");
         this.mappingNameLink = this.linkTo("mappingName");
-        this.subscriptions = [];
     }
 
     conditionIsNew(condition) {
@@ -110,40 +108,61 @@ export class ColumnMapper extends LinkedComponent {
         return [this.mappingsLink].every((link) => !link.error);
     }
 
-    componentWillUnmount() {
-        this.subscriptions.forEach((sub) => sub.unsubscribe());
+    componentDidMount() {
+        this.subscription = IoTHubManagerService.getDeviceProperties().subscribe(
+            (items) => {
+                const filterOptions = items.map((item) => toOption(item));
+                this.setState({
+                    mappingOptions: [
+                        ...this.state.mappingOptions,
+                        ...filterOptions,
+                    ],
+                });
+            },
+            (filtersError) => this.setState({ filtersError })
+        );
     }
 
-    queryDevices = () => {
-        return new Promise((resolve, reject) => {
-            try {
-                this.setState({ error: undefined, isPending: true }, () => {
-                    const rawQueryConditions = this.state.deviceQueryConditions.filter(
-                        (condition) => {
-                            // remove conditions that are new (have not been edited)
-                            return !this.conditionIsNew(condition);
-                        }
-                    );
-                    this.props.fetchDevicesByCondition({
-                        data: rawQueryConditions.map((condition) => {
-                            return toDeviceConditionModel(condition);
-                        }),
-                    });
-                    resolve();
-                });
-            } catch (error) {
-                reject(error);
-            }
-        });
-    };
+    componentWillUnmount() {
+        if (this.subscription) this.subscription.unsubscribe();
+    }
 
     apply = (event) => {
         event.preventDefault();
-        console.log(this.state.columnMappings);
-        if (this.state.isDefault) {
-            this.props.history.push(`/columnMapping/default`);
+
+        var requestData = {
+            Id: this.state.mappingId,
+            ETag: this.state.eTag,
+            ColumnMappingDefinitions: this.state.columnMappings,
+            Name: this.state.mappingName,
+        };
+        if (this.state.mappingId && this.state.eTag) {
+            ConfigService.updateColumnMappings(
+                this.state.mappingId,
+                requestData
+            ).subscribe(
+                (columnMapping) => {
+                    this.props.fetchColumnMappings();
+                    if (this.state.isDefault) {
+                        this.props.history.push(`/columnMapping/default`);
+                    } else {
+                        this.props.history.push(`/columnMapping/custom`);
+                    }
+                },
+                (error) => {}
+            );
         } else {
-            this.props.history.push(`/columnMapping/custom`);
+            ConfigService.createColumnMappings(requestData).subscribe(
+                (columnMapping) => {
+                    this.props.fetchColumnMappings();
+                    if (this.state.isDefault) {
+                        this.props.history.push(`/columnMapping/default`);
+                    } else {
+                        this.props.history.push(`/columnMapping/custom`);
+                    }
+                },
+                (error) => {}
+            );
         }
     };
 
@@ -169,8 +188,7 @@ export class ColumnMapper extends LinkedComponent {
     resetDeviceCondition = () => {
         this.setState(
             {
-                deviceQueryConditions: [newColumnMapping()],
-                error: undefined,
+                columnMappings: (this.props.columnMapping || {}).mapping || [],
             },
             () => {
                 this.render();
@@ -180,7 +198,6 @@ export class ColumnMapper extends LinkedComponent {
 
     onReset = () => {
         this.props.logEvent(toDiagnosticsModel("CreateDeviceQuery_Reset", {}));
-        this.props.resetDeviceByCondition();
         this.resetDeviceCondition();
     };
 
@@ -231,6 +248,15 @@ export class ColumnMapper extends LinkedComponent {
                                     "deviceQueryConditions.errorMsg.operatorCantBeEmpty"
                                 )
                             ),
+                        renderer = conditionLink
+                            .forkTo("cellRenderer")
+                            .map(({ value }) => value)
+                            .check(
+                                Validator.notEmpty,
+                                t(
+                                    "deviceQueryConditions.errorMsg.operatorCantBeEmpty"
+                                )
+                            ),
                         description = conditionLink.forkTo("description"),
                         edited = !(
                             !name.value &&
@@ -239,7 +265,14 @@ export class ColumnMapper extends LinkedComponent {
                         );
                     let error =
                         name.error || mapping.error || description.error || "";
-                    return { name, mapping, description, edited, error };
+                    return {
+                        name,
+                        mapping,
+                        renderer,
+                        description,
+                        edited,
+                        error,
+                    };
                 }
             ),
             defaultMappingsLink = this.defaultMappingsLink.getLinkedChildren(
@@ -261,6 +294,15 @@ export class ColumnMapper extends LinkedComponent {
                                     "deviceQueryConditions.errorMsg.operatorCantBeEmpty"
                                 )
                             ),
+                        renderer = conditionLink
+                            .forkTo("cellRenderer")
+                            .map(({ value }) => value)
+                            .check(
+                                Validator.notEmpty,
+                                t(
+                                    "deviceQueryConditions.errorMsg.operatorCantBeEmpty"
+                                )
+                            ),
                         description = conditionLink.forkTo("description"),
                         edited = !(
                             !name.value &&
@@ -269,7 +311,14 @@ export class ColumnMapper extends LinkedComponent {
                         );
                     let error =
                         name.error || mapping.error || description.error || "";
-                    return { name, mapping, description, edited, error };
+                    return {
+                        name,
+                        mapping,
+                        renderer,
+                        description,
+                        edited,
+                        error,
+                    };
                 }
             ),
             conditionHasErrors = mappingsLink.some(({ error }) => !!error);
@@ -286,7 +335,7 @@ export class ColumnMapper extends LinkedComponent {
                         placeholder={t(
                             "deviceQueryConditions.fieldPlaceholder"
                         )}
-                        link={this.mappingsLink.name}
+                        link={this.mappingNameLink}
                     />
                 )}
                 {!this.state.isDefault && this.state.isEdit && (
@@ -302,6 +351,8 @@ export class ColumnMapper extends LinkedComponent {
                                     <Cell className="col-3">Name</Cell>
                                     <Cell className="col-1"></Cell>
                                     <Cell className="col-2">Mapping</Cell>
+                                    <Cell className="col-1"></Cell>
+                                    <Cell className="col-2">Renderer</Cell>
                                     <Cell className="col-1"></Cell>
                                     <Cell className="col-3">Description</Cell>
                                 </Row>
@@ -355,6 +406,26 @@ export class ColumnMapper extends LinkedComponent {
                                                     "deviceQueryConditions.operatorPlaceholder"
                                                 )}
                                                 link={condition.mapping}
+                                            />
+                                        </Cell>
+                                        <Cell className="col-1"></Cell>
+                                        <Cell className="col-2">
+                                            <FormControl
+                                                type="select"
+                                                ariaLabel={t(
+                                                    "deviceQueryConditions.operator"
+                                                )}
+                                                className="long"
+                                                disabled={true}
+                                                searchable={false}
+                                                clearable={false}
+                                                options={
+                                                    this.state.rendererOptions
+                                                }
+                                                placeholder={t(
+                                                    "deviceQueryConditions.operatorPlaceholder"
+                                                )}
+                                                link={condition.renderer}
                                             />
                                         </Cell>
                                         <Cell className="col-1"></Cell>
@@ -425,6 +496,23 @@ export class ColumnMapper extends LinkedComponent {
                                                 "deviceQueryConditions.operatorPlaceholder"
                                             )}
                                             link={condition.mapping}
+                                        />
+                                    </Cell>
+                                    <Cell className="col-1"></Cell>
+                                    <Cell className="col-2">
+                                        <FormControl
+                                            type="select"
+                                            ariaLabel={t(
+                                                "deviceQueryConditions.operator"
+                                            )}
+                                            className="long"
+                                            searchable={false}
+                                            clearable={false}
+                                            options={this.state.rendererOptions}
+                                            placeholder={t(
+                                                "deviceQueryConditions.operatorPlaceholder"
+                                            )}
+                                            link={condition.renderer}
                                         />
                                     </Cell>
                                     <Cell className="col-1"></Cell>

@@ -46,6 +46,9 @@ export const epics = createEpicScenario({
     fetchDevices: {
         type: "DEVICES_FETCH",
         epic: (fromAction, store) => {
+            const activeDeviceGroupMappings = getActiveDeviceGroupMapping(
+                store.value
+            );
             const rawConditions = getActiveDeviceGroupConditions(
                     store.value
                 ).concat(getActiveDeviceQueryConditions(store.value)),
@@ -58,9 +61,7 @@ export const epics = createEpicScenario({
                 });
             const columnMappings = getColumnMappings(store.value);
             console.log(columnMappings);
-            const activeDeviceGroupMappings = getActiveDeviceGroupMapping(
-                store.value
-            );
+
             console.log(activeDeviceGroupMappings);
             const activeDeviceGroupMappingId = getActiveDeviceGroupMappingId(
                 store.value

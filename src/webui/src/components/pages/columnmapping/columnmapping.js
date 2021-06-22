@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 
 import { PageContent, PageTitle } from "components/shared";
 import { LinkedComponent } from "utilities";
-import { ColumnMapper } from "./columnmapper";
+import { ColumnMapperContainer } from "./columnmapper.container";
 import { ColumnMappingsGridContainer } from "../columnmapping/columnmappinggrid/columnMappingGrid.container";
 
 const classnames = require("classnames/bind");
@@ -19,9 +19,7 @@ export class ColumnMapping extends LinkedComponent {
         debugger;
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
-    }
+    UNSAFE_componentWillReceiveProps(nextProps) {}
 
     render() {
         return (
@@ -58,7 +56,8 @@ export class ColumnMapping extends LinkedComponent {
                             exact
                             path={"/columnMapping/default"}
                             render={() => (
-                                <ColumnMapper
+                                <ColumnMapperContainer
+                                    mappingName={"Default"}
                                     isDefault={true}
                                     {...this.props}
                                 />
@@ -71,28 +70,6 @@ export class ColumnMapping extends LinkedComponent {
                                 <ColumnMappingsGridContainer {...this.props} />
                             )}
                         />
-                        {/* <Route
-                            exact
-                            path={"/columnMapping/edit/:name"}
-                            render={(routeProps) => (
-                                <ColumnMapper
-                                    isEdit={true}
-                                    {...this.props}
-                                    {...routeProps}
-                                />
-                            )}
-                        /> */}
-                        {/* <Route
-                            exact
-                            path={"/columnMapping/add"}
-                            render={(routeProps) => (
-                                <ColumnMapper
-                                    isAdd={true}
-                                    {...this.props}
-                                    {...routeProps}
-                                />
-                            )}
-                        /> */}
                         <Redirect to="/columnMapping/default" />
                     </Switch>
                 </div>

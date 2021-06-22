@@ -109,7 +109,7 @@ class App extends Component {
                     to: "/columnMapping",
                     exact: false,
                     svg: svgs.tabs.maintenance,
-                    labelId: "tabs.maintenance",
+                    labelId: "tabs.columnMapping",
                     component: ColumnMappingsRouter,
                 },
             ],

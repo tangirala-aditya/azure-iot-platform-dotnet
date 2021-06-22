@@ -2,59 +2,45 @@
 // Copyright (c) 3M. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Mmm.Iot.Config.Services.Models;
+using Mmm.Iot.Common.Services;
+using Mmm.Iot.Common.Services.Filters;
+using Mmm.Iot.Config.Services;
 using Mmm.Iot.Config.WebService.Models;
-using Newtonsoft.Json.Linq;
 
 namespace Mmm.Iot.Config.WebService.Controllers
 {
-    [Route("columnmapping")]
-    [AllowAnonymous]
+    [Route("v1/columnmapping")]
+    [TypeFilter(typeof(ExceptionsFilterAttribute))]
     public class ColumnMappingController : Controller
     {
-        public List<ColumnMappingServiceModel> GetColumnMappings()
+        private readonly IStorage storage;
+
+        public ColumnMappingController(IStorage storage)
         {
-            List<ColumnMappingServiceModel> columnMappings = new List<ColumnMappingServiceModel>();
+            this.storage = storage;
+        }
 
-            List<ColumnMappingDefinition> columnMappingDefinitions = new List<ColumnMappingDefinition>();
-            List<ColumnMappingDefinition> customColumnMappingDefinitions = new List<ColumnMappingDefinition>();
-            columnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "id", Mapping = "id" });
-            columnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "lastActivity", Mapping = "lastActivity" });
-            columnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "isSimulated", Mapping = "isSimulated" });
-            columnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "c2DMessageCount", Mapping = "c2DMessageCount" });
-            columnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "enabled", Mapping = "enabled" });
-            columnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "lastStatusUpdated", Mapping = "lastStatusUpdated" });
-            columnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "iotHubHostName", Mapping = "iotHubHostName" });
-            columnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "eTag", Mapping = "eTag" });
-            columnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "authentication", Mapping = "authentication" });
-            columnMappingDefinitions.ForEach(x => x.IsDefault = true);
+        [Authorize("ReadAll")]
+        public async Task<ColumnMappingListApiModel> GetAllAsync()
+        {
+            return new ColumnMappingListApiModel(await this.storage.GetColumnMappingsAsync());
+        }
 
-            customColumnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "methods", Mapping = "properties.reported.supportedMethods" });
-            customColumnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "telemetry", Mapping = "properties.reported.telemetry" });
-            customColumnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "type", Mapping = "properties.reported.type" });
-            customColumnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "currentFwVersion", Mapping = "properties.reported.firmware.currentFwVersion" });
-            customColumnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "previousFwVersion", Mapping = "previousProperties.reported.firmware.currentFwVersion" });
-            customColumnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "lastFwUpdateStartTime", Mapping = "properties.reported.firmware.lastFwUpdateStartTime" });
-            customColumnMappingDefinitions.Add(new ColumnMappingDefinition() { Name = "lastFwUpdateEndTime", Mapping = "properties.reported.firmware.lastFwUpdateEndTime" });
-
-            columnMappings.Add(new ColumnMappingServiceModel() { Id = Guid.NewGuid().ToString(), Name = "Default", ColumnMappingDefinitions = columnMappingDefinitions, CreatedBy = "Ragav", CreatedDateTime = DateTime.UtcNow });
-            columnMappings.Add(new ColumnMappingServiceModel() { Id = Guid.NewGuid().ToString(), Name = "Custom1", ColumnMappingDefinitions = customColumnMappingDefinitions, CreatedBy = "Ragav", CreatedDateTime = DateTime.UtcNow });
-            columnMappings.Add(new ColumnMappingServiceModel() { Id = Guid.NewGuid().ToString(), Name = "Custom2", ColumnMappingDefinitions = customColumnMappingDefinitions, CreatedBy = "Ragav", CreatedDateTime = DateTime.UtcNow });
-            columnMappings.Add(new ColumnMappingServiceModel() { Id = Guid.NewGuid().ToString(), Name = "Custom3", ColumnMappingDefinitions = customColumnMappingDefinitions, CreatedBy = "Ragav", CreatedDateTime = DateTime.UtcNow });
-
-            return columnMappings;
+        [HttpPost]
+        [Authorize("ReadAll")]
+        public async Task<ColumnMappingApiModel> CreateAsync([FromBody] ColumnMappingApiModel columnMappingApiModel)
+        {
+            return new ColumnMappingApiModel(await this.storage.AddColumnMappingAsync(columnMappingApiModel.ToServiceModel(), this.GetClaimsUserDetails()));
         }
 
         [HttpPut("{id}")]
-        public ColumnMappingApiModel SaveColumnMapping(string id, [FromBody] ColumnMappingApiModel columnMappingApiModel)
+        [Authorize("ReadAll")]
+        public async Task<ColumnMappingApiModel> UpdateColumnMapping(string id, [FromBody] ColumnMappingApiModel columnMappingApiModel)
         {
-            columnMappingApiModel.Id = id;
-            return columnMappingApiModel;
+            return new ColumnMappingApiModel(await this.storage.UpdateColumnMappingAsync(id, columnMappingApiModel.ToServiceModel(), this.GetClaimsUserDetails()));
         }
     }
 }

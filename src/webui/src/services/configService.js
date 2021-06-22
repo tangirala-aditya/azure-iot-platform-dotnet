@@ -35,19 +35,6 @@ export class ConfigService {
         );
     }
 
-    static getColumnMappings() {
-        return HttpClient.get("https://localhost:2001/columnmapping").pipe(
-            map(toColumnMappings)
-        );
-    }
-
-    static createColumnMappings(id, payload) {
-        return HttpClient.put(
-            `https://localhost:2001/columnmapping/${id}`,
-            payload
-        ).pipe(map(toColumnMapping));
-    }
-
     /** Creates a new device group */
     static createDeviceGroup(payload) {
         return HttpClient.post(`${ENDPOINT}devicegroups`, payload).pipe(
@@ -231,5 +218,27 @@ export class ConfigService {
 
     static catch404(error, continueAs) {
         return error.status === 404 ? of(continueAs) : throwError(error);
+    }
+
+    static getColumnMappings() {
+        return HttpClient.get("https://localhost:2001/v1/columnmapping").pipe(
+            map(toColumnMappings)
+        );
+    }
+
+    static createColumnMappings(payload) {
+        return HttpClient.post(
+            `https://localhost:2001/v1/columnmapping`,
+            payload,
+            { timeout: 120000 }
+        ).pipe(map(toColumnMapping));
+    }
+
+    static updateColumnMappings(id, payload) {
+        return HttpClient.put(
+            `https://localhost:2001/v1/columnmapping/${id}`,
+            payload,
+            { timeout: 120000 }
+        ).pipe(map(toColumnMapping));
     }
 }

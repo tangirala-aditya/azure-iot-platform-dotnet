@@ -484,6 +484,29 @@ namespace Mmm.Iot.Config.Services
         {
             AuditHelper.AddAuditingData(columnMapping, userId);
 
+            // Make ETag as empty to make sure that is inserted as new entity;
+            columnMapping.ETag = null;
+            columnMapping.Id = columnMapping.Name;
+
+            ValueApiModel response = await this.SaveColumnMappingAsync(columnMapping);
+
+            return this.CreateColumnMappingServiceModel(response);
+        }
+
+        public async Task<ColumnMappingServiceModel> UpdateColumnMappingAsync(string id, ColumnMappingServiceModel columnMapping, string userId)
+        {
+            AuditHelper.UpdateAuditingData(columnMapping, userId);
+
+            // Update the Id to column mapping
+            columnMapping.Id = id;
+
+            ValueApiModel response = await this.SaveColumnMappingAsync(columnMapping);
+
+            return this.CreateColumnMappingServiceModel(response);
+        }
+
+        private async Task<ValueApiModel> SaveColumnMappingAsync(ColumnMappingServiceModel columnMapping)
+        {
             var value = JsonConvert.SerializeObject(
                 columnMapping,
                 Formatting.Indented,
@@ -492,12 +515,8 @@ namespace Mmm.Iot.Config.Services
                     NullValueHandling = NullValueHandling.Ignore,
                 });
 
-            var response = await this.client.CreateAsync(ColumnMappingsCollectionId, value);
-
-            // Setting the columnmapping id before logging
-            columnMapping.Id = response.Key;
-
-            return this.CreateColumnMappingServiceModel(response);
+            var response = await this.client.UpdateAsync(ColumnMappingsCollectionId, columnMapping.Id, value, columnMapping.ETag);
+            return response;
         }
 
         private string GetBlobSasUri(CloudBlobClient cloudBlobClient, string containerName, string blobName, string timeoutDuration)

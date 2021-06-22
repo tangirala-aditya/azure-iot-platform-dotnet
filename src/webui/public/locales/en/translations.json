@@ -30,7 +30,8 @@
         "rules": "Rules",
         "maintenance": "Maintenance",
         "packages": "Packages",
-        "deployments": "Deployments"
+        "deployments": "Deployments",
+        "columnMapping": "Column Mapping"
     },
     "errorFormat": "Error: {{message}}",
     "edgeAgentStatus": {

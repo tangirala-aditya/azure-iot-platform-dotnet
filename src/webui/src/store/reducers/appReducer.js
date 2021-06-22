@@ -710,7 +710,7 @@ export const getActiveDeviceGroupConditions = createSelector(
 );
 export const getActiveDeviceGroupMappingId = createSelector(
     getActiveDeviceGroup,
-    (activeDeviceGroup) => (activeDeviceGroup || {}).MappingId
+    (activeDeviceGroup) => (activeDeviceGroup || {}).mappingId
 );
 export const getColumnMappings = (state) =>
     getAppReducer(state).columnMappings || [];
@@ -722,8 +722,18 @@ export const getActiveDeviceGroupMapping = createSelector(
 export const getColumnMappingsList = createSelector(
     getColumnMappings,
     (columnMappings) =>
-        Object.keys(columnMappings).map((id) => columnMappings[id])
+        Object.keys(columnMappings)
+            .filter(function (elem) {
+                //return false for the element that matches both the name and the id
+                return elem !== "Default";
+            })
+            .map((id) => columnMappings[id])
 );
+export const getDefaultColumnMapping = createSelector(
+    getColumnMappings,
+    (mappings) => mappings["Default"]
+);
+export const getColumnMappingById = (state, id) => getColumnMappings(state)[id];
 
 export const getLogo = (state) => getAppReducer(state).logo;
 export const getName = (state) => getAppReducer(state).name;

@@ -23,7 +23,6 @@ const closedFlyoutState = {
 export class ColumnMappingsGrid extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props);
         // Set the initial state
         this.state = closedFlyoutState;
 
@@ -108,7 +107,6 @@ export class ColumnMappingsGrid extends Component {
     getSoftSelectId = ({ id } = "") => id;
 
     addNewColumnMapping = () => {
-        console.log(this.props);
         this.props.history.push(`/columnMapping/add`);
     };
 

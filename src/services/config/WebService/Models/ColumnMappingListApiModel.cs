@@ -10,7 +10,7 @@ namespace Mmm.Iot.Config.WebService.Models
 {
     public class ColumnMappingListApiModel
     {
-        public ColumnMappingListApiModel(List<ColumnMappingServiceModel> columnMappings)
+        public ColumnMappingListApiModel(IEnumerable<ColumnMappingServiceModel> columnMappings)
         {
             this.Items = new List<ColumnMappingApiModel>();
 

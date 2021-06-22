@@ -13,6 +13,10 @@ namespace Mmm.Iot.Config.WebService.Models
 {
     public class ColumnMappingApiModel : AuditApiModel
     {
+        public ColumnMappingApiModel()
+        {
+        }
+
         public ColumnMappingApiModel(ColumnMappingServiceModel columnMappingServiceModel)
         {
             this.Name = columnMappingServiceModel.Name;
@@ -30,5 +34,16 @@ namespace Mmm.Iot.Config.WebService.Models
         public IEnumerable<ColumnMappingDefinition> ColumnMappingDefinitions { get; set; }
 
         public string ETag { get; set; }
+
+        public ColumnMappingServiceModel ToServiceModel()
+        {
+            return new ColumnMappingServiceModel
+            {
+                Name = this.Name,
+                ColumnMappingDefinitions = this.ColumnMappingDefinitions,
+                ETag = this.ETag,
+                Id = this.Id,
+            };
+        }
     }
 }

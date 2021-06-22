@@ -4,7 +4,7 @@ import React from "react";
 
 import { PageContent, PageTitle } from "components/shared";
 import { LinkedComponent } from "utilities";
-import { ColumnMapper } from "../columnmapper";
+import { ColumnMapperContainer } from "../columnmapper.container";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("../summary.module.scss"));
@@ -13,14 +13,15 @@ const columnMappingCss = classnames.bind(require("../mapping.module.scss"));
 export class ColumnMappingNew extends LinkedComponent {
     constructor(props) {
         super(props);
-        debugger;
+        this.state = {
+            mappingName: this.props.isEdit ? this.props.match.params.name : "",
+        };
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
-    }
+    UNSAFE_componentWillReceiveProps(nextProps) {}
 
     render() {
+        const { mappingName } = this.state;
         return (
             <PageContent
                 className={`${columnMappingCss("mapping-container")}  ${css(
@@ -32,7 +33,10 @@ export class ColumnMappingNew extends LinkedComponent {
                         titleValue="Add/Edit Column Mapping"
                         descriptionValue="Map the Device Properties to Columns for displaying in Grid"
                     />
-                    <ColumnMapper isEdit={true} {...this.props} />
+                    <ColumnMapperContainer
+                        mappingName={mappingName}
+                        {...this.props}
+                    />
                 </div>
             </PageContent>
         );

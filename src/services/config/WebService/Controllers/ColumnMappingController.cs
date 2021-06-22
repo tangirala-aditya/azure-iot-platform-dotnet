@@ -23,6 +23,7 @@ namespace Mmm.Iot.Config.WebService.Controllers
             this.storage = storage;
         }
 
+        [HttpGet]
         [Authorize("ReadAll")]
         public async Task<ColumnMappingListApiModel> GetAllAsync()
         {

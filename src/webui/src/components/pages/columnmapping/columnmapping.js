@@ -57,7 +57,7 @@ export class ColumnMapping extends LinkedComponent {
                             path={"/columnMapping/default"}
                             render={() => (
                                 <ColumnMapperContainer
-                                    mappingName={"Default"}
+                                    mappingId={"Default"}
                                     isDefault={true}
                                     {...this.props}
                                 />

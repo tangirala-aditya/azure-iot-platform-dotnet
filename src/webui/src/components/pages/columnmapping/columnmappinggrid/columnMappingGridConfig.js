@@ -11,9 +11,9 @@ const { checkForEmpty } = gridValueFormatters;
 
 /** A collection of column definitions for the devices grid */
 export const columnMappingGridColumnDefs = {
-    id: {
+    name: {
         headerName: "Name",
-        field: "id",
+        field: "name",
         cellRendererFramework: SoftSelectLinkRenderer,
         suppressSizeToFit: true,
     },

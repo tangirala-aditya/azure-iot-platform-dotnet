@@ -81,11 +81,11 @@ export class ColumnMapper extends LinkedComponent {
                 { label: "TimeRenderer", value: "TimeRenderer" },
                 { label: "DefaultRenderer", value: "DefaultRenderer" },
             ],
-            mappingName: this.props.mappingName || "",
+            mappingId: this.props.mappingId || "",
             isEdit: this.props.isEdit || false,
             isDefault: this.props.isDefault || false,
             isAdd: this.props.isAdd || false,
-            mappingId: (this.props.columnMapping || {}).id,
+            mappingName: (this.props.columnMapping || {}).name,
             eTag: (this.props.columnMapping || {}).eTag,
             columnMappings: (this.props.columnMapping || {}).mapping || [],
             defaultColumnMappings:
@@ -97,7 +97,10 @@ export class ColumnMapper extends LinkedComponent {
         // State to input links
         this.mappingsLink = this.linkTo("columnMappings");
         this.defaultMappingsLink = this.linkTo("defaultColumnMappings");
-        this.mappingNameLink = this.linkTo("mappingName");
+        this.mappingNameLink = this.linkTo("mappingName").check(
+            Validator.notEmpty,
+            this.props.t("deviceQueryConditions.errorMsg.fieldCantBeEmpty")
+        );
     }
 
     conditionIsNew(condition) {
@@ -135,6 +138,7 @@ export class ColumnMapper extends LinkedComponent {
             ETag: this.state.eTag,
             ColumnMappingDefinitions: this.state.columnMappings,
             Name: this.state.mappingName,
+            IsDefault: this.state.isDefault,
         };
         if (this.state.mappingId && this.state.eTag) {
             ConfigService.updateColumnMappings(
@@ -185,7 +189,7 @@ export class ColumnMapper extends LinkedComponent {
         );
     };
 
-    resetDeviceCondition = () => {
+    resetColumnMappings = () => {
         this.setState(
             {
                 columnMappings: (this.props.columnMapping || {}).mapping || [],
@@ -197,8 +201,10 @@ export class ColumnMapper extends LinkedComponent {
     };
 
     onReset = () => {
-        this.props.logEvent(toDiagnosticsModel("CreateDeviceQuery_Reset", {}));
-        this.resetDeviceCondition();
+        this.props.logEvent(
+            toDiagnosticsModel("CreateColumnMappings_Reset", {})
+        );
+        this.resetColumnMappings();
     };
 
     operatorOptionArr = (options, key) => {
@@ -261,10 +267,15 @@ export class ColumnMapper extends LinkedComponent {
                         edited = !(
                             !name.value &&
                             !mapping.value &&
+                            !renderer.value &&
                             !description.value
                         );
                     let error =
-                        name.error || mapping.error || description.error || "";
+                        name.error ||
+                        mapping.error ||
+                        renderer.error ||
+                        description.error ||
+                        "";
                     return {
                         name,
                         mapping,
@@ -307,10 +318,15 @@ export class ColumnMapper extends LinkedComponent {
                         edited = !(
                             !name.value &&
                             !mapping.value &&
+                            !renderer.value &&
                             !description.value
                         );
                     let error =
-                        name.error || mapping.error || description.error || "";
+                        name.error ||
+                        mapping.error ||
+                        renderer.error ||
+                        description.error ||
+                        "";
                     return {
                         name,
                         mapping,
@@ -543,6 +559,7 @@ export class ColumnMapper extends LinkedComponent {
                                     disabled={
                                         !this.formIsValid() ||
                                         conditionHasErrors ||
+                                        this.mappingNameLink.error ||
                                         this.state.isPending ||
                                         this.state.columnMappings.length === 0
                                     }

@@ -9,7 +9,7 @@ export const ColumnMappingsRouter = () => (
     <Switch>
         <Route
             exact
-            path={"/columnMapping/edit/:name"}
+            path={"/columnMapping/edit/:id"}
             render={(routeProps) => (
                 <ColumnMappingNewContainer isEdit={true} {...routeProps} />
             )}

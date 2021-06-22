@@ -27,6 +27,9 @@ import {
 import { IdentityGatewayService } from "services";
 //import { ColumnMappingContainer } from "./pages/columnmapping/columnmapping.container";
 import { ColumnMappingsRouter } from "./pages/columnmapping/columnmapping.router";
+import { initializeIcons } from "@fluentui/font-icons-mdl2";
+
+initializeIcons();
 
 class App extends Component {
     constructor(props) {

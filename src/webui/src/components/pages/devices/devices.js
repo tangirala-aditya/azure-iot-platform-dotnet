@@ -25,6 +25,8 @@ import { SIMManagementContainer } from "./flyouts/SIMManagement";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
 import { svgs, getDeviceGroupParam, getTenantIdParam } from "utilities";
 import { IdentityGatewayService, IoTHubManagerService } from "services";
+import {ColumnDialog} from "./columnDialog";
+import { DefaultButton } from "@fluentui/react/lib/Button";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./devices.module.scss"));
@@ -34,19 +36,47 @@ const closedFlyoutState = { openFlyoutName: undefined };
 const closedModalState = {
     openModalName: undefined,
 };
+const ColumnOptions = [
+    {
+        label: "Earth",
+        options: [{ value: "luna", label: "Moon" }],
+    },
+    {
+        label: "Mars",
+        options: [
+            { value: "phobos", label: "Phobos" },
+            { value: "deimos", label: "Deimos" },
+        ],
+    },
+    {
+        label: "Jupiter",
+        options: [
+            { value: "io", label: "Io" },
+            { value: "europa", label: "Europa" },
+            { value: "ganymede", label: "Ganymede" },
+            { value: "callisto", label: "Callisto" },
+        ],
+    },
+];
 
 export class Devices extends Component {
     constructor(props) {
         super(props);
         this.state = {
             ...closedFlyoutState,
+            showColumnDialog: true,
             contextBtns: null,
             selectedDeviceGroupId: undefined,
             loadMore: props.loadMoreState,
             isDeviceSearch: false,
+            selectedColumns: []
         };
 
         this.props.updateCurrentWindow("Devices");
+    }
+
+    onColumnChange(selected) {
+        this.setState({ selected });
     }
 
     UNSAFE_componentWillMount() {
@@ -222,6 +252,11 @@ export class Devices extends Component {
         this.props.cancelDeviceCalls({ makeSubsequentCalls: false });
     };
 
+    toggleColumnDialog = () => {
+        const { showColumnDialog } = this.state;
+        this.setState({ showColumnDialog: !showColumnDialog });
+    };
+
     downloadFile = () => {
         IoTHubManagerService.getDevicesReportByQuery(
             this.props.activeDeviceGroupConditions
@@ -250,7 +285,7 @@ export class Devices extends Component {
                 lastUpdated,
                 routeProps,
             } = this.props,
-            { isDeviceSearch } = this.state,
+            { isDeviceSearch, showColumnDialog } = this.state,
             deviceData = isDeviceSearch ? devicesByCondition : devices,
             dataError = isDeviceSearch ? devicesByConditionError : deviceError,
             isDataPending = isDeviceSearch
@@ -295,6 +330,12 @@ export class Devices extends Component {
                     ]}
                     priorityChildren={this.priorityChildren()}
                 />
+                <ColumnDialog
+                    show={showColumnDialog}
+                    toggle={this.toggleColumnDialog}
+                    columnOptions={ColumnOptions}
+                    onColumnChange={this.onColumnChange}
+                />
                 <PageContent className={css("devices-container")}>
                     <PageTitle
                         titleValue={
@@ -312,6 +353,17 @@ export class Devices extends Component {
                     {this.state.isDeviceSearch && <AdvanceSearchContainer />}
                     {!this.state.isDeviceSearch && (
                         <div className={css("cancel-right-div")}>
+                            <DefaultButton
+                                iconProps={{ iconName: "Download" }}
+                                onClick={this.downloadFile}
+                                text={t("devices.downloadDeviceReport")}
+                            />
+
+                            <DefaultButton
+                                iconProps={{ iconName: "ColumnOptions" }}
+                                onClick={this.toggleColumnDialog}
+                                text="Column Options"
+                            />
                             <Toggle
                                 attr={{
                                     button: {
@@ -319,18 +371,12 @@ export class Devices extends Component {
                                         type: "button",
                                     },
                                 }}
+                                className="TODO-AddClassToPositionControl"
                                 on={this.state.loadMore}
                                 onLabel={t("devices.loadMore")}
                                 offLabel={t("devices.loadMore")}
                                 onChange={this.switchLoadMore}
                             />
-                            <Btn
-                                svg={svgs.upload}
-                                className={css("download-deviceReport")}
-                                onClick={this.downloadFile}
-                            >
-                                {t("devices.downloadDeviceReport")}
-                            </Btn>
                         </div>
                     )}
                     {!error && (

@@ -219,7 +219,7 @@ namespace Mmm.Iot.Functions.Messaging.Shared
             try
             {
                 string deviceTwin = null;
-
+                Twin twin = null;
                 JObject deviceTwinJson = new JObject();
                 deviceTwinJson.Add(DeviceTelemetryKeyConstants.DeviceId, deviceId.ToString());
                 deviceTwinJson.Add(DeviceTelemetryKeyConstants.TimeStamp, timeStamp.DateTime);
@@ -231,7 +231,7 @@ namespace Mmm.Iot.Functions.Messaging.Shared
                 {
                     try
                     {
-                        Twin twin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
+                        twin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
                         deviceTwin = twin.ToJson();
                         deviceTwinJson.Add(DeviceTelemetryKeyConstants.DeviceCreatedDate, timeStamp.DateTime);
                     }
@@ -242,41 +242,52 @@ namespace Mmm.Iot.Functions.Messaging.Shared
                 }
                 else
                 {
+                    JObject previousTwin = null;
                     KustoOperations kustoClient = await KustoOperations.GetClientAsync();
 
-                    string kustoQuery = $"DeviceTwin | where DeviceId == \"{deviceId}\" | summarize arg_max(TimeStamp, *) by DeviceId";
+                    string kustoQuery = $"DeviceTwin | where DeviceId == \"{deviceId}\" | summarize arg_max(TimeStamp, *) by DeviceId | where IsDeleted == false";
                     var deviceTwinList = await kustoClient.QueryAsync<DeviceTwinModel>($"IoT-{tenant}", kustoQuery, null);
 
                     DeviceTwinModel preDeviceTwin = deviceTwinList.FirstOrDefault();
 
                     if (preDeviceTwin != null)
                     {
-                        JObject previousTwin = preDeviceTwin.Twin;
+                        previousTwin = preDeviceTwin.Twin;
                         deviceTwinJson.Add(DeviceTelemetryKeyConstants.DeviceCreatedDate, preDeviceTwin.DeviceCreatedDate);
-
-                        switch (operationType)
-                        {
-                            case "deviceConnected":
-                                previousTwin["connectionState"] = "Connected";
-                                previousTwin["lastActivityTime"] = timeStamp.DateTime;
-                                break;
-                            case "deviceDisconnected":
-                                previousTwin["connectionState"] = "Disconnected";
-                                previousTwin["lastActivityTime"] = timeStamp.DateTime;
-                                break;
-                            case "updateTwin":
-                                JObject twinFragment = JObject.Parse(eventData);
-                                previousTwin = previousTwin.UpdateJson(twinFragment);
-                                break;
-                            case "deleteDeviceIdentity":
-                                deviceTwinJson[DeviceTelemetryKeyConstants.IsDeleted] = true;
-                                break;
-                            default:
-                                break;
-                        }
-
-                        deviceTwin = previousTwin.ToString();
                     }
+                    else
+                    {
+                        deviceTwinJson.Add(DeviceTelemetryKeyConstants.DeviceCreatedDate, default(DateTime)); // Set Device Created Date to Default if twin is not present in storage.
+                    }
+
+                    if (previousTwin == null)
+                    {
+                        twin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
+                        previousTwin = JObject.Parse(twin.ToJson());
+                    }
+
+                    switch (operationType)
+                    {
+                        case "deviceConnected":
+                            previousTwin["connectionState"] = "Connected";
+                            previousTwin["lastActivityTime"] = timeStamp.DateTime;
+                            break;
+                        case "deviceDisconnected":
+                            previousTwin["connectionState"] = "Disconnected";
+                            previousTwin["lastActivityTime"] = timeStamp.DateTime;
+                            break;
+                        case "updateTwin":
+                            JObject twinFragment = JObject.Parse(eventData);
+                            previousTwin = previousTwin.UpdateJson(twinFragment);
+                            break;
+                        case "deleteDeviceIdentity":
+                            deviceTwinJson[DeviceTelemetryKeyConstants.IsDeleted] = true;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    deviceTwin = previousTwin.ToString();
                 }
 
                 if (!string.IsNullOrEmpty(deviceTwin))

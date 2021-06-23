@@ -8,12 +8,9 @@ import {
     columnMappingGridColumnDefs,
     defaultColDef,
 } from "./columnMappingGridConfig";
-import { isFunc, translateColumnDefs } from "utilities";
-
-const closedFlyoutState = {
-    openFlyoutName: undefined,
-    softSelectedUserId: undefined,
-};
+import { isFunc, translateColumnDefs, svgs } from "utilities";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../columnMapping.scss"));
 
 /**
  * A grid for displaying users
@@ -23,8 +20,6 @@ const closedFlyoutState = {
 export class ColumnMappingsGrid extends Component {
     constructor(props) {
         super(props);
-        // Set the initial state
-        this.state = closedFlyoutState;
 
         // Default user grid columns
         this.columnDefs = [
@@ -47,21 +42,6 @@ export class ColumnMappingsGrid extends Component {
         }
     };
 
-    openFlyout = (flyoutName) => () =>
-        this.setState({
-            openFlyoutName: flyoutName,
-            softSelectedUserId: undefined,
-        });
-
-    getOpenFlyout = () => {
-        switch (this.state.openFlyoutName) {
-            default:
-                return null;
-        }
-    };
-
-    closeFlyout = () => this.setState(closedFlyoutState);
-
     /**
      * Handles soft select props method
      *
@@ -71,8 +51,6 @@ export class ColumnMappingsGrid extends Component {
         const { onSoftSelectChange } = this.props;
         if (mappingId) {
             this.props.history.push(`/columnMapping/edit/${mappingId}`);
-        } else {
-            this.closeFlyout();
         }
         if (isFunc(onSoftSelectChange)) {
             onSoftSelectChange(mappingId);
@@ -97,11 +75,15 @@ export class ColumnMappingsGrid extends Component {
     };
 
     onColumnMoved = () => {
-        this.props.logEvent(toDiagnosticsModel("Users_ColumnArranged", {}));
+        this.props.logEvent(
+            toDiagnosticsModel("ColumnMappings_ColumnArranged", {})
+        );
     };
 
     onSortChanged = () => {
-        this.props.logEvent(toDiagnosticsModel("Users_Sort_Click", {}));
+        this.props.logEvent(
+            toDiagnosticsModel("ColumnMappings_Sort_Click", {})
+        );
     };
 
     getSoftSelectId = ({ id } = "") => id;
@@ -118,7 +100,6 @@ export class ColumnMappingsGrid extends Component {
             defaultColDef: defaultColDef,
             sizeColumnsToFit: true,
             getSoftSelectId: this.getSoftSelectId,
-            softSelectId: this.state.softSelectedUserId || {},
             ...this.props, // Allow default property overrides
             immutableData: true,
             getRowNodeId: ({ id }) => id,
@@ -137,7 +118,15 @@ export class ColumnMappingsGrid extends Component {
 
         return (
             <Fragment>
-                <Btn onClick={this.addNewColumnMapping}>Add New</Btn>
+                <div>
+                    <Btn
+                        className={css("btn-icon")}
+                        svg={svgs.plus}
+                        onClick={this.addNewColumnMapping}
+                    >
+                        Add New
+                    </Btn>
+                </div>
                 <PcsGrid key="columnmappings-grid-key" {...gridProps} />
             </Fragment>
         );

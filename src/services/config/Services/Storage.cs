@@ -473,6 +473,12 @@ namespace Mmm.Iot.Config.Services
             return this.CreatePackageServiceModel(response);
         }
 
+        public async Task<ColumnMappingServiceModel> GetColumnMappingAsync(string id)
+        {
+            var response = await this.client.GetAsync(ColumnMappingsCollectionId, id);
+            return this.CreateColumnMappingServiceModel(response);
+        }
+
         public async Task<IEnumerable<ColumnMappingServiceModel>> GetColumnMappingsAsync()
         {
             var response = await this.client.GetAllAsync(ColumnMappingsCollectionId);
@@ -502,12 +508,13 @@ namespace Mmm.Iot.Config.Services
 
         public async Task<ColumnMappingServiceModel> UpdateColumnMappingAsync(string id, ColumnMappingServiceModel columnMapping, string userId)
         {
-            AuditHelper.UpdateAuditingData(columnMapping, userId);
+            ColumnMappingServiceModel existingColumnMapping = await this.GetColumnMappingAsync(id);
 
-            // Update the Id to column mapping
-            columnMapping.Id = id;
+            existingColumnMapping.ColumnMappingDefinitions = columnMapping.ColumnMappingDefinitions;
 
-            ValueApiModel response = await this.SaveColumnMappingWithKeyAsync(columnMapping);
+            AuditHelper.UpdateAuditingData(existingColumnMapping, userId);
+
+            ValueApiModel response = await this.SaveColumnMappingWithKeyAsync(existingColumnMapping);
 
             return this.CreateColumnMappingServiceModel(response);
         }

@@ -13,7 +13,10 @@ namespace Mmm.Iot.Functions.Messaging.Shared
         public const string TimeReceived = "_timeReceived";
         public const string Schema = "_schema";
         public const string Data = "data";
+        public const string TimeStamp = "timeStamp";
         public const string IsDeleted = "isDeleted";
+        public const string DeviceCreatedDate = "deviceCreatedDate";
+        public const string EventOpType = "eventOperationType";
 
         public const string MessageSchema = "message";
 

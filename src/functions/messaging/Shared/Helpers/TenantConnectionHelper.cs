@@ -11,7 +11,7 @@ namespace Mmm.Iot.Functions.Messaging.Shared.Helpers
     public static class TenantConnectionHelper
     {
         private const string TenantIotHubConnectionStringFormat = "tenant:{0}:iotHubConnectionString";
-        private const string TenantEventHubConnectionStringFormat = "tenant:{0}:telemetryHubConn";
+        private const string TenantEventHubConnectionStringFormat = "tenant:{0}:eventHubConn";
 
         public static string GetIotHubConnectionString(string tenantId)
         {

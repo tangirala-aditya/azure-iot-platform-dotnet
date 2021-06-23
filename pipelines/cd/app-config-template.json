@@ -123,6 +123,7 @@
     "TelemetryFunctionUri": "OVERWRITTEN_IN_DEPLOYMENT",
     "TwinChangeEventHubConnectionString": "OVERWRITTEN_IN_DEPLOYMENT",
     "TwinChangeFunctionName": "twin-change-processor",
-    "TwinChangeFunctionUri": "OVERWRITTEN_IN_DEPLOYMENT"
+    "TwinChangeFunctionUri": "OVERWRITTEN_IN_DEPLOYMENT",
+    "DeviceTwinMirrorEventHubConnectionString": "OVERWRITTEN_IN_DEPLOYMENT"
   }
 }

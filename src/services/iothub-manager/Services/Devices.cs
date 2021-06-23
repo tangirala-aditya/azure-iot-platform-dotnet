@@ -15,6 +15,7 @@ using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.AsaManager;
 using Mmm.Iot.Common.Services.External.CosmosDb;
+using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.Services.Helpers;
 using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.IoTHubManager.Services.Extensions;
@@ -33,8 +34,11 @@ namespace Mmm.Iot.IoTHubManager.Services
     {
         private const int MaximumGetList = 1000;
         private const string QueryPrefix = "SELECT * FROM devices";
+        private const string KustoQueryPrefix = "DeviceTwin | summarize arg_max(TimeStamp, *) by DeviceId | where IsDeleted == false";
+        private const string KustoOrderByQuery = "| order by TimeStamp desc nulls last";
         private const string ModuleQueryPrefix = "SELECT * FROM devices.modules";
         private const string DeviceConnectionStateCountQueryPrefix = "SELECT COUNT() AS numberOfDevices, connectionState FROM devices";
+        private const string DeviceConnectionStateCountKustoQuery = "| summarize numberOfDevices = count() by connectionState = tostring(Twin[\"connectionState\"])";
         private const string DeviceConnectionState = "connectionState";
         private const string DevicesConnectedQuery = "connectionState = 'Connected'";
         private const string TwinChangeDatabase = "iot";
@@ -45,6 +49,8 @@ namespace Mmm.Iot.IoTHubManager.Services
         private readonly IDeviceQueryCache deviceQueryCache;
         private readonly IStorageClient storageClient;
         private readonly IAppConfigurationClient appConfigurationClient;
+        private readonly IKustoQueryClient kustoQueryClient;
+        private readonly bool kustoEnabled;
 
         public Devices(
             AppConfig config,
@@ -52,13 +58,18 @@ namespace Mmm.Iot.IoTHubManager.Services
             IAsaManagerClient asaManagerClient,
             IDeviceQueryCache deviceQueryCache,
             IStorageClient storageClient,
-            IAppConfigurationClient appConfigurationClient)
+            IAppConfigurationClient appConfigurationClient,
+            IKustoQueryClient kustoQueryClient)
         {
             if (config == null)
             {
                 throw new ArgumentNullException("config");
             }
 
+            this.kustoEnabled = config.DeviceTelemetryService.Messages.TelemetryStorageType.Equals(
+                TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase);
+
+            this.kustoQueryClient = kustoQueryClient;
             this.tenantConnectionHelper = tenantConnectionHelper;
             this.asaManager = asaManagerClient;
             this.deviceQueryCache = deviceQueryCache;
@@ -251,6 +262,55 @@ namespace Mmm.Iot.IoTHubManager.Services
             return resultModel;
         }
 
+        public async Task<DeviceServiceListModel> GetListADXAsync(string inputQuery)
+        {
+            string querytoBeCached = inputQuery;
+
+            if (!string.IsNullOrWhiteSpace(inputQuery))
+            {
+                // Try to translate clauses to query
+                inputQuery = QueryConditionTranslator.ToADXQueryString(inputQuery);
+            }
+
+            DeviceServiceListModel resultModel = null;
+            string tenantId = this.tenantConnectionHelper.TenantId;
+
+            resultModel = await this.deviceQueryCache.GetCachedQueryResultAsync(tenantId, querytoBeCached);
+
+            if (resultModel != null)
+            {
+                return resultModel;
+            }
+
+            string query = string.Empty;
+            string deviceListValue = string.Empty;
+            var allTwins = await this.GetTwinDataADXQueryAsync<DeviceTwinMirrorModel>(
+                KustoQueryPrefix,
+                inputQuery,
+                KustoOrderByQuery);
+
+            var connectedEdgeDevices = await this.GetConnectedEdgeDevices(allTwins.Result.Select(x => x.Twin).ToList());
+            resultModel = new DeviceServiceListModel(
+                allTwins.Result.Select(azureTwin => new DeviceServiceModel(
+                    azureTwin.Twin,
+                    this.tenantConnectionHelper.GetIotHubName(),
+                    connectedEdgeDevices.ContainsKey(azureTwin.DeviceId),
+                    azureTwin.CreatedDeviceDate,
+                    azureTwin.TimeStamp)),
+                allTwins.ContinuationToken);
+
+            this.deviceQueryCache.SetTenantQueryResult(
+                this.tenantConnectionHelper.TenantId,
+                querytoBeCached,
+                new DeviceQueryCacheResultServiceModel
+                {
+                    Result = resultModel,
+                    ResultTimestamp = DateTimeOffset.Now,
+                });
+
+            return resultModel;
+        }
+
         public async Task<DeviceServiceListModel> GetDeviceListAsync(string query, string continuationToken)
         {
             if (!string.IsNullOrWhiteSpace(query))
@@ -430,18 +490,36 @@ namespace Mmm.Iot.IoTHubManager.Services
 
         public async Task<DeviceStatisticsServiceModel> GetDeviceStatisticsAsync(string query)
         {
-            if (!string.IsNullOrWhiteSpace(query))
-            {
-                // Try to translate clauses to query
-                query = QueryConditionTranslator.ToQueryString(query);
-            }
+            ResultWithContinuationToken<List<DeviceConnectionStatusCountModel>> data = null;
 
-            var data = await this.GetIotDataQueryAsync<DeviceConnectionStatusCountModel>(
-                DeviceConnectionStateCountQueryPrefix,
-                query,
-                DeviceConnectionState,
-                null,
-                MaximumGetList); // Currently data does not show correct edge device connected status count. Will be supported in future.
+            if (this.kustoEnabled)
+            {
+                if (!string.IsNullOrWhiteSpace(query))
+                {
+                    // Try to translate clauses to query
+                    query = QueryConditionTranslator.ToADXQueryString(query);
+                }
+
+                data = await this.GetTwinDataADXQueryAsync<DeviceConnectionStatusCountModel>(
+                    KustoQueryPrefix,
+                    query,
+                    DeviceConnectionStateCountKustoQuery);
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(query))
+                {
+                    // Try to translate clauses to query
+                    query = QueryConditionTranslator.ToQueryString(query);
+                }
+
+                data = await this.GetIotDataQueryAsync<DeviceConnectionStatusCountModel>(
+                    DeviceConnectionStateCountQueryPrefix,
+                    query,
+                    DeviceConnectionState,
+                    null,
+                    MaximumGetList); // Currently data does not show correct edge device connected status count. Will be supported in future.
+            }
 
             return new DeviceStatisticsServiceModel(data.Result);
         }
@@ -576,6 +654,22 @@ namespace Mmm.Iot.IoTHubManager.Services
             List<T> result = jsonResult.Select(result => JsonConvert.DeserializeObject<T>(result)).ToList();
 
             return new ResultWithContinuationToken<List<T>>(result, options.ContinuationToken);
+        }
+
+        private async Task<ResultWithContinuationToken<List<T>>> GetTwinDataADXQueryAsync<T>(
+                    string queryPrefix,
+                    string conditionQuery,
+                    string extraQuery = null)
+        {
+            string database = $"IoT-{this.tenantConnectionHelper.TenantId}";
+
+            conditionQuery = string.IsNullOrEmpty(conditionQuery) ? queryPrefix : $"{queryPrefix} | where {conditionQuery}";
+
+            conditionQuery = string.IsNullOrEmpty(extraQuery) ? conditionQuery : $"{conditionQuery} {extraQuery}";
+
+            var results = await this.kustoQueryClient.ExecuteQueryAsync<T>(database, conditionQuery, null);
+
+            return new ResultWithContinuationToken<List<T>>(results, null);
         }
 
         private class ResultWithContinuationToken<T>

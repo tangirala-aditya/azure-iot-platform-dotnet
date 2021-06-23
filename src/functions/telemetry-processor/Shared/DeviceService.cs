@@ -44,7 +44,7 @@ namespace Mmm.Iot.Functions.TelemetryProcessor.Shared
                 }
 
                 var telemetryTimestamp = new TelemetryTimestamp(Convert.ToDateTime(dateTimeReceived));
-                var connectionString = await configHelper.GetValueByKey($"tenant:{tenant}:telemetryHubConn");
+                var connectionString = await configHelper.GetValueByKey($"tenant:{tenant}:eventHubConn");
                 EventHubHelper eventHubHelper = new EventHubHelper(connectionString);
 
                 bool isBatchedTelemetry = false;

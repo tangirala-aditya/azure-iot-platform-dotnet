@@ -26,6 +26,18 @@ namespace Mmm.Iot.IoTHubManager.Services.Helpers
             { "LK", "LIKE" },
         };
 
+        private static readonly Dictionary<string, string> KustoOperatorMap = new Dictionary<string, string>
+        {
+            { "EQ", "==" },
+            { "NE", "!=" },
+            { "LT", "<" },
+            { "LE", "<=" },
+            { "GT", ">" },
+            { "GE", ">=" },
+            { "IN", "in" },
+            { "LK", "contains" },
+        };
+
         public static string ToQueryString(string conditions)
         {
             IEnumerable<QueryConditionClause> clauses = null;
@@ -79,6 +91,63 @@ namespace Mmm.Iot.IoTHubManager.Services.Helpers
                 }
 
                 return $"{c.Key} {op} {value.ToString()}";
+            });
+
+            return string.Join(" and ", clauseStrings);
+        }
+
+        public static string ToADXQueryString(string conditions)
+        {
+            IEnumerable<QueryConditionClause> clauses = null;
+
+            try
+            {
+                clauses = JsonConvert.DeserializeObject<IEnumerable<QueryConditionClause>>(conditions);
+            }
+            catch
+            {
+                // Any exception raised in deserializing will be ignored
+            }
+
+            if (clauses == null)
+            {
+                // Condition is not a valid clause list. Assume it a query string
+                return conditions;
+            }
+
+            var clauseStrings = clauses.Select(c =>
+            {
+                string op;
+                if (!KustoOperatorMap.TryGetValue(c.Operator.ToUpperInvariant(), out op))
+                {
+                    throw new InvalidInputException();
+                }
+
+                StringBuilder value = new StringBuilder();
+                using (StringWriter sw = new StringWriter(value))
+                {
+                    using (JsonTextWriter writer = new JsonTextWriter(sw))
+                    {
+                        writer.QuoteChar = '\"';
+
+                        JsonSerializer ser = new JsonSerializer();
+                        ser.Serialize(writer, c.Value);
+                    }
+                }
+
+                if (op == "IN")
+                {
+                    List<string> values = JsonConvert.DeserializeObject<List<string>>(value.ToString());
+                    string joinValues = string.Join(" or ", values.Select(v => $"Twin[\"{c.Key}\"] == \"{v}\""));
+                    return $"({joinValues})";
+                }
+
+                if (c.Key == "firmwareVersion")
+                {
+                    return $"( Twin[\"properties.reported.firmware.currentFwVersion\"] {op} {value.ToString()} or Twin[\"properties.reported.Firmware\"] {op} {value.ToString()} )";
+                }
+
+                return $"Twin[\"{c.Key}\"] {op} {value.ToString()}";
             });
 
             return string.Join(" and ", clauseStrings);

@@ -9,7 +9,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
 {
     public interface IKustoQueryClient
     {
-        Task<List<TDestination>> QueryAsync<TDestination>(
+        Task<List<TDestination>> ExecuteQueryAsync<TDestination>(
             string dataBaseName,
             string query,
             Dictionary<string, string> queryParameter);

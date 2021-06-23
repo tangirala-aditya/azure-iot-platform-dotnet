@@ -863,6 +863,10 @@ jobs:
             twinchangeEvConn=$(az eventhubs eventhub authorization-rule keys list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --eventhub-name $twinchangeEv --name $ehQueueAuthRule --query primaryConnectionString --output tsv)
             az keyvault secret set --vault-name $(keyVaultName) --name 'TenantManagerService--TwinChangeEventHubConnectionString' --value $twinchangeEvConn
 
+            deviceTwinMirrorEv=$(az eventhubs eventhub list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --query "[?contains(name, 'device-twin-mirror')]".name --output tsv)
+            deviceTwinMirrorEvConn=$(az eventhubs eventhub authorization-rule keys list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --eventhub-name $deviceTwinMirrorEv --name $ehQueueAuthRule --query primaryConnectionString --output tsv)
+            az keyvault secret set --vault-name $(keyVaultName) --name 'TenantManagerService--DeviceTwinMirrorEventHubConnectionString' --value $deviceTwinMirrorEvConn
+
             ehActionsAuthRule='actionroutes'
             actionsEv=$(az eventhubs eventhub list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --query "[?contains(name, 'actions-eventhub')]".name --output tsv)
             actionsEvConn=$(az eventhubs eventhub authorization-rule keys list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --eventhub-name $actionsEv --name $ehActionsAuthRule --query primaryConnectionString --output tsv)
@@ -941,6 +945,7 @@ jobs:
             lifecycleEvConn=$(az keyvault secret show --name "TenantManagerService--LifecycleEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
             telemetryEvConn=$(az keyvault secret show --name "TenantManagerService--TelemetryEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
             twinchangeEvConn=$(az keyvault secret show --name "TenantManagerService--TwinChangeEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            deviceTwinMirrorEvConn=$(az keyvault secret show --name "TenantManagerService--DeviceTwinMirrorEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
             storageAccountConn=$(az keyvault secret show --name "Global--StorageAccountConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
             az functionapp config appsettings set --name $devicetwinPropfn \
               --settings \
@@ -948,6 +953,7 @@ jobs:
                 "TelemetryEventHubConnectionString"="$telemetryEvConn" \
                 "LifecycleEventHubConnectionString"="$lifecycleEvConn" \
                 "TwinChangeEventHubConnectionString"="$twinchangeEvConn" \
+                "DeviecTwinMirrorEventHubConnectionString"="$deviceTwinMirrorEvConn" \
                 "DevicePropertiesCacheConsumerGroup"="devicepropertiescache" \
                 "DeviceStreamConsumerGroup"="devicestream" \
                 "CosmosDbRus"="400" \

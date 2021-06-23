@@ -64,7 +64,7 @@ namespace Mmm.Iot.Common.Services.Test
                 .Returns(Task.FromResult(dataReader.Object));
 
             // act
-            var result = await this.client.QueryAsync<TelemetryModel>(DatabaseName, query, queryParameter);
+            var result = await this.client.ExecuteQueryAsync<TelemetryModel>(DatabaseName, query, queryParameter);
 
             // assert that QueryAsync returns a document, document will be an empty Document Object
             Assert.NotNull(result);

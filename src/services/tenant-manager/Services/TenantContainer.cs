@@ -24,6 +24,8 @@ namespace Mmm.Iot.TenantManager.Services
     public class TenantContainer : ITenantContainer
     {
         private const string IotDatabaseId = "iot";
+        private const string IoTADXDatabaseFormat = "IoT-{0}";
+        private const string TelemetryADXDatabaseFormat = "Telemery-{0}";
         private const string StorageAdapterDatabaseId = "pcs-storage";
         private const string TenantTableId = "tenant";
         private const string TenantOperationTable = "tenantOperations";
@@ -52,6 +54,16 @@ namespace Mmm.Iot.TenantManager.Services
             { "pcs", StorageAdapterDatabaseId },
         };
 
+        private readonly Dictionary<string, string> tenantADXDatabaseCollection = new Dictionary<string, string>
+        {
+            {
+                "telemetry", TelemetryADXDatabaseFormat
+            },
+            {
+                "iot", IoTADXDatabaseFormat
+            },
+        };
+
         private readonly List<string> tenantBlobContainers = new List<string>
         {
             string.Empty,
@@ -62,7 +74,6 @@ namespace Mmm.Iot.TenantManager.Services
         private string dpsNameFormat = "dps-{0}";  // format with a guid
         private string streamAnalyticsNameFormat = "sa-{0}";  // format with a guide
         private string appConfigCollectionKeyFormat = "tenant:{0}:{1}-collection";  // format with a guid and collection name
-        private string kustoDBFormat = "IoT-{0}";  // format with a guid
         private string eventHubNamespaceFormat = "telemetry-eventhub-{0}";
 
         public TenantContainer(
@@ -386,16 +397,21 @@ namespace Mmm.Iot.TenantManager.Services
             // Delete Database from kusto
             if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
             {
-                string kustoDatabase = string.Format(this.kustoDBFormat, tenantId);
-                try
+                foreach (var collectionInfo in this.tenantADXDatabaseCollection)
                 {
-                    await this.azureManagementClient.KustoClusterManagementClient.DeleteDatabaseAsync(kustoDatabase);
-                    deletionRecord["KustoDatabase"] = true;
-                }
-                catch (Exception e)
-                {
-                    deletionRecord["KustoDatabase"] = false;
-                    this.logger.LogInformation(e, $"An error occurred while deleting the {kustoDatabase} kusto database for tenant {tenantId}", kustoDatabase, tenantId);
+                    string kustoDatabase = string.Format(collectionInfo.Value, tenantId);
+                    string deletionRecordValue = $"{collectionInfo.Key}ADXDatabase";
+
+                    try
+                    {
+                        await this.azureManagementClient.KustoClusterManagementClient.DeleteDatabaseAsync(kustoDatabase);
+                        deletionRecord[deletionRecordValue] = true;
+                    }
+                    catch (Exception e)
+                    {
+                        deletionRecord[deletionRecordValue] = false;
+                        this.logger.LogInformation(e, $"An error occurred while deleting the {kustoDatabase} kusto database for tenant {tenantId}", kustoDatabase, tenantId);
+                    }
                 }
 
                 string eventHubNamespace = string.Format(this.eventHubNamespaceFormat, tenantId.Substring(0, 8));

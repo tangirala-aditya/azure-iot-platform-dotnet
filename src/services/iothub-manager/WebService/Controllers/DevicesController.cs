@@ -12,8 +12,10 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Mvc;
 using Mmm.Iot.Common.Services;
+using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Filters;
 using Mmm.Iot.Common.Services.Helpers;
+using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.IoTHubManager.Services;
 using Mmm.Iot.IoTHubManager.Services.Models;
 using Mmm.Iot.IoTHubManager.WebService.Models;
@@ -28,12 +30,15 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
         private readonly IDevices devices;
         private readonly IDeviceProperties deviceProperties;
         private readonly IDeviceService deviceService;
+        private readonly bool kustoEnabled;
 
-        public DevicesController(IDevices devices, IDeviceService deviceService, IDeviceProperties deviceProperties)
+        public DevicesController(IDevices devices, IDeviceService deviceService, IDeviceProperties deviceProperties, AppConfig config)
         {
             this.deviceProperties = deviceProperties;
             this.devices = devices;
             this.deviceService = deviceService;
+            this.kustoEnabled = config.DeviceTelemetryService.Messages.TelemetryStorageType.Equals(
+    TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase);
         }
 
         [HttpGet]
@@ -44,6 +49,11 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             if (this.Request.Headers.ContainsKey(ContinuationTokenName))
             {
                 continuationToken = this.Request.Headers[ContinuationTokenName].FirstOrDefault();
+            }
+
+            if (this.kustoEnabled)
+            {
+                return new DeviceListApiModel(await this.devices.GetListADXAsync(query));
             }
 
             return new DeviceListApiModel(await this.devices.GetListAsync(query, continuationToken));
@@ -64,6 +74,11 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             if (this.Request.Headers.ContainsKey(ContinuationTokenName))
             {
                 continuationToken = this.Request.Headers[ContinuationTokenName].FirstOrDefault();
+            }
+
+            if (this.kustoEnabled)
+            {
+                return new DeviceListApiModel(await this.devices.GetListADXAsync(query));
             }
 
             return new DeviceListApiModel(await this.devices.GetListAsync(query, continuationToken));

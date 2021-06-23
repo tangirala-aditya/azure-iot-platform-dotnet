@@ -32,7 +32,26 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 {
     public class IoTHubMonitor : IHostedService, IDisposable
     {
+        private const string EventHubNamespaceFormat = "eventhub-{0}";
+        private const string TelemetryDatabaseNameFormat = "Telemetry-{0}";
+        private const string IoTDatabaseNameFormat = "IoT-{0}";
         private readonly CancellationTokenSource stoppingCts = new CancellationTokenSource();
+        private readonly List<ADXDatabaseModel> tenantADXDatabaseList = new List<ADXDatabaseModel>
+        {
+            new ADXDatabaseModel()
+            {
+                DatabaseNameFormat = TelemetryDatabaseNameFormat,
+                SoftDeletePeriod = new TimeSpan(30, 0, 0, 0),
+                HotDeletePeriod = new TimeSpan(0, 0, 0, 0),
+            },
+            new ADXDatabaseModel()
+            {
+                DatabaseNameFormat = IoTDatabaseNameFormat,
+                SoftDeletePeriod = new TimeSpan(0, 0, 0, 0),
+                HotDeletePeriod = new TimeSpan(0, 0, 0, 0),
+            },
+        };
+
         private Task executingTask;
         private ITableStorageClient tableStorageClient;
         private IBlobStorageClient blobStorageClient;
@@ -140,54 +159,11 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                                 if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    string telemetryEventHubNameSpace = $"telemetry-eventhub-{item.TenantId.Substring(0, 8)}";
-                                    await this.azureManagementClient.EventHubsManagementClient.CreateNamespace(telemetryEventHubNameSpace);
+                                    string eventHubNameSpace = await this.SetupEventHub(item.TenantId);
+                                    await this.SetupADXDatabase(item.TenantId);
 
-                                    string nameSpaceConnString = await this.azureManagementClient.EventHubsManagementClient.GetPrimaryConnectionString(telemetryEventHubNameSpace);
-
-                                    await this.appConfigurationClient.SetValueAsync($"tenant:{item.TenantId}:telemetryHubConn", nameSpaceConnString);
-
-                                    this.azureManagementClient.EventHubsManagementClient.CreateEventHub(telemetryEventHubNameSpace, $"{item.TenantId}-telemetry");
-
-                                    Console.WriteLine("Creating a DB in Data Explorer");
-
-                                    var softDeletePeriod = new TimeSpan(60, 0, 0, 0);
-                                    var hotDeletePeriod = new TimeSpan(0, 0, 0, 0);
-                                    var databaseName = $"IoT-{item.TenantId}";
-
-                                    await this.azureManagementClient.KustoClusterManagementClient.CreateDBInClusterAsync(databaseName, softDeletePeriod, hotDeletePeriod);
-
-                                    Console.WriteLine($"Created a {item.TenantId} DB in Data Explorer");
-
-                                    Console.WriteLine($"Creating telemetry table and mapping in {item.TenantId} DB in Data Explorer");
-
-                                    var tableName = "Telemetry";
-                                    var tableMappingName = $"TelemetryEvents_JSON_Mapping-{item.TenantId}";
-                                    var tableSchema = new[]
-                                    {
-                                    Tuple.Create("DeviceId", "System.String"),
-                                    Tuple.Create("Data", "System.Object"),
-                                    Tuple.Create("TimeStamp", "System.Datetime"),
-                                    };
-                                    var mappingSchema = new ColumnMapping[]
-                                    {
-                                    new ColumnMapping() { ColumnName = "DeviceId", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.deviceId" } } },
-                                    new ColumnMapping() { ColumnName = "Data", ColumnType = "dynamic", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.data" } } },
-                                    new ColumnMapping() { ColumnName = "TimeStamp", ColumnType = "datetime", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.dateTimeReceived" } } },
-                                    };
-
-                                    this.kustoTableManagementClient.CreateTable(tableName, tableSchema, databaseName);
-
-                                    this.kustoTableManagementClient.CreateTableMapping(tableMappingName, mappingSchema, tableName, databaseName);
-
-                                    this.kustoTableManagementClient.EnableStreamingIngestionPolicyToTable(tableName, databaseName);
-
-                                    string dataConnectName = $"TelemetryDataConnect-{item.TenantId.Substring(0, 8)}";
-                                    string iotHubName = iothub.Name;
-
-                                    string consumerGroup = "$Default";
-
-                                    await this.azureManagementClient.KustoClusterManagementClient.AddEventHubDataConnectionAsync(dataConnectName, databaseName, tableName, tableMappingName, telemetryEventHubNameSpace, $"{item.TenantId}-telemetry", consumerGroup);
+                                    await this.ADXTelemetrySetup(item.TenantId, string.Format(TelemetryDatabaseNameFormat, item.TenantId), eventHubNameSpace);
+                                    await this.ADXDeviceTwinSetup(item.TenantId, string.Format(IoTDatabaseNameFormat, item.TenantId), eventHubNameSpace);
                                 }
                             }
                         }
@@ -210,6 +186,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                     this.config.TenantManagerService.TelemetryEventHubConnectionString,
                                     this.config.TenantManagerService.TwinChangeEventHubConnectionString,
                                     this.config.TenantManagerService.LifecycleEventHubConnectionString,
+                                    this.config.TenantManagerService.DeviceTwinMirrorEventHubConnectionString,
                                     this.config.Global.StorageAccountConnectionString);
                                 await this.azureManagementClient.DeployTemplateAsync(template);
                             }
@@ -227,6 +204,123 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                     await Task.Delay(15000, stoppingToken);
                 }
             }
+        }
+
+        private async Task<string> SetupEventHub(string tenantId)
+        {
+            string eventHubNameSpace = string.Format(EventHubNamespaceFormat, tenantId.Substring(0, 8));
+            await this.azureManagementClient.EventHubsManagementClient.CreateNamespace(eventHubNameSpace);
+
+            string nameSpaceConnString = await this.azureManagementClient.EventHubsManagementClient.GetPrimaryConnectionString(eventHubNameSpace);
+
+            await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubConn", nameSpaceConnString);
+
+            this.azureManagementClient.EventHubsManagementClient.CreateEventHub(eventHubNameSpace, $"{tenantId}-telemetry");
+
+            this.azureManagementClient.EventHubsManagementClient.CreateEventHub(eventHubNameSpace, $"{tenantId}-devicetwin");
+
+            return eventHubNameSpace;
+        }
+
+        private async Task SetupADXDatabase(string tenantId)
+        {
+            foreach (var item in this.tenantADXDatabaseList)
+            {
+                var databaseName = string.Format(item.DatabaseNameFormat, tenantId);
+
+                Console.WriteLine($"Creating a {databaseName} DB in Data Explorer");
+
+                await this.azureManagementClient.KustoClusterManagementClient.CreateDBInClusterAsync(databaseName, item.SoftDeletePeriod, item.HotDeletePeriod);
+
+                Console.WriteLine($"Created a {databaseName} DB in Data Explorer");
+            }
+        }
+
+        private async Task ADXTelemetrySetup(string tenantId, string databaseName, string eventHubNameSpace)
+        {
+            Console.WriteLine($"Creating telemetry table and mapping in {tenantId} DB in Data Explorer");
+
+            var tableName = "Telemetry";
+            var tableMappingName = $"TelemetryEvents_JSON_Mapping-{tenantId}";
+            var tableSchema = new[]
+            {
+                  Tuple.Create("DeviceId", "System.String"),
+                  Tuple.Create("Data", "System.Object"),
+                  Tuple.Create("TimeStamp", "System.Datetime"),
+            };
+            var mappingSchema = new ColumnMapping[]
+            {
+                  new ColumnMapping() { ColumnName = "DeviceId", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.deviceId" } } },
+                  new ColumnMapping() { ColumnName = "Data", ColumnType = "dynamic", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.data" } } },
+                  new ColumnMapping() { ColumnName = "TimeStamp", ColumnType = "datetime", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.dateTimeReceived" } } },
+            };
+
+            string dataConnectionName = $"TelemetryDataConnect-{tenantId.Substring(0, 8)}";
+            string eventHubName = $"{tenantId}-telemetry";
+
+            await this.ADXTableSetup(tenantId, databaseName, tableName, tableSchema, tableMappingName, mappingSchema, dataConnectionName, eventHubNameSpace, eventHubName);
+        }
+
+        private async Task ADXDeviceTwinSetup(string tenantId, string databaseName, string eventHubNameSpace)
+        {
+            Console.WriteLine($"Creating telemetry table and mapping in {tenantId} DB in Data Explorer");
+
+            var tableName = "DeviceTwin";
+            var tableMappingName = $"DeviceTwinEvents_JSON_Mapping-{tenantId}";
+            var tableSchema = new[]
+            {
+                  Tuple.Create("DeviceId", "System.String"),
+                  Tuple.Create("Twin", "System.Object"),
+                  Tuple.Create("TimeStamp", "System.Datetime"),
+                  Tuple.Create("DeviceCreatedDate", "System.Datetime"),
+                  Tuple.Create("IsDeleted", "System.Boolean"),
+            };
+            var mappingSchema = new ColumnMapping[]
+            {
+                  new ColumnMapping() { ColumnName = "DeviceId", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.deviceId" } } },
+                  new ColumnMapping() { ColumnName = "Twin", ColumnType = "dynamic", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.data" } } },
+                  new ColumnMapping() { ColumnName = "TimeStamp", ColumnType = "datetime", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.timeStamp" } } },
+                  new ColumnMapping() { ColumnName = "DeviceCreatedDate", ColumnType = "datetime", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.deviceCreatedDate" } } },
+                  new ColumnMapping() { ColumnName = "IsDeleted", ColumnType = "bool", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.isDeleted" } } },
+            };
+
+            string dataConnectionName = $"DeviceTwinDataConnect-{tenantId.Substring(0, 8)}";
+            string eventHubName = $"{tenantId}-devicetwin";
+
+            await this.ADXTableSetup(tenantId, databaseName, tableName, tableSchema, tableMappingName, mappingSchema, dataConnectionName, eventHubNameSpace, eventHubName);
+        }
+
+        private async Task ADXTableSetup(
+            string tenantId,
+            string databaseName,
+            string tableName,
+            Tuple<string, string>[] tableSchema,
+            string tableMappingName,
+            ColumnMapping[] mappingSchema,
+            string dataConnectionName,
+            string eventHubNameSpace,
+            string eventHubName)
+        {
+            Console.WriteLine($"Creating telemetry table and mapping in {tenantId} DB in Data Explorer");
+
+            this.kustoTableManagementClient.CreateTable(tableName, tableSchema, databaseName);
+
+            this.kustoTableManagementClient.CreateTableMapping(tableMappingName, mappingSchema, tableName, databaseName);
+
+            this.kustoTableManagementClient.EnableStreamingIngestionPolicyToTable(tableName, databaseName);
+
+            string consumerGroup = "$Default";
+
+            await this.azureManagementClient.KustoClusterManagementClient.AddEventHubDataConnectionAsync(dataConnectionName, databaseName, tableName, tableMappingName, eventHubNameSpace, eventHubName, consumerGroup);
+        }
+
+        private class ADXDatabaseModel
+        {
+            public string DatabaseNameFormat { get; set; }
+
+            public TimeSpan SoftDeletePeriod { get; set; }
+
+            public TimeSpan HotDeletePeriod { get; set; }
         }
     }
 }

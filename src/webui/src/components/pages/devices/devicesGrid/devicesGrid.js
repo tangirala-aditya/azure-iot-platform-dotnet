@@ -49,6 +49,8 @@ export class DevicesGrid extends Component {
             deviceColumnDefs.telemetry,
             deviceColumnDefs.status,
             deviceColumnDefs.lastConnection,
+            deviceColumnDefs.modifiedDate,
+            deviceColumnDefs.deviceCreatedDate,
         ];
 
         this.contextBtns = (

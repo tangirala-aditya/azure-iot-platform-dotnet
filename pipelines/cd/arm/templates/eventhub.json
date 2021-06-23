@@ -277,7 +277,8 @@
                             ],
                             "properties": {
                                 "Rights": [
-                                    "Send","Listen"
+                                    "Send",
+                                    "Listen"
                                 ]
                             }
                         },
@@ -305,6 +306,44 @@
                             "type": "consumergroups",
                             "dependsOn": [
                                 "twin-change"
+                            ],
+                            "properties": {}
+                        }
+                    ]
+                },
+                {
+                    "type": "eventhubs",
+                    "name": "device-twin-mirror",
+                    "apiVersion": "2017-04-01",
+                    "location": "[parameters('location')]",
+                    "properties": {
+                        "MessageRetentionInDays": 3,
+                        "partitionCount": 2
+                    },
+                    "dependsOn": [
+                        "[concat('Microsoft.Eventhub/namespaces/', variables('namespaceName'))]"
+                    ],
+                    "resources": [
+                        {
+                            "apiVersion": "2017-04-01",
+                            "name": "[variables('ehAuthorization')]",
+                            "type": "authorizationRules",
+                            "dependsOn": [
+                                "device-twin-mirror"
+                            ],
+                            "properties": {
+                                "Rights": [
+                                    "Send",
+                                    "Listen"
+                                ]
+                            }
+                        },
+                        {
+                            "apiVersion": "2017-04-01",
+                            "name": "devicestream",
+                            "type": "consumergroups",
+                            "dependsOn": [
+                                "device-twin-mirror"
                             ],
                             "properties": {}
                         }

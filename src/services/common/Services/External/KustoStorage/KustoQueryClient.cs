@@ -51,7 +51,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             this.client = kustQueryClient;
         }
 
-        public async Task<List<TDestination>> QueryAsync<TDestination>(
+        public async Task<List<TDestination>> ExecuteQueryAsync<TDestination>(
             string databaseName,
             string query,
             Dictionary<string, string> queryParameter)

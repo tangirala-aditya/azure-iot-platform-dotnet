@@ -35,6 +35,8 @@ export const toDeviceModel = (device = {}) => {
             ioTHubHostName: "iotHubHostName",
             eTag: "eTag",
             authentication: "authentication",
+            modifiedDate: "modifiedDate",
+            deviceCreatedDate: "deviceCreatedDate",
         }),
         // TODO: Remove this once device simulation has removed FirmwareUpdate from supportedMethods of devices
         methods = (modelData.methods && typeof modelData.methods === "string"

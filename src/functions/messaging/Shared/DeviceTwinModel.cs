@@ -17,6 +17,8 @@ namespace Mmm.Iot.Functions.Messaging.Shared
 
         public DateTimeOffset TimeStamp { get; set; }
 
+        public DateTimeOffset DeviceCreatedDate { get; set; }
+
         public bool IsDeleted { get; set; }
     }
 }

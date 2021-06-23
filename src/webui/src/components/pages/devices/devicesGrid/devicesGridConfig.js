@@ -53,6 +53,19 @@ export const deviceColumnDefs = {
         field: "lastActivity",
         cellRendererFramework: TimeRenderer,
     },
+    modifiedDate: {
+        headerName: "Device Modified Date",
+        field: "modifiedDate",
+        cellRendererFramework: TimeRenderer,
+        suppressSizeToFit: true,
+    },
+    deviceCreatedDate: {
+        headerName: "Device Created Date",
+        field: "deviceCreatedDate",
+        cellRendererFramework: TimeRenderer,
+        suppressSizeToFit: true,
+        sort: "asc",
+    },
 };
 
 /** Given a device object, extract and return the device Id */

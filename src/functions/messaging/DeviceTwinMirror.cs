@@ -24,22 +24,20 @@ namespace Mmm.Iot.Functions.Messaging
             bool exceptionOccurred = false;
             List<Task> list = new List<Task>();
 
-            var eventList = events.ToList().GroupBy(x => new { Tenant = x.Properties["tenant"], DeviceId = x.SystemProperties["iothub-connection-device-id"] });
+            var eventGroupList = events.ToList().GroupBy(x => new { Tenant = x.Properties["tenant"], DeviceId = x.SystemProperties["iothub-connection-device-id"] });
 
-            foreach (EventData message in events)
+            foreach (var eventGroup in eventGroupList)
             {
                 try
                 {
-                    message.Properties.TryGetValue("tenant", out object tenant);
+                    var tenant = eventGroup.Key.Tenant;
 
                     if (tenant != null)
                     {
-                        string eventData = Encoding.UTF8.GetString(message.Body.Array);
-                        message.SystemProperties.TryGetValue("iothub-connection-device-id", out object deviceId);
-                        message.Properties.TryGetValue("opType", out object operationType);
+                        var deviceId = eventGroup.Key.DeviceId;
 
                         DeviceService deviceService = new DeviceService();
-                        list.Add(Task.Run(async () => await deviceService.SaveDeviceTwinOperationAsync(eventData, Convert.ToString(tenant), deviceId.ToString(), operationType.ToString())));
+                        list.Add(Task.Run(async () => await deviceService.ProcessDeviceTwin(eventGroup.ToArray(), log, Convert.ToString(tenant), deviceId.ToString())));
                     }
                 }
                 catch (Exception ex)

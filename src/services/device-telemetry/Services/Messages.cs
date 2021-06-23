@@ -214,7 +214,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services
                 deviceId,
                 "DeviceId");
 
-            var results = await this.kustoQueryClient.QueryAsync<TelemetryModel>(database, query, queryParameter);
+            var results = await this.kustoQueryClient.ExecuteQueryAsync<TelemetryModel>(database, query, queryParameter);
 
             HashSet<string> properties = new HashSet<string>();
             var messages = new List<Message>();
@@ -273,7 +273,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services
                 devices,
                 "DeviceId");
 
-            var results = await this.kustoQueryClient.QueryAsync<TelemetryModel>(database, query, queryParameter);
+            var results = await this.kustoQueryClient.ExecuteQueryAsync<TelemetryModel>(database, query, queryParameter);
 
             HashSet<string> properties = new HashSet<string>();
             var messages = new List<Message>();

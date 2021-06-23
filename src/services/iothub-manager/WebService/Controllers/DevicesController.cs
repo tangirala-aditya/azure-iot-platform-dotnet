@@ -17,6 +17,7 @@ using Mmm.Iot.Common.Services.Helpers;
 using Mmm.Iot.IoTHubManager.Services;
 using Mmm.Iot.IoTHubManager.Services.Models;
 using Mmm.Iot.IoTHubManager.WebService.Models;
+using Newtonsoft.Json.Linq;
 
 namespace Mmm.Iot.IoTHubManager.WebService.Controllers
 {
@@ -128,25 +129,15 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
 
         [HttpGet("report")]
         [Authorize("ReadAll")]
-        public async Task<IActionResult> ExportDevicesReport([FromQuery] string query)
+        public async Task<IActionResult> ExportDevicesReport([FromQuery] string query, [FromBody] List<LatestMappingModel> latestMapping)
         {
-            List<DeviceReportApiModel> devices = new List<DeviceReportApiModel>();
-
-            var deviceList = await this.devices.GetDeviceListForReport(query);
-
-            if (deviceList != null && deviceList.Count > 0)
-            {
-                foreach (var device in deviceList)
-                {
-                    devices.Add(new DeviceReportApiModel(device));
-                }
-            }
+            var deviceList = new DeviceListApiModel(await this.devices.GetListAsync(query, null));
 
             var stream = new MemoryStream();
 
             using (SpreadsheetDocument package = SpreadsheetDocument.Create(stream, SpreadsheetDocumentType.Workbook))
             {
-                this.CreatePartsForExcel(package, devices);
+                this.CreatePartsForExcel(package, deviceList.Items, latestMapping);
             }
 
             stream.Position = 0;
@@ -155,9 +146,9 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             return this.File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
-        private void CreatePartsForExcel(SpreadsheetDocument document, List<DeviceReportApiModel> data)
+        private void CreatePartsForExcel(SpreadsheetDocument document, List<DeviceRegistryApiModel> data, List<LatestMappingModel> latestMapping)
         {
-            SheetData partSheetData = this.GenerateSheetdataForDetails(data);
+            SheetData partSheetData = this.GenerateSheetdataForDetails(data, latestMapping);
 
             WorkbookPart workbookPart = document.AddWorkbookPart();
             this.GenerateWorkbookPartContent(workbookPart);
@@ -179,43 +170,39 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             workbookPart.Workbook = workbook;
         }
 
-        private SheetData GenerateSheetdataForDetails(List<DeviceReportApiModel> data)
+        private SheetData GenerateSheetdataForDetails(List<DeviceRegistryApiModel> data, List<LatestMappingModel> latestMapping)
         {
             SheetData sheetData = new SheetData();
-            sheetData.Append(this.CreateHeaderRowForExcel());
+            sheetData.Append(this.CreateHeaderRowForExcel(latestMapping));
 
-            foreach (DeviceReportApiModel testmodel in data)
+            foreach (DeviceRegistryApiModel testmodel in data)
             {
-                Row partsRows = this.GenerateRowForChildPartDetail(testmodel);
+                Row partsRows = this.GenerateRowForChildPartDetail(testmodel, latestMapping);
                 sheetData.Append(partsRows);
             }
 
             return sheetData;
         }
 
-        private Row CreateHeaderRowForExcel()
+        private Row CreateHeaderRowForExcel(List<LatestMappingModel> latestMapping)
         {
             Row workRow = new Row();
-            workRow.Append(OpenXMLHelper.CreateCell("Device Name", 2U));
-            workRow.Append(OpenXMLHelper.CreateCell("Simulated", 2U));
-            workRow.Append(OpenXMLHelper.CreateCell("Device Type", 2U));
-            workRow.Append(OpenXMLHelper.CreateCell("Firmware", 2U));
-            workRow.Append(OpenXMLHelper.CreateCell("Telemetry", 2U));
-            workRow.Append(OpenXMLHelper.CreateCell("Status", 2U));
-            workRow.Append(OpenXMLHelper.CreateCell("Last Connection", 2U));
+            foreach (var t in latestMapping)
+            {
+                workRow.Append(OpenXMLHelper.CreateCell(t.Name, 2U));
+            }
+
             return workRow;
         }
 
-        private Row GenerateRowForChildPartDetail(DeviceReportApiModel testmodel)
+        private Row GenerateRowForChildPartDetail(DeviceRegistryApiModel testmodel, List<LatestMappingModel> latestMapping)
         {
             Row tRow = new Row();
-            tRow.Append(OpenXMLHelper.CreateCell(testmodel.DeviceName));
-            tRow.Append(OpenXMLHelper.CreateCell(testmodel.IsSimulated.ToString()));
-            tRow.Append(OpenXMLHelper.CreateCell(testmodel.DeviceType));
-            tRow.Append(OpenXMLHelper.CreateCell(testmodel.Firmware));
-            tRow.Append(OpenXMLHelper.CreateCell(testmodel.Telemetry));
-            tRow.Append(OpenXMLHelper.CreateCell(testmodel.Status));
-            tRow.Append(OpenXMLHelper.CreateCell(testmodel.LastActivity));
+            JObject testmodelObj = (JObject)JToken.FromObject(testmodel);
+            foreach (var map in latestMapping)
+            {
+                tRow.Append(OpenXMLHelper.CreateCell((string)testmodelObj.SelectToken(map.Mapping)));
+            }
 
             return tRow;
         }

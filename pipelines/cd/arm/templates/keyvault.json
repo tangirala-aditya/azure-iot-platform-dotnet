@@ -22,6 +22,7 @@
         }
       }
     },
+    
     "variables": {
       "location": "[resourceGroup().location]"
     },
@@ -95,7 +96,32 @@
             }
           ]
         }
+      },
+      {
+      "type": "Microsoft.KeyVault/vaults/providers/diagnosticsettings",
+      "name": "[concat(parameters('resourceName'), '/Microsoft.Insights/DiagnosticSettings')]",
+      "apiVersion": "2016-09-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "workspaceId": "/subscriptions/c36fb2f8-f98d-40d0-90a9-d65e93acb428/resourcegroups/rg-iot-acs-dev/providers/microsoft.operationalinsights/workspaces/acshyd-loganalyticsws-dev",
+        "logs": [
+          {
+            "category": "AuditEvent",
+            "enabled": true,
+            "retentionPolicy": {
+              "enabled": true,
+              "days": "10"
+            }
+          }
+        ],
+            "metrics": [
+              {
+                "category": "AllMetrics",
+                "enabled": true
+              }
+            ]
       }
+    }
     ],
     "outputs": {
       "CloudResourceName": {

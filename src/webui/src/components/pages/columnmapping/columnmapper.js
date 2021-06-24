@@ -371,8 +371,8 @@ export class ColumnMapper extends LinkedComponent {
                             {(defaultMappingsLink.length > 0 ||
                                 mappingsLink.length > 0) && (
                                 <Row>
-                                    <Cell className="col-1"></Cell>
-                                    <Cell className="col-1"></Cell>
+                                    <Cell className="col-1 button"></Cell>
+                                    <Cell className="col-1 button"></Cell>
                                     <Cell className="col-3">Name</Cell>
                                     <Cell className="col-1"></Cell>
                                     <Cell className="col-2">Mapping</Cell>
@@ -392,8 +392,8 @@ export class ColumnMapper extends LinkedComponent {
                                         }
                                         // className="deviceExplorer-conditions"
                                     >
-                                        <Cell className="col-1"></Cell>
-                                        <Cell className="col-1"></Cell>
+                                        <Cell className="col-1 button"></Cell>
+                                        <Cell className="col-1 button"></Cell>
                                         <Cell className="col-3">
                                             <FormControl
                                                 type="text"
@@ -472,7 +472,7 @@ export class ColumnMapper extends LinkedComponent {
                                     // className="deviceExplorer-conditions"
                                 >
                                     {mappingsLink.length - 1 === idx && (
-                                        <Cell className="col-1">
+                                        <Cell className="col-1 button">
                                             <Btn
                                                 className={css("btn-icon")}
                                                 svg={svgs.plus}
@@ -481,9 +481,9 @@ export class ColumnMapper extends LinkedComponent {
                                         </Cell>
                                     )}
                                     {mappingsLink.length - 1 !== idx && (
-                                        <Cell className="col-1"></Cell>
+                                        <Cell className="col-1 button"></Cell>
                                     )}
-                                    <Cell className="col-1">
+                                    <Cell className="col-1 button">
                                         <Btn
                                             className="btn-icon"
                                             icon="cancel"

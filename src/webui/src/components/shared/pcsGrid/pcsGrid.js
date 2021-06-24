@@ -76,10 +76,7 @@ export class PcsGrid extends Component {
     /** When new props are passed in, check if the soft select state needs to be updated */
     UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.state.currentSoftSelectId !== nextProps.softSelectId) {
-            this.setState(
-                { currentSoftSelectId: nextProps.softSelectId },
-                this.refreshRows
-            );
+            this.setState({ currentSoftSelectId: nextProps.softSelectId });
         }
         // Resize the grid if updating from 0 row data to 1+ rowData
         if (
@@ -88,6 +85,7 @@ export class PcsGrid extends Component {
             (!this.props.rowData || !this.props.rowData.length)
         ) {
             this.resizeEvents.next("r");
+            this.refreshRows();
         }
     }
 

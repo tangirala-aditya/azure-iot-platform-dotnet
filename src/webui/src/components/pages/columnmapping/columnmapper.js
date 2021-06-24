@@ -8,6 +8,8 @@ import {
     AjaxError,
     Btn,
     BtnToolbar,
+    FormGroup,
+    FormLabel,
     FormControl,
     PropertyRow as Row,
     PropertyCell as Cell,
@@ -207,6 +209,17 @@ export class ColumnMapper extends LinkedComponent {
         this.resetColumnMappings();
     };
 
+    onCancel = () => {
+        this.props.logEvent(
+            toDiagnosticsModel("CreateColumnMappings_Cancel", {})
+        );
+        if (this.state.isDefault) {
+            this.props.history.push(`/columnMapping/default`);
+        } else {
+            this.props.history.push(`/columnMapping/custom`);
+        }
+    };
+
     operatorOptionArr = (options, key) => {
         var optionArr = options;
         if (
@@ -241,18 +254,14 @@ export class ColumnMapper extends LinkedComponent {
                             .forkTo("name")
                             .check(
                                 Validator.notEmpty,
-                                t(
-                                    "deviceQueryConditions.errorMsg.fieldCantBeEmpty"
-                                )
+                                t("columnMapping.errorMsg.headerCannotBeEmpty")
                             ),
                         mapping = conditionLink
                             .forkTo("mapping")
                             .map(({ value }) => value)
                             .check(
                                 Validator.notEmpty,
-                                t(
-                                    "deviceQueryConditions.errorMsg.operatorCantBeEmpty"
-                                )
+                                t("columnMapping.errorMsg.mappingCannotBeEmpty")
                             ),
                         renderer = conditionLink
                             .forkTo("cellRenderer")
@@ -260,7 +269,7 @@ export class ColumnMapper extends LinkedComponent {
                             .check(
                                 Validator.notEmpty,
                                 t(
-                                    "deviceQueryConditions.errorMsg.operatorCantBeEmpty"
+                                    "columnMapping.errorMsg.rendererCannotBeEmpty"
                                 )
                             ),
                         description = conditionLink.forkTo("description"),
@@ -292,18 +301,14 @@ export class ColumnMapper extends LinkedComponent {
                             .forkTo("name")
                             .check(
                                 Validator.notEmpty,
-                                t(
-                                    "deviceQueryConditions.errorMsg.fieldCantBeEmpty"
-                                )
+                                t("columnMapping.errorMsg.headerCannotBeEmpty")
                             ),
                         mapping = conditionLink
                             .forkTo("mapping")
                             .map(({ value }) => value)
                             .check(
                                 Validator.notEmpty,
-                                t(
-                                    "deviceQueryConditions.errorMsg.operatorCantBeEmpty"
-                                )
+                                t("columnMapping.errorMsg.mappingCannotBeEmpty")
                             ),
                         renderer = conditionLink
                             .forkTo("cellRenderer")
@@ -311,7 +316,7 @@ export class ColumnMapper extends LinkedComponent {
                             .check(
                                 Validator.notEmpty,
                                 t(
-                                    "deviceQueryConditions.errorMsg.operatorCantBeEmpty"
+                                    "columnMapping.errorMsg.rendererCannotBeEmpty"
                                 )
                             ),
                         description = conditionLink.forkTo("description"),
@@ -342,17 +347,20 @@ export class ColumnMapper extends LinkedComponent {
         return (
             <Fragment>
                 {!(this.state.isDefault || this.state.isEdit) && (
-                    <FormControl
-                        type="text"
-                        ariaLabel={t("deviceQueryConditions.field")}
-                        className="long"
-                        searchable={false}
-                        clearable={false}
-                        placeholder={t(
-                            "deviceQueryConditions.fieldPlaceholder"
-                        )}
-                        link={this.mappingNameLink}
-                    />
+                    <FormGroup>
+                        <FormLabel>
+                            {t("columnMapping.labels.mappingName")}
+                        </FormLabel>
+                        <FormControl
+                            type="text"
+                            ariaLabel={t("columnMapping.field")}
+                            className="long"
+                            searchable={false}
+                            clearable={false}
+                            placeholder={t("columnMapping.namePlaceHolder")}
+                            link={this.mappingNameLink}
+                        />
+                    </FormGroup>
                 )}
                 {!this.state.isDefault && this.state.isEdit && (
                     <p>{this.state.mappingName}</p>
@@ -360,10 +368,11 @@ export class ColumnMapper extends LinkedComponent {
                 <form onSubmit={this.apply}>
                     <div className={css("manage-filters-container")}>
                         <Grid>
-                            {mappingsLink.length > 0 && (
+                            {(defaultMappingsLink.length > 0 ||
+                                mappingsLink.length > 0) && (
                                 <Row>
-                                    <Cell className="col-1"></Cell>
-                                    <Cell className="col-1"></Cell>
+                                    <Cell className="col-1 button"></Cell>
+                                    <Cell className="col-1 button"></Cell>
                                     <Cell className="col-3">Name</Cell>
                                     <Cell className="col-1"></Cell>
                                     <Cell className="col-2">Mapping</Cell>
@@ -383,20 +392,20 @@ export class ColumnMapper extends LinkedComponent {
                                         }
                                         // className="deviceExplorer-conditions"
                                     >
-                                        <Cell className="col-1"></Cell>
-                                        <Cell className="col-1"></Cell>
+                                        <Cell className="col-1 button"></Cell>
+                                        <Cell className="col-1 button"></Cell>
                                         <Cell className="col-3">
                                             <FormControl
                                                 type="text"
                                                 ariaLabel={t(
-                                                    "deviceQueryConditions.field"
+                                                    "columnMapping.field"
                                                 )}
                                                 className="long"
                                                 disabled={true}
                                                 searchable={false}
                                                 clearable={false}
                                                 placeholder={t(
-                                                    "deviceQueryConditions.fieldPlaceholder"
+                                                    "columnMapping.headerPlaceholder"
                                                 )}
                                                 link={condition.name}
                                                 onChange={this.onFieldChange(
@@ -409,7 +418,7 @@ export class ColumnMapper extends LinkedComponent {
                                             <FormControl
                                                 type="select"
                                                 ariaLabel={t(
-                                                    "deviceQueryConditions.operator"
+                                                    "columnMapping.operator"
                                                 )}
                                                 className="long"
                                                 disabled={true}
@@ -419,7 +428,7 @@ export class ColumnMapper extends LinkedComponent {
                                                     this.state.mappingOptions
                                                 }
                                                 placeholder={t(
-                                                    "deviceQueryConditions.operatorPlaceholder"
+                                                    "columnMapping.mappingPlaceholder"
                                                 )}
                                                 link={condition.mapping}
                                             />
@@ -429,7 +438,7 @@ export class ColumnMapper extends LinkedComponent {
                                             <FormControl
                                                 type="select"
                                                 ariaLabel={t(
-                                                    "deviceQueryConditions.operator"
+                                                    "columnMapping.operator"
                                                 )}
                                                 className="long"
                                                 disabled={true}
@@ -439,7 +448,7 @@ export class ColumnMapper extends LinkedComponent {
                                                     this.state.rendererOptions
                                                 }
                                                 placeholder={t(
-                                                    "deviceQueryConditions.operatorPlaceholder"
+                                                    "columnMapping.renderPlaceholder"
                                                 )}
                                                 link={condition.renderer}
                                             />
@@ -449,7 +458,7 @@ export class ColumnMapper extends LinkedComponent {
                                             <FormControl
                                                 type="text"
                                                 placeholder={t(
-                                                    "deviceQueryConditions.valuePlaceholder"
+                                                    "columnMapping.descriptionPlaceholder"
                                                 )}
                                                 link={condition.description}
                                                 className={css("width-70")}
@@ -463,7 +472,7 @@ export class ColumnMapper extends LinkedComponent {
                                     // className="deviceExplorer-conditions"
                                 >
                                     {mappingsLink.length - 1 === idx && (
-                                        <Cell className="col-1">
+                                        <Cell className="col-1 button">
                                             <Btn
                                                 className={css("btn-icon")}
                                                 svg={svgs.plus}
@@ -472,9 +481,9 @@ export class ColumnMapper extends LinkedComponent {
                                         </Cell>
                                     )}
                                     {mappingsLink.length - 1 !== idx && (
-                                        <Cell className="col-1"></Cell>
+                                        <Cell className="col-1 button"></Cell>
                                     )}
-                                    <Cell className="col-1">
+                                    <Cell className="col-1 button">
                                         <Btn
                                             className="btn-icon"
                                             icon="cancel"
@@ -484,14 +493,12 @@ export class ColumnMapper extends LinkedComponent {
                                     <Cell className="col-3">
                                         <FormControl
                                             type="text"
-                                            ariaLabel={t(
-                                                "deviceQueryConditions.field"
-                                            )}
+                                            ariaLabel={t("columnMapping.field")}
                                             className="long"
                                             searchable={false}
                                             clearable={false}
                                             placeholder={t(
-                                                "deviceQueryConditions.fieldPlaceholder"
+                                                "columnMapping.headerPlaceholder"
                                             )}
                                             link={condition.name}
                                             onChange={this.onFieldChange(idx)}
@@ -502,14 +509,14 @@ export class ColumnMapper extends LinkedComponent {
                                         <FormControl
                                             type="select"
                                             ariaLabel={t(
-                                                "deviceQueryConditions.operator"
+                                                "columnMapping.operator"
                                             )}
                                             className="long"
                                             searchable={false}
                                             clearable={false}
                                             options={this.state.mappingOptions}
                                             placeholder={t(
-                                                "deviceQueryConditions.operatorPlaceholder"
+                                                "columnMapping.mappingPlaceholder"
                                             )}
                                             link={condition.mapping}
                                         />
@@ -519,14 +526,14 @@ export class ColumnMapper extends LinkedComponent {
                                         <FormControl
                                             type="select"
                                             ariaLabel={t(
-                                                "deviceQueryConditions.operator"
+                                                "columnMapping.operator"
                                             )}
                                             className="long"
                                             searchable={false}
                                             clearable={false}
                                             options={this.state.rendererOptions}
                                             placeholder={t(
-                                                "deviceQueryConditions.operatorPlaceholder"
+                                                "columnMapping.renderPlaceholder"
                                             )}
                                             link={condition.renderer}
                                         />
@@ -536,7 +543,7 @@ export class ColumnMapper extends LinkedComponent {
                                         <FormControl
                                             type="text"
                                             placeholder={t(
-                                                "deviceQueryConditions.valuePlaceholder"
+                                                "columnMapping.descriptionPlaceholder"
                                             )}
                                             link={condition.description}
                                             className={css("width-70")}
@@ -567,6 +574,14 @@ export class ColumnMapper extends LinkedComponent {
                                 >
                                     Save
                                 </Btn>
+                                {!this.state.isDefault && (
+                                    <Btn
+                                        svg={svgs.cancelX}
+                                        onClick={this.onCancel}
+                                    >
+                                        Cancel
+                                    </Btn>
+                                )}
                                 <Btn
                                     disabled={this.state.isPending}
                                     svg={svgs.cancelX}

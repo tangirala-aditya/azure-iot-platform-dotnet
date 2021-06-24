@@ -61,3 +61,9 @@
 :global(.btn):disabled :global(.btn-icon) {
   display: inline-flex !important; 
 }
+
+.button {
+  min-width: 10px;
+  margin-right: 40px;
+  width: 10px;
+}

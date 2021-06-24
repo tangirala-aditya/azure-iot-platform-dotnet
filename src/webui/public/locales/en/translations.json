@@ -1132,5 +1132,21 @@
             "header": "Example Panel",
             "panelBody": "This is a new panel."
         }
+    },
+    "columnMapping":{
+        "field": "Field",
+        "namePlaceHolder":"Enter Mapping Name",
+        "headerPlaceholder": "Enter Header Name",
+        "mappingPlaceholder": "Select Mapping",
+        "renderPlaceholder": "Select Renderer",
+        "descriptionPlaceholder": "Enter Description",
+        "errorMsg":{
+            "headerCannotBeEmpty": "Header Name is Required",
+            "mappingCannotBeEmpty": "Mapping is Required",
+            "rendererCannotBeEmpty": "Renderer is Required"
+        },
+        "labels":{
+            "mappingName": "Column Mapping Name"
+        }
     }
 }

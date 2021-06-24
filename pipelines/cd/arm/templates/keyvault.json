@@ -20,6 +20,12 @@
         "metadata": {
           "description": "Object Id of the Application to be added to Access policy"
         }
+      },
+      "settingName": {
+        "type": "string",
+        "metadata": {
+          "description": "Setting Name of the Application to be added to Access policy"
+        }
       }
     },
     
@@ -99,7 +105,7 @@
       },
       {
       "type": "Microsoft.KeyVault/vaults/providers/diagnosticsettings",
-      "name": "[concat(parameters('resourceName'), '/Microsoft.Insights/gogo')]",
+      "name": "[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('settingName'))]",
       "apiVersion": "2016-09-01",
       "location": "[variables('location')]",
       "properties": {

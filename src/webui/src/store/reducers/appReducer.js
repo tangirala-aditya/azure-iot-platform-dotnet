@@ -1,12 +1,25 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import "rxjs";
-import { Observable } from "rxjs";
+import { EMPTY, of, interval, scheduled } from "rxjs";
 import dot from "dot-object";
 import moment from "moment";
 import { schema, normalize } from "normalizr";
 import { createSelector } from "reselect";
 import update from "immutability-helper";
+import { ofType } from "redux-observable";
+import {
+    map,
+    distinctUntilChanged,
+    switchMap,
+    catchError,
+    mergeMap,
+    first,
+    filter,
+    take,
+    mergeAll,
+    delay,
+} from "rxjs/operators";
 
 import Config from "app.config";
 import {
@@ -36,9 +49,7 @@ import { HttpClient } from "utilities/httpClient";
 
 // ========================= Epics - START
 const handleError = (fromAction) => (error) =>
-    Observable.of(
-        redux.actions.registerError(fromAction.type, { error, fromAction })
-    );
+    of(redux.actions.registerError(fromAction.type, { error, fromAction }));
 
 export const epics = createEpicScenario({
     /** Initializes the redux state */
@@ -59,21 +70,20 @@ export const epics = createEpicScenario({
     logEvent: {
         type: "APP_LOG_EVENT",
         epic: ({ payload }, store) => {
-            const diagnosticsOptIn = getDiagnosticsOptIn(store.getState());
+            const diagnosticsOptIn = getDiagnosticsOptIn(store.value);
             if (diagnosticsOptIn) {
-                payload.sessionId = getSessionId(store.getState());
+                payload.sessionId = getSessionId(store.value);
                 payload.eventProperties.CurrentWindow = getCurrentWindow(
-                    store.getState()
+                    store.value
                 );
-                return (
-                    DiagnosticsService.logEvent(payload)
-                        /* We don't want anymore action to be executed after this call
+                return DiagnosticsService.logEvent(payload).pipe(
+                    /* We don't want anymore action to be executed after this call
               and hence return empty observable in flatMap */
-                        .flatMap((_) => Observable.empty())
-                        .catch((_) => Observable.empty())
+                    mergeMap((_) => EMPTY),
+                    catchError((_) => EMPTY)
                 );
             }
-            return Observable.empty();
+            return EMPTY;
         },
     },
 
@@ -81,52 +91,56 @@ export const epics = createEpicScenario({
     fetchUser: {
         type: "APP_USER_FETCH",
         epic: (fromAction, store) =>
-            AuthService.getCurrentUser()
-                .map(toActionCreator(redux.actions.updateUser, fromAction))
-                .catch(handleError(fromAction)),
+            AuthService.getCurrentUser().pipe(
+                map(toActionCreator(redux.actions.updateUser, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Get the Alerting Status */
     fetchAlerting: {
         type: "APP_ALERTING_FETCH",
         epic: (fromAction, store) =>
-            TenantService.getAlertingStatus(true)
-                .map(toActionCreator(redux.actions.updateAlerting, fromAction))
-                .catch(handleError(fromAction)),
+            TenantService.getAlertingStatus(true).pipe(
+                map(toActionCreator(redux.actions.updateAlerting, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Get solution settings */
     fetchSolutionSettings: {
         type: "APP_FETCH_SOLUTION_SETTINGS",
         epic: (fromAction) =>
-            ConfigService.getSolutionSettings()
-                .map(
+            ConfigService.getSolutionSettings().pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateSolutionSettings,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Get Telemetry Status */
     fetchTelemetryStatus: {
         type: "APP_FETCH_TELEMETRY_STATUS",
         epic: (fromAction) =>
-            TelemetryService.getStatus()
-                .map(
+            TelemetryService.getStatus().pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateTelemetryProperties,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Update solution settings */
     updateDiagnosticsOptIn: {
         type: "APP_UPDATE_DIAGNOSTICS_OPTOUT",
         epic: (fromAction, store) => {
-            const currSettings = getSettings(store.getState()),
+            const currSettings = getSettings(store.value),
                 settings = {
                     name: currSettings.name,
                     description: currSettings.description,
@@ -139,20 +153,21 @@ export const epics = createEpicScenario({
                     "isEnabled",
                     isDiagnosticOptIn
                 );
-            logPayload.sessionId = getSessionId(store.getState());
+            logPayload.sessionId = getSessionId(store.value);
             logPayload.eventProperties.CurrentWindow = getCurrentWindow(
-                store.getState()
+                store.value
             );
             DiagnosticsService.logEvent(logPayload).subscribe();
 
-            return ConfigService.updateSolutionSettings(settings)
-                .map(
+            return ConfigService.updateSolutionSettings(settings).pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateSolutionSettings,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction));
+                ),
+                catchError(handleError(fromAction))
+            );
         },
     },
 
@@ -160,8 +175,8 @@ export const epics = createEpicScenario({
     fetchDeviceGroups: {
         type: "APP_DEVICE_GROUPS_FETCH",
         epic: (fromAction, store) =>
-            ConfigService.getDeviceGroups()
-                .flatMap((payload) => {
+            ConfigService.getDeviceGroups().pipe(
+                mergeMap((payload) => {
                     const deviceGroups = payload.sort(
                             compareByProperty("displayName", true)
                         ),
@@ -174,26 +189,28 @@ export const epics = createEpicScenario({
                     );
                     actions.push(epics.actions.fetchSelectedDeviceGroup());
                     return actions;
-                })
-                .catch(handleError(fromAction)),
+                }),
+                catchError(handleError(fromAction))
+            ),
     },
 
     fetchSelectedDeviceGroup: {
         type: "APP_SELECTED_DEVICE_GROUP_FETCH",
         epic: (fromAction, store) =>
-            IdentityGatewayService.getUserActiveDeviceGroup()
-                .map(
+            IdentityGatewayService.getUserActiveDeviceGroup().pipe(
+                map(
                     (value) =>
                         value ||
-                        Object.keys(getDeviceGroupEntities(store.getState()))[0]
-                )
-                .map(
+                        Object.keys(getDeviceGroupEntities(store.value))[0]
+                ),
+                map(
                     toActionCreator(
                         redux.actions.updateActiveDeviceGroup,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     updateActiveDeviceGroup: {
@@ -201,33 +218,36 @@ export const epics = createEpicScenario({
         epic: (fromAction) =>
             IdentityGatewayService.updateUserActiveDeviceGroup(
                 fromAction.payload
-            )
-                .map(
+            ).pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateActiveDeviceGroup,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Listen to route events and emit a route change event when the url changes */
     detectRouteChange: {
         type: "APP_ROUTE_EVENT",
         rawEpic: (action$, store, actionType) =>
-            action$
-                .ofType(actionType)
-                .map(({ payload }) => payload) // payload === pathname
-                .distinctUntilChanged()
-                .map(createAction("EPIC_APP_ROUTE_CHANGE")),
+            action$.pipe(
+                ofType(actionType),
+                map(({ payload }) => payload), // payload === pathname
+                distinctUntilChanged(),
+                map(createAction("EPIC_APP_ROUTE_CHANGE"))
+            ),
     },
 
     /** Get the logo and company name from the config service */
     fetchLogo: {
         type: "APP_FETCH_LOGO",
         epic: (fromAction) =>
-            ConfigService.getLogo()
-                .map(toActionCreator(redux.actions.updateLogo, fromAction))
-                .catch(handleError(fromAction)),
+            ConfigService.getLogo().pipe(
+                map(toActionCreator(redux.actions.updateLogo, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Set the logo and/or company name in the config service */
@@ -237,81 +257,89 @@ export const epics = createEpicScenario({
             ConfigService.setLogo(
                 fromAction.payload.logo,
                 fromAction.payload.headers
-            )
-                .map(toActionCreator(redux.actions.updateLogo, fromAction))
-                .catch(handleError(fromAction)),
+            ).pipe(
+                map(toActionCreator(redux.actions.updateLogo, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Update alerting */
     updateAlerting: {
         type: "APP_UPDATE_ALERTING",
         epic: (fromAction) =>
-            Observable.of(fromAction.payload)
-                .map(toActionCreator(redux.actions.updateAlerting, fromAction))
-                .catch(handleError(fromAction)),
+            of(fromAction.payload).pipe(
+                map(toActionCreator(redux.actions.updateAlerting, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Get the current release version and release notes link from GitHub */
     fetchReleaseInformation: {
         type: "APP_FETCH_RELEASE_INFO",
         epic: (fromAction) =>
-            GitHubService.getReleaseInfo()
-                .map(
+            GitHubService.getReleaseInfo().pipe(
+                map(
                     toActionCreator(
                         redux.actions.getReleaseInformation,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Get solution's action settings */
     fetchActionSettings: {
         type: "APP_FETCH_SOLUTION_ACTION_SETTINGS",
         epic: (fromAction) =>
-            ConfigService.getActionSettings()
-                .map(
+            ConfigService.getActionSettings().pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateActionSettings,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Poll the server for the action settings. */
     pollActionSettings: {
         type: "APP_POLL_SOLUTION_ACTION_SETTINGS",
         rawEpic: (action$, store, actionType) =>
-            action$.ofType(actionType).switchMap((fromAction) => {
-                const poll$ = Observable.interval(
-                        Config.actionSetupPollingInterval
-                    )
-                        .switchMap((_) => ConfigService.getActionSettings())
-                        .map(
-                            toActionCreator(
-                                redux.actions.updateActionSettings,
-                                fromAction
-                            )
-                        )
-                        .filter((updateAction) => {
-                            const {
-                                    entities: { actionSettings },
-                                } = normalize(
-                                    updateAction.payload,
-                                    actionSettingsListSchema
-                                ),
-                                isEnabled = dot.pick(
-                                    "Email.isEnabled",
-                                    actionSettings
-                                );
-                            return isEnabled;
-                        })
-                        .take(1)
-                        .catch(handleError(fromAction)),
-                    timeout$ = Observable.of(
-                        redux.actions.updateActionPollingTimeout()
-                    ).delay(Config.actionSetupPollingTimeLimit);
-                return Observable.merge(poll$, timeout$).first();
-            }),
+            action$.pipe(
+                ofType(actionType),
+                switchMap((fromAction) => {
+                    const poll$ = interval(
+                            Config.actionSetupPollingInterval
+                        ).pipe(
+                            switchMap((_) => ConfigService.getActionSettings()),
+                            map(
+                                toActionCreator(
+                                    redux.actions.updateActionSettings,
+                                    fromAction
+                                )
+                            ),
+                            filter((updateAction) => {
+                                const {
+                                        entities: { actionSettings },
+                                    } = normalize(
+                                        updateAction.payload,
+                                        actionSettingsListSchema
+                                    ),
+                                    isEnabled = dot.pick(
+                                        "Email.isEnabled",
+                                        actionSettings
+                                    );
+                                return isEnabled;
+                            }),
+                            take(1),
+                            catchError(handleError(fromAction))
+                        ),
+                        timeout$ = of(
+                            redux.actions.updateActionPollingTimeout()
+                        ).pipe(delay(Config.actionSetupPollingTimeLimit));
+                    return scheduled(poll$, timeout$).pipe(mergeAll(), first());
+                })
+            ),
     },
 });
 // ========================= Epics - END

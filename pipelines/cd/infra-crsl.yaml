@@ -53,6 +53,7 @@ stages:
           runVersion: $(runVersion-crslDev)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-crslDev)
+          isHelmVersion3: true
           aadSGId: $(aadSGId-crslDev)
           telemetryStorageType: $(telemetryStorageType-crslDev)
 
@@ -79,6 +80,7 @@ stages:
           runVersion: $(runVersion-acsDev)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-acsDev)
+          isHelmVersion3: false
           aadSGId: $(aadSGId-acsDev)
           telemetryStorageType: $(telemetryStorageType-acsDev)
 
@@ -107,6 +109,7 @@ stages:
           runVersion: $(runVersion-crslQa)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-crslQa)
+          isHelmVersion3: false          
           aadSGId: $(aadSGId-crslQa)
           telemetryStorageType: $(telemetryStorageType-crslQa)
           
@@ -135,5 +138,6 @@ stages:
           runVersion: $(runVersion-crslWkbnch)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-crslWkbnch)
+          isHelmVersion3: false
           aadSGId: $(aadSGId-crslWkbnch)
           telemetryStorageType: $(telemetryStorageType-crslWkbnch)

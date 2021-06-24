@@ -4,9 +4,10 @@ import React from "react";
 
 import { joinClasses } from "utilities";
 
-import "./statGroup.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./statGroup.module.scss"));
 
 /** A presentational component containing one or many StatProperty */
 export const StatGroup = ({ children, className }) => (
-    <div className={joinClasses("stat-cell", className)}>{children}</div>
+    <div className={joinClasses(css("stat-cell"), className)}>{children}</div>
 );

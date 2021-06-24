@@ -9,11 +9,14 @@ import { Indicator } from "../indicator/indicator";
 import { ROW_HEIGHT } from "components/shared/pcsGrid/pcsGridConfig";
 import { SearchInput } from "components/shared";
 
-import "../../../../node_modules/ag-grid-community/src/styles/ag-grid.scss";
-import "../../../../node_modules/ag-grid-community/src/styles/ag-theme-dark.scss";
-import "./pcsGrid.scss";
+import "../../../../node_modules/ag-grid-community/dist/styles/ag-grid.scss";
+import "../../../../node_modules/ag-grid-community/dist/styles/ag-theme-alpine/sass/ag-theme-alpine.scss";
 import { Btn } from "../forms";
 import { ComponentArray } from "../componentArray/componentArray";
+import { debounceTime, filter } from "rxjs/operators";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./pcsGrid.module.scss"));
 
 /**
  * PcsGrid is a helper wrapper around AgGrid. The primary functionality of this wrapper
@@ -49,12 +52,14 @@ export class PcsGrid extends Component {
     componentDidMount() {
         this.subscriptions.push(
             this.resizeEvents
-                .debounceTime(Config.gridResizeDebounceTime)
-                .filter(
-                    () =>
-                        !!this.gridApi &&
-                        !!this.props.sizeColumnsToFit &&
-                        window.outerWidth >= Config.gridMinResize
+                .pipe(
+                    debounceTime(Config.gridResizeDebounceTime),
+                    filter(
+                        () =>
+                            !!this.gridApi &&
+                            !!this.props.sizeColumnsToFit &&
+                            window.outerWidth >= Config.gridMinResize
+                    )
                 )
                 .subscribe(() => this.gridApi.sizeColumnsToFit())
         );
@@ -69,7 +74,7 @@ export class PcsGrid extends Component {
     registerResizeEvent = () => this.resizeEvents.next("r");
 
     /** When new props are passed in, check if the soft select state needs to be updated */
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.state.currentSoftSelectId !== nextProps.softSelectId) {
             this.setState(
                 { currentSoftSelectId: nextProps.softSelectId },
@@ -110,9 +115,9 @@ export class PcsGrid extends Component {
      * Forces and update event
      */
     refreshRows = () => {
-        if (this.gridApi && isFunc(this.gridApi.updateRowData)) {
+        if (this.gridApi && isFunc(this.gridApi.applyTransaction)) {
             this.gridApi.setQuickFilter("");
-            this.gridApi.updateRowData({ update: [] });
+            this.gridApi.applyTransaction({ update: [] });
         }
     };
 
@@ -195,16 +200,16 @@ export class PcsGrid extends Component {
             },
             { rowData, pcsLoadingTemplate } = this.props,
             loadingContainer = (
-                <div className="pcs-grid-loading-container">
+                <div className={css("pcs-grid-loading-container")}>
                     {!pcsLoadingTemplate ? <Indicator /> : pcsLoadingTemplate}
                 </div>
             );
         return (
             <ComponentArray>
                 {rowData && (
-                    <div className="flex-container">
+                    <div className={css("flex-container")}>
                         {this.props.searchPlaceholder && (
-                            <div className="flex-child">
+                            <div className={css("flex-child")}>
                                 <SearchInput
                                     onChange={this.searchOnChange}
                                     placeholder={this.props.searchPlaceholder}
@@ -212,10 +217,10 @@ export class PcsGrid extends Component {
                                 />
                             </div>
                         )}
-                        <div className="flex-child">
+                        <div className={css("flex-child")}>
                             <Btn
                                 onClick={this.expandColumns}
-                                className="expand-columns"
+                                className={css("expand-columns")}
                                 icon="chevronRightMed"
                             >
                                 Expand Columns
@@ -224,11 +229,9 @@ export class PcsGrid extends Component {
                     </div>
                 )}
                 <div
-                    className={`pcs-grid-container ag-theme-dark ${
-                        gridParams.suppressMovableColumns
-                            ? ""
-                            : "movable-columns"
-                    }`}
+                    className={css("pcs-grid-container", "ag-theme-alpine", {
+                        "movable-columns": !gridParams.suppressMovableColumns,
+                    })}
                     style={style}
                 >
                     {!rowData ? loadingContainer : ""}

@@ -10,7 +10,8 @@ import Flyout from "components/shared/flyout";
 import DeviceGroupForm from "./views/deviceGroupForm";
 import DeviceGroups from "./views/deviceGroups";
 
-import "./manageDeviceGroups.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./manageDeviceGroups.module.scss"));
 
 const toOption = (value, label) => ({
     label: label || value,
@@ -98,7 +99,7 @@ export class ManageDeviceGroups extends LinkedComponent {
                     this.expandFlyout();
                 }}
             >
-                <div className="manage-filters-flyout-container">
+                <div className={css("manage-filters-flyout-container")}>
                     {this.state.addNewDeviceGroup ||
                     !!this.state.selectedDeviceGroup ? (
                         <DeviceGroupForm
@@ -112,7 +113,7 @@ export class ManageDeviceGroups extends LinkedComponent {
                                 permission={permissions.createDeviceGroups}
                             >
                                 <Btn
-                                    className="add-btn"
+                                    className={css("add-btn")}
                                     style={btnStyle}
                                     svg={svgs.plus}
                                     onClick={this.toggleNewFilter}

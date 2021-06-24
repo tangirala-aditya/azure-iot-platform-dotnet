@@ -8,8 +8,10 @@ export * from "./flyoutSection";
 export * from "./flyoutSectionHeader";
 export * from "./flyoutSectionContent";
 
-export default {
+var flyoutSectionObject = {
     Container: FlyoutSection,
     Header: FlyoutSectionHeader,
     Content: FlyoutSectionContent,
 };
+
+export default flyoutSectionObject;

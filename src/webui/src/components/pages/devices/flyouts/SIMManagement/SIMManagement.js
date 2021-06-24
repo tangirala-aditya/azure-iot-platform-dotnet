@@ -16,8 +16,10 @@ import {
 } from "components/shared";
 
 import Flyout from "components/shared/flyout";
+import { CssClassApplier } from "ag-grid-community";
 
-import "./SIMManagement.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./SIMManagement.module.scss"));
 
 const Section = Flyout.Section,
     simManagementUrl = "https://iot.telefonica.com/contact",
@@ -69,19 +71,21 @@ export class SIMManagement extends LinkedComponent {
                     this.expandFlyout();
                 }}
             >
-                <div className="sim-management-container">
+                <div className={CssClassApplier("sim-management-container")}>
                     <Protected permission={permissions.updateSIMManagement}>
-                        <div className="sim-management-selector">
-                            <div className="sim-management-label-selector">
+                        <div className={css("sim-management-selector")}>
+                            <div
+                                className={css("sim-management-label-selector")}
+                            >
                                 {t("devices.flyouts.SIMManagement.provider")}
                             </div>
-                            <div className="sim-management-dropdown">
+                            <div className={css("sim-management-dropdown")}>
                                 <FormControl
                                     type="select"
                                     ariaLabel={t(
                                         "devices.flyouts.SIMManagement.provider"
                                     )}
-                                    className="sim-management-dropdown"
+                                    className={css("sim-management-dropdown")}
                                     options={options}
                                     searchable={false}
                                     clearable={false}
@@ -94,7 +98,7 @@ export class SIMManagement extends LinkedComponent {
                         </div>
                         {!!provider && (
                             <Section.Container
-                                className="hide-border"
+                                className={css("hide-border")}
                                 collapsable={false}
                             >
                                 <Section.Header>
@@ -108,7 +112,11 @@ export class SIMManagement extends LinkedComponent {
                                             `devices.flyouts.SIMManagement.header.${provider}`
                                         )}
                                     </div>
-                                    <div className="sim-management-label-desctiption">
+                                    <div
+                                        className={css(
+                                            "sim-management-label-desctiption"
+                                        )}
+                                    >
                                         <Trans
                                             i18nKey={`devices.flyouts.SIMManagement.description.${provider}`}
                                         >

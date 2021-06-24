@@ -5,14 +5,15 @@ import React from "react";
 import { Svg } from "components/shared/svg/svg";
 import { svgs } from "utilities";
 
-import "../cellRenderer.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../cellRenderer.module.scss"));
 
 export const IsActivePackageRenderer = ({ value, context: { t } }) => (
-    <div className="pcs-renderer-cell highlight">
+    <div className={css("pcs-renderer-cell", "highlight")}>
         {value ? (
-            <Svg path={svgs.checkmark} className="pcs-renderer-icon" />
+            <Svg src={svgs.checkmark} className={css("pcs-renderer-icon")} />
         ) : (
-            <Svg path={svgs.cancelX} className="pcs-renderer-icon" />
+            <Svg src={svgs.cancelX} className={css("pcs-renderer-icon")} />
         )}
     </div>
 );

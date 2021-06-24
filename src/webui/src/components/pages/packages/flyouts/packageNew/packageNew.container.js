@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { PackageNew } from "./packageNew";
 import { getActiveDeviceGroupId, getTheme } from "store/reducers/appReducer";
 import {
@@ -41,6 +41,6 @@ const mapStateToProps = (state) => ({
             dispatch(packagesEpics.actions.fetchConfigTypes()),
     });
 
-export const PackageNewContainer = withNamespaces()(
+export const PackageNewContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(PackageNew)
 );

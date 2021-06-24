@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { SystemAdminDelete } from "./systemAdminDelete";
 import {
     epics as usersEpics,
@@ -27,6 +27,6 @@ const mapStateToProps = (state) => ({
             dispatch(usersEpics.actions.fetchAllSystemAdmins()),
     });
 
-export const SystemAdminDeleteContainer = withNamespaces()(
+export const SystemAdminDeleteContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(SystemAdminDelete)
 );

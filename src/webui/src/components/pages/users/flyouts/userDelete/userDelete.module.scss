@@ -1,0 +1,37 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.user-delete-container {
+  @include rem-font-size(14px);
+
+  .user-delete-header { @include rem-fallback(padding, 12px, 0px); }
+
+  .toggle-btn-div { @include rem-fallback(margin, 12px, 0px); }
+
+  .user-delete-error {
+    border: 1px transparent solid;
+    @include rem-fallback(margin, 12px, 0px);
+    @include rem-fallback(padding, 16px);
+  }
+
+  :global(.wait-indicator) { @include rem-fallback(margin-left, 8px); }
+
+  .summary-icon svg {
+    @include square-px-rem(16px);
+    @include rem-fallback(margin-left, 8px);
+  }
+
+  @include themify($themes) {
+    color: themed('colorContentTextDim');
+
+    .user-delete-header { color: themed('colorContentText'); }
+
+    .user-delete-error {
+      border-color: themed('colorAlert');
+    }
+
+    .summary-icon svg { fill: themed('colorContentText'); }
+  }
+}

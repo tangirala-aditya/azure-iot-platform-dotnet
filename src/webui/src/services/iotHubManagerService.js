@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { Observable } from "rxjs";
+import { forkJoin } from "rxjs";
 
 import Config from "app.config";
 import { stringify } from "query-string";
@@ -19,6 +19,7 @@ import {
     toEdgeAgentsModel,
     toDevicesDeploymentHistoryModel,
 } from "./models";
+import { map } from "rxjs/operators";
 
 const ENDPOINT = Config.serviceUrls.iotHubManager;
 
@@ -34,47 +35,52 @@ export class IoTHubManagerService {
         }
         options.timeout = 120000;
         const query = encodeURIComponent(JSON.stringify(conditions));
-        return HttpClient.get(`${ENDPOINT}devices?query=${query}`, options).map(
-            toDevicesModel
-        );
+        return HttpClient.get(
+            `${ENDPOINT}devices?query=${query}`,
+            options
+        ).pipe(map(toDevicesModel));
     }
 
     /** Returns a list of all modules message schema fields */
     static getModulesFields(query) {
-        return HttpClient.post(`${ENDPOINT}modules/query`, `"${query}"`).map(
-            toModuleFieldsModel
+        return HttpClient.post(`${ENDPOINT}modules/query`, `"${query}"`).pipe(
+            map(toModuleFieldsModel)
         );
     }
 
     /** Returns a list of all jobs */
     static getJobs(params) {
-        return HttpClient.get(`${ENDPOINT}jobs?${stringify(params)}`).map(
-            toJobsModel
+        return HttpClient.get(`${ENDPOINT}jobs?${stringify(params)}`).pipe(
+            map(toJobsModel)
         );
     }
 
     /** Submits a job */
     static submitJob(body) {
-        return HttpClient.post(`${ENDPOINT}jobs`, body).map(toJobStatusModel);
+        return HttpClient.post(`${ENDPOINT}jobs`, body).pipe(
+            map(toJobStatusModel)
+        );
     }
 
     /** Get returns the status details for a particular job */
     static getJobStatus(jobId) {
         return HttpClient.get(
             `${ENDPOINT}jobs/${jobId}?includeDeviceDetails=true`
-        ).map(toJobStatusModel);
+        ).pipe(map(toJobStatusModel));
     }
 
     /** Provisions a device */
     static provisionDevice(body) {
-        return HttpClient.post(`${ENDPOINT}devices`, body).map(toDeviceModel);
+        return HttpClient.post(`${ENDPOINT}devices`, body).pipe(
+            map(toDeviceModel)
+        );
     }
 
     /** Deletes a device */
     static deleteDevice(id) {
-        return HttpClient.delete(`${ENDPOINT}devices/${id}`).map(() => ({
-            deletedDeviceId: id,
-        }));
+        return HttpClient.delete(`${ENDPOINT}devices/${id}`).pipe(
+            map(() => ({ deletedDeviceId: id }))
+        );
     }
 
     /** Returns the account's device group filters */
@@ -87,37 +93,41 @@ export class IoTHubManagerService {
         //   .map(([iotResponse, dsResponse]) => toDevicePropertiesModel(iotResponse, dsResponse));
 
         // Stop Gap until Device Sim is online
-        return Observable.forkJoin(
+        return forkJoin(
             HttpClient.get(`${ENDPOINT}deviceproperties`) //,
             //HttpClient.get(`${Config.serviceUrls.deviceSimulation}devicemodelproperties`)
-        ).map(([iotResponse]) =>
-            toDevicePropertiesModel(iotResponse, iotResponse)
+        ).pipe(
+            map(([iotResponse]) =>
+                toDevicePropertiesModel(iotResponse, iotResponse)
+            )
         );
     }
 
     /** Returns deployments */
     static getDeployments() {
-        return HttpClient.get(`${ENDPOINT}deployments`).map(toDeploymentsModel);
+        return HttpClient.get(`${ENDPOINT}deployments`).pipe(
+            map(toDeploymentsModel)
+        );
     }
 
     /** Returns deployment */
     static getDeployment(id, isLatest) {
         return HttpClient.get(
             `${ENDPOINT}deployments/${id}?includeDeviceStatus=true&isLatest=${isLatest}`
-        ).map(toDeploymentModel);
+        ).pipe(map(toDeploymentModel));
     }
 
     /** Queries EdgeAgent */
     static getModulesByQuery(query) {
-        return HttpClient.post(`${ENDPOINT}modules/query`, query).map(
-            toEdgeAgentsModel
+        return HttpClient.post(`${ENDPOINT}modules/query`, query).pipe(
+            map(toEdgeAgentsModel)
         );
     }
 
     /** Queries Devices */
     static getDevicesByQuery(query) {
-        return HttpClient.post(`${ENDPOINT}devices/query`, query).map(
-            toDevicesModel
+        return HttpClient.post(`${ENDPOINT}devices/query`, query).pipe(
+            map(toDevicesModel)
         );
     }
 
@@ -125,7 +135,7 @@ export class IoTHubManagerService {
         return HttpClient.get(
             `${ENDPOINT}deployments/devices/${id}?isLatest=${isLatest}`,
             { timeout: 180000 }
-        ).map(toDevicesModel);
+        ).pipe(map(toDevicesModel));
     }
 
     static getModulesByQueryForDeployment(id, query, isLatest) {
@@ -133,7 +143,7 @@ export class IoTHubManagerService {
             `${ENDPOINT}deployments/modules/${id}?isLatest=${isLatest}`,
             query,
             { timeout: 120000 }
-        ).map(toEdgeAgentsModel);
+        ).pipe(map(toEdgeAgentsModel));
     }
 
     /** Create a deployment */
@@ -142,7 +152,7 @@ export class IoTHubManagerService {
             `${ENDPOINT}deployments`,
             toDeploymentRequestModel(deploymentModel),
             { timeout: 120000 }
-        ).map(toDeploymentModel);
+        ).pipe(map(toDeploymentModel));
     }
 
     /** Delete a deployment */
@@ -151,7 +161,7 @@ export class IoTHubManagerService {
             `${ENDPOINT}deployments/${id}?isDelete=${isDelete}`,
             {},
             { timeout: 120000 }
-        ).map(() => id);
+        ).pipe(map(() => id));
     }
 
     static reactivateDeployment(id) {
@@ -164,8 +174,8 @@ export class IoTHubManagerService {
 
     /** Returns deployments */
     static getDeploymentDetails(query) {
-        return HttpClient.post(`${ENDPOINT}modules`, query).map(
-            toDeploymentsModel
+        return HttpClient.post(`${ENDPOINT}modules`, query).pipe(
+            map(toDeploymentsModel)
         );
     }
 
@@ -188,7 +198,7 @@ export class IoTHubManagerService {
     static getDeploymentHistoryForSelectedDevice(deviceId) {
         return HttpClient.get(
             `${ENDPOINT}devices/deploymentHistory/${deviceId}`
-        ).map(toDevicesDeploymentHistoryModel);
+        ).pipe(map(toDevicesDeploymentHistoryModel));
     }
 
     /** Returns a device statistics */
@@ -196,7 +206,7 @@ export class IoTHubManagerService {
         const query = encodeURIComponent(JSON.stringify(conditions));
         return HttpClient.get(
             `${ENDPOINT}devices/statistics?query=${query}`
-        ).map(toDeviceStatisticsModel);
+        ).pipe(map(toDeviceStatisticsModel));
     }
 
     /** Queries Devices */

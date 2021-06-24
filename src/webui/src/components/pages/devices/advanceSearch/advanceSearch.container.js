@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { AdvanceSearch } from "./advanceSearch";
 import {
     epics as devicesEpics,
@@ -18,6 +18,6 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(devicesRedux.actions.resetDeviceByCondition()),
 });
 
-export const AdvanceSearchContainer = withNamespaces()(
+export const AdvanceSearchContainer = withTranslation()(
     connect(null, mapDispatchToProps)(AdvanceSearch)
 );

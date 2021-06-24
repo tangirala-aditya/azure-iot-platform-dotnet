@@ -6,7 +6,8 @@ import { Btn, BtnToolbar, Modal } from "components/shared";
 import { svgs } from "utilities";
 import { toSinglePropertyDiagnosticsModel } from "services/models";
 
-import "./confirmationModal.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./confirmationModal.module.scss"));
 
 export class ConfirmationModal extends Component {
     genericCloseClick = (eventName) => {
@@ -39,13 +40,15 @@ export class ConfirmationModal extends Component {
                 onClose={() =>
                     this.genericCloseClick("ConfirmationModal_ModalClose")
                 }
-                className="confirmation-modal-container"
+                className={css("confirmation-modal-container")}
             >
-                <div className="confirmation-header-container">
-                    <div className="confirmation-title">{title}</div>
+                <div className={css("confirmation-header-container")}>
+                    <div className={css("confirmation-title")}>{title}</div>
                 </div>
-                <div className="confirmation-info">{confirmationInfo}</div>
-                <div className="confirmation-summary">
+                <div className={css("confirmation-info")}>
+                    {confirmationInfo}
+                </div>
+                <div className={css("confirmation-summary")}>
                     <BtnToolbar>
                         <Btn
                             svg={svgs.apply}

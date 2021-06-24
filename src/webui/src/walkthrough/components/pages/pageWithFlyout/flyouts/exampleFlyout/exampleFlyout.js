@@ -19,7 +19,8 @@ import {
     Svg,
 } from "components/shared";
 
-import "./exampleFlyout.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./exampleFlyout.module.scss"));
 
 export class ExampleFlyout extends Component {
     constructor(props) {
@@ -121,19 +122,19 @@ export class ExampleFlyout extends Component {
                  * The following is a simple empty form with buttons to do an action or close the flyout.
                  * */}
                 <form
-                    className="example-flyout-container"
+                    className={css("example-flyout-container")}
                     onSubmit={this.apply}
                 >
-                    <div className="example-flyout-header">
+                    <div className={css("example-flyout-header")}>
                         {t("walkthrough.pageWithFlyout.flyouts.example.header")}
                     </div>
-                    <div className="example-flyout-descr">
+                    <div className={css("example-flyout-descr")}>
                         {t(
                             "walkthrough.pageWithFlyout.flyouts.example.description"
                         )}
                     </div>
 
-                    <div className="form-placeholder">
+                    <div className={css("form-placeholder")}>
                         {t(
                             "walkthrough.pageWithFlyout.flyouts.example.insertFormHere"
                         )}
@@ -152,8 +153,8 @@ export class ExampleFlyout extends Component {
                             {this.state.isPending && <Indicator />}
                             {completedSuccessfully && (
                                 <Svg
-                                    className="summary-icon"
-                                    path={svgs.apply}
+                                    className={css("summary-icon")}
+                                    src={svgs.apply}
                                 />
                             )}
                         </SummaryBody>
@@ -162,45 +163,49 @@ export class ExampleFlyout extends Component {
                     {/** Displays an error message if one occurs while applying changes. */}
                     {error && (
                         <AjaxError
-                            className="example-flyout-error"
+                            className={css("example-flyout-error")}
                             t={t}
                             error={error}
                         />
                     )}
-                    {/** If changes are not yet applied, show the buttons for applying changes and closing the flyout. */
-                    !changesApplied && (
-                        <BtnToolbar>
-                            <Btn
-                                svg={svgs.reconfigure}
-                                primary={true}
-                                disabled={isPending || itemCount === 0}
-                                type="submit"
-                            >
-                                {t(
-                                    "walkthrough.pageWithFlyout.flyouts.example.apply"
-                                )}
-                            </Btn>
-                            <Btn svg={svgs.cancelX} onClick={onClose}>
-                                {t(
-                                    "walkthrough.pageWithFlyout.flyouts.example.cancel"
-                                )}
-                            </Btn>
-                        </BtnToolbar>
-                    )}
-                    {/**
-                     * If changes are applied, show only the close button.
-                     * Other text or component might be included here as well.
-                     * For example, you might provide a link to the detail page for a newly submitted job.
-                     * */
-                    !!changesApplied && (
-                        <BtnToolbar>
-                            <Btn svg={svgs.cancelX} onClick={onClose}>
-                                {t(
-                                    "walkthrough.pageWithFlyout.flyouts.example.close"
-                                )}
-                            </Btn>
-                        </BtnToolbar>
-                    )}
+                    {
+                        /** If changes are not yet applied, show the buttons for applying changes and closing the flyout. */
+                        !changesApplied && (
+                            <BtnToolbar>
+                                <Btn
+                                    svg={svgs.reconfigure}
+                                    primary={true}
+                                    disabled={isPending || itemCount === 0}
+                                    type="submit"
+                                >
+                                    {t(
+                                        "walkthrough.pageWithFlyout.flyouts.example.apply"
+                                    )}
+                                </Btn>
+                                <Btn svg={svgs.cancelX} onClick={onClose}>
+                                    {t(
+                                        "walkthrough.pageWithFlyout.flyouts.example.cancel"
+                                    )}
+                                </Btn>
+                            </BtnToolbar>
+                        )
+                    }
+                    {
+                        /**
+                         * If changes are applied, show only the close button.
+                         * Other text or component might be included here as well.
+                         * For example, you might provide a link to the detail page for a newly submitted job.
+                         * */
+                        !!changesApplied && (
+                            <BtnToolbar>
+                                <Btn svg={svgs.cancelX} onClick={onClose}>
+                                    {t(
+                                        "walkthrough.pageWithFlyout.flyouts.example.close"
+                                    )}
+                                </Btn>
+                            </BtnToolbar>
+                        )
+                    }
                 </form>
             </Flyout>
         );

@@ -184,7 +184,7 @@ class DateTimeField extends React.Component {
             lastDate: invalid ? "invalid" : initialValue.toJSON(),
         };
     }
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         if (
             this.props.initialValue !== newProps.initialValue ||
             this.props.localTimezone !== newProps.localTimezone

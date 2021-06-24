@@ -2,14 +2,13 @@
 
 import React from "react";
 
-import "../cellRenderer.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../cellRenderer.module.scss"));
 
 export const RuleStatusRenderer = ({ value, context: { t } }) => (
     <div
-        className={`pcs-renderer-cell ${
-            value === "Enabled" ? "highlight" : ""
-        }`}
+        className={css("pcs-renderer-cell", { highlight: value === "Enabled" })}
     >
-        <div className="pcs-renderer-text">{value}</div>
+        <div className={css("pcs-renderer-text")}>{value}</div>
     </div>
 );

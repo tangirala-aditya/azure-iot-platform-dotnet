@@ -3,12 +3,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { joinClasses } from "utilities";
-
-import "./styles/summarySection.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./styles/summarySection.module.scss"));
 
 export const SummarySection = (props) => (
-    <div className={joinClasses("summary-section", props.className)}>
+    <div className={css("summary-section", props.className)}>
         {props.children}
     </div>
 );

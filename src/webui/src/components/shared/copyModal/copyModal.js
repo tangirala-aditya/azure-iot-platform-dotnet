@@ -5,7 +5,8 @@ import React, { Component } from "react";
 import { Btn, BtnToolbar, Modal } from "components/shared";
 import { svgs, copyToClipboard } from "utilities";
 
-import "./copyModal.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./copyModal.module.scss"));
 
 export class CopyModal extends Component {
     constructor(props) {
@@ -27,14 +28,14 @@ export class CopyModal extends Component {
 
         return (
             <Modal
-                className="copy-modal-container"
+                className={css("copy-modal-container")}
                 onClose={() => this.genericCloseClick()}
             >
-                <div className="copy-header-container">
-                    <div className="copy-title">{title}</div>
+                <div className={css("copy-header-container")}>
+                    <div className={css("copy-title")}>{title}</div>
                 </div>
-                <div className="copy-info">{copyLink}</div>
-                <div className="copy-summary">
+                <div className={css("copy-info")}>{copyLink}</div>
+                <div className={css("copy-summary")}>
                     <BtnToolbar>
                         <Btn
                             svg={svgs.copy}

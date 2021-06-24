@@ -1,14 +1,16 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from "react";
-import "../cellRenderer.scss";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../cellRenderer.module.scss"));
 
 export const IsActiveDeploymentRenderer = ({ value, context: { t } }) => (
-    <div className="pcs-renderer-cell highlight">
+    <div className={css("pcs-renderr-cell", "highlight")}>
         {value ? (
-            <div className="small-green-circle"></div>
+            <div className={css("small-green-circle")}></div>
         ) : (
-            <div className="small-black-circle"></div>
+            <div className={css("small-black-circle")}></div>
         )}
     </div>
 );

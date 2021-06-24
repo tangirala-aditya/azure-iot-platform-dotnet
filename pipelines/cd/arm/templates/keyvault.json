@@ -99,7 +99,7 @@
       },
       {
       "type": "Microsoft.KeyVault/vaults/providers/diagnosticsettings",
-      "name": "[concat(parameters('resourceName'), '/Microsoft.Insights/DiagnosticSettings')]",
+      "name": "[concat(parameters('resourceName'), '/Microsoft.Insights/newService')]",
       "apiVersion": "2016-09-01",
       "location": "[variables('location')]",
       "properties": {

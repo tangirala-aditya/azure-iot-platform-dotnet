@@ -5,6 +5,6 @@
       "resourceName": { "value": "crslkeyvaultdev" },
       "userObjId": { "value": "562b0a82-a156-4a88-987d-5c8eb71c2b9b" },
       "applicationObjId": { "value": "562b0a82-a156-4a88-987d-5c8eb71c2b9b" },
-      "workspaceId": { "value": "crsliot-loganalyticsws-dev" }
+      "omsWorkspaceName": { "value": "crsliot-loganalyticsws-dev" }
     }
   }

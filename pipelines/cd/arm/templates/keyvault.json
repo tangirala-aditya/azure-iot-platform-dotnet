@@ -21,10 +21,10 @@
           "description": "Object Id of the Application to be added to Access policy"
         }
       },
-      "workspaceId": {
+      "omsWorkspaceName": {
         "type": "string",
         "metadata": {
-          "description": "Wrokspace Id of the Application Log Analytics to be added to Access policy"
+          "description": "WorkspaceName of the Application Log Analytics to be added to Access policy"
         }
       }
     },
@@ -105,11 +105,11 @@
       },
       {
       "type": "Microsoft.KeyVault/vaults/providers/diagnosticsettings",
-      "name": "[concat(parameters('keyVaultName'), '/Microsoft.Insights/service')]",
+      "name": "[concat(parameters('resourceName'), '/Microsoft.Insights/service')]",
       "apiVersion": "2016-09-01",
       "location": "[variables('location')]",
       "properties": {
-        "workspaceId": "[parameters('workspaceId')]",
+        "workspaceId": "[parameters('omsWorkspaceName')]",
         "logs": [
           {
             "category": "AuditEvent",

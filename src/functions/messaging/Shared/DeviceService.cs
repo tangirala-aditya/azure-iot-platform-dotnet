@@ -181,8 +181,6 @@ namespace Mmm.Iot.Functions.Messaging.Shared
 
         public async Task ProcessDeviceTwin(EventData[] source, ILogger log, string tenant, string deviceId)
         {
-            bool exceptionOccurred = false;
-
             foreach (EventData message in source)
             {
                 try
@@ -204,13 +202,7 @@ namespace Mmm.Iot.Functions.Messaging.Shared
                 catch (Exception ex)
                 {
                     log.LogError($"Error occurrred in for loop: {ex.Message} StackTrace: {ex.StackTrace}  Inner Exception: {(string.IsNullOrEmpty(ex.StackTrace) ? string.Empty : ex.StackTrace)}");
-                    exceptionOccurred = true;
                 }
-            }
-
-            if (exceptionOccurred)
-            {
-                throw new Exception("Function Failed with exception");
             }
         }
 
@@ -258,27 +250,44 @@ namespace Mmm.Iot.Functions.Messaging.Shared
                     else
                     {
                         deviceTwinJson.Add(DeviceTelemetryKeyConstants.DeviceCreatedDate, default(DateTime)); // Set Device Created Date to Default if twin is not present in storage.
-                    }
 
-                    if (previousTwin == null)
-                    {
                         twin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
-                        previousTwin = JObject.Parse(twin.ToJson());
+
+                        if (twin != null)
+                        {
+                            previousTwin = JObject.Parse(twin.ToJson());
+                        }
                     }
 
                     switch (operationType)
                     {
                         case "deviceConnected":
-                            previousTwin["connectionState"] = "Connected";
-                            previousTwin["lastActivityTime"] = timeStamp.DateTime;
+                            if (preDeviceTwin != null)
+                            {
+                                previousTwin["connectionState"] = "Connected";
+                                previousTwin["lastActivityTime"] = timeStamp.DateTime;
+                            }
+
                             break;
                         case "deviceDisconnected":
-                            previousTwin["connectionState"] = "Disconnected";
-                            previousTwin["lastActivityTime"] = timeStamp.DateTime;
+                            if (preDeviceTwin != null)
+                            {
+                                previousTwin["connectionState"] = "Disconnected";
+                                previousTwin["lastActivityTime"] = timeStamp.DateTime;
+                            }
+
                             break;
                         case "updateTwin":
-                            JObject twinFragment = JObject.Parse(eventData);
-                            previousTwin = previousTwin.UpdateJson(twinFragment);
+                            if (preDeviceTwin != null)
+                            {
+                                JObject twinFragment = JObject.Parse(eventData);
+                                previousTwin = previousTwin.UpdateJson(twinFragment);
+                            }
+                            else
+                            {
+                                previousTwin = JObject.Parse(eventData);
+                            }
+
                             break;
                         case "deleteDeviceIdentity":
                             deviceTwinJson[DeviceTelemetryKeyConstants.IsDeleted] = true;
@@ -287,20 +296,17 @@ namespace Mmm.Iot.Functions.Messaging.Shared
                             break;
                     }
 
-                    deviceTwin = previousTwin.ToString();
+                    deviceTwin = previousTwin?.ToString();
                 }
 
-                if (!string.IsNullOrEmpty(deviceTwin))
-                {
-                    deviceTwinJson.Add(DeviceTelemetryKeyConstants.Data, deviceTwin);
+                deviceTwinJson.Add(DeviceTelemetryKeyConstants.Data, deviceTwin);
 
-                    // Save the Device Twin Data to EventHub for further processing
-                    var byteMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceTwinJson));
-                    var eventDeviceTwinData = new Azure.Messaging.EventHubs.EventData(byteMessage);
-                    eventDeviceTwinData.Properties.Add("deviceid", deviceId.ToString());
+                // Save the Device Twin Data to EventHub for further processing
+                var byteMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceTwinJson));
+                var eventDeviceTwinData = new Azure.Messaging.EventHubs.EventData(byteMessage);
+                eventDeviceTwinData.Properties.Add("deviceid", deviceId.ToString());
 
-                    await eventHubHelper.SendMessageToEventHub($"{tenant}-devicetwin", new Azure.Messaging.EventHubs.EventData[] { eventDeviceTwinData });
-                }
+                await eventHubHelper.SendMessageToEventHub($"{tenant}-devicetwin", new Azure.Messaging.EventHubs.EventData[] { eventDeviceTwinData });
             }
             catch (Exception exception)
             {

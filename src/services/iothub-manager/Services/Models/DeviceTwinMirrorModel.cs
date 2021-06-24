@@ -21,7 +21,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
 
         public DateTime TimeStamp { get; set; }
 
-        public DateTime CreatedDeviceDate { get; set; }
+        public DateTime DeviceCreatedDate { get; set; }
 
         public bool IsDeleted { get; set; }
     }

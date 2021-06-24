@@ -295,7 +295,7 @@ namespace Mmm.Iot.IoTHubManager.Services
                     azureTwin.Twin,
                     this.tenantConnectionHelper.GetIotHubName(),
                     connectedEdgeDevices.ContainsKey(azureTwin.DeviceId),
-                    azureTwin.CreatedDeviceDate,
+                    azureTwin.DeviceCreatedDate,
                     azureTwin.TimeStamp)),
                 allTwins.ContinuationToken);
 

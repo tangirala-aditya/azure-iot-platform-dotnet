@@ -109,7 +109,7 @@
       "apiVersion": "2016-09-01",
       "location": "[variables('location')]",
       "properties": {
-        "workspaceId": "[parameters('omsWorkspaceName')]",
+        "workspaceId": "8db0436e-acde-4f33-b8ac-1266c16bdf9e",
         "logs": [
           {
             "category": "AuditEvent",

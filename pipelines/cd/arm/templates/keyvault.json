@@ -104,27 +104,24 @@
         }
       },
       {
-          "type": "Microsoft.KeyVault/vaults/providers/diagnosticSettings",
-          "apiVersion": "2017-05-01-preview",
-          "location": "[variables('location')]",
-          "name": "diagnosSettingKV",
-          "dependsOn": [],
-          "properties": {
-            "workspaceId": "[parameters('workspaceId')]",
-            "logs": [
-              {
-                "category": "AuditEvent",
-                "enabled": true
-              }
-            ],
-            "metrics": [
-              {
-                "category": "AllMetrics",
-                "enabled": true
-              }
-            ]
+      "type": "Microsoft.KeyVault/vaults/providers/diagnosticsettings",
+      "name": "[concat(parameters('keyVaultName'), '/Microsoft.Insights/service')]",
+      "apiVersion": "2016-09-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "workspaceId": "[parameters('workspaceId')]",
+        "logs": [
+          {
+            "category": "AuditEvent",
+            "enabled": true,
+            "retentionPolicy": {
+              "enabled": true,
+              "days": "10"
+            }
           }
-        }
+        ]
+      }
+    }
     ],
     "outputs": {
       "CloudResourceName": {

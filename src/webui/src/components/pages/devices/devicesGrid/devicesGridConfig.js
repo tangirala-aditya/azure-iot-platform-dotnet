@@ -19,7 +19,6 @@ export const deviceColumnDefs = {
     id: {
         headerName: "devices.grid.deviceName",
         field: "id",
-        sort: "asc",
         cellRendererFramework: SoftSelectLinkRenderer,
         suppressSizeToFit: true,
     },

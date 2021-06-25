@@ -134,6 +134,16 @@ namespace Mmm.Iot.IoTHubManager.Services
 
         public async Task<DeviceServiceListModel> GetListAsync(string inputQuery, string continuationToken)
         {
+            if (this.kustoEnabled)
+            {
+                return await this.GetListFromADXAsync(inputQuery);
+            }
+
+            return await this.GetListFromIoTHubAsync(inputQuery, continuationToken);
+        }
+
+        public async Task<DeviceServiceListModel> GetListFromIoTHubAsync(string inputQuery, string continuationToken)
+        {
             string querytoBeCached = inputQuery;
             IEnumerable<QueryConditionClause> clauses = null;
             IEnumerable<QueryConditionClause> deviceIdClauses = null;
@@ -262,7 +272,7 @@ namespace Mmm.Iot.IoTHubManager.Services
             return resultModel;
         }
 
-        public async Task<DeviceServiceListModel> GetListADXAsync(string inputQuery)
+        public async Task<DeviceServiceListModel> GetListFromADXAsync(string inputQuery)
         {
             string querytoBeCached = inputQuery;
 

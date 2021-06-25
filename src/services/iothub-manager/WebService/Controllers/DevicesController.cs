@@ -30,15 +30,12 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
         private readonly IDevices devices;
         private readonly IDeviceProperties deviceProperties;
         private readonly IDeviceService deviceService;
-        private readonly bool kustoEnabled;
 
-        public DevicesController(IDevices devices, IDeviceService deviceService, IDeviceProperties deviceProperties, AppConfig config)
+        public DevicesController(IDevices devices, IDeviceService deviceService, IDeviceProperties deviceProperties)
         {
             this.deviceProperties = deviceProperties;
             this.devices = devices;
             this.deviceService = deviceService;
-            this.kustoEnabled = config.DeviceTelemetryService.Messages.TelemetryStorageType.Equals(
-    TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase);
         }
 
         [HttpGet]
@@ -49,11 +46,6 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             if (this.Request.Headers.ContainsKey(ContinuationTokenName))
             {
                 continuationToken = this.Request.Headers[ContinuationTokenName].FirstOrDefault();
-            }
-
-            if (this.kustoEnabled)
-            {
-                return new DeviceListApiModel(await this.devices.GetListADXAsync(query));
             }
 
             return new DeviceListApiModel(await this.devices.GetListAsync(query, continuationToken));
@@ -74,11 +66,6 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             if (this.Request.Headers.ContainsKey(ContinuationTokenName))
             {
                 continuationToken = this.Request.Headers[ContinuationTokenName].FirstOrDefault();
-            }
-
-            if (this.kustoEnabled)
-            {
-                return new DeviceListApiModel(await this.devices.GetListADXAsync(query));
             }
 
             return new DeviceListApiModel(await this.devices.GetListAsync(query, continuationToken));

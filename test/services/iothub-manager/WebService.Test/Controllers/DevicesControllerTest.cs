@@ -25,7 +25,6 @@ namespace Mmm.Iot.IoTHubManager.WebService.Test.Controllers
         private readonly Mock<IDeviceProperties> devicePropertiesMock;
         private readonly Mock<IDeviceService> deviceServiceMock;
         private readonly Mock<IDevices> devicesMock;
-        private readonly Mock<AppConfig> configMock;
         private Mock<HttpContext> mockHttpContext;
         private Mock<HttpRequest> mockHttpRequest;
         private IDictionary<object, object> contextItems;
@@ -36,12 +35,11 @@ namespace Mmm.Iot.IoTHubManager.WebService.Test.Controllers
             this.devicePropertiesMock = new Mock<IDeviceProperties>();
             this.deviceServiceMock = new Mock<IDeviceService>();
             this.devicesMock = new Mock<IDevices>();
-            this.configMock = new Mock<AppConfig>();
             this.mockHttpContext = new Mock<HttpContext> { DefaultValue = DefaultValue.Mock };
             this.mockHttpRequest = new Mock<HttpRequest> { DefaultValue = DefaultValue.Mock };
             this.mockHttpRequest.Setup(m => m.HttpContext).Returns(this.mockHttpContext.Object);
             this.mockHttpContext.Setup(m => m.Request).Returns(this.mockHttpRequest.Object);
-            this.controller = new DevicesController(this.devicesMock.Object, this.deviceServiceMock.Object, this.devicePropertiesMock.Object, this.configMock.Object)
+            this.controller = new DevicesController(this.devicesMock.Object, this.deviceServiceMock.Object, this.devicePropertiesMock.Object)
             {
                 ControllerContext = new ControllerContext()
                 {

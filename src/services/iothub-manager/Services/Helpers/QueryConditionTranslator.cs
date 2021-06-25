@@ -38,6 +38,10 @@ namespace Mmm.Iot.IoTHubManager.Services.Helpers
             { "LK", "contains" },
         };
 
+        private static readonly string DeviceTwinTags = "tags";
+        private static readonly string DeviceTwinDesired = "properties.desired";
+        private static readonly string DeviceTwinReported = "properties.reported";
+
         public static string ToQueryString(string conditions)
         {
             IEnumerable<QueryConditionClause> clauses = null;
@@ -138,19 +142,40 @@ namespace Mmm.Iot.IoTHubManager.Services.Helpers
                 if (op == "IN")
                 {
                     List<string> values = JsonConvert.DeserializeObject<List<string>>(value.ToString());
-                    string joinValues = string.Join(" or ", values.Select(v => $"Twin[\"{c.Key}\"] == \"{v}\""));
+                    string joinValues = string.Join(" or ", values.Select(v => $"{DeviceTwinKustoKeyBuilder(c.Key)} == \"{v}\""));
                     return $"({joinValues})";
                 }
 
                 if (c.Key == "firmwareVersion")
                 {
-                    return $"( Twin[\"properties.reported.firmware.currentFwVersion\"] {op} {value.ToString()} or Twin[\"properties.reported.Firmware\"] {op} {value.ToString()} )";
+                    return $"( Twin.properties.reported.firmware.currentFwVersion {op} {value.ToString()} or Twin.properties.reported.Firmware {op} {value.ToString()} )";
                 }
 
-                return $"Twin[\"{c.Key}\"] {op} {value.ToString()}";
+                return $"{DeviceTwinKustoKeyBuilder(c.Key)} {op} {value.ToString()}";
             });
 
             return string.Join(" and ", clauseStrings);
+        }
+
+        private static string DeviceTwinKustoKeyBuilder(string twinPath)
+        {
+            switch (twinPath)
+            {
+                case var someVal when someVal.StartsWith(DeviceTwinTags, System.StringComparison.OrdinalIgnoreCase):
+                    return DeviceTwinKustoKey(someVal, DeviceTwinTags);
+                case var someVal when someVal.StartsWith(DeviceTwinDesired, System.StringComparison.OrdinalIgnoreCase):
+                    return DeviceTwinKustoKey(someVal, DeviceTwinDesired);
+                case var someVal when someVal.StartsWith(DeviceTwinReported, System.StringComparison.OrdinalIgnoreCase):
+                    return DeviceTwinKustoKey(someVal, DeviceTwinReported);
+                default:
+                    return $"Twin.{twinPath}";
+            }
+        }
+
+        private static string DeviceTwinKustoKey(string twinPath, string twinPrefix)
+        {
+            string subString = twinPath.Substring(twinPrefix.Length);
+            return $"Twin.{twinPrefix}{subString}";
         }
     }
 }

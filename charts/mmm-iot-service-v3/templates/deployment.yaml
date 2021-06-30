@@ -25,17 +25,11 @@ spec:
           imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
           resources:
             limits:
-              cpu: 50m
+              cpu: "0.5"
               memory: 500M
             requests:
-              cpu: 25m
+              cpu: "0.25"
               memory: 300M
-          # securityContext:
-          #   privileged: false
-          #   readOnlyRootFilesystem: true
-          #   allowPrivilegeEscalation: false
-          #   runAsNonRoot: true
-          #   runAsUser: 1000
           ports:
             - name: http
               containerPort: {{ .Values.deployment.port.http }}

@@ -134,16 +134,16 @@ try {
                Get-AzKustoDatabase -ClusterName $clusterName -ResourceGroupName $resourceGroupName -Name $iotDatabaseName  
 
                #change the names in the script file for mapping Name
-               (Get-Content -path .\pipelines\cd\ExistingTenantsADE\script1.txt -Raw) -replace 'MAPPINGNAME', $deviceTwinMappingName | Set-Content -Path .\pipelines\cd\ExistingTenantsADE\script1.txt -ErrorAction Stop
+               (Get-Content -path .\pipelines\cd\ExistingTenantsADE\script2.txt -Raw) -replace 'MAPPINGNAME', $deviceTwinMappingName | Set-Content -Path .\pipelines\cd\ExistingTenantsADE\script2.txt -ErrorAction Stop
                Write-Host "############## Changed the path in the script file!"
 
                $connStr = "Data Source=" + $clusterURI + ";Initial Catalog=" + $iotDatabaseName + ";Application Client Id=" + $servicePrincipalId + ";Application Key=" + $servicePrincipalKey + ";AAD Federated Security=True;dSTS Federated Security=False;Authority Id=" + $tenantId
                Write-Host $connStr
-               Microsoft.Azure.Kusto.Tools.5.1.0\Tools\Kusto.Cli.exe $connStr -script:".\pipelines\cd\ExistingTenantsADE\script1.txt"
+               Microsoft.Azure.Kusto.Tools.5.1.0\Tools\Kusto.Cli.exe $connStr -script:".\pipelines\cd\ExistingTenantsADE\script2.txt"
                Write-Host "############## Executed the Kusto Script."
 
                #REVERT change the names in the script file for mapping Name
-               (Get-Content -path .\pipelines\cd\ExistingTenantsADE\script1.txt -Raw) -replace $deviceTwinMappingName, 'MAPPINGNAME' | Set-Content -Path .\pipelines\cd\ExistingTenantsADE\script1.txt -ErrorAction Stop
+               (Get-Content -path .\pipelines\cd\ExistingTenantsADE\script2.txt -Raw) -replace $deviceTwinMappingName, 'MAPPINGNAME' | Set-Content -Path .\pipelines\cd\ExistingTenantsADE\script2.txt -ErrorAction Stop
                Write-Host "############## Reverted the change in the script file."
           }
           else {

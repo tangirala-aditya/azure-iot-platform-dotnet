@@ -176,3 +176,49 @@ stages:
               ScriptPath: pipelines/cd/ExistingTenantsADE/ExistingTenantsADE.ps1
               ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroup $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId) -subscriptionId $(subscriptionId)
               azurePowerShellVersion: LatestVersion
+
+      - job: preBuild
+        displayName: Pre-build
+        steps:
+          - checkout: none
+
+          - task: AzureCLI@2
+            displayName: Get App Configuration connection string
+            name: getAppConfigurationConnectionString
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                $appConfigurationConnectionString = az appconfig credential list --name $(appConfigurationName) --resource-group $(resourceGroupName) --query "[?name=='Primary'].connectionString | [0]" --output tsv
+                echo "##vso[task.setvariable variable=AppConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
+                $tableExists = az storage table exists --name $(tableStorageName) --account-name $(storageAccountName) --output tsv
+                if ($tableExists -eq $False)
+                {
+                  az storage table create --name $(tableStorageName) --account-name $(storageAccountName)
+                }
+                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(tableStorageAppConfigurationConnectionStringRowKey) Content="$appConfigurationConnectionString" --table-name $(tableStorageName) --account-name $(storageAccountName)
+
+      - job: build
+        displayName: Build Services
+        dependsOn:
+          - preBuild
+          - testCLIPowershell
+        variables:
+          AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
+        steps:
+          - checkout: self
+            displayName: Checkout repository
+
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '3.1.x'
+              includePreviewVersions: true
+
+          - script: >-
+              dotnet run
+              --force
+              --project src/onetime-applications/migrate-iot-devicetwin-to-adx
+              --runtime $(dotnetProductionRuntimeId)
+            displayName: Run Application

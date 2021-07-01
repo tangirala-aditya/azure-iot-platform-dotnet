@@ -15,6 +15,7 @@ import {
     FormLabel,
     Indicator,
     Protected,
+    Hyperlink,
 } from "components/shared";
 import { ConfigService } from "services";
 import {
@@ -62,6 +63,7 @@ class DeviceGroupForm extends LinkedComponent {
             id: undefined,
             eTag: undefined,
             displayName: "",
+            mappingId: "",
             conditions: [newCondition()],
             telemetryFormat: [],
             supportedMethods: [],
@@ -78,6 +80,8 @@ class DeviceGroupForm extends LinkedComponent {
             Validator.notEmpty,
             () => this.props.t("deviceGroupsFlyout.errorMsg.nameCantBeEmpty")
         );
+        this.mappingLink = this.linkTo("mappingId")
+        .map(({ value }) => value);
 
         this.conditionsLink = this.linkTo("conditions");
         this.subscriptions = [];
@@ -105,6 +109,7 @@ class DeviceGroupForm extends LinkedComponent {
             eTag,
             conditions,
             displayName,
+            mappingId,
             telemetryFormat,
             supportedMethods,
             isPinned,
@@ -116,6 +121,7 @@ class DeviceGroupForm extends LinkedComponent {
                 id,
                 eTag,
                 displayName,
+                mappingId,
                 conditions: conditions.map((condition) => ({
                     field: condition.key,
                     operator: condition.operator,
@@ -284,6 +290,7 @@ class DeviceGroupForm extends LinkedComponent {
                 value,
             }));
         const { telemetryFormat, supportedMethods } = this.state;
+        
         return (
             <div>
                 {!this.state.isDelete ? (
@@ -310,6 +317,38 @@ class DeviceGroupForm extends LinkedComponent {
                                         )}
                                         link={this.nameLink}
                                     />
+                                </FormGroup>
+                                <FormGroup>
+                                    <FormLabel>
+                                        {t("deviceGroupsFlyout.columnMapping")}
+                                    </FormLabel>
+                                    <FormControl
+                                        type="select"
+                                        ariaLabel={t(
+                                            "deviceGroupsFlyout.columnMapping"
+                                        )}
+                                        className="long"
+                                        searchable={false}
+                                        clearable={false}
+                                        placeholder={t(
+                                            "deviceGroupsFlyout.columnMappingPlaceholder"
+                                        )}
+                                        options={
+                                            this.props
+                                                .columnMappingsOptions
+                                        }
+                                        link={this.mappingLink}
+                                    />
+                                    <Hyperlink
+                                    href={`/columnMapping/custom`}
+                                    className={css("new-mapping-link")}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    >
+                                    {this.props.t(
+                                        "deviceGroupsFlyout.createNewMapping"
+                                    )}
+                                    </Hyperlink>
                                 </FormGroup>
                                 <Btn
                                     className={css("add-btn")}

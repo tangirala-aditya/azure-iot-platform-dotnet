@@ -95,7 +95,6 @@ export class ColumnMapper extends LinkedComponent {
             isPending: false,
             error: undefined,
         };
-        console.log(this.state.columnMappings);
         // State to input links
         this.mappingsLink = this.linkTo("columnMappings");
         this.defaultMappingsLink = this.linkTo("defaultColumnMappings");

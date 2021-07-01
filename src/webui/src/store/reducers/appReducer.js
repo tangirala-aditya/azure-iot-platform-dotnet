@@ -58,6 +58,7 @@ export const epics = createEpicScenario({
         epic: () => [
             epics.actions.fetchUser(),
             epics.actions.fetchColumnMappings(),
+            epics.actions.fetchColumnOptions(),
             epics.actions.fetchDeviceGroups(),
             epics.actions.fetchLogo(),
             epics.actions.fetchReleaseInformation(),
@@ -202,6 +203,20 @@ export const epics = createEpicScenario({
                 map(
                     toActionCreator(
                         redux.actions.updateColumnMappings,
+                        fromAction
+                    )
+                ),
+                catchError(handleError(fromAction))
+            ),
+    },
+
+    fetchColumnOptions: {
+        type: "APP_COLUMN_OPTIONS_FETCH",
+        epic: (fromAction, store) =>
+            ConfigService.getColumnOptions().pipe(
+                map(
+                    toActionCreator(
+                        redux.actions.updateColumnOptions,
                         fromAction
                     )
                 ),
@@ -366,6 +381,8 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
     actionSettingsListSchema = new schema.Array(actionSettingsSchema),
     columnMappingSchema = new schema.Entity("columnMappings"),
     columnMappingListSchema = new schema.Array(columnMappingSchema),
+    columnOptionsSchema = new schema.Entity("columnOptions"),
+    columnOptionsListSchema = new schema.Array(columnOptionsSchema),
     // ========================= Schemas - END
 
     // ========================= Reducers - START
@@ -405,6 +422,8 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
             jobState: "Not Enabled",
             isActive: false,
         },
+        columnMappings: [],
+        columnOptions: [],
     },
     updateUserReducer = (state, { payload, fromAction }) => {
         return update(state, {
@@ -463,6 +482,14 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
         } = normalize(payload, columnMappingListSchema);
         return update(state, {
             columnMappings: { $set: columnMappings },
+        });
+    },
+    updateColumnOptionsReducer = (state, { payload }) => {
+        const {
+            entities: { columnOptions },
+        } = normalize(payload, columnOptionsListSchema);
+        return update(state, {
+            columnOptions: { $set: columnOptions },
         });
     },
     updateSolutionSettingsReducer = (state, { payload, fromAction }) =>
@@ -588,6 +615,8 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
         epics.actionTypes.fetchSolutionSettings,
         epics.actionTypes.fetchTelemetryStatus,
         epics.actionTypes.fetchAlerting,
+        epics.actionTypes.fetchColumnMappings,
+        epics.actionTypes.fetchColumnOptions,
     ];
 
 export const redux = createReducerScenario({
@@ -619,6 +648,10 @@ export const redux = createReducerScenario({
     updateColumnMappings: {
         type: "APP_COLUMN_MAPPINGS_GETCH",
         reducer: updateColumnMappingsReducer,
+    },
+    updateColumnOptions: {
+        type: "APP_COLUMN_OPTIONS_FETCH",
+        reducer: updateColumnOptionsReducer,
     },
     changeTheme: { type: "APP_CHANGE_THEME", reducer: updateThemeReducer },
     registerError: { type: "APP_REDUCER_ERROR", reducer: errorReducer },
@@ -714,6 +747,8 @@ export const getActiveDeviceGroupMappingId = createSelector(
 );
 export const getColumnMappings = (state) =>
     getAppReducer(state).columnMappings || [];
+export const getColumnOptions = (state) =>
+    getAppReducer(state).columnOptions || [];
 export const getActiveDeviceGroupMapping = createSelector(
     getColumnMappings,
     getActiveDeviceGroupMappingId,
@@ -728,6 +763,12 @@ export const getColumnMappingsList = createSelector(
                 return elem !== "Default";
             })
             .map((id) => columnMappings[id])
+);
+export const getColumnOptionsList = createSelector(
+    getColumnOptions,
+    (columnOptions) =>
+        Object.keys(columnOptions)
+            .map((deviceGroupId) => columnOptions[deviceGroupId])
 );
 export const getDefaultColumnMapping = createSelector(
     getColumnMappings,

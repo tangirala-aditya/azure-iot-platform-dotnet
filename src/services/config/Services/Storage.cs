@@ -41,6 +41,7 @@ namespace Mmm.Iot.Config.Services
         public const string AppInsightDateFormat = "yyyy-MM-dd HH:mm:ss";
         public const string SoftwarePackageStore = "software-package";
         public const string ColumnMappingsCollectionId = "columnmappings";
+        public const string ColumnOptionsCollectionId = "columnoptions";
         private readonly IStorageAdapterClient client;
         private readonly IAsaManagerClient asaManager;
         private readonly AppConfig config;
@@ -517,6 +518,40 @@ namespace Mmm.Iot.Config.Services
             ValueApiModel response = await this.SaveColumnMappingWithKeyAsync(existingColumnMapping);
 
             return this.CreateColumnMappingServiceModel(response);
+        }
+
+        public async Task<IEnumerable<ColumnOptionsServiceModel>> GetDeviceGroupColumnOptions()
+        {
+            var response = await this.client.GetAllAsync(ColumnOptionsCollectionId);
+            return response.Items.Select(this.CreateColumnOptionsServiceModel);
+        }
+
+        public async Task<ColumnOptionsServiceModel> AddColumnOptionsAsync(ColumnOptionsServiceModel columnOptions, string userId)
+        {
+            ValueApiModel response = null;
+            AuditHelper.AddAuditingData(columnOptions, userId);
+
+            var value = JsonConvert.SerializeObject(columnOptions, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            response = await this.client.CreateAsync(ColumnOptionsCollectionId, value);
+            return this.CreateColumnOptionsServiceModel(response);
+        }
+
+        public async Task<ColumnOptionsServiceModel> UpdateColumnOptionsAsync(string id, ColumnOptionsServiceModel columnOptions, string userId)
+        {
+            AuditHelper.UpdateAuditingData(columnOptions, userId);
+
+            var value = JsonConvert.SerializeObject(columnOptions, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var response = await this.client.UpdateAsync(ColumnOptionsCollectionId, id, value, columnOptions.ETag);
+
+            return this.CreateColumnOptionsServiceModel(response);
+        }
+
+        private ColumnOptionsServiceModel CreateColumnOptionsServiceModel(ValueApiModel input)
+        {
+            var output = JsonConvert.DeserializeObject<ColumnOptionsServiceModel>(input.Data);
+            output.ETag = input.ETag;
+            output.Key = input.Key;
+            return output;
         }
 
         private async Task<ValueApiModel> SaveColumnMappingWithKeyAsync(ColumnMappingServiceModel columnMapping)

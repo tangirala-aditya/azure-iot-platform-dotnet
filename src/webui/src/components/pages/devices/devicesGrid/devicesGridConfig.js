@@ -1,61 +1,19 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import Config from "app.config";
-import {
-    IsSimulatedRenderer,
-    ConnectionStatusRenderer,
-    TimeRenderer,
-    SoftSelectLinkRenderer,
-} from "components/shared/cellRenderers";
-import {
-    EMPTY_FIELD_VAL,
-    gridValueFormatters,
-} from "components/shared/pcsGrid/pcsGridConfig";
+import { SoftSelectLinkRenderer } from "components/shared/cellRenderers";
+import { checkboxColumn } from "components/shared/pcsGrid/pcsGridConfig";
 
-const { checkForEmpty } = gridValueFormatters;
-
-/** A collection of column definitions for the devices grid */
-export const deviceColumnDefs = {
-    id: {
+export const defaultDeviceColumns = [
+    checkboxColumn,
+    {
         headerName: "devices.grid.deviceName",
         field: "id",
         sort: "asc",
         cellRendererFramework: SoftSelectLinkRenderer,
         suppressSizeToFit: true,
-    },
-    isSimulated: {
-        headerName: "devices.grid.simulated",
-        field: "isSimulated",
-        cellRendererFramework: IsSimulatedRenderer,
-    },
-    deviceType: {
-        headerName: "devices.grid.deviceType",
-        field: "type",
-        valueFormatter: ({ value }) => checkForEmpty(value),
-    },
-    firmware: {
-        headerName: "devices.grid.firmware",
-        field: "firmware",
-        valueFormatter: ({ value }) => checkForEmpty(value),
-    },
-    telemetry: {
-        headerName: "devices.grid.telemetry",
-        field: "telemetry",
-        valueFormatter: ({ value }) =>
-            Object.keys(value || {}).join("; ") || EMPTY_FIELD_VAL,
-    },
-    status: {
-        headerName: "devices.grid.status",
-        field: "connected",
-        cellRendererFramework: ConnectionStatusRenderer,
-    },
-    lastConnection: {
-        headerName: "devices.grid.lastConnection",
-        field: "lastActivity",
-        cellRendererFramework: TimeRenderer,
-        suppressSizeToFit: true,
-    },
-};
+    }
+];
 
 /** Default column definitions*/
 export const defaultColDef = {

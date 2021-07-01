@@ -22,6 +22,11 @@
     @include rem-fallback(margin, 24px, 0px, 24px, 0px);
   }
 
+  .new-mapping-link {
+    font-size: 12px;
+    margin-left: 85%;
+  }
+
   .actions-button { @include rem-fallback(min-width, 110px); }
 
   :global(.btn-toolbar) {

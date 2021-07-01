@@ -43,7 +43,7 @@ const swap = (index1, index2) => (options) => {
 };
 
 const defaultIcons = {
-    moveLeft: <i class="ms-Icon ms-Icon--ChevronLeft" aria-hidden="true"></i>,
+    moveLeft: <i className="ms-Icon ms-Icon--ChevronLeft" aria-hidden="true"></i>,
     moveAllLeft: [
         <span key={0} className="ms-Icon ms-Icon--DoubleChevronLeft" />,
     ],
@@ -53,8 +53,8 @@ const defaultIcons = {
     ],
     moveTop: <span className="ms-Icon ms-Icon--DoubleChevronUp" />,
     moveBottom: <span className="ms-Icon ms-Icon--DoubleChevronDown" />,
-    moveDown: <span className="ms-Icon ms-Icon--ChevronUp" />,
-    moveUp: <span className="ms-Icon ms-Icon--ChevronDown" />,
+    moveDown: <span className="ms-Icon ms-Icon--ChevronDown" />,
+    moveUp: <span className="ms-Icon ms-Icon--ChevronUp" />,
 }
 
 class ColumnMapper extends React.Component {
@@ -817,8 +817,8 @@ class ColumnMapper extends React.Component {
             lang,
             name,
             options,
-            preserveSelectOrder,
             selected,
+            preserveSelectOrder,
             selectedRef,
             showHeaderLabels,
             showOrderButtons,
@@ -843,14 +843,14 @@ class ColumnMapper extends React.Component {
         );
         const actionsRight = (
             <div className="rdl-actions-right">
-                {makeAction("right", true)}
+                {/* {makeAction("right", true)} */}
                 {makeAction("right")}
             </div>
         );
         const actionsLeft = (
             <div className="rdl-actions-left">
                 {makeAction("left")}
-                {makeAction("left", true)}
+                {/* {makeAction("left", true)} */}
             </div>
         );
         const rootClassName = classNames({
@@ -884,10 +884,10 @@ class ColumnMapper extends React.Component {
                 )}
                 {preserveSelectOrder && showOrderButtons ? (
                     <div className="rdl-actions">
-                        {makeAction("top")}
+                        {/* {makeAction("top")} */}
                         {makeAction("up")}
                         {makeAction("down")}
-                        {makeAction("bottom")}
+                        {/* {makeAction("bottom")} */}
                     </div>
                 ) : null}
                 <input

@@ -8,11 +8,13 @@ import {
     epics as appEpics,
     getDeviceGroups,
     getActiveDeviceGroupId,
+    getColumnMappingsList,
 } from "store/reducers/appReducer";
 
 const mapStateToProps = (state) => ({
         deviceGroups: getDeviceGroups(state),
         activeDeviceGroupId: getActiveDeviceGroupId(state),
+        columnMappings: getColumnMappingsList(state),
     }),
     mapDispatchToProps = (dispatch) => ({
         changeDeviceGroup: (id) =>

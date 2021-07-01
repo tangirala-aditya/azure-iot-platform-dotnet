@@ -5,6 +5,7 @@ import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/T
 
 import { permissions, toDiagnosticsModel } from "services/models";
 import { DevicesGridContainer } from "./devicesGrid";
+import { defaultDeviceColumns } from "./devicesGrid/devicesGridConfig";
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from "components/shell/deviceGroupDropdown";
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from "components/shell/manageDeviceGroupsBtn";
 import { ResetActiveDeviceQueryBtnContainer as ResetActiveDeviceQueryBtn } from "components/shell/resetActiveDeviceQueryBtn";
@@ -23,10 +24,11 @@ import { DeviceNewContainer } from "./flyouts/deviceNew";
 import { AdvanceSearchContainer } from "./advanceSearch";
 import { SIMManagementContainer } from "./flyouts/SIMManagement";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
-import { svgs, getDeviceGroupParam, getTenantIdParam } from "utilities";
-import { IdentityGatewayService, IoTHubManagerService } from "services";
+import { svgs, getDeviceGroupParam, getTenantIdParam, translateColumnDefs } from "utilities";
+import { IdentityGatewayService, IoTHubManagerService, ConfigService } from "services";
 import {ColumnDialog} from "./columnDialog";
 import { DefaultButton } from "@fluentui/react/lib/Button";
+import { generateColumnOptionsFromMappings, generateColumnDefsFromSelectedOptions, generateSelectedOptionsFromMappings, generateColumnDefsFromMappings } from "./devicesGrid/deviceColumnHelper";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./devices.module.scss"));
@@ -36,47 +38,54 @@ const closedFlyoutState = { openFlyoutName: undefined };
 const closedModalState = {
     openModalName: undefined,
 };
-const ColumnOptions = [
-    {
-        label: "Earth",
-        options: [{ value: "luna", label: "Moon" }],
-    },
-    {
-        label: "Mars",
-        options: [
-            { value: "phobos", label: "Phobos" },
-            { value: "deimos", label: "Deimos" },
-        ],
-    },
-    {
-        label: "Jupiter",
-        options: [
-            { value: "io", label: "Io" },
-            { value: "europa", label: "Europa" },
-            { value: "ganymede", label: "Ganymede" },
-            { value: "callisto", label: "Callisto" },
-        ],
-    },
-];
 
 export class Devices extends Component {
     constructor(props) {
         super(props);
         this.state = {
             ...closedFlyoutState,
-            showColumnDialog: true,
+            showColumnDialog: false,
             contextBtns: null,
             selectedDeviceGroupId: undefined,
             loadMore: props.loadMoreState,
             isDeviceSearch: false,
-            selectedColumns: []
         };
+        
+        this.props.updateCurrentWindow("Devices"); 
 
-        this.props.updateCurrentWindow("Devices");
+        this.DefaultColumnMappings = props.columnMappings["Default"] ? props.columnMappings["Default"].mapping : [];
+        this.ColumnOptions = [];
+
+        this.setMappingsAndOptions(props); 
+        this.setColumnOptions();
     }
 
-    onColumnChange(selected) {
-        this.setState({ selected });
+    setMappingsAndOptions(props, deviceGroupId = null) {
+        const defaultMappings = props.columnMappings["Default"].mapping;
+        const deviceGroupMappingId = props.deviceGroups.find(dg => dg.id === (deviceGroupId ?? props.activeDeviceGroupId)).mappingId;
+        this.DeviceGroupColumnMappings = props.columnMappings[deviceGroupMappingId] ? defaultMappings.concat(props.columnMappings[deviceGroupMappingId].mapping) : [];
+        const colOption = props.columnOptions.find(c => c.deviceGroupId === (deviceGroupId ?? props.activeDeviceGroupId));
+        this.ColumnOptionsModel = colOption ?? null;
+        this.SelectedOptions = colOption ? colOption.selectedOptions : [];
+    }
+
+    setColumnOptions() {
+        if(this.DeviceGroupColumnMappings.length === 0 && this.SelectedOptions.length === 0 && this.DefaultColumnMappings.length > 0) {
+            this.ColumnOptions = generateColumnOptionsFromMappings(this.DefaultColumnMappings);
+            this.SelectedOptions = generateSelectedOptionsFromMappings(this.DefaultColumnMappings);
+            this.ColumnDefinitions = generateColumnDefsFromMappings(this.DefaultColumnMappings);
+        } else if(this.DeviceGroupColumnMappings.length === 0 && this.SelectedOptions.length > 0 && this.DefaultColumnMappings.length > 0) {
+            this.ColumnOptions = generateColumnOptionsFromMappings(this.DefaultColumnMappings);
+            this.ColumnDefinitions = generateColumnDefsFromSelectedOptions(this.DefaultColumnMappings, this.SelectedOptions);
+        } else if(this.DeviceGroupColumnMappings.length > 0 && this.SelectedOptions.length === 0) {
+            this.ColumnOptions = generateColumnOptionsFromMappings(this.DeviceGroupColumnMappings);
+            this.SelectedOptions = generateSelectedOptionsFromMappings(this.DefaultColumnMappings);
+            this.ColumnDefinitions = generateColumnDefsFromMappings(this.DefaultColumnMappings);
+        } else if(this.DeviceGroupColumnMappings.length > 0 && this.SelectedOptions.length > 0) {
+            this.ColumnOptions = generateColumnOptionsFromMappings(this.DeviceGroupColumnMappings);
+            this.ColumnDefinitions = generateColumnDefsFromSelectedOptions(this.DeviceGroupColumnMappings, this.SelectedOptions);
+        }
+        
     }
 
     UNSAFE_componentWillMount() {
@@ -163,6 +172,10 @@ export class Devices extends Component {
 
     closeModal = () => this.setState(closedModalState);
 
+    openColumnOptions = () => {
+        this.setState({showColumnDialog: true});
+    }
+
     getOpenModal = () => {
         const { t, theme, logEvent } = this.props;
         if (this.state.openModalName === "json-editor") {
@@ -193,6 +206,7 @@ export class Devices extends Component {
                 <DeviceGroupDropdown
                     updateLoadMore={this.updateLoadMoreOnDeviceGroupChange}
                     deviceGroupIdFromUrl={this.state.selectedDeviceGroupId}
+                    updateColumns={this.updateColumnsOnDeviceGroupChange}
                 />,
                 <Protected permission={permissions.updateDeviceGroups}>
                     <ManageDeviceGroupsBtn />
@@ -252,6 +266,12 @@ export class Devices extends Component {
         this.props.cancelDeviceCalls({ makeSubsequentCalls: false });
     };
 
+    updateColumnsOnDeviceGroupChange = (deviceGroupId) => {
+        this.setMappingsAndOptions(this.props, deviceGroupId);
+        this.setColumnOptions();
+        this.deviceGridApi.setColumnDefs(translateColumnDefs(this.props.t, defaultDeviceColumns.concat(this.ColumnDefinitions)));
+    }
+
     toggleColumnDialog = () => {
         const { showColumnDialog } = this.state;
         this.setState({ showColumnDialog: !showColumnDialog });
@@ -272,6 +292,45 @@ export class Devices extends Component {
         });
     };
 
+    updateColumns = (saveUpdates, selectedColumnOptions) => {
+        this.toggleColumnDialog();
+        this.SelectedOptions = selectedColumnOptions;
+        this.setColumnOptions();
+        this.deviceGridApi.setColumnDefs(translateColumnDefs(this.props.t, defaultDeviceColumns.concat(this.ColumnDefinitions)));
+        if(saveUpdates) {
+            var requestData = {
+                DeviceGroupId: this.props.activeDeviceGroupId,
+                SelectedOptions: selectedColumnOptions,
+            };
+            if(!this.ColumnOptionsModel) {
+                ConfigService.saveColumnOptions(requestData).subscribe(
+                    (columnMapping) => {
+                        this.ColumnOptionsModel = columnMapping;
+                    },
+                    (error) => {}
+                );
+            } else {
+                this.ColumnOptionsModel.SelectedOptions = selectedColumnOptions;
+                ConfigService.updateColumnOptions(this.ColumnOptionsModel.key, this.ColumnOptionsModel).subscribe(
+                    (columnMapping) => {
+                        this.ColumnOptionsModel = columnMapping;
+                    },
+                    (error) => {}
+                );
+            }
+            
+        }
+    }
+
+    /**
+     * Get the grid api options
+     *
+     * @param {Object} gridReadyEvent An object containing access to the grid APIs
+     */
+     onGridReady = (gridReadyEvent) => {
+        this.deviceGridApi = gridReadyEvent.api;
+    };
+
     render() {
         const {
                 t,
@@ -284,6 +343,7 @@ export class Devices extends Component {
                 isDevicesByConditionPanding,
                 lastUpdated,
                 routeProps,
+                columnMappings
             } = this.props,
             { isDeviceSearch, showColumnDialog } = this.state,
             deviceData = isDeviceSearch ? devicesByCondition : devices,
@@ -330,12 +390,14 @@ export class Devices extends Component {
                     ]}
                     priorityChildren={this.priorityChildren()}
                 />
-                <ColumnDialog
+                {showColumnDialog && (<ColumnDialog
                     show={showColumnDialog}
                     toggle={this.toggleColumnDialog}
-                    columnOptions={ColumnOptions}
-                    onColumnChange={this.onColumnChange}
-                />
+                    columnOptions={this.ColumnOptions}
+                    selectedOptions={this.SelectedOptions}
+                    updateColumns={this.updateColumns}
+                    t={t}
+                />)}
                 <PageContent className={css("devices-container")}>
                     <PageTitle
                         titleValue={
@@ -361,8 +423,8 @@ export class Devices extends Component {
 
                             <DefaultButton
                                 iconProps={{ iconName: "ColumnOptions" }}
-                                onClick={this.toggleColumnDialog}
-                                text="Column Options"
+                                onClick={this.openColumnOptions}
+                                text={t("devices.columnOptions")}
                             />
                             <Toggle
                                 attr={{
@@ -384,6 +446,8 @@ export class Devices extends Component {
                             {...gridProps}
                             {...routeProps}
                             openPropertyEditorModal={this.openModal}
+                            deviceColumnMappings={columnMappings}
+                            columnDefs={this.ColumnDefinitions}
                         />
                     )}
                     {newDeviceFlyoutOpen && (

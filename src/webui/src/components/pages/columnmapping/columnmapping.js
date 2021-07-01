@@ -16,7 +16,6 @@ const columnMappingCss = classnames.bind(require("./mapping.module.scss"));
 export class ColumnMapping extends LinkedComponent {
     constructor(props) {
         super(props);
-        debugger;
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {}

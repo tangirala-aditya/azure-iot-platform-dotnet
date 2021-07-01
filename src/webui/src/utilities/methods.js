@@ -16,7 +16,9 @@ import {
     RuleStatusRenderer,
     LastTriggerRenderer,
 } from "components/shared/cellRenderers";
+import { gridValueFormatters } from "components/shared/pcsGrid/pcsGridConfig";
 
+const { checkForEmpty } = gridValueFormatters;
 /** Tests if a value is a function */
 export const isFunc = (value) => typeof value === "function";
 
@@ -99,6 +101,9 @@ export const camelCaseReshape = (response, model) => {
  */
 export const translateColumnDefs = (t, columnDefs) => {
     return columnDefs.map((columnDef) => {
+        if(columnDef.cellRendererFramework && typeof columnDef.cellRendererFramework === "string") {
+            columnDef = getRendererFramework(columnDef.cellRendererFramework, columnDef);
+        }
         if (columnDef.valueFormatter) {
             columnDef.tooltipValueGetter = columnDef.valueFormatter;
         } else if (columnDef.cellRendererFramework) {
@@ -120,6 +125,25 @@ export const translateColumnDefs = (t, columnDefs) => {
         };
     });
 };
+
+export const getRendererFramework = (name, columnDef) => {
+    switch (name) {
+        case TimeRenderer.name:
+            columnDef.cellRendererFramework =  TimeRenderer;
+            break;
+        case IsSimulatedRenderer.name:
+            columnDef.cellRendererFramework =  IsSimulatedRenderer;
+            break;
+        case ConnectionStatusRenderer.name:
+            columnDef.cellRendererFramework =  ConnectionStatusRenderer;
+            break;
+        case "DefaultRenderer":
+            delete columnDef.cellRendererFramework;
+            columnDef = { ...columnDef, valueFormatter: ({ value }) => checkForEmpty(value) };
+            break;
+    }
+    return columnDef;
+}
 
 export const tooltipRenderer = ({ value, context: { t }, colDef }) => {
     switch (colDef.cellRendererFramework.name) {

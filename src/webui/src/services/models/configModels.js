@@ -14,19 +14,18 @@ export const toDeviceGroupModel = function (deviceGroup = {}) {
     deviceGroup = camelCaseReshape(deviceGroup, {
         id: "id",
         displayName: "displayName",
+        mappingId: "mappingId",
         conditions: "conditions",
         eTag: "eTag",
         telemetryFormat: "telemetryFormat",
         isPinned: "isPinned",
         sortOrder: "sortOrder",
         supportedMethods: "supportedMethods",
-        mappingId: "mappingId",
     });
     deviceGroup["telemetryFormat"] = deviceGroup.telemetryFormat || [];
     deviceGroup["isPinned"] = deviceGroup.isPinned || false;
     deviceGroup["sortOrder"] = deviceGroup.sortOrder || 0;
     deviceGroup["supportedMethods"] = deviceGroup.supportedMethods || [];
-    deviceGroup["mappingId"] = "Default";
     return deviceGroup;
 };
 
@@ -43,8 +42,24 @@ export const toColumnMapping = function (columnMapping = {}) {
     return columnMapping;
 };
 
+export const toColumnOption = function (columnOption = {}) {
+    columnOption = camelCaseReshape(columnOption, {
+        deviceGroupId: "deviceGroupId",
+        eTag: "eTag",
+        createdBy: "createdBy",
+        createdDate: "createdDate",
+        selectedOptions: "selectedOptions",
+        key: "key"
+    });
+
+    return columnOption;
+};
+
 export const toColumnMappings = (response = {}) =>
     getItems(response).map(toColumnMapping);
+
+export const toColumnOptions = (response = {}) =>
+    getItems(response).map(toColumnOption);
 
 export const toDeviceConditionModel = (condition = {}) => ({
     key: condition.field,
@@ -61,6 +76,7 @@ export const toDeviceGroupsModel = (response = {}) =>
 
 export const toCreateDeviceGroupRequestModel = (params = {}) => ({
     DisplayName: params.displayName,
+    MappingId: params.mappingId,
     Conditions: (params.conditions || []).map((condition) =>
         toDeviceConditionModel(condition)
     ),
@@ -74,6 +90,7 @@ export const toUpdateDeviceGroupRequestModel = (params = {}) => ({
     Id: params.id,
     ETag: params.eTag,
     DisplayName: params.displayName,
+    MappingId: params.mappingId,
     Conditions: (params.conditions || []).map((condition) =>
         toDeviceConditionModel(condition)
     ),

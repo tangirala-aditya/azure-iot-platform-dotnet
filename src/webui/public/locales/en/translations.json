@@ -262,6 +262,9 @@
         "edit": "Edit a device group",
         "name": "Name",
         "namePlaceHolder": "Device group name",
+        "columnMapping": "Column Mapping",
+        "columnMappingPlaceholder": "Select column mapping",
+        "createNewMapping": "Create new",
         "save": "Save",
         "errorMsg": {
             "nameCantBeEmpty": "Name is required"
@@ -422,6 +425,7 @@
         "deviceSearchTitle": "Device Search",
         "deviceSearchTitleDescription": "Search across all devices.",
         "downloadDeviceReport": "Download",
+        "columnOptions":"Column Options",
         "showTelemetry": "Show telemetry",
         "returnToDevices": "Devices",
         "loadMore": "Load more",

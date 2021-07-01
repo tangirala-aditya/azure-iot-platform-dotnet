@@ -22,6 +22,9 @@ import {
     getDeviceGroupError,
     getActiveDeviceQueryConditions,
     getActiveDeviceGroupConditions,
+    getActiveDeviceGroupId,
+    getColumnMappings,
+    getColumnOptionsList
 } from "store/reducers/appReducer";
 
 // Pass the devices status
@@ -38,6 +41,9 @@ const mapStateToProps = (state) => ({
         activeDeviceQueryConditions: getActiveDeviceQueryConditions(state),
         activeDeviceGroupConditions: getActiveDeviceGroupConditions(state),
         loadMoreState: getLoadMoreToggleState(state),
+        activeDeviceGroupId: getActiveDeviceGroupId(state),
+        columnMappings: getColumnMappings(state),
+        columnOptions: getColumnOptionsList(state)
     }),
     // Wrap the dispatch method
     mapDispatchToProps = (dispatch) => ({
@@ -53,7 +59,7 @@ const mapStateToProps = (state) => ({
         checkTenantAndSwitch: (payload) =>
             dispatch(appRedux.actions.checkTenantAndSwitch(payload)),
         resetDeviceByCondition: () =>
-            dispatch(devicesRedux.actions.resetDeviceByCondition()),
+            dispatch(devicesRedux.actions.resetDeviceByCondition())
     });
 
 export const DevicesContainer = withTranslation()(

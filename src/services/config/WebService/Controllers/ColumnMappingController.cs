@@ -5,6 +5,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+
 using Mmm.Iot.Common.Services;
 using Mmm.Iot.Common.Services.Filters;
 using Mmm.Iot.Config.Services;
@@ -42,6 +43,27 @@ namespace Mmm.Iot.Config.WebService.Controllers
         public async Task<ColumnMappingApiModel> UpdateColumnMapping(string id, [FromBody] ColumnMappingApiModel columnMappingApiModel)
         {
             return new ColumnMappingApiModel(await this.storage.UpdateColumnMappingAsync(id, columnMappingApiModel.ToServiceModel(), this.GetClaimsUserDetails()));
+        }
+
+        [HttpGet("ColumnOptions")]
+        [Authorize("ReadAll")]
+        public async Task<ColumnOptionsListApiModel> GetDeviceGroupColumnOptions()
+        {
+            return new ColumnOptionsListApiModel(await this.storage.GetDeviceGroupColumnOptions());
+        }
+
+        [HttpPost("ColumnOptions")]
+        [Authorize("UpdateDeviceGroups")]
+        public async Task<ColumnOptionsApiModel> AddColumnOptionsAsync([FromBody] ColumnOptionsApiModel columnOptionsApiModel)
+        {
+            return new ColumnOptionsApiModel(await this.storage.AddColumnOptionsAsync(columnOptionsApiModel.ToServiceModel(), this.GetClaimsUserDetails()));
+        }
+
+        [HttpPut("ColumnOptions/{id}")]
+        [Authorize("UpdateDeviceGroups")]
+        public async Task<ColumnOptionsApiModel> UpdateColumnOptionsAsync(string id, [FromBody] ColumnOptionsApiModel columnOptionsApiModel)
+        {
+            return new ColumnOptionsApiModel(await this.storage.UpdateColumnOptionsAsync(id, columnOptionsApiModel.ToServiceModel(), this.GetClaimsUserDetails()));
         }
     }
 }

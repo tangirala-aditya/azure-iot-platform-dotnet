@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useId, useBoolean } from '@fluentui/react-hooks';
 import {
   getTheme,
   mergeStyleSets,
@@ -14,13 +13,8 @@ import {
 } from "@fluentui/react/lib/Button";
 import  ColumnMapper  from './columnMapper';
 import { DialogFooter } from "@fluentui/react/lib/Dialog";
-
-
-export const ColumnDialog = (props) => {
-    const [
-        isModalOpen,
-        { setTrue: showModal, setFalse: hideModal },
-    ] = useBoolean(props.show);
+import { permissions } from "services/models";
+import { Protected } from "components/shared";
 
     // Normally the drag options would be in a constant, but here the toggle can modify keepInBounds
     const dragOptions = {
@@ -29,64 +23,110 @@ export const ColumnDialog = (props) => {
         menu: ContextualMenu,
     };
 
-    
+export class ColumnDialog extends React.Component {
 
-    // Use useId() to ensure that the IDs are unique on the page.
-    // (It's also okay to use plain strings and manually ensure uniqueness.)
-    const titleId = useId("title");
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedOptions: props.selectedOptions
+        }
+    }
 
-    return (
-        <div>
-            <DefaultButton onClick={showModal} text="Open Modal" />
-            <Modal
-                titleAriaId={titleId}
-                isOpen={isModalOpen}
-                onDismiss={hideModal}
-                isBlocking={true}
-                containerClassName={contentStyles.container}
-                dragOptions={dragOptions}
-            >
-                <div className={contentStyles.header}>
-                    <span id={titleId}>Column Options</span>
-                    <IconButton
-                        styles={iconButtonStyles}
-                        iconProps={cancelIcon}
-                        ariaLabel="Close popup modal"
-                        onClick={hideModal}
-                    />
-                </div>
-                <div className={contentStyles.body}>
-                    <ColumnMapper
-                        options={props.columnOptions}
-                        onChange={props.onColumnChange}
-                    />
-                    <DialogFooter>
-                        <PrimaryButton
-                            onClick={props.toggle}
-                            text="OK"
-                            styles={{
-                                root: {
-                                    color: "#fff",
-                                    backgroundColor: "#f00",
-                                    selectors: {
-                                        ":hover": {
-                                            backgroundColor: "#8d8989",
-                                            color: "#030303",
-                                        },
-                                        ":hover .childElement": {
-                                            backgroundColor: "#8d8989",
-                                            color: "#030303",
+    onSelectionChange = (selected) => {
+        this.setState({ selectedOptions: selected });
+    };
+
+    applyChanges = (saveUpdates = false) => {
+        this.props.updateColumns(saveUpdates, this.state.selectedOptions);
+    }
+
+    render() {
+        const {
+            toggle,
+            columnOptions,
+            show,
+            t
+        } = this.props
+        return (
+            <div>
+                <Modal
+                    titleAriaId="columnOptionsModal"
+                    isOpen={show}
+                    isBlocking={true}
+                    containerClassName={contentStyles.container}
+                    dragOptions={dragOptions}
+                >
+                    <div className={contentStyles.header}>
+                        <span>{t("devices.columnOptions")}</span>
+                        <IconButton
+                            onClick={toggle}
+                            styles={iconButtonStyles}
+                            iconProps={cancelIcon}
+                            ariaLabel="Close popup modal"
+                        />
+                    </div>
+                    <div className={contentStyles.body}>
+                        <ColumnMapper
+                            options={columnOptions}
+                            selected={this.state.selectedOptions}
+                            onChange={this.onSelectionChange}
+                            preserveSelectOrder
+                            showOrderButtons
+                            canFilter
+                        />
+                        <DialogFooter>
+                            <Protected
+                                permission={permissions.createDeviceGroups}
+                            >
+                                <PrimaryButton
+                                onClick={() => this.applyChanges(true)}
+                                text="Save"
+                                styles={{
+                                    root: {
+                                        color: "#fff",
+                                        backgroundColor: "#f00",
+                                        selectors: {
+                                            ":hover": {
+                                                backgroundColor: "#8d8989",
+                                                color: "#030303",
+                                            },
+                                            ":hover .childElement": {
+                                                backgroundColor: "#8d8989",
+                                                color: "#030303",
+                                            },
                                         },
                                     },
-                                },
-                            }}
-                        />
-                        <DefaultButton onClick={props.toggle} text="Cancel" />
-                    </DialogFooter>
-                </div>
-            </Modal>
-        </div>
-    );
+                                }}
+                            />
+                            </Protected>
+                            <PrimaryButton
+                                onClick={() => this.applyChanges(false)}
+                                text="OK"
+                                styles={{
+                                    root: {
+                                        color: "#fff",
+                                        backgroundColor: "#f00",
+                                        selectors: {
+                                            ":hover": {
+                                                backgroundColor: "#8d8989",
+                                                color: "#030303",
+                                            },
+                                            ":hover .childElement": {
+                                                backgroundColor: "#8d8989",
+                                                color: "#030303",
+                                            },
+                                        },
+                                    },
+                                }}
+                            />
+                            <DefaultButton onClick={toggle} text="Cancel" />
+                        </DialogFooter>
+                    </div>
+                </Modal>
+            </div>
+        );
+    }
+    
 };
 
 const cancelIcon= { iconName: "Cancel" };

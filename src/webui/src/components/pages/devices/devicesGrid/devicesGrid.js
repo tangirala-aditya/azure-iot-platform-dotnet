@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { permissions, toDiagnosticsModel } from "services/models";
 import { Btn, ComponentArray, PcsGrid, Protected } from "components/shared";
 import {
-    deviceColumnDefs,
+    defaultDeviceColumns,
     defaultDeviceGridProps,
     defaultColDef,
 } from "./devicesGridConfig";
@@ -21,7 +21,6 @@ import {
     getFlyoutLink,
     userHasPermission,
 } from "utilities";
-import { checkboxColumn } from "components/shared/pcsGrid/pcsGridConfig";
 
 const closedFlyoutState = {
     openFlyoutName: undefined,
@@ -43,17 +42,7 @@ export class DevicesGrid extends Component {
             isDeviceSearch: false,
         };
 
-        // Default device grid columns
-        this.columnDefs = [
-            checkboxColumn,
-            deviceColumnDefs.id,
-            deviceColumnDefs.isSimulated,
-            deviceColumnDefs.deviceType,
-            deviceColumnDefs.firmware,
-            deviceColumnDefs.telemetry,
-            deviceColumnDefs.status,
-            deviceColumnDefs.lastConnection,
-        ];
+        this.columnDefs =  props.columnDefs && props.columnDefs.length > 0 ? defaultDeviceColumns.concat(props.columnDefs) : defaultDeviceColumns;
     }
 
     contextBtns = () => (
@@ -336,12 +325,12 @@ export class DevicesGrid extends Component {
             /* Grid Properties */
             ...defaultDeviceGridProps,
             onFirstDataRendered: this.onFirstDataRendered,
-            columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
             defaultColDef: defaultColDef,
             sizeColumnsToFit: true,
             getSoftSelectId: this.getSoftSelectId,
             softSelectId: this.state.softSelectedDeviceId || {},
             ...this.props, // Allow default property overrides
+            columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
             immutableData: true,
             getRowNodeId: ({ id }) => id,
             context: {
@@ -355,7 +344,6 @@ export class DevicesGrid extends Component {
             onColumnMoved: this.onColumnMoved,
             onSortChanged: this.onSortChanged,
         };
-
         return [
             <PcsGrid key="device-grid-key" {...gridProps} />,
             this.getOpenFlyout(),

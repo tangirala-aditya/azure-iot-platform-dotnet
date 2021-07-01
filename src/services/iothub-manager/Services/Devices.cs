@@ -35,7 +35,7 @@ namespace Mmm.Iot.IoTHubManager.Services
         private const int MaximumGetList = 1000;
         private const string QueryPrefix = "SELECT * FROM devices";
         private const string KustoQueryPrefix = "DeviceTwin | summarize arg_max(TimeStamp, *) by DeviceId | where IsDeleted == false";
-        private const string KustoOrderByQuery = "| order by TimeStamp desc nulls last";
+        private const string KustoOrderByQuery = "| order by DeviceCreatedDate desc nulls last";
         private const string ModuleQueryPrefix = "SELECT * FROM devices.modules";
         private const string DeviceConnectionStateCountQueryPrefix = "SELECT COUNT() AS numberOfDevices, connectionState FROM devices";
         private const string DeviceConnectionStateCountKustoQuery = "| summarize numberOfDevices = count() by connectionState = tostring(Twin[\"connectionState\"])";

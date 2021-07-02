@@ -22,6 +22,9 @@ spec:
       containers:
         - name: {{ include "service.name" . }}
           image: {{ cat (include "service.deployment.image.repository" .) ":" (required "Error: missing required value .Values.deployment.image.tag" .Values.deployment.image.tag) | nospace }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
           imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
           resources:
             limits:
@@ -30,8 +33,6 @@ spec:
             requests:
               cpu: "0.25"
               memory: 300M
-          securityContext:
-            allowPrivilegeEscalation: false
           ports:
             - name: http
               containerPort: {{ .Values.deployment.port.http }}

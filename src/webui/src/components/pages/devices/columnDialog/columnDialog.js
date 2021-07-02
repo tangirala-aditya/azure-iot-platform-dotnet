@@ -80,6 +80,7 @@ export class ColumnDialog extends React.Component {
                             >
                                 <PrimaryButton
                                 onClick={() => this.applyChanges(true)}
+                                title="Apply and save"
                                 text="Save"
                                 styles={{
                                     root: {
@@ -101,6 +102,7 @@ export class ColumnDialog extends React.Component {
                             </Protected>
                             <PrimaryButton
                                 onClick={() => this.applyChanges(false)}
+                                title="Apply"
                                 text="OK"
                                 styles={{
                                     root: {

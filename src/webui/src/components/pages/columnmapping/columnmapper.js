@@ -371,7 +371,6 @@ export class ColumnMapper extends LinkedComponent {
                                 mappingsLink.length > 0) && (
                                 <Row>
                                     <Cell className="col-1 button"></Cell>
-                                    <Cell className="col-1 button"></Cell>
                                     <Cell className="col-3">Name</Cell>
                                     <Cell className="col-1"></Cell>
                                     <Cell className="col-2">Mapping</Cell>
@@ -391,7 +390,6 @@ export class ColumnMapper extends LinkedComponent {
                                         }
                                         // className="deviceExplorer-conditions"
                                     >
-                                        <Cell className="col-1 button"></Cell>
                                         <Cell className="col-1 button"></Cell>
                                         <Cell className="col-3">
                                             <FormControl
@@ -417,7 +415,7 @@ export class ColumnMapper extends LinkedComponent {
                                             <FormControl
                                                 type="select"
                                                 ariaLabel={t(
-                                                    "columnMapping.operator"
+                                                    "columnMapping.mapping"
                                                 )}
                                                 className="long"
                                                 disabled={true}
@@ -437,7 +435,7 @@ export class ColumnMapper extends LinkedComponent {
                                             <FormControl
                                                 type="select"
                                                 ariaLabel={t(
-                                                    "columnMapping.operator"
+                                                    "columnMapping.renderer"
                                                 )}
                                                 className="long"
                                                 disabled={true}
@@ -470,18 +468,6 @@ export class ColumnMapper extends LinkedComponent {
                                     key={this.state.columnMappings[idx].key}
                                     // className="deviceExplorer-conditions"
                                 >
-                                    {mappingsLink.length - 1 === idx && (
-                                        <Cell className="col-1 button">
-                                            <Btn
-                                                className={css("btn-icon")}
-                                                svg={svgs.plus}
-                                                onClick={this.addCondition}
-                                            />
-                                        </Cell>
-                                    )}
-                                    {mappingsLink.length - 1 !== idx && (
-                                        <Cell className="col-1 button"></Cell>
-                                    )}
                                     <Cell className="col-1 button">
                                         <Btn
                                             className="btn-icon"
@@ -573,6 +559,13 @@ export class ColumnMapper extends LinkedComponent {
                                 >
                                     Save
                                 </Btn>
+                                <Btn
+                                    disabled={this.state.isPending}
+                                    svg={svgs.cancelX}
+                                    onClick={this.onReset}
+                                >
+                                    Reset
+                                </Btn>
                                 {!this.state.isDefault && (
                                     <Btn
                                         svg={svgs.cancelX}
@@ -581,13 +574,6 @@ export class ColumnMapper extends LinkedComponent {
                                         Cancel
                                     </Btn>
                                 )}
-                                <Btn
-                                    disabled={this.state.isPending}
-                                    svg={svgs.cancelX}
-                                    onClick={this.onReset}
-                                >
-                                    Reset
-                                </Btn>
                             </BtnToolbar>
                         </div>
                         {this.state.error && (

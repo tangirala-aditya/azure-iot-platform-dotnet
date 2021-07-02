@@ -622,6 +622,7 @@ export class RuleDetails extends Component {
                                     <DevicesGridContainer
                                         t={t}
                                         domLayout="autoHeight"
+                                        useStaticCols={true}
                                         onGridReady={this.onDeviceGridReady}
                                         rowData={
                                             isPending

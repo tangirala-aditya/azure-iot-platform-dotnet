@@ -51,17 +51,11 @@ export class Devices extends Component {
             isDeviceSearch: false,
         };
         
-        this.props.updateCurrentWindow("Devices"); 
-
-        this.DefaultColumnMappings = props.columnMappings["Default"] ? props.columnMappings["Default"].mapping : [];
-        this.ColumnOptions = [];
-
-        this.setMappingsAndOptions(props); 
-        this.setColumnOptions();
+        this.props.updateCurrentWindow("Devices");
     }
 
     setMappingsAndOptions(props, deviceGroupId = null) {
-        const defaultMappings = props.columnMappings["Default"].mapping;
+        const defaultMappings = props.columnMappings["Default"] ? props.columnMappings["Default"].mapping : [];
         const deviceGroupMappingId = props.deviceGroups.find(dg => dg.id === (deviceGroupId ?? props.activeDeviceGroupId)).mappingId;
         this.DeviceGroupColumnMappings = props.columnMappings[deviceGroupMappingId] ? defaultMappings.concat(props.columnMappings[deviceGroupMappingId].mapping) : [];
         const colOption = props.columnOptions.find(c => c.deviceGroupId === (deviceGroupId ?? props.activeDeviceGroupId));
@@ -113,6 +107,11 @@ export class Devices extends Component {
             this.setState({
                 isDeviceSearch: false,
             });
+            this.DefaultColumnMappings = this.props.columnMappings["Default"] ? this.props.columnMappings["Default"].mapping : [];
+            this.ColumnOptions = [];
+
+            this.setMappingsAndOptions(this.props); 
+            this.setColumnOptions();
         }
 
         IdentityGatewayService.VerifyAndRefreshCache();
@@ -270,6 +269,7 @@ export class Devices extends Component {
         this.setMappingsAndOptions(this.props, deviceGroupId);
         this.setColumnOptions();
         this.deviceGridApi.setColumnDefs(translateColumnDefs(this.props.t, defaultDeviceColumns.concat(this.ColumnDefinitions)));
+        this.deviceGridApi.sizeColumnsToFit();
     }
 
     toggleColumnDialog = () => {
@@ -297,6 +297,7 @@ export class Devices extends Component {
         this.SelectedOptions = selectedColumnOptions;
         this.setColumnOptions();
         this.deviceGridApi.setColumnDefs(translateColumnDefs(this.props.t, defaultDeviceColumns.concat(this.ColumnDefinitions)));
+        this.deviceGridApi.sizeColumnsToFit();
         if(saveUpdates) {
             var requestData = {
                 DeviceGroupId: this.props.activeDeviceGroupId,
@@ -343,7 +344,6 @@ export class Devices extends Component {
                 isDevicesByConditionPanding,
                 lastUpdated,
                 routeProps,
-                columnMappings
             } = this.props,
             { isDeviceSearch, showColumnDialog } = this.state,
             deviceData = isDeviceSearch ? devicesByCondition : devices,
@@ -424,7 +424,6 @@ export class Devices extends Component {
                             <DefaultButton
                                 iconProps={{ iconName: "ColumnOptions" }}
                                 onClick={this.openColumnOptions}
-                                text={t("devices.columnOptions")}
                             />
                             <Toggle
                                 attr={{
@@ -443,10 +442,10 @@ export class Devices extends Component {
                     )}
                     {!error && (
                         <DevicesGridContainer
+                            useStaticCols={isDeviceSearch}
                             {...gridProps}
                             {...routeProps}
                             openPropertyEditorModal={this.openModal}
-                            deviceColumnMappings={columnMappings}
                             columnDefs={this.ColumnDefinitions}
                         />
                     )}

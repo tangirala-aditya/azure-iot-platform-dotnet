@@ -5,6 +5,7 @@ import { permissions, toDiagnosticsModel } from "services/models";
 import { Btn, ComponentArray, PcsGrid, Protected } from "components/shared";
 import {
     defaultDeviceColumns,
+    deviceGridColumns,
     defaultDeviceGridProps,
     defaultColDef,
 } from "./devicesGridConfig";
@@ -41,8 +42,6 @@ export class DevicesGrid extends Component {
             ...closedFlyoutState,
             isDeviceSearch: false,
         };
-
-        this.columnDefs =  props.columnDefs && props.columnDefs.length > 0 ? defaultDeviceColumns.concat(props.columnDefs) : defaultDeviceColumns;
     }
 
     contextBtns = () => (
@@ -81,6 +80,11 @@ export class DevicesGrid extends Component {
             this.setState({
                 isDeviceSearch: false,
             });
+        }
+        if(this.props.useStaticCols) {
+            this.columnDefs = deviceGridColumns;
+        } else {
+            this.columnDefs =  this.props.columnDefs && this.props.columnDefs.length > 0 ? defaultDeviceColumns.concat(this.props.columnDefs) : defaultDeviceColumns;
         }
     }
 

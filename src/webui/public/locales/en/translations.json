@@ -1146,7 +1146,9 @@
         "descriptionPlaceholder": "Enter Description",
         "errorMsg":{
             "headerCannotBeEmpty": "Header Name is Required",
+            "nameIsDuplicated": "Name is Duplicated",
             "mappingCannotBeEmpty": "Mapping is Required",
+            "mappingIsDuplicated": "Mapping is Duplicated",
             "rendererCannotBeEmpty": "Renderer is Required"
         },
         "labels":{

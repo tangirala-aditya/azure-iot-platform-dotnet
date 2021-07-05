@@ -289,6 +289,11 @@ export class ColumnMapper extends LinkedComponent {
                             .check(
                                 Validator.notEmpty,
                                 t("columnMapping.errorMsg.headerCannotBeEmpty")
+                            )
+                            .check(
+                                Validator.notDuplicated,
+                                t("columnMapping.errorMsg.nameIsDuplicated"),
+                                !this.state.isDefault ? [...this.state.defaultColumnMappings, ...this.state.columnMappings].map(m => m.name) : this.state.columnMappings.map(m => m.name)
                             ),
                         mapping = conditionLink
                             .forkTo("mapping")
@@ -296,6 +301,11 @@ export class ColumnMapper extends LinkedComponent {
                             .check(
                                 Validator.notEmpty,
                                 t("columnMapping.errorMsg.mappingCannotBeEmpty")
+                            )
+                            .check(
+                                Validator.notDuplicated,
+                                t("columnMapping.errorMsg.mappingIsDuplicated"),
+                                !this.state.isDefault ? [...this.state.defaultColumnMappings, ...this.state.columnMappings].map(m => m.mapping) : this.state.columnMappings.map(m => m.mapping)
                             ),
                         renderer = conditionLink
                             .forkTo("cellRenderer")
@@ -336,6 +346,11 @@ export class ColumnMapper extends LinkedComponent {
                             .check(
                                 Validator.notEmpty,
                                 t("columnMapping.errorMsg.headerCannotBeEmpty")
+                            )
+                            .check(
+                                Validator.notDuplicated,
+                                t("columnMapping.errorMsg.nameIsDuplicated"),
+                                this.state.columnMappings.map(m => m.name)
                             ),
                         mapping = conditionLink
                             .forkTo("mapping")
@@ -343,6 +358,11 @@ export class ColumnMapper extends LinkedComponent {
                             .check(
                                 Validator.notEmpty,
                                 t("columnMapping.errorMsg.mappingCannotBeEmpty")
+                            )
+                            .check(
+                                Validator.notDuplicated,
+                                t("columnMapping.errorMsg.mappingIsDuplicated"),
+                                this.state.columnMappings.map(m => m.mapping)
                             ),
                         renderer = conditionLink
                             .forkTo("cellRenderer")
@@ -376,8 +396,7 @@ export class ColumnMapper extends LinkedComponent {
                     };
                 }
             ),
-            conditionHasErrors = mappingsLink.some(({ error }) => !!error);
-        
+            conditionHasErrors = defaultMappingsLink.some(({ error }) => !!error) || mappingsLink.some(({ error }) => !!error);
         return (
             <Fragment>
                 {!(this.state.isDefault || this.state.isEdit) && (

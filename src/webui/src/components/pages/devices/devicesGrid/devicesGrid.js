@@ -81,11 +81,6 @@ export class DevicesGrid extends Component {
                 isDeviceSearch: false,
             });
         }
-        if(this.props.useStaticCols) {
-            this.columnDefs = deviceGridColumns;
-        } else {
-            this.columnDefs =  this.props.columnDefs && this.props.columnDefs.length > 0 ? defaultDeviceColumns.concat(this.props.columnDefs) : defaultDeviceColumns;
-        }
     }
 
     onFirstDataRendered = () => {
@@ -325,6 +320,15 @@ export class DevicesGrid extends Component {
     getSoftSelectId = ({ id } = "") => id;
 
     render() {
+
+        let columnDefs = null;
+
+        if (this.props.useStaticCols) {
+            columnDefs = deviceGridColumns;
+        } else {
+            columnDefs = this.props.columnDefs && this.props.columnDefs.length > 0 ? defaultDeviceColumns.concat(this.props.columnDefs) : defaultDeviceColumns;
+        }
+
         const gridProps = {
             /* Grid Properties */
             ...defaultDeviceGridProps,
@@ -334,7 +338,10 @@ export class DevicesGrid extends Component {
             getSoftSelectId: this.getSoftSelectId,
             softSelectId: this.state.softSelectedDeviceId || {},
             ...this.props, // Allow default property overrides
-            columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
+            columnDefs: translateColumnDefs(
+                this.props.t,
+                columnDefs
+            ),
             immutableData: true,
             getRowNodeId: ({ id }) => id,
             context: {

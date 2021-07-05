@@ -62,8 +62,8 @@ export class ColumnMapper extends LinkedComponent {
                     value: "lastStatusUpdated",
                 },
                 {
-                    label: "iotHubHostName",
-                    value: "iotHubHostName",
+                    label: "ioTHubHostName",
+                    value: "ioTHubHostName",
                 },
                 {
                     label: "eTag",
@@ -92,9 +92,10 @@ export class ColumnMapper extends LinkedComponent {
             columnMappings: (this.props.columnMapping || {}).mapping || [],
             defaultColumnMappings:
                 (this.props.defaultColumnMapping || {}).mapping || [],
-            isPending: false,
+            isPending: true,
             error: undefined,
         };
+
         // State to input links
         this.mappingsLink = this.linkTo("columnMappings");
         this.defaultMappingsLink = this.linkTo("defaultColumnMappings");
@@ -125,6 +126,39 @@ export class ColumnMapper extends LinkedComponent {
             },
             (filtersError) => this.setState({ filtersError })
         );
+
+        if (!this.props.isPending) {
+            this.setState({
+                mappingName: (this.props.columnMapping || {}).name,
+                eTag: (this.props.columnMapping || {}).eTag,
+                columnMappings: (this.props.columnMapping || {}).mapping || [],
+                defaultColumnMappings:
+                    (this.props.defaultColumnMapping || {}).mapping || [],
+                isPending: this.props.isPending,
+            });
+        }
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.isPending !== state.isPending) {
+            if (!props.isPending) {
+                return {
+                    mappingName: (props.columnMapping || {}).name,
+                    eTag: (props.columnMapping || {}).eTag,
+                    columnMappings:
+                        (props.columnMapping || {}).mapping || [],
+                    defaultColumnMappings:
+                        (props.defaultColumnMapping || {}).mapping || [],
+                    isPending: props.isPending,
+                };
+            } else {
+               return {
+                    isPending: props.isPending,
+                };
+            }
+        }
+
+        return null;
     }
 
     componentWillUnmount() {

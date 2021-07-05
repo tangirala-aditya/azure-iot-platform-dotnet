@@ -7,11 +7,13 @@ import {
     epics as appEpics,
     getColumnMappingById,
     getDefaultColumnMapping,
+    getColumnMappingPendingStatus,
 } from "store/reducers/appReducer";
 
 const mapStateToProps = (state, props) => ({
         columnMapping: getColumnMappingById(state, props.mappingId),
         defaultColumnMapping: getDefaultColumnMapping(state),
+        isPending: getColumnMappingPendingStatus(state),
     }),
     mapDispatchToProps = (dispatch) => ({
         fetchColumnMappings: () =>

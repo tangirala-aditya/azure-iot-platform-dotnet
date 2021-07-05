@@ -476,20 +476,31 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
             deviceGroups: { $merge: deviceGroups },
         });
     },
-    updateColumnMappingsReducer = (state, { payload }) => {
+    updateColumnMappingsReducer = (state, { payload, fromAction }) => {
         const {
             entities: { columnMappings },
         } = normalize(payload, columnMappingListSchema);
         return update(state, {
             columnMappings: { $set: columnMappings },
+            ...setPending(fromAction.type, false)
         });
     },
-    updateColumnOptionsReducer = (state, { payload }) => {
+    updateColumnOptionsReducer = (state, { payload, fromAction }) => {
         const {
             entities: { columnOptions },
         } = normalize(payload, columnOptionsListSchema);
         return update(state, {
             columnOptions: { $set: columnOptions },
+            ...setPending(fromAction.type, false),
+        });
+    },
+    insertColumnOptionsReducer = (state, { payload }) => {
+        const {
+            entities: { columnOptions },
+        } = normalize(payload, columnOptionsListSchema);
+
+        return update(state, {
+            deviceGroups: { $merge: columnOptions },
         });
     },
     updateSolutionSettingsReducer = (state, { payload, fromAction }) =>
@@ -653,6 +664,10 @@ export const redux = createReducerScenario({
         type: "APP_COLUMN_OPTIONS_FETCH",
         reducer: updateColumnOptionsReducer,
     },
+    insertColumnOptions: {
+        type: "APP_COLUMN_OPTIONS_INSERT",
+        reducer: insertColumnOptionsReducer,
+    },
     changeTheme: { type: "APP_CHANGE_THEME", reducer: updateThemeReducer },
     registerError: { type: "APP_REDUCER_ERROR", reducer: errorReducer },
     updateLogo: { type: "APP_UPDATE_LOGO", reducer: logoReducer },
@@ -749,6 +764,8 @@ export const getColumnMappings = (state) =>
     getAppReducer(state).columnMappings || [];
 export const getColumnOptions = (state) =>
     getAppReducer(state).columnOptions || [];
+export const getColumnOptionsPendingStatus = (state) =>
+    getPending(getAppReducer(state), epics.actionTypes.fetchColumnOptions);
 export const getActiveDeviceGroupMapping = createSelector(
     getColumnMappings,
     getActiveDeviceGroupMappingId,
@@ -775,6 +792,8 @@ export const getDefaultColumnMapping = createSelector(
     (mappings) => mappings["Default"]
 );
 export const getColumnMappingById = (state, id) => getColumnMappings(state)[id];
+export const getColumnMappingPendingStatus = (state) =>
+    getPending(getAppReducer(state), epics.actionTypes.fetchColumnMappings);
 
 export const getLogo = (state) => getAppReducer(state).logo;
 export const getName = (state) => getAppReducer(state).name;

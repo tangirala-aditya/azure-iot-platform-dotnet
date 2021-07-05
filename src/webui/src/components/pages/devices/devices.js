@@ -5,7 +5,6 @@ import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/T
 
 import { permissions, toDiagnosticsModel } from "services/models";
 import { DevicesGridContainer } from "./devicesGrid";
-import { defaultDeviceColumns } from "./devicesGrid/devicesGridConfig";
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from "components/shell/deviceGroupDropdown";
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from "components/shell/manageDeviceGroupsBtn";
 import { ResetActiveDeviceQueryBtnContainer as ResetActiveDeviceQueryBtn } from "components/shell/resetActiveDeviceQueryBtn";
@@ -24,11 +23,24 @@ import { DeviceNewContainer } from "./flyouts/deviceNew";
 import { AdvanceSearchContainer } from "./advanceSearch";
 import { SIMManagementContainer } from "./flyouts/SIMManagement";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
-import { svgs, getDeviceGroupParam, getTenantIdParam, translateColumnDefs } from "utilities";
-import { IdentityGatewayService, IoTHubManagerService, ConfigService } from "services";
-import {ColumnDialog} from "./columnDialog";
+import {
+    svgs,
+    getDeviceGroupParam,
+    getTenantIdParam,
+} from "utilities";
+import {
+    IdentityGatewayService,
+    IoTHubManagerService,
+    ConfigService,
+} from "services";
+import { ColumnDialog } from "./columnDialog";
 import { DefaultButton } from "@fluentui/react/lib/Button";
-import { generateColumnOptionsFromMappings, generateColumnDefsFromSelectedOptions, generateSelectedOptionsFromMappings, generateColumnDefsFromMappings } from "./devicesGrid/deviceColumnHelper";
+import {
+    generateColumnOptionsFromMappings,
+    generateColumnDefsFromSelectedOptions,
+    generateSelectedOptionsFromMappings,
+    generateColumnDefsFromMappings,
+} from "./devicesGrid/deviceColumnHelper";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./devices.module.scss"));
@@ -49,37 +61,121 @@ export class Devices extends Component {
             selectedDeviceGroupId: undefined,
             loadMore: props.loadMoreState,
             isDeviceSearch: false,
+            columnOptions: [],
+            selectedOptions: [],
+            columnDefinitions: [],
+            defaultColumnMappings: [],
+            isColumnMappingsPending: this.props.isColumnMappingsPending,
         };
-        
+
         this.props.updateCurrentWindow("Devices");
+
+        if (
+            !this.props.isColumnMappingsPending &&
+            this.props.activeDeviceGroupId
+        ) {
+            var defaultColumnMappings = props.columnMappings["Default"]
+                ? props.columnMappings["Default"].mapping
+                : [];
+            this.ColumnOptions = [];
+
+            this.state = {
+                ...this.state,
+                defaultColumnMappings: defaultColumnMappings,
+                ...this.setMappingsAndOptions(props),
+            };
+
+            this.state = {
+                ...this.state,
+                ...this.setColumnOptions(this.state),
+            };
+        }
     }
 
     setMappingsAndOptions(props, deviceGroupId = null) {
-        const defaultMappings = props.columnMappings["Default"] ? props.columnMappings["Default"].mapping : [];
-        const deviceGroupMappingId = props.deviceGroups.find(dg => dg.id === (deviceGroupId ?? props.activeDeviceGroupId)).mappingId;
-        this.DeviceGroupColumnMappings = props.columnMappings[deviceGroupMappingId] ? defaultMappings.concat(props.columnMappings[deviceGroupMappingId].mapping) : [];
-        const colOption = props.columnOptions.find(c => c.deviceGroupId === (deviceGroupId ?? props.activeDeviceGroupId));
+        const defaultMappings = props.columnMappings["Default"].mapping;
+        const deviceGroupMappingId = props.deviceGroups.find(
+            (dg) => dg.id === (deviceGroupId ?? props.activeDeviceGroupId)
+        ).mappingId;
+        this.DeviceGroupColumnMappings = props.columnMappings[
+            deviceGroupMappingId
+        ]
+            ? defaultMappings.concat(
+                  props.columnMappings[deviceGroupMappingId].mapping
+              )
+            : [];
+        
+        const colOption = props.columnOptions.find(
+            (c) =>
+                c.deviceGroupId === (deviceGroupId ?? props.activeDeviceGroupId)
+        );
         this.ColumnOptionsModel = colOption ?? null;
-        this.SelectedOptions = colOption ? colOption.selectedOptions : [];
+
+        return {
+            selectedOptions: colOption ? colOption.selectedOptions : [],
+        };
     }
 
-    setColumnOptions() {
-        if(this.DeviceGroupColumnMappings.length === 0 && this.SelectedOptions.length === 0 && this.DefaultColumnMappings.length > 0) {
-            this.ColumnOptions = generateColumnOptionsFromMappings(this.DefaultColumnMappings);
-            this.SelectedOptions = generateSelectedOptionsFromMappings(this.DefaultColumnMappings);
-            this.ColumnDefinitions = generateColumnDefsFromMappings(this.DefaultColumnMappings);
-        } else if(this.DeviceGroupColumnMappings.length === 0 && this.SelectedOptions.length > 0 && this.DefaultColumnMappings.length > 0) {
-            this.ColumnOptions = generateColumnOptionsFromMappings(this.DefaultColumnMappings);
-            this.ColumnDefinitions = generateColumnDefsFromSelectedOptions(this.DefaultColumnMappings, this.SelectedOptions);
-        } else if(this.DeviceGroupColumnMappings.length > 0 && this.SelectedOptions.length === 0) {
-            this.ColumnOptions = generateColumnOptionsFromMappings(this.DeviceGroupColumnMappings);
-            this.SelectedOptions = generateSelectedOptionsFromMappings(this.DefaultColumnMappings);
-            this.ColumnDefinitions = generateColumnDefsFromMappings(this.DefaultColumnMappings);
-        } else if(this.DeviceGroupColumnMappings.length > 0 && this.SelectedOptions.length > 0) {
-            this.ColumnOptions = generateColumnOptionsFromMappings(this.DeviceGroupColumnMappings);
-            this.ColumnDefinitions = generateColumnDefsFromSelectedOptions(this.DeviceGroupColumnMappings, this.SelectedOptions);
+    setColumnOptions(state) {
+        if (
+            this.DeviceGroupColumnMappings.length === 0 &&
+            state.selectedOptions.length === 0 &&
+            state.defaultColumnMappings.length > 0
+        ) {
+            return {
+                columnOptions: generateColumnOptionsFromMappings(
+                    state.defaultColumnMappings
+                ),
+                selectedOptions: generateSelectedOptionsFromMappings(
+                    state.defaultColumnMappings
+                ),
+                columnDefinitions: generateColumnDefsFromMappings(
+                    state.defaultColumnMappings
+                ),
+            };
+        } else if (
+            this.DeviceGroupColumnMappings.length === 0 &&
+            state.selectedOptions.length > 0 &&
+            state.defaultColumnMappings.length > 0
+        ) {
+            return {
+                columnOptions: generateColumnOptionsFromMappings(
+                    state.defaultColumnMappings
+                ),
+                columnDefinitions: generateColumnDefsFromSelectedOptions(
+                    state.defaultColumnMappings,
+                    state.selectedOptions
+                ),
+            };
+        } else if (
+            this.DeviceGroupColumnMappings.length > 0 &&
+            state.selectedOptions.length === 0
+        ) {
+            return {
+                columnOptions: generateColumnOptionsFromMappings(
+                    this.DeviceGroupColumnMappings
+                ),
+                selectedOptions: generateSelectedOptionsFromMappings(
+                    state.defaultColumnMappings
+                ),
+                columnDefinitions: generateColumnDefsFromMappings(
+                    state.defaultColumnMappings
+                ),
+            };
+        } else if (
+            this.DeviceGroupColumnMappings.length > 0 &&
+            state.selectedOptions.length > 0
+        ) {
+            return {
+                columnOptions: generateColumnOptionsFromMappings(
+                    this.DeviceGroupColumnMappings
+                ),
+                columnDefinitions: generateColumnDefsFromSelectedOptions(
+                    this.DeviceGroupColumnMappings,
+                    state.selectedOptions
+                ),
+            };
         }
-        
     }
 
     UNSAFE_componentWillMount() {
@@ -107,11 +203,6 @@ export class Devices extends Component {
             this.setState({
                 isDeviceSearch: false,
             });
-            this.DefaultColumnMappings = this.props.columnMappings["Default"] ? this.props.columnMappings["Default"].mapping : [];
-            this.ColumnOptions = [];
-
-            this.setMappingsAndOptions(this.props); 
-            this.setColumnOptions();
         }
 
         IdentityGatewayService.VerifyAndRefreshCache();
@@ -129,6 +220,34 @@ export class Devices extends Component {
                     break;
                 default:
                     this.setState(closedFlyoutState);
+            }
+        }
+
+        if (
+            this.props.isColumnMappingsPending !==
+                this.state.isColumnMappingsPending &&
+            this.props.activeDeviceGroupId
+        ) {
+            if (!nextProps.isColumnMappingsPending) {
+                var defaultColumnMappings = nextProps.columnMappings["Default"]
+                    ? nextProps.columnMappings["Default"].mapping
+                    : [];
+
+                let tempState = {
+                    ...this.state,
+                    defaultColumnMappings: defaultColumnMappings,
+                    ...this.setMappingsAndOptions(nextProps),
+                };
+
+                this.setState({
+                    ...tempState,
+                    ...this.setColumnOptions(tempState),
+                    isColumnMappingsPending: nextProps.isColumnMappingsPending,
+                });
+            } else {
+                this.setState({
+                    isColumnMappingsPending: nextProps.isColumnMappingsPending,
+                });
             }
         }
     }
@@ -172,8 +291,8 @@ export class Devices extends Component {
     closeModal = () => this.setState(closedModalState);
 
     openColumnOptions = () => {
-        this.setState({showColumnDialog: true});
-    }
+        this.setState({ showColumnDialog: true });
+    };
 
     getOpenModal = () => {
         const { t, theme, logEvent } = this.props;
@@ -266,11 +385,15 @@ export class Devices extends Component {
     };
 
     updateColumnsOnDeviceGroupChange = (deviceGroupId) => {
-        this.setMappingsAndOptions(this.props, deviceGroupId);
-        this.setColumnOptions();
-        this.deviceGridApi.setColumnDefs(translateColumnDefs(this.props.t, defaultDeviceColumns.concat(this.ColumnDefinitions)));
-        this.deviceGridApi.sizeColumnsToFit();
-    }
+        let tempState = {
+            ...this.state,
+            ...this.setMappingsAndOptions(this.props, deviceGroupId),
+        };
+
+        this.setState({
+            ...this.setColumnOptions(tempState),
+        });
+    };
 
     toggleColumnDialog = () => {
         const { showColumnDialog } = this.state;
@@ -293,42 +416,53 @@ export class Devices extends Component {
     };
 
     updateColumns = (saveUpdates, selectedColumnOptions) => {
-        this.toggleColumnDialog();
-        this.SelectedOptions = selectedColumnOptions;
-        this.setColumnOptions();
-        this.deviceGridApi.setColumnDefs(translateColumnDefs(this.props.t, defaultDeviceColumns.concat(this.ColumnDefinitions)));
-        this.deviceGridApi.sizeColumnsToFit();
-        if(saveUpdates) {
+
+        var tempState = {
+            ...this.state,
+            showColumnDialog: !this.state.showColumnDialog,
+            selectedOptions: selectedColumnOptions,
+        }
+
+        this.setState({
+            ...tempState,
+            ...this.setColumnOptions(tempState),
+        });
+
+        if (saveUpdates) {
             var requestData = {
                 DeviceGroupId: this.props.activeDeviceGroupId,
                 SelectedOptions: selectedColumnOptions,
             };
-            if(!this.ColumnOptionsModel) {
+            if (!this.ColumnOptionsModel) {
                 ConfigService.saveColumnOptions(requestData).subscribe(
                     (columnMapping) => {
                         this.ColumnOptionsModel = columnMapping;
+                        this.props.insertColumnOptions([columnMapping]);
                     },
                     (error) => {}
                 );
             } else {
-                this.ColumnOptionsModel.SelectedOptions = selectedColumnOptions;
-                ConfigService.updateColumnOptions(this.ColumnOptionsModel.key, this.ColumnOptionsModel).subscribe(
+                this.ColumnOptionsModel.selectedOptions = selectedColumnOptions;
+                ConfigService.updateColumnOptions(
+                    this.ColumnOptionsModel.id,
+                    this.ColumnOptionsModel
+                ).subscribe(
                     (columnMapping) => {
                         this.ColumnOptionsModel = columnMapping;
+                        this.props.insertColumnOptions([columnMapping]);
                     },
                     (error) => {}
                 );
             }
-            
         }
-    }
+    };
 
     /**
      * Get the grid api options
      *
      * @param {Object} gridReadyEvent An object containing access to the grid APIs
      */
-     onGridReady = (gridReadyEvent) => {
+    onGridReady = (gridReadyEvent) => {
         this.deviceGridApi = gridReadyEvent.api;
     };
 
@@ -390,14 +524,16 @@ export class Devices extends Component {
                     ]}
                     priorityChildren={this.priorityChildren()}
                 />
-                {showColumnDialog && (<ColumnDialog
-                    show={showColumnDialog}
-                    toggle={this.toggleColumnDialog}
-                    columnOptions={this.ColumnOptions}
-                    selectedOptions={this.SelectedOptions}
-                    updateColumns={this.updateColumns}
-                    t={t}
-                />)}
+                {showColumnDialog && (
+                    <ColumnDialog
+                        show={showColumnDialog}
+                        toggle={this.toggleColumnDialog}
+                        columnOptions={this.state.columnOptions}
+                        selectedOptions={this.state.selectedOptions}
+                        updateColumns={this.updateColumns}
+                        t={t}
+                    />
+                )}
                 <PageContent className={css("devices-container")}>
                     <PageTitle
                         titleValue={
@@ -446,7 +582,7 @@ export class Devices extends Component {
                             {...gridProps}
                             {...routeProps}
                             openPropertyEditorModal={this.openModal}
-                            columnDefs={this.ColumnDefinitions}
+                            columnDefs={this.state.columnDefinitions}
                         />
                     )}
                     {newDeviceFlyoutOpen && (

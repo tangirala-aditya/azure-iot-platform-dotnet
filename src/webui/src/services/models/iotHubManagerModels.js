@@ -2,7 +2,7 @@
 
 import update from "immutability-helper";
 import dot from "dot-object";
-import { camelCaseReshape, getItems, float } from "utilities";
+import { camelCaseReshape, getItems, float, camelCaseWithDotKeys } from "utilities";
 import uuid from "uuid/v4";
 
 // Contains methods for converting service response
@@ -56,7 +56,7 @@ const defaultMappingObject = {
     c2DMessageCount: "c2DMessageCount",
     enabled: "enabled",
     lastStatusUpdated: "lastStatusUpdated",
-    ioTHubHostName: "iotHubHostName",
+    ioTHubHostName: "IoTHubHostName",
     eTag: "eTag",
     authentication: "authentication",
 };
@@ -87,6 +87,7 @@ export const toDevicesModel = (response = {}, mapping = []) => {
 };
 
 export const toDeviceModel = (device = {}, mapping = {}) => {
+    mapping = camelCaseWithDotKeys(mapping);
     const modelData = camelCaseReshape(device, mapping || defaultMappingObject),
         // TODO: Remove this once device simulation has removed FirmwareUpdate from supportedMethods of devices
         methods = (modelData.methods && typeof modelData.methods === "string"

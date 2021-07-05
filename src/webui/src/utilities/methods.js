@@ -80,6 +80,29 @@ export const camelCaseKeys = (data) => {
     return data;
 };
 
+/**
+ * Convert object keys to be camelCased with Dot
+ */
+export const camelCaseWithDotKeys = (data) => {
+    if (Array.isArray(data)) {
+        return data.map(camelCaseWithDotKeys);
+    } else if (data !== null && isObject(data)) {
+        return Object.entries(data).reduce((acc, [key, value]) => {
+            var afterKey = /[.]/g.test(key)
+                ? key
+                      .split(".")
+                      .map((x) => {
+                          return toCamelcase(x);
+                      })
+                      .join(".")
+                : toCamelcase(key);
+            acc[afterKey] = camelCaseWithDotKeys(value);
+            return acc;
+        }, {});
+    }
+    return data;
+};
+
 /** Takes an object and converts it to another structure using dot-notation */
 export const reshape = (response, model) => {
     return Object.keys(model).reduce(
@@ -101,8 +124,14 @@ export const camelCaseReshape = (response, model) => {
  */
 export const translateColumnDefs = (t, columnDefs) => {
     return columnDefs.map((columnDef) => {
-        if(columnDef.cellRendererFramework && typeof columnDef.cellRendererFramework === "string") {
-            columnDef = getRendererFramework(columnDef.cellRendererFramework, columnDef);
+        if (
+            columnDef.cellRendererFramework &&
+            typeof columnDef.cellRendererFramework === "string"
+        ) {
+            columnDef = getRendererFramework(
+                columnDef.cellRendererFramework,
+                columnDef
+            );
         }
         if (columnDef.valueFormatter) {
             columnDef.tooltipValueGetter = columnDef.valueFormatter;
@@ -129,21 +158,24 @@ export const translateColumnDefs = (t, columnDefs) => {
 export const getRendererFramework = (name, columnDef) => {
     switch (name) {
         case TimeRenderer.name:
-            columnDef.cellRendererFramework =  TimeRenderer;
+            columnDef.cellRendererFramework = TimeRenderer;
             break;
         case IsSimulatedRenderer.name:
-            columnDef.cellRendererFramework =  IsSimulatedRenderer;
+            columnDef.cellRendererFramework = IsSimulatedRenderer;
             break;
         case ConnectionStatusRenderer.name:
-            columnDef.cellRendererFramework =  ConnectionStatusRenderer;
+            columnDef.cellRendererFramework = ConnectionStatusRenderer;
             break;
         case "DefaultRenderer":
             delete columnDef.cellRendererFramework;
-            columnDef = { ...columnDef, valueFormatter: ({ value }) => checkForEmpty(value) };
+            columnDef = {
+                ...columnDef,
+                valueFormatter: ({ value }) => checkForEmpty(value),
+            };
             break;
     }
     return columnDef;
-}
+};
 
 export const tooltipRenderer = ({ value, context: { t }, colDef }) => {
     switch (colDef.cellRendererFramework.name) {

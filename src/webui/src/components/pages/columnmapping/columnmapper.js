@@ -14,11 +14,12 @@ import {
     PropertyRow as Row,
     PropertyCell as Cell,
     PropertyGrid as Grid,
+    Indicator,
 } from "components/shared";
 import { ConfigService, IoTHubManagerService } from "services";
 
 const classnames = require("classnames/bind");
-const css = classnames.bind(require("./columnMapping.scss"));
+const css = classnames.bind(require("./columnMapping.module.scss"));
 
 const toOption = (value, label) => ({
     label: label || value,
@@ -376,7 +377,7 @@ export class ColumnMapper extends LinkedComponent {
                 }
             ),
             conditionHasErrors = mappingsLink.some(({ error }) => !!error);
-
+        
         return (
             <Fragment>
                 {!(this.state.isDefault || this.state.isEdit) && (
@@ -398,6 +399,7 @@ export class ColumnMapper extends LinkedComponent {
                 {!this.state.isDefault && this.state.isEdit && (
                     <p>{this.state.mappingName}</p>
                 )}
+                {this.state.isPending && <Indicator size="large" pattern="bar" />}
                 <form onSubmit={this.apply}>
                     <div className={css("manage-filters-container")}>
                         <Grid>

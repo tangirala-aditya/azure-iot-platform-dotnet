@@ -74,7 +74,6 @@ const transformObject = (obj = []) => {
         return defaultMappingObject;
     }
     transformedObject["id"] = "id";
-    console.log(transformedObject);
     return transformedObject;
 };
 
@@ -94,7 +93,6 @@ export const toDeviceModel = (device = {}, mapping = {}) => {
             ? modelData.methods.split(",")
             : []
         ).filter((methodName) => methodName !== "FirmwareUpdate");
-    console.log("modelData", modelData);
     return update(modelData, {
         methods: { $set: methods },
         tags: { $set: device.Tags || {} },

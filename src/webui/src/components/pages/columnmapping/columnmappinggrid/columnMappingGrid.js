@@ -10,7 +10,7 @@ import {
 } from "./columnMappingGridConfig";
 import { isFunc, translateColumnDefs, svgs } from "utilities";
 const classnames = require("classnames/bind");
-const css = classnames.bind(require("../columnMapping.scss"));
+const css = classnames.bind(require("../columnMapping.module.scss"));
 
 /**
  * A grid for displaying users

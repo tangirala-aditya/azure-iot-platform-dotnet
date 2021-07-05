@@ -482,7 +482,7 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
         } = normalize(payload, columnMappingListSchema);
         return update(state, {
             columnMappings: { $set: columnMappings },
-            ...setPending(fromAction.type, false)
+            ...setPending(fromAction.type, false),
         });
     },
     updateColumnOptionsReducer = (state, { payload, fromAction }) => {
@@ -784,8 +784,9 @@ export const getColumnMappingsList = createSelector(
 export const getColumnOptionsList = createSelector(
     getColumnOptions,
     (columnOptions) =>
-        Object.keys(columnOptions)
-            .map((deviceGroupId) => columnOptions[deviceGroupId])
+        Object.keys(columnOptions).map(
+            (deviceGroupId) => columnOptions[deviceGroupId]
+        )
 );
 export const getDefaultColumnMapping = createSelector(
     getColumnMappings,

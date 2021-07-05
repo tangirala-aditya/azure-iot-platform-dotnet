@@ -80,8 +80,7 @@ class DeviceGroupForm extends LinkedComponent {
             Validator.notEmpty,
             () => this.props.t("deviceGroupsFlyout.errorMsg.nameCantBeEmpty")
         );
-        this.mappingLink = this.linkTo("mappingId")
-        .map(({ value }) => value);
+        this.mappingLink = this.linkTo("mappingId").map(({ value }) => value);
 
         this.conditionsLink = this.linkTo("conditions");
         this.subscriptions = [];
@@ -290,7 +289,7 @@ class DeviceGroupForm extends LinkedComponent {
                 value,
             }));
         const { telemetryFormat, supportedMethods } = this.state;
-        
+
         return (
             <div>
                 {!this.state.isDelete ? (
@@ -334,20 +333,19 @@ class DeviceGroupForm extends LinkedComponent {
                                             "deviceGroupsFlyout.columnMappingPlaceholder"
                                         )}
                                         options={
-                                            this.props
-                                                .columnMappingsOptions
+                                            this.props.columnMappingsOptions
                                         }
                                         link={this.mappingLink}
                                     />
                                     <Hyperlink
-                                    href={`/columnMapping/custom`}
-                                    className={css("new-mapping-link")}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                        href={`/columnMapping/custom`}
+                                        className={css("new-mapping-link")}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                     >
-                                    {this.props.t(
-                                        "deviceGroupsFlyout.createNewMapping"
-                                    )}
+                                        {this.props.t(
+                                            "deviceGroupsFlyout.createNewMapping"
+                                        )}
                                     </Hyperlink>
                                 </FormGroup>
                                 <Btn

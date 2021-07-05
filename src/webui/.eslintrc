@@ -1,8 +1,8 @@
 {
     "extends": "react-app",
-    "plugins": ["react-hooks"],
+    "plugins": ["prettier","react-hooks"],
     "rules": {
-        "prettier/prettier": 0,
+        "prettier/prettier": "error",
         "no-unused-vars": "error",
         "eqeqeq": "error",
         "react-hooks/rules-of-hooks": "error",

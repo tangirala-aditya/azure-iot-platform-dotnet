@@ -49,7 +49,7 @@ export const toColumnOption = function (columnOption = {}) {
         createdBy: "createdBy",
         createdDate: "createdDate",
         selectedOptions: "selectedOptions",
-        key: "id"
+        key: "id",
     });
 
     return columnOption;

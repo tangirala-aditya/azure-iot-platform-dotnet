@@ -18,7 +18,7 @@ export class Validator {
     };
 
     static notDuplicated = (x, array) => {
-        return array.filter(i => i === x).length < 2;
+        return array.filter((i) => i === x).length < 2;
     };
 
     constructor(validator = {}) {
@@ -33,7 +33,12 @@ export class Validator {
     check(checker, msg = true, optionalParam = null) {
         this.validators = [
             ...this.validators,
-            (value) => (checker(value, optionalParam) ? "" : isFunc(msg) ? msg(value) : msg),
+            (value) =>
+                checker(value, optionalParam)
+                    ? ""
+                    : isFunc(msg)
+                    ? msg(value)
+                    : msg,
         ];
         return this;
     }

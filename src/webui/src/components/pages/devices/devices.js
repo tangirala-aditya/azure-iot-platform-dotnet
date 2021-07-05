@@ -23,11 +23,7 @@ import { DeviceNewContainer } from "./flyouts/deviceNew";
 import { AdvanceSearchContainer } from "./advanceSearch";
 import { SIMManagementContainer } from "./flyouts/SIMManagement";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
-import {
-    svgs,
-    getDeviceGroupParam,
-    getTenantIdParam,
-} from "utilities";
+import { svgs, getDeviceGroupParam, getTenantIdParam } from "utilities";
 import {
     IdentityGatewayService,
     IoTHubManagerService,
@@ -104,7 +100,7 @@ export class Devices extends Component {
                   props.columnMappings[deviceGroupMappingId].mapping
               )
             : [];
-        
+
         const colOption = props.columnOptions.find(
             (c) =>
                 c.deviceGroupId === (deviceGroupId ?? props.activeDeviceGroupId)
@@ -416,12 +412,11 @@ export class Devices extends Component {
     };
 
     updateColumns = (saveUpdates, selectedColumnOptions) => {
-
         var tempState = {
             ...this.state,
             showColumnDialog: !this.state.showColumnDialog,
             selectedOptions: selectedColumnOptions,
-        }
+        };
 
         this.setState({
             ...tempState,

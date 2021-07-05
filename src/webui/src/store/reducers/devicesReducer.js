@@ -94,7 +94,9 @@ export const epics = createEpicScenario({
                 const activeDeviceGroupMappings = getActiveDeviceGroupMapping(
                     store.value
                 );
-                const defaultColumnMappings = getDefaultColumnMapping(store.value);
+                const defaultColumnMappings = getDefaultColumnMapping(
+                    store.value
+                );
                 const columnMappings = [
                     ...((activeDeviceGroupMappings || {}).mapping || []),
                     ...((defaultColumnMappings || {}).mapping || []),
@@ -109,8 +111,11 @@ export const epics = createEpicScenario({
                             !!condition.value
                         );
                     });
-                return IoTHubManagerService.getDevices(conditions,
-                    columnMappings, cToken).pipe(
+                return IoTHubManagerService.getDevices(
+                    conditions,
+                    columnMappings,
+                    cToken
+                ).pipe(
                     map((response) => {
                         cToken = response.continuationToken;
                         return response.items;

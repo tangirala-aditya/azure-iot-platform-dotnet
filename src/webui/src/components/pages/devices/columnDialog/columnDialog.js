@@ -1,35 +1,34 @@
-import * as React from 'react';
+import * as React from "react";
 import {
-  getTheme,
-  mergeStyleSets,
-  FontWeights,
-  ContextualMenu,
-  Modal,
-} from '@fluentui/react';
+    getTheme,
+    mergeStyleSets,
+    FontWeights,
+    ContextualMenu,
+    Modal,
+} from "@fluentui/react";
 import {
-    PrimaryButton, 
+    PrimaryButton,
     DefaultButton,
     IconButton,
 } from "@fluentui/react/lib/Button";
-import  ColumnMapper  from './columnMapper';
+import ColumnMapper from "./columnMapper";
 import { DialogFooter } from "@fluentui/react/lib/Dialog";
 import { permissions } from "services/models";
 import { Protected } from "components/shared";
 
-    // Normally the drag options would be in a constant, but here the toggle can modify keepInBounds
-    const dragOptions = {
-        moveMenuItemText: "Move",
-        closeMenuItemText: "Close",
-        menu: ContextualMenu,
-    };
+// Normally the drag options would be in a constant, but here the toggle can modify keepInBounds
+const dragOptions = {
+    moveMenuItemText: "Move",
+    closeMenuItemText: "Close",
+    menu: ContextualMenu,
+};
 
 export class ColumnDialog extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            selectedOptions: props.selectedOptions
-        }
+            selectedOptions: props.selectedOptions,
+        };
     }
 
     onSelectionChange = (selected) => {
@@ -38,15 +37,10 @@ export class ColumnDialog extends React.Component {
 
     applyChanges = (saveUpdates = false) => {
         this.props.updateColumns(saveUpdates, this.state.selectedOptions);
-    }
+    };
 
     render() {
-        const {
-            toggle,
-            columnOptions,
-            show,
-            t
-        } = this.props
+        const { toggle, columnOptions, show, t } = this.props;
         return (
             <div>
                 <Modal
@@ -79,26 +73,26 @@ export class ColumnDialog extends React.Component {
                                 permission={permissions.createDeviceGroups}
                             >
                                 <PrimaryButton
-                                onClick={() => this.applyChanges(true)}
-                                title="Apply and save"
-                                text="Save"
-                                styles={{
-                                    root: {
-                                        color: "#fff",
-                                        backgroundColor: "#f00",
-                                        selectors: {
-                                            ":hover": {
-                                                backgroundColor: "#8d8989",
-                                                color: "#030303",
-                                            },
-                                            ":hover .childElement": {
-                                                backgroundColor: "#8d8989",
-                                                color: "#030303",
+                                    onClick={() => this.applyChanges(true)}
+                                    title="Apply and save"
+                                    text="Save"
+                                    styles={{
+                                        root: {
+                                            color: "#fff",
+                                            backgroundColor: "#f00",
+                                            selectors: {
+                                                ":hover": {
+                                                    backgroundColor: "#8d8989",
+                                                    color: "#030303",
+                                                },
+                                                ":hover .childElement": {
+                                                    backgroundColor: "#8d8989",
+                                                    color: "#030303",
+                                                },
                                             },
                                         },
-                                    },
-                                }}
-                            />
+                                    }}
+                                />
                             </Protected>
                             <PrimaryButton
                                 onClick={() => this.applyChanges(false)}
@@ -128,10 +122,9 @@ export class ColumnDialog extends React.Component {
             </div>
         );
     }
-    
-};
+}
 
-const cancelIcon= { iconName: "Cancel" };
+const cancelIcon = { iconName: "Cancel" };
 
 const theme = getTheme();
 const contentStyles = mergeStyleSets({
@@ -154,7 +147,7 @@ const contentStyles = mergeStyleSets({
     ],
     body: {
         flex: "4 4 auto",
-        padding: "0 24px 24px 24px",        
+        padding: "0 24px 24px 24px",
         overflowY: "hidden",
         selectors: {
             p: { margin: "14px 0" },

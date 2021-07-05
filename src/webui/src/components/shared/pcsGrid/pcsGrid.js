@@ -88,7 +88,8 @@ export class PcsGrid extends Component {
                 (!this.props.rowData || !this.props.rowData.length)) ||
             (nextProps.columnDefs &&
                 nextProps.columnDefs.length > 0 &&
-                JSON.stringify(nextProps.columnDefs) !== JSON.stringify(this.props.columnDefs))
+                JSON.stringify(nextProps.columnDefs) !==
+                    JSON.stringify(this.props.columnDefs))
         ) {
             this.resizeEvents.next("r");
         }

@@ -155,6 +155,9 @@ export const translateColumnDefs = (t, columnDefs) => {
     });
 };
 
+/**
+ *
+ */
 export const getRendererFramework = (name, columnDef) => {
     switch (name) {
         case TimeRenderer.name:
@@ -172,6 +175,8 @@ export const getRendererFramework = (name, columnDef) => {
                 ...columnDef,
                 valueFormatter: ({ value }) => checkForEmpty(value),
             };
+            break;
+        default:
             break;
     }
     return columnDef;

@@ -1,4 +1,4 @@
-export default {
+const defaultLang = {
     availableFilterHeader: "Filter available",
     availableHeader: "Available",
     moveAllLeft: "Move all left",
@@ -14,3 +14,5 @@ export default {
     selectedFilterHeader: "Filter selected",
     selectedHeader: "Selected",
 };
+
+export default defaultLang;

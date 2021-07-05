@@ -146,14 +146,13 @@ export class ColumnMapper extends LinkedComponent {
                 return {
                     mappingName: (props.columnMapping || {}).name,
                     eTag: (props.columnMapping || {}).eTag,
-                    columnMappings:
-                        (props.columnMapping || {}).mapping || [],
+                    columnMappings: (props.columnMapping || {}).mapping || [],
                     defaultColumnMappings:
                         (props.defaultColumnMapping || {}).mapping || [],
                     isPending: props.isPending,
                 };
             } else {
-               return {
+                return {
                     isPending: props.isPending,
                 };
             }
@@ -293,7 +292,14 @@ export class ColumnMapper extends LinkedComponent {
                             .check(
                                 Validator.notDuplicated,
                                 t("columnMapping.errorMsg.nameIsDuplicated"),
-                                !this.state.isDefault ? [...this.state.defaultColumnMappings, ...this.state.columnMappings].map(m => m.name) : this.state.columnMappings.map(m => m.name)
+                                !this.state.isDefault
+                                    ? [
+                                          ...this.state.defaultColumnMappings,
+                                          ...this.state.columnMappings,
+                                      ].map((m) => m.name)
+                                    : this.state.columnMappings.map(
+                                          (m) => m.name
+                                      )
                             ),
                         mapping = conditionLink
                             .forkTo("mapping")
@@ -305,7 +311,14 @@ export class ColumnMapper extends LinkedComponent {
                             .check(
                                 Validator.notDuplicated,
                                 t("columnMapping.errorMsg.mappingIsDuplicated"),
-                                !this.state.isDefault ? [...this.state.defaultColumnMappings, ...this.state.columnMappings].map(m => m.mapping) : this.state.columnMappings.map(m => m.mapping)
+                                !this.state.isDefault
+                                    ? [
+                                          ...this.state.defaultColumnMappings,
+                                          ...this.state.columnMappings,
+                                      ].map((m) => m.mapping)
+                                    : this.state.columnMappings.map(
+                                          (m) => m.mapping
+                                      )
                             ),
                         renderer = conditionLink
                             .forkTo("cellRenderer")
@@ -350,7 +363,7 @@ export class ColumnMapper extends LinkedComponent {
                             .check(
                                 Validator.notDuplicated,
                                 t("columnMapping.errorMsg.nameIsDuplicated"),
-                                this.state.columnMappings.map(m => m.name)
+                                this.state.columnMappings.map((m) => m.name)
                             ),
                         mapping = conditionLink
                             .forkTo("mapping")
@@ -362,7 +375,7 @@ export class ColumnMapper extends LinkedComponent {
                             .check(
                                 Validator.notDuplicated,
                                 t("columnMapping.errorMsg.mappingIsDuplicated"),
-                                this.state.columnMappings.map(m => m.mapping)
+                                this.state.columnMappings.map((m) => m.mapping)
                             ),
                         renderer = conditionLink
                             .forkTo("cellRenderer")
@@ -396,7 +409,9 @@ export class ColumnMapper extends LinkedComponent {
                     };
                 }
             ),
-            conditionHasErrors = defaultMappingsLink.some(({ error }) => !!error) || mappingsLink.some(({ error }) => !!error);
+            conditionHasErrors =
+                defaultMappingsLink.some(({ error }) => !!error) ||
+                mappingsLink.some(({ error }) => !!error);
         return (
             <Fragment>
                 {!(this.state.isDefault || this.state.isEdit) && (
@@ -418,7 +433,9 @@ export class ColumnMapper extends LinkedComponent {
                 {!this.state.isDefault && this.state.isEdit && (
                     <p>{this.state.mappingName}</p>
                 )}
-                {this.state.isPending && <Indicator size="large" pattern="bar" />}
+                {this.state.isPending && (
+                    <Indicator size="large" pattern="bar" />
+                )}
                 <form onSubmit={this.apply}>
                     <div className={css("manage-filters-container")}>
                         <Grid>

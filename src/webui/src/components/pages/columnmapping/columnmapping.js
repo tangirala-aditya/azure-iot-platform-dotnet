@@ -14,12 +14,6 @@ const css = classnames.bind(require("./summary.module.scss"));
 const columnMappingCss = classnames.bind(require("./mapping.module.scss"));
 
 export class ColumnMapping extends LinkedComponent {
-    constructor(props) {
-        super(props);
-    }
-
-    UNSAFE_componentWillReceiveProps(nextProps) {}
-
     render() {
         return (
             <PageContent

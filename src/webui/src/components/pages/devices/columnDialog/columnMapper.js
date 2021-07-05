@@ -43,7 +43,9 @@ const swap = (index1, index2) => (options) => {
 };
 
 const defaultIcons = {
-    moveLeft: <i className="ms-Icon ms-Icon--ChevronLeft" aria-hidden="true"></i>,
+    moveLeft: (
+        <i className="ms-Icon ms-Icon--ChevronLeft" aria-hidden="true"></i>
+    ),
     moveAllLeft: [
         <span key={0} className="ms-Icon ms-Icon--DoubleChevronLeft" />,
     ],
@@ -55,7 +57,7 @@ const defaultIcons = {
     moveBottom: <span className="ms-Icon ms-Icon--DoubleChevronDown" />,
     moveDown: <span className="ms-Icon ms-Icon--ChevronDown" />,
     moveUp: <span className="ms-Icon ms-Icon--ChevronUp" />,
-}
+};
 
 class ColumnMapper extends React.Component {
     static propTypes = {

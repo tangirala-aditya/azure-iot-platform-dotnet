@@ -19,8 +19,8 @@ const toOption = (value, label) => ({
 });
 const toColumnMappingOptions = (mapping) => ({
     label: mapping.name,
-    value: mapping.id
-})
+    value: mapping.id,
+});
 
 export class ManageDeviceGroups extends LinkedComponent {
     constructor(props) {
@@ -44,8 +44,10 @@ export class ManageDeviceGroups extends LinkedComponent {
             },
             (filtersError) => this.setState({ filtersError })
         );
-        const columnMappingsOptions = [...this.props.columnMappings].map((item) => toColumnMappingOptions(item));
-        this.setState({columnMappingsOptions});
+        const columnMappingsOptions = [
+            ...this.props.columnMappings,
+        ].map((item) => toColumnMappingOptions(item));
+        this.setState({ columnMappingsOptions });
     }
 
     componentWillUnmount() {

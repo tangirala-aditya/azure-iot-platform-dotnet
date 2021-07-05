@@ -68,7 +68,7 @@ export const defaultDeviceColumns = [
         sort: "asc",
         cellRendererFramework: SoftSelectLinkRenderer,
         suppressSizeToFit: true,
-    }
+    },
 ];
 
 /** Default column definitions*/

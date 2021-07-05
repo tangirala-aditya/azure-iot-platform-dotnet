@@ -2,42 +2,13 @@
 
 import update from "immutability-helper";
 import dot from "dot-object";
-import { camelCaseReshape, getItems, float, camelCaseWithDotKeys } from "utilities";
+import {
+    camelCaseReshape,
+    getItems,
+    float,
+    camelCaseWithDotKeys,
+} from "utilities";
 import uuid from "uuid/v4";
-
-// Contains methods for converting service response
-// object to UI friendly objects
-
-// const defaultColumnMappings = [
-//     { name: "id", mapping: "id" },
-//     { name: "lastActivity", mapping: "lastActivity" },
-//     { name: "isSimulated", mapping: "isSimulated" },
-//     { name: "methods", mapping: "properties.reported.supportedMethods" },
-//     { name: "telemetry", mapping: "properties.reported.telemetry" },
-//     { name: "type", mapping: "properties.reported.type" },
-//     {
-//         name: "currentFwVersion",
-//         mapping: "properties.reported.firmware.currentFwVersion",
-//     },
-//     {
-//         name: "previousFwVersion",
-//         mapping: "previousProperties.reported.firmware.currentFwVersion",
-//     },
-//     {
-//         name: "lastFwUpdateStartTime",
-//         mapping: "properties.reported.firmware.lastFwUpdateStartTime",
-//     },
-//     {
-//         name: "lastFwUpdateEndTime",
-//         mapping: "properties.reported.firmware.lastFwUpdateEndTime",
-//     },
-//     { name: "c2DMessageCount", mapping: "c2DMessageCount" },
-//     { name: "enabled", mapping: "enabled" },
-//     { name: "lastStatusUpdated", mapping: "lastStatusUpdated" },
-//     { name: "iotHubHostName", mapping: "iotHubHostName" },
-//     { name: "eTag", mapping: "eTag" },
-//     { name: "authentication", mapping: "authentication" },
-// ];
 
 const defaultMappingObject = {
     id: "id",
@@ -65,7 +36,7 @@ const transformObject = (obj = []) => {
     let transformedObject = {};
 
     if (obj && obj.length > 0) {
-        obj.map((val) => {
+        obj.forEach((val) => {
             if (val && typeof val === "object") {
                 transformedObject[val.mapping] = val.name;
             }

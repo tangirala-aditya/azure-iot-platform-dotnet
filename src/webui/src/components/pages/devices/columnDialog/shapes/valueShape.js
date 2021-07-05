@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import optionShape from './optionShape';
+import optionShape from "./optionShape";
 
 export default PropTypes.arrayOf(
     PropTypes.oneOfType([
@@ -10,5 +10,5 @@ export default PropTypes.arrayOf(
             value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
             options: PropTypes.arrayOf(optionShape),
         }),
-    ]),
+    ])
 );

@@ -59,13 +59,9 @@ const classNames = mergeStyleSets({
     },
 });
 
-const onRenderCell = (
-    item,
-    index
-) => {
+const onRenderCell = (item, index) => {
     return (
         <div className={classNames.itemCell} data-is-focusable={true}>
-            
             <div className={classNames.itemContent}>
                 <div className={classNames.itemName}>{item.name}</div>
                 <div className={classNames.itemIndex}>{`Item ${index}`}</div>
@@ -85,7 +81,6 @@ export const ColumnList = (props) => {
         { id: 7, name: "Value 7" },
         { id: 8, name: "Value 8" },
         { id: 9, name: "Value 9" },
-
     ];
 
     return (

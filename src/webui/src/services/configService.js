@@ -32,20 +32,20 @@ export const INACTIVE_PACKAGE_TAG = "reserved.inactive";
 export class ConfigService {
     /** Returns a the account's device groups */
     static getDeviceGroups() {
-        return HttpClient.get("https://localhost:5001/v1/devicegroups").pipe(
+        return HttpClient.get(`${ENDPOINT}devicegroups`).pipe(
             map(toDeviceGroupsModel)
         );
     }
 
     /** Creates a new device group */
     static createDeviceGroup(payload) {
-        return HttpClient.post("https://localhost:5001/v1/devicegroups", payload).pipe(
+        return HttpClient.post(`${ENDPOINT}devicegroups`, payload).pipe(
             map(toDeviceGroupModel)
         );
     }
 
     static updateDeviceGroup(id, payload) {
-        return HttpClient.put(`https://localhost:5001/v1/devicegroups/${id}`, payload).pipe(
+        return HttpClient.put(`${ENDPOINT}devicegroups/${id}`, payload).pipe(
             map(toDeviceGroupModel)
         );
     }
@@ -223,14 +223,14 @@ export class ConfigService {
     }
 
     static getColumnMappings() {
-        return HttpClient.get("https://localhost:5001/v1/columnmapping").pipe(
+        return HttpClient.get(`${ENDPOINT}columnmapping`).pipe(
             map(toColumnMappings)
         );
     }
 
     static createColumnMappings(payload) {
         return HttpClient.post(
-            `https://localhost:5001/v1/columnmapping`,
+            `${ENDPOINT}columnmapping`,
             payload,
             { timeout: 120000 }
         ).pipe(map(toColumnMapping));
@@ -238,21 +238,21 @@ export class ConfigService {
 
     static updateColumnMappings(id, payload) {
         return HttpClient.put(
-            `https://localhost:5001/v1/columnmapping/${id}`,
+            `${ENDPOINT}columnmapping/${id}`,
             payload,
             { timeout: 120000 }
         ).pipe(map(toColumnMapping));
     }
 
     static getColumnOptions() {
-        return HttpClient.get("https://localhost:5001/v1/columnmapping/ColumnOptions").pipe(
+        return HttpClient.get(`${ENDPOINT}columnmapping/ColumnOptions`).pipe(
             map(toColumnOptions)
         );
     }
 
     static saveColumnOptions(payload) {
         return HttpClient.post(
-            `https://localhost:5001/v1/columnmapping/ColumnOptions`,
+            `${ENDPOINT}columnmapping/ColumnOptions`,
             payload,
             { timeout: 120000 }
         ).pipe(map(toColumnOption))
@@ -260,7 +260,7 @@ export class ConfigService {
 
     static updateColumnOptions(id, payload) {
         return HttpClient.put(
-            `https://localhost:5001/v1/columnmapping/ColumnOptions/${id}`,
+            `${ENDPOINT}columnmapping/ColumnOptions/${id}`,
             payload,
             { timeout: 120000 }
         ).pipe(map(toColumnOption));

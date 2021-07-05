@@ -884,10 +884,10 @@ class ColumnMapper extends React.Component {
                 )}
                 {preserveSelectOrder && showOrderButtons ? (
                     <div className="rdl-actions">
-                        {/* {makeAction("top")} */}
+                        {makeAction("top")}
                         {makeAction("up")}
                         {makeAction("down")}
-                        {/* {makeAction("bottom")} */}
+                        {makeAction("bottom")}
                     </div>
                 ) : null}
                 <input

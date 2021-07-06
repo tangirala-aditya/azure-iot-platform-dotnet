@@ -422,10 +422,10 @@ export class ColumnMapper extends LinkedComponent {
                         </FormLabel>
                         <FormControl
                             type="text"
-                            ariaLabel={t("columnMapping.field")}
+                            aria-label={t("columnMapping.field")}
                             className="long"
-                            searchable={false}
-                            clearable={false}
+                            searchable="false"
+                            clearable="false"
                             placeholder={t("columnMapping.namePlaceHolder")}
                             link={this.mappingNameLink}
                         />
@@ -456,24 +456,20 @@ export class ColumnMapper extends LinkedComponent {
                             {!this.state.isDefault &&
                                 defaultMappingsLink.map((condition, idx) => (
                                     <Row
-                                        key={
-                                            this.state.defaultColumnMappings[
-                                                idx
-                                            ].key
-                                        }
+                                        key={idx}
                                         // className="deviceExplorer-conditions"
                                     >
                                         <Cell className="col-1 button"></Cell>
                                         <Cell className="col-3">
                                             <FormControl
                                                 type="text"
-                                                ariaLabel={t(
+                                                aria-label={t(
                                                     "columnMapping.field"
                                                 )}
                                                 className="long"
                                                 disabled={true}
-                                                searchable={false}
-                                                clearable={false}
+                                                searchable="false"
+                                                clearable="false"
                                                 placeholder={t(
                                                     "columnMapping.headerPlaceholder"
                                                 )}
@@ -487,13 +483,13 @@ export class ColumnMapper extends LinkedComponent {
                                         <Cell className="col-2">
                                             <FormControl
                                                 type="select"
-                                                ariaLabel={t(
+                                                aria-label={t(
                                                     "columnMapping.mapping"
                                                 )}
                                                 className="long"
                                                 disabled={true}
-                                                searchable={false}
-                                                clearable={false}
+                                                searchable="false"
+                                                clearable="false"
                                                 options={
                                                     this.state.mappingOptions
                                                 }
@@ -507,13 +503,13 @@ export class ColumnMapper extends LinkedComponent {
                                         <Cell className="col-2">
                                             <FormControl
                                                 type="select"
-                                                ariaLabel={t(
+                                                aria-label={t(
                                                     "columnMapping.renderer"
                                                 )}
                                                 className="long"
                                                 disabled={true}
-                                                searchable={false}
-                                                clearable={false}
+                                                searchable="false"
+                                                clearable="false"
                                                 options={
                                                     this.state.rendererOptions
                                                 }
@@ -538,7 +534,7 @@ export class ColumnMapper extends LinkedComponent {
                                 ))}
                             {mappingsLink.map((condition, idx) => (
                                 <Row
-                                    key={this.state.columnMappings[idx].key}
+                                    key={idx}
                                     // className="deviceExplorer-conditions"
                                 >
                                     <Cell className="col-1 button">
@@ -551,10 +547,12 @@ export class ColumnMapper extends LinkedComponent {
                                     <Cell className="col-3">
                                         <FormControl
                                             type="text"
-                                            ariaLabel={t("columnMapping.field")}
+                                            aria-label={t(
+                                                "columnMapping.field"
+                                            )}
                                             className="long"
-                                            searchable={false}
-                                            clearable={false}
+                                            searchable="false"
+                                            clearable="false"
                                             placeholder={t(
                                                 "columnMapping.headerPlaceholder"
                                             )}
@@ -566,12 +564,12 @@ export class ColumnMapper extends LinkedComponent {
                                     <Cell className="col-2">
                                         <FormControl
                                             type="select"
-                                            ariaLabel={t(
+                                            aria-label={t(
                                                 "columnMapping.operator"
                                             )}
                                             className="long"
-                                            searchable={false}
-                                            clearable={false}
+                                            searchable="false"
+                                            clearable="false"
                                             options={this.state.mappingOptions}
                                             placeholder={t(
                                                 "columnMapping.mappingPlaceholder"
@@ -583,12 +581,12 @@ export class ColumnMapper extends LinkedComponent {
                                     <Cell className="col-2">
                                         <FormControl
                                             type="select"
-                                            ariaLabel={t(
+                                            aria-label={t(
                                                 "columnMapping.operator"
                                             )}
                                             className="long"
-                                            searchable={false}
-                                            clearable={false}
+                                            searchable="false"
+                                            clearable="false"
                                             options={this.state.rendererOptions}
                                             placeholder={t(
                                                 "columnMapping.renderPlaceholder"

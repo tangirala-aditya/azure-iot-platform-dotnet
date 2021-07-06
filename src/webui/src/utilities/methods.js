@@ -124,31 +124,32 @@ export const camelCaseReshape = (response, model) => {
  */
 export const translateColumnDefs = (t, columnDefs) => {
     return columnDefs.map((columnDef) => {
+        var tempColumnDef = { ...columnDef };
         if (
-            columnDef.cellRendererFramework &&
-            typeof columnDef.cellRendererFramework === "string"
+            tempColumnDef.cellRendererFramework &&
+            typeof tempColumnDef.cellRendererFramework === "string"
         ) {
-            columnDef = getRendererFramework(
-                columnDef.cellRendererFramework,
-                columnDef
+            tempColumnDef = getRendererFramework(
+                tempColumnDef.cellRendererFramework,
+                tempColumnDef
             );
         }
-        if (columnDef.valueFormatter) {
-            columnDef.tooltipValueGetter = columnDef.valueFormatter;
-        } else if (columnDef.cellRendererFramework) {
-            columnDef.tooltipValueGetter = tooltipRenderer;
+        if (tempColumnDef.valueFormatter) {
+            tempColumnDef.tooltipValueGetter = tempColumnDef.valueFormatter;
+        } else if (tempColumnDef.cellRendererFramework) {
+            tempColumnDef.tooltipValueGetter = tooltipRenderer;
         } else {
-            columnDef.tooltipField = columnDef.field;
+            tempColumnDef.tooltipField = tempColumnDef.field;
         }
 
-        const headerName = columnDef.headerName
-                ? t(columnDef.headerName)
+        const headerName = tempColumnDef.headerName
+                ? t(tempColumnDef.headerName)
                 : undefined,
-            headerTooltip = columnDef.headerTooltip
-                ? t(columnDef.headerTooltip)
+            headerTooltip = tempColumnDef.headerTooltip
+                ? t(tempColumnDef.headerTooltip)
                 : headerName;
         return {
-            ...columnDef,
+            ...tempColumnDef,
             headerName,
             headerTooltip,
         };
@@ -160,13 +161,13 @@ export const translateColumnDefs = (t, columnDefs) => {
  */
 export const getRendererFramework = (name, columnDef) => {
     switch (name) {
-        case TimeRenderer.name:
+        case "TimeRenderer":
             columnDef.cellRendererFramework = TimeRenderer;
             break;
-        case IsSimulatedRenderer.name:
+        case "IsSimulatedRenderer":
             columnDef.cellRendererFramework = IsSimulatedRenderer;
             break;
-        case ConnectionStatusRenderer.name:
+        case "ConnectionStatusRenderer":
             columnDef.cellRendererFramework = ConnectionStatusRenderer;
             break;
         case "DefaultRenderer":

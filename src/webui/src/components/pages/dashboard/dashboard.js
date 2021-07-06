@@ -23,7 +23,7 @@ import { ResetActiveDeviceQueryBtnContainer as ResetActiveDeviceQueryBtn } from 
 import {
     OverviewPanel,
     AlertsPanelContainer as AlertsPanel,
-    TelemetryPanel,
+    GrafanaTelemetryPanel,
     AnalyticsPanel,
     MapPanelContainer as MapPanel,
     ExamplePanel,
@@ -625,8 +625,9 @@ export class Dashboard extends Component {
                             />
                         </Cell>
                         <Cell className={css("col-6")}>
-                            <TelemetryPanel
+                            <GrafanaTelemetryPanel
                                 timeSeriesExplorerUrl={timeSeriesParamUrl}
+                                devices={devices}
                                 telemetry={telemetry}
                                 isPending={telemetryIsPending}
                                 limitExceeded={telemetryQueryExceededLimit}

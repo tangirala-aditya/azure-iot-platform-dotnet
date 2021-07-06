@@ -6,3 +6,4 @@ export * from "./overview";
 export * from "./map";
 export * from "./analytics";
 export * from "./telemetry";
+export * from "./grafanatelemetry";

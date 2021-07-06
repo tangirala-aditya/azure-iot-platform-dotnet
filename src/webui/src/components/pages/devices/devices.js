@@ -23,7 +23,11 @@ import { DeviceNewContainer } from "./flyouts/deviceNew";
 import { AdvanceSearchContainer } from "./advanceSearch";
 import { SIMManagementContainer } from "./flyouts/SIMManagement";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
-import { svgs, getDeviceGroupParam, getTenantIdParam } from "utilities";
+import {
+    svgs,
+    getDeviceGroupParam,
+    getTenantIdParam,
+} from "utilities";
 import {
     IdentityGatewayService,
     IoTHubManagerService,
@@ -36,6 +40,7 @@ import {
     generateColumnDefsFromSelectedOptions,
     generateSelectedOptionsFromMappings,
     generateColumnDefsFromMappings,
+    generateMappingObjectForDownload,
 } from "./devicesGrid/deviceColumnHelper";
 
 const classnames = require("classnames/bind");
@@ -397,8 +402,13 @@ export class Devices extends Component {
     };
 
     downloadFile = () => {
+        let mappingObject = [];
+        if(!this.isDeviceSearch) {
+            mappingObject = generateMappingObjectForDownload(this.DeviceGroupColumnMappings, this.state.selectedOptions);
+        }
         IoTHubManagerService.getDevicesReportByQuery(
-            this.props.activeDeviceGroupConditions
+            this.props.activeDeviceGroupConditions,
+            mappingObject
         ).subscribe((response) => {
             var blob = new Blob([response.response], {
                 type: response.response.type,

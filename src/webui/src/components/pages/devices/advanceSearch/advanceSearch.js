@@ -14,6 +14,7 @@ import {
     PropertyCell as Cell,
     PropertyGrid as Grid,
 } from "components/shared";
+import { defaultDownloadMappings } from "../devicesGrid/devicesGridConfig";
 
 import { IoTHubManagerService } from "services";
 
@@ -180,7 +181,8 @@ export class AdvanceSearch extends LinkedComponent {
         IoTHubManagerService.getDevicesReportByQuery(
             rawQueryConditions.map((condition) => {
                 return toDeviceConditionModel(condition);
-            })
+            }),
+            defaultDownloadMappings
         ).subscribe((response) => {
             var blob = new Blob([response.response], {
                 type: response.response.type,

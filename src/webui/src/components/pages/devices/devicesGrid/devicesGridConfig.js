@@ -89,3 +89,34 @@ export const defaultDeviceGridProps = {
     paginationPageSize: Config.paginationPageSize,
     rowSelection: "multiple",
 };
+
+export const defaultDownloadMappings = [
+    {
+        name: "Device name",
+        mapping: "Id",
+    },
+    {
+        name: "Simulated",
+        mapping: "IsSimulated",
+    },
+    {
+        name: "Device Type",
+        mapping: "DeviceType",
+    },
+    {
+        name: "Firmware",
+        mapping: "Firmware",
+    },
+    {
+        name: "Telemetry",
+        mapping: "Telemetry",
+    },
+    {
+        name: "Status",
+        mapping: "Connected",
+    },
+    {
+        name: "Last connection",
+        mapping: "LastActivity",
+    },
+];

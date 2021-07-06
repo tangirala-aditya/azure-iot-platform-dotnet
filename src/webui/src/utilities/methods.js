@@ -456,3 +456,9 @@ export const getFlyoutLink = (
 export const userHasPermission = (permission, userPermissions) => {
     return (userPermissions || new Set()).has(permission);
 };
+
+export const toPascalCase = (data) => {
+    return toCamelcase(data, {
+        pascalCase: true,
+    })
+};

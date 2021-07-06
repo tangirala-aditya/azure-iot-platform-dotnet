@@ -210,10 +210,11 @@ export class IoTHubManagerService {
     }
 
     /** Queries Devices */
-    static getDevicesReportByQuery(conditions = []) {
+    static getDevicesReportByQuery(conditions = [], mappings = []) {
         const query = encodeURIComponent(JSON.stringify(conditions));
-        var response = HttpClient.get(
+        var response = HttpClient.post(
             `${ENDPOINT}devices/report?query=${query}`,
+            mappings,
             { responseType: "blob", timeout: 120000 }
         );
         return response;

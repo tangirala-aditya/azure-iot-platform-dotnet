@@ -1,3 +1,6 @@
+
+import { toPascalCase } from "utilities";
+
 export const generateColumnDefsFromMappings = (mappings = []) => {
     let columnDefs = [];
     if (mappings.length > 0) {
@@ -53,4 +56,23 @@ export const generateSelectedOptionsFromMappings = (mappings = []) => {
         });
     }
     return selectedOptions;
+};
+
+export const generateMappingObjectForDownload = (mappings = [], selectedOptions = []) => {
+    let columnDefs = [{
+        name: "Device Name",
+        mapping: "Id",
+    }];
+    if(mappings.length > 0 && selectedOptions.length > 0) {
+        selectedOptions.forEach(option => {
+            if(mappings.find(m => m.name === option)) {
+                let mapping = mappings.filter(m => m.name === option)[0];
+                columnDefs.push({
+                    Name: mapping.name,
+                    Mapping: mapping.mapping.includes(".") ? mapping.mapping : toPascalCase(mapping.mapping)
+                });
+            }
+        });
+    }
+    return columnDefs;
 };

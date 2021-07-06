@@ -7,14 +7,8 @@ const classnames = require("classnames/bind");
 const css = classnames.bind(require("./styles/formGroup.module.scss"));
 
 export const FormLabel = (props) => {
-    const {
-            formGroupId,
-            className,
-            children,
-            htmlFor,
-            isRequired,
-            ...rest
-        } = props,
+    const { formGroupId, className, children, htmlFor, isRequired, ...rest } =
+            props,
         labelProps = {
             ...rest,
             className: css("form-group-label", className),

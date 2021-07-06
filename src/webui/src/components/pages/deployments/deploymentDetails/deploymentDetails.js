@@ -68,13 +68,8 @@ export class DeploymentDetails extends Component {
     }
 
     getOpenModal = () => {
-        const {
-            t,
-            deleteIsPending,
-            deleteError,
-            deleteItem,
-            logEvent,
-        } = this.props;
+        const { t, deleteIsPending, deleteError, deleteItem, logEvent } =
+            this.props;
         if (
             this.state.openModalName === "delete-deployment" &&
             this.props.currentDeployment
@@ -158,9 +153,9 @@ export class DeploymentDetails extends Component {
 
     activateOrInactivateDeployment = (deploymentId, isActive) => {
         if (!isActive) {
-            IoTHubManagerService.reactivateDeployment(
-                deploymentId
-            ).subscribe(() => this.closeAndNavigateBack(true));
+            IoTHubManagerService.reactivateDeployment(deploymentId).subscribe(
+                () => this.closeAndNavigateBack(true)
+            );
         } else {
             IoTHubManagerService.deleteDeployment(
                 deploymentId,

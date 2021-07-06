@@ -235,13 +235,8 @@ export class MapPanel extends Component {
     closeDeviceDetails = () => this.setState({ selectedDeviceId: undefined });
 
     render() {
-        const {
-                t,
-                isPending,
-                mapKeyIsPending,
-                azureMapsKey,
-                error,
-            } = this.props,
+        const { t, isPending, mapKeyIsPending, azureMapsKey, error } =
+                this.props,
             showOverlay = !error && isPending && mapKeyIsPending;
         return (
             <Panel className={css("map-panel-container")}>

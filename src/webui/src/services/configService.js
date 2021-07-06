@@ -229,19 +229,15 @@ export class ConfigService {
     }
 
     static createColumnMappings(payload) {
-        return HttpClient.post(
-            `${ENDPOINT}columnmapping`,
-            payload,
-            { timeout: 120000 }
-        ).pipe(map(toColumnMapping));
+        return HttpClient.post(`${ENDPOINT}columnmapping`, payload, {
+            timeout: 120000,
+        }).pipe(map(toColumnMapping));
     }
 
     static updateColumnMappings(id, payload) {
-        return HttpClient.put(
-            `${ENDPOINT}columnmapping/${id}`,
-            payload,
-            { timeout: 120000 }
-        ).pipe(map(toColumnMapping));
+        return HttpClient.put(`${ENDPOINT}columnmapping/${id}`, payload, {
+            timeout: 120000,
+        }).pipe(map(toColumnMapping));
     }
 
     static getColumnOptions() {
@@ -255,7 +251,7 @@ export class ConfigService {
             `${ENDPOINT}columnmapping/ColumnOptions`,
             payload,
             { timeout: 120000 }
-        ).pipe(map(toColumnOption))
+        ).pipe(map(toColumnOption));
     }
 
     static updateColumnOptions(id, payload) {

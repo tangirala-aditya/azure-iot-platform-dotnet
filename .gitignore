@@ -465,4 +465,3 @@ bld/
 src/webui/build
 src/webui/package-lock.json
 src/services/*/WebService/azds/*
-src/webui/src/app.config.js

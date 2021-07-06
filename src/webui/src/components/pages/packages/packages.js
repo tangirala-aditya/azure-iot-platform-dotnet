@@ -164,14 +164,8 @@ export class Packages extends Component {
     };
 
     render() {
-        const {
-                t,
-                packages,
-                error,
-                isPending,
-                fetchPackages,
-                lastUpdated,
-            } = this.props,
+        const { t, packages, error, isPending, fetchPackages, lastUpdated } =
+                this.props,
             gridProps = {
                 onGridReady: this.onGridReady,
                 onFirstDataRendered: this.onFirstDataRendered,

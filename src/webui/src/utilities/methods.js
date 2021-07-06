@@ -461,5 +461,5 @@ export const userHasPermission = (permission, userPermissions) => {
 export const toPascalCase = (data) => {
     return toCamelcase(data, {
         pascalCase: true,
-    })
+    });
 };

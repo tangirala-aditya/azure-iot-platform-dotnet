@@ -23,11 +23,7 @@ import { DeviceNewContainer } from "./flyouts/deviceNew";
 import { AdvanceSearchContainer } from "./advanceSearch";
 import { SIMManagementContainer } from "./flyouts/SIMManagement";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
-import {
-    svgs,
-    getDeviceGroupParam,
-    getTenantIdParam,
-} from "utilities";
+import { svgs, getDeviceGroupParam, getTenantIdParam } from "utilities";
 import {
     IdentityGatewayService,
     IoTHubManagerService,
@@ -225,31 +221,28 @@ export class Devices extends Component {
         }
 
         if (
-            this.props.isColumnMappingsPending !==
-                this.state.isColumnMappingsPending &&
+            !nextProps.isColumnMappingsPending &&
             this.props.activeDeviceGroupId
         ) {
-            if (!nextProps.isColumnMappingsPending) {
-                var defaultColumnMappings = nextProps.columnMappings["Default"]
-                    ? nextProps.columnMappings["Default"].mapping
-                    : [];
+            var defaultColumnMappings = nextProps.columnMappings["Default"]
+                ? nextProps.columnMappings["Default"].mapping
+                : [];
 
-                let tempState = {
-                    ...this.state,
-                    defaultColumnMappings: defaultColumnMappings,
-                    ...this.setMappingsAndOptions(nextProps),
-                };
+            let tempState = {
+                ...this.state,
+                defaultColumnMappings: defaultColumnMappings,
+                ...this.setMappingsAndOptions(nextProps),
+            };
 
-                this.setState({
-                    ...tempState,
-                    ...this.setColumnOptions(tempState),
-                    isColumnMappingsPending: nextProps.isColumnMappingsPending,
-                });
-            } else {
-                this.setState({
-                    isColumnMappingsPending: nextProps.isColumnMappingsPending,
-                });
-            }
+            this.setState({
+                ...tempState,
+                ...this.setColumnOptions(tempState),
+                isColumnMappingsPending: nextProps.isColumnMappingsPending,
+            });
+        } else {
+            this.setState({
+                isColumnMappingsPending: nextProps.isColumnMappingsPending,
+            });
         }
     }
 
@@ -403,8 +396,11 @@ export class Devices extends Component {
 
     downloadFile = () => {
         let mappingObject = [];
-        if(!this.isDeviceSearch) {
-            mappingObject = generateMappingObjectForDownload(this.DeviceGroupColumnMappings, this.state.selectedOptions);
+        if (!this.isDeviceSearch) {
+            mappingObject = generateMappingObjectForDownload(
+                this.DeviceGroupColumnMappings,
+                this.state.selectedOptions
+            );
         }
         IoTHubManagerService.getDevicesReportByQuery(
             this.props.activeDeviceGroupConditions,

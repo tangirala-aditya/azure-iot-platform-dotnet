@@ -3,6 +3,7 @@
 // Exports models
 
 export * from "./authModels";
+export * from "./mappingModels";
 export * from "./deviceSimulationModels";
 export * from "./iotHubManagerModels";
 export * from "./identityGatewayModels";

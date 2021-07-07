@@ -2,6 +2,10 @@ trigger: none
 pr: none
 pool:
   vmImage: ubuntu-latest
+variables:
+  - template: ../../templates/variables-all.yaml
+  - name: appConfigurationName
+    value: $(applicationCode)-$(appConfigurationPartialName)-$(environmentCategory)
 stages:
   - stage: checkParameters
     displayName: Check parameters

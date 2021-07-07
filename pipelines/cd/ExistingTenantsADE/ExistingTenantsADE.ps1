@@ -110,7 +110,7 @@ try {
           #Data Connection
           ##checking if Name exists.
           if ((Test-AzKustoDataConnectionNameAvailability -ClusterName $clusterName -DatabaseName $databaseName -ResourceGroupName $resourceGroupName -Name $dataconnectionName -Type Microsoft.Kusto/Clusters/Databases/dataConnections).NameAvailable) {
-               New-AzKustoDataConnection -ResourceGroupName $resourceGroupName -ClusterName $clusterName -DatabaseName $databaseName -DataConnectionName $dataconnectionName -Location $clusterLocation -Kind "EventHub" -EventHubResourceId $deviceTwinEventHubResourceId -DataFormat "JSON" -ConsumerGroup '$Default' -TableName "Telemetry" -MappingRuleName $dataConMappingName
+               New-AzKustoDataConnection -ResourceGroupName $resourceGroupName -ClusterName $clusterName -DatabaseName $databaseName -DataConnectionName $dataconnectionName -Location $clusterLocation -Kind "EventHub" -EventHubResourceId $eventHubResourceId -DataFormat "JSON" -ConsumerGroup '$Default' -TableName "Telemetry" -MappingRuleName $dataConMappingName
                Write-Host "############## Created Data Connection."
           }
           else {

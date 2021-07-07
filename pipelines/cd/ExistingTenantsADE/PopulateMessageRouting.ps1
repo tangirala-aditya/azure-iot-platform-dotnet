@@ -11,6 +11,8 @@ param(
      #remove and reinstall pkmngr and install packages
      Install-Module -Name AzTable -Force
 
+     Write-Host "############## Installed AzTable successfully."
+
      $resourceGroupName = $resourceGroup
      $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
      $eventhubNamespace=$applicationCode + "eventhub" + $environmentCategory
@@ -28,8 +30,12 @@ param(
      az login --service-principal -u $servicePrincipalId --password $servicePrincipalKey --tenant $tenantId --allow-no-subscriptions
      az account set --subscription $subscriptionId
 
+     Write-Host "############## Got iothub records from storage."
 
      Foreach ($iotHub in $iotHubArray) {
+
+          Write-Host "############## Started Updating routes in IotHub $iotHubName"
+
           $iotHubName = $iotHub.Name
           # $enrichMessageObject[0].value=$iotHub.TenantId
           $authruleName=(Get-AzEventHubAuthorizationRule -ResourceGroupName $resourceGroup -NamespaceName $eventhubNamespace -EventHubName $eventHubs).Name
@@ -45,6 +51,8 @@ param(
             -EndpointSubscriptionId $subscriptionId `
             -ConnectionString $eventhubConnectionString
 
+          Write-Host "############## Added Routing Endpoint IotHub $iotHubName"
+
         for ($i = 0; $i -lt $messageRoutes.Count; $i++) {
         # This is used to create a route in all IoT Hubs (for now it is single iothub)
         Add-AzIotHubRoute  `
@@ -55,10 +63,14 @@ param(
            -EndpointName $endpointName
          } 
 
+         Write-Host "############## Added Routes IotHub $iotHubName"
+
          Set-AzIotHubMessageEnrichment `
            -ResourceGroupName $resourceGroup `
            -Name $iotHubName `
            -Key "tenant" `
            -Value $iotHub.TenantId `
            -Endpoint $messageEnrichmentEndpoints
+
+         Write-Host "############## Added Message Enrichment IotHub $iotHubName"
     }

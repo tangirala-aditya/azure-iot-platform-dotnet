@@ -622,7 +622,8 @@ export class ColumnMapper extends LinkedComponent {
                                     disabled={
                                         !this.formIsValid() ||
                                         conditionHasErrors ||
-                                        (!this.state.isDefault && this.mappingNameLink.error) ||
+                                        (!this.state.isDefault &&
+                                            this.mappingNameLink.error) ||
                                         this.state.isPending ||
                                         this.state.columnMappings.length === 0
                                     }

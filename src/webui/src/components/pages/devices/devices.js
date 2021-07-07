@@ -90,7 +90,7 @@ export class Devices extends Component {
     }
 
     setMappingsAndOptions(props, deviceGroupId = null) {
-        const defaultMappings = props.columnMappings["Default"]?.mapping??[];
+        const defaultMappings = props.columnMappings["Default"]?.mapping ?? [];
         const deviceGroupMappingId = props.deviceGroups.find(
             (dg) => dg.id === (deviceGroupId ?? props.activeDeviceGroupId)
         ).mappingId;
@@ -398,7 +398,9 @@ export class Devices extends Component {
         let mappingObject = [];
         if (!this.isDeviceSearch) {
             mappingObject = generateMappingObjectForDownload(
-                this.DeviceGroupColumnMappings.length === 0 ? this.state.defaultColumnMappings : this.DeviceGroupColumnMappings,
+                this.DeviceGroupColumnMappings.length === 0
+                    ? this.state.defaultColumnMappings
+                    : this.DeviceGroupColumnMappings,
                 this.state.selectedOptions
             );
         }

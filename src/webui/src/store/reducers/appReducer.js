@@ -44,7 +44,10 @@ import {
     getError,
 } from "store/utilities";
 import { svgs, compareByProperty } from "utilities";
-import { toSinglePropertyDiagnosticsModel, SystemDefaultMapping } from "services/models";
+import {
+    toSinglePropertyDiagnosticsModel,
+    SystemDefaultMapping,
+} from "services/models";
 import { HttpClient } from "utilities/httpClient";
 
 // ========================= Epics - START
@@ -477,7 +480,7 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
         });
     },
     updateColumnMappingsReducer = (state, { payload, fromAction }) => {
-        if(!payload.find(p => p.id === "Default")) {
+        if (!payload.find((p) => p.id === "Default")) {
             payload.push(SystemDefaultMapping);
         }
         const {

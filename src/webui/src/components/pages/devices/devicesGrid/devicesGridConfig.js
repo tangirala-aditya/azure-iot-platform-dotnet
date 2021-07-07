@@ -65,7 +65,7 @@ export const deviceColumnDefs = {
         field: "deviceCreatedDate",
         cellRendererFramework: TimeRenderer,
         suppressSizeToFit: true,
-        sort: "asc",
+        sort: "desc",
     },
 };
 

@@ -42,13 +42,13 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
             {
                 DatabaseNameFormat = TelemetryDatabaseNameFormat,
                 SoftDeletePeriod = new TimeSpan(30, 0, 0, 0),
-                HotDeletePeriod = new TimeSpan(0, 0, 0, 0),
+                HotCachePeriod = new TimeSpan(0, 0, 0, 0),
             },
             new ADXDatabaseModel()
             {
                 DatabaseNameFormat = IoTDatabaseNameFormat,
                 SoftDeletePeriod = null,
-                HotDeletePeriod = new TimeSpan(0, 0, 0, 0),
+                HotCachePeriod = new TimeSpan(0, 0, 0, 0),
             },
         };
 
@@ -230,7 +230,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                 Console.WriteLine($"Creating a {databaseName} DB in Data Explorer");
 
-                await this.azureManagementClient.KustoClusterManagementClient.CreateDBInClusterAsync(databaseName, item.SoftDeletePeriod, item.HotDeletePeriod);
+                await this.azureManagementClient.KustoClusterManagementClient.CreateDBInClusterAsync(databaseName, item.SoftDeletePeriod, item.HotCachePeriod);
 
                 Console.WriteLine($"Created a {databaseName} DB in Data Explorer");
             }
@@ -320,7 +320,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
             public TimeSpan? SoftDeletePeriod { get; set; }
 
-            public TimeSpan HotDeletePeriod { get; set; }
+            public TimeSpan HotCachePeriod { get; set; }
         }
     }
 }

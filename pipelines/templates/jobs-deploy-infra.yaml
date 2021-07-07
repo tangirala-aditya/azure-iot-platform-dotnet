@@ -1077,13 +1077,15 @@ jobs:
             twinchangeEvConn=$(az keyvault secret show --name "TenantManagerService--TwinChangeEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
             deviceTwinMirrorEvConn=$(az keyvault secret show --name "TenantManagerService--DeviceTwinMirrorEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
             storageAccountConn=$(az keyvault secret show --name "Global--StorageAccountConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             az functionapp config appsettings set --name $devicetwinPropfn \
               --settings \
+                "AppConfigurationConnectionString"="$appConfigurationConnectionString" \
                 "CosmosDbConnectionString"="$cosmosDbConn" \
                 "TelemetryEventHubConnectionString"="$telemetryEvConn" \
                 "LifecycleEventHubConnectionString"="$lifecycleEvConn" \
                 "TwinChangeEventHubConnectionString"="$twinchangeEvConn" \
-                "DeviecTwinMirrorEventHubConnectionString"="$deviceTwinMirrorEvConn" \
+                "DeviceTwinMirrorEventHubConnectionString"="$deviceTwinMirrorEvConn" \
                 "DevicePropertiesCacheConsumerGroup"="devicepropertiescache" \
                 "DeviceStreamConsumerGroup"="devicestream" \
                 "CosmosDbRus"="400" \

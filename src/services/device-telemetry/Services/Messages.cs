@@ -33,6 +33,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services
         private const string TsiStorageTypeKey = "tsi";
         private const string TenantInfoKey = "tenant";
         private const string TelemetryCollectionKey = "telemetry-collection";
+        private const string TelemetryDatabaseNameFormat = "Telemetry-{0}";
         private readonly ILogger logger;
         private readonly IStorageClient storageClient;
         private readonly ITimeSeriesClient timeSeriesClient;
@@ -257,8 +258,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services
             int limit,
             string[] devices)
         {
-            // TODO
-            string database = $"IoT-{this.httpContextAccessor.HttpContext.Request.GetTenant()}";
+            string database = string.Format(TelemetryDatabaseNameFormat, this.httpContextAccessor.HttpContext.Request.GetTenant());
 
             (string query, Dictionary<string, string> queryParameter) = QueryBuilder.GetKustoQuery(
                 "Telemetry",

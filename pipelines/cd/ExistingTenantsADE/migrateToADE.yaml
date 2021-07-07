@@ -179,7 +179,7 @@ stages:
 
           - task: AzurePowerShell@5
             displayName: Add Device Twin Endpoint to IoTHubs.
-            name: existingTenants
+            name: existingTenantsIoTHubs
             inputs:
               azureSubscription: $(subscriptionName)
               ScriptType: FilePath

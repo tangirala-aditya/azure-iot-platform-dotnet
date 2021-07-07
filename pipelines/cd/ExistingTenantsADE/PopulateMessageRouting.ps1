@@ -7,9 +7,7 @@ param(
      [string] $tenantId,
      [string] $subscriptionId     
 )
-
-
-try {       
+      
      #remove and reinstall pkmngr and install packages
      Install-Module -Name AzTable -Force
 
@@ -33,7 +31,7 @@ try {
 
      Foreach ($iotHub in $iotHubArray) {
           $iotHubName = $iotHub.Name
-          $enrichMessageObject[0].value=$iotHub.TenantId
+          # $enrichMessageObject[0].value=$iotHub.TenantId
           $authruleName=(Get-AzEventHubAuthorizationRule -ResourceGroupName $resourceGroup -NamespaceName $eventhubNamespace -EventHubName $eventHubs).Name
           $eventhubConnectionString=(Get-AzEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -AuthorizationRuleName $authruleName).PrimaryConnectionString
      
@@ -64,8 +62,3 @@ try {
            -Value $iotHub.TenantId `
            -Endpoint $messageEnrichmentEndpoints
     }
-}
-catch {
-     Write-Host("An Error occured.")
-     Write-Host($_)
-}

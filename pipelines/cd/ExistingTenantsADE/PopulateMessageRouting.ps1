@@ -24,7 +24,7 @@ try {
      $iotHubArray = (Get-AzTableRow -table $tableObject -CustomFilter 'IsIotHubDeployed eq true')
      $endpointType="eventhubs"
      $endpointName= "event-hub-device-twin-mirror"
-     $messageRoutes=@("TwinMirrorDeviceConnectionState","TwinMirrorLifecycle","TwinMirrorTwinChange")
+     $messageRoutes=@("deviceTwinMirrorDeviceConnectionState","deviceTwinMirrorLifecycle","deviceTwinMirrorTwinChange")
      $dataSources=@("DeviceConnectionStateEvents","DeviceLifecycleEvents","TwinChangeEvents")
      $eventHubs="device-twin-mirror"
      $messageEnrichmentEndpoints=@("event-hub-telemetry,event-hub-twin-change,event-hub-lifecycle,event-hub-device-twin-mirror")

@@ -109,13 +109,13 @@
                             "isEnabled": true
                         }},
                         {{
-                            "name": "deviceConnectionState",
-                            "source": "DeviceConnectionStateEvents",
-                            "condition": "true",
-                            "endpointNames": [
-                                "event-hub-device-twin-mirror"
-                            ],
-                            "isEnabled": true
+                                "name": "deviceTwinMirrorDeviceConnectionState",
+                                "source": "DeviceConnectionStateEvents",
+                                "condition": "true",
+                                "endpointNames": [
+                                    "event-hub-device-twin-mirror"
+                                ],
+                                "isEnabled": true
                         }},
                         {{
                             "name": "deviceTwinMirrorLifecycle",

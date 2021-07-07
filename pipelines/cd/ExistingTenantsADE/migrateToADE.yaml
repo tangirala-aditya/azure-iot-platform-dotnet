@@ -6,6 +6,8 @@ variables:
   - template: ../../templates/variables-all.yaml
   - name: appConfigurationName
     value: $(applicationCode)-$(appConfigurationPartialName)-$(environmentCategory)
+  - name: resourceGroupName
+    value: rg-iot-$(applicationShortCode)-$(environmentCategory)
 stages:
   - stage: checkParameters
     displayName: Check parameters

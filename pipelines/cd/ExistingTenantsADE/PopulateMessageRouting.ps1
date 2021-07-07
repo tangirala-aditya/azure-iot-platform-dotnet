@@ -39,7 +39,7 @@ param(
           $iotHubName = $iotHub.Name
           # $enrichMessageObject[0].value=$iotHub.TenantId
           $authruleName=(Get-AzEventHubAuthorizationRule -ResourceGroupName $resourceGroup -NamespaceName $eventhubNamespace -EventHubName $eventHubs).Name
-          $eventhubConnectionString=(Get-AzEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -AuthorizationRuleName $authruleName).PrimaryConnectionString
+          $eventhubConnectionString=(Get-AzEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $eventHubs -AuthorizationRuleName $authruleName).PrimaryConnectionString
      
         # This is used to Create/Add an endpoint to all IoT Hub (for now it is single iothub)    
           Add-AzIotHubRoutingEndpoint `

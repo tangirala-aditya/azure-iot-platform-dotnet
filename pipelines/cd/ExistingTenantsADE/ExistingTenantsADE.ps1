@@ -129,7 +129,7 @@ try {
           $clusterLocation = (Get-AzKustoCluster -Name $clusterName -ResourceGroupName $resourceGroupName).Location
           ##checking if Name exists.
           if ((Test-AzKustoDatabaseNameAvailability -ResourceGroupName $ResourceGroupName -ClusterName $clusterName -Name $iotDatabaseName -Type Microsoft.Kusto/Clusters/Databases).NameAvailable) {
-               New-AzKustoDatabase -ResourceGroupName $resourceGroupName -ClusterName $clusterName -Name $iotDatabaseName -SoftDeletePeriod 0:00:00:00 -HotCachePeriod 0:00:00:00 -Kind ReadWrite -Location $clusterLocation
+               New-AzKustoDatabase -ResourceGroupName $resourceGroupName -ClusterName $clusterName -Name $iotDatabaseName -HotCachePeriod 0:00:00:00 -Kind ReadWrite -Location $clusterLocation
                Write-Host "############## Created DataBase $iotDatabaseName."
                Get-AzKustoDatabase -ClusterName $clusterName -ResourceGroupName $resourceGroupName -Name $iotDatabaseName  
 

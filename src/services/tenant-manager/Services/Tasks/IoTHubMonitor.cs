@@ -47,7 +47,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
             new ADXDatabaseModel()
             {
                 DatabaseNameFormat = IoTDatabaseNameFormat,
-                SoftDeletePeriod = new TimeSpan(0, 0, 0, 0),
+                SoftDeletePeriod = null,
                 HotDeletePeriod = new TimeSpan(0, 0, 0, 0),
             },
         };
@@ -318,7 +318,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
         {
             public string DatabaseNameFormat { get; set; }
 
-            public TimeSpan SoftDeletePeriod { get; set; }
+            public TimeSpan? SoftDeletePeriod { get; set; }
 
             public TimeSpan HotDeletePeriod { get; set; }
         }

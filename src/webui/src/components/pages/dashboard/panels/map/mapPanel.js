@@ -63,7 +63,10 @@ export class MapPanel extends Component {
                 const [pin] = event.features;
                 this.popup.setPopupOptions({
                     position: pin.geometry.coordinates,
-                    content: this.buildDevicePopup(pin.properties, classname),
+                    content: this.buildDevicePopup(
+                        pin.properties,
+                        css(classname)
+                    ),
                 });
                 this.props.logEvent(toDiagnosticsModel("Map_DeviceClick", {}));
                 this.popup.open(map);
@@ -78,17 +81,17 @@ export class MapPanel extends Component {
 
     buildDevicePopup = (properties, classname) => {
         const popupContentBox = document.createElement("div");
-        popupContentBox.classList.add("popup-content-box");
-        popupContentBox.classList.add(classname);
+        popupContentBox.classList.add(css("popup-content-box"));
+        popupContentBox.classList.add(css(classname));
 
         const type = document.createElement("div");
-        type.classList.add("popup-type");
+        type.classList.add(css("popup-type"));
         type.innerText = properties.cluster
             ? "Device Cluster"
             : properties.type;
 
         const name = document.createElement("div");
-        name.classList.add("popup-device-name");
+        name.classList.add(css("popup-device-name"));
         name.innerText = properties.cluster
             ? `Devices: ${properties.point_count}`
             : properties.id;

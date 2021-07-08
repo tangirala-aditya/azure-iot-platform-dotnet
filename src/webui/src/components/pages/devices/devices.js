@@ -91,9 +91,11 @@ export class Devices extends Component {
 
     setMappingsAndOptions(props, deviceGroupId = null) {
         const defaultMappings = props.columnMappings["Default"]?.mapping ?? [];
-        const deviceGroupMappingId = props.deviceGroups.find(
-            (dg) => dg.id === (deviceGroupId ?? props.activeDeviceGroupId)
-        ).mappingId;
+        const deviceGroupMappingId =
+            props.deviceGroups.find(
+                (dg) => dg.id === (deviceGroupId ?? props.activeDeviceGroupId)
+            ).mappingId ?? null;
+
         this.DeviceGroupColumnMappings = props.columnMappings[
             deviceGroupMappingId
         ]

@@ -27,6 +27,8 @@ const mapStateToProps = (state) => ({
             dispatch(appRedux.actions.insertDeviceGroups(deviceGroups)),
         logEvent: (diagnosticsModel) =>
             dispatch(appEpics.actions.logEvent(diagnosticsModel)),
+        updateActiveDeviceGroup: (id) =>
+            dispatch(appRedux.actions.updateActiveDeviceGroup(id)),
     });
 
 export const ManageDeviceGroupsContainer = withTranslation()(

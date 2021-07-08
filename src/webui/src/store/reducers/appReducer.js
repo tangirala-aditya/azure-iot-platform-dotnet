@@ -541,7 +541,7 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
             ...setPending(epics.actionTypes.pollActionSettings, false),
         });
     },
-    updateActiveDeviceGroupsReducer = (state, { payload }) => {
+    updateActiveDeviceGroupReducer = (state, { payload }) => {
         if (state.deviceGroups[payload]) {
             return update(state, { activeDeviceGroupId: { $set: payload } });
         }
@@ -660,7 +660,7 @@ export const redux = createReducerScenario({
     },
     updateActiveDeviceGroup: {
         type: "APP_ACTIVE_DEVICE_GROUP_UPDATE",
-        reducer: updateActiveDeviceGroupsReducer,
+        reducer: updateActiveDeviceGroupReducer,
     },
     updateColumnMappings: {
         type: "APP_COLUMN_MAPPINGS_GETCH",

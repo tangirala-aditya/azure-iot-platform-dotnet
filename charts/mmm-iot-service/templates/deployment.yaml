@@ -80,6 +80,8 @@ spec:
           env:
             {{- $root := . }}
             {{- range $ref := .Values.deployment.secretsRef }}
+            - name: COMPlus_EnableDiagnostics
+              value: "0"
             - name: {{ $ref }}
               valueFrom:
                 secretKeyRef:

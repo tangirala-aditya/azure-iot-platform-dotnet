@@ -1,6 +1,6 @@
 FROM node:11-alpine as codebuilder
 WORKDIR /app
-RUN adduser -D docker && chown -R docker /app
+RUN adduser -D nginx && chown -R nginx /app
 RUN apk add --no-cache bash
 RUN apk --update add python3
 RUN apk add --no-cache --virtual build-base
@@ -35,7 +35,7 @@ RUN chmod +x ./set_env.sh
 COPY ./run.sh .
 RUN chmod +x ./run.sh
 COPY ./content/nginx.conf /app/nginx.conf
-RUN chown -R docker /etc/nginx/ /var/log/nginx/ /var/cache/nginx/ /var/lib/nginx/
-RUN chmod +rw /etc/nginx/ /var/log/nginx /var/cache/nginx
-USER docker
+RUN chown -R docker /etc/nginx/ /var/log/nginx/ /var/cache/nginx/ /var/lib/nginx/ /var/tmp/
+RUN chmod +rw /etc/nginx/ /var/log/nginx /var/cache/nginx /var/tmp/
+USER nginx
 ENTRYPOINT [ "/app/run.sh" ]

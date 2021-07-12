@@ -67,8 +67,7 @@ export class GrafanaTelemetryPanel extends Component {
                 <PanelContent className={css("telemetry-panel-container")}>
                     <iframe
                         title="Dashboard"
-                        src={`http://localhost:8080/grafana/d/Sb-VAjknk/telemetry?orgId=1&${deviceurl}&theme=light&from=${from}&to=now&refresh=10s&kiosk`}
-                        //src={`http://localhost:8080/grafana/d-solo/Sb-VAjknk/telemetry?orgId=1&${deviceurl}&theme=light&from=now-1h&to=now&refresh=1m&panelId=2`}
+                        src={`https://acsagic-aks-dev.centralus.cloudapp.azure.com/grafana/d/Ij8AUoink/sample-dashboard?orgId=1&kiosk`}
                         width="100%"
                         height="100%"
                         frameborder="0"

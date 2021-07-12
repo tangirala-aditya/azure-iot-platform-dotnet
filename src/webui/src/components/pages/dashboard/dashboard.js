@@ -15,7 +15,7 @@ import {
     getTenantIdParam,
 } from "utilities";
 import { Grid, Cell } from "./grid";
-import { PanelErrorBoundary } from "./panel";
+//import { PanelErrorBoundary } from "./panel";
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from "components/shell/deviceGroupDropdown";
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from "components/shell/manageDeviceGroupsBtn";
 import { TimeIntervalDropdownContainer as TimeIntervalDropdown } from "components/shell/timeIntervalDropdown";
@@ -25,7 +25,7 @@ import {
     AlertsPanelContainer as AlertsPanel,
     GrafanaTelemetryPanel,
     AnalyticsPanel,
-    MapPanelContainer as MapPanel,
+    //MapPanelContainer as MapPanel,
     ExamplePanel,
     transformTelemetryResponse,
     chartColorObjects,
@@ -446,9 +446,9 @@ export class Dashboard extends Component {
                 timeInterval,
                 timeSeriesExplorerUrl,
 
-                azureMapsKey,
-                azureMapsKeyError,
-                azureMapsKeyIsPending,
+                //azureMapsKey,
+                //azureMapsKeyError,
+                //azureMapsKeyIsPending,
 
                 devices,
                 devicesError,
@@ -472,7 +472,7 @@ export class Dashboard extends Component {
                 telemetryError,
                 telemetryQueryExceededLimit,
 
-                analyticsVersion,
+                //analyticsVersion,
                 currentActiveAlerts,
                 topAlerts,
                 alertsPerDeviceId,
@@ -483,7 +483,7 @@ export class Dashboard extends Component {
                 openWarningCount,
                 openCriticalCount,
 
-                devicesInAlert,
+                //devicesInAlert,
 
                 lastRefreshed,
             } = this.state,
@@ -592,28 +592,6 @@ export class Dashboard extends Component {
                                 t={t}
                             />
                         </Cell>
-                        <Cell className={css("col-5")}>
-                            <PanelErrorBoundary
-                                msg={t("dashboard.panels.map.runtimeError")}
-                            >
-                                <MapPanel
-                                    analyticsVersion={analyticsVersion}
-                                    azureMapsKey={azureMapsKey}
-                                    devices={devices}
-                                    devicesInAlert={devicesInAlert}
-                                    mapKeyIsPending={azureMapsKeyIsPending}
-                                    isPending={
-                                        devicesIsPending || analyticsIsPending
-                                    }
-                                    error={
-                                        azureMapsKeyError ||
-                                        devicesError ||
-                                        analyticsError
-                                    }
-                                    t={t}
-                                />
-                            </PanelErrorBoundary>
-                        </Cell>
                         <Cell className={css("col-3")}>
                             <AlertsPanel
                                 alerts={currentActiveAlertsWithName}
@@ -622,20 +600,6 @@ export class Dashboard extends Component {
                                 t={t}
                                 deviceGroups={deviceGroups}
                                 isAlertingActive={alerting.isActive}
-                            />
-                        </Cell>
-                        <Cell className={css("col-6")}>
-                            <GrafanaTelemetryPanel
-                                timeSeriesExplorerUrl={timeSeriesParamUrl}
-                                devices={devices}
-                                telemetry={telemetry}
-                                isPending={telemetryIsPending}
-                                limitExceeded={telemetryQueryExceededLimit}
-                                lastRefreshed={lastRefreshed}
-                                error={deviceGroupError || telemetryError}
-                                theme={theme}
-                                colors={chartColorObjects}
-                                t={t}
                             />
                         </Cell>
                         <Cell className={css("col-4")}>
@@ -656,6 +620,43 @@ export class Dashboard extends Component {
                                 colors={chartColorObjects}
                                 t={t}
                                 isAlertingActive={alerting.isActive}
+                            />
+                        </Cell>
+                        {/* <Cell className={css("col-5")}>
+                            <PanelErrorBoundary
+                                msg={t("dashboard.panels.map.runtimeError")}
+                            >
+                                <MapPanel
+                                    analyticsVersion={analyticsVersion}
+                                    azureMapsKey={azureMapsKey}
+                                    devices={devices}
+                                    devicesInAlert={devicesInAlert}
+                                    mapKeyIsPending={azureMapsKeyIsPending}
+                                    isPending={
+                                        devicesIsPending || analyticsIsPending
+                                    }
+                                    error={
+                                        azureMapsKeyError ||
+                                        devicesError ||
+                                        analyticsError
+                                    }
+                                    t={t}
+                                />
+                            </PanelErrorBoundary>
+                        </Cell> */}
+                        <Cell className={css("col-9")}>
+                            <GrafanaTelemetryPanel
+                                timeSeriesExplorerUrl={timeSeriesParamUrl}
+                                devices={devices}
+                                telemetry={telemetry}
+                                isPending={telemetryIsPending}
+                                limitExceeded={telemetryQueryExceededLimit}
+                                lastRefreshed={lastRefreshed}
+                                error={deviceGroupError || telemetryError}
+                                theme={theme}
+                                colors={chartColorObjects}
+                                timeInterval={timeInterval}
+                                t={t}
                             />
                         </Cell>
                         {Config.showWalkthroughExamples && (

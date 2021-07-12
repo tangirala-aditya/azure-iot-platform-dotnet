@@ -11,15 +11,30 @@ import {
     PanelHeaderLabel,
     PanelOverlay,
 } from "components/pages/dashboard/panel";
-
+import "./grafana.scss";
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("../telemetry/telemetryPanel.module.scss"));
+export const getIntervalParams = (timeInterval) => {
+    switch (timeInterval) {
+        case "PT15M":
+            return "now-15m";
+        case "P1D":
+            return "now-1d";
+        case "P7D":
+            return "now-7d";
+        case "P1M":
+            return "now-1M";
+        default:
+            // Use PT1H as the default case
+            return "now-1h";
+    }
+};
 
 export class GrafanaTelemetryPanel extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { deviceurl: "blank" };
+        this.state = { deviceurl: "blank", from: "now-1h" };
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -27,11 +42,11 @@ export class GrafanaTelemetryPanel extends Component {
     }
 
     prepareUrl(props) {
+        this.setState({ from: getIntervalParams(props.timeInterval) });
         const deviceIds = Object.keys(props.devices);
         if (deviceIds.length > 0) {
             var combinedUrl =
                 "var-deviceid=" + deviceIds.join("&var-deviceid=");
-            console.log(combinedUrl);
             this.setState({ deviceurl: combinedUrl });
         } else {
             this.setState({ deviceurl: "blank" });
@@ -40,21 +55,22 @@ export class GrafanaTelemetryPanel extends Component {
 
     render() {
         const { t, isPending, lastRefreshed, error } = this.props,
-            { deviceurl } = this.state,
+            { deviceurl, from } = this.state,
             showOverlay = isPending && !lastRefreshed;
         return (
             <Panel>
                 <PanelHeader>
                     <PanelHeaderLabel>
-                        {t("dashboard.panels.telemetry.header")}
+                        {t("dashboard.panels.dashboard.header")}
                     </PanelHeaderLabel>
                 </PanelHeader>
                 <PanelContent className={css("telemetry-panel-container")}>
                     <iframe
-                        title="Telemetry"
-                        src={`http://localhost:8080/grafana/d-solo/Sb-VAjknk/telemetry?orgId=1&${deviceurl}&theme=light&from=now-1h&to=now&refresh=1m&panelId=2`}
-                        width="800"
-                        height="400"
+                        title="Dashboard"
+                        src={`http://localhost:8080/grafana/d/Sb-VAjknk/telemetry?orgId=1&${deviceurl}&theme=light&from=${from}&to=now&refresh=10s&kiosk`}
+                        //src={`http://localhost:8080/grafana/d-solo/Sb-VAjknk/telemetry?orgId=1&${deviceurl}&theme=light&from=now-1h&to=now&refresh=1m&panelId=2`}
+                        width="100%"
+                        height="100%"
                         frameborder="0"
                     ></iframe>
                 </PanelContent>

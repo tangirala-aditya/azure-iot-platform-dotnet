@@ -35,7 +35,7 @@ RUN chmod +x ./set_env.sh
 COPY ./run.sh .
 RUN chmod +x ./run.sh
 COPY ./content/nginx.conf /app/nginx.conf
-RUN chown -R docker /etc/nginx/ /var/log/nginx/ /var/cache/nginx/ /var/lib/nginx/ /var/tmp/
+RUN chown -R nginx /etc/nginx/ /var/log/nginx/ /var/cache/nginx/ /var/lib/nginx/ /var/tmp/
 RUN chmod +rw /etc/nginx/ /var/log/nginx /var/cache/nginx /var/tmp/
 USER nginx
 ENTRYPOINT [ "/app/run.sh" ]

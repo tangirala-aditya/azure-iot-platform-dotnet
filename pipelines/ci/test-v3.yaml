@@ -525,7 +525,7 @@ stages:
 
           - pwsh: |-
               $assemblyName = (Get-Content src/services/$(serviceName)/WebService/WebService.csproj | Select-String '(?<=<AssemblyName>).*(?=</AssemblyName>)').Matches[0].Value
-              $dockerfileContents = "FROM mcr.microsoft.com/dotnet/core/aspnet:$(dotnetCoreRuntimeVersion)-alpine AS base`nWORKDIR /app`nRUN adduser --disabled-password --gecos '' nginx && chown -R nginx /app `nEXPOSE 8084`nENV ASPNETCORE_URLS http://+:8084`nCOPY . .`nUSER nginx`nENTRYPOINT [`"dotnet`", `"$(assemblyName.dll)`"]"
+              $dockerfileContents = "FROM mcr.microsoft.com/dotnet/core/aspnet:$(dotnetCoreRuntimeVersion)-alpine AS base`nWORKDIR /app`nRUN adduser --disabled-password --gecos '' nginx && chown -R nginx /app `nEXPOSE 8084`nENV ASPNETCORE_URLS http://+:8084`nCOPY . .`nUSER nginx`nENTRYPOINT [`"dotnet`", `"$assemblyName.dll`"]"
                Set-Content -Value $dockerfileContents -Path $(dockerfile) -NoNewline -Encoding utf8
             displayName: Generate Dockerfile
             workingDirectory: $(Pipeline.Workspace)/$(publishedFilesArtifactName)
@@ -553,6 +553,7 @@ stages:
   #         vmImage: windows-latest
   #       steps:
   #         - checkout: none
+  ##
 
   #         - task: PowerShell@2
   #           displayName: Add auth callback URL for V3

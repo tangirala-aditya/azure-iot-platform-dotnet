@@ -55,7 +55,6 @@ export class GrafanaTelemetryPanel extends Component {
 
     render() {
         const { t, isPending, lastRefreshed, error } = this.props,
-            { deviceurl, from } = this.state,
             showOverlay = isPending && !lastRefreshed;
         return (
             <Panel>

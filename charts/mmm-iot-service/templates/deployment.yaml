@@ -30,7 +30,9 @@ spec:
             requests:
               cpu: "0.25"
               memory: 300M
-          securityContext: {}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1010
           ports:
             - name: http
               containerPort: {{ .Values.deployment.port.http }}

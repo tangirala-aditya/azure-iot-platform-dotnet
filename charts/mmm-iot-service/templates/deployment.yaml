@@ -30,9 +30,6 @@ spec:
             requests:
               cpu: "0.25"
               memory: 300M
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 1010
           ports:
             - name: http
               containerPort: {{ .Values.deployment.port.http }}
@@ -92,6 +89,9 @@ spec:
       {{- with .Values.deployment.nodeSelector }}
       nodeSelector: {{ toYaml . | nindent 8 }}
       {{- end }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1010
     {{- with .Values.deployment.affinity }}
       affinity: {{ toYaml . | nindent 8 }}
     {{- end }}

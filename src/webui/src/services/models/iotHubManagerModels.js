@@ -50,20 +50,27 @@ const transformObject = (obj = []) => {
 
 export const toDevicesModel = (response = {}, mapping = []) => {
     var mappingObject = transformObject(mapping);
-    var items = getItems(response).map((val) =>
+    var items = getItems(response).map((val) => toDeviceModel(val));
+    var itemsWithMapping = getItems(response).map((val) =>
         toDeviceModel(val, mappingObject)
     );
-    return { items, continuationToken: response.ContinuationToken };
+    return {
+        items: items,
+        itemsWithMapping: itemsWithMapping,
+        continuationToken: response.ContinuationToken,
+    };
 };
 
 export const toDeviceModel = (device = {}, mapping = {}) => {
     mapping = camelCaseWithDotKeys(mapping);
-    const modelData = camelCaseReshape(device, mapping || defaultMappingObject),
+    const modelData = camelCaseReshape(
+            device,
+            Object.entries(mapping).length > 0 ? mapping : defaultMappingObject
+        ),
         // TODO: Remove this once device simulation has removed FirmwareUpdate from supportedMethods of devices
-        methods = (
-            modelData.methods && typeof modelData.methods === "string"
-                ? modelData.methods.split(",")
-                : []
+        methods = (modelData.methods && typeof modelData.methods === "string"
+            ? modelData.methods.split(",")
+            : []
         ).filter((methodName) => methodName !== "FirmwareUpdate");
     return update(modelData, {
         methods: { $set: methods },
@@ -88,6 +95,14 @@ export const toDeviceModel = (device = {}, mapping = {}) => {
                 : dot.pick("PreviousProperties.Reported.Firmware", device),
         },
     });
+};
+
+export const toInsertDeviceModel = (device = {}, mapping = {}) => {
+    var mappingObject = transformObject(mapping);
+    return {
+        items: [toDeviceModel(device, {})],
+        itemsWithMapping: [toDeviceModel(device, mappingObject)],
+    };
 };
 
 export const toModuleFieldsModel = (response = {}) =>

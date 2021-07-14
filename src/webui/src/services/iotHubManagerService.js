@@ -7,7 +7,7 @@ import { stringify } from "query-string";
 import { HttpClient } from "utilities/httpClient";
 import {
     toDevicesModel,
-    toDeviceModel,
+    toInsertDeviceModel,
     toModuleFieldsModel,
     toJobsModel,
     toJobStatusModel,
@@ -70,9 +70,9 @@ export class IoTHubManagerService {
     }
 
     /** Provisions a device */
-    static provisionDevice(body) {
+    static provisionDevice(body, mapping = {}) {
         return HttpClient.post(`${ENDPOINT}devices`, body).pipe(
-            map(toDeviceModel)
+            map((response) => toInsertDeviceModel(response, mapping))
         );
     }
 

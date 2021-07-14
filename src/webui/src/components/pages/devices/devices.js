@@ -591,7 +591,14 @@ export class Devices extends Component {
                         />
                     )}
                     {newDeviceFlyoutOpen && (
-                        <DeviceNewContainer onClose={this.closeFlyout} />
+                        <DeviceNewContainer
+                            onClose={this.closeFlyout}
+                            mapping={
+                                this.DeviceGroupColumnMappings.length === 0
+                                    ? this.state.defaultColumnMappings
+                                    : this.DeviceGroupColumnMappings
+                            }
+                        />
                     )}
                     {simManagementFlyoutOpen && (
                         <SIMManagementContainer onClose={this.closeFlyout} />

@@ -249,8 +249,8 @@ const deploymentSchema = new schema.Entity("deployments"),
                     ...acc,
                     [deviceId]: {
                         id: deviceId,
-                        start: normalizedDevices[deviceId]
-                            .lastFwUpdateStartTime,
+                        start:
+                            normalizedDevices[deviceId].lastFwUpdateStartTime,
                         end: normalizedDevices[deviceId].lastFwUpdateEndTime,
                         firmware: normalizedDevices[deviceId].firmware,
                         previousFirmware:

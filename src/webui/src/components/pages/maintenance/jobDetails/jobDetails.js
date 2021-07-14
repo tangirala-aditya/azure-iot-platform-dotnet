@@ -192,6 +192,7 @@ export class JobDetails extends Component {
                                 <DevicesGridContainer
                                     t={t}
                                     domLayout="autoHeight"
+                                    useStaticCols={true}
                                     rowData={this.state.selectedDevices}
                                     onContextMenuChange={
                                         this.onContextMenuChange

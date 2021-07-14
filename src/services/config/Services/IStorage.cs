@@ -59,5 +59,17 @@ namespace Mmm.Iot.Config.Services
         Task<PackageServiceModel> AddPackageTagAsync(string id, string tag, string userId);
 
         Task<PackageServiceModel> RemovePackageTagAsync(string id, string tag, string userId);
+
+        Task<IEnumerable<ColumnMappingServiceModel>> GetColumnMappingsAsync();
+
+        Task<ColumnMappingServiceModel> AddColumnMappingAsync(ColumnMappingServiceModel columnMapping, string userId);
+
+        Task<ColumnMappingServiceModel> UpdateColumnMappingAsync(string id, ColumnMappingServiceModel columnMapping, string userId);
+
+        Task<IEnumerable<ColumnOptionsServiceModel>> GetDeviceGroupColumnOptions();
+
+        Task<ColumnOptionsServiceModel> AddColumnOptionsAsync(ColumnOptionsServiceModel columnOptions, string userId);
+
+        Task<ColumnOptionsServiceModel> UpdateColumnOptionsAsync(string id, ColumnOptionsServiceModel columnOptions, string userId);
     }
 }

@@ -18,6 +18,7 @@ namespace Mmm.Iot.Config.WebService.Models
         {
             this.Id = model.Id;
             this.DisplayName = model.DisplayName;
+            this.MappingId = model.MappingId;
             this.Conditions = model.Conditions;
             this.TelemetryFormat = model.TelemetryFormat;
             this.SupportedMethods = model.SupportedMethods;
@@ -37,6 +38,9 @@ namespace Mmm.Iot.Config.WebService.Models
 
         [JsonProperty("DisplayName")]
         public string DisplayName { get; set; }
+
+        [JsonProperty("MappingId")]
+        public string MappingId { get; set; }
 
         [JsonProperty("Conditions")]
         public IEnumerable<DeviceGroupCondition> Conditions { get; set; }
@@ -64,6 +68,7 @@ namespace Mmm.Iot.Config.WebService.Models
             return new DeviceGroup
             {
                 DisplayName = this.DisplayName,
+                MappingId = this.MappingId,
                 Conditions = this.Conditions,
                 TelemetryFormat = this.TelemetryFormat,
                 IsPinned = this.IsPinned,

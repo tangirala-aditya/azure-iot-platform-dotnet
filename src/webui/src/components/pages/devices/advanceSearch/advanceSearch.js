@@ -14,6 +14,7 @@ import {
     PropertyCell as Cell,
     PropertyGrid as Grid,
 } from "components/shared";
+import { defaultDownloadMappings } from "../devicesGrid/devicesGridConfig";
 
 import { IoTHubManagerService } from "services";
 
@@ -76,12 +77,11 @@ export class AdvanceSearch extends LinkedComponent {
         return new Promise((resolve, reject) => {
             try {
                 this.setState({ error: undefined, isPending: true }, () => {
-                    const rawQueryConditions = this.state.deviceQueryConditions.filter(
-                        (condition) => {
+                    const rawQueryConditions =
+                        this.state.deviceQueryConditions.filter((condition) => {
                             // remove conditions that are new (have not been edited)
                             return !this.conditionIsNew(condition);
-                        }
-                    );
+                        });
                     this.props.fetchDevicesByCondition({
                         data: rawQueryConditions.map((condition) => {
                             return toDeviceConditionModel(condition);
@@ -181,7 +181,8 @@ export class AdvanceSearch extends LinkedComponent {
         IoTHubManagerService.getDevicesReportByQuery(
             rawQueryConditions.map((condition) => {
                 return toDeviceConditionModel(condition);
-            })
+            }),
+            defaultDownloadMappings
         ).subscribe((response) => {
             var blob = new Blob([response.response], {
                 type: response.response.type,

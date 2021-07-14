@@ -32,9 +32,8 @@ const mapStateToProps = (state) => ({
         isPending: getRulesPendingStatus(state),
         deviceGroups: getDeviceGroups(state),
         lastUpdated: getRulesLastUpdated(state),
-        applicationPermissionsAssigned: getApplicationPermissionsAssigned(
-            state
-        ),
+        applicationPermissionsAssigned:
+            getApplicationPermissionsAssigned(state),
         activeDeviceQueryConditions: getActiveDeviceQueryConditions(state),
         activeDeviceGroupId: getActiveDeviceGroupId(state),
         userPermissions: getUser(state).permissions,

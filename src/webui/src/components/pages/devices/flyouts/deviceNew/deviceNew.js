@@ -477,19 +477,20 @@ export class DeviceNew extends LinkedComponent {
                 );
             } else {
                 this.provisionSubscription = IoTHubManagerService.provisionDevice(
-                    toNewDeviceRequestModel(formData)
+                    toNewDeviceRequestModel(formData),
+                    this.props.mapping
                 ).subscribe(
-                    (provisionedDevice) => {
+                    (response) => {
                         this.setState({
-                            provisionedDevice,
+                            provisionedDevice: response.items[0],
                             successCount: formData.count,
                             isPending: false,
                             changesApplied: true,
                         });
-                        this.props.insertDevices([provisionedDevice]);
+                        this.props.insertDevices(response);
                         const metadata = {
                             DeviceType: Config.deviceType.physical,
-                            DeviceID: provisionedDevice.id,
+                            DeviceID: this.state.provisionedDevice.id,
                         };
                         this.props.logEvent(
                             toDiagnosticsModel("Devices_Created", metadata)

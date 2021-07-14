@@ -2,40 +2,71 @@
 
 import update from "immutability-helper";
 import dot from "dot-object";
-import { camelCaseReshape, getItems, float } from "utilities";
+import {
+    camelCaseReshape,
+    getItems,
+    float,
+    camelCaseWithDotKeys,
+} from "utilities";
 import uuid from "uuid/v4";
 
-// Contains methods for converting service response
-// object to UI friendly objects
-
-export const toDevicesModel = (response = {}) => {
-    var items = getItems(response).map(toDeviceModel);
-    return { items, continuationToken: response.ContinuationToken };
+const defaultMappingObject = {
+    id: "id",
+    lastActivity: "lastActivity",
+    connected: "connected",
+    isSimulated: "isSimulated",
+    "properties.reported.supportedMethods": "methods",
+    "properties.reported.telemetry": "telemetry",
+    "properties.reported.type": "type",
+    "properties.reported.firmware.currentFwVersion": "currentFwVersion",
+    "previousProperties.reported.firmware.currentFwVersion":
+        "previousFwVersion",
+    "properties.reported.firmware.lastFwUpdateStartTime":
+        "lastFwUpdateStartTime",
+    "properties.reported.firmware.lastFwUpdateEndTime": "lastFwUpdateEndTime",
+    c2DMessageCount: "c2DMessageCount",
+    enabled: "enabled",
+    lastStatusUpdated: "lastStatusUpdated",
+    ioTHubHostName: "IoTHubHostName",
+    eTag: "eTag",
+    authentication: "authentication",
 };
 
-export const toDeviceModel = (device = {}) => {
-    const modelData = camelCaseReshape(device, {
-            id: "id",
-            lastActivity: "lastActivity",
-            connected: "connected",
-            isSimulated: "isSimulated",
-            "properties.reported.supportedMethods": "methods",
-            "properties.reported.telemetry": "telemetry",
-            "properties.reported.type": "type",
-            "properties.reported.firmware.currentFwVersion": "currentFwVersion",
-            "previousProperties.reported.firmware.currentFwVersion":
-                "previousFwVersion",
-            "properties.reported.firmware.lastFwUpdateStartTime":
-                "lastFwUpdateStartTime",
-            "properties.reported.firmware.lastFwUpdateEndTime":
-                "lastFwUpdateEndTime",
-            c2DMessageCount: "c2DMessageCount",
-            enabled: "enabled",
-            lastStatusUpdated: "lastStatusUpdated",
-            ioTHubHostName: "iotHubHostName",
-            eTag: "eTag",
-            authentication: "authentication",
-        }),
+const transformObject = (obj = []) => {
+    let transformedObject = {};
+
+    if (obj && obj.length > 0) {
+        obj.forEach((val) => {
+            if (val && typeof val === "object") {
+                transformedObject[val.mapping] = val.name;
+            }
+        });
+    } else {
+        return defaultMappingObject;
+    }
+    transformedObject["id"] = "id";
+    return transformedObject;
+};
+
+export const toDevicesModel = (response = {}, mapping = []) => {
+    var mappingObject = transformObject(mapping);
+    var items = getItems(response).map((val) => toDeviceModel(val));
+    var itemsWithMapping = getItems(response).map((val) =>
+        toDeviceModel(val, mappingObject)
+    );
+    return {
+        items: items,
+        itemsWithMapping: itemsWithMapping,
+        continuationToken: response.ContinuationToken,
+    };
+};
+
+export const toDeviceModel = (device = {}, mapping = {}) => {
+    mapping = camelCaseWithDotKeys(mapping);
+    const modelData = camelCaseReshape(
+            device,
+            Object.entries(mapping).length > 0 ? mapping : defaultMappingObject
+        ),
         // TODO: Remove this once device simulation has removed FirmwareUpdate from supportedMethods of devices
         methods = (modelData.methods && typeof modelData.methods === "string"
             ? modelData.methods.split(",")
@@ -64,6 +95,14 @@ export const toDeviceModel = (device = {}) => {
                 : dot.pick("PreviousProperties.Reported.Firmware", device),
         },
     });
+};
+
+export const toInsertDeviceModel = (device = {}, mapping = {}) => {
+    var mappingObject = transformObject(mapping);
+    return {
+        items: [toDeviceModel(device, {})],
+        itemsWithMapping: [toDeviceModel(device, mappingObject)],
+    };
 };
 
 export const toModuleFieldsModel = (response = {}) =>

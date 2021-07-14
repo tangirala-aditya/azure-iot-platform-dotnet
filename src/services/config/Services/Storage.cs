@@ -40,6 +40,8 @@ namespace Mmm.Iot.Config.Services
         public const string DateFormat = "yyyy-MM-dd'T'HH:mm:sszzz";
         public const string AppInsightDateFormat = "yyyy-MM-dd HH:mm:ss";
         public const string SoftwarePackageStore = "software-package";
+        public const string ColumnMappingsCollectionId = "columnmappings";
+        public const string ColumnOptionsCollectionId = "columnoptions";
         private readonly IStorageAdapterClient client;
         private readonly IAsaManagerClient asaManager;
         private readonly AppConfig config;
@@ -472,6 +474,115 @@ namespace Mmm.Iot.Config.Services
             return this.CreatePackageServiceModel(response);
         }
 
+        public async Task<ColumnMappingServiceModel> GetColumnMappingAsync(string id)
+        {
+            var response = await this.client.GetAsync(ColumnMappingsCollectionId, id);
+            return this.CreateColumnMappingServiceModel(response);
+        }
+
+        public async Task<IEnumerable<ColumnMappingServiceModel>> GetColumnMappingsAsync()
+        {
+            var response = await this.client.GetAllAsync(ColumnMappingsCollectionId);
+            return response.Items
+                .Select(this.CreateColumnMappingServiceModel);
+        }
+
+        public async Task<ColumnMappingServiceModel> AddColumnMappingAsync(ColumnMappingServiceModel columnMapping, string userId)
+        {
+            ValueApiModel response = null;
+            AuditHelper.AddAuditingData(columnMapping, userId);
+
+            // Make ETag as empty to make sure that is inserted as new entity;
+            columnMapping.ETag = null;
+            if (columnMapping.IsDefault)
+            {
+                columnMapping.Id = columnMapping.Name;
+                response = await this.SaveColumnMappingWithKeyAsync(columnMapping);
+            }
+            else
+            {
+                response = await this.SaveColumnMappingAsync(columnMapping);
+            }
+
+            return this.CreateColumnMappingServiceModel(response);
+        }
+
+        public async Task<ColumnMappingServiceModel> UpdateColumnMappingAsync(string id, ColumnMappingServiceModel columnMapping, string userId)
+        {
+            ColumnMappingServiceModel existingColumnMapping = await this.GetColumnMappingAsync(id);
+
+            existingColumnMapping.ColumnMappingDefinitions = columnMapping.ColumnMappingDefinitions;
+
+            AuditHelper.UpdateAuditingData(existingColumnMapping, userId);
+
+            ValueApiModel response = await this.SaveColumnMappingWithKeyAsync(existingColumnMapping);
+
+            return this.CreateColumnMappingServiceModel(response);
+        }
+
+        public async Task<IEnumerable<ColumnOptionsServiceModel>> GetDeviceGroupColumnOptions()
+        {
+            var response = await this.client.GetAllAsync(ColumnOptionsCollectionId);
+            return response.Items.Select(this.CreateColumnOptionsServiceModel);
+        }
+
+        public async Task<ColumnOptionsServiceModel> AddColumnOptionsAsync(ColumnOptionsServiceModel columnOptions, string userId)
+        {
+            ValueApiModel response = null;
+            AuditHelper.AddAuditingData(columnOptions, userId);
+
+            var value = JsonConvert.SerializeObject(columnOptions, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            response = await this.client.CreateAsync(ColumnOptionsCollectionId, value);
+            return this.CreateColumnOptionsServiceModel(response);
+        }
+
+        public async Task<ColumnOptionsServiceModel> UpdateColumnOptionsAsync(string id, ColumnOptionsServiceModel columnOptions, string userId)
+        {
+            AuditHelper.UpdateAuditingData(columnOptions, userId);
+
+            var value = JsonConvert.SerializeObject(columnOptions, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var response = await this.client.UpdateAsync(ColumnOptionsCollectionId, id, value, columnOptions.ETag);
+
+            return this.CreateColumnOptionsServiceModel(response);
+        }
+
+        private ColumnOptionsServiceModel CreateColumnOptionsServiceModel(ValueApiModel input)
+        {
+            var output = JsonConvert.DeserializeObject<ColumnOptionsServiceModel>(input.Data);
+            output.ETag = input.ETag;
+            output.Key = input.Key;
+            return output;
+        }
+
+        private async Task<ValueApiModel> SaveColumnMappingWithKeyAsync(ColumnMappingServiceModel columnMapping)
+        {
+            var value = JsonConvert.SerializeObject(
+                columnMapping,
+                Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                });
+
+            var response = await this.client.UpdateAsync(ColumnMappingsCollectionId, columnMapping.Id, value, columnMapping.ETag);
+            return response;
+        }
+
+        private async Task<ValueApiModel> SaveColumnMappingAsync(ColumnMappingServiceModel columnMapping)
+        {
+            var value = JsonConvert.SerializeObject(
+                columnMapping,
+                Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                });
+
+            var response = await this.client.CreateAsync(ColumnMappingsCollectionId, value);
+
+            return response;
+        }
+
         private string GetBlobSasUri(CloudBlobClient cloudBlobClient, string containerName, string blobName, string timeoutDuration)
         {
             string[] time = timeoutDuration.Split(':');
@@ -559,6 +670,19 @@ namespace Mmm.Iot.Config.Services
             {
                 return packages;
             }
+        }
+
+        private ColumnMappingServiceModel CreateColumnMappingServiceModel(ValueApiModel input)
+        {
+            var output = JsonConvert.DeserializeObject<ColumnMappingServiceModel>(input.Data);
+            output.Id = input.Key;
+            output.ETag = input.ETag;
+            if (output.Tags == null)
+            {
+                output.Tags = new List<string>();
+            }
+
+            return output;
         }
     }
 }

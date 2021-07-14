@@ -14,6 +14,7 @@ export const toDeviceGroupModel = function (deviceGroup = {}) {
     deviceGroup = camelCaseReshape(deviceGroup, {
         id: "id",
         displayName: "displayName",
+        mappingId: "mappingId",
         conditions: "conditions",
         eTag: "eTag",
         telemetryFormat: "telemetryFormat",
@@ -27,6 +28,38 @@ export const toDeviceGroupModel = function (deviceGroup = {}) {
     deviceGroup["supportedMethods"] = deviceGroup.supportedMethods || [];
     return deviceGroup;
 };
+
+export const toColumnMapping = function (columnMapping = {}) {
+    columnMapping = camelCaseReshape(columnMapping, {
+        id: "id",
+        name: "name",
+        eTag: "eTag",
+        createdBy: "createdBy",
+        createdDate: "createdDate",
+        columnMappingDefinitions: "mapping",
+    });
+
+    return columnMapping;
+};
+
+export const toColumnOption = function (columnOption = {}) {
+    columnOption = camelCaseReshape(columnOption, {
+        deviceGroupId: "deviceGroupId",
+        eTag: "eTag",
+        createdBy: "createdBy",
+        createdDate: "createdDate",
+        selectedOptions: "selectedOptions",
+        key: "id",
+    });
+
+    return columnOption;
+};
+
+export const toColumnMappings = (response = {}) =>
+    getItems(response).map(toColumnMapping);
+
+export const toColumnOptions = (response = {}) =>
+    getItems(response).map(toColumnOption);
 
 export const toDeviceConditionModel = (condition = {}) => ({
     key: condition.field,
@@ -43,6 +76,7 @@ export const toDeviceGroupsModel = (response = {}) =>
 
 export const toCreateDeviceGroupRequestModel = (params = {}) => ({
     DisplayName: params.displayName,
+    MappingId: params.mappingId,
     Conditions: (params.conditions || []).map((condition) =>
         toDeviceConditionModel(condition)
     ),
@@ -56,6 +90,7 @@ export const toUpdateDeviceGroupRequestModel = (params = {}) => ({
     Id: params.id,
     ETag: params.eTag,
     DisplayName: params.displayName,
+    MappingId: params.mappingId,
     Conditions: (params.conditions || []).map((condition) =>
         toDeviceConditionModel(condition)
     ),
@@ -210,8 +245,7 @@ export const backupDefaultFirmwareModel = {
                     "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND ( properties.reported.softwareConfig.status='Downloading' OR properties.reported.softwareConfig.status='Verifying' OR properties.reported.softwareConfig.status='Applying')",
                 rebooting:
                     "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.version = properties.desired.softwareConfig.version AND properties.reported.softwareConfig.status='Rebooting'",
-                error:
-                    "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.status='Error'",
+                error: "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.status='Error'",
                 rolledback:
                     "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.status='RolledBack'",
             },

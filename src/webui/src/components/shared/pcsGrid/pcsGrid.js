@@ -83,9 +83,13 @@ export class PcsGrid extends Component {
         }
         // Resize the grid if updating from 0 row data to 1+ rowData
         if (
-            nextProps.rowData &&
-            nextProps.rowData.length &&
-            (!this.props.rowData || !this.props.rowData.length)
+            (nextProps.rowData &&
+                nextProps.rowData.length &&
+                (!this.props.rowData || !this.props.rowData.length)) ||
+            (nextProps.columnDefs &&
+                nextProps.columnDefs.length > 0 &&
+                JSON.stringify(nextProps.columnDefs) !==
+                    JSON.stringify(this.props.columnDefs))
         ) {
             this.resizeEvents.next("r");
         }

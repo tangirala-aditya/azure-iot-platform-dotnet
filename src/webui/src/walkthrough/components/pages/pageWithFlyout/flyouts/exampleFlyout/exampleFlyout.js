@@ -96,13 +96,8 @@ export class ExampleFlyout extends Component {
 
     render() {
         const { t, onClose } = this.props,
-            {
-                itemCount,
-                isPending,
-                error,
-                successCount,
-                changesApplied,
-            } = this.state,
+            { itemCount, isPending, error, successCount, changesApplied } =
+                this.state,
             summaryCount = changesApplied ? successCount : itemCount,
             completedSuccessfully = changesApplied && !error,
             summaryMessage = this.getSummaryMessage();

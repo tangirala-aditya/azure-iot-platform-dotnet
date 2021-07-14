@@ -17,6 +17,8 @@ import {
     redux as appRedux,
     getActiveDeviceGroupConditions,
     getActiveDeviceQueryConditions,
+    getActiveDeviceGroupMapping,
+    getDefaultColumnMapping,
 } from "./appReducer";
 import { IoTHubManagerService } from "services";
 import {
@@ -43,6 +45,14 @@ export const epics = createEpicScenario({
     fetchDevices: {
         type: "DEVICES_FETCH",
         epic: (fromAction, store) => {
+            const activeDeviceGroupMappings = getActiveDeviceGroupMapping(
+                store.value
+            );
+            const defaultColumnMappings = getDefaultColumnMapping(store.value);
+            const columnMappings = [
+                ...((activeDeviceGroupMappings || {}).mapping || []),
+                ...((defaultColumnMappings || {}).mapping || []),
+            ];
             const rawConditions = getActiveDeviceGroupConditions(
                     store.value
                 ).concat(getActiveDeviceQueryConditions(store.value)),
@@ -53,10 +63,14 @@ export const epics = createEpicScenario({
                         !!condition.value
                     );
                 });
-            return IoTHubManagerService.getDevices(conditions).pipe(
+
+            return IoTHubManagerService.getDevices(
+                conditions,
+                columnMappings
+            ).pipe(
                 map((response) => {
                     cToken = response.continuationToken;
-                    return response.items;
+                    return response;
                 }),
                 map(toActionCreator(redux.actions.updateDevices, fromAction)),
                 mergeMap((action) => {
@@ -77,6 +91,16 @@ export const epics = createEpicScenario({
         type: "DEVICES_FETCH_CTOKEN",
         epic: (fromAction, store) => {
             if (cToken) {
+                const activeDeviceGroupMappings = getActiveDeviceGroupMapping(
+                    store.value
+                );
+                const defaultColumnMappings = getDefaultColumnMapping(
+                    store.value
+                );
+                const columnMappings = [
+                    ...((activeDeviceGroupMappings || {}).mapping || []),
+                    ...((defaultColumnMappings || {}).mapping || []),
+                ];
                 const rawConditions = getActiveDeviceGroupConditions(
                         store.value
                     ).concat(getActiveDeviceQueryConditions(store.value)),
@@ -87,10 +111,14 @@ export const epics = createEpicScenario({
                             !!condition.value
                         );
                     });
-                return IoTHubManagerService.getDevices(conditions, cToken).pipe(
+                return IoTHubManagerService.getDevices(
+                    conditions,
+                    columnMappings,
+                    cToken
+                ).pipe(
                     map((response) => {
                         cToken = response.continuationToken;
-                        return response.items;
+                        return response;
                     }),
                     map(
                         toActionCreator(redux.actions.insertDevices, fromAction)
@@ -121,7 +149,7 @@ export const epics = createEpicScenario({
                 fromAction.payload.data
             ).pipe(
                 map((response) => {
-                    return response.items;
+                    return response;
                 }),
                 map(
                     toActionCreator(
@@ -200,12 +228,15 @@ export const epics = createEpicScenario({
 // ========================= Schemas - START
 const deviceSchema = new schema.Entity("devices"),
     deviceListSchema = new schema.Array(deviceSchema),
+    deviceWithMappingSchema = new schema.Entity("devicesWithMapping"),
+    deviceWithMappingListSchema = new schema.Array(deviceWithMappingSchema),
     // ========================= Schemas - END
 
     // ========================= Reducers - START
     initialState = {
         ...errorPendingInitialState,
         entities: {},
+        entitiesWithMappings: {},
         items: [],
         lastUpdated: "",
         totalDeviceCount: 0,
@@ -218,9 +249,13 @@ const deviceSchema = new schema.Entity("devices"),
         const {
             entities: { devices },
             result,
-        } = normalize(payload, deviceListSchema);
+        } = normalize(payload.items, deviceListSchema);
+        const {
+            entities: { devicesWithMapping },
+        } = normalize(payload.itemsWithMapping, deviceWithMappingListSchema);
         return update(state, {
             entities: { $set: devices },
+            entitiesWithMappings: { $set: devicesWithMapping },
             items: { $set: result },
             lastUpdated: { $set: moment() },
             ...setPending(fromAction.type, false),
@@ -237,7 +272,7 @@ const deviceSchema = new schema.Entity("devices"),
         const {
             entities: { devices },
             result,
-        } = normalize(payload, deviceListSchema);
+        } = normalize(payload.items, deviceListSchema);
         return update(state, {
             devicesByConditionEntities: { $set: devices },
             devicesByConditionItems: { $set: result },
@@ -276,27 +311,55 @@ const deviceSchema = new schema.Entity("devices"),
         });
     },
     insertDevicesReducer = (state, { payload }) => {
-        // As some of the multiple contains clauses lead to duplicates, we are explicitly removing the duplicates
-        payload = payload.filter(
-            (v, i, a) => a.findIndex((t) => t.id === v.id) === i
-        );
-        // Excluding the devices that are already loaded(on-demand) into the grid
-        payload = payload.filter((device) => {
-            return !state.items.includes(device.id);
-        });
-        const inserted = payload.map((device) => ({ ...device, isNew: true })),
+        // // As some of the multiple contains clauses lead to duplicates, we are explicitly removing the duplicates
+        if (payload.items && payload.items.length > 0) {
+            payload.items = payload.items.filter(
+                (v, i, a) => a.findIndex((t) => t.id === v.id) === i
+            );
+            // Excluding the devices that are already loaded(on-demand) into the grid
+            payload.items = payload.items.filter((device) => {
+                return !state.items.includes(device.id);
+            });
+        }
+
+        // // As some of the multiple contains clauses lead to duplicates, we are explicitly removing the duplicates
+        if (payload.itemsWithMapping && payload.itemsWithMapping.length > 0) {
+            payload.itemsWithMapping = payload.itemsWithMapping.filter(
+                (v, i, a) => a.findIndex((t) => t.id === v.id) === i
+            );
+            // Excluding the devices that are already loaded(on-demand) into the grid
+            payload.itemsWithMapping = payload.itemsWithMapping.filter(
+                (device) => {
+                    return !state.items.includes(device.id);
+                }
+            );
+        }
+
+        const inserted = payload.items.map((device) => ({
+                ...device,
+                isNew: true,
+            })),
+            insertedWithMapping = payload.itemsWithMapping.map((device) => ({
+                ...device,
+                isNew: true,
+            })),
             {
                 entities: { devices },
                 result,
-            } = normalize(inserted, deviceListSchema);
+            } = normalize(inserted, deviceListSchema),
+            {
+                entities: { devicesWithMapping },
+            } = normalize(insertedWithMapping, deviceWithMappingListSchema);
         if (state.entities) {
             return update(state, {
                 entities: { $merge: devices },
+                entitiesWithMappings: { $merge: devicesWithMapping },
                 items: { $splice: [[0, 0, ...result]] },
             });
         }
         return update(state, {
             entities: { $set: devices },
+            entitiesWithMappings: { $set: devicesWithMapping },
             items: { $set: result },
         });
     },
@@ -408,6 +471,8 @@ export const reducer = { devices: redux.getReducer(initialState) };
 // ========================= Selectors - START
 export const getDevicesReducer = (state) => state.devices;
 export const getEntities = (state) => getDevicesReducer(state).entities || {};
+export const getEntitiesWithMappings = (state) =>
+    getDevicesReducer(state).entitiesWithMappings || {};
 export const getItems = (state) => getDevicesReducer(state).items || [];
 export const getDevicesLastUpdated = (state) =>
     getDevicesReducer(state).lastUpdated;
@@ -438,6 +503,11 @@ export const getDevices = createSelector(
     getEntities,
     getItems,
     (entities, items) => items.map((id) => entities[id])
+);
+export const getDevicesWithMappings = createSelector(
+    getEntitiesWithMappings,
+    getItems,
+    (entitiesWithMappings, items) => items.map((id) => entitiesWithMappings[id])
 );
 export const getDeviceById = (state, id) => getEntities(state)[id];
 export const getDeviceByConditionById = (state, id) =>

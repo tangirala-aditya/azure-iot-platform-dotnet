@@ -17,6 +17,10 @@ import {
     toNewFirmwareUploadRequestModel,
     toFirmwareModel,
     backupDefaultFirmwareModel,
+    toColumnMappings,
+    toColumnMapping,
+    toColumnOptions,
+    toColumnOption,
 } from "./models";
 import { throwError, EMPTY, of } from "rxjs";
 import { catchError, map } from "rxjs/operators";
@@ -216,5 +220,45 @@ export class ConfigService {
 
     static catch404(error, continueAs) {
         return error.status === 404 ? of(continueAs) : throwError(error);
+    }
+
+    static getColumnMappings() {
+        return HttpClient.get(`${ENDPOINT}columnmapping`).pipe(
+            map(toColumnMappings)
+        );
+    }
+
+    static createColumnMappings(payload) {
+        return HttpClient.post(`${ENDPOINT}columnmapping`, payload, {
+            timeout: 120000,
+        }).pipe(map(toColumnMapping));
+    }
+
+    static updateColumnMappings(id, payload) {
+        return HttpClient.put(`${ENDPOINT}columnmapping/${id}`, payload, {
+            timeout: 120000,
+        }).pipe(map(toColumnMapping));
+    }
+
+    static getColumnOptions() {
+        return HttpClient.get(`${ENDPOINT}columnmapping/ColumnOptions`).pipe(
+            map(toColumnOptions)
+        );
+    }
+
+    static saveColumnOptions(payload) {
+        return HttpClient.post(
+            `${ENDPOINT}columnmapping/ColumnOptions`,
+            payload,
+            { timeout: 120000 }
+        ).pipe(map(toColumnOption));
+    }
+
+    static updateColumnOptions(id, payload) {
+        return HttpClient.put(
+            `${ENDPOINT}columnmapping/ColumnOptions/${id}`,
+            payload,
+            { timeout: 120000 }
+        ).pipe(map(toColumnOption));
     }
 }

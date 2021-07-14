@@ -7,7 +7,7 @@ import { stringify } from "query-string";
 import { HttpClient } from "utilities/httpClient";
 import {
     toDevicesModel,
-    toDeviceModel,
+    toInsertDeviceModel,
     toModuleFieldsModel,
     toJobsModel,
     toJobStatusModel,
@@ -26,7 +26,7 @@ const ENDPOINT = Config.serviceUrls.iotHubManager;
 /** Contains methods for calling the Device service */
 export class IoTHubManagerService {
     /** Returns a list of devices */
-    static getDevices(conditions = [], cToken = null) {
+    static getDevices(conditions = [], mappings = [], cToken = null) {
         var options = {};
         if (cToken) {
             options.headers = {
@@ -38,7 +38,7 @@ export class IoTHubManagerService {
         return HttpClient.get(
             `${ENDPOINT}devices?query=${query}`,
             options
-        ).pipe(map(toDevicesModel));
+        ).pipe(map((response) => toDevicesModel(response, mappings)));
     }
 
     /** Returns a list of all modules message schema fields */
@@ -70,9 +70,9 @@ export class IoTHubManagerService {
     }
 
     /** Provisions a device */
-    static provisionDevice(body) {
+    static provisionDevice(body, mapping = {}) {
         return HttpClient.post(`${ENDPOINT}devices`, body).pipe(
-            map(toDeviceModel)
+            map((response) => toInsertDeviceModel(response, mapping))
         );
     }
 
@@ -210,10 +210,11 @@ export class IoTHubManagerService {
     }
 
     /** Queries Devices */
-    static getDevicesReportByQuery(conditions = []) {
+    static getDevicesReportByQuery(conditions = [], mappings = []) {
         const query = encodeURIComponent(JSON.stringify(conditions));
-        var response = HttpClient.get(
+        var response = HttpClient.post(
             `${ENDPOINT}devices/report?query=${query}`,
+            mappings,
             { responseType: "blob", timeout: 120000 }
         );
         return response;

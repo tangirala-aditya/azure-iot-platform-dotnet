@@ -56,7 +56,7 @@ AuthService.onLoad(() => {
 
     // Create the React app
     ReactDOM.render(
-        <Suspense fallback={null}>
+        <Suspense fallback={<h1>Loading...</h1>}>
             <Provider store={store}>
                 <Router>
                     {Config.showWalkthroughExamples ? (

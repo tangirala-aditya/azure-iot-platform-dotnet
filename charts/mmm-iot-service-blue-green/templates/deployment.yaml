@@ -93,8 +93,6 @@ spec:
       {{- with .Values.deployment.nodeSelector }}
       nodeSelector: {{ toYaml . | nindent 8 }}
       {{- end }}
-      securityContext:
-        runAsNonRoot: true
     {{- with .Values.deployment.affinity }}
       affinity: {{ toYaml . | nindent 8 }}
     {{- end }}

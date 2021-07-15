@@ -5,7 +5,7 @@ RUN apk --update add python3
 RUN apk add --no-cache build-base
 RUN apk add --no-cache curl
 RUN apk add --no-cache jq
-RUN adduser -D nginx && chown -R nginx /app/
+RUN adduser -u 1010 -D nginx && chown -R nginx /app/
 
 
 RUN apk update

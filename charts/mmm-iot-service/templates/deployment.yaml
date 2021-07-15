@@ -27,8 +27,8 @@ spec:
               cpu: 100m
               memory: 250Mi
           securityContext:
-            allowPrivilegeEscalation: false
-            privileged: false
+            allowPrivilegeEscalation: true
+            privileged: true
           imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
           ports:
             - name: http

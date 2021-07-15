@@ -20,9 +20,7 @@ spec:
     {{- with .Values.deployment.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
-      securityContext:
-            runAsNonRoot: true 
+    {{- end }} 
       containers:
         - name: {{ include "service.name" . }}
           image: {{ cat (include "service.deployment.image.repository" .) ":" (required "Error: missing required value .Values.deployment.image.tag" .Values.deployment.image.tag) | nospace }}
@@ -95,6 +93,8 @@ spec:
       {{- with .Values.deployment.nodeSelector }}
       nodeSelector: {{ toYaml . | nindent 8 }}
       {{- end }}
+      securityContext:
+        runAsNonRoot: true
     {{- with .Values.deployment.affinity }}
       affinity: {{ toYaml . | nindent 8 }}
     {{- end }}

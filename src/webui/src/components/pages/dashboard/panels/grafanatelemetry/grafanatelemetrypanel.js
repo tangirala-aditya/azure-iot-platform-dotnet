@@ -11,6 +11,7 @@ import {
     PanelHeaderLabel,
     PanelOverlay,
 } from "components/pages/dashboard/panel";
+import Config from "app.config";
 import "./grafana.scss";
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("../telemetry/telemetryPanel.module.scss"));
@@ -33,7 +34,7 @@ export const getIntervalParams = (timeInterval) => {
 export class GrafanaTelemetryPanel extends Component {
     constructor(props) {
         super(props);
-
+        console.log("Config", Config);
         this.state = { deviceurl: "blank", from: "now-1h" };
     }
 
@@ -55,6 +56,7 @@ export class GrafanaTelemetryPanel extends Component {
 
     render() {
         const { t, isPending, lastRefreshed, error } = this.props,
+            { deviceurl, from } = this.state,
             showOverlay = isPending && !lastRefreshed;
         return (
             <Panel>
@@ -66,7 +68,7 @@ export class GrafanaTelemetryPanel extends Component {
                 <PanelContent className={css("telemetry-panel-container")}>
                     <iframe
                         title="Dashboard"
-                        src={`https://acsagic-aks-dev.centralus.cloudapp.azure.com/grafana/d/Ij8AUoink/sample-dashboard?orgId=1&kiosk`}
+                        src={`${Config.serviceUrls.grafana}d/Jh8M7Yinz/sample-dashboard?from=${from}&to=now&orgId=1&${deviceurl}&theme=light&refresh=10s&kiosk`}
                         width="100%"
                         height="100%"
                         frameborder="0"

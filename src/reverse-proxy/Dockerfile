@@ -1,6 +1,6 @@
 FROM node:11-alpine as codebuilder
 WORKDIR /app
-RUN adduser -u 1010 -D nginx && chown -R nginx /app
+RUN adduser -u 1010 --disabled-password nginx && chown -R nginx /app
 RUN apk add --no-cache bash
 RUN apk --update add python3
 RUN apk add --no-cache --virtual build-base

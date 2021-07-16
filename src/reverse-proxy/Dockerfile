@@ -1,5 +1,6 @@
 FROM node:11-alpine as codebuilder
 WORKDIR /app
+RUN adduser -u 1010 --disabled-password nginx && chown -R nginx /app
 RUN apk add --no-cache bash
 RUN apk --update add python3
 RUN apk add --no-cache --virtual build-base
@@ -34,4 +35,6 @@ RUN chmod +x ./set_env.sh
 COPY ./run.sh .
 RUN chmod +x ./run.sh
 COPY ./content/nginx.conf /app/nginx.conf
+RUN chown -R nginx /etc/nginx/ /var/log/nginx/ /var/cache/nginx/ /var/lib/nginx/ /var/tmp/ /app/
+USER nginx
 ENTRYPOINT [ "/app/run.sh" ]

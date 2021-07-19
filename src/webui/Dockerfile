@@ -40,9 +40,9 @@ RUN ["chmod", "+x", "/app/set_policies.sh"]
 RUN ["chmod", "+x", "/app/set_variables.sh"]
 #RUN "/app/build.sh"
 
-/app/set_policies.sh
-/app/build.sh
-/app/set_variables.sh
+RUN /set_policies.sh
+RUN /build.sh
+RUN /set_variables.sh
 
 COPY /app/webui-config.js /app/build/webui-config.js
 

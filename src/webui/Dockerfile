@@ -37,6 +37,14 @@ RUN ["chmod", "+x", "/app/run.sh"]
 RUN ["chmod", "+x", "/app/build.sh"]
 RUN ["chmod", "+x", "/app/set_env.sh"]
 RUN ["chmod", "+x", "/app/set_policies.sh"]
+RUN ["chmod", "+x", "/app/set_variables.sh"]
 #RUN "/app/build.sh"
+
+/app/set_policies.sh
+/app/build.sh
+/app/set_variables.sh
+
+COPY /app/webui-config.js /app/build/webui-config.js
+
 
 ENTRYPOINT ["/bin/bash", "-c", "/app/run.sh"]

@@ -29,6 +29,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             privileged: false
+            readOnlyRootFilesystem: true
           imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
           ports:
             - name: http

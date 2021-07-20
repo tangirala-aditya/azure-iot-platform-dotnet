@@ -89,7 +89,6 @@ spec:
                   name: globalsecrets
                   key: {{ $ref }}
             {{- end }}
-          resources: {{ toYaml .Values.deployment.resources | nindent 12 }}
       {{- with .Values.deployment.nodeSelector }}
       nodeSelector: {{ toYaml . | nindent 8 }}
       {{- end }}

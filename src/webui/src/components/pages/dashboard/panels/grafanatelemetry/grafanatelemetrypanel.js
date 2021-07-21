@@ -34,8 +34,7 @@ export const getIntervalParams = (timeInterval) => {
 export class GrafanaTelemetryPanel extends Component {
     constructor(props) {
         super(props);
-        console.log("Config", Config);
-        this.state = { deviceurl: "blank", from: "now-1h" };
+        this.state = { deviceGroupId: "default", from: "now-1h" };
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -43,20 +42,14 @@ export class GrafanaTelemetryPanel extends Component {
     }
 
     prepareUrl(props) {
+        console.log(props.activeDeviceGroup);
         this.setState({ from: getIntervalParams(props.timeInterval) });
-        const deviceIds = Object.keys(props.devices);
-        if (deviceIds.length > 0) {
-            var combinedUrl =
-                "var-deviceid=" + deviceIds.join("&var-deviceid=");
-            this.setState({ deviceurl: combinedUrl });
-        } else {
-            this.setState({ deviceurl: "blank" });
-        }
+        this.setState({ deviceGroupId: (props.activeDeviceGroup || {}).id });
     }
 
     render() {
         const { t, isPending, lastRefreshed, error } = this.props,
-            { deviceurl, from } = this.state,
+            { deviceGroupId, from } = this.state,
             showOverlay = isPending && !lastRefreshed;
         return (
             <Panel>
@@ -68,7 +61,7 @@ export class GrafanaTelemetryPanel extends Component {
                 <PanelContent className={css("telemetry-panel-container")}>
                     <iframe
                         title="Dashboard"
-                        src={`${Config.serviceUrls.grafana}d/Jh8M7Yinz/sample-dashboard?from=${from}&to=now&orgId=1&${deviceurl}&theme=light&refresh=10s&kiosk`}
+                        src={`${Config.serviceUrls.grafana}d/Jh8M7Yinz/sample-dashboard?from=${from}&to=now&orgId=1&var-deviceGroupId=${deviceGroupId}&theme=light&refresh=10s&kiosk`}
                         width="100%"
                         height="100%"
                         frameborder="0"

@@ -6,7 +6,7 @@ variables:
     dotnetBuildConfiguration: Release
     dotnetCoreRuntimeVersion: 3.1
     dotnetProductionRuntimeId: linux-musl-x64
-    dockerHubServiceConnectionName: 3M-CRSLAD16-BBIoTP-Dev-ACR
+    dockerHubServiceConnectionName: 3M-CRSLAD16-BBIoTP-Dev
     dockerHubRepositoryName: azureiot3m
     acrRepositoryName: acracsdev.azurecr.io
     aksPartialName: aks

@@ -131,6 +131,18 @@ stages:
           - checkout: none
 
           - task: AzureCLI@2
+            displayName: Set Client Ip to Storage Account
+            name: setClientIpAddressToStorageAccount
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
+                az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
+
+          - task: AzureCLI@2
             displayName: Get App Configuration connection string
             name: getAppConfigurationConnectionString
             inputs:
@@ -146,6 +158,16 @@ stages:
                   az storage table create --name $(tableStorageName) --account-name $(storageAccountName)
                 }
                 az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(tableStorageAppConfigurationConnectionStringRowKey) Content="$appConfigurationConnectionString" --table-name $(tableStorageName) --account-name $(storageAccountName)
+
+          - task: AzureCLI@2
+            displayName: Remove Client Ip from Storage Account
+            name: removeClientIpFromStorageAccount
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
 
       - job: build
         displayName: Build Services
@@ -575,6 +597,18 @@ stages:
               kubectlVersion: 1.18.2
 
           - task: AzureCLI@2
+            displayName: Set Client Ip to Storage Account
+            name: setClientIpAddressToStorageAccount
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
+                az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
+
+          - task: AzureCLI@2
             displayName: Create namespace
             inputs:
               azureSubscription: $(subscriptionName)
@@ -587,6 +621,7 @@ stages:
                   kubectl create namespace $(kubernetesNamespace) --output json
                 }
                 az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(kubernetesNamespaceWasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+
           - template: ../templates/steps-install-helm.yaml
             parameters:
               helmVersion: $(helmVersion)
@@ -624,6 +659,7 @@ stages:
               inlineScript: |-
                 set -Eeuxo pipefail
                 az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+
           - task: AzureCLI@2
             displayName: Configure DNS
             name: configureDns
@@ -644,6 +680,16 @@ stages:
                   Start-Sleep -Seconds 10
                   $certificateIsReady = kubectl get certificates --namespace $(kubernetesNamespace) --output jsonpath="{.items[0].status.conditions[?(@.type=='Ready')].status}"
                 }
+          - task: AzureCLI@2
+            displayName: Remove Client Ip from Storage Account
+            name: removeClientIpAddressFromStorageAccount
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                                
   - stage: deployServices
     displayName: Deploy services
     dependsOn:
@@ -656,6 +702,18 @@ stages:
           - checkout: none
 
           - task: AzureCLI@2
+            displayName: Set Client Ip to Storage Account
+            name: setClientIpAddressToStorageAccount
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
+                az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
+
+          - task: AzureCLI@2
             displayName: Get pipeline variables
             name: getPipelineVariables
             inputs:
@@ -666,6 +724,17 @@ stages:
                 set -Eeuxo pipefail
                 appConfigurationConnectionString=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(tableStorageAppConfigurationConnectionStringRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
                 echo "##vso[task.setvariable variable=appConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
+
+          - task: AzureCLI@2
+            displayName: Remove Client Ip to Storage Account
+            name: removeClientIpAddressFromStorageAccount
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+
       - job: deployServices
         displayName: Deploy services
         dependsOn:
@@ -675,6 +744,18 @@ stages:
         steps:
           - checkout: self
             displayName: Checkout repository
+
+          - task: AzureCLI@2
+            displayName: Set Client Ip to Storage Account
+            name: setClientIPAddressToStorageAccount
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
+                az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
 
           - template: ../templates/steps-install-helm.yaml
             parameters:
@@ -688,6 +769,7 @@ stages:
               set -Eeuxo pipefail
               sed -i -e 's/replace_this_imageTag/$(Build.BuildId)/g' $(mmmIotPlatformServicesHelmChartValuesFile)
             displayName: Set image tag
+
           - task: HelmDeploy@0
             displayName: Install services Helm chart
             inputs:
@@ -708,6 +790,7 @@ stages:
                 --set secrets.globalsecrets.Global__AzureB2cBaseUri=https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_testpolicy&client_id=$(azureAdB2cAppRegistrationClientIdTest)&nonce=defaultNonce&redirect_uri=https%3A%2F%2Flocalhost%3A44367%2Fconnect%2Fcallback&scope=openid&response_type=id_token&prompt=login&response_mode=form_post
                 --timeout $(helmInstallTimeoutInSeconds)
                 --wait
+
           - task: AzureCLI@2
             displayName: Note services Helm chart was installed
             inputs:
@@ -717,6 +800,17 @@ stages:
               inlineScript: |-
                 set -Eeuxo pipefail
                 az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(mmmIotPlatformServicesHelmChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+
+          - task: AzureCLI@2
+            displayName: Remove Client Ip to Storage Account
+            name: removeClientIpAddressFromStorageAccount
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+
   - stage: functionalTest
     displayName: Functional tests
     dependsOn:
@@ -729,6 +823,19 @@ stages:
         dependsOn: []
         steps:
         - checkout: none
+
+        - task: AzureCLI@2
+          displayName: Set Client Ip to Storage Account
+          name: setClientIpAddressToStorageAccount
+          inputs:
+            azureSubscription: $(subscriptionName)
+            scriptType: pscore
+            scriptLocation: inlineScript
+            inlineScript: |-
+              IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
+              az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+              echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
+
         - task: AzureCLI@2
           displayName: Add TestAccount details  to App Configuration
           inputs:
@@ -785,12 +892,35 @@ stages:
                   -partitionKey $(testAccountSysAdmin) `
                   -rowKey $(testAccountSysAdmin) -property @{"Timestamp"=$datetimevariable;"Name"="TestAccount - SystemAdmin";"Type"="Member"}
               }
+
+        - task: AzureCLI@2
+          displayName: Remove Client Ip From Storage Account
+          name: removeClientIpAddressFromStorageAccount
+          inputs:
+            azureSubscription: $(subscriptionName)
+            scriptType: pscore
+            scriptLocation: inlineScript
+            inlineScript: |-
+              az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+
       - job: getPipelineVariables
         displayName: Get pipeline variables
         dependsOn: 
           - addFunctionalTestAccount
         steps:
           - checkout: none
+          - task: AzureCLI@2
+            displayName: Set Client Ip to Storage Account
+            name: getAppConfigurationConnectionString
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
+                az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
+
           - task: AzureCLI@2
             displayName: Get pipeline variables
             name: getPipelineVariables
@@ -801,6 +931,17 @@ stages:
               inlineScript: |-
                 appConfigurationConnectionString=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(tableStorageAppConfigurationConnectionStringRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
                 echo "##vso[task.setvariable variable=appConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
+
+          - task: AzureCLI@2
+            displayName: Set Client Ip to Storage Account
+            name: setClientIpAddressToStorageAccount
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+
       - job: functionalTest
         displayName: Functional test
         dependsOn:
@@ -826,6 +967,7 @@ stages:
                 kubectl get pods -n $(kubernetesNamespace)
                 kubectl wait pods --for=condition=Ready --selector app.kubernetes.io/name=webui -n $(kubernetesNamespace)
                 kubectl wait pods --for=condition=Ready --timeout=500s --selector app.kubernetes.io/name=reverse-proxy -n $(kubernetesNamespace)
+
           - task: DotNetCoreCLI@2
             displayName: Run functional tests
             continueOnError: true
@@ -929,6 +1071,17 @@ stages:
         dependsOn: []
         steps:
           - checkout: none
+          - task: AzureCLI@2
+            displayName: Set Client Ip to Storage Account
+            name: setClientIpAddressToStorageAccount
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
+                az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
 
           - task: AzureCLI@2
             displayName: Get pipeline variables
@@ -944,6 +1097,19 @@ stages:
                 echo "##vso[task.setvariable variable=mmmIotPlatformServicesHelmChartWasInstalled;isOutput=true]$mmmIotPlatformServicesHelmChartWasInstalled"
                 mmmIotPlatformIngressHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
                 echo "##vso[task.setvariable variable=mmmIotPlatformIngressHelmChartWasInstalled;isOutput=true]$mmmIotPlatformIngressHelmChartWasInstalled"
+
+          - task: AzureCLI@2
+            displayName: Remove Client Ip to Storage Account
+            name: getAppConfigurationConnectionString
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |-
+                az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+
+
+
       - job: deleteDnsRecordSet
         displayName: Delete DNS record set
         dependsOn: []

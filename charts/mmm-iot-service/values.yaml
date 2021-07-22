@@ -4,6 +4,7 @@ service:
 deployment:
   affinity: {}
   tolerations: []
+  namespace: azure-iot
   nodeSelector: {}
   resources: {}
   secretsRef:

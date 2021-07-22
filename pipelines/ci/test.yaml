@@ -468,13 +468,13 @@ stages:
           - checkout: self
             displayName: Checkout repository
             
-            - task: Docker@1
-                  displayName: "buildAndPush-$(env) copy"
-                  inputs:
-                      azureSubscriptionEndpoint: '3M-CRSLAD16-BBIoTP-Dev'
-                      azureContainerRegistry: acracsdev
-                      command: buildAndPush
-                      imageName: '$serviceName:$(Build.BuildId)'
+          - task: Docker@1
+                displayName: "buildAndPush-$(env) copy"
+                inputs:
+                    azureSubscriptionEndpoint: '3M-CRSLAD16-BBIoTP-Dev'
+                    azureContainerRegistry: acracsdev
+                    command: buildAndPush
+                    imageName: '$serviceName:$(Build.BuildId)'
 
           # - task: Docker@2
           #   displayName: Build and push container
@@ -487,7 +487,7 @@ stages:
           #     tags: |-
           #       $(Build.BuildId)
           #       $(Build.SourceVersion)
-          
+
   - stage: buildServiceContainers
     displayName: Build service containers
     dependsOn:

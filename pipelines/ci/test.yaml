@@ -469,7 +469,7 @@ stages:
             displayName: Checkout repository
             
           - task: Docker@1
-                displayName: "buildAndPush-$(env) copy"
+                displayName: Build and push container
                 inputs:
                     azureSubscriptionEndpoint: '3M-CRSLAD16-BBIoTP-Dev'
                     azureContainerRegistry: acracsdev

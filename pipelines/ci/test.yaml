@@ -470,10 +470,10 @@ stages:
                 - task: Docker@1
                   displayName: "buildAndPush-$(env) copy"
                   inputs:
-                      azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
+                      azureSubscriptionEndpoint: '3M-CRSLAD16-BBIoTP-Dev'
                       azureContainerRegistry: acracsdev
                       command: buildAndPush
-                      imageName: "$serviceName:$(Build.BuildId)"
+                      imageName: '$serviceName:$(Build.BuildId)''
                       # arguments: |
                       # $(Build.BuildId)
                       # $(test)

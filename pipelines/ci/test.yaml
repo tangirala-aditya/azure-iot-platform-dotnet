@@ -468,11 +468,19 @@ stages:
                   displayName: Checkout repository
 
                 - task: Docker@1
-                  displayName: Build and push container
+                  displayName: Build container
                   inputs:
                       azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
                       azureContainerRegistry: acracsdev
-                      command: buildAndPush
+                      command: build
+                      imageName: "$serviceName:$(Build.BuildId)"
+
+                - task: Docker@1
+                  displayName: Push container
+                  inputs:
+                      azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
+                      azureContainerRegistry: acracsdev
+                      command: push
                       imageName: "$serviceName:$(Build.BuildId)"
 
                 # - task: Docker@2

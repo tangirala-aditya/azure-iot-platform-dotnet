@@ -467,12 +467,12 @@ stages:
                 - checkout: self
                   displayName: Checkout repository
 
-                # - task: Docker@1
-                #   displayName: Login container
-                #   inputs:
-                #       azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
-                #       azureContainerRegistry: acracsdev
-                #       command: login
+                - task: Docker@1
+                  displayName: Login container
+                  inputs:
+                      azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
+                      azureContainerRegistry: acracsdev
+                      command: login
 
                 - task: Docker@1
                   displayName: Build container
@@ -495,7 +495,7 @@ stages:
                   inputs:
                       azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
                       azureContainerRegistry: acracsdev.azurecr.io
-                      command: "Push an image"
+                      command: push
                       imageName: "acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
 
                 # - task: Docker@2

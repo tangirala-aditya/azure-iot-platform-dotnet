@@ -468,27 +468,13 @@ stages:
                   displayName: Checkout repository
 
                 - task: Docker@1
-                  displayName: Login container
-                  inputs:
-                      azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
-                      azureContainerRegistry: acracsdev
-                      command: login
-
-                - task: Docker@1
                   displayName: Build container
                   inputs:
                       azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
                       azureContainerRegistry: acracsdev.azurecr.io
                       command: build
+                      dockerfile: src/$(serviceName)/$(dockerfile)
                       imageName: "acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
-
-                # - task: Docker@1
-                #   displayName: Tag image
-                #   inputs:
-                #       azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
-                #       azureContainerRegistry: acracsdev
-                #       command: tag
-                #       arguments: "$(dockerHubRepositoryName)/$(serviceName):$(Build.BuildId) acracsdev.azurecr.io/$(serviceName):$(Build.BuildId) "
 
                 - task: Docker@1
                   displayName: Push container
@@ -547,17 +533,35 @@ stages:
                       Set-Content -Value $dockerfileContents -Path $(dockerfile) -NoNewline -Encoding utf8
                   displayName: Generate Dockerfile
                   workingDirectory: $(Pipeline.Workspace)/$(publishedFilesArtifactName)
-                - task: Docker@2
-                  displayName: Build and push container
+
+                # - task: Docker@2
+                #   displayName: Build and push container
+                #   inputs:
+                #       containerRegistry: $(dockerHubServiceConnectionName)
+                #       repository: $(dockerHubRepositoryName)/$(serviceName)
+                #       command: buildAndPush
+                #       dockerfile: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/$(dockerfile)
+                #       buildContext: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/src/services/$(serviceName)/WebService/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/$(dotnetProductionRuntimeId)/publish
+                #       tags: |-
+                #           $(Build.BuildId)
+                #           $(Build.SourceVersion)
+
+                - task: Docker@1
+                  displayName: Build container
                   inputs:
-                      containerRegistry: $(dockerHubServiceConnectionName)
-                      repository: $(dockerHubRepositoryName)/$(serviceName)
-                      command: buildAndPush
+                      azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
+                      azureContainerRegistry: acracsdev.azurecr.io
+                      command: build
                       dockerfile: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/$(dockerfile)
-                      buildContext: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/src/services/$(serviceName)/WebService/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/$(dotnetProductionRuntimeId)/publish
-                      tags: |-
-                          $(Build.BuildId)
-                          $(Build.SourceVersion)
+                      imageName: "acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
+
+                - task: Docker@1
+                  displayName: Push container
+                  inputs:
+                      azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
+                      azureContainerRegistry: acracsdev.azurecr.io
+                      command: push
+                      imageName: "acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
 
     - stage: addAuthenticationCallbackUrl
       displayName: Add auth callback URL

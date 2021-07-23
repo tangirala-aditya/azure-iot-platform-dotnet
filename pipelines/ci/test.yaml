@@ -473,7 +473,6 @@ stages:
                       azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
                       azureContainerRegistry: acracsdev
                       command: login
-                  enabled: false
 
                 - task: Docker@1
                   displayName: Build container
@@ -495,7 +494,7 @@ stages:
                   displayName: Push container
                   inputs:
                       azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
-                      azureContainerRegistry: acracsdev
+                      azureContainerRegistry: "acracsdev"
                       command: push
                       imageName: "acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
 

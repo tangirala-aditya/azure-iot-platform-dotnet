@@ -478,7 +478,7 @@ stages:
                   displayName: Build container
                   inputs:
                       azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
-                      azureContainerRegistry: acracsdev
+                      azureContainerRegistry: acracsdev.azurecr.io
                       command: build
                       imageName: "acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
 
@@ -494,7 +494,7 @@ stages:
                   displayName: Push container
                   inputs:
                       azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
-                      azureContainerRegistry: "acracsdev"
+                      azureContainerRegistry: acracsdev.azurecr.io
                       command: "Push an image"
                       imageName: "acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
 

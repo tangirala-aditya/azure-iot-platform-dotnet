@@ -663,7 +663,7 @@ jobs:
           inlineScript: |-
             az aks get-credentials -n $(aksName) -g $(resourceGroupName)
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
-            kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
+            kubectl create secret generic --namespace=azure-iot globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
 
   - job: globalsecretsV3
     displayName: Create K8s secrets
@@ -692,7 +692,7 @@ jobs:
           inlineScript: |-
             az aks get-credentials -n $(aksName) -g $(resourceGroupName)
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
-            kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
+            kubectl create secret generic --namespace=azure-iot globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
 
 
   - job: appInsights
@@ -1521,7 +1521,7 @@ jobs:
             kind: Ingress
             metadata:
               name: $(aksName)
-              namespace: default
+              namespace: azure-iot
               annotations:
                 kubernetes.io/ingress.class: nginx
                 cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -1649,7 +1649,7 @@ jobs:
             kind: Ingress
             metadata:
               name: $(aksName)
-              namespace: default
+              namespace: azure-iot
               annotations:
                 kubernetes.io/ingress.class: nginx
                 cert-manager.io/cluster-issuer: letsencrypt-prod

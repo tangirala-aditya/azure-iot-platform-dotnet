@@ -468,7 +468,7 @@ stages:
                   displayName: Checkout repository
 
                 - task: Docker@1
-                  displayName: login
+                  displayName: Login container
                   inputs:
                       azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
                       azureContainerRegistry: acracsdev

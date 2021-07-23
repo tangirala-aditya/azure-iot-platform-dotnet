@@ -15,6 +15,7 @@ spec:
       labels:
 {{ include "service.labels" . | indent 8 }}
     spec:
+      automountServiceAccountToken: false
     {{- with .Values.deployment.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

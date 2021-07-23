@@ -498,7 +498,7 @@ stages:
     - stage: buildServiceContainers
       displayName: Build service containers
       dependsOn:
-          - build
+          - buildFrontEndContainers
       jobs:
           - job: buildServiceContainers
             displayName: Build service containers
@@ -553,6 +553,7 @@ stages:
                       azureContainerRegistry: acracsdev.azurecr.io
                       command: build
                       dockerfile: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/$(dockerfile)
+                      buildContext: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/src/services/$(serviceName)/WebService/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/$(dotnetProductionRuntimeId)/publish
                       imageName: "acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
 
                 - task: Docker@1

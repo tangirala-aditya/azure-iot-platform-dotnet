@@ -468,6 +468,14 @@ stages:
                   displayName: Checkout repository
 
                 - task: Docker@1
+                  displayName: login
+                  inputs:
+                      azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
+                      azureContainerRegistry: acracsdev
+                      command: login
+                  enabled: false
+
+                - task: Docker@1
                   displayName: Build container
                   inputs:
                       azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
@@ -475,13 +483,13 @@ stages:
                       command: build
                       imageName: "acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
 
-                - task: Docker@1
-                  displayName: Tag image
-                  inputs:
-                      azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
-                      azureContainerRegistry: acracsdev
-                      command: tag
-                      arguments: "$(dockerHubRepositoryName)/$(serviceName):$(Build.BuildId) acracsdev.azurecr.io/$(serviceName):$(Build.BuildId) "
+                # - task: Docker@1
+                #   displayName: Tag image
+                #   inputs:
+                #       azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
+                #       azureContainerRegistry: acracsdev
+                #       command: tag
+                #       arguments: "$(dockerHubRepositoryName)/$(serviceName):$(Build.BuildId) acracsdev.azurecr.io/$(serviceName):$(Build.BuildId) "
 
                 - task: Docker@1
                   displayName: Push container

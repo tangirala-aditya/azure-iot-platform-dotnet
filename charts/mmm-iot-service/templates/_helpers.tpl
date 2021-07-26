@@ -22,5 +22,5 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{- define "service.deployment.image.repository" -}}
-  {{- include "service.name" . | cat "acracsdev.azurecr.io/" | nospace -}}
+  {{- include "service.name" . | cat "azureiot3m/" | nospace -}}
 {{- end -}}

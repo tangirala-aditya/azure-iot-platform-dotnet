@@ -534,27 +534,36 @@ stages:
                   displayName: Generate Dockerfile
                   workingDirectory: $(Pipeline.Workspace)/$(publishedFilesArtifactName)
 
-                # - task: Docker@2
-                #   displayName: Build and push container
-                #   inputs:
-                #       containerRegistry: $(dockerHubServiceConnectionName)
-                #       repository: $(dockerHubRepositoryName)/$(serviceName)
-                #       command: buildAndPush
-                #       dockerfile: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/$(dockerfile)
-                #       buildContext: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/src/services/$(serviceName)/WebService/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/$(dotnetProductionRuntimeId)/publish
-                #       tags: |-
-                #           $(Build.BuildId)
-                #           $(Build.SourceVersion)
-
-                - task: Docker@1
-                  displayName: Build container
+                - task: Docker@2
+                  displayName: Build container not push.
                   inputs:
-                      azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
-                      azureContainerRegistry: acracsdev.azurecr.io
+                      containerRegistry: $(dockerHubServiceConnectionName)
+                      repository: $(dockerHubRepositoryName)/$(serviceName)
                       command: build
                       dockerfile: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/$(dockerfile)
                       buildContext: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/src/services/$(serviceName)/WebService/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/$(dotnetProductionRuntimeId)/publish
-                      imageName: "acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
+                      tags: |-
+                          $(Build.BuildId)
+                          $(Build.SourceVersion)
+
+                - task: Docker@1
+                  displayName: Tag image
+                  inputs:
+                      azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
+                      azureContainerRegistry: acracsdev.azurecr.io
+                      command: tag
+                      arguments: "$(dockerHubRepositoryName)/$(serviceName):$(Build.BuildId) acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
+                      imageName: "$(dockerHubRepositoryName)/$(serviceName):$(Build.BuildId)"
+
+                # - task: Docker@1
+                #   displayName: Build container
+                #   inputs:
+                #       azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
+                #       azureContainerRegistry: acracsdev.azurecr.io
+                #       command: build
+                #       dockerfile: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/$(dockerfile)
+                #       buildContext: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/src/services/$(serviceName)/WebService/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/$(dotnetProductionRuntimeId)/publish
+                #       imageName: "acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
 
                 - task: Docker@1
                   displayName: Push container

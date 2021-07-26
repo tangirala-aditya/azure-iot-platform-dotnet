@@ -546,13 +546,18 @@ stages:
                           $(Build.BuildId)
                           $(Build.SourceVersion)
 
-                - task: Docker@2
-                  displayName: Tag image
-                  inputs:
-                      containerRegistry: $(dockerHubServiceConnectionName)
-                      command: tag
-                      arguments: "$(serviceName):$(Build.BuildId) acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
-                      imageName: "$(dockerHubRepositoryName)/$(serviceName):$(Build.BuildId)"
+                - bash: |-
+                      docker ps
+                      docker tag $(dockerHubRepositoryName)/$(serviceName):$(Build.BuildId) acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)
+                  displayName: "Bash Script"
+
+                # - task: Docker@2
+                #   displayName: Tag image
+                #   inputs:
+                #       containerRegistry: $(dockerHubServiceConnectionName)
+                #       command: tag
+                #       arguments: "$(serviceName):$(Build.BuildId) acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
+                #       imageName: "$(dockerHubRepositoryName)/$(serviceName):$(Build.BuildId)"
 
                 # - task: Docker@1
                 #   displayName: Build container

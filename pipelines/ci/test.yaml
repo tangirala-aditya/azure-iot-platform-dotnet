@@ -546,13 +546,12 @@ stages:
                           $(Build.BuildId)
                           $(Build.SourceVersion)
 
-                - task: Docker@1
+                - task: Docker@2
                   displayName: Tag image
                   inputs:
-                      azureSubscriptionEndpoint: "3M-CRSLAD16-BBIoTP-Dev"
-                      azureContainerRegistry: acracsdev.azurecr.io
+                      containerRegistry: $(dockerHubServiceConnectionName)
                       command: tag
-                      arguments: "$(dockerHubRepositoryName)/$(serviceName):$(Build.BuildId) acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
+                      arguments: "$(serviceName):$(Build.BuildId) acracsdev.azurecr.io/$(serviceName):$(Build.BuildId)"
                       imageName: "$(dockerHubRepositoryName)/$(serviceName):$(Build.BuildId)"
 
                 # - task: Docker@1

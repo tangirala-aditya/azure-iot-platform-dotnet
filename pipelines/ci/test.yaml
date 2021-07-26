@@ -498,7 +498,7 @@ stages:
     - stage: buildServiceContainers
       displayName: Build service containers
       dependsOn:
-          - buildFrontEndContainers
+          - build
       jobs:
           - job: buildServiceContainers
             displayName: Build service containers

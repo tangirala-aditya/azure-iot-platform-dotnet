@@ -26,10 +26,11 @@ import {
 import Flyout from "components/shared/flyout";
 import { DeviceGroupTelemetryFormatContainer } from "../deviceGroupTelemetryFormat.container";
 import { DeviceGroupSupportedMethodsContainer } from "../deviceGroupSupportedMethods.container";
+import { NavLink } from "react-router-dom";
+import deleteItem from "./delete-item.png";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("../manageDeviceGroups.module.scss"));
-
 const Section = Flyout.Section;
 
 // A counter for creating unique keys per new condition
@@ -64,7 +65,8 @@ class DeviceGroupForm extends LinkedComponent {
             eTag: undefined,
             displayName: "",
             mappingId: "",
-            conditions: [newCondition()],
+            deviceID: "",
+            conditions: [],
             telemetryFormat: [],
             supportedMethods: [],
             isPending: false,
@@ -73,6 +75,8 @@ class DeviceGroupForm extends LinkedComponent {
             isDelete: undefined,
             IsPinned: false,
             SortOrder: 0,
+            isConditionQuery: true,
+            deviceIDList: [],
         };
 
         // State to input links
@@ -80,6 +84,7 @@ class DeviceGroupForm extends LinkedComponent {
             Validator.notEmpty,
             () => this.props.t("deviceGroupsFlyout.errorMsg.nameCantBeEmpty")
         );
+
         this.mappingLink = this.linkTo("mappingId").map(({ value }) => value);
 
         this.conditionsLink = this.linkTo("conditions");
@@ -109,6 +114,7 @@ class DeviceGroupForm extends LinkedComponent {
             conditions,
             displayName,
             mappingId,
+            deviceID,
             telemetryFormat,
             supportedMethods,
             isPinned,
@@ -121,13 +127,24 @@ class DeviceGroupForm extends LinkedComponent {
                 eTag,
                 displayName,
                 mappingId,
-                conditions: conditions.map((condition) => ({
-                    field: condition.key,
-                    operator: condition.operator,
-                    type: isNaN(condition.value) ? "Text" : "Number",
-                    value: condition.value,
-                    key: conditionKey++,
-                })),
+                deviceID,
+                isConditionQuery: !(
+                    conditions.length === 1 && conditions[0].key === "id"
+                ),
+                deviceIDList:
+                    conditions.length === 1 && conditions[0].key === "id"
+                        ? conditions[0].value
+                        : [],
+                conditions:
+                    conditions.length === 1 && conditions[0].key === "id"
+                        ? []
+                        : conditions.map((condition) => ({
+                              field: condition.key,
+                              operator: condition.operator,
+                              type: isNaN(condition.value) ? "Text" : "Number",
+                              value: condition.value,
+                              key: conditionKey++,
+                          })),
                 telemetryFormat: telemetryFormat,
                 supportedMethods: supportedMethods,
                 isPinned: isPinned,
@@ -160,9 +177,18 @@ class DeviceGroupForm extends LinkedComponent {
                 telemetryFormat: this.state.telemetryFormat.filter(
                     (t) => t.key !== "" || t.displayName !== ""
                 ),
-                conditions: this.state.conditions.filter(
-                    (condition) => !conditionIsNew(condition)
-                ),
+                conditions: this.state.isConditionQuery
+                    ? this.state.conditions.filter(
+                          (condition) => !conditionIsNew(condition)
+                      )
+                    : [
+                          {
+                              field: "id",
+                              operator: "IN",
+                              type: "List",
+                              value: this.state.deviceIDList,
+                          },
+                      ],
             },
             function () {
                 this.subscriptions.push(
@@ -214,6 +240,21 @@ class DeviceGroupForm extends LinkedComponent {
         this.setState({
             isDelete: false,
         });
+
+    tabClickHandler = (tabName) =>
+        this.setState({ isConditionQuery: tabName === "Conditions" });
+
+    addDevice = () => {
+        var devices = this.state.deviceIDList;
+        devices.push(this.state.deviceID);
+        this.setState({ deviceIDList: devices, deviceID: "" });
+    };
+
+    removeDevice = (index) => {
+        var devices = this.state.deviceIDList;
+        devices.splice(index, 1);
+        this.setState({ deviceIDList: devices });
+    };
 
     render() {
         const { t } = this.props,
@@ -289,7 +330,17 @@ class DeviceGroupForm extends LinkedComponent {
                 value,
             }));
         const { telemetryFormat, supportedMethods } = this.state;
-
+        this.deviceIDLink = this.linkTo("deviceID")
+            .check(
+                Validator.listNotDuplicated,
+                t(`deviceQueryConditions.errorMsg.deviceIDExists`),
+                this.state.deviceIDList
+            )
+            .check(
+                Validator.arrayExceedsLimit,
+                t(`deviceQueryConditions.errorMsg.cannotAddMoreThan50Devices`),
+                this.state.deviceIDList
+            );
         return (
             <div>
                 {!this.state.isDelete ? (
@@ -348,130 +399,267 @@ class DeviceGroupForm extends LinkedComponent {
                                         )}
                                     </Hyperlink>
                                 </FormGroup>
-                                <Btn
-                                    className={css("add-btn")}
-                                    svg={svgs.plus}
-                                    onClick={this.addCondition}
-                                >
-                                    {t("deviceQueryConditions.add")}
-                                </Btn>
-                                {conditionLinks.map((condition, idx) => (
-                                    <Section.Container
-                                        key={this.state.conditions[idx].key}
+                                <div className={css("tab-container")}>
+                                    <NavLink
+                                        to={"#"}
+                                        className={css("tab")}
+                                        activeClassName={
+                                            this.state.isConditionQuery
+                                                ? css("active")
+                                                : ""
+                                        }
+                                        onClick={() =>
+                                            this.tabClickHandler("Conditions")
+                                        }
                                     >
-                                        <Section.Header>
+                                        Conditions
+                                    </NavLink>
+                                    <NavLink
+                                        to={"#"}
+                                        className={css("tab")}
+                                        activeClassName={
+                                            !this.state.isConditionQuery
+                                                ? css("active")
+                                                : ""
+                                        }
+                                        onClick={() =>
+                                            this.tabClickHandler("Devices")
+                                        }
+                                    >
+                                        Devices
+                                    </NavLink>
+                                </div>
+                                {!this.state.isConditionQuery && (
+                                    <FormGroup>
+                                        <FormLabel
+                                            className={css("device-id-label")}
+                                        >
                                             {t(
-                                                "deviceQueryConditions.condition",
-                                                {
-                                                    headerCount: idx + 1,
-                                                }
+                                                `deviceQueryConditions.deviceID`
                                             )}
+                                        </FormLabel>
+                                        <div className={css("device-id")}>
+                                            <FormControl
+                                                type="text"
+                                                className="long"
+                                                placeholder={t(
+                                                    `deviceQueryConditions.enterDeviceID`
+                                                )}
+                                                link={this.deviceIDLink}
+                                                disabled={
+                                                    this.state.conditions
+                                                        .length > 0
+                                                }
+                                            />
+                                            <Btn
+                                                primary
+                                                disabled={
+                                                    !this.state.deviceID ||
+                                                    this.state.deviceID.length <
+                                                        0 ||
+                                                    this.state.conditions
+                                                        .length > 0 ||
+                                                    this.deviceIDLink.hasErrors()
+                                                }
+                                                onClick={this.addDevice}
+                                            >
+                                                Add
+                                            </Btn>
+                                        </div>
+                                    </FormGroup>
+                                )}
+                                {!this.state.isConditionQuery && (
+                                    <Section.Container>
+                                        <Section.Header>
+                                            {t(`deviceQueryConditions.devices`)}
                                         </Section.Header>
                                         <Section.Content>
-                                            <FormGroup>
-                                                <FormLabel isRequired="true">
-                                                    {t(
-                                                        "deviceQueryConditions.field"
+                                            <div
+                                                className={css("device-group")}
+                                            >
+                                                <div
+                                                    className={css(
+                                                        "device-list"
                                                     )}
-                                                </FormLabel>
-                                                {this.props.filtersError ? (
-                                                    <AjaxError
-                                                        t={t}
-                                                        error={
-                                                            this.props
-                                                                .filtersError
-                                                        }
-                                                    />
-                                                ) : (
+                                                >
+                                                    {this.state.deviceIDList.map(
+                                                        (id, idx) => (
+                                                            <div
+                                                                className={css(
+                                                                    "item"
+                                                                )}
+                                                                key={id}
+                                                                data-index={id}
+                                                            >
+                                                                <img
+                                                                    className={css(
+                                                                        "deleteItem"
+                                                                    )}
+                                                                    src={
+                                                                        deleteItem
+                                                                    }
+                                                                    onClick={() =>
+                                                                        this.removeDevice(
+                                                                            idx
+                                                                        )
+                                                                    }
+                                                                    alt={
+                                                                        "Remove"
+                                                                    }
+                                                                />
+                                                                <div
+                                                                    className={css(
+                                                                        "title"
+                                                                    )}
+                                                                    key={id}
+                                                                    title={id}
+                                                                >
+                                                                    {id}
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </Section.Content>
+                                    </Section.Container>
+                                )}
+                                {this.state.isConditionQuery && (
+                                    <Btn
+                                        className={css("add-btn")}
+                                        svg={svgs.plus}
+                                        onClick={this.addCondition}
+                                        disabled={
+                                            this.state.deviceIDList.length > 0
+                                        }
+                                    >
+                                        {t("deviceQueryConditions.add")}
+                                    </Btn>
+                                )}
+                                {this.state.isConditionQuery &&
+                                    conditionLinks.map((condition, idx) => (
+                                        <Section.Container
+                                            key={this.state.conditions[idx].key}
+                                        >
+                                            <Section.Header>
+                                                {t(
+                                                    "deviceQueryConditions.condition",
+                                                    {
+                                                        headerCount: idx + 1,
+                                                    }
+                                                )}
+                                            </Section.Header>
+                                            <Section.Content>
+                                                <FormGroup>
+                                                    <FormLabel isRequired="true">
+                                                        {t(
+                                                            "deviceQueryConditions.field"
+                                                        )}
+                                                    </FormLabel>
+                                                    {this.props.filtersError ? (
+                                                        <AjaxError
+                                                            t={t}
+                                                            error={
+                                                                this.props
+                                                                    .filtersError
+                                                            }
+                                                        />
+                                                    ) : (
+                                                        <FormControl
+                                                            type="select"
+                                                            ariaLabel={t(
+                                                                "deviceQueryConditions.field"
+                                                            )}
+                                                            className="long"
+                                                            searchable={false}
+                                                            clearable={false}
+                                                            placeholder={t(
+                                                                "deviceQueryConditions.fieldPlaceholder"
+                                                            )}
+                                                            options={
+                                                                this.props
+                                                                    .filterOptions
+                                                            }
+                                                            link={
+                                                                condition.field
+                                                            }
+                                                        />
+                                                    )}
+                                                </FormGroup>
+                                                <FormGroup>
+                                                    <FormLabel isRequired="true">
+                                                        {t(
+                                                            "deviceQueryConditions.operator"
+                                                        )}
+                                                    </FormLabel>
                                                     <FormControl
                                                         type="select"
                                                         ariaLabel={t(
-                                                            "deviceQueryConditions.field"
+                                                            "deviceQueryConditions.operator"
                                                         )}
                                                         className="long"
                                                         searchable={false}
                                                         clearable={false}
-                                                        placeholder={t(
-                                                            "deviceQueryConditions.fieldPlaceholder"
-                                                        )}
                                                         options={
-                                                            this.props
-                                                                .filterOptions
+                                                            operatorOptions
                                                         }
-                                                        link={condition.field}
+                                                        placeholder={t(
+                                                            "deviceQueryConditions.operatorPlaceholder"
+                                                        )}
+                                                        link={
+                                                            condition.operator
+                                                        }
                                                     />
-                                                )}
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <FormLabel isRequired="true">
-                                                    {t(
-                                                        "deviceQueryConditions.operator"
-                                                    )}
-                                                </FormLabel>
-                                                <FormControl
-                                                    type="select"
-                                                    ariaLabel={t(
-                                                        "deviceQueryConditions.operator"
-                                                    )}
-                                                    className="long"
-                                                    searchable={false}
-                                                    clearable={false}
-                                                    options={operatorOptions}
-                                                    placeholder={t(
-                                                        "deviceQueryConditions.operatorPlaceholder"
-                                                    )}
-                                                    link={condition.operator}
-                                                />
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <FormLabel isRequired="true">
-                                                    {t(
-                                                        "deviceQueryConditions.value"
-                                                    )}
-                                                </FormLabel>
-                                                <FormControl
-                                                    type="text"
-                                                    placeholder={t(
-                                                        "deviceQueryConditions.valuePlaceholder"
-                                                    )}
-                                                    link={condition.value}
-                                                />
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <FormLabel isRequired="true">
-                                                    {t(
-                                                        "deviceQueryConditions.type"
-                                                    )}
-                                                </FormLabel>
-                                                <FormControl
-                                                    type="select"
-                                                    ariaLabel={t(
-                                                        "deviceQueryConditions.type"
-                                                    )}
-                                                    className="short"
-                                                    clearable={false}
-                                                    searchable={false}
-                                                    options={typeOptions}
-                                                    placeholder={t(
-                                                        "deviceQueryConditions.typePlaceholder"
-                                                    )}
-                                                    link={condition.type}
-                                                />
-                                            </FormGroup>
-                                            <BtnToolbar>
-                                                <Btn
-                                                    onClick={this.deleteCondition(
-                                                        idx
-                                                    )}
-                                                >
-                                                    {t(
-                                                        "deviceQueryConditions.remove"
-                                                    )}
-                                                </Btn>
-                                            </BtnToolbar>
-                                        </Section.Content>
-                                    </Section.Container>
-                                ))}
+                                                </FormGroup>
+                                                <FormGroup>
+                                                    <FormLabel isRequired="true">
+                                                        {t(
+                                                            "deviceQueryConditions.value"
+                                                        )}
+                                                    </FormLabel>
+                                                    <FormControl
+                                                        type="text"
+                                                        placeholder={t(
+                                                            "deviceQueryConditions.valuePlaceholder"
+                                                        )}
+                                                        link={condition.value}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup>
+                                                    <FormLabel isRequired="true">
+                                                        {t(
+                                                            "deviceQueryConditions.type"
+                                                        )}
+                                                    </FormLabel>
+                                                    <FormControl
+                                                        type="select"
+                                                        ariaLabel={t(
+                                                            "deviceQueryConditions.type"
+                                                        )}
+                                                        className="short"
+                                                        clearable={false}
+                                                        searchable={false}
+                                                        options={typeOptions}
+                                                        placeholder={t(
+                                                            "deviceQueryConditions.typePlaceholder"
+                                                        )}
+                                                        link={condition.type}
+                                                    />
+                                                </FormGroup>
+                                                <BtnToolbar>
+                                                    <Btn
+                                                        onClick={this.deleteCondition(
+                                                            idx
+                                                        )}
+                                                    >
+                                                        {t(
+                                                            "deviceQueryConditions.remove"
+                                                        )}
+                                                    </Btn>
+                                                </BtnToolbar>
+                                            </Section.Content>
+                                        </Section.Container>
+                                    ))}
                                 {this.state.isPending && (
                                     <Indicator pattern="bar" size="medium" />
                                 )}

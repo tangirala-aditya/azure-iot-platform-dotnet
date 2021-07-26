@@ -66,7 +66,9 @@ export const toDeviceConditionModel = (condition = {}) => ({
     operator: condition.operator,
     // parse the value as a number or string depending on the value of condition.type and condition.value.
     value:
-        condition.type === "Number" && !isNaN(condition.value)
+        condition.type === "List"
+            ? condition.value
+            : condition.type === "Number" && !isNaN(condition.value)
             ? parseFloat(condition.value)
             : String(condition.value),
 });
@@ -245,7 +247,8 @@ export const backupDefaultFirmwareModel = {
                     "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND ( properties.reported.softwareConfig.status='Downloading' OR properties.reported.softwareConfig.status='Verifying' OR properties.reported.softwareConfig.status='Applying')",
                 rebooting:
                     "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.version = properties.desired.softwareConfig.version AND properties.reported.softwareConfig.status='Rebooting'",
-                error: "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.status='Error'",
+                error:
+                    "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.status='Error'",
                 rolledback:
                     "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.status='RolledBack'",
             },

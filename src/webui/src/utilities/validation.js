@@ -21,6 +21,14 @@ export class Validator {
         return array.filter((i) => i === x).length < 2;
     };
 
+    static listNotDuplicated = (x, array) => {
+        return array.filter((i) => i === x).length < 1;
+    };
+
+    static arrayExceedsLimit = (x, array) => {
+        return array.length < 50;
+    };
+
     constructor(validator = {}) {
         this.validators = validator.validators || [];
         this.rejectors = validator.rejectors || [];

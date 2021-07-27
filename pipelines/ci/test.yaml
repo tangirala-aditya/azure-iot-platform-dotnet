@@ -141,7 +141,7 @@ stages:
                 IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
                 az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
                 echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
-                sleep 1200
+                sleep 120
 
           - task: AzureCLI@2
             displayName: Get App Configuration connection string
@@ -609,7 +609,7 @@ stages:
                 IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
                 az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
                 echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
-                sleep 1200
+                sleep 120
 
           - task: AzureCLI@2
             displayName: Create namespace
@@ -715,7 +715,7 @@ stages:
                 IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
                 az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
                 echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
-                sleep 1200
+                sleep 120
 
           - task: AzureCLI@2
             displayName: Get pipeline variables
@@ -760,7 +760,7 @@ stages:
                 IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
                 az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
                 echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
-                sleep 1200
+                sleep 120
 
           - template: ../templates/steps-install-helm.yaml
             parameters:
@@ -840,7 +840,7 @@ stages:
               IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
               az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
               echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
-              sleep 1200
+              sleep 120
 
         - task: AzureCLI@2
           displayName: Add TestAccount details  to App Configuration
@@ -926,7 +926,7 @@ stages:
                 IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
                 az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
                 echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
-                sleep 1200
+                sleep 120
 
           - task: AzureCLI@2
             displayName: Get pipeline variables
@@ -1089,7 +1089,7 @@ stages:
                 IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
                 az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
                 echo "##vso[task.setvariable variable=ClientIpAddress;isOutput=true]$IP"
-                sleep 1200
+                sleep 120
 
           - task: AzureCLI@2
             displayName: Get pipeline variables

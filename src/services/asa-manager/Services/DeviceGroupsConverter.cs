@@ -5,31 +5,43 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.AsaManager.Services.External.IotHubManager;
+using Mmm.Iot.AsaManager.Services.Helper;
 using Mmm.Iot.AsaManager.Services.Models;
 using Mmm.Iot.AsaManager.Services.Models.DeviceGroups;
 using Mmm.Iot.Common.Services.Exceptions;
+using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Mmm.Iot.AsaManager.Services
 {
     public class DeviceGroupsConverter : Converter, IConverter
     {
         private const string CsvHeader = "DeviceId,GroupId";
+        private const string DeviceGroupId = "DeviceGroupId";
+        private const string DeviceGroupName = "DeviceGroupName";
+        private const string DeviceGroupConditions = "DeviceGroupConditions";
+        private const string Data = "Data";
+        private const string TimeStamp = "TimeStamp";
         private readonly IIotHubManagerClient iotHubManager;
+        private readonly IAppConfigurationClient appConfigurationClient;
 
         public DeviceGroupsConverter(
             IIotHubManagerClient iotHubManager,
             IBlobStorageClient blobClient,
             IStorageAdapterClient storageAdapterClient,
+            IAppConfigurationClient appConfigClient,
             ILogger<DeviceGroupsConverter> log)
                 : base(blobClient, storageAdapterClient, log)
         {
             this.iotHubManager = iotHubManager;
+            this.appConfigurationClient = appConfigClient;
         }
 
         public override string Entity
@@ -123,7 +135,7 @@ namespace Mmm.Iot.AsaManager.Services
                     {
                         deviceMapping.Add(deviceGroup, new DeviceListModel()
                         {
-                        Items = completeDevicesList,
+                            Items = completeDevicesList,
                         });
                     }
                 }
@@ -141,6 +153,40 @@ namespace Mmm.Iot.AsaManager.Services
                 string errorMessage = $"No Devices were found for any {this.Entity}. OperationId: {operationId}. TenantId: {tenantId}\n{groups}";
                 this.Logger.LogError(new Exception(errorMessage), errorMessage);
                 throw new ResourceNotFoundException($"No Devices were found for any {this.Entity}.");
+            }
+
+            try
+            {
+                List<Azure.Messaging.EventHubs.EventData> events = new List<Azure.Messaging.EventHubs.EventData>();
+                foreach (var key in deviceMapping.Keys)
+                {
+                    var deviceIds = deviceMapping[key].Items.Select(device => device.Id);
+                    JObject deviceGroupDeviceMappingJson = new JObject();
+                    deviceGroupDeviceMappingJson.Add(DeviceGroupId, key.Id);
+                    deviceGroupDeviceMappingJson.Add(DeviceGroupName, key.DisplayName);
+                    deviceGroupDeviceMappingJson.Add(DeviceGroupConditions, JsonConvert.SerializeObject(key.Conditions));
+                    deviceGroupDeviceMappingJson.Add(Data, JsonConvert.SerializeObject(deviceIds));
+                    deviceGroupDeviceMappingJson.Add(TimeStamp, DateTime.UtcNow);
+                    var byteMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceGroupDeviceMappingJson));
+                    var deviceMappingEventData = new Azure.Messaging.EventHubs.EventData(byteMessage);
+                    events.Add(deviceMappingEventData);
+                }
+
+                try
+                {
+                    var eventHubConnString = this.appConfigurationClient.GetValue($"tenant:{tenantId}:telemetryHubConn");
+                    EventHubHelper eventHubHelper = new EventHubHelper(eventHubConnString);
+
+                    await eventHubHelper.SendMessageToEventHub($"{tenantId}-devicegroup", events.ToArray());
+                }
+                catch (Exception e)
+                {
+                    this.Logger.LogError(e, "Unable to Send the {entity} data models to Entity Hub. OperationId: {operationId}. TenantId: {tenantId}", this.Entity, operationId, tenantId);
+                }
+            }
+            catch (Exception e)
+            {
+                this.Logger.LogError(e, "Unable to Send the {entity} data models to Entity Hub. OperationId: {operationId}. TenantId: {tenantId}", this.Entity, operationId, tenantId);
             }
 
             string fileContent = null;

@@ -167,7 +167,8 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
-                az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                az storage account network-rule remove --account-name $(storageAccountName) --ip-address $IP --resource-group $(resourceGroupName)
+
 
       - job: build
         displayName: Build Services

@@ -689,7 +689,7 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
-                az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                az storage account network-rule remove --account-name $(storageAccountName) --ip-address $IP --resource-group $(resourceGroupName)
                                 
   - stage: deployServices
     displayName: Deploy services
@@ -734,7 +734,7 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
-                az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                az storage account network-rule remove --account-name $(storageAccountName) --ip-address $IP --resource-group $(resourceGroupName)
 
       - job: deployServices
         displayName: Deploy services
@@ -810,7 +810,7 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
-                az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                az storage account network-rule remove --account-name $(storageAccountName) --ip-address $IP --resource-group $(resourceGroupName)
 
   - stage: functionalTest
     displayName: Functional tests
@@ -902,7 +902,7 @@ stages:
             scriptType: bash
             scriptLocation: inlineScript
             inlineScript: |-
-              az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                az storage account network-rule remove --account-name $(storageAccountName) --ip-address $IP --resource-group $(resourceGroupName)
 
       - job: getPipelineVariables
         displayName: Get pipeline variables
@@ -941,7 +941,7 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
-                az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                az storage account network-rule remove --account-name $(storageAccountName) --ip-address $IP --resource-group $(resourceGroupName)
 
       - job: functionalTest
         displayName: Functional test
@@ -1107,7 +1107,7 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
-                az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
+                az storage account network-rule remove --account-name $(storageAccountName) --ip-address $IP --resource-group $(resourceGroupName)
 
 
 

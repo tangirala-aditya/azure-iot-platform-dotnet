@@ -135,7 +135,7 @@ stages:
             name: setClientIpAddressToStorageAccount
             inputs:
               azureSubscription: $(subscriptionName)
-              scriptType: pscore
+              scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
                 IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
@@ -164,7 +164,7 @@ stages:
             name: removeClientIpFromStorageAccount
             inputs:
               azureSubscription: $(subscriptionName)
-              scriptType: pscore
+              scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
                 az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
@@ -601,7 +601,7 @@ stages:
             name: setClientIpAddressToStorageAccount
             inputs:
               azureSubscription: $(subscriptionName)
-              scriptType: pscore
+              scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
                 IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
@@ -685,7 +685,7 @@ stages:
             name: removeClientIpAddressFromStorageAccount
             inputs:
               azureSubscription: $(subscriptionName)
-              scriptType: pscore
+              scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
                 az storage account network-rule add -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
@@ -706,7 +706,7 @@ stages:
             name: setClientIpAddressToStorageAccount
             inputs:
               azureSubscription: $(subscriptionName)
-              scriptType: pscore
+              scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
                 IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
@@ -730,7 +730,7 @@ stages:
             name: removeClientIpAddressFromStorageAccount
             inputs:
               azureSubscription: $(subscriptionName)
-              scriptType: pscore
+              scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
                 az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
@@ -750,7 +750,7 @@ stages:
             name: setClientIPAddressToStorageAccount
             inputs:
               azureSubscription: $(subscriptionName)
-              scriptType: pscore
+              scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
                 IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
@@ -806,7 +806,7 @@ stages:
             name: removeClientIpAddressFromStorageAccount
             inputs:
               azureSubscription: $(subscriptionName)
-              scriptType: pscore
+              scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
                 az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
@@ -829,7 +829,7 @@ stages:
           name: setClientIpAddressToStorageAccount
           inputs:
             azureSubscription: $(subscriptionName)
-            scriptType: pscore
+            scriptType: bash
             scriptLocation: inlineScript
             inlineScript: |-
               IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
@@ -898,7 +898,7 @@ stages:
           name: removeClientIpAddressFromStorageAccount
           inputs:
             azureSubscription: $(subscriptionName)
-            scriptType: pscore
+            scriptType: bash
             scriptLocation: inlineScript
             inlineScript: |-
               az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
@@ -914,7 +914,7 @@ stages:
             name: getAppConfigurationConnectionString
             inputs:
               azureSubscription: $(subscriptionName)
-              scriptType: pscore
+              scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
                 IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
@@ -933,11 +933,11 @@ stages:
                 echo "##vso[task.setvariable variable=appConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
 
           - task: AzureCLI@2
-            displayName: Set Client Ip to Storage Account
-            name: setClientIpAddressToStorageAccount
+            displayName: Remove Client Ip from Storage Account
+            name: removeClientIpAddressToStorageAccount
             inputs:
               azureSubscription: $(subscriptionName)
-              scriptType: pscore
+              scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
                 az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP
@@ -1076,7 +1076,7 @@ stages:
             name: setClientIpAddressToStorageAccount
             inputs:
               azureSubscription: $(subscriptionName)
-              scriptType: pscore
+              scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
                 IP=($(curl -s http://ipinfo.io/json | jq '.ip' | sed -e 's/^"//' -e 's/"$//'))
@@ -1103,7 +1103,7 @@ stages:
             name: getAppConfigurationConnectionString
             inputs:
               azureSubscription: $(subscriptionName)
-              scriptType: pscore
+              scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
                 az storage account network-rule remove -g $(resourceGroupName) --account-name $(storageAccountName) --ip-address $IP

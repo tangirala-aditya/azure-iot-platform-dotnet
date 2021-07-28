@@ -41,7 +41,7 @@
                 "description": "Resource group name where storage account exists"
             }
         },
-        "environmentName": {
+        "environmentCategory": {
             "type": "string",
             "defaultValue": "dev",
             "metadata": {
@@ -59,7 +59,7 @@
 
     "variables": {
       "location": "[resourceGroup().location]",
-      "workSpaceID": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/microsoft.operationalinsights/workspaces/',parameters('applicationCode'),'-loganalyticsws-',parameters('environmentName'))]"
+      "workSpaceID": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/microsoft.operationalinsights/workspaces/',parameters('applicationCode'),'-loganalyticsws-',parameters('environmentCategory'))]"
     },
     "resources": [
       {

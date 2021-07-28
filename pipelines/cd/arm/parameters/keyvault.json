@@ -5,6 +5,9 @@
       "resourceName": { "value": "crslkeyvaultdev" },
       "userObjId": { "value": "562b0a82-a156-4a88-987d-5c8eb71c2b9b" },
       "applicationObjId": { "value": "562b0a82-a156-4a88-987d-5c8eb71c2b9b" },
-      "settingName": { "value": "someName" }
+      "settingName": { "value": "someName" },
+      "subscriptionID": {"value": "c36fb2f8-f98d-40d0-90a9-d65e93acb428"},
+      "resourceGroupName": {"value": "rg-iot-acs-dev"},
+      "logAnalyticsName": {"value": "acshyd-loganalyticsws-dev"}
     }
   }

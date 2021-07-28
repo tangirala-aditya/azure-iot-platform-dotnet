@@ -318,7 +318,9 @@ function addUsersAsAdminsForNewTenant() {
 
 #Adding Diagnostic Settings for IoTHub
 function createDiagnosticSettings() {
-    Set-AzDiagnosticSetting -Name newDiag -ResourceId /subscriptions/$($data.subscriptionId)/resourceGroups/$($data.resourceGroup)/providers/Microsoft.Devices/IotHubs/$($data.iotHubName) -Category Connections, Routes -MetricCategory AllMetrics -Enabled $true -WorkspaceId /subscriptions/$($data.subscriptionId)/resourceGroups/$($data.resourceGroup)/providers/microsoft.operationalinsights/workspaces/acshyd-loganalyticsws-dev
+    $splitRG = $data.resourceGroup.Split('-')
+    $loganalyticsName = -join ($splitRG[2], "-loganatics-", $splitRG[3])
+    Set-AzDiagnosticSetting -Name newDiag -ResourceId /subscriptions/$($data.subscriptionId)/resourceGroups/$($data.resourceGroup)/providers/Microsoft.Devices/IotHubs/$($data.iotHubName) -Category Connections, Routes -MetricCategory AllMetrics -Enabled $true -WorkspaceId /subscriptions/$($data.subscriptionId)/resourceGroups/$($data.resourceGroup)/providers/microsoft.operationalinsights/workspaces/$($loganalyticsName)
 }
 
 try {

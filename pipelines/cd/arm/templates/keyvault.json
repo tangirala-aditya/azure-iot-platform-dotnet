@@ -26,6 +26,27 @@
         "metadata": {
           "description": "Setting Name of the Application to be added to Access policy"
         }
+      },
+      "subscriptionID": {
+        "type": "string",
+        "defaultValue": "c36fb2f8-f98d-40d0-90a9-d65e93acb428",
+        "metadata": {
+          "description": "subscriptionID of the Application to be added to Access policy"
+        }
+      },
+      "resourceGroupName": {
+        "type": "string",
+        "defaultValue": "rg-iot-acs-dev",
+        "metadata": {
+          "description": "resourceGroupName of the Application to be added to Access policy"
+        }
+      },
+      "logAnalyticsName": {
+        "type": "string",
+        "defaultValue": "acshyd-loganalyticsws-dev",
+        "metadata": {
+          "description": "logAnalyticsName of the Application to be added to Access policy"
+        }
       }
     },
     
@@ -109,7 +130,7 @@
       "apiVersion": "2016-09-01",
       "location": "[variables('location')]",
       "properties": {
-        "workspaceId": "/subscriptions/c36fb2f8-f98d-40d0-90a9-d65e93acb428/resourcegroups/rg-iot-acs-dev/providers/microsoft.operationalinsights/workspaces/acshyd-loganalyticsws-dev",
+        "workspaceId": "[concat('/subscriptions/', parameters(subscriptionID), '/resourcegroups/', parameters(resourceGroupName), '/providers/microsoft.operationalinsights/workspaces/', parameters(logAnalyticsName)]",
         "logs": [
           {
             "category": "AuditEvent",

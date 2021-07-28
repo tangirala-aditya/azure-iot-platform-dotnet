@@ -143,6 +143,7 @@
                 "enabled": true,
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('functionAppName'))]",
 				"httpsOnly": true,
+                "ftpsState": "FtpsOnly",
                 "reserved": false,
                 "scmSiteAlsoStopped": false,
                 "hostingEnvironmentProfile": null,

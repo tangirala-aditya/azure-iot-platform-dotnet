@@ -130,7 +130,7 @@
       "apiVersion": "2016-09-01",
       "location": "[variables('location')]",
       "properties": {
-        "workspaceId": "[concat('/subscriptions/', parameters(subscriptionID), '/resourcegroups/', parameters(resourceGroupName), '/providers/microsoft.operationalinsights/workspaces/', parameters(logAnalyticsName)]",
+        "workspaceId": "[concat('/subscriptions/', parameters('subscriptionID'), '/resourcegroups/', parameters('resourceGroupName'), '/providers/microsoft.operationalinsights/workspaces/', parameters('logAnalyticsName')]",
         "logs": [
           {
             "category": "AuditEvent",

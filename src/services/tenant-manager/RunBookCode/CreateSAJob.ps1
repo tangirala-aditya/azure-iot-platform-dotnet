@@ -815,6 +815,10 @@ function updateUserTenantTtable($tenantId){
     Write-Output "SAJob Name $SAJobName updated for tenant $tenantId in tenant table"
 }
 
+function createSADiagnosticSettings() {
+    Set-AzDiagnosticSetting -Name newDiag -ResourceId /subscriptions/$($data.subscriptionId)/resourceGroups/$($data.resourceGroup)/providers/Microsoft.Devices/IotHubs/$($data.iotHubName) -Category Connections, Routes -MetricCategory AllMetrics -Enabled $true -WorkspaceId /subscriptions/$($data.subscriptionId)/resourceGroups/$($data.resourceGroup)/providers/microsoft.operationalinsights/workspaces/acshyd-loganalyticsws-dev
+}
+
 # call the functions 
 try {
     createBlobforTenant -tenantId $tenantId
@@ -825,6 +829,7 @@ try {
     addSAJobQuery -saJobName $saJobName
     addSAfunctions -saJobName $saJobName
     updateUserTenantTtable -tenantId $tenantId
+    createSADiagnosticSettings
     # Start the SA job if required
     #Start-AzStreamAnalyticsJob -Name $saJobName -ResourceGroupName $resourceGroup
     Write-Output "Finished provisioning Stream Analytics Job for the Tenant $tenantId"

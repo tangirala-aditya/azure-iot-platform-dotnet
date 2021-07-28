@@ -112,7 +112,7 @@
         "storageAccountName": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/Microsoft.Storage/storageAccounts/',parameters('storageAccountName'))]",
         "defaultSASKeyName": "RootManageSharedAccessKey",
         "authRuleResourceId": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('namespaceName'), variables('defaultSASKeyName'))]",
-        "workSpaceID": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/microsoft.operationalinsights/workspaces/',parameters('applicationCode'),'-loganalytics-',parameters('environmentCategory'))]"
+        "workSpaceID": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/microsoft.operationalinsights/workspaces/',parameters('applicationCode'),'-loganalyticsws-',parameters('environmentCategory'))]"
     },
     "resources": [
         {

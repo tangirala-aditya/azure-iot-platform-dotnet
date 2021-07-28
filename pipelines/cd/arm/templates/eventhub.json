@@ -77,23 +77,16 @@
         },
         "subscriptionId": {
             "type": "string",
-            "defaultValue": "c36fb2f8-f98d-40d0-90a9-d65e93acb428",
+            "defaultValue": "403f2258-d6b0-4c0a-b565-4102510935aa",
             "metadata": {
                 "description": "Subscription Id where storage account exists"
             }
         },
-        "resourceGroupName": {
+        "workSpaceID": {
             "type": "string",
-            "defaultValue": "rg-crsliot-dev",
+            "defaultValue": "/subscriptions/c36fb2f8-f98d-40d0-90a9-d65e93acb428/resourcegroups/rg-iot-acs-dev/providers/microsoft.operationalinsights/workspaces/acshyd-loganalyticsws-dev",
             "metadata": {
-                "description": "Resource group name where storage account exists"
-            }
-        },
-      "logAnalyticsName": {
-            "type": "string",
-            "defaultValue": "acshyd-loganalyticsws-dev",
-            "metadata": {
-            "description": "logAnalyticsName of the Application to be added to Access policy"
+                "description": "workSpaceID of the loganalytics"
             }
         }
     },
@@ -326,7 +319,7 @@
       "apiVersion": "2016-09-01",
       "location": "[parameters('location')]",
       "properties": {
-        "workspaceId": "[concat('/subscriptions/', parameters('subscriptionID'), '/resourcegroups/', parameters('resourceGroupName'), '/providers/microsoft.operationalinsights/workspaces/', parameters('logAnalyticsName')]",
+        "workspaceId": "/subscriptions/c36fb2f8-f98d-40d0-90a9-d65e93acb428/resourcegroups/rg-iot-acs-dev/providers/microsoft.operationalinsights/workspaces/acshyd-loganalyticsws-dev",
         "logs": [
           {
             "category": "ArchiveLogs",

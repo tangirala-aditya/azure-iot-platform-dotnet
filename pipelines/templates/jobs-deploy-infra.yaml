@@ -251,6 +251,7 @@ jobs:
             set -Eeuxo pipefail
             az provider register --namespace Microsoft.PolicyInsights
             az aks enable-addons --addons azure-policy --name $(aksName) --resource-group $(resourceGroupName)
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
             kubectl get pods -n gatekeeper-system
             kubectl get pods -n kube-system
             az aks show --query addonProfiles.azurepolicy -g $(resourceGroupName) -n $(aksName)
@@ -441,7 +442,7 @@ jobs:
             set -Eeuxo pipefail
             az storage account show -g $(resourceGroupName) -n $(storageAccountName)
             az storage account update -g $(resourceGroupName) -n $(storageAccountName) --https-only true
-            
+
       - template: steps-delete-oldest-deployment.yaml
         parameters:
           subscriptionName: ${{parameters.subscriptionName}}

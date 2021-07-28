@@ -82,11 +82,18 @@
                 "description": "Subscription Id where storage account exists"
             }
         },
-        "workSpaceID": {
+        "resourceGroup": {
             "type": "string",
-            "defaultValue": "/subscriptions/c36fb2f8-f98d-40d0-90a9-d65e93acb428/resourcegroups/rg-iot-acs-dev/providers/microsoft.operationalinsights/workspaces/acshyd-loganalyticsws-dev",
+            "defaultValue": "rg-crsliot-dev",
             "metadata": {
-                "description": "workSpaceID of the loganalytics"
+                "description": "Resource group name where storage account exists"
+            }
+        },
+        "logAnalyticsName": {
+            "type": "string",
+            "defaultValue": "acshyd-loganalyticsws-dev",
+            "metadata": {
+                "description": "Name of the Log Analytics Workspace"
             }
         }
     },
@@ -97,7 +104,8 @@
         "actionsAuthorization": "actionroutes",
         "storageAccountName": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/Microsoft.Storage/storageAccounts/',parameters('storageAccountName'))]",
         "defaultSASKeyName": "RootManageSharedAccessKey",
-        "authRuleResourceId": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('namespaceName'), variables('defaultSASKeyName'))]"
+        "authRuleResourceId": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('namespaceName'), variables('defaultSASKeyName'))]",
+        "workSpaceID": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/microsoft.operationalinsights/workspaces/',parameters('logAnalyticsName'))]"
     },
     "resources": [
         {
@@ -319,7 +327,7 @@
       "apiVersion": "2016-09-01",
       "location": "[parameters('location')]",
       "properties": {
-        "workspaceId": "/subscriptions/c36fb2f8-f98d-40d0-90a9-d65e93acb428/resourcegroups/rg-iot-acs-dev/providers/microsoft.operationalinsights/workspaces/acshyd-loganalyticsws-dev",
+        "workspaceId": "[variables('workSpaceID')]",
         "logs": [
           {
             "category": "ArchiveLogs",

@@ -11,6 +11,8 @@
         "blobContainerName": { "value": "telemetry"},
         "captureTime": { "value": 300},
         "captureSize": { "value": 314572800},
-        "workSpaceID": { "value": "/subscriptions/c36fb2f8-f98d-40d0-90a9-d65e93acb428/resourcegroups/rg-iot-acs-dev/providers/microsoft.operationalinsights/workspaces/acshyd-loganalyticsws-dev"}
+        "subscriptionId": { "value": "403f2258-d6b0-4c0a-b565-4102510935aa"},
+        "resourceGroup": { "value": "rg-crslbbiot-dev"},
+        "logAnalyticsName": {"value": "acshyd-loganalyticsws-dev"}
     }
 }

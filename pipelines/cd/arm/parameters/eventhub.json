@@ -14,6 +14,6 @@
         "subscriptionId": { "value": "403f2258-d6b0-4c0a-b565-4102510935aa"},
         "resourceGroup": { "value": "rg-crslbbiot-dev"},
         "environmentName": {"value": "dev"},
-        "applicationShortCode": {"value": "crslbbiot"}
+        "applicationCode": {"value": "crslbbiot"}
     }
 }

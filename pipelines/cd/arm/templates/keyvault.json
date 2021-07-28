@@ -48,7 +48,7 @@
                 "description": "Name of the Log Analytics Workspace"
             }
         },
-        "applicationShortCode": {
+        "applicationCode": {
             "type": "string",
             "defaultValue": "crsliot",
             "metadata": {
@@ -59,7 +59,7 @@
 
     "variables": {
       "location": "[resourceGroup().location]",
-      "workSpaceID": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/microsoft.operationalinsights/workspaces/',parameters('applicationShortCode'),'-loganalyticsws-',parameters('environmentName'))]"
+      "workSpaceID": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/microsoft.operationalinsights/workspaces/',parameters('applicationCode'),'-loganalyticsws-',parameters('environmentName'))]"
     },
     "resources": [
       {

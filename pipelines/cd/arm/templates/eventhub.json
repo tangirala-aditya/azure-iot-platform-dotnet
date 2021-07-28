@@ -96,7 +96,7 @@
                 "description": "Name of the Log Analytics Workspace"
             }
         },
-        "applicationShortCode": {
+        "applicationCode": {
             "type": "string",
             "defaultValue": "crsliot",
             "metadata": {
@@ -112,7 +112,7 @@
         "storageAccountName": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/Microsoft.Storage/storageAccounts/',parameters('storageAccountName'))]",
         "defaultSASKeyName": "RootManageSharedAccessKey",
         "authRuleResourceId": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('namespaceName'), variables('defaultSASKeyName'))]",
-        "workSpaceID": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/microsoft.operationalinsights/workspaces/',parameters('applicationShortCode'),'-loganalyticsws-',parameters('environmentName'))]"
+        "workSpaceID": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/microsoft.operationalinsights/workspaces/',parameters('applicationCode'),'-loganalyticsws-',parameters('environmentName'))]"
     },
     "resources": [
         {

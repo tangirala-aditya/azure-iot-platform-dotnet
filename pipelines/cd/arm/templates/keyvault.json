@@ -27,17 +27,39 @@
           "description": "Setting Name of the Application to be added to Access policy"
         }
       },
-      "workSpaceID": {
-        "type": "string",
-        "defaultValue": "",
-        "metadata": {
-          "description": "workSpaceID of the Application to be added to Access policy"
+        "subscriptionId": {
+            "type": "string",
+            "defaultValue": "403f2258-d6b0-4c0a-b565-4102510935aa",
+            "metadata": {
+                "description": "Subscription Id where storage account exists"
+            }
+        },
+        "resourceGroup": {
+            "type": "string",
+            "defaultValue": "rg-crsliot-dev",
+            "metadata": {
+                "description": "Resource group name where storage account exists"
+            }
+        },
+        "environmentName": {
+            "type": "string",
+            "defaultValue": "dev",
+            "metadata": {
+                "description": "Name of the Log Analytics Workspace"
+            }
+        },
+        "applicationShortCode": {
+            "type": "string",
+            "defaultValue": "crsliot",
+            "metadata": {
+                "description": "Name of the Log Analytics Workspace"
+            }
         }
-      }
     },
-    
+
     "variables": {
-      "location": "[resourceGroup().location]"
+      "location": "[resourceGroup().location]",
+      "workSpaceID": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/microsoft.operationalinsights/workspaces/',parameters('applicationShortCode'),'-loganalyticsws-',parameters('environmentName'))]"
     },
     "resources": [
       {
@@ -116,7 +138,7 @@
       "apiVersion": "2016-09-01",
       "location": "[variables('location')]",
       "properties": {
-        "workspaceId": "[parameters('workSpaceID')]",
+        "workspaceId": "[variables('workSpaceID')]",
         "logs": [
           {
             "category": "AuditEvent",

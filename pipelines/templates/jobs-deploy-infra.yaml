@@ -543,7 +543,7 @@ jobs:
                 templateLocation: Linked artifact
                 csmFile: $(armTemplatesDirectory)/$(keyVaultPartialName).json
                 csmParametersFile: $(armParametersDirectory)/$(keyVaultPartialName).json
-                overrideParameters: -resourceName $(keyVaultName) -applicationObjId $(servicePrincipalObjectId) -userObjId $(userObjId) -settingName $(omsWorkspacePartialName) -resourceGroup $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}} -environmentCategory ${{parameters.environmentCategory}} -applicationCode ${{parameters.applicationCode}}"
+                overrideParameters: -resourceName $(keyVaultName) -applicationObjId $(servicePrincipalObjectId) -userObjId $(userObjId) -settingName $(omsWorkspacePartialName) -resourceGroup $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}} -environmentCategory ${{parameters.environmentCategory}} -applicationCode ${{parameters.applicationCode}}
                 deploymentMode: Incremental
 
           - template: steps-delete-oldest-deployment.yaml

@@ -149,7 +149,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                         this.config.TenantManagerService.LifecycleEventHubConnectionString,
                                         this.config.Global.StorageAccountConnectionString,
                                         this.config.Global.LogAnalytics.WorkspaceId,
-                                        this.config.Global.DiagnosticSetting.Name);                                        );
+                                        this.config.Global.DiagnosticSetting.Name);
                                     await this.azureManagementClient.DeployTemplateAsync(template);
                                 }
                             }

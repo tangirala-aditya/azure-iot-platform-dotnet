@@ -37,7 +37,7 @@ RUN ["chmod", "+x", "/app/run.sh"]
 RUN ["chmod", "+x", "/app/build.sh"]
 RUN ["chmod", "+x", "/app/set_env.sh"]
 RUN ["chmod", "+x", "/app/set_policies.sh"]
-RUN chown -R nginx /var/lib/nginx/ /var/log/nginx/ /var/cache/nginx/ /var/tmp/nginx/ /app/**/*
+RUN chown -R nginx /var/lib/nginx/ /var/log/nginx/ /var/cache/nginx/ /var/tmp/nginx/ /app/
 USER nginx
 RUN mkdir /app/logs
 VOLUME /app/logs

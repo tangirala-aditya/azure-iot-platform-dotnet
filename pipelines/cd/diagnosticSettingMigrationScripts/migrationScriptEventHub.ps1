@@ -8,7 +8,7 @@
 function createDiagnosticSettings([string]$rgName, [string]$subscriptionId, [string]$eventHubNameSpaceName, [string]$loganalyticsName) {
     $resourceId = "/subscriptions/$subscriptionId/resourceGroups/$rgName/providers/Microsoft.EventHub/namespaces/$eventHubNameSpaceName"
     $workSpaceID = "/subscriptions/$subscriptionId/resourceGroups/$rgName/providers/microsoft.operationalinsights/workspaces/$loganalyticsName"
-    $existingDiagSetting = (Get-AzDiagnosticSetting -ResourceId $resourceId)
+    $existingDiagSetting = Get-AzDiagnosticSetting -ResourceId $resourceId
     if($existingDiagSetting)
     {
     if($existingDiagSetting.WorkspaceId.Split('/')[8] -eq $loganalyticsName)

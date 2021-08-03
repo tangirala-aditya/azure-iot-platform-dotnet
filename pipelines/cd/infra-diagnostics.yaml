@@ -153,5 +153,5 @@ stages:
             azureSubscription: $(subscriptionName)
             ScriptType: FilePath
             ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptEventHub.ps1
-            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId)
+            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
             azurePowerShellVersion: LatestVersion

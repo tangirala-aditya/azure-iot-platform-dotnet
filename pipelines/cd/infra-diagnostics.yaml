@@ -137,7 +137,7 @@ stages:
         dependsOn:
           - printVariables
         variables:
-          - template: variables-deploy-infra.yaml
+          - template: ../templates/variables-deploy-infra.yaml
             parameters:
               subscriptionName: $(subscriptionName)
               locationName: $(locationName)

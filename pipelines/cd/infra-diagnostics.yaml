@@ -136,16 +136,16 @@ stages:
         displayName: Powershell scripts
         dependsOn:
           - printVariables
-         variables:
+        variables:
           - template: variables-deploy-infra.yaml
             parameters:
-              subscriptionName: ${{parameters.subscriptionName}}
-              locationName: ${{parameters.locationName}}
-              environmentName: ${{parameters.environmentName}}
-              subscriptionId: ${{parameters.subscriptionId}}
-              applicationCode: ${{parameters.applicationCode}}
-              applicationShortCode: ${{parameters.applicationShortCode}}
-              environmentCategory: ${{parameters.environmentCategory}}
+              subscriptionName: $(subscriptionName)
+              locationName: $(locationName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)
         steps:
         - task: AzurePowerShell@5
           displayName: Create certificate and connections on Azure Automation Account

@@ -8,6 +8,8 @@
 function createDiagnosticSettings([string]$rgName, [string]$subscriptionId, [string]$eventHubNameSpaceName, [string]$loganalyticsName) {
     $resourceId = "/subscriptions/$subscriptionId/resourceGroups/$rgName/providers/Microsoft.EventHub/namespaces/$eventHubNameSpaceName"
     $workSpaceID = "/subscriptions/$subscriptionId/resourceGroups/$rgName/providers/microsoft.operationalinsights/workspaces/$loganalyticsName"
+    Write-Host $resourceId
+    Write-Host $workSpaceID
     $existingDiagSetting = Get-AzDiagnosticSetting -ResourceId $resourceId
     if($existingDiagSetting)
     {
@@ -24,9 +26,12 @@ function createDiagnosticSettings([string]$rgName, [string]$subscriptionId, [str
 
 function getIoTHubListandCreateDiagnosticSettings([string]$resourceGroupName, [string]$subscriptionId, [string]$applicationCode) {
     Write-Host $resourceGroupName
+    Write-Host $subscriptionId
+    Write-Host $applicationCode
     $eventHubNameSpaceList = Get-AzEventHubNamespace -ResourceGroupName $resourceGroupName
     $splitRG = $resourceGroupName.Split('-')
     $loganalyticsName = -join ($applicationCode, "-loganalyticsws-", $splitRG[3])
+    Write-Host $loganalyticsName
 
     ForEach($item in $eventHubNameSpaceList)
     {

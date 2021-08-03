@@ -31,11 +31,12 @@ function getSAJobListandCreateDiagnosticSettings([string]$resourceGroupName, [st
     $loganalyticsName = -join ($applicationCode, "-loganalyticsws-", $splitRG[3])
     Write-Host $saJobList
     Write-Host $saJobList[0].JobName
+    Write-Host $saJobList[0].Name
 
     ForEach($item in $saJobList)
     {
-    Write-Host $item.JobName
-    createDiagnosticSettings -resourceGroupName $resourceGroupName -subscriptionId $subscriptionId -saJobName $item.JobName -loganalyticsName $loganalyticsName
+    Write-Host $item.Name
+    createDiagnosticSettings -resourceGroupName $resourceGroupName -subscriptionId $subscriptionId -saJobName $item.Name -loganalyticsName $loganalyticsName
     Write-Host "======================================="
     }
 }

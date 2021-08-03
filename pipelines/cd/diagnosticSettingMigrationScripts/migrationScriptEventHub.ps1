@@ -1,6 +1,7 @@
 ﻿param(
     [string] $resourceGroupName,
-    [string] $subscriptionId
+    [string] $subscriptionId,
+    [string] $applicationCode
 )
 
 
@@ -21,18 +22,19 @@ function createDiagnosticSettings([string]$rgName, [string]$subscriptionId, [str
 }
 
 
-function getIoTHubListandCreateDiagnosticSettings([string]$resourceGroupName, [string]$subscriptionId) {
+function getIoTHubListandCreateDiagnosticSettings([string]$resourceGroupName, [string]$subscriptionId, [string]$applicationCode) {
+    Write-Host $resourceGroupName
     $eventHubNameSpaceList = Get-AzEventHubNamespace -ResourceGroupName $resourceGroupName
     $splitRG = $resourceGroupName.Split('-')
-    $loganalyticsName = -join ("acshyd", "-loganalyticsws-", $splitRG[3])
+    $loganalyticsName = -join ($applicationCode, "-loganalyticsws-", $splitRG[3])
 
     ForEach($item in $eventHubNameSpaceList)
     {
     Write-Host $item.Name
-        createDiagnosticSettings -resourceGroupName "rg-iot-acs-dev" -subscriptionId "c36fb2f8-f98d-40d0-90a9-d65e93acb428" -eventHubNameSpaceName $item.Name -loganalyticsName $loganalyticsName
+        createDiagnosticSettings -resourceGroupName $resourceGroupName -subscriptionId $resourceGroupName -eventHubNameSpaceName $item.Name -loganalyticsName $loganalyticsName
     Write-Host "======================================="
     }
 }
 
 
-getIoTHubListandCreateDiagnosticSettings resourceGroupName $resourceGroupName -subscriptionId $subscriptionId
+getIoTHubListandCreateDiagnosticSettings resourceGroupName $resourceGroupName -subscriptionId $subscriptionId -applicationCode $applicationCode

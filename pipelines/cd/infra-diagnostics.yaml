@@ -116,7 +116,7 @@ stages:
         dependsOn:
           - getApproval
         variables:
-          - template: variables-deploy-infra.yaml
+          - template: ../templates/variables-deploy-infra.yaml
             parameters:
               subscriptionName: $(subscriptionName)
               locationName: $(locationName)
@@ -128,7 +128,7 @@ stages:
         steps:
           - checkout: none
 
-          - template: print-pipeline-resource-variables.yaml
+          - template: ../templates/print-pipeline-resource-variables.yaml
             parameters:
               pipelineResourceName: test
 
@@ -184,8 +184,8 @@ stages:
         - task: AzurePowerShell@5
           displayName: Create certificate and connections on Azure Automation Account
           inputs:
-            azureSubscription: ${{parameters.subscriptionName}}
+            azureSubscription: $(subscriptionName)
             ScriptType: FilePath
             ScriptPath: pipelines\cd\diagnosticSettingMigrationScripts\migrationScriptEventHub.ps1
-            ScriptArguments: -rgName $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}}
+            ScriptArguments: -rgName $(resourceGroupName) -subscriptionId $(subscriptionId)
             azurePowerShellVersion: LatestVersion

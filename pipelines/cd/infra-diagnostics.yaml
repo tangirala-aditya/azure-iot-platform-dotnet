@@ -133,7 +133,7 @@ stages:
               echo "variable: storageAccountName: $(storageAccountName)"
             displayName: Print variables
       - job: powershellScripts
-        displayName: Powershell scripts
+        displayName: Powershell scripts to Migrate
         dependsOn:
           - printVariables
         variables:
@@ -148,10 +148,34 @@ stages:
               environmentCategory: $(environmentCategory)
         steps:
         - task: AzurePowerShell@5
-          displayName: Create certificate and connections on Azure Automation Account
+          displayName: Migrate Event Hub
           inputs:
             azureSubscription: $(subscriptionName)
             ScriptType: FilePath
             ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptEventHub.ps1
             ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
             azurePowerShellVersion: LatestVersion
+         - task: AzurePowerShell@5
+          displayName: Migrate IoT Hub
+          inputs:
+            azureSubscription: $(subscriptionName)
+            ScriptType: FilePath
+            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptIoTHub.ps1
+            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
+            azurePowerShellVersion: LatestVersion
+        - task: AzurePowerShell@5
+          displayName: Migrate Key Vault
+          inputs:
+            azureSubscription: $(subscriptionName)
+            ScriptType: FilePath
+            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptKeyVault.ps1
+            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
+            azurePowerShellVersion: LatestVersion
+        - task: AzurePowerShell@5
+          displayName: Migrate Stream Analytics
+          inputs:
+            azureSubscription: $(subscriptionName)
+            ScriptType: FilePath
+            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptStreamAnalytics.ps1
+            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
+            azurePowerShellVersion: LatestVersion           

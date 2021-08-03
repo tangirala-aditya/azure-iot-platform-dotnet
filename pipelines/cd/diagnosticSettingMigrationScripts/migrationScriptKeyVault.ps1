@@ -1,13 +1,14 @@
 ﻿param(
-    [string] $rgName,
-    [string] $subscriptionId
+    [string] $resourceGroupName,
+    [string] $subscriptionId,
+    [string] $applicationCode
 )
 
 
-function createDiagnosticSettings([string]$rgName, [string]$subscriptionId, [string]$vaultName, [string]$loganalyticsName) {
-    $resourceId = "/subscriptions/$subscriptionId/resourceGroups/$rgName/providers/Microsoft.KeyVault/vaults/$vaultName"
-    $workSpaceID = "/subscriptions/$subscriptionId/resourceGroups/$rgName/providers/microsoft.operationalinsights/workspaces/$loganalyticsName"
-    $existingDiagSetting = (Get-AzDiagnosticSetting -ResourceId $resourceId)
+function createDiagnosticSettings([string]$resourceGroupName, [string]$subscriptionId, [string]$vaultName, [string]$loganalyticsName) {
+    $resourceId = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.KeyVault/vaults/$vaultName"
+    $workSpaceID = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/microsoft.operationalinsights/workspaces/$loganalyticsName"
+    $existingDiagSetting = Get-AzDiagnosticSetting -ResourceId $resourceId
     if($existingDiagSetting)
     {
     if($existingDiagSetting.WorkspaceId.Split('/')[8] -eq $loganalyticsName)
@@ -21,17 +22,17 @@ function createDiagnosticSettings([string]$rgName, [string]$subscriptionId, [str
 }
 
 
-function getIoTHubListandCreateDiagnosticSettings([string]$rgName, [string]$subscriptionId){
-    $kvList = Get-AzKeyVault -ResourceGroupName $rgName
-    $splitRG = $rgName.Split('-')
-    $loganalyticsName = -join ("acshyd", "-loganalyticsws-", $splitRG[3])
+function getIoTHubListandCreateDiagnosticSettings([string]$resourceGroupName, [string]$subscriptionId, [string]$applicationCode) {
+    $kvList = Get-AzKeyVault -ResourceGroupName $resourceGroupName
+    $splitRG = $resourceGroupName.Split('-')
+    $loganalyticsName = -join ($applicationCode, "-loganalyticsws-", $splitRG[3])
 
     ForEach($item in $kvList)
     {
     Write-Host $item.VaultName
-    createDiagnosticSettings -rgName "rg-iot-acs-dev" -subscriptionId "c36fb2f8-f98d-40d0-90a9-d65e93acb428" -vaultName $item.VaultName -loganalyticsName $loganalyticsName
+        createDiagnosticSettings -resourceGroupName $resourceGroupName -subscriptionId $subscriptionId -vaultName $item.VaultName -loganalyticsName $loganalyticsName
     Write-Host "======================================="
     }
 }
 
-getIoTHubListandCreateDiagnosticSettings -rgName $rgName -subscriptionId $subscriptionId
+getIoTHubListandCreateDiagnosticSettings -resourceGroupName $resourceGroupName -subscriptionId $subscriptionId -applicationCode $applicationCode

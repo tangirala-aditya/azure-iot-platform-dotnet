@@ -37,4 +37,4 @@ function getIoTHubListandCreateDiagnosticSettings([string]$resourceGroupName, [s
 }
 
 
-getIoTHubListandCreateDiagnosticSettings resourceGroupName $resourceGroupName -subscriptionId $subscriptionId -applicationCode $applicationCode
+getIoTHubListandCreateDiagnosticSettings -resourceGroupName $resourceGroupName -subscriptionId $subscriptionId -applicationCode $applicationCode

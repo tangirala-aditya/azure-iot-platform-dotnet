@@ -155,7 +155,8 @@ stages:
             ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptEventHub.ps1
             ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
             azurePowerShellVersion: LatestVersion
-         - task: AzurePowerShell@5
+
+        - task: AzurePowerShell@5
           displayName: Migrate IoT Hub
           inputs:
             azureSubscription: $(subscriptionName)
@@ -163,6 +164,7 @@ stages:
             ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptIoTHub.ps1
             ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
             azurePowerShellVersion: LatestVersion
+
         - task: AzurePowerShell@5
           displayName: Migrate Key Vault
           inputs:
@@ -171,6 +173,7 @@ stages:
             ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptKeyVault.ps1
             ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
             azurePowerShellVersion: LatestVersion
+
         - task: AzurePowerShell@5
           displayName: Migrate Stream Analytics
           inputs:

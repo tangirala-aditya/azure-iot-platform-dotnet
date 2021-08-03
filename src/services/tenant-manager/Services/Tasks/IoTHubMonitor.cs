@@ -33,17 +33,10 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
     public class IoTHubMonitor : IHostedService, IDisposable
     {
         private const string EventHubNamespaceFormat = "eventhub-{0}";
-        private const string TelemetryDatabaseNameFormat = "Telemetry-{0}";
         private const string IoTDatabaseNameFormat = "IoT-{0}";
         private readonly CancellationTokenSource stoppingCts = new CancellationTokenSource();
         private readonly List<ADXDatabaseModel> tenantADXDatabaseList = new List<ADXDatabaseModel>
         {
-            new ADXDatabaseModel()
-            {
-                DatabaseNameFormat = TelemetryDatabaseNameFormat,
-                SoftDeletePeriod = new TimeSpan(30, 0, 0, 0),
-                HotCachePeriod = new TimeSpan(0, 0, 0, 0),
-            },
             new ADXDatabaseModel()
             {
                 DatabaseNameFormat = IoTDatabaseNameFormat,
@@ -162,7 +155,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                     string eventHubNameSpace = await this.SetupEventHub(item.TenantId);
                                     await this.SetupADXDatabase(item.TenantId);
 
-                                    await this.ADXTelemetrySetup(item.TenantId, string.Format(TelemetryDatabaseNameFormat, item.TenantId), eventHubNameSpace);
+                                    await this.ADXTelemetrySetup(item.TenantId, string.Format(IoTDatabaseNameFormat, item.TenantId), eventHubNameSpace);
                                     await this.ADXDeviceTwinSetup(item.TenantId, string.Format(IoTDatabaseNameFormat, item.TenantId), eventHubNameSpace);
                                 }
                             }
@@ -259,6 +252,8 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
             string eventHubName = $"{tenantId}-telemetry";
 
             await this.ADXTableSetup(tenantId, databaseName, tableName, tableSchema, tableMappingName, mappingSchema, dataConnectionName, eventHubNameSpace, eventHubName);
+
+            this.kustoTableManagementClient.AlterTableRetentionPolicy(tableName, databaseName, new TimeSpan(30, 0, 0, 0), DataRecoverability.Disabled);
         }
 
         private async Task ADXDeviceTwinSetup(string tenantId, string databaseName, string eventHubNameSpace)

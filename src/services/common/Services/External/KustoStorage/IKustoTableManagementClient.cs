@@ -15,5 +15,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
         void CreateTableMapping(string tableMappingName, IEnumerable<ColumnMapping> mapping, string tableName, string databaseName);
 
         void EnableStreamingIngestionPolicyToTable(string tableName, string databaseName);
+
+        void AlterTableRetentionPolicy(string tableName, string databaseName, TimeSpan? softDeletePeriod, DataRecoverability recoverability = DataRecoverability.Unknown);
     }
 }

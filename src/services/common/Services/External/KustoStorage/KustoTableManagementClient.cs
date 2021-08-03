@@ -75,6 +75,20 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             }
         }
 
+        public void AlterTableRetentionPolicy(string tableName, string databaseName, TimeSpan? softDeletePeriod, DataRecoverability recoverability = DataRecoverability.Unknown)
+        {
+            try
+            {
+                var command = CslCommandGenerator.GenerateTableAlterRetentionPolicyCommand(databaseName, tableName, softDeletePeriod, recoverability);
+
+                this.client.ExecuteControlCommand(databaseName, command);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public void Dispose()
         {
             this.Dispose(true);

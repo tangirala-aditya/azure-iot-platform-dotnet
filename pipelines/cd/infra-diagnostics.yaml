@@ -113,8 +113,6 @@ stages:
     jobs:
       - job: printVariables
         displayName: Print variables
-        dependsOn:
-          - getApproval
         variables:
           - template: ../templates/variables-deploy-infra.yaml
             parameters:

@@ -1,79 +1,191 @@
-parameters:
-  subscriptionName:
-  locationName:
-  environmentName:
-  subscriptionId:
-  applicationCode:
-  applicationShortCode:
-  environmentCategory:
+trigger: none
+pr: none
+pool:
+  vmImage: ubuntu-latest
+stages:
+  - stage: checkParameters
+    displayName: Check parameters
+    dependsOn: []
+    jobs:
+      - job: checkParameters
+        displayName: Check parameters
+        steps:
+          - checkout: none
 
-jobs:
-  - template: get-approval.yaml
-    parameters:
-      environmentName: ${{parameters.environmentName}}
+          - script: |-
+              set -Eeuxo pipefail
+              echo "Subscription name: '$(subscriptionName)'"
+              if [ -z "$(subscriptionName)" ]
+              then
+                echo "A value for the 'subscriptionName' variable must be provided" > /dev/stderr
+                exit 1
+              fi
 
-  - job: printVariables
-    displayName: Print variables
+              echo "Location name: '$(locationName)'"
+              if [ -z "$(locationName)" ]
+              then
+                echo "A value for the 'locationName' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Environment name: '$(environmentName)'"
+              if [ -z "$(environmentName)" ]
+              then
+                echo "A value for the 'environmentName' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Subscription ID: '$(subscriptionId)'"
+              if [ -z "$(subscriptionId)" ]
+              then
+                echo "A value for the 'subscriptionId' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Application code: '$(applicationCode)'"
+              if [ -z "$(applicationCode)" ]
+              then
+                echo "A value for the 'applicationCode' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Application short code: '$(applicationShortCode)'"
+              if [ -z "$(applicationShortCode)" ]
+              then
+                echo "A value for the 'applicationShortCode' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Environment category: '$(environmentCategory)'"
+              if [ -z "$(environmentCategory)" ]
+              then
+                echo "A value for the 'environmentCategory' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Kubernetes version: '$(kubernetesVersion)'"
+              if [ -z "$(kubernetesVersion)" ]
+              then
+                echo "A value for the 'kubernetesVersion' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "SendGrid email: '$(sendGridEmail)'"
+              if [ -z "$(sendGridEmail)" ]
+              then
+                echo "A value for the 'sendGridEmail' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "System Admins: '$(sysAdmins)'"
+              if [ -z "$(sysAdmins)" ]
+              then
+                echo "A value for the 'sysAdmins' variable must be provided in JSON format" > /dev/stderr
+                exit 1
+              fi
+
+              echo "AKS agent VM size: '$(aksAgentVmSize)'"
+              if [ -z "$(aksAgentVmSize)" ]
+              then
+                echo "A value for the 'aksAgentVmSize' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "TestPipelineRunId: '$(testPipelineRunId)'"
+              if [ -z "$(testPipelineRunId)" ]
+              then
+                echo "A value for the 'testPipelineRunId' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "appInsightsLocation: '$(appInsightsLocation)'"
+              if [ -z "$(appInsightsLocation)" ]
+              then
+                echo "A value for the 'appInsightsLocation' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+            displayName: Check parameters
+
+  - stage: deployInfrastructure
+    displayName: Deploy infrastructure
     dependsOn:
-      - getApproval
-    variables:
-      - template: variables-deploy-infra.yaml
-        parameters:
-          subscriptionName: ${{parameters.subscriptionName}}
-          locationName: ${{parameters.locationName}}
-          environmentName: ${{parameters.environmentName}}
-          subscriptionId: ${{parameters.subscriptionId}}
-          applicationCode: ${{parameters.applicationCode}}
-          applicationShortCode: ${{parameters.applicationShortCode}}
-          environmentCategory: ${{parameters.environmentCategory}}
-    steps:
-      - checkout: none
-
-      - template: print-pipeline-resource-variables.yaml
-        parameters:
-          pipelineResourceName: test
-
-      - script: |-
-          echo "parameter: subscriptionName: ${{parameters.subscriptionName}}"
-          echo "parameter: locationName: ${{parameters.locationName}}"
-          echo "parameter: environmentName: ${{parameters.environmentName}}"
-          echo "parameter: subscriptionId: ${{parameters.subscriptionId}}"
-          echo "parameter: applicationCode: ${{parameters.applicationCode}}"
-          echo "parameter: applicationShortCode: ${{parameters.applicationShortCode}}"
-          echo "parameter: environmentCategory: ${{parameters.environmentCategory}}"
-          echo "variable: aksPartialName: $(aksPartialName)"
-          echo "variable: appConfigurationPartialName: $(appConfigurationPartialName)"
-          echo "variable: appInsightsPartialName: $(appInsightsPartialName)"
-          echo "variable: armDirectory: $(armDirectory)"
-          echo "variable: automationPartialName: $(automationPartialName)"
-          echo "variable: blobContainerPartialName: $(blobContainerPartialName)"
-          echo "variable: cosmosDbName: $(cosmosDbName)"
-          echo "variable: cosmosDbAccountPartialName: $(cosmosDbAccountPartialName)"
-          echo "variable: crslPlatformKeyVault: $(crslPlatformKeyVault)"
-          echo "variable: defaultSasKeyName: $(defaultSasKeyName)"
-          echo "variable: eventHubPartialName: $(eventHubPartialName)"
-          echo "variable: functionApp1PartialName: $(functionApp1PartialName)"
-          echo "variable: functionApp2PartialName: $(functionApp2PartialName)"
-          echo "variable: keyVaultPartialName: $(keyVaultPartialName)"
-          echo "variable: mapsPartialName: $(mapsPartialName)"
-          echo "variable: omsWorkspacePartialName: $(omsWorkspacePartialName)"
-          echo "variable: storageAccountPartialName: $(storageAccountPartialName)"
-          echo "variable: tenantId: $(tenantId)"
-          echo "variable: userObjId: $(userObjId)"
-          echo "variable: aksName: $(aksName)"
-          echo "variable: appConfigurationName: $(appConfigurationName)"
-          echo "variable: appInsightsName: $(appInsightsName)"
-          echo "variable: armParametersDirectory: $(armParametersDirectory)"
-          echo "variable: armTemplatesDirectory: $(armTemplatesDirectory)"
-          echo "variable: automationName: $(automationName)"
-          echo "variable: blobContainerName: $(blobContainerName)"
-          echo "variable: cosmosDbAccountName: $(cosmosDbAccountName)"
-          echo "variable: eventHubName: $(eventHubName)"
-          echo "variable: functionApp1Name: $(functionApp1Name)"
-          echo "variable: functionApp2Name: $(functionApp2Name)"
-          echo "variable: keyVaultName: $(keyVaultName)"
-          echo "variable: mapsName: $(mapsName)"
-          echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
-          echo "variable: resourceGroupName: $(resourceGroupName)"
-          echo "variable: storageAccountName: $(storageAccountName)"
+      - checkParameters
+    jobs:
+      - job: printVariables
         displayName: Print variables
+        dependsOn:
+          - getApproval
+        variables:
+          - template: variables-deploy-infra.yaml
+            parameters:
+              subscriptionName: ${{parameters.subscriptionName}}
+              locationName: ${{parameters.locationName}}
+              environmentName: ${{parameters.environmentName}}
+              subscriptionId: ${{parameters.subscriptionId}}
+              applicationCode: ${{parameters.applicationCode}}
+              applicationShortCode: ${{parameters.applicationShortCode}}
+              environmentCategory: ${{parameters.environmentCategory}}
+        steps:
+          - checkout: none
+
+          - template: print-pipeline-resource-variables.yaml
+            parameters:
+              pipelineResourceName: test
+
+          - script: |-
+              echo "parameter: subscriptionName: ${{parameters.subscriptionName}}"
+              echo "parameter: locationName: ${{parameters.locationName}}"
+              echo "parameter: environmentName: ${{parameters.environmentName}}"
+              echo "parameter: subscriptionId: ${{parameters.subscriptionId}}"
+              echo "parameter: applicationCode: ${{parameters.applicationCode}}"
+              echo "parameter: applicationShortCode: ${{parameters.applicationShortCode}}"
+              echo "parameter: environmentCategory: ${{parameters.environmentCategory}}"
+              echo "variable: aksPartialName: $(aksPartialName)"
+              echo "variable: appConfigurationPartialName: $(appConfigurationPartialName)"
+              echo "variable: appInsightsPartialName: $(appInsightsPartialName)"
+              echo "variable: armDirectory: $(armDirectory)"
+              echo "variable: automationPartialName: $(automationPartialName)"
+              echo "variable: blobContainerPartialName: $(blobContainerPartialName)"
+              echo "variable: cosmosDbName: $(cosmosDbName)"
+              echo "variable: cosmosDbAccountPartialName: $(cosmosDbAccountPartialName)"
+              echo "variable: crslPlatformKeyVault: $(crslPlatformKeyVault)"
+              echo "variable: defaultSasKeyName: $(defaultSasKeyName)"
+              echo "variable: eventHubPartialName: $(eventHubPartialName)"
+              echo "variable: functionApp1PartialName: $(functionApp1PartialName)"
+              echo "variable: functionApp2PartialName: $(functionApp2PartialName)"
+              echo "variable: keyVaultPartialName: $(keyVaultPartialName)"
+              echo "variable: mapsPartialName: $(mapsPartialName)"
+              echo "variable: omsWorkspacePartialName: $(omsWorkspacePartialName)"
+              echo "variable: storageAccountPartialName: $(storageAccountPartialName)"
+              echo "variable: tenantId: $(tenantId)"
+              echo "variable: userObjId: $(userObjId)"
+              echo "variable: aksName: $(aksName)"
+              echo "variable: appConfigurationName: $(appConfigurationName)"
+              echo "variable: appInsightsName: $(appInsightsName)"
+              echo "variable: armParametersDirectory: $(armParametersDirectory)"
+              echo "variable: armTemplatesDirectory: $(armTemplatesDirectory)"
+              echo "variable: automationName: $(automationName)"
+              echo "variable: blobContainerName: $(blobContainerName)"
+              echo "variable: cosmosDbAccountName: $(cosmosDbAccountName)"
+              echo "variable: eventHubName: $(eventHubName)"
+              echo "variable: functionApp1Name: $(functionApp1Name)"
+              echo "variable: functionApp2Name: $(functionApp2Name)"
+              echo "variable: keyVaultName: $(keyVaultName)"
+              echo "variable: mapsName: $(mapsName)"
+              echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
+              echo "variable: resourceGroupName: $(resourceGroupName)"
+              echo "variable: storageAccountName: $(storageAccountName)"
+            displayName: Print variables
+      - job: powershellScripts
+        displayName: Powershell scripts
+        dependsOn:
+          - printVariables
+        steps:
+        - task: AzurePowerShell@5
+          displayName: Create certificate and connections on Azure Automation Account
+          inputs:
+            azureSubscription: ${{parameters.subscriptionName}}
+            ScriptType: FilePath
+            ScriptPath: pipelines\cd\diagnosticSettingMigrationScripts\migrationScriptEventHub.ps1
+            ScriptArguments: -rgName $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}}
+            azurePowerShellVersion: LatestVersion

@@ -9,6 +9,8 @@ Install-Module -Name Az.StreamAnalytics -Force
 function createDiagnosticSettings([string]$resourceGroupName, [string]$subscriptionId, [string]$saJobName, [string]$loganalyticsName) {
     $resourceId = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.StreamAnalytics/streamingjobs/$saJobName"
     $workSpaceID = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/microsoft.operationalinsights/workspaces/$loganalyticsName"
+    Write-Host $resourceId
+    Write-Host $subscriptionId
     $existingDiagSetting = Get-AzDiagnosticSetting -ResourceId $resourceId
     if($existingDiagSetting)
     {

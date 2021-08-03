@@ -8,103 +8,72 @@ parameters:
   environmentCategory:
 
 jobs:
-	- template: get-approval.yaml
-		parameters:
-			environmentName: ${{parameters.environmentName}}
+  - template: get-approval.yaml
+    parameters:
+      environmentName: ${{parameters.environmentName}}
 
-	- job: printVariables
-	  displayName: Print variables
-	  dependsOn:
-		  - getApproval
-	  variables:
-		  - template: variables-deploy-infra.yaml
-			parameters:
-				subscriptionName: ${{parameters.subscriptionName}}
-				locationName: ${{parameters.locationName}}
-				environmentName: ${{parameters.environmentName}}
-				subscriptionId: ${{parameters.subscriptionId}}
-				applicationCode: ${{parameters.applicationCode}}
-				applicationShortCode: ${{parameters.applicationShortCode}}
-				environmentCategory: ${{parameters.environmentCategory}}
-	  steps:
-		  - checkout: none
+  - job: printVariables
+    displayName: Print variables
+    dependsOn:
+      - getApproval
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: none
 
-		  - template: print-pipeline-resource-variables.yaml
-			parameters:
-				pipelineResourceName: test
+      - template: print-pipeline-resource-variables.yaml
+        parameters:
+          pipelineResourceName: test
 
-		  - script: |-
-				echo "parameter: subscriptionName: ${{parameters.subscriptionName}}"
-				echo "parameter: locationName: ${{parameters.locationName}}"
-				echo "parameter: environmentName: ${{parameters.environmentName}}"
-				echo "parameter: subscriptionId: ${{parameters.subscriptionId}}"
-				echo "parameter: applicationCode: ${{parameters.applicationCode}}"
-				echo "parameter: applicationShortCode: ${{parameters.applicationShortCode}}"
-				echo "parameter: environmentCategory: ${{parameters.environmentCategory}}"
-				echo "variable: aksPartialName: $(aksPartialName)"
-				echo "variable: appConfigurationPartialName: $(appConfigurationPartialName)"
-				echo "variable: appInsightsPartialName: $(appInsightsPartialName)"
-				echo "variable: armDirectory: $(armDirectory)"
-				echo "variable: automationPartialName: $(automationPartialName)"
-				echo "variable: blobContainerPartialName: $(blobContainerPartialName)"
-				echo "variable: cosmosDbName: $(cosmosDbName)"
-				echo "variable: cosmosDbAccountPartialName: $(cosmosDbAccountPartialName)"
-				echo "variable: crslPlatformKeyVault: $(crslPlatformKeyVault)"
-				echo "variable: defaultSasKeyName: $(defaultSasKeyName)"
-				echo "variable: eventHubPartialName: $(eventHubPartialName)"
-				echo "variable: functionApp1PartialName: $(functionApp1PartialName)"
-				echo "variable: functionApp2PartialName: $(functionApp2PartialName)"
-				echo "variable: keyVaultPartialName: $(keyVaultPartialName)"
-				echo "variable: mapsPartialName: $(mapsPartialName)"
-				echo "variable: omsWorkspacePartialName: $(omsWorkspacePartialName)"
-				echo "variable: storageAccountPartialName: $(storageAccountPartialName)"
-				echo "variable: tenantId: $(tenantId)"
-				echo "variable: userObjId: $(userObjId)"
-				echo "variable: aksName: $(aksName)"
-				echo "variable: appConfigurationName: $(appConfigurationName)"
-				echo "variable: appInsightsName: $(appInsightsName)"
-				echo "variable: armParametersDirectory: $(armParametersDirectory)"
-				echo "variable: armTemplatesDirectory: $(armTemplatesDirectory)"
-				echo "variable: automationName: $(automationName)"
-				echo "variable: blobContainerName: $(blobContainerName)"
-				echo "variable: cosmosDbAccountName: $(cosmosDbAccountName)"
-				echo "variable: eventHubName: $(eventHubName)"
-				echo "variable: functionApp1Name: $(functionApp1Name)"
-				echo "variable: functionApp2Name: $(functionApp2Name)"
-				echo "variable: keyVaultName: $(keyVaultName)"
-				echo "variable: mapsName: $(mapsName)"
-				echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
-				echo "variable: resourceGroupName: $(resourceGroupName)"
-				echo "variable: storageAccountName: $(storageAccountName)"
-			displayName: Print variables
-
-	- job: printVariables
-	  displayName: Print variables
-	  dependsOn:
-		  - getApproval
-	  variables:
-		  - template: variables-deploy-infra.yaml
-			parameters:
-				subscriptionName: ${{parameters.subscriptionName}}
-				locationName: ${{parameters.locationName}}
-				environmentName: ${{parameters.environmentName}}
-				subscriptionId: ${{parameters.subscriptionId}}
-				applicationCode: ${{parameters.applicationCode}}
-				applicationShortCode: ${{parameters.applicationShortCode}}
-				environmentCategory: ${{parameters.environmentCategory}}
-	  steps:
-		  # - task: PowerShell@2
-		  #   displayName: Migration script of Event Hub
-		  #   inputs:
-		  #     targetType: filePath
-		  #     filePath: 'pipelines\cd\diagnosticSettingMigrationScripts\migrationScriptEventHub.ps1'
-		  #     arguments: '-rgName $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}}
-
-		  - task: AzurePowerShell@5
-			displayName: Create certificate and connections on Azure Automation Account
-			inputs:
-				azureSubscription: ${{parameters.subscriptionName}}
-				ScriptType: FilePath
-				ScriptPath: pipelines\cd\diagnosticSettingMigrationScripts\migrationScriptEventHub.ps1
-				ScriptArguments: -rgName $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}}
-				azurePowerShellVersion: LatestVersion
+      - script: |-
+          echo "parameter: subscriptionName: ${{parameters.subscriptionName}}"
+          echo "parameter: locationName: ${{parameters.locationName}}"
+          echo "parameter: environmentName: ${{parameters.environmentName}}"
+          echo "parameter: subscriptionId: ${{parameters.subscriptionId}}"
+          echo "parameter: applicationCode: ${{parameters.applicationCode}}"
+          echo "parameter: applicationShortCode: ${{parameters.applicationShortCode}}"
+          echo "parameter: environmentCategory: ${{parameters.environmentCategory}}"
+          echo "variable: aksPartialName: $(aksPartialName)"
+          echo "variable: appConfigurationPartialName: $(appConfigurationPartialName)"
+          echo "variable: appInsightsPartialName: $(appInsightsPartialName)"
+          echo "variable: armDirectory: $(armDirectory)"
+          echo "variable: automationPartialName: $(automationPartialName)"
+          echo "variable: blobContainerPartialName: $(blobContainerPartialName)"
+          echo "variable: cosmosDbName: $(cosmosDbName)"
+          echo "variable: cosmosDbAccountPartialName: $(cosmosDbAccountPartialName)"
+          echo "variable: crslPlatformKeyVault: $(crslPlatformKeyVault)"
+          echo "variable: defaultSasKeyName: $(defaultSasKeyName)"
+          echo "variable: eventHubPartialName: $(eventHubPartialName)"
+          echo "variable: functionApp1PartialName: $(functionApp1PartialName)"
+          echo "variable: functionApp2PartialName: $(functionApp2PartialName)"
+          echo "variable: keyVaultPartialName: $(keyVaultPartialName)"
+          echo "variable: mapsPartialName: $(mapsPartialName)"
+          echo "variable: omsWorkspacePartialName: $(omsWorkspacePartialName)"
+          echo "variable: storageAccountPartialName: $(storageAccountPartialName)"
+          echo "variable: tenantId: $(tenantId)"
+          echo "variable: userObjId: $(userObjId)"
+          echo "variable: aksName: $(aksName)"
+          echo "variable: appConfigurationName: $(appConfigurationName)"
+          echo "variable: appInsightsName: $(appInsightsName)"
+          echo "variable: armParametersDirectory: $(armParametersDirectory)"
+          echo "variable: armTemplatesDirectory: $(armTemplatesDirectory)"
+          echo "variable: automationName: $(automationName)"
+          echo "variable: blobContainerName: $(blobContainerName)"
+          echo "variable: cosmosDbAccountName: $(cosmosDbAccountName)"
+          echo "variable: eventHubName: $(eventHubName)"
+          echo "variable: functionApp1Name: $(functionApp1Name)"
+          echo "variable: functionApp2Name: $(functionApp2Name)"
+          echo "variable: keyVaultName: $(keyVaultName)"
+          echo "variable: mapsName: $(mapsName)"
+          echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
+          echo "variable: resourceGroupName: $(resourceGroupName)"
+          echo "variable: storageAccountName: $(storageAccountName)"
+        displayName: Print variables

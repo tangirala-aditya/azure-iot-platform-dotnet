@@ -118,13 +118,13 @@ stages:
         variables:
           - template: variables-deploy-infra.yaml
             parameters:
-              subscriptionName: ${{parameters.subscriptionName}}
-              locationName: ${{parameters.locationName}}
-              environmentName: ${{parameters.environmentName}}
-              subscriptionId: ${{parameters.subscriptionId}}
-              applicationCode: ${{parameters.applicationCode}}
-              applicationShortCode: ${{parameters.applicationShortCode}}
-              environmentCategory: ${{parameters.environmentCategory}}
+              subscriptionName: $(subscriptionName)
+              locationName: $(locationName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)
         steps:
           - checkout: none
 
@@ -133,13 +133,13 @@ stages:
               pipelineResourceName: test
 
           - script: |-
-              echo "parameter: subscriptionName: ${{parameters.subscriptionName}}"
-              echo "parameter: locationName: ${{parameters.locationName}}"
-              echo "parameter: environmentName: ${{parameters.environmentName}}"
-              echo "parameter: subscriptionId: ${{parameters.subscriptionId}}"
-              echo "parameter: applicationCode: ${{parameters.applicationCode}}"
-              echo "parameter: applicationShortCode: ${{parameters.applicationShortCode}}"
-              echo "parameter: environmentCategory: ${{parameters.environmentCategory}}"
+              echo "parameter: subscriptionName: $(subscriptionName)"
+              echo "parameter: locationName: $(locationName)"
+              echo "parameter: environmentName: $environmentName)"
+              echo "parameter: subscriptionId: $(subscriptionId)"
+              echo "parameter: applicationCode: $(applicationCode)"
+              echo "parameter: applicationShortCode: $(applicationShortCode)"
+              echo "parameter: environmentCategory: $(environmentCategory)"
               echo "variable: aksPartialName: $(aksPartialName)"
               echo "variable: appConfigurationPartialName: $(appConfigurationPartialName)"
               echo "variable: appInsightsPartialName: $(appInsightsPartialName)"

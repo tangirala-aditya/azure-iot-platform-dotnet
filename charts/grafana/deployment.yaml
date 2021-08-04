@@ -12,9 +12,9 @@ spec:
         name: grafana
     spec:
       volumes:
-         - name: azure
+         - name: grafana-storage
            persistentVolumeClaim: 
-                claimName: azurefile
+               claimName: azurefile
       containers:
       - env:
         - name: GF_INSTALL_PLUGINS
@@ -56,8 +56,10 @@ spec:
             cpu: "100m" 
         volumeMounts:
           - name: grafana-storage
-            mountPath: /var/lib/grafana                      
+            mountPath: /var/lib/grafana 
+            readOnly: false                     
         ports:
         - containerPort: 3000
   replicas: 1
+
 

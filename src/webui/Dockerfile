@@ -20,7 +20,6 @@ LABEL Tags="Azure,IoT,Solutions,React,SPA"
 
 RUN echo "Installing web server..." \
  && apk add --no-cache nginx \
- && mkdir /app/logs \
  && mkdir -p /var/lib/nginx /var/cache/nginx /var/tmp/nginx /var/log/nginx \
  && echo "Removing unused files..." \
  && apk del --force --purge alpine-keys apk-tools \

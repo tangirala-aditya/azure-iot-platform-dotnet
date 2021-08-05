@@ -14,7 +14,7 @@ spec:
       volumes:
          - name: grafana-storage
            persistentVolumeClaim: 
-               claimName: azurefile
+               claimName: azurefile-pvc
       containers:
       - env:
         - name: GF_INSTALL_PLUGINS
@@ -60,7 +60,6 @@ spec:
             readOnly: false                     
         ports:
         - containerPort: 3000
-        - containerPort: 8000
   replicas: 1
 
 

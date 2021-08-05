@@ -9,4 +9,4 @@ spec:
       targetPort: 3000
       protocol: TCP
   selector:
-    app.kubernetes.io/name: grafana
+    name: grafana

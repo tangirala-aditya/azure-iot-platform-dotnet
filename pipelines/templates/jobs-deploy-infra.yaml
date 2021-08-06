@@ -489,7 +489,7 @@ jobs:
                 templateLocation: Linked artifact
                 csmFile: $(armTemplatesDirectory)/$(eventHubPartialName).json
                 csmParametersFile: $(armParametersDirectory)/$(eventHubPartialName).json
-                overrideParameters: "-namespaceName $(eventHubName) -resourceGroup $(resourceGroupName) -location ${{parameters.locationName}} -storageAccountName $(storageAccountName) -subscriptionId ${{parameters.subscriptionId}} -environmentCategory ${{parameters.environmentCategory}} -applicationCode ${{parameters.applicationCode}}"
+                overrideParameters: "-namespaceName $(eventHubName) -resourceGroup $(resourceGroupName) -location ${{parameters.locationName}} -storageAccountName $(storageAccountName) -subscriptionId ${{parameters.subscriptionId}} -environmentCategory ${{parameters.environmentCategory}} -applicationCode ${{parameters.applicationCode}}
                 deploymentMode: Incremental
                 addSpnToEnvironment: true
 

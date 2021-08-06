@@ -61,7 +61,11 @@ variables:
     value: SystemAdmin
   - name: inviteEmail
     value: iotplatformnoreply@iot.cld.3m.com
+  - name: logAnalyticsWorkspaceId
+    value: /subscriptions/${{parameters.subscriptionId}}/resourcegroups/$(resourceGroupName)/providers/microsoft.operationalinsights/workspaces/${{parameters.applicationCode}}-loganalyticsws-${{parameters.environmentCategory}}    
   - name: maxDeviceCount
     value: 5000
+  - name: diagnosticSettingName
+    value: ${{parameters.applicationCode}}-diagsetting-${{parameters.environmentCategory}}     
   - name: processIOTHubBeyondLimit
     value: false

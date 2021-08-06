@@ -489,7 +489,7 @@ jobs:
           templateLocation: Linked artifact
           csmFile: $(armTemplatesDirectory)/$(eventHubPartialName).json
           csmParametersFile: $(armParametersDirectory)/$(eventHubPartialName).json
-          overrideParameters: '-namespaceName $(eventHubName) -resourceGroup $(resourceGroupName) -location ${{parameters.locationName}} -storageAccountName $(storageAccountName) -subscriptionId ${{parameters.subscriptionId}}'
+          overrideParameters: "-namespaceName $(eventHubName) -resourceGroup $(resourceGroupName) -location ${{parameters.locationName}} -storageAccountName $(storageAccountName) -subscriptionId ${{parameters.subscriptionId}} -environmentCategory ${{parameters.environmentCategory}} -applicationCode ${{parameters.applicationCode}}"
           deploymentMode: Incremental
           addSpnToEnvironment: true
 
@@ -543,7 +543,7 @@ jobs:
           templateLocation: Linked artifact
           csmFile: $(armTemplatesDirectory)/$(keyVaultPartialName).json
           csmParametersFile: $(armParametersDirectory)/$(keyVaultPartialName).json
-          overrideParameters: -resourceName $(keyVaultName) -applicationObjId $(servicePrincipalObjectId) -userObjId $(userObjId)
+          overrideParameters: -resourceName $(keyVaultName) -applicationObjId $(servicePrincipalObjectId) -userObjId $(userObjId) -settingName $(omsWorkspacePartialName) -resourceGroup $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}} -environmentCategory ${{parameters.environmentCategory}} -applicationCode ${{parameters.applicationCode}}
           deploymentMode: Incremental
 
       - template: steps-delete-oldest-deployment.yaml
@@ -832,6 +832,8 @@ jobs:
             az appconfig kv set --key Global:EventHub:Name                        --value $(eventHubName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:EventHub:RootKey                     --value $(az eventhubs namespace authorization-rule keys list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --name RootManageSharedAccessKey --query primaryKey --output tsv) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:InviteFromEmail                      --value $(inviteEmail) --name $(appConfigurationName) --yes
+            az appconfig kv set --key Global:LogAnalytics:WorkspaceId             --value $(logAnalyticsWorkspaceId) --name $(appConfigurationName) --yes
+            az appconfig kv set --key Global:DiagnosticSetting:Name               --value $(diagnosticSettingName) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:EventHubNamespaceName  --value $(eventHubName) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:AutomationAccountName  --value $(automationName) --name $(appConfigurationName) --yes
 

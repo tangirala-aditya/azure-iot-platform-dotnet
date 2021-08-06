@@ -205,7 +205,9 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                             this.config.Global.EventHub.Name,
                                             this.config.Global.EventHub.RootKey,
                                             this.config.Global.CosmosDb.AccountName,
-                                            this.config.Global.CosmosDb.DocumentDbAuthKey);
+                                            this.config.Global.CosmosDb.DocumentDbAuthKey,
+                                            this.config.Global.LogAnalytics.WorkspaceId,
+                                            this.config.Global.DiagnosticSetting.Name);
                                         await this.azureManagementClient.DeployTemplateAsync(template);
                                     }
                                 }

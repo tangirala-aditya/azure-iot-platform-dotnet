@@ -55,6 +55,7 @@ namespace Mmm.Iot.TenantManager.Services
         private string iotHubNameFormat = "iothub-{0}";  // format with a guid
         private string dpsNameFormat = "dps-{0}";  // format with a guid
         private string streamAnalyticsNameFormat = "sa-{0}";  // format with a guide
+        private string grafanaNameFormat = "grafana-{0}";  // format with a guide
         private string appConfigCollectionKeyFormat = "tenant:{0}:{1}-collection";  // format with a guid and collection name
 
         public TenantContainer(
@@ -175,6 +176,18 @@ namespace Mmm.Iot.TenantManager.Services
                 throw new Exception("Unable to create the default device group for the new tenant.", e);
             }
 
+            string grafanaName = this.FormatResourceName(this.grafanaNameFormat, tenantId);
+
+            // trigger grafana dashboard
+            try
+            {
+                await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.GrafanaDashboardCreation, grafanaName));
+            }
+            catch (Exception e)
+            {
+                this.logger.LogInformation(e, "Unable to create grafana dashboard for tenant {tenantId}", tenantId);
+            }
+
             return new CreateTenantModel(tenantId);
         }
 
@@ -292,6 +305,20 @@ namespace Mmm.Iot.TenantManager.Services
             {
                 this.logger.LogInformation(e, "Unable to successfully add Delete Alerting Operation for tenant {tenantId}", tenantId);
                 deletionRecord["alerting"] = false;
+            }
+
+            string grafanaName = this.FormatResourceName(this.grafanaNameFormat, tenantId);
+
+            // trigger deletion grafana dashboard
+            try
+            {
+                await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.GrafanaDashboardDeletion, grafanaName));
+                deletionRecord["grafana"] = true;
+            }
+            catch (Exception e)
+            {
+                this.logger.LogInformation(e, "Unable to to successfully add Delete grafana dashboard for tenant {tenantId}", tenantId);
+                deletionRecord["grafana"] = false;
             }
 
             // Delete collections

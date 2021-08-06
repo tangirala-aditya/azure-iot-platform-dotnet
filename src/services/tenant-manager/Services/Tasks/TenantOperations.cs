@@ -19,6 +19,7 @@ using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.Azure;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.TableStorage;
+using Mmm.Iot.TenantManager.Services.External;
 using Mmm.Iot.TenantManager.Services.Models;
 
 namespace Mmm.Iot.TenantManager.Services.Tasks
@@ -33,14 +34,16 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
         private IAzureManagementClient azureManagementClient;
         private IAppConfigurationClient appConfigurationClient;
         private AppConfig config;
+        private IGrafanaClient grafanaClient;
 
-        public TenantOperations(ITableStorageClient tableStorageClient, IBlobStorageClient blobStorageClient, IAzureManagementClient azureManagementClient, IAppConfigurationClient appConfigurationClient, AppConfig config)
+        public TenantOperations(ITableStorageClient tableStorageClient, IBlobStorageClient blobStorageClient, IAzureManagementClient azureManagementClient, IAppConfigurationClient appConfigurationClient, AppConfig config, IGrafanaClient grafanaClient)
         {
             this.tableStorageClient = tableStorageClient;
             this.blobStorageClient = blobStorageClient;
             this.azureManagementClient = azureManagementClient;
             this.appConfigurationClient = appConfigurationClient;
             this.config = config;
+            this.grafanaClient = grafanaClient;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -91,147 +94,220 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
         protected async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-                while (!stoppingToken.IsCancellationRequested)
-                {
-                        Console.WriteLine("Getting Tenant Operations...");
-                        TableQuery<TenantOperationModel> query = new TableQuery<TenantOperationModel>();
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                Console.WriteLine("Getting Tenant Operations...");
+                TableQuery<TenantOperationModel> query = new TableQuery<TenantOperationModel>();
 
-                        var items = await this.tableStorageClient.QueryAsync(TableName, query, stoppingToken);
-                        foreach (var item in items)
+                var items = await this.tableStorageClient.QueryAsync(TableName, query, stoppingToken);
+                foreach (var item in items)
+                {
+                    try
+                    {
+                        if (item.Type == TenantOperation.IoTHubDeletion)
                         {
+                            Console.WriteLine($"Processing {item.TenantId}");
                             try
                             {
-                                if (item.Type == TenantOperation.IoTHubDeletion)
-                                {
-                                    Console.WriteLine($"Processing {item.TenantId}");
-                                    try
-                                    {
-                                        Console.WriteLine($"Deleting {item.Name}...");
+                                Console.WriteLine($"Deleting {item.Name}...");
 
-                                        await this.azureManagementClient.IotHubManagementClient.DeleteAsync(
-                                            item.Name,
-                                            stoppingToken);
-                                        Console.WriteLine($"Deleting Table Operation Record...");
-                                        await this.tableStorageClient.DeleteAsync(TableName, item);
-                                    }
-                                    catch (Microsoft.Azure.Management.IotHub.Models.ErrorDetailsException e)
-                                    {
-                                        if (e.Message == "Operation returned an invalid status code 'NotFound'")
-                                        {
-                                            // Handle edge case
-                                        }
-                                    }
-                                }
-
-                                if (item.Type == TenantOperation.SaJobDeletion)
-                                {
-                                    try
-                                    {
-                                        var job = await this.azureManagementClient.AsaManagementClient.RetrieveAsync(
-                                            item.Name,
-                                            null,
-                                            stoppingToken);
-                                        Console.WriteLine($"SA job {item.Name} found");
-                                        if (new List<string> { "Starting", "Running" }.Contains(job.JobState))
-                                        {
-                                            Console.WriteLine($"Stopping job");
-                                            await this.azureManagementClient.AsaManagementClient.StopAsync(
-                                                item.Name,
-                                                null,
-                                                stoppingToken);
-                                        }
-                                        else if (job.JobState != "Stopping")
-                                        {
-                                            Console.WriteLine($"Deleting job");
-                                            await this.azureManagementClient.AsaManagementClient.DeleteAsync(
-                                                item.Name,
-                                                null,
-                                                stoppingToken);
-                                        }
-                                    }
-                                    catch (ResourceNotFoundException)
-                                    {
-                                        // Item does not exist... delete the record
-                                        Console.WriteLine($"SA job {item.Name} does not exist...deleting tenant operation");
-                                        await this.tableStorageClient.DeleteAsync(TableName, item);
-                                    }
-                                }
-
-                                if (item.Type == TenantOperation.SaJobCreation)
-                                {
-                                    await this.blobStorageClient.CreateBlobContainerIfNotExistsAsync(item.TenantId);
-                                    Console.WriteLine("File Upload Container Made");
-                                    var tenant = await this.tableStorageClient.RetrieveAsync<TenantModel>(
-                                        "tenant",
-                                        item.TenantId.Substring(0, 1),
-                                        item.TenantId);
-
-                                    this.azureManagementClient.IotHubManagementClient.AddConsumerGroup(
-                                        tenant.IotHubName,
-                                        "events",
-                                        "sajobconsumergroup");
-                                    Console.WriteLine("Event Consumer Group created");
-                                    try
-                                    {
-                                        var job = await this.azureManagementClient.AsaManagementClient.RetrieveAsync(
-                                            item.Name,
-                                            null,
-                                            stoppingToken);
-                                        Console.WriteLine($"SA job {item.Name} found");
-                                        Console.WriteLine($"Updating tenant table...");
-                                        tenant.SAJobName = item.Name;
-                                        await this.tableStorageClient.InsertOrMergeAsync("tenant", tenant);
-                                        Console.WriteLine($"Deleting tenant operations table...");
-                                        await this.tableStorageClient.DeleteAsync(TableName, item);
-                                    }
-                                    catch (ResourceNotFoundException)
-                                    {
-                                        // Item does not exist... delete the record
-                                        Console.WriteLine($"SA job {item.Name} does not exist...creating it");
-                                        Assembly assembly = Assembly.GetExecutingAssembly();
-                                        StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("sajob.json"));
-                                        string template = await reader.ReadToEndAsync();
-                                        template = string.Format(
-                                            template,
-                                            item.Name,
-                                            this.config.Global.Location,
-                                            this.config.Global.StorageAccount.Name,
-                                            this.config.Global.StorageAccountConnectionString.Split(";")[2].Replace("AccountKey=", string.Empty),
-                                            tenant.IotHubName,
-                                            this.azureManagementClient.IotHubManagementClient.GetAccessKey(
-                                                tenant.IotHubName,
-                                                "iothubowner"),
-                                            item.TenantId,
-                                            this.config.Global.EventHub.Name,
-                                            this.config.Global.EventHub.RootKey,
-                                            this.config.Global.CosmosDb.AccountName,
-                                            this.config.Global.CosmosDb.DocumentDbAuthKey);
-                                        await this.azureManagementClient.DeployTemplateAsync(template);
-                                    }
-                                }
-
-                                if (item.Type == TenantOperation.DpsDeletion)
-                                {
-                                    try
-                                    {
-                                        Console.WriteLine($"Deleting {item.Name}...");
-                                        await this.azureManagementClient.DpsManagmentClient.DeleteAsync(item.Name);
-                                    }
-                                    catch (ResourceNotFoundException)
-                                    {
-                                        Console.WriteLine($"Deleting Table Operation Record...");
-                                        await this.tableStorageClient.DeleteAsync(TableName, item);
-                                    }
-                                }
+                                await this.azureManagementClient.IotHubManagementClient.DeleteAsync(
+                                    item.Name,
+                                    stoppingToken);
+                                Console.WriteLine($"Deleting Table Operation Record...");
+                                await this.tableStorageClient.DeleteAsync(TableName, item);
                             }
-                            catch (Exception e)
+                            catch (Microsoft.Azure.Management.IotHub.Models.ErrorDetailsException e)
                             {
-                                Console.WriteLine(e.Message);
+                                if (e.Message == "Operation returned an invalid status code 'NotFound'")
+                                {
+                                    // Handle edge case
+                                }
                             }
                         }
 
-                        await Task.Delay(15000, stoppingToken);
+                        if (item.Type == TenantOperation.SaJobDeletion)
+                        {
+                            try
+                            {
+                                var job = await this.azureManagementClient.AsaManagementClient.RetrieveAsync(
+                                    item.Name,
+                                    null,
+                                    stoppingToken);
+                                Console.WriteLine($"SA job {item.Name} found");
+                                if (new List<string> { "Starting", "Running" }.Contains(job.JobState))
+                                {
+                                    Console.WriteLine($"Stopping job");
+                                    await this.azureManagementClient.AsaManagementClient.StopAsync(
+                                        item.Name,
+                                        null,
+                                        stoppingToken);
+                                }
+                                else if (job.JobState != "Stopping")
+                                {
+                                    Console.WriteLine($"Deleting job");
+                                    await this.azureManagementClient.AsaManagementClient.DeleteAsync(
+                                        item.Name,
+                                        null,
+                                        stoppingToken);
+                                }
+                            }
+                            catch (ResourceNotFoundException)
+                            {
+                                // Item does not exist... delete the record
+                                Console.WriteLine($"SA job {item.Name} does not exist...deleting tenant operation");
+                                await this.tableStorageClient.DeleteAsync(TableName, item);
+                            }
+                        }
+
+                        if (item.Type == TenantOperation.SaJobCreation)
+                        {
+                            await this.blobStorageClient.CreateBlobContainerIfNotExistsAsync(item.TenantId);
+                            Console.WriteLine("File Upload Container Made");
+                            var tenant = await this.tableStorageClient.RetrieveAsync<TenantModel>(
+                                "tenant",
+                                item.TenantId.Substring(0, 1),
+                                item.TenantId);
+
+                            this.azureManagementClient.IotHubManagementClient.AddConsumerGroup(
+                                tenant.IotHubName,
+                                "events",
+                                "sajobconsumergroup");
+                            Console.WriteLine("Event Consumer Group created");
+                            try
+                            {
+                                var job = await this.azureManagementClient.AsaManagementClient.RetrieveAsync(
+                                    item.Name,
+                                    null,
+                                    stoppingToken);
+                                Console.WriteLine($"SA job {item.Name} found");
+                                Console.WriteLine($"Updating tenant table...");
+                                tenant.SAJobName = item.Name;
+                                await this.tableStorageClient.InsertOrMergeAsync("tenant", tenant);
+                                Console.WriteLine($"Deleting tenant operations table...");
+                                await this.tableStorageClient.DeleteAsync(TableName, item);
+                            }
+                            catch (ResourceNotFoundException)
+                            {
+                                // Item does not exist... delete the record
+                                Console.WriteLine($"SA job {item.Name} does not exist...creating it");
+                                Assembly assembly = Assembly.GetExecutingAssembly();
+                                StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("sajob.json"));
+                                string template = await reader.ReadToEndAsync();
+                                template = string.Format(
+                                    template,
+                                    item.Name,
+                                    this.config.Global.Location,
+                                    this.config.Global.StorageAccount.Name,
+                                    this.config.Global.StorageAccountConnectionString.Split(";")[2].Replace("AccountKey=", string.Empty),
+                                    tenant.IotHubName,
+                                    this.azureManagementClient.IotHubManagementClient.GetAccessKey(
+                                        tenant.IotHubName,
+                                        "iothubowner"),
+                                    item.TenantId,
+                                    this.config.Global.EventHub.Name,
+                                    this.config.Global.EventHub.RootKey,
+                                    this.config.Global.CosmosDb.AccountName,
+                                    this.config.Global.CosmosDb.DocumentDbAuthKey);
+                                await this.azureManagementClient.DeployTemplateAsync(template);
+                                await this.tableStorageClient.DeleteAsync(TableName, item);
+                            }
+                        }
+
+                        if (item.Type == TenantOperation.DpsDeletion)
+                        {
+                            try
+                            {
+                                Console.WriteLine($"Deleting {item.Name}...");
+                                await this.azureManagementClient.DpsManagmentClient.DeleteAsync(item.Name);
+                            }
+                            catch (ResourceNotFoundException)
+                            {
+                                Console.WriteLine($"Deleting Table Operation Record...");
+                                await this.tableStorageClient.DeleteAsync(TableName, item);
+                            }
+                        }
+
+                        if (item.Type == TenantOperation.GrafanaDashboardCreation)
+                        {
+                            await this.grafanaClient.CreateAPIKeyIsNotFound();
+
+                            string tenantIdSubstring = item.TenantId.Substring(0, 8);
+                            string mainDashboardName = $"Main:{tenantIdSubstring}";
+                            string mainDashboardUid = tenantIdSubstring;
+                            string mainDashboardSubUrl = $"main-{tenantIdSubstring}";
+
+                            string tenantIdLastSubstring = item.TenantId.Substring(item.TenantId.Length - 8, 8);
+                            string adminDashboardName = $"Admin:{tenantIdLastSubstring}";
+                            string adminDashboardUid = tenantIdLastSubstring;
+                            string adminDashboardSubUrl = $"admin-{tenantIdLastSubstring}";
+
+                            var tenant = await this.tableStorageClient.RetrieveAsync<TenantModel>(
+                                "tenant",
+                                item.TenantId.Substring(0, 1),
+                                item.TenantId);
+
+                            Assembly assembly = Assembly.GetExecutingAssembly();
+                            StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("grafana-main-dashboard.json"));
+                            string template = await reader.ReadToEndAsync();
+                            template = string.Format(
+                                template,
+                                this.config.ExternalDependencies.GrafanaUrl,
+                                $"{adminDashboardUid}/{adminDashboardSubUrl}",
+                                this.config.Global.SubscriptionId,
+                                this.config.Global.ResourceGroup,
+                                this.config.Global.LogAnalytics.Name,
+                                $"IoT-{item.TenantId}",
+                                mainDashboardUid,
+                                mainDashboardName);
+                            await this.grafanaClient.CreateAndUpdateDashboard(template);
+
+                            reader = new StreamReader(assembly.GetManifestResourceStream("grafana-admin-dashboard.json"));
+                            template = await reader.ReadToEndAsync();
+                            template = string.Format(
+                                template,
+                                this.config.ExternalDependencies.GrafanaUrl,
+                                $"{mainDashboardUid}/{mainDashboardSubUrl}",
+                                this.config.Global.SubscriptionId,
+                                this.config.Global.ResourceGroup,
+                                this.config.Global.LogAnalytics.Name,
+                                tenant.IotHubName,
+                                this.config.Global.EventHub.Name,
+                                this.config.Global.CosmosDb.AccountName,
+                                adminDashboardUid,
+                                adminDashboardName);
+
+                            await this.grafanaClient.CreateAndUpdateDashboard(template);
+                            await this.tableStorageClient.DeleteAsync(TableName, item);
+                        }
+
+                        if (item.Type == TenantOperation.GrafanaDashboardDeletion)
+                        {
+                            await this.grafanaClient.CreateAPIKeyIsNotFound();
+
+                            string mainDashboardUid = item.TenantId.Substring(0, 8);
+
+                            string adminDashboardUid = item.TenantId.Substring(item.TenantId.Length - 8, 8);
+
+                            var tenant = await this.tableStorageClient.RetrieveAsync<TenantModel>(
+                                "tenant",
+                                item.TenantId.Substring(0, 1),
+                                item.TenantId);
+
+                            await this.grafanaClient.DeleteDashboardByUid(mainDashboardUid);
+
+                            await this.grafanaClient.DeleteDashboardByUid(adminDashboardUid);
+                            await this.tableStorageClient.DeleteAsync(TableName, item);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                 }
+
+                await Task.Delay(15000, stoppingToken);
+            }
         }
     }
 }

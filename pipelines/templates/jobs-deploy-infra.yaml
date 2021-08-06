@@ -834,6 +834,7 @@ jobs:
             az appconfig kv set --key Global:InviteFromEmail                      --value $(inviteEmail) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:EventHubNamespaceName  --value $(eventHubName) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:AutomationAccountName  --value $(automationName) --name $(appConfigurationName) --yes
+            az appconfig kv set --key Global:LogAnalytics:Name                    --value $(omsWorkspaceName) --name $(appConfigurationName) --yes
 
             appInsightKey=$(az resource show -g $(resourceGroupName) -n $(appInsightsName) --resource-type "Microsoft.Insights/components" --query properties.InstrumentationKey --output tsv)
             az appconfig kv set --key Global:InstrumentationKey --value $appInsightKey --name $(appConfigurationName) --yes

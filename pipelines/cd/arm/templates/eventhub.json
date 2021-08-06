@@ -113,7 +113,7 @@
         "defaultSASKeyName": "RootManageSharedAccessKey",
         "authRuleResourceId": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('namespaceName'), variables('defaultSASKeyName'))]",
         "workSpaceID": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/microsoft.operationalinsights/workspaces/',parameters('applicationCode'),'-loganalyticsws-',parameters('environmentCategory'))]",
-        "setingsName":"[concat(parameters('applicationCode'),'-diagnosticsetting-',parameters('environmentCategory'))]"
+        "settingsName":"[concat(parameters('applicationCode'),'-diagnosticsetting-',parameters('environmentCategory'))]"
 
     },
     "resources": [
@@ -326,30 +326,32 @@
                             "properties": {}
                         }
                     ]
+                },
+                {
+                        "type": "providers/diagnosticSettings",
+                        "apiVersion": "2021-05-01-preview",
+                        "name": "[concat('/Microsoft.Insights/',variables('settingsName') )]",
+                        "location": "[parameters('location')]",
+                        "dependsOn": [
+                            "[concat('Microsoft.Eventhub/namespaces/', variables('namespaceName'))]"
+                        ],
+                        "properties": {
+                            "workspaceId": "[variables('workSpaceID')]",
+                            "logs": [
+                                {
+                                    "category": "ArchiveLogs",
+                                    "enabled": true
+                                }
+                            ],
+                            "metrics": [
+                                {
+                                    "category": "AllMetrics",
+                                    "enabled": true
+                                }
+                            ]
+                        }
                 }
             ]
-        },
-        {
-
-            "type": "Microsoft.Eventhub/namespaces/providers/diagnosticsettings",
-            "name": "[concat(variables('namespaceName'), '/Microsoft.Insights/', variables('setingsName'))]",
-            "apiVersion": "2016-09-01",
-            "location": "[parameters('location')]",
-            "properties": {
-              "workspaceId": "[variables('workSpaceID')]",
-              "logs": [
-                {
-                  "category": "ArchiveLogs",
-                  "enabled": true
-                }
-              ],
-                  "metrics": [
-                    {
-                      "category": "AllMetrics",
-                      "enabled": true
-                    }
-                  ]
-            }
         }
     ],
     "outputs": {

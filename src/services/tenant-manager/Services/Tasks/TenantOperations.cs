@@ -210,7 +210,6 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                     this.config.Global.CosmosDb.AccountName,
                                     this.config.Global.CosmosDb.DocumentDbAuthKey);
                                 await this.azureManagementClient.DeployTemplateAsync(template);
-                                await this.tableStorageClient.DeleteAsync(TableName, item);
                             }
                         }
 

@@ -6,11 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
+using Mmm.Iot.Common.Services.External.Azure;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.CosmosDb;
+using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.Services.External.TableStorage;
+using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.TenantManager.Services.External;
 using Mmm.Iot.TenantManager.Services.Helpers;
 using Mmm.Iot.TenantManager.Services.Models;
@@ -20,6 +24,8 @@ namespace Mmm.Iot.TenantManager.Services
     public class TenantContainer : ITenantContainer
     {
         private const string IotDatabaseId = "iot";
+        private const string IoTADXDatabaseFormat = "IoT-{0}";
+        private const string TelemetryADXDatabaseFormat = "Telemery-{0}";
         private const string StorageAdapterDatabaseId = "pcs-storage";
         private const string TenantTableId = "tenant";
         private const string TenantOperationTable = "tenantOperations";
@@ -36,6 +42,8 @@ namespace Mmm.Iot.TenantManager.Services
         private readonly ITableStorageClient tableStorageClient;
         private readonly IAppConfigurationClient appConfigClient;
         private readonly IBlobStorageClient blobStorageClient;
+        private readonly AppConfig config;
+        private readonly IAzureManagementClient azureManagementClient;
 
         private readonly Dictionary<string, string> tenantCollections = new Dictionary<string, string>
         {
@@ -44,6 +52,16 @@ namespace Mmm.Iot.TenantManager.Services
             { "lifecycle", IotDatabaseId },
             { "alarms", IotDatabaseId },
             { "pcs", StorageAdapterDatabaseId },
+        };
+
+        private readonly Dictionary<string, string> tenantADXDatabaseCollection = new Dictionary<string, string>
+        {
+            {
+                "telemetry", TelemetryADXDatabaseFormat
+            },
+            {
+                "iot", IoTADXDatabaseFormat
+            },
         };
 
         private readonly List<string> tenantBlobContainers = new List<string>
@@ -57,6 +75,7 @@ namespace Mmm.Iot.TenantManager.Services
         private string streamAnalyticsNameFormat = "sa-{0}";  // format with a guide
         private string grafanaNameFormat = "grafana-{0}";  // format with a guide
         private string appConfigCollectionKeyFormat = "tenant:{0}:{1}-collection";  // format with a guid and collection name
+        private string eventHubNamespaceFormat = "telemetry-eventhub-{0}";
 
         public TenantContainer(
             ILogger<TenantContainer> logger,
@@ -66,7 +85,9 @@ namespace Mmm.Iot.TenantManager.Services
             IIdentityGatewayClient identityGatewayClient,
             IDeviceGroupsConfigClient deviceGroupConfigClient,
             IAppConfigurationClient appConfigHelper,
-            IBlobStorageClient blobStorageClient)
+            IBlobStorageClient blobStorageClient,
+            AppConfig config,
+            IAzureManagementClient azureManagementClient)
         {
             this.logger = logger;
             this.runbookHelper = runbookHelper;
@@ -76,6 +97,8 @@ namespace Mmm.Iot.TenantManager.Services
             this.deviceGroupClient = deviceGroupConfigClient;
             this.appConfigClient = appConfigHelper;
             this.blobStorageClient = blobStorageClient;
+            this.config = config;
+            this.azureManagementClient = azureManagementClient;
         }
 
         public async Task<bool> TenantIsReadyAsync(string tenantId)
@@ -395,6 +418,39 @@ namespace Mmm.Iot.TenantManager.Services
                 {
                     this.logger.LogInformation(e, $"Unable to delete blob container {containerName} for tenant {tenantId}.");
                     deletionRecord[deletionRecordValue] = false;
+                }
+            }
+
+            // Delete Database from kusto
+            if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
+            {
+                foreach (var collectionInfo in this.tenantADXDatabaseCollection)
+                {
+                    string kustoDatabase = string.Format(collectionInfo.Value, tenantId);
+                    string deletionRecordValue = $"{collectionInfo.Key}ADXDatabase";
+
+                    try
+                    {
+                        await this.azureManagementClient.KustoClusterManagementClient.DeleteDatabaseAsync(kustoDatabase);
+                        deletionRecord[deletionRecordValue] = true;
+                    }
+                    catch (Exception e)
+                    {
+                        deletionRecord[deletionRecordValue] = false;
+                        this.logger.LogInformation(e, $"An error occurred while deleting the {kustoDatabase} kusto database for tenant {tenantId}", kustoDatabase, tenantId);
+                    }
+                }
+
+                string eventHubNamespace = string.Format(this.eventHubNamespaceFormat, tenantId.Substring(0, 8));
+                try
+                {
+                    await this.azureManagementClient.EventHubsManagementClient.DeleteEventHubNameSpace(eventHubNamespace);
+                    deletionRecord["EventHubNameSpace"] = true;
+                }
+                catch (Exception e)
+                {
+                    deletionRecord["EventHubNameSpace"] = false;
+                    this.logger.LogInformation(e, $"An error occurred while deleting the {eventHubNamespace} EventHub NameSpace for tenant {tenantId}", eventHubNamespace, tenantId);
                 }
             }
 

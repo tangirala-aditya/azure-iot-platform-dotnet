@@ -16,6 +16,7 @@ parameters:
   runVersion:
   testPipelineRunId:
   isHelmVersion3:
+  aadSGId:
 
 jobs:
   - template: get-approval.yaml
@@ -90,6 +91,9 @@ jobs:
           echo "variable: resourceGroupName: $(resourceGroupName)"
           echo "variable: storageAccountName: $(storageAccountName)"
           echo "variable: isHelmVersion3:  ${{parameters.isHelmVersion3}}"
+          echo "variable: dataExplorerClusterPartialName: $(dataExplorerClusterPartialName)"
+          echo "variable: dataExplorerClusterName: $(dataExplorerClusterName)"
+          echo "variable: telemetryStorageType: $(telemetryStorageType)"
         displayName: Print variables
 
   - job: resourceGroup
@@ -777,6 +781,82 @@ jobs:
           deploymentPartialName: $(cosmosDbAccountPartialName)
           resourceGroupName: $(resourceGroupName)
 
+  - job: dataExplorer
+    displayName: Provision Azure Data Explorer Cluster
+    condition: and(succeeded(), eq(variables.telemetryStorageType, 'ade'))
+    dependsOn:
+      - resourceGroup
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+  
+      - template: apply-arm-tags.yaml
+        parameters:
+          environment: ${{parameters.environmentName}}
+  
+      - task: AzureResourceGroupDeployment@2
+        displayName: Provision Azure Data Explorer Cluster
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          action: Create Or Update Resource Group
+          resourceGroupName: $(resourceGroupName)
+          location: ${{parameters.locationName}}
+          templateLocation: Linked artifact
+          csmFile: $(armTemplatesDirectory)/kustocluster.json
+          csmParametersFile: $(armParametersDirectory)/kustocluster.json
+          overrideParameters: -kustoClusterName $(dataExplorerClusterName) -location ${{parameters.locationName}} -principalIdForCluster ${{parameters.aadSGId}} -tenantIdForClusterPrincipal $(tenantId)
+          deploymentMode: Incremental
+  
+      - template: steps-delete-oldest-deployment.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          deploymentPartialName: $(dataExplorerClusterPartialName)
+          resourceGroupName: $(resourceGroupName)
+
+  - job: removeDataExplorer
+    displayName: Remove not in use Azure Data Explorer
+    condition: and(succeeded(), ne(variables.telemetryStorageType, 'ade'))
+    dependsOn:
+      - resourceGroup
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: none
+  
+      - task: AzureCLI@2
+        displayName: Check and Remove Data Explorer
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          addSpnToEnvironment: true
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+              clusterName=$(az kusto cluster list --resource-group $(resourceGroupName) | jq -r .[0].name)
+              if [ -n "$clusterName" ] && [ "$clusterName" == "$(dataExplorerClusterName)" ]
+              then
+                    az kusto cluster delete -n $(dataExplorerClusterName) -g $(resourceGroupName) --yes
+              else
+                    echo "Azure Data Explorer does not exists"
+              fi
+
   - job: populateAppConfiguration
     displayName: Populate App Configuration
     dependsOn:
@@ -807,6 +887,7 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
+            telemetryStorageType=$(telemetryStorageType)
             set -Eeuxo pipefail
             az appconfig kv import --yes --name $(appConfigurationName) --format json --source file --path "$(System.DefaultWorkingDirectory)/pipelines/cd/app-config-template.json" --separator ":"
             echo "Checking for $(System.DefaultWorkingDirectory)/pipelines/cd/permissions-config/permissions-${{parameters.environmentName}}.json"
@@ -829,11 +910,13 @@ jobs:
             az appconfig kv set --key Global:SubscriptionId                       --value ${{parameters.subscriptionId}} --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:StorageAccount:Name                  --value $(storageAccountName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:CosmosDb:AccountName                 --value $(cosmosDbAccountName) --name $(appConfigurationName) --yes
+            az appconfig kv set --key Global:DataExplorer:Name                    --value $(dataExplorerClusterName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:EventHub:Name                        --value $(eventHubName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:EventHub:RootKey                     --value $(az eventhubs namespace authorization-rule keys list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --name RootManageSharedAccessKey --query primaryKey --output tsv) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:InviteFromEmail                      --value $(inviteEmail) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:EventHubNamespaceName  --value $(eventHubName) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:AutomationAccountName  --value $(automationName) --name $(appConfigurationName) --yes
+            az appconfig kv set --key DeviceTelemetryService:Messages:TelemetryStorageType  --value ${telemetryStorageType,,} --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:LogAnalytics:Name                    --value $(omsWorkspaceName) --name $(appConfigurationName) --yes
 
             appInsightKey=$(az resource show -g $(resourceGroupName) -n $(appInsightsName) --resource-type "Microsoft.Insights/components" --query properties.InstrumentationKey --output tsv)
@@ -911,6 +994,10 @@ jobs:
             twinchangeEv=$(az eventhubs eventhub list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --query "[?contains(name, 'twin-change')]".name --output tsv)
             twinchangeEvConn=$(az eventhubs eventhub authorization-rule keys list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --eventhub-name $twinchangeEv --name $ehQueueAuthRule --query primaryConnectionString --output tsv)
             az keyvault secret set --vault-name $(keyVaultName) --name 'TenantManagerService--TwinChangeEventHubConnectionString' --value $twinchangeEvConn
+
+            deviceTwinMirrorEv=$(az eventhubs eventhub list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --query "[?contains(name, 'device-twin-mirror')]".name --output tsv)
+            deviceTwinMirrorEvConn=$(az eventhubs eventhub authorization-rule keys list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --eventhub-name $deviceTwinMirrorEv --name $ehQueueAuthRule --query primaryConnectionString --output tsv)
+            az keyvault secret set --vault-name $(keyVaultName) --name 'TenantManagerService--DeviceTwinMirrorEventHubConnectionString' --value $deviceTwinMirrorEvConn
 
             ehActionsAuthRule='actionroutes'
             actionsEv=$(az eventhubs eventhub list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --query "[?contains(name, 'actions-eventhub')]".name --output tsv)
@@ -990,13 +1077,17 @@ jobs:
             lifecycleEvConn=$(az keyvault secret show --name "TenantManagerService--LifecycleEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
             telemetryEvConn=$(az keyvault secret show --name "TenantManagerService--TelemetryEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
             twinchangeEvConn=$(az keyvault secret show --name "TenantManagerService--TwinChangeEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            deviceTwinMirrorEvConn=$(az keyvault secret show --name "TenantManagerService--DeviceTwinMirrorEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
             storageAccountConn=$(az keyvault secret show --name "Global--StorageAccountConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             az functionapp config appsettings set --name $devicetwinPropfn \
               --settings \
+                "AppConfigurationConnectionString"="$appConfigurationConnectionString" \
                 "CosmosDbConnectionString"="$cosmosDbConn" \
                 "TelemetryEventHubConnectionString"="$telemetryEvConn" \
                 "LifecycleEventHubConnectionString"="$lifecycleEvConn" \
                 "TwinChangeEventHubConnectionString"="$twinchangeEvConn" \
+                "DeviceTwinMirrorEventHubConnectionString"="$deviceTwinMirrorEvConn" \
                 "DevicePropertiesCacheConsumerGroup"="devicepropertiescache" \
                 "DeviceStreamConsumerGroup"="devicestream" \
                 "CosmosDbRus"="400" \
@@ -1006,6 +1097,17 @@ jobs:
                 "BatchThreshold"="12" \
                 "BatchWriteDelay"="85" \
               --resource-group $(resourceGroupName)
+            telemetryStorageType=$(telemetryStorageType)
+            if [ ${telemetryStorageType,,} == "ade"  ]
+            then
+                az functionapp config appsettings set --name $devicetwinPropfn \
+                --resource-group $(resourceGroupName) \
+                --settings AzureWebJobs.DeviceTelemetry.Disabled=true
+            else
+                az functionapp config appsettings set --name $devicetwinPropfn \
+                --resource-group $(resourceGroupName) \
+                --settings AzureWebJobs.DeviceTelemetry.Disabled=false
+            fi
 
   - job: function2
     displayName: Create App Config Function
@@ -1182,13 +1284,91 @@ jobs:
                 "DeploymentsDatabaseId"="pcs-storage" \
               --resource-group $(resourceGroupName)
 
+  - job: function5
+    displayName: Create Batch Telemetry Function
+    dependsOn:
+      - appInsights
+      - storageAccount
+      - populateKeyVault
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+
+      - template: apply-arm-tags.yaml
+        parameters:
+          environment: ${{parameters.environmentName}}
+
+      - task: AzureResourceGroupDeployment@2
+        displayName: Create Batch Telemetry Function
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          action: Create Or Update Resource Group
+          resourceGroupName: $(resourceGroupName)
+          location: ${{parameters.locationName}}
+          templateLocation: Linked artifact
+          csmFile: $(armTemplatesDirectory)/functions.json
+          csmParametersFile: $(armParametersDirectory)/functions.json
+          overrideParameters: -functionAppName ${{parameters.applicationCode}}-batchprocessorfuncapp-${{parameters.environmentCategory}} -appInsightsLocation ${{parameters.appInsightsLocation}} -appInsightsName $(appInsightsName) -storageAccountName $(storageAccountName) -runtime dotnet -funcVersion ~3
+          deploymentMode: Incremental
+          deploymentName: batchprocessorfuncapp-$(Build.BuildId)
+          addSpnToEnvironment: true
+
+      - template: steps-delete-oldest-deployment.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          deploymentPartialName: $(functionApp5PartialName)
+          resourceGroupName: $(resourceGroupName)
+
+      - task: AzureCLI@2
+        displayName: Set app settings for Batch Telemetry Function
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            batchProcessorfn=${{parameters.applicationCode}}-batchprocessorfuncapp-${{parameters.environmentCategory}}
+            telemetryEvConn=$(az keyvault secret show --name "TenantManagerService--TelemetryEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
+            storageAccountConn=$(az keyvault secret show --name "Global--StorageAccountConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            az functionapp config appsettings set --name $batchProcessorfn \
+              --settings \
+                "TelemetryEventHubConnectionString"="$telemetryEvConn" \
+                "DeviceStreamConsumerGroup"="devicestream" \
+                "BatchThreshold"="12" \
+                "BatchWriteDelay"="85" \
+                "AppConfigConnectionString"="$appConfigurationConnectionString" \
+              --resource-group $(resourceGroupName)
+            telemetryStorageType=$(telemetryStorageType)
+            if [ ${telemetryStorageType,,} == "ade"  ]
+            then
+                az functionapp config appsettings set --name $batchProcessorfn \
+                --resource-group $(resourceGroupName) \
+                --settings AzureWebJobs.BatchTelemetryProcessor.Disabled=false
+            else
+                az functionapp config appsettings set --name $batchProcessorfn \
+                --resource-group $(resourceGroupName) \
+                --settings AzureWebJobs.BatchTelemetryProcessor.Disabled=true
+            fi
+
+
   - job: deployFunctions
     displayName: Deploy functions
     dependsOn:
       - function1
       - function2
       - function3
-      - function4     
+      - function4
+      - function5      
     pool:
       vmImage: windows-latest
     variables:
@@ -1210,6 +1390,10 @@ jobs:
         deployment-sync:
           functionName: deployment-sync
           appNamePartial: iotdeploymentfuncapp
+          appName: ${{parameters.applicationCode}}-$(appNamePartial)-${{parameters.environmentCategory}}
+        telemetry-processor:
+          functionName: telemetry-processor
+          appNamePartial: batchprocessorfuncapp
           appName: ${{parameters.applicationCode}}-$(appNamePartial)-${{parameters.environmentCategory}}
 
     steps:

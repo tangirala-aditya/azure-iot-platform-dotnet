@@ -601,6 +601,7 @@ stages:
                 if (!$namespaceAlreadyExists) {
                   kubectl create namespace $(kubernetesNamespace) --output json
                 }
+
                 az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(kubernetesNamespaceWasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
           - template: ../templates/steps-install-helm-v3.yaml

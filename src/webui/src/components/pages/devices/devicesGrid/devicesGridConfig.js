@@ -22,7 +22,6 @@ export const deviceGridColumns = [
     {
         headerName: "devices.grid.deviceName",
         field: "id",
-        sort: "asc",
         cellRendererFramework: SoftSelectLinkRenderer,
         suppressSizeToFit: true,
     },
@@ -58,6 +57,20 @@ export const deviceGridColumns = [
         cellRendererFramework: TimeRenderer,
         suppressSizeToFit: true,
     },
+    {
+        headerName: "Device Modified Date",
+        field: "modifiedDate",
+        cellRendererFramework: TimeRenderer,
+        suppressSizeToFit: true,
+    },
+    {
+        headerName: "Device Created Date",
+        field: "deviceCreatedDate",
+        cellRendererFramework: TimeRenderer,
+        suppressSizeToFit: true,
+        sort: "desc",
+    },
+};
 ];
 
 export const defaultDeviceColumns = [

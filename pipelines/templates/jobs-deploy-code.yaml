@@ -222,6 +222,15 @@ jobs:
           useConfigurationFile: true
           configuration: pipelines/cd/grafana/service.yaml
 
+      - task: AzureCLI@2
+        displayName: Expose Grafana Service
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            kubectl expose deployment grafana --port=80 --target-port=3000 --protocol=TCP
 
 
 

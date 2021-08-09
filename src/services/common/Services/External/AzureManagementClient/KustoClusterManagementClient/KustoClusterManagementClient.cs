@@ -12,6 +12,7 @@ using Microsoft.Rest.Azure;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.Models;
+using Type = Microsoft.Azure.Management.Kusto.Models.Type;
 
 namespace Mmm.Iot.Common.Services.External.Azure
 {
@@ -155,6 +156,38 @@ namespace Mmm.Iot.Common.Services.External.Azure
                 }
 
                 throw e;
+            }
+        }
+
+        /// <summary>
+        /// Create Database If not exist
+        /// Note: Created Database will have ulimited days of retention period and 0 cache period.
+        /// </summary>
+        /// <param name="databaseName">Azure Data Explorer Database Name.</param>
+        public async Task CreateDatabaseIfNotExistAsync(string databaseName)
+        {
+            CheckNameRequest checkNameRequest = new CheckNameRequest(databaseName, Type.MicrosoftKustoClustersDatabases);
+
+            CheckNameResult databaseNameAvailability = this.client.Databases.CheckNameAvailability(
+                                            this.config.Global.ResourceGroup,
+                                            this.config.Global.DataExplorer.Name,
+                                            checkNameRequest);
+
+            if (databaseNameAvailability.NameAvailable.GetValueOrDefault())
+            {
+                try
+                {
+                    await this.CreateDBInClusterAsync(databaseName, null, new TimeSpan(0, 0, 0, 0));
+                }
+                catch (CloudException e)
+                {
+                    if (e.Body.Code == "ResourceNotFound")
+                    {
+                        throw new ResourceNotFoundException($"Error Creating kusto database {databaseName}");
+                    }
+
+                    throw e;
+                }
             }
         }
 

@@ -5,6 +5,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Azure.Management.EventHub;
+using Microsoft.Azure.Management.EventHub.Models;
 using Mmm.Iot.Common.Services.Config;
 
 namespace Mmm.Iot.Common.Services.External.EventHub
@@ -83,6 +84,26 @@ namespace Mmm.Iot.Common.Services.External.EventHub
             }
 
             await this.eventHubManagementClient.Namespaces.DeleteAsync(resourceGroupName, namespaceName);
+        }
+
+        public async Task CreateNamespaceIfNotExist(string namespaceName, string resourceGroupName = null, string location = null)
+        {
+            if (string.IsNullOrWhiteSpace(resourceGroupName))
+            {
+                resourceGroupName = this.appConfig.Global.ResourceGroup;
+            }
+
+            if (string.IsNullOrWhiteSpace(location))
+            {
+                location = this.appConfig.Global.Location;
+            }
+
+            CheckNameAvailabilityResult namespaceAvailability = this.eventHubManagementClient.Namespaces.CheckNameAvailability(new CheckNameAvailabilityParameter(namespaceName));
+
+            if (namespaceAvailability.NameAvailable.GetValueOrDefault())
+            {
+                await this.CreateNamespace(namespaceName, resourceGroupName, location);
+            }
         }
     }
 }

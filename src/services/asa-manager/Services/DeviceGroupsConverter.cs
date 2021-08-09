@@ -174,7 +174,7 @@ namespace Mmm.Iot.AsaManager.Services
 
                 try
                 {
-                    var eventHubConnString = this.appConfigurationClient.GetValue($"tenant:{tenantId}:telemetryHubConn");
+                    var eventHubConnString = this.appConfigurationClient.GetValue($"tenant:{tenantId}:eventHubConn");
                     EventHubHelper eventHubHelper = new EventHubHelper(eventHubConnString);
 
                     await eventHubHelper.SendMessageToEventHub($"{tenantId}-devicegroup", events.ToArray());

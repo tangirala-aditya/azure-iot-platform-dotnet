@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using Kusto.Data;
 using Kusto.Data.Common;
 
 namespace Mmm.Iot.Common.Services.External.KustoStorage
@@ -17,5 +18,9 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
         void EnableStreamingIngestionPolicyToTable(string tableName, string databaseName);
 
         void AlterTableRetentionPolicy(string tableName, string databaseName, TimeSpan? softDeletePeriod, DataRecoverability recoverability = DataRecoverability.Unknown);
+
+        void AlterTablePolicy(string tableName, string databaseName, IEnumerable<DataUpdatePolicy> dataUpdatePolicies);
+
+        void CreateOrAlterFunctionPolicy(string functionName, IDictionary<string, string> parameters, string body, string databaseName);
     }
 }

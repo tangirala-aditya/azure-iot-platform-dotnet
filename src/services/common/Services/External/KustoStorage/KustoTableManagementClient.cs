@@ -89,6 +89,34 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             }
         }
 
+        public void AlterTablePolicy(string tableName, string databaseName, IEnumerable<DataUpdatePolicy> dataUpdatePolicies)
+        {
+            try
+            {
+                var command = CslCommandGenerator.GenerateTableUpdatePoliciesAlterCommand(databaseName, tableName, dataUpdatePolicies);
+
+                this.client.ExecuteControlCommand(databaseName, command);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public void CreateOrAlterFunctionPolicy(string functionName, IDictionary<string, string> parameters, string body, string databaseName)
+        {
+            try
+            {
+                var command = CslCommandGenerator.GenerateCreateOrAlterFunctionCommand(functionName, null, null, parameters, body);
+
+                this.client.ExecuteControlCommand(databaseName, command);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public void Dispose()
         {
             this.Dispose(true);

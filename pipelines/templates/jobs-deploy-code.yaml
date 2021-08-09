@@ -162,7 +162,7 @@ jobs:
             set -Eeuxo pipefail
             az appconfig kv set --key Global:BuildNumber --value $(Build.BuildId) --name $(appConfigurationName)  --yes
 
- - job: grafana
+  - job: grafana
     displayName: Deploy Grafana
     variables:
       - template: variables-deploy-infra.yaml

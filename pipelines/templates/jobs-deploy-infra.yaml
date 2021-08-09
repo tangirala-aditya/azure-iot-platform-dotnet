@@ -403,6 +403,18 @@ jobs:
           deploymentMode: Incremental
           addSpnToEnvironment: true
 
+      - task: AzureCLI@2
+        displayName: Create Azure File share for grafana dashboard
+        name: getStorageAccountConnectionString
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+           storageAccountConnectionString=$(az storage account show-connection-string -n $(storageAccountName) -g $(resourceGroupName) -o tsv)
+           az storage share create -n $(aksFileName) --connection-string $storageAccountConnectionString --quota 1
+          addSpnToEnvironment: true
+
       - template: steps-delete-oldest-deployment.yaml
         parameters:
           subscriptionName: ${{parameters.subscriptionName}}
@@ -662,8 +674,10 @@ jobs:
           scriptType: bash
           inlineScript: |-
             az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            storageAccountKey=$(az storage account keys list --account-name $(storageAccountName) | jq -r .[0].value)
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
+            kubectl create secret generic --namespace=default azure-secret --from-literal=azurestorageaccountname=$(storageAccountName) --from-literal=azurestorageaccountkey=$storageAccountKey --dry-run=client -o yaml | kubectl apply -f -
 
   - job: globalsecretsV3
     displayName: Create K8s secrets
@@ -691,9 +705,10 @@ jobs:
           scriptType: bash
           inlineScript: |-
             az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            storageAccountKey=$(az storage account keys list --account-name $(storageAccountName) -o json --query "[0].value")
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
-
+            kubectl create secret generic --namespace=default azure-secret --from-literal=azurestorageaccountname=$(storageAccountName) --from-literal=azurestorageaccountkey=$storageAccountKey --dry-run=client -o yaml | kubectl apply -f -
 
   - job: appInsights
     displayName: Provision Application Insights

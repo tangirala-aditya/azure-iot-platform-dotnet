@@ -22,6 +22,7 @@ using Mmm.Iot.Common.Services.External.Azure;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.Services.External.TableStorage;
+using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.TenantManager.Services.External;
 using Mmm.Iot.TenantManager.Services.Models;
 
@@ -192,11 +193,14 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                 tenant.SAJobName = item.Name;
                                 await this.tableStorageClient.InsertOrMergeAsync("tenant", tenant);
 
-                                string eventHubNameSpace = await this.SetupEventHub(item.TenantId);
-                                var databaseName = string.Format(IoTDatabaseNameFormat, item.TenantId);
-                                await this.azureManagementClient.KustoClusterManagementClient.CreateDatabaseIfNotExistAsync(databaseName);
+                                if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    string eventHubNameSpace = await this.SetupEventHub(item.TenantId);
+                                    var databaseName = string.Format(IoTDatabaseNameFormat, item.TenantId);
+                                    await this.azureManagementClient.KustoClusterManagementClient.CreateDatabaseIfNotExistAsync(databaseName);
 
-                                await this.ADXAlertsSetup(item.TenantId, databaseName, eventHubNameSpace);
+                                    await this.ADXAlertsSetup(item.TenantId, databaseName, eventHubNameSpace);
+                                }
 
                                 Console.WriteLine($"Deleting tenant operations table...");
                                 await this.tableStorageClient.DeleteAsync(TableName, item);

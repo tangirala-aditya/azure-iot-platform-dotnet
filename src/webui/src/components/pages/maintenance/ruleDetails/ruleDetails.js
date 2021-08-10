@@ -198,8 +198,13 @@ export class RuleDetails extends Component {
     }
 
     handleProps(nextProps) {
-        const { alerts, alertEntities, deviceEntities, match, rulesEntities } =
-                nextProps,
+        const {
+                alerts,
+                alertEntities,
+                deviceEntities,
+                match,
+                rulesEntities,
+            } = nextProps,
             selectedId = match.params.id,
             selectedRule = rulesEntities[selectedId],
             selectedAlert =

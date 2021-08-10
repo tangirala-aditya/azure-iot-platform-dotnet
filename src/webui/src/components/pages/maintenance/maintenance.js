@@ -187,8 +187,11 @@ export class Maintenance extends Component {
     }
 
     componentDidMount() {
-        const { devicesIsPending, deviceLastUpdated, deviceEntities } =
-            this.props;
+        const {
+            devicesIsPending,
+            deviceLastUpdated,
+            deviceEntities,
+        } = this.props;
         if (!devicesIsPending && deviceLastUpdated) {
             this.getData(deviceEntities);
         }

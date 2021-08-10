@@ -245,7 +245,8 @@ export const backupDefaultFirmwareModel = {
                     "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND ( properties.reported.softwareConfig.status='Downloading' OR properties.reported.softwareConfig.status='Verifying' OR properties.reported.softwareConfig.status='Applying')",
                 rebooting:
                     "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.version = properties.desired.softwareConfig.version AND properties.reported.softwareConfig.status='Rebooting'",
-                error: "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.status='Error'",
+                error:
+                    "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.status='Error'",
                 rolledback:
                     "SELECT deviceId FROM devices WHERE configurations.[[${deployment.id}]].status = 'Applied' AND properties.reported.softwareConfig.status='RolledBack'",
             },

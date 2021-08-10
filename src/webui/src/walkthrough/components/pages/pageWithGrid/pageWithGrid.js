@@ -30,8 +30,14 @@ export class PageWithGrid extends Component {
     onContextMenuChange = (contextBtns) => this.setState({ contextBtns });
 
     render() {
-        const { t, data, error, isPending, lastUpdated, fetchData } =
-                this.props,
+        const {
+                t,
+                data,
+                error,
+                isPending,
+                lastUpdated,
+                fetchData,
+            } = this.props,
             gridProps = {
                 rowData: isPending ? undefined : data || [],
                 onContextMenuChange: this.onContextMenuChange,

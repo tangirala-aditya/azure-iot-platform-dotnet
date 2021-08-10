@@ -95,11 +95,12 @@ class CreateDeviceQueryForm extends LinkedComponent {
         return new Promise((resolve, reject) => {
             try {
                 this.setState({ error: undefined, isPending: true }, () => {
-                    const rawQueryConditions =
-                        this.state.deviceQueryConditions.filter((condition) => {
+                    const rawQueryConditions = this.state.deviceQueryConditions.filter(
+                        (condition) => {
                             // remove conditions that are new (have not been edited)
                             return !this.conditionIsNew(condition);
-                        });
+                        }
+                    );
                     this.props.setActiveDeviceQueryConditions(
                         rawQueryConditions.map((condition) => {
                             return toDeviceConditionModel(condition);

@@ -121,7 +121,7 @@
                         "[resourceId('Microsoft.Devices/IotHubs', '{0}')]"
                     ],
                     "properties": {{
-                        "workspaceId": "{10}",
+                        "workspaceId": "/subscriptions/{}/resourcegroups/rg-iot-acs-dev/providers/microsoft.operationalinsights/workspaces/acshyd-loganalyticsws-dev",
                         "logs": [
                             {{
                                 "category": "Connections",

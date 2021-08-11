@@ -32,8 +32,9 @@ export class DeploymentStatus extends LinkedComponent {
             changesApplied: false,
             expandedValue: false,
         };
-        this.activateOrInactivateDeployment =
-            this.activateOrInactivateDeployment.bind(this);
+        this.activateOrInactivateDeployment = this.activateOrInactivateDeployment.bind(
+            this
+        );
         this.expandFlyout = this.expandFlyout.bind(this);
     }
 
@@ -80,9 +81,9 @@ export class DeploymentStatus extends LinkedComponent {
     activateOrInactivateDeployment(deploymentId) {
         this.setState({ changesApplied: true });
         if (this.state.isActive) {
-            IoTHubManagerService.reactivateDeployment(deploymentId).subscribe(
-                () => this.postUpdatingDeployment()
-            );
+            IoTHubManagerService.reactivateDeployment(
+                deploymentId
+            ).subscribe(() => this.postUpdatingDeployment());
         } else {
             IoTHubManagerService.deleteDeployment(
                 deploymentId,

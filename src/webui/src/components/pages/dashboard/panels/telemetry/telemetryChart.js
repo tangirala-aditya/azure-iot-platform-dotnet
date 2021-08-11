@@ -92,9 +92,8 @@ export const transformTelemetryResponse = (getCurrentTelemetry) => (items) =>
                             .reduce(
                                 (acc, time) => ({
                                     ...acc,
-                                    [time]: telemetry[metric][deviceId][""][
-                                        time
-                                    ],
+                                    [time]:
+                                        telemetry[metric][deviceId][""][time],
                                 }),
                                 {}
                             );
@@ -211,10 +210,9 @@ export class TelemetryChart extends Component {
             { telemetryKeys } = this.state,
             telemetryList = telemetryKeys.map((key) => {
                 const count = Object.keys(telemetry[key]).length,
-                    keyFormatMatch =
-                        this.props.deviceGroup.telemetryFormat.find(
-                            (format) => format.key === key
-                        );
+                    keyFormatMatch = this.props.deviceGroup.telemetryFormat.find(
+                        (format) => format.key === key
+                    );
                 return {
                     label: `${
                         keyFormatMatch ? keyFormatMatch.displayName : key

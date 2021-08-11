@@ -368,8 +368,13 @@ export class DeviceJobProperties extends LinkedComponent {
     };
 
     render() {
-        const { t, onClose, devices, theme, openPropertyEditorModal } =
-                this.props,
+        const {
+                t,
+                onClose,
+                devices,
+                theme,
+                openPropertyEditorModal,
+            } = this.props,
             {
                 isPending,
                 error,

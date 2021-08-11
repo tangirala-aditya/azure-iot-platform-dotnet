@@ -26,8 +26,7 @@ import { Policies } from "utilities";
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./userNewServicePrincipal.module.scss"));
 
-const isGuidRegex =
-        /^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$/,
+const isGuidRegex = /^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$/,
     guid = (x) => x.match(isGuidRegex),
     userOptions = {
         labelName: "users.flyouts.new.servicePrincipal.label",

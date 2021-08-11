@@ -33,7 +33,10 @@ import {
 } from "store/reducers/devicesReducer";
 
 import { Dashboard } from "./dashboard";
+import { GrafanaDashboard } from "./grafanaDashboard";
+import { IdentityGatewayService } from "services";
 
+let loadGrafana = IdentityGatewayService.getDashboardMode();
 const mapStateToProps = (state) => ({
         activeDeviceGroup: getActiveDeviceGroup(state),
         alerting: getAlerting(state),
@@ -69,5 +72,8 @@ const mapStateToProps = (state) => ({
     });
 
 export const DashboardContainer = withTranslation()(
-    connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(loadGrafana ? GrafanaDashboard : Dashboard)
 );

@@ -1,15 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
-
-import { AjaxError, Indicator } from "components/shared";
 import {
     Panel,
     PanelContent,
-    PanelError,
     PanelHeader,
     PanelHeaderLabel,
-    PanelOverlay,
 } from "components/pages/dashboard/panel";
 import Config from "app.config";
 import "./grafana.scss";
@@ -48,9 +44,8 @@ export class GrafanaTelemetryPanel extends Component {
     }
 
     render() {
-        const { t, isPending, lastRefreshed, error } = this.props,
-            { deviceGroupId, from } = this.state,
-            showOverlay = isPending && !lastRefreshed;
+        const { t } = this.props,
+            { deviceGroupId, from } = this.state;
         return (
             <Panel>
                 <PanelHeader>
@@ -67,16 +62,6 @@ export class GrafanaTelemetryPanel extends Component {
                         frameborder="0"
                     ></iframe>
                 </PanelContent>
-                {showOverlay && (
-                    <PanelOverlay>
-                        <Indicator />
-                    </PanelOverlay>
-                )}
-                {error && (
-                    <PanelError>
-                        <AjaxError t={t} error={error} />
-                    </PanelError>
-                )}
             </Panel>
         );
     }

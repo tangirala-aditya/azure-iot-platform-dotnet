@@ -78,4 +78,9 @@ export class TenantService {
             `"${tenantName}"`
         );
     }
+
+    /** Returns whether a tenant is ready or not */
+    static getGrafanaUrl() {
+        return HttpClient.get(`${TENANT_MANAGER_ENDPOINT}GrafanaUrl`);
+    }
 }

@@ -76,6 +76,7 @@ namespace Mmm.Iot.TenantManager.Services
         private string grafanaNameFormat = "grafana-{0}";  // format with a guide
         private string appConfigCollectionKeyFormat = "tenant:{0}:{1}-collection";  // format with a guid and collection name
         private string eventHubNamespaceFormat = "telemetry-eventhub-{0}";
+        private string grafanaUrlFormat = "tenant:{0}:grafanaUrl";
 
         public TenantContainer(
             ILogger<TenantContainer> logger,
@@ -513,6 +514,12 @@ namespace Mmm.Iot.TenantManager.Services
             {
                 throw new Exception("Unable to retrieve the tenants", e);
             }
+        }
+
+        public string GetGrafanaUrl(string tenantId)
+        {
+            string grafanaUrlKey = this.FormatResourceName(this.grafanaUrlFormat, tenantId);
+            return this.appConfigClient.GetValue(grafanaUrlKey);
         }
 
         private string FormatResourceName(string format, string tenantId)

@@ -83,5 +83,13 @@ namespace Mmm.Iot.TenantManager.WebService.Controllers
         {
             return await this.tenantContainer.UpdateTenantAsync(tenantId, tenantName);
         }
+
+        [HttpGet("GrafanaUrl")]
+        [Authorize("ReadAll")]
+        public string GetGrafanaUrl()
+        {
+            string grafanaUrl = this.tenantContainer.GetGrafanaUrl(this.GetTenantId());
+            return grafanaUrl;
+        }
     }
 }

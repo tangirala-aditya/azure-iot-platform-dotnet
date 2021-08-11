@@ -1,5 +1,3 @@
-// Copyright (c) Microsoft. All rights reserved.
-
 import React, { Component } from "react";
 import { EMPTY, forkJoin, merge, of, Subject } from "rxjs";
 import moment from "moment";
@@ -15,17 +13,17 @@ import {
     getTenantIdParam,
 } from "utilities";
 import { Grid, Cell } from "./grid";
-//import { PanelErrorBoundary } from "./panel";
+import { PanelErrorBoundary } from "./panel";
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from "components/shell/deviceGroupDropdown";
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from "components/shell/manageDeviceGroupsBtn";
 import { TimeIntervalDropdownContainer as TimeIntervalDropdown } from "components/shell/timeIntervalDropdown";
 import { ResetActiveDeviceQueryBtnContainer as ResetActiveDeviceQueryBtn } from "components/shell/resetActiveDeviceQueryBtn";
 import {
-    //OverviewPanel,
-    //AlertsPanelContainer as AlertsPanel,
-    GrafanaTelemetryPanel,
-    //AnalyticsPanel,
-    //MapPanelContainer as MapPanel,
+    OverviewPanel,
+    AlertsPanelContainer as AlertsPanel,
+    TelemetryPanel,
+    AnalyticsPanel,
+    MapPanelContainer as MapPanel,
     ExamplePanel,
     transformTelemetryResponse,
     chartColorObjects,
@@ -441,29 +439,29 @@ export class Dashboard extends Component {
 
     render() {
         const {
-                //alerting,
+                alerting,
                 theme,
                 timeInterval,
-                //timeSeriesExplorerUrl,
+                timeSeriesExplorerUrl,
 
-                //azureMapsKey,
-                //azureMapsKeyError,
-                //azureMapsKeyIsPending,
+                azureMapsKey,
+                azureMapsKeyError,
+                azureMapsKeyIsPending,
 
                 devices,
-                //devicesError,
+                devicesError,
                 devicesIsPending,
-                //deviceStatistics,
-                // deviceStatisticsIsPending,
-                // deviceStatisticsError,
+                deviceStatistics,
+                deviceStatisticsIsPending,
+                deviceStatisticsError,
 
                 activeDeviceGroup,
-                // deviceGroups,
+                deviceGroups,
                 deviceGroupError,
 
                 rules,
-                // rulesError,
-                // rulesIsPending,
+                rulesError,
+                rulesIsPending,
                 t,
             } = this.props,
             {
@@ -472,46 +470,46 @@ export class Dashboard extends Component {
                 telemetryError,
                 telemetryQueryExceededLimit,
 
-                //analyticsVersion,
+                analyticsVersion,
                 currentActiveAlerts,
                 topAlerts,
-                //alertsPerDeviceId,
-                //criticalAlertsChange,
+                alertsPerDeviceId,
+                criticalAlertsChange,
                 analyticsIsPending,
-                // analyticsError,
+                analyticsError,
 
-                // openWarningCount,
-                // openCriticalCount,
+                openWarningCount,
+                openCriticalCount,
 
-                //devicesInAlert,
+                devicesInAlert,
 
                 lastRefreshed,
             } = this.state,
             // Count the number of online and offline devices
-            // onlineDeviceCount = deviceStatistics
-            //     ? deviceStatistics.connectedDeviceCount
-            //     : undefined,
-            // offlineDeviceCount = deviceStatistics
-            //     ? deviceStatistics.totalDeviceCount -
-            //       deviceStatistics.connectedDeviceCount
-            //     : undefined,
-            // // Add parameters to Time Series Insights Url
-            // timeSeriesParamUrl = timeSeriesExplorerUrl
-            //     ? timeSeriesExplorerUrl +
-            //       '&relativeMillis=1800000&timeSeriesDefinitions=[{"name":"Devices","splitBy":"iothub-connection-device-id"}]'
-            //     : undefined,
-            // // Add the alert rule name to the list of top alerts
-            // topAlertsWithName = topAlerts.map((alert) => ({
-            //     ...alert,
-            //     name: (rules[alert.ruleId] || {}).name || alert.ruleId,
-            // })),
-            // // Add the alert rule name to the list of currently active alerts
-            // currentActiveAlertsWithName = currentActiveAlerts.map((alert) => ({
-            //     ...alert,
-            //     name: (rules[alert.ruleId] || {}).name || alert.ruleId,
-            //     // limit the number shown in the UI to 1000 active
-            //     count: Math.min(alert.count, Config.maxAlertsCount),
-            // })),
+            onlineDeviceCount = deviceStatistics
+                ? deviceStatistics.connectedDeviceCount
+                : undefined,
+            offlineDeviceCount = deviceStatistics
+                ? deviceStatistics.totalDeviceCount -
+                  deviceStatistics.connectedDeviceCount
+                : undefined,
+            // Add parameters to Time Series Insights Url
+            timeSeriesParamUrl = timeSeriesExplorerUrl
+                ? timeSeriesExplorerUrl +
+                  '&relativeMillis=1800000&timeSeriesDefinitions=[{"name":"Devices","splitBy":"iothub-connection-device-id"}]'
+                : undefined,
+            // Add the alert rule name to the list of top alerts
+            topAlertsWithName = topAlerts.map((alert) => ({
+                ...alert,
+                name: (rules[alert.ruleId] || {}).name || alert.ruleId,
+            })),
+            // Add the alert rule name to the list of currently active alerts
+            currentActiveAlertsWithName = currentActiveAlerts.map((alert) => ({
+                ...alert,
+                name: (rules[alert.ruleId] || {}).name || alert.ruleId,
+                // limit the number shown in the UI to 1000 active
+                count: Math.min(alert.count, Config.maxAlertsCount),
+            })),
             // Determine if the rules for all of the alerts are actually loaded.
             unloadedRules =
                 topAlerts.filter((alert) => !rules[alert.ruleId]).length +
@@ -523,17 +521,17 @@ export class Dashboard extends Component {
         }
 
         // Convert the list of alerts by device id to alerts by device type
-        // const alertsPerDeviceType = Object.keys(alertsPerDeviceId).reduce(
-        //     (acc, deviceId) => {
-        //         const deviceType = (devices[deviceId] || {}).type || deviceId;
-        //         return {
-        //             ...acc,
-        //             [deviceType]:
-        //                 (acc[deviceType] || 0) + alertsPerDeviceId[deviceId],
-        //         };
-        //     },
-        //     {}
-        // );
+        const alertsPerDeviceType = Object.keys(alertsPerDeviceId).reduce(
+            (acc, deviceId) => {
+                const deviceType = (devices[deviceId] || {}).type || deviceId;
+                return {
+                    ...acc,
+                    [deviceType]:
+                        (acc[deviceType] || 0) + alertsPerDeviceId[deviceId],
+                };
+            },
+            {}
+        );
         return (
             <ComponentArray>
                 <ContextMenu>
@@ -572,10 +570,61 @@ export class Dashboard extends Component {
                 </ContextMenu>
                 <PageContent className={css("dashboard-container")}>
                     <Grid>
-                        <Cell className={css("col-9")}>
-                            <GrafanaTelemetryPanel
-                                devices={devices}
+                        <Cell className={css("col-1", "devices-overview-cell")}>
+                            <OverviewPanel
                                 activeDeviceGroup={activeDeviceGroup}
+                                openWarningCount={openWarningCount}
+                                openCriticalCount={openCriticalCount}
+                                onlineDeviceCount={onlineDeviceCount}
+                                offlineDeviceCount={offlineDeviceCount}
+                                isPending={
+                                    analyticsIsPending ||
+                                    deviceStatisticsIsPending
+                                }
+                                error={
+                                    deviceGroupError ||
+                                    deviceStatisticsError ||
+                                    analyticsError
+                                }
+                                alerting={alerting}
+                                t={t}
+                            />
+                        </Cell>
+                        <Cell className={css("col-5")}>
+                            <PanelErrorBoundary
+                                msg={t("dashboard.panels.map.runtimeError")}
+                            >
+                                <MapPanel
+                                    analyticsVersion={analyticsVersion}
+                                    azureMapsKey={azureMapsKey}
+                                    devices={devices}
+                                    devicesInAlert={devicesInAlert}
+                                    mapKeyIsPending={azureMapsKeyIsPending}
+                                    isPending={
+                                        devicesIsPending || analyticsIsPending
+                                    }
+                                    error={
+                                        azureMapsKeyError ||
+                                        devicesError ||
+                                        analyticsError
+                                    }
+                                    t={t}
+                                />
+                            </PanelErrorBoundary>
+                        </Cell>
+                        <Cell className={css("col-3")}>
+                            <AlertsPanel
+                                alerts={currentActiveAlertsWithName}
+                                isPending={analyticsIsPending || rulesIsPending}
+                                error={rulesError || analyticsError}
+                                t={t}
+                                deviceGroups={deviceGroups}
+                                isAlertingActive={alerting.isActive}
+                            />
+                        </Cell>
+                        <Cell className={css("col-6")}>
+                            <TelemetryPanel
+                                timeSeriesExplorerUrl={timeSeriesParamUrl}
                                 telemetry={telemetry}
                                 isPending={telemetryIsPending}
                                 limitExceeded={telemetryQueryExceededLimit}
@@ -583,8 +632,27 @@ export class Dashboard extends Component {
                                 error={deviceGroupError || telemetryError}
                                 theme={theme}
                                 colors={chartColorObjects}
-                                timeInterval={timeInterval}
                                 t={t}
+                            />
+                        </Cell>
+                        <Cell className={css("col-4")}>
+                            <AnalyticsPanel
+                                timeSeriesExplorerUrl={timeSeriesParamUrl}
+                                topAlerts={topAlertsWithName}
+                                alertsPerDeviceId={alertsPerDeviceType}
+                                criticalAlertsChange={criticalAlertsChange}
+                                isPending={
+                                    analyticsIsPending ||
+                                    rulesIsPending ||
+                                    devicesIsPending
+                                }
+                                error={
+                                    devicesError || rulesError || analyticsError
+                                }
+                                theme={theme}
+                                colors={chartColorObjects}
+                                t={t}
+                                isAlertingActive={alerting.isActive}
                             />
                         </Cell>
                         {Config.showWalkthroughExamples && (

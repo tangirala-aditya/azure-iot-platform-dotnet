@@ -69,8 +69,7 @@ export const deviceGridColumns = [
         cellRendererFramework: TimeRenderer,
         suppressSizeToFit: true,
         sort: "desc",
-    },
-};
+    }
 ];
 
 export const defaultDeviceColumns = [

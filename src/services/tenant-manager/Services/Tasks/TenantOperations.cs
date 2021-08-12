@@ -207,7 +207,9 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                             this.config.Global.CosmosDb.AccountName,
                                             this.config.Global.CosmosDb.DocumentDbAuthKey,
                                             this.config.Global.LogAnalytics.WorkspaceId,
-                                            this.config.Global.DiagnosticSetting.Name);
+                                            this.config.Global.DiagnosticSetting.Name
+                                            this.config.Global.SubscriptionId,
+                                            this.config.Global.ResourceGroup);
                                         await this.azureManagementClient.DeployTemplateAsync(template);
                                     }
                                 }

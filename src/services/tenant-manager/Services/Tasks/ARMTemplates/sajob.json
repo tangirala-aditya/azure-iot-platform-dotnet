@@ -29,7 +29,7 @@
                         "[resourceId('Microsoft.StreamAnalytics/StreamingJobs', '{0}')]"
                     ],
                     "properties": {{
-                        "workspaceId": "{11}",
+                        "workspaceId": "/subscriptions/{13}/resourcegroups/{14}/providers/microsoft.operationalinsights/workspaces/{11}",
                         "logs": [
                             {{
                                 "category": "Execution",

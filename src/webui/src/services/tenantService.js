@@ -79,8 +79,10 @@ export class TenantService {
         );
     }
 
-    /** Returns whether a tenant is ready or not */
+    /** Returns the configured grafana url of a tenant */
     static getGrafanaUrl() {
-        return HttpClient.get(`${TENANT_MANAGER_ENDPOINT}GrafanaUrl`);
+        return HttpClient.get(
+            `${TENANT_MANAGER_ENDPOINT}tenant/GrafanaUrl`
+        ).pipe(map((value) => value));
     }
 }

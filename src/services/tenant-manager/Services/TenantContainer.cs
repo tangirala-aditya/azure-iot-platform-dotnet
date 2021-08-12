@@ -518,7 +518,7 @@ namespace Mmm.Iot.TenantManager.Services
 
         public string GetGrafanaUrl(string tenantId)
         {
-            string grafanaUrlKey = string.Format(this.grafanaUrlFormat, tenantId.Substring(0, 8));
+            string grafanaUrlKey = string.Format(this.grafanaUrlFormat, tenantId);
             return this.appConfigClient.GetValue(grafanaUrlKey);
         }
 

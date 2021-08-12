@@ -125,8 +125,9 @@ export class GrafanaDashboard extends Component {
                 devicesIsPending,
                 activeDeviceGroup,
                 t,
+                grafanaUrl,
             } = this.props,
-            { telemetryQueryExceededLimit, lastRefreshed } = this.state;
+            { lastRefreshed } = this.state;
 
         return (
             <ComponentArray>
@@ -151,7 +152,6 @@ export class GrafanaDashboard extends Component {
                         <TimeIntervalDropdown
                             onChange={this.props.updateTimeInterval}
                             value={timeInterval}
-                            limitExceeded={telemetryQueryExceededLimit}
                             activeDeviceGroup={activeDeviceGroup}
                             t={t}
                         />
@@ -167,7 +167,11 @@ export class GrafanaDashboard extends Component {
                 <PageContent className={css("dashboard-container")}>
                     <Grid>
                         <Cell className={css("col-9")}>
-                            <GrafanaTelemetryPanel t={t} devices={devices} />
+                            <GrafanaTelemetryPanel
+                                t={t}
+                                devices={devices}
+                                grafanaUrl={grafanaUrl}
+                            />
                         </Cell>
                         {Config.showWalkthroughExamples && (
                             <Cell className={css("col-4")}>

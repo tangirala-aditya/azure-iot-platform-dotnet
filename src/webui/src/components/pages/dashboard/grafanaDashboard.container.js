@@ -32,7 +32,7 @@ import {
     getDeviceStatisticsError,
 } from "store/reducers/devicesReducer";
 
-import { Dashboard } from "./dashboard";
+import { GrafanaDashboard } from "./grafanaDashboard";
 
 const mapStateToProps = (state) => ({
         activeDeviceGroup: getActiveDeviceGroup(state),
@@ -68,6 +68,6 @@ const mapStateToProps = (state) => ({
             dispatch(appRedux.actions.checkTenantAndSwitch(payload)),
     });
 
-export const DashboardContainer = withTranslation()(
-    connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export const GrafanaDashboardContainer = withTranslation()(
+    connect(mapStateToProps, mapDispatchToProps)(GrafanaDashboard)
 );

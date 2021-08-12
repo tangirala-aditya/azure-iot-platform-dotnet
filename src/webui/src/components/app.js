@@ -27,6 +27,7 @@ import {
 import { IdentityGatewayService } from "services";
 import { ColumnMappingsRouter } from "./pages/columnmapping/columnmapping.router";
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
+import { GrafanaDashboardContainer } from "./pages/dashboard/grafanaDashboard.container";
 
 initializeIcons();
 
@@ -34,11 +35,14 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { openFlyout: "" };
+        this.state = { openFlyout: "", isGrafana: false };
     }
 
     UNSAFE_componentWillMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
+        IdentityGatewayService.getDashboardMode().subscribe((value) => {
+            this.setState({ isGrafana: value.toUpperCase() === "TRUE" });
+        });
     }
 
     closeFlyout = () => this.setState({ openFlyout: "" });
@@ -56,7 +60,9 @@ class App extends Component {
                     exact: true,
                     svg: svgs.tabs.dashboard,
                     labelId: "tabs.dashboard",
-                    component: DashboardContainer,
+                    component: this.state.isGrafana
+                        ? GrafanaDashboardContainer
+                        : DashboardContainer,
                 },
                 {
                     to: "/devices",

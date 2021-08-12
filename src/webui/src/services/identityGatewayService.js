@@ -98,12 +98,8 @@ export class IdentityGatewayService {
 
     /* Method that returns the mode of the dashboard*/
     static getDashboardMode() {
-        var dashboardMode = true;
-        HttpClient.get(`${ENDPOINT}settings/DashboardMode`)
-            .pipe(map((setting) => setting && setting.value))
-            .subscribe((value) => {
-                dashboardMode = value.toUpperCase() === "true".toUpperCase();
-            });
-        return dashboardMode;
+        return HttpClient.get(
+            `${ENDPOINT}settings/DashboardMode`
+        ).pipe(map((setting) => setting && setting.value));
     }
 }

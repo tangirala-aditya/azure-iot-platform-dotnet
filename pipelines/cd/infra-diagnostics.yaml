@@ -1,0 +1,184 @@
+trigger: none
+pr: none
+pool:
+  vmImage: ubuntu-latest
+stages:
+  - stage: checkParameters
+    displayName: Check parameters
+    dependsOn: []
+    jobs:
+      - job: checkParameters
+        displayName: Check parameters
+        steps:
+          - checkout: none
+
+          - script: |-
+              set -Eeuxo pipefail
+              echo "Subscription name: '$(subscriptionName)'"
+              if [ -z "$(subscriptionName)" ]
+              then
+                echo "A value for the 'subscriptionName' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Location name: '$(locationName)'"
+              if [ -z "$(locationName)" ]
+              then
+                echo "A value for the 'locationName' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Environment name: '$(environmentName)'"
+              if [ -z "$(environmentName)" ]
+              then
+                echo "A value for the 'environmentName' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Subscription ID: '$(subscriptionId)'"
+              if [ -z "$(subscriptionId)" ]
+              then
+                echo "A value for the 'subscriptionId' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Application code: '$(applicationCode)'"
+              if [ -z "$(applicationCode)" ]
+              then
+                echo "A value for the 'applicationCode' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Application short code: '$(applicationShortCode)'"
+              if [ -z "$(applicationShortCode)" ]
+              then
+                echo "A value for the 'applicationShortCode' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Environment category: '$(environmentCategory)'"
+              if [ -z "$(environmentCategory)" ]
+              then
+                echo "A value for the 'environmentCategory' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+            displayName: Check parameters
+
+  - stage: deployInfrastructure
+    displayName: Deploy infrastructure
+    dependsOn:
+      - checkParameters
+    jobs:
+      - job: printVariables
+        displayName: Print variables
+        variables:
+          - template: ../templates/variables-deploy-infra.yaml
+            parameters:
+              subscriptionName: $(subscriptionName)
+              locationName: $(locationName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)
+        steps:
+          - checkout: none
+
+          - template: ../templates/print-pipeline-resource-variables.yaml
+            parameters:
+              pipelineResourceName: test
+
+          - script: |-
+              echo "parameter: subscriptionName: $(subscriptionName)"
+              echo "parameter: locationName: $(locationName)"
+              echo "parameter: environmentName: $environmentName)"
+              echo "parameter: subscriptionId: $(subscriptionId)"
+              echo "parameter: applicationCode: $(applicationCode)"
+              echo "parameter: applicationShortCode: $(applicationShortCode)"
+              echo "parameter: environmentCategory: $(environmentCategory)"
+              echo "variable: aksPartialName: $(aksPartialName)"
+              echo "variable: appConfigurationPartialName: $(appConfigurationPartialName)"
+              echo "variable: appInsightsPartialName: $(appInsightsPartialName)"
+              echo "variable: armDirectory: $(armDirectory)"
+              echo "variable: automationPartialName: $(automationPartialName)"
+              echo "variable: blobContainerPartialName: $(blobContainerPartialName)"
+              echo "variable: cosmosDbName: $(cosmosDbName)"
+              echo "variable: cosmosDbAccountPartialName: $(cosmosDbAccountPartialName)"
+              echo "variable: crslPlatformKeyVault: $(crslPlatformKeyVault)"
+              echo "variable: defaultSasKeyName: $(defaultSasKeyName)"
+              echo "variable: eventHubPartialName: $(eventHubPartialName)"
+              echo "variable: functionApp1PartialName: $(functionApp1PartialName)"
+              echo "variable: functionApp2PartialName: $(functionApp2PartialName)"
+              echo "variable: keyVaultPartialName: $(keyVaultPartialName)"
+              echo "variable: mapsPartialName: $(mapsPartialName)"
+              echo "variable: omsWorkspacePartialName: $(omsWorkspacePartialName)"
+              echo "variable: storageAccountPartialName: $(storageAccountPartialName)"
+              echo "variable: tenantId: $(tenantId)"
+              echo "variable: userObjId: $(userObjId)"
+              echo "variable: aksName: $(aksName)"
+              echo "variable: appConfigurationName: $(appConfigurationName)"
+              echo "variable: appInsightsName: $(appInsightsName)"
+              echo "variable: armParametersDirectory: $(armParametersDirectory)"
+              echo "variable: armTemplatesDirectory: $(armTemplatesDirectory)"
+              echo "variable: automationName: $(automationName)"
+              echo "variable: blobContainerName: $(blobContainerName)"
+              echo "variable: cosmosDbAccountName: $(cosmosDbAccountName)"
+              echo "variable: eventHubName: $(eventHubName)"
+              echo "variable: functionApp1Name: $(functionApp1Name)"
+              echo "variable: functionApp2Name: $(functionApp2Name)"
+              echo "variable: keyVaultName: $(keyVaultName)"
+              echo "variable: mapsName: $(mapsName)"
+              echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
+              echo "variable: resourceGroupName: $(resourceGroupName)"
+              echo "variable: storageAccountName: $(storageAccountName)"
+            displayName: Print variables
+      - job: powershellScripts
+        displayName: Powershell scripts to Migrate
+        dependsOn:
+          - printVariables
+        variables:
+          - template: ../templates/variables-deploy-infra.yaml
+            parameters:
+              subscriptionName: $(subscriptionName)
+              locationName: $(locationName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)
+        steps:
+        - task: AzurePowerShell@5
+          displayName: Migrate Event Hub
+          inputs:
+            azureSubscription: $(subscriptionName)
+            ScriptType: FilePath
+            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptEventHub.ps1
+            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
+            azurePowerShellVersion: LatestVersion
+
+        - task: AzurePowerShell@5
+          displayName: Migrate IoT Hub
+          inputs:
+            azureSubscription: $(subscriptionName)
+            ScriptType: FilePath
+            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptIoTHub.ps1
+            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
+            azurePowerShellVersion: LatestVersion
+
+        - task: AzurePowerShell@5
+          displayName: Migrate Key Vault
+          inputs:
+            azureSubscription: $(subscriptionName)
+            ScriptType: FilePath
+            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptKeyVault.ps1
+            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
+            azurePowerShellVersion: LatestVersion
+
+        - task: AzurePowerShell@5
+          displayName: Migrate Stream Analytics
+          inputs:
+            azureSubscription: $(subscriptionName)
+            ScriptType: FilePath
+            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptStreamAnalytics.ps1
+            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
+            azurePowerShellVersion: LatestVersion           

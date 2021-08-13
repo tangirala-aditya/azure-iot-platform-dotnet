@@ -25,10 +25,10 @@ function New-GrafanaApiKey {
      Write-Host $body
      try {
           $response = Invoke-RestMethod -Uri $uri -Method 'POST' -Headers $headers -Body $body
-          $response = $response | ConvertTo-Json
+          $response = ($response | ConvertTo-Json | ConvertFrom-Json)
           $apiKey = $response.key
           $secret = Set-AzKeyVaultSecret -VaultName $keyvaultName -Name "Grafana--APIKey" -SecretValue $apiKey
-          Write-Host $result.key
+          Write-Host "Added Key...."
      }
      catch {
           Write-Host("An Error occured.")

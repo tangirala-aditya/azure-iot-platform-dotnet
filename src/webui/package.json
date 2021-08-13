@@ -30,6 +30,7 @@
         "query-string": "6.13.8",
         "react": "17.0.1",
         "react-app-polyfill": "2.0.0",
+        "react-beautiful-dnd": "13.1.0",
         "react-dom": "17.0.1",
         "react-dom-factories": "1.0.2",
         "react-i18next": "11.8.5",
@@ -56,12 +57,12 @@
         "typescript": "3.4.3"
     },
     "scripts": {
-        "start": "./node_modules/.bin/eslint . && react-scripts start",
+        "start": "./node_modules/.bin/eslint . --fix && react-scripts start",
         "build": "GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true react-scripts build",
         "lint": "./node_modules/.bin/eslint .",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "debug": "cross-env NODE_PATH=src/ REACT_APP_BASE_SERVICE_URL='https://crsliot-aks-dev.centralus.cloudapp.azure.com' react-scripts --inspect-brk start --runInBand"
+        "debug": "cross-env NODE_PATH=src/ REACT_APP_BASE_SERVICE_URL='https://acsagic-aks-dev.centralus.cloudapp.azure.com' react-scripts --inspect-brk start --runInBand"
     },
     "browserslist": [
         ">0.2%",

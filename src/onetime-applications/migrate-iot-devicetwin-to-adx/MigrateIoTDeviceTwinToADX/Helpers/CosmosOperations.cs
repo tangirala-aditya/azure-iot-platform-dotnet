@@ -22,19 +22,18 @@ namespace MigrateIoTDeviceTwinToADX.Helpers
         private static CosmosOperations instance = null;
         private static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
         private readonly DocumentClient client = null;
-        private RequestOptions requestOptions;
 
         private CosmosOperations(DocumentClient client)
         {
             this.client = client;
         }
 
-        public static async Task<CosmosOperations> GetClientAsync()
+        public static async Task<CosmosOperations> GetClientAsync(string connectionString)
         {
             await semaphoreSlim.WaitAsync();
             try
             {
-                return instance ?? (instance = CreateInstance());
+                return instance ?? (instance = CreateInstance(connectionString));
             }
             finally
             {
@@ -117,79 +116,8 @@ namespace MigrateIoTDeviceTwinToADX.Helpers
             }
         }
 
-        public async Task<List<Document>> QueryAllDocumentsAsync(
-            string databaseName,
-            string colId,
-            FeedOptions queryOptions,
-            SqlQuerySpec querySpec)
+        private static CosmosOperations CreateInstance(string connectionString)
         {
-            if (queryOptions == null)
-            {
-                queryOptions = new FeedOptions
-                {
-                    EnableCrossPartitionQuery = true,
-                    EnableScanInQuery = true,
-                };
-            }
-
-            string collectionLink = string.Format(
-                "/dbs/{0}/colls/{1}",
-                databaseName,
-                colId);
-
-            try
-            {
-                var result = await Task.FromResult(this.client.CreateDocumentQuery<Document>(
-                        collectionLink,
-                        querySpec,
-                        queryOptions));
-
-                var queryResults = result == null ?
-                    new List<Document>() :
-                    result
-                        .AsEnumerable()
-                        .ToList();
-
-                return queryResults;
-            }
-            catch (AggregateException ae)
-            {
-                if (ae.InnerException is DocumentClientException)
-                {
-                    throw this.ConvertDocumentClientException(ae.InnerException as DocumentClientException);
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            catch (DocumentClientException dce)
-            {
-                throw this.ConvertDocumentClientException(dce);
-            }
-        }
-
-        private static RequestOptions IfMatch(string condition)
-        {
-            if (condition == "*")
-            {
-                // Match all
-                return null;
-            }
-
-            return new RequestOptions
-            {
-                AccessCondition = new AccessCondition
-                {
-                    Condition = condition,
-                    Type = AccessConditionType.IfMatch,
-                },
-            };
-        }
-
-        private static CosmosOperations CreateInstance()
-        {
-            string connectionString = Environment.GetEnvironmentVariable("CosmosDbConnectionString", EnvironmentVariableTarget.Process);
             DocumentClient docClient = CreateClient(connectionString);
             return new CosmosOperations(docClient);
         }
@@ -230,33 +158,6 @@ namespace MigrateIoTDeviceTwinToADX.Helpers
             if (Regex.IsMatch(input, InvalidCharacterRegex))
             {
                 throw new Exception($"Input '{input}' contains invalid characters.");
-            }
-        }
-
-        private RequestOptions GetDocDbOptions(int docDBRUs)
-        {
-            return new RequestOptions
-            {
-                OfferThroughput = docDBRUs,
-                ConsistencyLevel = ConsistencyLevel.Strong,
-            };
-        }
-
-        private async Task CreateDatabaseAsync(string cosmosDatabase)
-        {
-            try
-            {
-                var db = new Database { Id = cosmosDatabase };
-                await this.client.CreateDatabaseAsync(db);
-            }
-            catch (DocumentClientException)
-            {
-                // If the DB is already created it will throw a DocumentClientException and we do not want to handle that
-                // So we do not throw this exception
-            }
-            catch (Exception e)
-            {
-                throw new ApplicationException("Error while creating DocumentDb database", e);
             }
         }
 

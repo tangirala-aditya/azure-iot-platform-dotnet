@@ -13,5 +13,7 @@ namespace Mmm.Iot.MigrateIoTDeviceTwinToADX.Config
         public virtual string StorageAccountConnectionStringKeyVaultSecret { get; set; }
 
         public virtual string StorageAccountConnectionString { get; set; }
+
+        public virtual CosmosDb CosmosDb { get; set; }
     }
 }

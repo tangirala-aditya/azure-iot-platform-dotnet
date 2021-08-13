@@ -22,13 +22,15 @@ namespace Mmm.Iot.MigrateIoTDeviceTwinToADX
                 AppConfigHelper appConfigHelper = new AppConfigHelper(appConfig.AppConfigurationConnectionString);
                 TableStorageHelper tableStorageHelper = new TableStorageHelper(appConfig);
                 TenantConnectionHelper tenantConnectionHelper = new TenantConnectionHelper(appConfigHelper);
+                DeviceGroupMigration deviceGroupMigration = new DeviceGroupMigration(tableStorageHelper, tenantConnectionHelper, logger, appConfig);
+                logger.LogInformation("Device Group Migration Started");
+                await deviceGroupMigration.Start();
+                logger.LogInformation("Device Group Migration Completed");
+
                 DeviceTwinMigration deviceTwinMigration = new DeviceTwinMigration(tableStorageHelper, tenantConnectionHelper, logger);
-
-                logger.LogInformation("Migration Started");
-
+                logger.LogInformation("Device Group Migration Started");
                 await deviceTwinMigration.Start();
-
-                logger.LogInformation("Migration Completed");
+                logger.LogInformation("Device Group Migration Completed");
             }
             catch (System.Exception ex)
             {

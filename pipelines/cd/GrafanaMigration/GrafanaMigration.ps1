@@ -129,7 +129,7 @@ function New-DataSources {
      $dataSourceContent = $dataSourceContent -replace '\{0\}' , $servicePrincipalId
      $dataSourceContent = $dataSourceContent -replace '\{1\}' , $tenantId
      $dataSourceContent = $dataSourceContent -replace '\{2\}' , $servicePrincipalKey
-     $dataSourceContent = $dataSourceContent -replace '\{3\}' , ("https://" + $applicationCode + "kusto" + $environmentCategory + ".centralus.kusto.windows.net")
+     $dataSourceContent = $dataSourceContent -replace '\{3\}' , ("https://" + $applicationCode + "kusto" + $environmentCategory + ".$location.kusto.windows.net")
 
 
      $body = $dataSourceContent | ConvertFrom-Json | ConvertTo-Json -Depth 32

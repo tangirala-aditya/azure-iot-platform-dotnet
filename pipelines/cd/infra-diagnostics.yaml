@@ -260,4 +260,20 @@ stages:
                 az webapp config set --name "$(applicationCode)-iotdeploymentfuncapp-$(environmentCategory)" --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
                 az webapp config set --name "$(applicationCode)-resourcedatacollector-$(environmentCategory)" --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
 
+          - task: AzureCLI@2
+            displayName: Enable FTTPS in functionApp
+            inputs:
+              azureSubscription: ${{parameters.subscriptionName}}
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |-
+                set -Eeuxo pipefail
+                az webapp update --set clientCertEnabled=true --name "$(applicationCode)-alertingactionsfuncapp-$(environmentCategory)" --resource-group $(resourceGroupName)
+                az webapp update --set clientCertEnabled=true --name "$(applicationCode)-appconfigfuncapp-$(environmentCategory)" --resource-group $(resourceGroupName)
+                az webapp update --set clientCertEnabled=true --name "$(applicationCode)-devicetwinfuncapp-$(environmentCategory)" --resource-group $(resourceGroupName)
+                az webapp update --set clientCertEnabled=true --name "$(applicationCode)-iotdeploymentfuncapp-$(environmentCategory)" --resource-group $(resourceGroupName)
+                az webapp update --set clientCertEnabled=true --name "$(applicationCode)-resourcedatacollector-$(environmentCategory)" --resource-group $(resourceGroupName)
+
+ 
+
 

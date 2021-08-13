@@ -183,6 +183,8 @@ try {
      #remove and reisntall pkmngr and install packages
      #Register-PackageSource -Name MyNuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet
      Install-Module -Name AzTable -Force
+     az login --service-principal -u $servicePrincipalId --password $servicePrincipalKey --tenant $tenantId --allow-no-subscriptions
+     az account set --subscription $subscriptionId
 
      Write-Host "############## Installed AzTable successfully."
      

@@ -10,13 +10,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.Messaging.EventHubs;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Devices;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
-
 using Mmm.Iot.Common.Services;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
@@ -29,7 +27,6 @@ using Mmm.Iot.Config.Services.Helpers;
 using Mmm.Iot.Config.Services.Helpers.PackageValidation;
 using Mmm.Iot.Config.Services.Models;
 using Mmm.Platform.IoT.Common.Services.Models;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace Mmm.Iot.Common.Services.External.KustoStorage
@@ -11,6 +12,11 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
     {
         Task<List<TDestination>> ExecuteQueryAsync<TDestination>(
             string dataBaseName,
+            string query,
+            Dictionary<string, string> queryParameter);
+
+        Task<int> ExecuteCountQueryAsync(
+            string databaseName,
             string query,
             Dictionary<string, string> queryParameter);
     }

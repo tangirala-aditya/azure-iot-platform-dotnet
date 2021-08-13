@@ -336,35 +336,36 @@ namespace Mmm.Iot.Common.Services.Helpers
             return new SqlQuerySpec(queryBuilder.ToString(), sqlParameterCollection);
         }
 
-        public static (string Query, Dictionary<string, string> QueryParameter) GetKustoQuery(
-            string tableName,
-            DateTimeOffset? from,
-            string fromProperty,
-            DateTimeOffset? to,
-            string toProperty,
-            string order,
-            string orderProperty,
-            int skip,
-            int limit,
-            string[] devices,
-            string devicesProperty)
+        public static (string Query, Dictionary<string, string> QueryParameter) GetCountKustoSql(
+        string tableName,
+        string byId,
+        string byIdProperty,
+        DateTimeOffset? from,
+        string fromProperty,
+        DateTimeOffset? to,
+        string toProperty,
+        string[] devices,
+        string devicesProperty,
+        string[] filterValues,
+        string filterProperty,
+        string uniqueRecordProperty)
         {
             ValidateInput(ref tableName);
             ValidateInput(ref fromProperty);
             ValidateInput(ref toProperty);
-            ValidateInput(ref order);
-            ValidateInput(ref orderProperty);
-            for (int i = 0; i < devices.Length; i++)
-            {
-                ValidateInput(ref devices[i]);
-            }
-
             ValidateInput(ref devicesProperty);
+            ValidateInput(ref filterProperty);
 
             var queryParameterCollection = new Dictionary<string, string>();
 
             var queryParameterBuilder = new StringBuilder("declare query_parameters (");
             var queryBuilder = new StringBuilder($"{tableName}");
+
+            if (uniqueRecordProperty != null)
+            {
+                ValidateInput(ref uniqueRecordProperty);
+                queryBuilder.AppendLine($" | summarize arg_max({uniqueRecordProperty}, *) by Id | where IsDeleted == false");
+            }
 
             if (devices.Length > 0)
             {
@@ -379,6 +380,17 @@ namespace Mmm.Iot.Common.Services.Helpers
                 queryParameterBuilder.Append($"{string.Join(", ", devicesParameters.Select(p => $"{p.Key}:string"))},");
             }
 
+            if (!string.IsNullOrEmpty(byId) && !string.IsNullOrEmpty(byIdProperty))
+            {
+                ValidateInput(ref byId);
+                ValidateInput(ref byIdProperty);
+
+                queryBuilder.AppendLine($" | where {byIdProperty} == byId");
+
+                queryParameterCollection.Add("byId", byId);
+                queryParameterBuilder.Append("byId:string,");
+            }
+
             if (from.HasValue)
             {
                 // TODO: left operand is never null
@@ -391,6 +403,170 @@ namespace Mmm.Iot.Common.Services.Helpers
                 // TODO: left operand is never null
                 DateTimeOffset toDate = to ?? default(DateTimeOffset);
                 queryBuilder.Append($" and {toProperty} <= datetime({toDate.UtcDateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)})");
+            }
+
+            if (filterValues.Length > 0)
+            {
+                var filterValueParameters = filterValues.Select((value, index) => new KeyValuePair<string, string>($"filterParameterName{index}", value));
+
+                queryBuilder.AppendLine($" | where {filterProperty} in ({string.Join(",", filterValueParameters.Select(p => p.Key))})");
+                foreach (var p in filterValueParameters)
+                {
+                    queryParameterCollection.Add(p.Key, p.Value);
+                }
+
+                queryParameterBuilder.Append($"{string.Join(", ", filterValueParameters.Select(p => $"{p.Key}:string"))},");
+            }
+
+            queryBuilder.AppendLine("| count");
+
+            queryParameterBuilder.Append(");");
+
+            queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());
+
+            return (queryBuilder.ToString(), queryParameterCollection);
+        }
+
+        public static (string Query, Dictionary<string, string> QueryParameter) GetKustoQuery(
+            string tableName,
+            string byId,
+            string byIdProperty,
+            DateTimeOffset? from,
+            string fromProperty,
+            DateTimeOffset? to,
+            string toProperty,
+            string order,
+            string orderProperty,
+            int skip,
+            int limit,
+            string[] devices,
+            string devicesProperty,
+            string uniqueRecordProperty = null)
+        {
+            ValidateInput(ref tableName);
+            ValidateInput(ref fromProperty);
+            ValidateInput(ref toProperty);
+            ValidateInput(ref order);
+            ValidateInput(ref orderProperty);
+
+            for (int i = 0; i < devices.Length; i++)
+            {
+                ValidateInput(ref devices[i]);
+            }
+
+            ValidateInput(ref devicesProperty);
+
+            var queryParameterCollection = new Dictionary<string, string>();
+
+            var queryParameterBuilder = new StringBuilder("declare query_parameters (");
+            var queryBuilder = new StringBuilder($"{tableName}");
+
+            if (uniqueRecordProperty != null)
+            {
+                ValidateInput(ref uniqueRecordProperty);
+                queryBuilder.AppendLine($" | summarize arg_max({uniqueRecordProperty}, *) by Id | where IsDeleted == false");
+            }
+
+            if (devices.Length > 0)
+            {
+                var devicesParameters = devices.Select((value, index) => new KeyValuePair<string, string>($"devicesParameterName{index}", value));
+
+                queryBuilder.AppendLine($" | where {devicesProperty} in ({string.Join(",", devicesParameters.Select(p => p.Key))})");
+                foreach (var p in devicesParameters)
+                {
+                    queryParameterCollection.Add(p.Key, p.Value);
+                }
+
+                queryParameterBuilder.Append($"{string.Join(", ", devicesParameters.Select(p => $"{p.Key}:string"))},");
+            }
+
+            if (!string.IsNullOrEmpty(byId) && !string.IsNullOrEmpty(byIdProperty))
+            {
+                ValidateInput(ref byId);
+                ValidateInput(ref byIdProperty);
+
+                queryBuilder.AppendLine($" | where {byIdProperty} == byId");
+
+                queryParameterCollection.Add("byId", byId);
+                queryParameterBuilder.Append("byId:string,");
+            }
+
+            if (from.HasValue)
+            {
+                // TODO: left operand is never null
+                DateTimeOffset fromDate = from ?? default(DateTimeOffset);
+                queryBuilder.AppendLine($" | where {fromProperty} >= datetime({fromDate.UtcDateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)})");
+            }
+
+            if (to.HasValue)
+            {
+                // TODO: left operand is never null
+                DateTimeOffset toDate = to ?? default(DateTimeOffset);
+                queryBuilder.Append($" and {toProperty} <= datetime({toDate.UtcDateTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)})");
+            }
+
+            if (order == null || string.Equals(order, "desc", StringComparison.OrdinalIgnoreCase))
+            {
+                queryBuilder.AppendLine($" | top topNumber by {orderProperty} desc");
+            }
+            else
+            {
+                queryBuilder.AppendLine($" | top topNumber by {orderProperty} asc");
+            }
+
+            queryParameterCollection.Add("topNumber", $"{skip + limit}");
+            queryParameterBuilder.Append("topNumber:int");
+
+            queryParameterBuilder.Append(");");
+
+            queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());
+
+            return (queryBuilder.ToString(), queryParameterCollection);
+        }
+
+        public static (string Query, Dictionary<string, string> QueryParameter) GetKustoQuery(
+            string tableName,
+            string order,
+            string orderProperty,
+            int skip,
+            int limit,
+            string[] values,
+            string valueProperty,
+            string uniqueRecordProperty = null)
+        {
+            ValidateInput(ref tableName);
+            ValidateInput(ref order);
+            ValidateInput(ref orderProperty);
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                ValidateInput(ref values[i]);
+            }
+
+            ValidateInput(ref valueProperty);
+
+            var queryParameterCollection = new Dictionary<string, string>();
+
+            var queryParameterBuilder = new StringBuilder("declare query_parameters (");
+            var queryBuilder = new StringBuilder($"{tableName}");
+
+            if (uniqueRecordProperty != null)
+            {
+                ValidateInput(ref uniqueRecordProperty);
+                queryBuilder.AppendLine($" | summarize arg_max({uniqueRecordProperty}, *) by Id | where IsDeleted == false");
+            }
+
+            if (values.Length > 0)
+            {
+                var devicesParameters = values.Select((value, index) => new KeyValuePair<string, string>($"valuesParameterName{index}", value));
+
+                queryBuilder.AppendLine($" | where {valueProperty} in ({string.Join(",", devicesParameters.Select(p => p.Key))})");
+                foreach (var p in devicesParameters)
+                {
+                    queryParameterCollection.Add(p.Key, p.Value);
+                }
+
+                queryParameterBuilder.Append($"{string.Join(", ", devicesParameters.Select(p => $"{p.Key}:string"))},");
             }
 
             if (order == null || string.Equals(order, "desc", StringComparison.OrdinalIgnoreCase))
@@ -448,6 +624,52 @@ namespace Mmm.Iot.Common.Services.Helpers
 
             queryParameterCollection.Add("topNumber", limit.ToString());
             queryParameterBuilder.Append("topNumber:int");
+            queryParameterBuilder.Append(");");
+
+            queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());
+
+            return (queryBuilder.ToString(), queryParameterCollection);
+        }
+
+        public static (string Query, Dictionary<string, string> QueryParameter) GetKustoQuery(
+            string tableName,
+            string[] values,
+            string valueProperty,
+            string uniqueRecordProperty = null)
+        {
+            ValidateInput(ref tableName);
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                ValidateInput(ref values[i]);
+            }
+
+            ValidateInput(ref valueProperty);
+
+            var queryParameterCollection = new Dictionary<string, string>();
+
+            var queryParameterBuilder = new StringBuilder("declare query_parameters (");
+            var queryBuilder = new StringBuilder($"{tableName}");
+
+            if (uniqueRecordProperty != null)
+            {
+                ValidateInput(ref uniqueRecordProperty);
+                queryBuilder.AppendLine($" | summarize arg_max({uniqueRecordProperty}, *) by Id | where IsDeleted == false");
+            }
+
+            if (values.Length > 0)
+            {
+                var devicesParameters = values.Select((value, index) => new KeyValuePair<string, string>($"valuesParameterName{index}", value));
+
+                queryBuilder.AppendLine($" | where {valueProperty} in ({string.Join(",", devicesParameters.Select(p => p.Key))})");
+                foreach (var p in devicesParameters)
+                {
+                    queryParameterCollection.Add(p.Key, p.Value);
+                }
+
+                queryParameterBuilder.Append($"{string.Join(", ", devicesParameters.Select(p => $"{p.Key}:string"))}");
+            }
+
             queryParameterBuilder.Append(");");
 
             queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());

@@ -31,8 +31,6 @@ function New-Dashboards {
           [string] $applicationCode,
           [string] $environmentCategory,
           [string] $resourceGroup,
-          [string] $servicePrincipalId, 
-          [string] $servicePrincipalKey,
           [string] $subscriptionId, 
           [string] $tenantId,
           [string] $grafanabaseurl,
@@ -103,8 +101,6 @@ function New-DataSources {
      param(
           [string] $applicationCode,
           [string] $environmentCategory,
-          [string] $servicePrincipalId, 
-          [string] $servicePrincipalKey,
           [string] $tenantId,
           [string] $grafanabaseurl,
           [string] $grafanaApiKey
@@ -114,9 +110,9 @@ function New-DataSources {
 
      $dataSourceContent = Get-Content '.\pipelines\cd\GrafanaMigration\sample-dataexplorer-datasource-template.json' -raw 
 
-     $dataSourceContent = $dataSourceContent -replace '\{0\}' , $servicePrincipalId
+     $dataSourceContent = $dataSourceContent -replace '\{0\}' , $env:servicePrincipalId
      $dataSourceContent = $dataSourceContent -replace '\{1\}' , $tenantId
-     $dataSourceContent = $dataSourceContent -replace '\{2\}' , $servicePrincipalKey
+     $dataSourceContent = $dataSourceContent -replace '\{2\}' , $env:servicePrincipalKey
      $dataSourceContent = $dataSourceContent -replace '\{3\}' , ("https://" + $applicationCode + "kusto" + $environmentCategory + ".centralus.kusto.windows.net")
 
 
@@ -139,9 +135,9 @@ function New-DataSources {
 
      $monitorDataSource = Get-Content '.\pipelines\cd\GrafanaMigration\sample-azuremonitor-datasource-template.json' -raw 
 
-     $monitorDataSource = $monitorDataSource -replace '\{0\}' , $servicePrincipalId
+     $monitorDataSource = $monitorDataSource -replace '\{0\}' , $env:servicePrincipalId
      $monitorDataSource = $monitorDataSource -replace '\{1\}' , $tenantId
-     $monitorDataSource = $monitorDataSource -replace '\{2\}' , $servicePrincipalKey
+     $monitorDataSource = $monitorDataSource -replace '\{2\}' , $env:servicePrincipalKey
 
 
      $monitorDataSourceBody = $monitorDataSource | ConvertFrom-Json | ConvertTo-Json -Depth 32
@@ -166,18 +162,10 @@ function New-DataSources {
 param(
      [string] $applicationCode,
      [string] $environmentCategory,
-     [string] $resourceGroup,
-     [string] $servicePrincipalId, 
-     [string] $servicePrincipalKey, 
+     [string] $resourceGroup, 
      [string] $tenantId,
-	 [string] $grafanabaseurl,
+	 [string] $grafanabaseurl
 )
-
-$spKey = ConvertTo-SecureString -String $servicePrincipalKey -AsPlainText -Force
-
-$pscredential = New-Object -TypeName System.Management.Automation.PSCredential($servicePrincipalId, $spKey)
-Connect-AzAccount -ServicePrincipal -Credential $pscredential -Tenant $tenantId
-Set-AzContext -SubscriptionId $subscriptionId
 
 try {       
      $resourceGroupName = $resourceGroup
@@ -198,13 +186,13 @@ try {
 
      # Create DataSources required for Grafana Dashboards
      Write-Host "## Creating Data Sources"
-     New-DataSources -applicationCode $applicationCode -environmentCategory $environmentCategory -servicePrincipalId $servicePrincipalId -servicePrincipalKey $servicePrincipalKey -tenantId $tenantId -grafanabaseurl $grafanabaseurl -grafanaApiKey $grafanaApiKey
+     New-DataSources -applicationCode $applicationCode -environmentCategory $environmentCategory -servicePrincipalId $env:servicePrincipalId -servicePrincipalKey $env:servicePrincipalKey -tenantId $tenantId -grafanabaseurl $grafanabaseurl -grafanaApiKey $grafanaApiKey
      Write-Host "## Data Sources are created"
 
      Foreach ($iotHub in $iotHubArray) {
           $iotTenantId = $iotHub.TenantId
           # Create Main and Admin Dashboards for each tenant.
-          New-Dashboards -applicationCode $applicationCode -environmentCategory $environmentCategory -resourceGroup $resourceGroup -servicePrincipalId $servicePrincipalId -servicePrincipalKey $servicePrincipalKey -subscriptionId $subscriptionId -tenantId $tenantId -grafanabaseurl $grafanabaseurl -apptenantId $iotHub.TenantId -grafanaApiKey $grafanaApiKey
+          New-Dashboards -applicationCode $applicationCode -environmentCategory $environmentCategory -resourceGroup $resourceGroup -servicePrincipalId $env:servicePrincipalId -servicePrincipalKey $env:servicePrincipalKey -subscriptionId $subscriptionId -tenantId $tenantId -grafanabaseurl $grafanabaseurl -apptenantId $iotHub.TenantId -grafanaApiKey $grafanaApiKey
           Write-Host "Created Dashboard for Tenant:" + $iotTenantId        
      }
 }

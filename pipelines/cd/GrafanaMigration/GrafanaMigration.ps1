@@ -1,4 +1,47 @@
-﻿function New-GrafanaApiKey {
+﻿param(
+     [string] $applicationCode,
+     [string] $environmentCategory,
+     [string] $resourceGroup, 
+     [string] $tenantId,
+     [string] $location
+)
+
+try {       
+     $resourceGroupName = $resourceGroup
+     $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
+     $keyvaultName = $applicationCode + "-keyvault-" + $environmentCategory
+     $grafanabaseurl = "https://$applicationCode-aks-$environmentCategory.$location.cloudapp.azure.com/grafana/"
+
+     #remove and reisntall pkmngr and install packages
+     #Register-PackageSource -Name MyNuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet
+     Install-Module -Name AzTable -Force
+
+     Write-Host "############## Installed AzTable successfully."
+
+     $cloudTable = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context
+     $tableObject = (Get-AzStorageTable -Name "tenant" -Context $cloudTable).CloudTable
+     $iotHubArray = (Get-AzTableRow -table $tableObject -CustomFilter 'IsIotHubDeployed eq true')
+     $grafanaApiKey = Get-AzKeyVaultSecret -VaultName $keyvaultName -Name "Grafana--APIKey" -AsPlainText
+     Write-Host $grafanaApiKey
+
+     # Create DataSources required for Grafana Dashboards
+     Write-Host "## Creating Data Sources"
+     New-DataSources -applicationCode $applicationCode -environmentCategory $environmentCategory -servicePrincipalId $env:servicePrincipalId -servicePrincipalKey $env:servicePrincipalKey -tenantId $tenantId -grafanabaseurl $grafanabaseurl -grafanaApiKey $grafanaApiKey
+     Write-Host "## Data Sources are created"
+
+     Foreach ($iotHub in $iotHubArray) {
+          $iotTenantId = $iotHub.TenantId
+          # Create Main and Admin Dashboards for each tenant.
+          New-Dashboards -applicationCode $applicationCode -environmentCategory $environmentCategory -resourceGroup $resourceGroup -servicePrincipalId $env:servicePrincipalId -servicePrincipalKey $env:servicePrincipalKey -subscriptionId $subscriptionId -tenantId $tenantId -grafanabaseurl $grafanabaseurl -apptenantId $iotHub.TenantId -grafanaApiKey $grafanaApiKey
+          Write-Host "Created Dashboard for Tenant:" + $iotTenantId        
+     }
+}
+catch {
+     Write-Host("An Error occured.")
+     Write-Host($_)
+}
+
+function New-GrafanaApiKey {
      param(
           [string] $grafanabaseurl,
           [string] $keyvaultName
@@ -159,47 +202,6 @@ function New-DataSources {
 }
 
 
-param(
-     [string] $applicationCode,
-     [string] $environmentCategory,
-     [string] $resourceGroup, 
-     [string] $tenantId,
-     [string] $location
-)
 
-try {       
-     $resourceGroupName = $resourceGroup
-     $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
-     $keyvaultName = $applicationCode + "-keyvault-" + $environmentCategory
-     $grafanabaseurl = "https://$applicationCode-aks-$environmentCategory.$location.cloudapp.azure.com/grafana/"
-
-     #remove and reisntall pkmngr and install packages
-     #Register-PackageSource -Name MyNuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet
-     Install-Module -Name AzTable -Force
-
-     Write-Host "############## Installed AzTable successfully."
-
-     $cloudTable = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context
-     $tableObject = (Get-AzStorageTable -Name "tenant" -Context $cloudTable).CloudTable
-     $iotHubArray = (Get-AzTableRow -table $tableObject -CustomFilter 'IsIotHubDeployed eq true')
-     $grafanaApiKey = Get-AzKeyVaultSecret -VaultName $keyvaultName -Name "Grafana--APIKey" -AsPlainText
-     Write-Host $grafanaApiKey
-
-     # Create DataSources required for Grafana Dashboards
-     Write-Host "## Creating Data Sources"
-     New-DataSources -applicationCode $applicationCode -environmentCategory $environmentCategory -servicePrincipalId $env:servicePrincipalId -servicePrincipalKey $env:servicePrincipalKey -tenantId $tenantId -grafanabaseurl $grafanabaseurl -grafanaApiKey $grafanaApiKey
-     Write-Host "## Data Sources are created"
-
-     Foreach ($iotHub in $iotHubArray) {
-          $iotTenantId = $iotHub.TenantId
-          # Create Main and Admin Dashboards for each tenant.
-          New-Dashboards -applicationCode $applicationCode -environmentCategory $environmentCategory -resourceGroup $resourceGroup -servicePrincipalId $env:servicePrincipalId -servicePrincipalKey $env:servicePrincipalKey -subscriptionId $subscriptionId -tenantId $tenantId -grafanabaseurl $grafanabaseurl -apptenantId $iotHub.TenantId -grafanaApiKey $grafanaApiKey
-          Write-Host "Created Dashboard for Tenant:" + $iotTenantId        
-     }
-}
-catch {
-     Write-Host("An Error occured.")
-     Write-Host($_)
-}
 
 

@@ -49,7 +49,8 @@ namespace Mmm.Iot.AsaManager.Services.Test
                 this.mockBlobStorageClient.Object,
                 this.mockStorageAdapterClient.Object,
                 this.mockConfig.Object,
-                this.mockLog.Object);
+                this.mockLog.Object,
+                null);
         }
 
         [Fact]

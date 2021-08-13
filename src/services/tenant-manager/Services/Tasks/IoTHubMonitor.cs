@@ -147,6 +147,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                     await this.azureManagementClient.KustoClusterManagementClient.CreateDatabaseIfNotExistAsync(databaseName);
                                     await this.ADXTelemetrySetup(item.TenantId, string.Format(IoTDatabaseNameFormat, item.TenantId), eventHubNameSpace);
                                     await this.ADXDeviceTwinSetup(item.TenantId, string.Format(IoTDatabaseNameFormat, item.TenantId), eventHubNameSpace);
+                                    await this.ADXDeviceGroupSetup(item.TenantId, string.Format(IoTDatabaseNameFormat, item.TenantId), eventHubNameSpace);
                                 }
                             }
                         }
@@ -205,6 +206,12 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
             this.azureManagementClient.EventHubsManagementClient.CreateEventHub(eventHubNameSpace, $"{tenantId}-devicetwin");
 
+            this.azureManagementClient.EventHubsManagementClient.CreateEventHub(eventHubNameSpace, $"{tenantId}-devicegroup");
+
+            // Set the Refresh Key to new connectionstring so the functions can update
+            // values from AppConfiguration
+            await this.appConfigurationClient.SetValueAsync($"tenant:refreshappconfig", true.ToString());
+
             return eventHubNameSpace;
         }
 
@@ -260,6 +267,33 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
             string dataConnectionName = $"DeviceTwinDataConnect-{tenantId.Substring(0, 8)}";
             string eventHubName = $"{tenantId}-devicetwin";
+
+            await this.ADXTableSetup(tenantId, databaseName, tableName, tableSchema, tableMappingName, mappingSchema, dataConnectionName, eventHubNameSpace, eventHubName);
+        }
+
+        private async Task ADXDeviceGroupSetup(string tenantId, string databaseName, string eventHubNameSpace)
+        {
+            Console.WriteLine($"Creating telemetry table and mapping in {tenantId} DB in Data Explorer");
+
+            var tableName = "DeviceGroup";
+            var tableMappingName = $"DeviceGroup_JSON_Mapping-{tenantId}";
+            var tableSchema = new[]
+            {
+                  Tuple.Create("DeviceGroupId", "System.String"),
+                  Tuple.Create("DeviceGroupName", "System.String"),
+                  Tuple.Create("DeviceGroupConditions", "System.String"),
+                  Tuple.Create("TimeStamp", "System.Datetime"),
+            };
+            var mappingSchema = new ColumnMapping[]
+            {
+                  new ColumnMapping() { ColumnName = "DeviceGroupId", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.DeviceGroupId" } } },
+                  new ColumnMapping() { ColumnName = "DeviceGroupName", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.DeviceGroupName" } } },
+                  new ColumnMapping() { ColumnName = "DeviceGroupConditions", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.DeviceGroupConditions" } } },
+                  new ColumnMapping() { ColumnName = "TimeStamp", ColumnType = "datetime", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.TimeStamp" } } },
+            };
+
+            string dataConnectionName = $"DeviceGroupDataConnect-{tenantId.Substring(0, 8)}";
+            string eventHubName = $"{tenantId}-devicegroup";
 
             await this.ADXTableSetup(tenantId, databaseName, tableName, tableSchema, tableMappingName, mappingSchema, dataConnectionName, eventHubNameSpace, eventHubName);
         }

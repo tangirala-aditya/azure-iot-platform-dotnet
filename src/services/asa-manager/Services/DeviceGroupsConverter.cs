@@ -7,15 +7,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Messaging.EventHubs;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.AsaManager.Services.External.IotHubManager;
 using Mmm.Iot.AsaManager.Services.Helper;
 using Mmm.Iot.AsaManager.Services.Models;
 using Mmm.Iot.AsaManager.Services.Models.DeviceGroups;
+using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
+using Mmm.Iot.Common.Services.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -27,21 +30,24 @@ namespace Mmm.Iot.AsaManager.Services
         private const string DeviceGroupId = "DeviceGroupId";
         private const string DeviceGroupName = "DeviceGroupName";
         private const string DeviceGroupConditions = "DeviceGroupConditions";
-        private const string Data = "Data";
         private const string TimeStamp = "TimeStamp";
         private readonly IIotHubManagerClient iotHubManager;
         private readonly IAppConfigurationClient appConfigurationClient;
+        private readonly bool kustoEnabled;
 
         public DeviceGroupsConverter(
             IIotHubManagerClient iotHubManager,
             IBlobStorageClient blobClient,
             IStorageAdapterClient storageAdapterClient,
             IAppConfigurationClient appConfigClient,
-            ILogger<DeviceGroupsConverter> log)
+            ILogger<DeviceGroupsConverter> log,
+            AppConfig config)
                 : base(blobClient, storageAdapterClient, log)
         {
             this.iotHubManager = iotHubManager;
             this.appConfigurationClient = appConfigClient;
+            this.kustoEnabled = config.DeviceTelemetryService.Messages.TelemetryStorageType.Equals(
+               TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase);
         }
 
         public override string Entity
@@ -111,6 +117,38 @@ namespace Mmm.Iot.AsaManager.Services
                 throw e;
             }
 
+            if (this.kustoEnabled)
+            {
+                try
+                {
+                    List<EventData> events = new List<EventData>();
+                    foreach (var deviceGroup in deviceGroupModels.Items)
+                    {
+                        EventData deviceMappingEventData = GetDeviceGroupsForADX(deviceGroup);
+                        events.Add(deviceMappingEventData);
+                    }
+
+                    try
+                    {
+                        var eventHubConnString = this.appConfigurationClient.GetValue($"tenant:{tenantId}:eventHubConn");
+                        if (!string.IsNullOrWhiteSpace(eventHubConnString))
+                        {
+                            EventHubHelper eventHubHelper = new EventHubHelper(eventHubConnString);
+
+                            await eventHubHelper.SendMessageToEventHub($"{tenantId}-devicegroup", events.ToArray());
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        this.Logger.LogError(e, "Unable to Send the {entity} data models to Entity Hub. OperationId: {operationId}. TenantId: {tenantId}", this.Entity, operationId, tenantId);
+                    }
+                }
+                catch (Exception e)
+                {
+                    this.Logger.LogError(e, "Unable to Send the {entity} data models to Entity Hub. OperationId: {operationId}. TenantId: {tenantId}", this.Entity, operationId, tenantId);
+                }
+            }
+
             Dictionary<DeviceGroupModel, DeviceListModel> deviceMapping = new Dictionary<DeviceGroupModel, DeviceListModel>();
             foreach (DeviceGroupModel deviceGroup in deviceGroupModels.Items)
             {
@@ -155,40 +193,6 @@ namespace Mmm.Iot.AsaManager.Services
                 throw new ResourceNotFoundException($"No Devices were found for any {this.Entity}.");
             }
 
-            try
-            {
-                List<Azure.Messaging.EventHubs.EventData> events = new List<Azure.Messaging.EventHubs.EventData>();
-                foreach (var key in deviceMapping.Keys)
-                {
-                    var deviceIds = deviceMapping[key].Items.Select(device => device.Id);
-                    JObject deviceGroupDeviceMappingJson = new JObject();
-                    deviceGroupDeviceMappingJson.Add(DeviceGroupId, key.Id);
-                    deviceGroupDeviceMappingJson.Add(DeviceGroupName, key.DisplayName);
-                    deviceGroupDeviceMappingJson.Add(DeviceGroupConditions, JsonConvert.SerializeObject(key.Conditions));
-                    deviceGroupDeviceMappingJson.Add(Data, JsonConvert.SerializeObject(deviceIds));
-                    deviceGroupDeviceMappingJson.Add(TimeStamp, DateTime.UtcNow);
-                    var byteMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceGroupDeviceMappingJson));
-                    var deviceMappingEventData = new Azure.Messaging.EventHubs.EventData(byteMessage);
-                    events.Add(deviceMappingEventData);
-                }
-
-                try
-                {
-                    var eventHubConnString = this.appConfigurationClient.GetValue($"tenant:{tenantId}:eventHubConn");
-                    EventHubHelper eventHubHelper = new EventHubHelper(eventHubConnString);
-
-                    await eventHubHelper.SendMessageToEventHub($"{tenantId}-devicegroup", events.ToArray());
-                }
-                catch (Exception e)
-                {
-                    this.Logger.LogError(e, "Unable to Send the {entity} data models to Entity Hub. OperationId: {operationId}. TenantId: {tenantId}", this.Entity, operationId, tenantId);
-                }
-            }
-            catch (Exception e)
-            {
-                this.Logger.LogError(e, "Unable to Send the {entity} data models to Entity Hub. OperationId: {operationId}. TenantId: {tenantId}", this.Entity, operationId, tenantId);
-            }
-
             string fileContent = null;
             try
             {
@@ -221,6 +225,18 @@ namespace Mmm.Iot.AsaManager.Services
             };
             this.Logger.LogInformation("Successfully Completed {entity} conversion\n{model}", this.Entity, JsonConvert.SerializeObject(conversionResponse));
             return conversionResponse;
+        }
+
+        private static EventData GetDeviceGroupsForADX(DeviceGroupModel deviceGroup)
+        {
+            JObject deviceGroupDeviceMappingJson = new JObject();
+            deviceGroupDeviceMappingJson.Add(DeviceGroupId, deviceGroup.Id);
+            deviceGroupDeviceMappingJson.Add(DeviceGroupName, deviceGroup.DisplayName);
+            deviceGroupDeviceMappingJson.Add(DeviceGroupConditions, QueryConditionTranslator.ToADXQueryString(JsonConvert.SerializeObject(deviceGroup.Conditions)));
+            deviceGroupDeviceMappingJson.Add(TimeStamp, DateTime.UtcNow);
+            var byteMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceGroupDeviceMappingJson));
+            var deviceMappingEventData = new Azure.Messaging.EventHubs.EventData(byteMessage);
+            return deviceMappingEventData;
         }
     }
 }

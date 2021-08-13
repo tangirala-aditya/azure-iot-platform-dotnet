@@ -198,38 +198,62 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                             }
                             catch (ResourceNotFoundException)
                             {
+                                // Item does not exist... delete the record
+                                Console.WriteLine($"SA job {item.Name} does not exist...creating it");
                                 Assembly assembly = Assembly.GetExecutingAssembly();
-                                StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("sajob.json"));
+                                string template = string.Empty;
 
                                 if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    string eventHubNameSpace = await this.SetupEventHub(item.TenantId);
+                                    (string eventHubNameSpace, string primaryKey) = await this.SetupEventHub(item.TenantId);
                                     var databaseName = string.Format(IoTDatabaseNameFormat, item.TenantId);
                                     await this.azureManagementClient.KustoClusterManagementClient.CreateDatabaseIfNotExistAsync(databaseName);
 
                                     await this.ADXAlertsSetup(item.TenantId, databaseName, eventHubNameSpace);
-                                    reader = new StreamReader(assembly.GetManifestResourceStream("sajob_ADX.json"));
+                                    StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("sajob_ADX.json"));
+
+                                    template = await reader.ReadToEndAsync();
+                                    template = string.Format(
+                                        template,
+                                        item.Name,
+                                        this.config.Global.Location,
+                                        this.config.Global.StorageAccount.Name,
+                                        this.config.Global.StorageAccountConnectionString.Split(";")[2].Replace("AccountKey=", string.Empty),
+                                        tenant.IotHubName,
+                                        this.azureManagementClient.IotHubManagementClient.GetAccessKey(
+                                            tenant.IotHubName,
+                                            "iothubowner"),
+                                        item.TenantId,
+                                        this.config.Global.EventHub.Name,
+                                        this.config.Global.EventHub.RootKey,
+                                        this.config.Global.CosmosDb.AccountName,
+                                        this.config.Global.CosmosDb.DocumentDbAuthKey,
+                                        $"{item.TenantId}-alerts",
+                                        eventHubNameSpace,
+                                        primaryKey);
+                                }
+                                else
+                                {
+                                    StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("sajob.json"));
+
+                                    template = await reader.ReadToEndAsync();
+                                    template = string.Format(
+                                        template,
+                                        item.Name,
+                                        this.config.Global.Location,
+                                        this.config.Global.StorageAccount.Name,
+                                        this.config.Global.StorageAccountConnectionString.Split(";")[2].Replace("AccountKey=", string.Empty),
+                                        tenant.IotHubName,
+                                        this.azureManagementClient.IotHubManagementClient.GetAccessKey(
+                                            tenant.IotHubName,
+                                            "iothubowner"),
+                                        item.TenantId,
+                                        this.config.Global.EventHub.Name,
+                                        this.config.Global.EventHub.RootKey,
+                                        this.config.Global.CosmosDb.AccountName,
+                                        this.config.Global.CosmosDb.DocumentDbAuthKey);
                                 }
 
-                                // Item does not exist... delete the record
-                                Console.WriteLine($"SA job {item.Name} does not exist...creating it");
-
-                                string template = await reader.ReadToEndAsync();
-                                template = string.Format(
-                                    template,
-                                    item.Name,
-                                    this.config.Global.Location,
-                                    this.config.Global.StorageAccount.Name,
-                                    this.config.Global.StorageAccountConnectionString.Split(";")[2].Replace("AccountKey=", string.Empty),
-                                    tenant.IotHubName,
-                                    this.azureManagementClient.IotHubManagementClient.GetAccessKey(
-                                        tenant.IotHubName,
-                                        "iothubowner"),
-                                    item.TenantId,
-                                    this.config.Global.EventHub.Name,
-                                    this.config.Global.EventHub.RootKey,
-                                    this.config.Global.CosmosDb.AccountName,
-                                    this.config.Global.CosmosDb.DocumentDbAuthKey);
                                 await this.azureManagementClient.DeployTemplateAsync(template);
                             }
                         }
@@ -330,21 +354,24 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
             }
         }
 
-        private async Task<string> SetupEventHub(string tenantId)
+        private async Task<(string NamespaceName, string PrimaryKey)> SetupEventHub(string tenantId)
         {
             string nameSpaceConnString = this.appConfigurationClient.GetValue($"tenant:{tenantId}:eventHubConn");
+            string nameSpacePrimaryKey = this.appConfigurationClient.GetValue($"tenant:{tenantId}:eventHubPrimaryKey");
             string eventHubNameSpace = string.Format(EventHubNamespaceFormat, tenantId.Substring(0, 8));
 
             if (string.IsNullOrEmpty(nameSpaceConnString))
             {
                 await this.azureManagementClient.EventHubsManagementClient.CreateNamespaceIfNotExist(eventHubNameSpace);
-                nameSpaceConnString = await this.azureManagementClient.EventHubsManagementClient.GetPrimaryConnectionString(nameSpaceConnString);
-                await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubConn", nameSpaceConnString);
+                var accessKeys = await this.azureManagementClient.EventHubsManagementClient.GetPrimaryConnectionString(eventHubNameSpace);
+                await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubConn", accessKeys.PrimaryConnectionString);
+                await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubPrimaryKey", accessKeys.PrimaryKey);
+                nameSpacePrimaryKey = accessKeys.PrimaryKey;
             }
 
             this.azureManagementClient.EventHubsManagementClient.CreateEventHub(eventHubNameSpace, $"{tenantId}-alerts");
 
-            return eventHubNameSpace;
+            return (eventHubNameSpace, nameSpacePrimaryKey);
         }
 
         private async Task ADXAlertsSetup(string tenantId, string databaseName, string eventHubNameSpace)

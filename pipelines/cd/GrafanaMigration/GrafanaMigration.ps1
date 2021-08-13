@@ -184,6 +184,8 @@ try {
      #Register-PackageSource -Name MyNuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet
      Install-Module -Name AzTable -Force
      az cloud set -n AzureCloud
+     Write-Host $servicePrincipalId 
+     Write-Host $servicePrincipalKey
      az login --service-principal -u $servicePrincipalId --password $servicePrincipalKey --tenant $tenantId --allow-no-subscriptions
      az account set --subscription $subscriptionId
 

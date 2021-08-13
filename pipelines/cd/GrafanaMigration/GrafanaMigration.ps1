@@ -26,7 +26,7 @@ function New-GrafanaApiKey {
      try {
           $response = Invoke-RestMethod -Uri $uri -Method 'POST' -Headers $headers -Body $body
           $response = ($response | ConvertTo-Json | ConvertFrom-Json)
-          $apiKey = $response.key
+          $apiKey =  ConvertTo-SecureString $response.key -AsPlainText -Force
           $secret = Set-AzKeyVaultSecret -VaultName $keyvaultName -Name "Grafana--APIKey" -SecretValue $apiKey
           Write-Host "Added Key...."
      }

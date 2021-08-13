@@ -185,10 +185,12 @@ try {
      Install-Module -Name AzTable -Force
 
      Write-Host "############## Installed AzTable successfully."
-
+     
      $cloudTable = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context
      $tableObject = (Get-AzStorageTable -Name "tenant" -Context $cloudTable).CloudTable
      $iotHubArray = (Get-AzTableRow -table $tableObject -CustomFilter 'IsIotHubDeployed eq true')
+     New-GrafanaApiKey -grafanabaseurl $grafanabaseurl -keyvaultName $keyvaultName
+
      $grafanaApiKey = Get-AzKeyVaultSecret -VaultName $keyvaultName -Name "Grafana--APIKey" -AsPlainText
      Write-Host $grafanaApiKey
 

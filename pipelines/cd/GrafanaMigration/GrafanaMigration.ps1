@@ -140,7 +140,6 @@ function New-DataSources {
      }
 
      try {
-          Write-Host $servicePrincipalId
           Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body
           Write-Host "## Created Azure Data Explorer Monitor Data Source"
      }
@@ -185,8 +184,6 @@ try {
      #Register-PackageSource -Name MyNuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet
      Install-Module -Name AzTable -Force
      az cloud set -n AzureCloud
-     Write-Host $servicePrincipalId 
-     Write-Host $servicePrincipalKey
      az login --service-principal -u $servicePrincipalId --password $servicePrincipalKey --tenant $tenantId --allow-no-subscriptions
      az account set --subscription $subscriptionId
 

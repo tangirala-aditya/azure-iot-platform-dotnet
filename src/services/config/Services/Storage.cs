@@ -7,13 +7,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
+using Azure.Messaging.EventHubs;
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Devices;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+
+using Mmm.Iot.Common.Services;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
+using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.AsaManager;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
 using Mmm.Iot.Common.Services.Helpers;
@@ -22,6 +29,7 @@ using Mmm.Iot.Config.Services.Helpers;
 using Mmm.Iot.Config.Services.Helpers.PackageValidation;
 using Mmm.Iot.Config.Services.Models;
 using Mmm.Platform.IoT.Common.Services.Models;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -42,24 +50,35 @@ namespace Mmm.Iot.Config.Services
         public const string SoftwarePackageStore = "software-package";
         public const string ColumnMappingsCollectionId = "columnmappings";
         public const string ColumnOptionsCollectionId = "columnoptions";
+        private const string DeviceGroupId = "DeviceGroupId";
+        private const string DeviceGroupName = "DeviceGroupName";
+        private const string DeviceGroupConditions = "DeviceGroupConditions";
+        private const string TimeStamp = "TimeStamp";
+        private const string IsDeleted = "IsDeleted";
         private readonly IStorageAdapterClient client;
         private readonly IAsaManagerClient asaManager;
         private readonly AppConfig config;
         private readonly IPackageEventLog packageLog;
         private readonly ILogger logger;
+        private readonly TenantConnectionHelper tenantConnectionHelper;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public Storage(
             IStorageAdapterClient client,
             IAsaManagerClient asaManager,
             AppConfig config,
             IPackageEventLog packageLog,
-            ILogger<Storage> logger)
+            ILogger<Storage> logger,
+            IHttpContextAccessor httpContextAccessor,
+            IAppConfigurationClient appConfigurationClient)
         {
             this.client = client;
             this.asaManager = asaManager;
             this.config = config;
             this.packageLog = packageLog;
             this.logger = logger;
+            this.tenantConnectionHelper = new TenantConnectionHelper(appConfigurationClient);
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Theme> GetThemeAsync()
@@ -174,6 +193,7 @@ namespace Mmm.Iot.Config.Services
             var value = JsonConvert.SerializeObject(input, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             var response = await this.client.CreateAsync(DeviceGroupCollectionId, value);
             var responseModel = this.CreateGroupServiceModel(response);
+            await this.AddDeviceGroupToADX(responseModel);
             await this.asaManager.BeginDeviceGroupsConversionAsync();
             return responseModel;
         }
@@ -188,12 +208,14 @@ namespace Mmm.Iot.Config.Services
             var value = JsonConvert.SerializeObject(input, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             var response = await this.client.UpdateAsync(DeviceGroupCollectionId, id, value, etag);
             await this.asaManager.BeginDeviceGroupsConversionAsync();
+            await this.AddDeviceGroupToADX(this.CreateGroupServiceModel(response));
             return this.CreateGroupServiceModel(response);
         }
 
         public async Task DeleteDeviceGroupAsync(string id)
         {
             await this.client.DeleteAsync(DeviceGroupCollectionId, id);
+            await this.DeleteDeviceGroupToADX(id);
             await this.asaManager.BeginDeviceGroupsConversionAsync();
         }
 
@@ -546,6 +568,15 @@ namespace Mmm.Iot.Config.Services
             return this.CreateColumnOptionsServiceModel(response);
         }
 
+        public async Task CreateDeviceGroupsAsync()
+        {
+            var deviceGroups = await this.GetAllDeviceGroupsAsync();
+            foreach (DeviceGroup deviceGroup in deviceGroups)
+            {
+                await this.AddDeviceGroupToADX(deviceGroup);
+            }
+        }
+
         private ColumnOptionsServiceModel CreateColumnOptionsServiceModel(ValueApiModel input)
         {
             var output = JsonConvert.DeserializeObject<ColumnOptionsServiceModel>(input.Data);
@@ -683,6 +714,45 @@ namespace Mmm.Iot.Config.Services
             }
 
             return output;
+        }
+
+        private async Task AddDeviceGroupToADX(DeviceGroup deviceGroup, bool isDeleted = false)
+        {
+            bool isKustoEnabled = this.config.DeviceTelemetryService.Messages.TelemetryStorageType.Equals(Common.Services.Models.TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase);
+            if (isKustoEnabled)
+            {
+                string tenantId = this.httpContextAccessor.HttpContext.Request.GetTenant();
+                var connectionString = this.tenantConnectionHelper.GetEventHubConnectionString(tenantId);
+                if (!string.IsNullOrWhiteSpace(connectionString))
+                {
+                    EventHubHelper eventHubHelper = new EventHubHelper(connectionString);
+                    var result = this.GetDeviceGroupsForADX(deviceGroup, isDeleted);
+                    await eventHubHelper.SendMessageToEventHub($"{tenantId}-devicegroup", new EventData[] { result });
+                }
+            }
+        }
+
+        private async Task DeleteDeviceGroupToADX(string id)
+        {
+            bool isKustoEnabled = this.config.DeviceTelemetryService.Messages.TelemetryStorageType.Equals(Common.Services.Models.TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase);
+            if (isKustoEnabled)
+            {
+                DeviceGroup deviceGroup = await this.GetDeviceGroupAsync(id);
+                await this.AddDeviceGroupToADX(deviceGroup, true);
+            }
+        }
+
+        private EventData GetDeviceGroupsForADX(DeviceGroup deviceGroup, bool isDeleted)
+        {
+            JObject deviceGroupDeviceMappingJson = new JObject();
+            deviceGroupDeviceMappingJson.Add(DeviceGroupId, deviceGroup.Id);
+            deviceGroupDeviceMappingJson.Add(DeviceGroupName, deviceGroup.DisplayName);
+            deviceGroupDeviceMappingJson.Add(DeviceGroupConditions, QueryConditionTranslator.ToADXQueryString(JsonConvert.SerializeObject(deviceGroup.Conditions)));
+            deviceGroupDeviceMappingJson.Add(TimeStamp, DateTime.UtcNow);
+            deviceGroupDeviceMappingJson.Add(IsDeleted, isDeleted);
+            var byteMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceGroupDeviceMappingJson));
+            var deviceMappingEventData = new EventData(byteMessage);
+            return deviceMappingEventData;
         }
     }
 }

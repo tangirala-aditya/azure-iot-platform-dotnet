@@ -25,6 +25,7 @@ using Mmm.Iot.StorageAdapter.Services.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using AuthenticationType = Mmm.Iot.IoTHubManager.Services.Models.AuthenticationType;
+using QueryConditionTranslator = Mmm.Iot.IoTHubManager.Services.Helpers.QueryConditionTranslator;
 
 namespace Mmm.Iot.IoTHubManager.Services
 {

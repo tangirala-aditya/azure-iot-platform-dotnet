@@ -525,8 +525,9 @@ export class PackageNew extends LinkedComponent {
                 this.props.t("packages.flyouts.new.validation.invalid")
         );
 
-        this.packageNameLink =
-            this.linkTo("packageName").withValidator(requiredValidator);
+        this.packageNameLink = this.linkTo("packageName").withValidator(
+            requiredValidator
+        );
 
         this.packageVersionLink = this.linkTo("packageVersion")
             .check(

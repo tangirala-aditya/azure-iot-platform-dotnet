@@ -22,8 +22,9 @@ const mapStateToProps = (state) => ({
         actionIsPolling: getActionPollingStatus(state),
         actionPollingError: getActionPollingError(state),
         actionPollingTimeout: getActionPollingTimeout(state),
-        applicationPermissionsAssigned:
-            getApplicationPermissionsAssigned(state),
+        applicationPermissionsAssigned: getApplicationPermissionsAssigned(
+            state
+        ),
     }),
     // Wrap the dispatch method
     mapDispatchToProps = (dispatch) => ({

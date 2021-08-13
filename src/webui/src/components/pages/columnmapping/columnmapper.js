@@ -115,19 +115,18 @@ export class ColumnMapper extends LinkedComponent {
     }
 
     componentDidMount() {
-        this.subscription =
-            IoTHubManagerService.getDeviceProperties().subscribe(
-                (items) => {
-                    const filterOptions = items.map((item) => toOption(item));
-                    this.setState({
-                        mappingOptions: [
-                            ...this.state.mappingOptions,
-                            ...filterOptions,
-                        ],
-                    });
-                },
-                (filtersError) => this.setState({ filtersError })
-            );
+        this.subscription = IoTHubManagerService.getDeviceProperties().subscribe(
+            (items) => {
+                const filterOptions = items.map((item) => toOption(item));
+                this.setState({
+                    mappingOptions: [
+                        ...this.state.mappingOptions,
+                        ...filterOptions,
+                    ],
+                });
+            },
+            (filtersError) => this.setState({ filtersError })
+        );
 
         if (!this.props.isPending) {
             this.setState({

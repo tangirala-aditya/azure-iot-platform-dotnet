@@ -215,8 +215,9 @@ export class ContextMenuAgile extends Component {
     render() {
         const { visible } = this.state;
         const { priorityChildren, farChildren } = this.props;
-        const [priorityChildrenArray, extraChildrenArray] =
-            this.updateMenu(priorityChildren);
+        const [priorityChildrenArray, extraChildrenArray] = this.updateMenu(
+            priorityChildren
+        );
         return (
             <div className={css("context-menu-container")} ref={this.container}>
                 {priorityChildrenArray && (

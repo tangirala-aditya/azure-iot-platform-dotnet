@@ -177,13 +177,12 @@ export class Deployments extends Component {
             this.setState({
                 openFlyoutName: "deployment-status",
                 deployment: selectedDeployment.data,
-                relatedDeployments:
-                    selectedDeployment.node.gridOptionsWrapper.gridOptions.rowData.filter(
-                        (x) =>
-                            x.deviceGroupId ===
-                                selectedDeployment.data.deviceGroupId &&
-                            x.id !== selectedDeployment.data.id
-                    ),
+                relatedDeployments: selectedDeployment.node.gridOptionsWrapper.gridOptions.rowData.filter(
+                    (x) =>
+                        x.deviceGroupId ===
+                            selectedDeployment.data.deviceGroupId &&
+                        x.id !== selectedDeployment.data.id
+                ),
                 flyoutLink: flyoutLink,
             });
         }

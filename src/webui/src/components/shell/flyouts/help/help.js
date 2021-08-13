@@ -25,7 +25,8 @@ const platformDocLinks = [
 const microsoftDocLinks = [
     {
         translationId: "header.getStarted",
-        url: "https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-monitor",
+        url:
+            "https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-monitor",
     },
     {
         translationId: "header.iotAcceleratorDocumentation",

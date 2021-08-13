@@ -198,8 +198,9 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
             if (string.IsNullOrEmpty(nameSpaceConnString))
             {
                 await this.azureManagementClient.EventHubsManagementClient.CreateNamespaceIfNotExist(eventHubNameSpace);
-                nameSpaceConnString = await this.azureManagementClient.EventHubsManagementClient.GetPrimaryConnectionString(nameSpaceConnString);
-                await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubConn", nameSpaceConnString);
+                var accessKeys = await this.azureManagementClient.EventHubsManagementClient.GetPrimaryConnectionString(eventHubNameSpace);
+                await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubConn", accessKeys.PrimaryConnectionString);
+                await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubPrimaryKey", accessKeys.PrimaryKey);
             }
 
             this.azureManagementClient.EventHubsManagementClient.CreateEventHub(eventHubNameSpace, $"{tenantId}-telemetry");

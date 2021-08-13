@@ -64,16 +64,14 @@ namespace Mmm.Iot.Common.Services.External.EventHub
             return result;
         }
 
-        public async Task<string> GetPrimaryConnectionString(string namespaceName, string resourceGroupName = null)
+        public async Task<AccessKeys> GetPrimaryConnectionString(string namespaceName, string resourceGroupName = null)
         {
             if (resourceGroupName == null)
             {
                 resourceGroupName = this.appConfig.Global.ResourceGroup;
             }
 
-            var result = await this.eventHubManagementClient.Namespaces.ListKeysAsync(resourceGroupName, namespaceName, "RootManageSharedAccessKey");
-
-            return result.PrimaryConnectionString;
+            return await this.eventHubManagementClient.Namespaces.ListKeysAsync(resourceGroupName, namespaceName, "RootManageSharedAccessKey");
         }
 
         public async Task DeleteEventHubNameSpace(string namespaceName, string resourceGroupName = null)

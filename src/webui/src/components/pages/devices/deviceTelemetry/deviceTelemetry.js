@@ -55,9 +55,8 @@ export class DeviceTelemetry extends Component {
     }
 
     componentDidMount() {
-        const {
-            device: { telemetry: { interval = "0" } = {} } = {},
-        } = this.props;
+        const { device: { telemetry: { interval = "0" } = {} } = {} } =
+            this.props;
         const [hours = 0, minutes = 0, seconds = 0] = interval
                 .split(":")
                 .map(int),

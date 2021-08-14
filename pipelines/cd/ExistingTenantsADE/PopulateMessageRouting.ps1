@@ -53,7 +53,7 @@ param(
 
         for ($i = 0; $i -lt $messageRoutes.Count; $i++) {
           # This is used to create a route in all IoT Hubs (for now it is single iothub)
-          az iot hub route create --hub-name $iotHubName --endpoint-name $endpointName --source $dataSources[$i] --enabled true --conditiontrue -n $messageRoutes[$i] --resource-group $resourceGroupName
+          az iot hub route create --hub-name $iotHubName --endpoint-name $endpointName --source $dataSources[$i] --enabled true --condition true -n $messageRoutes[$i] --resource-group $resourceGroupName
          } 
 
          Write-Host "############## Added Routes IotHub $iotHubName"

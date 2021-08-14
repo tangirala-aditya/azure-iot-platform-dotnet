@@ -37,16 +37,17 @@ export class ManageDeviceGroups extends LinkedComponent {
     }
 
     componentDidMount() {
-        this.subscription = IoTHubManagerService.getDeviceProperties().subscribe(
-            (items) => {
-                const filterOptions = items.map((item) => toOption(item));
-                this.setState({ filterOptions });
-            },
-            (filtersError) => this.setState({ filtersError })
+        this.subscription =
+            IoTHubManagerService.getDeviceProperties().subscribe(
+                (items) => {
+                    const filterOptions = items.map((item) => toOption(item));
+                    this.setState({ filterOptions });
+                },
+                (filtersError) => this.setState({ filtersError })
+            );
+        const columnMappingsOptions = [...this.props.columnMappings].map(
+            (item) => toColumnMappingOptions(item)
         );
-        const columnMappingsOptions = [
-            ...this.props.columnMappings,
-        ].map((item) => toColumnMappingOptions(item));
         this.setState({ columnMappingsOptions });
     }
 

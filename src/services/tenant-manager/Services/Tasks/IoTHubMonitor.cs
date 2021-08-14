@@ -26,6 +26,7 @@ using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.Services.External.TableStorage;
 using Mmm.Iot.Common.Services.Models;
+using Mmm.Iot.TenantManager.Services.External;
 using Mmm.Iot.TenantManager.Services.Models;
 
 namespace Mmm.Iot.TenantManager.Services.Tasks
@@ -42,8 +43,9 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
         private IAppConfigurationClient appConfigurationClient;
         private AppConfig config;
         private IKustoTableManagementClient kustoTableManagementClient;
+        private IDeviceGroupsConfigClient deviceGroupClient;
 
-        public IoTHubMonitor(ITableStorageClient tableStorageClient, IBlobStorageClient blobStorageClient, IAzureManagementClient azureManagementClient, IAppConfigurationClient appConfigurationClient, AppConfig config, IKustoTableManagementClient kustoTableManagementClient)
+        public IoTHubMonitor(ITableStorageClient tableStorageClient, IBlobStorageClient blobStorageClient, IAzureManagementClient azureManagementClient, IAppConfigurationClient appConfigurationClient, AppConfig config, IKustoTableManagementClient kustoTableManagementClient, IDeviceGroupsConfigClient deviceGroupsConfigClient)
         {
             this.tableStorageClient = tableStorageClient;
             this.blobStorageClient = blobStorageClient;
@@ -51,6 +53,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
             this.appConfigurationClient = appConfigurationClient;
             this.config = config;
             this.kustoTableManagementClient = kustoTableManagementClient;
+            this.deviceGroupClient = deviceGroupsConfigClient;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -137,9 +140,6 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                     connectionString);
                                 await this.azureManagementClient.DeployTemplateAsync(template);
 
-                                item.IsIotHubDeployed = true;
-                                await this.tableStorageClient.InsertOrReplaceAsync<TenantModel>("tenant", item);
-
                                 if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
                                 {
                                     string eventHubNameSpace = await this.SetupEventHub(item.TenantId);
@@ -148,7 +148,13 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                     await this.ADXTelemetrySetup(item.TenantId, string.Format(IoTDatabaseNameFormat, item.TenantId), eventHubNameSpace);
                                     await this.ADXDeviceTwinSetup(item.TenantId, string.Format(IoTDatabaseNameFormat, item.TenantId), eventHubNameSpace);
                                     await this.ADXDeviceGroupSetup(item.TenantId, string.Format(IoTDatabaseNameFormat, item.TenantId), eventHubNameSpace);
+
+                                    // Migrate DeviceGroups Data into ADX
+                                    await this.MigrateDeviceGroupsToADX(item.TenantId);
                                 }
+
+                                item.IsIotHubDeployed = true;
+                                await this.tableStorageClient.InsertOrReplaceAsync<TenantModel>("tenant", item);
                             }
                         }
                         catch (Microsoft.Azure.Management.IotHub.Models.ErrorDetailsException e)
@@ -211,7 +217,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
             // Set the Refresh Key to new connectionstring so the functions can update
             // values from AppConfiguration
-            await this.appConfigurationClient.SetValueAsync($"tenant:refreshappconfig", true.ToString());
+            await this.appConfigurationClient.SetValueAsync("tenant:refreshappconfig", true.ToString());
 
             return eventHubNameSpace;
         }
@@ -284,6 +290,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                   Tuple.Create("DeviceGroupName", "System.String"),
                   Tuple.Create("DeviceGroupConditions", "System.String"),
                   Tuple.Create("TimeStamp", "System.Datetime"),
+                  Tuple.Create("IsDeleted", "System.Boolean"),
             };
             var mappingSchema = new ColumnMapping[]
             {
@@ -291,6 +298,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                   new ColumnMapping() { ColumnName = "DeviceGroupName", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.DeviceGroupName" } } },
                   new ColumnMapping() { ColumnName = "DeviceGroupConditions", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.DeviceGroupConditions" } } },
                   new ColumnMapping() { ColumnName = "TimeStamp", ColumnType = "datetime", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.TimeStamp" } } },
+                  new ColumnMapping() { ColumnName = "IsDeleted", ColumnType = "bool", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.IsDeleted" } } },
             };
 
             string dataConnectionName = $"DeviceGroupDataConnect-{tenantId.Substring(0, 8)}";
@@ -319,6 +327,22 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
             string consumerGroup = "$Default";
 
             await this.azureManagementClient.KustoClusterManagementClient.AddEventHubDataConnectionAsync(dataConnectionName, databaseName, tableName, tableMappingName, eventHubNameSpace, eventHubName, consumerGroup);
+        }
+
+        private async Task MigrateDeviceGroupsToADX(string tenantId)
+        {
+            Console.WriteLine($"Migration DeviceGroups for {tenantId} to Data Explorer");
+
+            try
+            {
+                await this.deviceGroupClient.MigrateDeviceGroupsAsync(tenantId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+            }
         }
     }
 }

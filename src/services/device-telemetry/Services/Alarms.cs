@@ -26,6 +26,7 @@ using Mmm.Iot.DeviceTelemetry.Services.Helper;
 using Mmm.Iot.DeviceTelemetry.Services.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using EventHubHelper = Mmm.Iot.DeviceTelemetry.Services.Helper.EventHubHelper;
 
 namespace Mmm.Iot.DeviceTelemetry.Services
 {

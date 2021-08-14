@@ -67,9 +67,9 @@ namespace Mmm.Iot.TenantManager.Services.External
             return await this.requestHelper.ProcessRequestAsync(HttpMethod.Post, url, defaultGroup, tenantId);
         }
 
-        public async Task MigrateDeviceGroupAsync(string tenantId)
+        public async Task MigrateDeviceGroupsAsync(string tenantId)
         {
-            string url = this.RequestUrl("devicegroups/");
+            string url = this.RequestUrl("devicegroups/Migrate");
             await this.requestHelper.ProcessRequestAsync(HttpMethod.Post, url, tenantId, null);
         }
     }

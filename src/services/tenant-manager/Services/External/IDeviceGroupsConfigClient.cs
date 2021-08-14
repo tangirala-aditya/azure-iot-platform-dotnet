@@ -11,5 +11,7 @@ namespace Mmm.Iot.TenantManager.Services.External
     public interface IDeviceGroupsConfigClient : IExternalServiceClient
     {
         Task<DeviceGroupApiModel> CreateDefaultDeviceGroupAsync(string tenantId);
+
+        Task MigrateDeviceGroupsAsync(string tenantId);
     }
 }

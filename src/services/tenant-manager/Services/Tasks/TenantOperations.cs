@@ -277,14 +277,11 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                             await this.grafanaClient.CreateAPIKeyIsNotFound();
 
                             string tenantIdSubstring = item.TenantId.Substring(0, 8);
-                            string mainDashboardName = $"Main:{tenantIdSubstring}";
+                            string mainDashboardName = $"{tenantIdSubstring}-Dashboard";
                             string mainDashboardUid = tenantIdSubstring;
-                            string mainDashboardSubUrl = $"main-{tenantIdSubstring}";
 
-                            string tenantIdLastSubstring = item.TenantId.Substring(item.TenantId.Length - 8, 8);
-                            string adminDashboardName = $"Admin:{tenantIdLastSubstring}";
-                            string adminDashboardUid = tenantIdLastSubstring;
-                            string adminDashboardSubUrl = $"admin-{tenantIdLastSubstring}";
+                            string adminDashboardName = $"{tenantIdSubstring}-AdminDashboard";
+                            string adminDashboardUid = $"{tenantIdSubstring}-adm";
 
                             var tenant = await this.tableStorageClient.RetrieveAsync<TenantModel>(
                                 "tenant",
@@ -297,7 +294,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                             template = string.Format(
                                 template,
                                 this.config.ExternalDependencies.GrafanaUrl,
-                                $"{adminDashboardUid}/{adminDashboardSubUrl}",
+                                $"{adminDashboardUid}/{adminDashboardName}",
                                 this.config.Global.SubscriptionId,
                                 this.config.Global.ResourceGroup,
                                 this.config.Global.LogAnalytics.Name,
@@ -311,7 +308,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                             template = string.Format(
                                 template,
                                 this.config.ExternalDependencies.GrafanaUrl,
-                                $"{mainDashboardUid}/{mainDashboardSubUrl}",
+                                $"{mainDashboardUid}/{mainDashboardName}",
                                 this.config.Global.SubscriptionId,
                                 this.config.Global.ResourceGroup,
                                 this.config.Global.LogAnalytics.Name,
@@ -322,6 +319,8 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                 adminDashboardName);
 
                             await this.grafanaClient.CreateAndUpdateDashboard(template);
+
+                            await this.appConfigurationClient.SetValueAsync($"tenant:{item.TenantId}:grafanaUrl", $"{mainDashboardUid}/{mainDashboardName}");
                             await this.tableStorageClient.DeleteAsync(TableName, item);
                         }
 
@@ -331,16 +330,13 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                             string mainDashboardUid = item.TenantId.Substring(0, 8);
 
-                            string adminDashboardUid = item.TenantId.Substring(item.TenantId.Length - 8, 8);
-
-                            var tenant = await this.tableStorageClient.RetrieveAsync<TenantModel>(
-                                "tenant",
-                                item.TenantId.Substring(0, 1),
-                                item.TenantId);
+                            string adminDashboardUid = $"{mainDashboardUid}-adm";
 
                             await this.grafanaClient.DeleteDashboardByUid(mainDashboardUid);
 
                             await this.grafanaClient.DeleteDashboardByUid(adminDashboardUid);
+                            await this.appConfigurationClient.DeleteKeyAsync($"tenant:{item.TenantId}:grafanaUrl");
+
                             await this.tableStorageClient.DeleteAsync(TableName, item);
                         }
                     }

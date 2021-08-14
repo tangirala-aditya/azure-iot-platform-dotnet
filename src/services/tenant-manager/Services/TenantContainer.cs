@@ -202,14 +202,17 @@ namespace Mmm.Iot.TenantManager.Services
 
             string grafanaName = this.FormatResourceName(this.grafanaNameFormat, tenantId);
 
-            // trigger grafana dashboard
-            try
+            if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
             {
-                await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.GrafanaDashboardCreation, grafanaName));
-            }
-            catch (Exception e)
-            {
-                this.logger.LogInformation(e, "Unable to create grafana dashboard for tenant {tenantId}", tenantId);
+                // trigger grafana dashboard
+                try
+                {
+                    await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.GrafanaDashboardCreation, grafanaName));
+                }
+                catch (Exception e)
+                {
+                    this.logger.LogInformation(e, "Unable to create grafana dashboard for tenant {tenantId}", tenantId);
+                }
             }
 
             return new CreateTenantModel(tenantId);
@@ -333,18 +336,6 @@ namespace Mmm.Iot.TenantManager.Services
 
             string grafanaName = this.FormatResourceName(this.grafanaNameFormat, tenantId);
 
-            // trigger deletion grafana dashboard
-            try
-            {
-                await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.GrafanaDashboardDeletion, grafanaName));
-                deletionRecord["grafana"] = true;
-            }
-            catch (Exception e)
-            {
-                this.logger.LogInformation(e, "Unable to to successfully add Delete grafana dashboard for tenant {tenantId}", tenantId);
-                deletionRecord["grafana"] = false;
-            }
-
             // Delete collections
             foreach (KeyValuePair<string, string> collectionInfo in this.tenantCollections)
             {
@@ -452,6 +443,18 @@ namespace Mmm.Iot.TenantManager.Services
                 {
                     deletionRecord["EventHubNameSpace"] = false;
                     this.logger.LogInformation(e, $"An error occurred while deleting the {eventHubNamespace} EventHub NameSpace for tenant {tenantId}", eventHubNamespace, tenantId);
+                }
+
+                // trigger deletion grafana dashboard
+                try
+                {
+                    await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.GrafanaDashboardDeletion, grafanaName));
+                    deletionRecord["grafana"] = true;
+                }
+                catch (Exception e)
+                {
+                    this.logger.LogInformation(e, "Unable to to successfully add Delete grafana dashboard for tenant {tenantId}", tenantId);
+                    deletionRecord["grafana"] = false;
                 }
             }
 

@@ -15,7 +15,7 @@ param(
 
      $resourceGroupName = $resourceGroup
      $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
-     $eventhubNamespace=$applicationCode + "eventhub" + $environmentCategory
+     $eventhubNamespace = $applicationCode + "-eventhub-" + $environmentCategory
      $cloudTable = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context
      $tableObject = (Get-AzStorageTable -Name "tenant" -Context $cloudTable).CloudTable
      $iotHubArray = (Get-AzTableRow -table $tableObject -CustomFilter 'IsIotHubDeployed eq true')
@@ -37,7 +37,7 @@ param(
           Write-Host "############## Started Updating routes in IotHub $iotHubName"
 
           $iotHubName = $iotHub.IotHubName
-          $eventhubConnectionString=(Get-AzEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHub $eventHubs -AuthorizationRuleName iothubroutes).PrimaryConnectionString
+          $eventhubConnectionString=(Get-AzEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHub $eventHubs -AuthorizationRuleName "iothubroutes").PrimaryConnectionString
      
         # This is used to Create/Add an endpoint to all IoT Hub (for now it is single iothub)    
           Add-AzIotHubRoutingEndpoint `

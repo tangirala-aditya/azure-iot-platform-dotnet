@@ -1,6 +1,7 @@
 // <copyright file="TenantConnectionHelper.cs" company="3M">
 // Copyright (c) 3M. All rights reserved.
 // </copyright>
+using System;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 
 namespace Mmm.Iot.Common.Services.Helpers
@@ -25,8 +26,15 @@ namespace Mmm.Iot.Common.Services.Helpers
         public string GetEventHubConnectionString(string tenantId)
         {
             var appConfigurationKey = string.Format(TenantEventHubConnectionStringFormat, tenantId);
-            var value = this.appConfigurationClient.GetValue(appConfigurationKey);
-            return value;
+            try
+            {
+                var value = this.appConfigurationClient.GetValue(appConfigurationKey);
+                return value;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
         }
     }
 }

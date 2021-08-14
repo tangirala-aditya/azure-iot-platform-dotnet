@@ -13,6 +13,7 @@ using Kusto.Data;
 using Kusto.Data.Common;
 using Kusto.Data.Net.Client;
 using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Azure.Management.EventHub.Models;
 using Microsoft.Azure.Management.IotHub.Models;
 using Microsoft.Azure.Management.Kusto;
 using Microsoft.Azure.Management.Kusto.Models;
@@ -198,10 +199,13 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
         private async Task<string> SetupEventHub(string tenantId)
         {
-            string nameSpaceConnString = this.appConfigurationClient.GetValue($"tenant:{tenantId}:eventHubConn");
             string eventHubNameSpace = string.Format(EventHubNamespaceFormat, tenantId.Substring(0, 8));
 
-            if (string.IsNullOrEmpty(nameSpaceConnString))
+            try
+            {
+                EHNamespace eventHubNamespace = await this.azureManagementClient.EventHubsManagementClient.RetrieveAsync(eventHubNameSpace, CancellationToken.None);
+            }
+            catch (Exception)
             {
                 await this.azureManagementClient.EventHubsManagementClient.CreateNamespaceIfNotExist(eventHubNameSpace);
                 var accessKeys = await this.azureManagementClient.EventHubsManagementClient.GetPrimaryConnectionString(eventHubNameSpace);

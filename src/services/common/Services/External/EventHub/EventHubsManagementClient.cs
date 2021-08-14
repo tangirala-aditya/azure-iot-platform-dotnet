@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Management.EventHub;
 using Microsoft.Azure.Management.EventHub.Models;
@@ -102,6 +103,11 @@ namespace Mmm.Iot.Common.Services.External.EventHub
             {
                 await this.CreateNamespace(namespaceName, resourceGroupName, location);
             }
+        }
+
+        public async Task<EHNamespace> RetrieveAsync(string eventHubNamespaceName, CancellationToken token)
+        {
+            return await this.eventHubManagementClient.Namespaces.GetAsync(this.appConfig.Global.ResourceGroup, eventHubNamespaceName, token != null ? token : CancellationToken.None);
         }
     }
 }

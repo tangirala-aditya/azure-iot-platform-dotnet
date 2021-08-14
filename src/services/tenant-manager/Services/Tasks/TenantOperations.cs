@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Kusto.Data;
 using Kusto.Data.Common;
 using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Azure.Management.EventHub.Models;
 using Microsoft.Azure.Management.IotHub.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -352,17 +353,21 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
         private async Task<(string NamespaceName, string PrimaryKey)> SetupEventHub(string tenantId)
         {
-            string nameSpaceConnString = this.appConfigurationClient.GetValue($"tenant:{tenantId}:eventHubConn");
-            string nameSpacePrimaryKey = this.appConfigurationClient.GetValue($"tenant:{tenantId}:eventHubPrimaryKey");
+            string nameSpacePrimaryKey = string.Empty;
             string eventHubNameSpace = string.Format(EventHubNamespaceFormat, tenantId.Substring(0, 8));
-
-            if (string.IsNullOrEmpty(nameSpaceConnString))
+            try
             {
-                await this.azureManagementClient.EventHubsManagementClient.CreateNamespaceIfNotExist(eventHubNameSpace);
-                var accessKeys = await this.azureManagementClient.EventHubsManagementClient.GetPrimaryConnectionString(eventHubNameSpace);
-                await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubConn", accessKeys.PrimaryConnectionString);
-                await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubPrimaryKey", accessKeys.PrimaryKey);
-                nameSpacePrimaryKey = accessKeys.PrimaryKey;
+                EHNamespace eventHubNamespace = await this.azureManagementClient.EventHubsManagementClient.RetrieveAsync(eventHubNameSpace, CancellationToken.None);
+
+                nameSpacePrimaryKey = this.appConfigurationClient.GetValue($"tenant:{tenantId}:eventHubPrimaryKey");
+            }
+            catch (Exception)
+            {
+                    await this.azureManagementClient.EventHubsManagementClient.CreateNamespaceIfNotExist(eventHubNameSpace);
+                    var accessKeys = await this.azureManagementClient.EventHubsManagementClient.GetPrimaryConnectionString(eventHubNameSpace);
+                    await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubConn", accessKeys.PrimaryConnectionString);
+                    await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubPrimaryKey", accessKeys.PrimaryKey);
+                    nameSpacePrimaryKey = accessKeys.PrimaryKey;
             }
 
             this.azureManagementClient.EventHubsManagementClient.CreateEventHub(eventHubNameSpace, $"{tenantId}-alerts");
@@ -414,6 +419,8 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
             var alertsTableSchema = new[]
             {
                   Tuple.Create("Id", "System.String"),
+                  Tuple.Create("DateCreated", "System.Datetime"),
+                  Tuple.Create("DateModified", "System.Datetime"),
                   Tuple.Create("Description", "System.String"),
                   Tuple.Create("GroupId", "System.String"),
                   Tuple.Create("DeviceId", "System.String"),
@@ -422,16 +429,16 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                   Tuple.Create("RuleSeverity", "System.String"),
                   Tuple.Create("RuleDescription", "System.String"),
                   Tuple.Create("IsDeleted", "System.Boolean"),
-                  Tuple.Create("DateCreated", "System.Datetime"),
-                  Tuple.Create("DateModified", "System.Datetime"),
             };
 
             this.ADXTableSetup(tenantId, databaseName, alertsTableName, alertsTableSchema);
 
             string functionName = "ProcessAlerts";
-            string functionQuery = $@"{tableName}  \n | project \n Id = iif(isempty(tostring(Data[""id""])), tostring(new_guid()), tostring(Data[""id""])), \n DateCreated = unixtime_milliseconds_todatetime(todouble(Data[""created""])), \n  DateModified = unixtime_milliseconds_todatetime(todouble(Data[""modified""])), \n Description = tostring(Data[""description""]), \n  GroupId = tostring(Data[""groupId""]), \n DeviceId = tostring(Data[""deviceId""]), \n Status = tostring(Data[""status""]), \n RuleId = tostring(Data[""ruleId""]), \n RuleSeverity = tostring(Data[""ruleSeverity""]), \n ruleDescription = tostring(Data[""ruleDescription""]), \n IsDeleted = iif(isempty(tostring(Data[""isDeleted""])), false, tobool(Data[""isDeleted""]))";
+            string functionQueryFormat = @"{{ {0} | project Id = iif(isempty(tostring(Data[""id""])), tostring(new_guid()), tostring(Data[""id""])), DateCreated = unixtime_milliseconds_todatetime(todouble(Data[""created""])), DateModified = unixtime_milliseconds_todatetime(todouble(Data[""modified""])), Description = tostring(Data[""description""]), GroupId = tostring(Data[""groupId""]), DeviceId = tostring(Data[""deviceId""]), Status = tostring(Data[""status""]), RuleId = tostring(Data[""ruleId""]), RuleSeverity = tostring(Data[""ruleSeverity""]), ruleDescription = tostring(Data[""ruleDescription""]), IsDeleted = iif(isempty(tostring(Data[""isDeleted""])), false, tobool(Data[""isDeleted""]))}}";
 
-            this.kustoTableManagementClient.CreateOrAlterFunctionPolicy(functionName, null, functionQuery, databaseName);
+            string functionQuery = string.Format(functionQueryFormat, tableName);
+
+            this.kustoTableManagementClient.CreateOrAlterFunction(functionName, null, functionQuery, databaseName);
 
             DataUpdatePolicy alertsDataUpdatePolicy = new DataUpdatePolicy(
                                                 isEnabled: true,
@@ -441,7 +448,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                                 propagateIngestionProperties: false);
 
             List<DataUpdatePolicy> alertsPolicyList = new List<DataUpdatePolicy>();
-            policyList.Add(alertsDataUpdatePolicy);
+            alertsPolicyList.Add(alertsDataUpdatePolicy);
 
             this.kustoTableManagementClient.AlterTablePolicy(alertsTableName, databaseName, alertsPolicyList);
         }

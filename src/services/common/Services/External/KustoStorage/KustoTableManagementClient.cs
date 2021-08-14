@@ -103,10 +103,15 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             }
         }
 
-        public void CreateOrAlterFunctionPolicy(string functionName, IDictionary<string, string> parameters, string body, string databaseName)
+        public void CreateOrAlterFunction(string functionName, IDictionary<string, string> parameters, string body, string databaseName)
         {
             try
             {
+                if (parameters == null)
+                {
+                    parameters = new Dictionary<string, string>();
+                }
+
                 var command = CslCommandGenerator.GenerateCreateOrAlterFunctionCommand(functionName, null, null, parameters, body);
 
                 this.client.ExecuteControlCommand(databaseName, command);

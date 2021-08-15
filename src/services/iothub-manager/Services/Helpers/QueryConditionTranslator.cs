@@ -38,6 +38,8 @@ namespace Mmm.Iot.IoTHubManager.Services.Helpers
             { "LK", "contains" },
         };
 
+        private static readonly string Id = "id";
+        private static readonly string DeviceId = "deviceId";
         private static readonly string DeviceTwinTags = "tags";
         private static readonly string DeviceTwinDesired = "properties.desired";
         private static readonly string DeviceTwinReported = "properties.reported";
@@ -139,7 +141,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Helpers
                     }
                 }
 
-                if (op == "IN")
+                if (op == "in")
                 {
                     List<string> values = JsonConvert.DeserializeObject<List<string>>(value.ToString());
                     string joinValues = string.Join(" or ", values.Select(v => $"{DeviceTwinKustoKeyBuilder(c.Key)} == \"{v}\""));
@@ -167,6 +169,8 @@ namespace Mmm.Iot.IoTHubManager.Services.Helpers
                     return DeviceTwinKustoKey(someVal, DeviceTwinDesired);
                 case var someVal when someVal.StartsWith(DeviceTwinReported, System.StringComparison.OrdinalIgnoreCase):
                     return DeviceTwinKustoKey(someVal, DeviceTwinReported);
+                case var someVal when someVal.Equals(Id):
+                    return $"Twin.{DeviceId}";
                 default:
                     return $"Twin.{twinPath}";
             }

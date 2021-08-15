@@ -22,7 +22,7 @@ param(
      $endpointType="EventHub"
      $endpointName= "event-hub-device-twin-mirror"
      $messageRoutes=@("deviceTwinMirrorDeviceConnectionState","deviceTwinMirrorLifecycle","deviceTwinMirrorTwinChange")
-     $dataSources=@("deviceconnectionstateevents","devicejoblifecycleevents","twinchangeevents")
+     $dataSources=@("deviceconnectionstateevents","devicelifecycleevents","twinchangeevents")
      $eventHubs="device-twin-mirror"
      #$messageEnrichmentEndpoints=@("event-hub-telemetry,event-hub-twin-change,event-hub-lifecycle,event-hub-device-twin-mirror")
 

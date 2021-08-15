@@ -1,9 +1,19 @@
-﻿function New-GrafanaApiKey {
+param(
+     [string] $applicationCode,
+     [string] $environmentCategory,
+     [string] $resourceGroup,
+     [string] $servicePrincipalId, 
+     [string] $servicePrincipalKey, 
+     [string] $tenantId,
+	 [string] $grafanabaseurl,
+)
+
+function New-GrafanaApiKey {
      param(
           [string] $grafanabaseurl,
           [string] $keyvaultName
      )
-     $uri = $grafanabaseurl + "api/auth/keys"
+     $uri = $grafanabaseurl + "/api/auth/keys"
 
      $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
      $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f "admin", "admin")))
@@ -18,7 +28,7 @@
           $response = $response | ConvertTo-Json
           $apiKey = $response.key
           $secret = Set-AzKeyVaultSecret -VaultName $keyvaultName -Name "Grafana--APIKey" -SecretValue $apiKey
-          Write-Host $result.key
+          Write-Host $response.key
      }
      catch {
           Write-Host("An Error occured.")
@@ -58,7 +68,7 @@ function New-Dashboards {
 
      $body = $dashboardContent | ConvertFrom-Json | ConvertTo-Json -Depth 32
 
-     $uri = $grafanabaseurl + "grafana/api/dashboards/db"
+     $uri = $grafanabaseurl + "/api/dashboards/db"
      $headers = @{
           'Authorization' = "Bearer " + $grafanaApiKey
           'Content-Type'  = 'application/json'
@@ -122,7 +132,7 @@ function New-DataSources {
 
      $body = $dataSourceContent | ConvertFrom-Json | ConvertTo-Json -Depth 32
 
-     $uri = $grafanabaseurl + "api/datasources"
+     $uri = $grafanabaseurl + "/api/datasources"
      $headers = @{
           'Authorization' = "Bearer " + $grafanaApiKey
           'Content-Type'  = 'application/json'
@@ -146,7 +156,7 @@ function New-DataSources {
 
      $monitorDataSourceBody = $monitorDataSource | ConvertFrom-Json | ConvertTo-Json -Depth 32
 
-     $uri = $grafanabaseurl + "api/datasources"
+     $uri = $grafanabaseurl + "/api/datasources"
      $headers = @{
           'Authorization' = "Bearer " + $grafanaApiKey
           'Content-Type'  = 'application/json'
@@ -161,17 +171,6 @@ function New-DataSources {
           Write-Host($_)
      }
 }
-
-
-param(
-     [string] $applicationCode,
-     [string] $environmentCategory,
-     [string] $resourceGroup,
-     [string] $servicePrincipalId, 
-     [string] $servicePrincipalKey, 
-     [string] $tenantId,
-	 [string] $grafanabaseurl,
-)
 
 $spKey = ConvertTo-SecureString -String $servicePrincipalKey -AsPlainText -Force
 
@@ -202,7 +201,7 @@ try {
      Write-Host "## Data Sources are created"
 
      Foreach ($iotHub in $iotHubArray) {
-          $iotTenantId = $iotHub.TenantId
+          $iotTenantId = $iotHub.TenantId  
           # Create Main and Admin Dashboards for each tenant.
           New-Dashboards -applicationCode $applicationCode -environmentCategory $environmentCategory -resourceGroup $resourceGroup -servicePrincipalId $servicePrincipalId -servicePrincipalKey $servicePrincipalKey -subscriptionId $subscriptionId -tenantId $tenantId -grafanabaseurl $grafanabaseurl -apptenantId $iotHub.TenantId -grafanaApiKey $grafanaApiKey
           Write-Host "Created Dashboard for Tenant:" + $iotTenantId        

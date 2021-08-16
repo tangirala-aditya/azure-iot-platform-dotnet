@@ -67,3 +67,8 @@ variables:
     value: 5000
   - name: processIOTHubBeyondLimit
     value: false
+  - name: loadGrafanaDashboard
+    value: true
+
+
+

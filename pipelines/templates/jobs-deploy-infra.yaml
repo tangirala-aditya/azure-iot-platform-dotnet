@@ -6,7 +6,7 @@ parameters:
   applicationCode:
   applicationShortCode:
   appInsightsLocation: 
-  environmentCategory:
+  environmentCategory:s
   kubernetesVersion:
   sendgridEmail:
   aksAgentVmSize: Standard_DS2_v2
@@ -918,9 +918,13 @@ jobs:
             az appconfig kv set --key TenantManagerService:AutomationAccountName  --value $(automationName) --name $(appConfigurationName) --yes
             az appconfig kv set --key DeviceTelemetryService:Messages:TelemetryStorageType  --value ${telemetryStorageType,,} --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:LogAnalytics:Name                    --value $(omsWorkspaceName) --name $(appConfigurationName) --yes
-
+            az appconfig kv set --key Global:LoadGrafanaDashboard                 --value $(loadGrafanaDashboard) --name $(appConfigurationName) --yes
+            
+            grafanaUrl = "https://$(aksName).$(locationName).cloudapp.azure.com/grafana/"
+            az appconfig kv set --key Global:ExternalDependencies:GrafanaUrl --value $grafanaUrl --name $(appConfigurationName) --yes
             appInsightKey=$(az resource show -g $(resourceGroupName) -n $(appInsightsName) --resource-type "Microsoft.Insights/components" --query properties.InstrumentationKey --output tsv)
             az appconfig kv set --key Global:InstrumentationKey --value $appInsightKey --name $(appConfigurationName) --yes
+ 
 
             jwtIssuer="https://$(aksName).${{parameters.locationName}}.cloudapp.azure.com/auth"
             az appconfig kv set --key Global:ClientAuth:Jwt:AuthIssuer --value $jwtIssuer --name $(appConfigurationName) --yes

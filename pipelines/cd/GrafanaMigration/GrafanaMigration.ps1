@@ -1,11 +1,12 @@
-param(
+﻿param(
      [string] $applicationCode,
      [string] $environmentCategory,
      [string] $resourceGroup,
      [string] $servicePrincipalId, 
      [string] $servicePrincipalKey, 
      [string] $tenantId,
-	 [string] $grafanabaseurl,
+     [string] $subscriptionId,
+     [string] $location
 )
 
 function New-GrafanaApiKey {
@@ -25,10 +26,10 @@ function New-GrafanaApiKey {
      Write-Host $body
      try {
           $response = Invoke-RestMethod -Uri $uri -Method 'POST' -Headers $headers -Body $body
-          $response = $response | ConvertTo-Json
-          $apiKey = $response.key
-          $secret = Set-AzKeyVaultSecret -VaultName $keyvaultName -Name "Grafana--APIKey" -SecretValue $apiKey
-          Write-Host $response.key
+          $response = ($response | ConvertTo-Json | ConvertFrom-Json)
+          $apiKey =  ConvertTo-SecureString $response.key -AsPlainText -Force
+          Set-AzKeyVaultSecret -VaultName $keyvaultName -Name "Grafana--APIKey" -SecretValue $apiKey
+          Write-Host "Added Key...."
      }
      catch {
           Write-Host("An Error occured.")
@@ -76,6 +77,7 @@ function New-Dashboards {
 
      try {
           Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body
+          az appconfig kv set --name $appConfigurationName --key ("tenant:"+$iotTenantId+":grafanaUrl") --value ($tenantSubString + "/" + $tenantSubString + "-Dashboard") --yes
      }
      catch {
           Write-Host("An Error occured.")
@@ -117,7 +119,8 @@ function New-DataSources {
           [string] $servicePrincipalKey,
           [string] $tenantId,
           [string] $grafanabaseurl,
-          [string] $grafanaApiKey
+          [string] $grafanaApiKey,
+          [string] $location
      )
 
      # creation of Data Sources for Grafana Dashboards
@@ -127,7 +130,7 @@ function New-DataSources {
      $dataSourceContent = $dataSourceContent -replace '\{0\}' , $servicePrincipalId
      $dataSourceContent = $dataSourceContent -replace '\{1\}' , $tenantId
      $dataSourceContent = $dataSourceContent -replace '\{2\}' , $servicePrincipalKey
-     $dataSourceContent = $dataSourceContent -replace '\{3\}' , ("https://" + $applicationCode + "kusto" + $environmentCategory + ".centralus.kusto.windows.net")
+     $dataSourceContent = $dataSourceContent -replace '\{3\}' , ("https://" + $applicationCode + "kusto" + $environmentCategory + ".$location.kusto.windows.net")
 
 
      $body = $dataSourceContent | ConvertFrom-Json | ConvertTo-Json -Depth 32
@@ -172,16 +175,11 @@ function New-DataSources {
      }
 }
 
-$spKey = ConvertTo-SecureString -String $servicePrincipalKey -AsPlainText -Force
-
-$pscredential = New-Object -TypeName System.Management.Automation.PSCredential($servicePrincipalId, $spKey)
-Connect-AzAccount -ServicePrincipal -Credential $pscredential -Tenant $tenantId
-Set-AzContext -SubscriptionId $subscriptionId
-
 try {       
      $resourceGroupName = $resourceGroup
      $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
      $keyvaultName = $applicationCode + "-keyvault-" + $environmentCategory
+     $grafanabaseurl = "https://$applicationCode-aks-$environmentCategory.$location.cloudapp.azure.com/grafana/"
      
      #remove and reisntall pkmngr and install packages
      #Register-PackageSource -Name MyNuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet
@@ -197,7 +195,7 @@ try {
 
      # Create DataSources required for Grafana Dashboards
      Write-Host "## Creating Data Sources"
-     New-DataSources -applicationCode $applicationCode -environmentCategory $environmentCategory -servicePrincipalId $servicePrincipalId -servicePrincipalKey $servicePrincipalKey -tenantId $tenantId -grafanabaseurl $grafanabaseurl -grafanaApiKey $grafanaApiKey
+     New-DataSources -applicationCode $applicationCode -environmentCategory $environmentCategory -servicePrincipalId $servicePrincipalId -servicePrincipalKey $servicePrincipalKey -tenantId $tenantId -grafanabaseurl $grafanabaseurl -grafanaApiKey $grafanaApiKey -location $location
      Write-Host "## Data Sources are created"
 
      Foreach ($iotHub in $iotHubArray) {

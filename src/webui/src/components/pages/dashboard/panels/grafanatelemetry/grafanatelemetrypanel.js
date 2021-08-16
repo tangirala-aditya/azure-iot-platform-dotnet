@@ -38,7 +38,6 @@ export class GrafanaTelemetryPanel extends Component {
     }
 
     prepareUrl(props) {
-        console.log(props.activeDeviceGroup);
         this.setState({ from: getIntervalParams(props.timeInterval) });
         this.setState({ deviceGroupId: (props.activeDeviceGroup || {}).id });
     }

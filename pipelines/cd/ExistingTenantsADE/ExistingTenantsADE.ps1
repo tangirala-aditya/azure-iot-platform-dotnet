@@ -32,9 +32,9 @@ try {
     $location = (Get-AzResourceGroup -Name $resourceGroupName | Select-Object location).location 
     $spKey = ConvertTo-SecureString -String $servicePrincipalKey -AsPlainText -Force
 
-    $pscredential = New-Object -TypeName System.Management.Automation.PSCredential($servicePrincipalId, $spKey)
-    Connect-AzAccount -ServicePrincipal -Credential $pscredential -Tenant $tenantId
-    Set-AzContext -SubscriptionId $subscriptionId
+    az cloud set -n AzureCloud
+    az login --service-principal -u $servicePrincipalId --password $servicePrincipalKey --tenant $tenantId --allow-no-subscriptions
+    az account set --subscription $subscriptionId
 
 
     function Update_TelemetryInfra {
@@ -483,7 +483,7 @@ try {
 "@
 
         $outputPSObj = $SAJobOutputDefinition | ConvertFrom-Json
-        Write-Output $JsonData = $outputPSObj | ConvertTo-Json -Depth 32
+        Write-Output $outputPSObj | ConvertTo-Json -Depth 32
 
     }
 
@@ -549,13 +549,11 @@ try {
         param(
             [string] $tenantId,
             [string] $eventhubNamespace,
-            [string] $eventhubsharedaccesspolicykey,
             [string] $resourceGroupName,
             [string] $clusterName,
             [string] $clusterLocation,
             [string] $databaseName,
-            [string] $connStr,
-            [string] $saJobName
+            [string] $connStr
         )
   
   
@@ -596,8 +594,19 @@ try {
         else {
             write-host("############## There is already a Data conection with the Name $deviceTwinDataconnectionName.")
         }
-		  
-
+    }
+	
+	function Update_SAJobQueryForTenant {
+        param(
+            [string] $tenantId,
+            [string] $eventhubNamespace,
+            [string] $eventhubsharedaccesspolicykey,
+            [string] $resourceGroupName,
+            [string] $saJobName
+        )
+  
+  
+        $alertsEventhubname = "$tenantId-Alerts"
 
         # get the current path
         $currPath = (Get-Item -Path ".\").FullName
@@ -645,7 +654,7 @@ try {
             Write-Host "############## Created EventHub NameSpace : $eventhubNamespace."                   
         }
         else {
-            Write-Host "############## EventHub NameSpace Already $eventhubNamespace." 
+            Write-Host "############## EventHub NameSpace Already Exists $eventhubNamespace." 
         }
 		  
         #Place the EventHub Namespace primary connectionstting => appConfiguration
@@ -657,6 +666,12 @@ try {
 
         $eventhubsharedaccesspolicykey = $connectionString.PrimaryKey
 
+        
+        #$IotHubResourceId = (Get-AzIotHub -ResourceGroupName $resourceGroupName -Name $iotHub.IotHubName).Id
+        $clusterURI = (Get-AzKustoCluster -Name $clusterName -ResourceGroupName $resourceGroupName).Uri          
+        $clusterLocation = (Get-AzKustoCluster -Name $clusterName -ResourceGroupName $resourceGroupName).Location
+        Write-Host $clusterLocation
+
         ##checking if Name exists.
         if ((Test-AzKustoDatabaseNameAvailability -ResourceGroupName $resourceGroupName -ClusterName $clusterName -Name $databaseName -Type Microsoft.Kusto/Clusters/Databases).NameAvailable) {
             New-AzKustoDatabase -ResourceGroupName $resourceGroupName -ClusterName $clusterName -Name $databaseName -HotCachePeriod 0:00:00:00 -Kind ReadWrite -Location $clusterLocation
@@ -665,11 +680,6 @@ try {
         else {
             write-host("############## There is already a Database with the Name $databaseName.")
         }
-			   
-
-        #$IotHubResourceId = (Get-AzIotHub -ResourceGroupName $resourceGroupName -Name $iotHub.IotHubName).Id
-        $clusterURI = (Get-AzKustoCluster -Name $clusterName -ResourceGroupName $resourceGroupName).Uri          
-        $clusterLocation = (Get-AzKustoCluster -Name $clusterName -ResourceGroupName $resourceGroupName).Location
 
         $connStr = "Data Source=" + $clusterURI + ";Initial Catalog=" + $databaseName + ";Application Client Id=" + $servicePrincipalId + ";Application Key=" + $servicePrincipalKey + ";AAD Federated Security=True;dSTS Federated Security=False;Authority Id=" + $tenantId
         Write-Host $connStr
@@ -697,18 +707,22 @@ try {
             -clusterLocation $clusterLocation `
             -databaseName $databaseName `
             -connStr $connStr
-		  
-		  
-        if ($iotHub.SAJobName) {
-            Update_AlertsInfra -tenantId $iotTenantId `
-                -saJobName $iotHub.SAJobName `
+			
+		Update_AlertsInfra -tenantId $iotTenantId `
                 -eventhubNamespace $eventhubNamespace `
-                -eventhubsharedaccesspolicykey $eventhubsharedaccesspolicykey `
                 -resourceGroupName $resourceGroup `
                 -clusterName $clusterName `
                 -clusterLocation $clusterLocation `
                 -databaseName $databaseName `
                 -connStr $connStr
+		  
+		  
+        if ($iotHub.SAJobName) {
+            Update_SAJobQueryForTenant -tenantId $iotTenantId `
+                -saJobName $iotHub.SAJobName `
+                -eventhubNamespace $eventhubNamespace `
+                -eventhubsharedaccesspolicykey $eventhubsharedaccesspolicykey `
+                -resourceGroupName $resourceGroup
         }
     }
 }

@@ -21,6 +21,6 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
 
         void AlterTablePolicy(string tableName, string databaseName, IEnumerable<DataUpdatePolicy> dataUpdatePolicies);
 
-        void CreateOrAlterFunctionPolicy(string functionName, IDictionary<string, string> parameters, string body, string databaseName);
+        void CreateOrAlterFunction(string functionName, IDictionary<string, string> parameters, string body, string databaseName);
     }
 }

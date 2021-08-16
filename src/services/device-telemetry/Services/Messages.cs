@@ -262,6 +262,8 @@ namespace Mmm.Iot.DeviceTelemetry.Services
 
             (string query, Dictionary<string, string> queryParameter) = QueryBuilder.GetKustoQuery(
                 "Telemetry",
+                null,
+                null,
                 from,
                 "TimeStamp",
                 to,

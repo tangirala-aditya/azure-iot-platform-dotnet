@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Kusto.Data;
 using Kusto.Data.Common;
 using Microsoft.Azure.Cosmos.Table;
+using Microsoft.Azure.Management.EventHub.Models;
 using Microsoft.Azure.Management.IotHub.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -193,15 +194,6 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                 tenant.SAJobName = item.Name;
                                 await this.tableStorageClient.InsertOrMergeAsync("tenant", tenant);
 
-                                if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    string eventHubNameSpace = await this.SetupEventHub(item.TenantId);
-                                    var databaseName = string.Format(IoTDatabaseNameFormat, item.TenantId);
-                                    await this.azureManagementClient.KustoClusterManagementClient.CreateDatabaseIfNotExistAsync(databaseName);
-
-                                    await this.ADXAlertsSetup(item.TenantId, databaseName, eventHubNameSpace);
-                                }
-
                                 Console.WriteLine($"Deleting tenant operations table...");
                                 await this.tableStorageClient.DeleteAsync(TableName, item);
                             }
@@ -210,23 +202,59 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                 // Item does not exist... delete the record
                                 Console.WriteLine($"SA job {item.Name} does not exist...creating it");
                                 Assembly assembly = Assembly.GetExecutingAssembly();
-                                StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("sajob.json"));
-                                string template = await reader.ReadToEndAsync();
-                                template = string.Format(
-                                    template,
-                                    item.Name,
-                                    this.config.Global.Location,
-                                    this.config.Global.StorageAccount.Name,
-                                    this.config.Global.StorageAccountConnectionString.Split(";")[2].Replace("AccountKey=", string.Empty),
-                                    tenant.IotHubName,
-                                    this.azureManagementClient.IotHubManagementClient.GetAccessKey(
+                                string template = string.Empty;
+
+                                if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    (string eventHubNameSpace, string primaryKey) = await this.SetupEventHub(item.TenantId);
+                                    var databaseName = string.Format(IoTDatabaseNameFormat, item.TenantId);
+                                    await this.azureManagementClient.KustoClusterManagementClient.CreateDatabaseIfNotExistAsync(databaseName);
+
+                                    await this.ADXAlertsSetup(item.TenantId, databaseName, eventHubNameSpace);
+                                    StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("sajob_ADX.json"));
+
+                                    template = await reader.ReadToEndAsync();
+                                    template = string.Format(
+                                        template,
+                                        item.Name,
+                                        this.config.Global.Location,
+                                        this.config.Global.StorageAccount.Name,
+                                        this.config.Global.StorageAccountConnectionString.Split(";")[2].Replace("AccountKey=", string.Empty),
                                         tenant.IotHubName,
-                                        "iothubowner"),
-                                    item.TenantId,
-                                    this.config.Global.EventHub.Name,
-                                    this.config.Global.EventHub.RootKey,
-                                    this.config.Global.CosmosDb.AccountName,
-                                    this.config.Global.CosmosDb.DocumentDbAuthKey);
+                                        this.azureManagementClient.IotHubManagementClient.GetAccessKey(
+                                            tenant.IotHubName,
+                                            "iothubowner"),
+                                        item.TenantId,
+                                        this.config.Global.EventHub.Name,
+                                        this.config.Global.EventHub.RootKey,
+                                        this.config.Global.CosmosDb.AccountName,
+                                        this.config.Global.CosmosDb.DocumentDbAuthKey,
+                                        $"{item.TenantId}-alerts",
+                                        eventHubNameSpace,
+                                        primaryKey);
+                                }
+                                else
+                                {
+                                    StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("sajob.json"));
+
+                                    template = await reader.ReadToEndAsync();
+                                    template = string.Format(
+                                        template,
+                                        item.Name,
+                                        this.config.Global.Location,
+                                        this.config.Global.StorageAccount.Name,
+                                        this.config.Global.StorageAccountConnectionString.Split(";")[2].Replace("AccountKey=", string.Empty),
+                                        tenant.IotHubName,
+                                        this.azureManagementClient.IotHubManagementClient.GetAccessKey(
+                                            tenant.IotHubName,
+                                            "iothubowner"),
+                                        item.TenantId,
+                                        this.config.Global.EventHub.Name,
+                                        this.config.Global.EventHub.RootKey,
+                                        this.config.Global.CosmosDb.AccountName,
+                                        this.config.Global.CosmosDb.DocumentDbAuthKey);
+                                }
+
                                 await this.azureManagementClient.DeployTemplateAsync(template);
                             }
                         }
@@ -250,14 +278,11 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                             await this.grafanaClient.CreateAPIKeyIsNotFound();
 
                             string tenantIdSubstring = item.TenantId.Substring(0, 8);
-                            string mainDashboardName = $"Main:{tenantIdSubstring}";
+                            string mainDashboardName = $"{tenantIdSubstring}-Dashboard";
                             string mainDashboardUid = tenantIdSubstring;
-                            string mainDashboardSubUrl = $"main-{tenantIdSubstring}";
 
-                            string tenantIdLastSubstring = item.TenantId.Substring(item.TenantId.Length - 8, 8);
-                            string adminDashboardName = $"Admin:{tenantIdLastSubstring}";
-                            string adminDashboardUid = tenantIdLastSubstring;
-                            string adminDashboardSubUrl = $"admin-{tenantIdLastSubstring}";
+                            string adminDashboardName = $"{tenantIdSubstring}-AdminDashboard";
+                            string adminDashboardUid = $"{tenantIdSubstring}-adm";
 
                             var tenant = await this.tableStorageClient.RetrieveAsync<TenantModel>(
                                 "tenant",
@@ -270,7 +295,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                             template = string.Format(
                                 template,
                                 this.config.ExternalDependencies.GrafanaUrl,
-                                $"{adminDashboardUid}/{adminDashboardSubUrl}",
+                                $"{adminDashboardUid}/{adminDashboardName}",
                                 this.config.Global.SubscriptionId,
                                 this.config.Global.ResourceGroup,
                                 this.config.Global.LogAnalytics.Name,
@@ -284,7 +309,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                             template = string.Format(
                                 template,
                                 this.config.ExternalDependencies.GrafanaUrl,
-                                $"{mainDashboardUid}/{mainDashboardSubUrl}",
+                                $"{mainDashboardUid}/{mainDashboardName}",
                                 this.config.Global.SubscriptionId,
                                 this.config.Global.ResourceGroup,
                                 this.config.Global.LogAnalytics.Name,
@@ -295,6 +320,8 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                 adminDashboardName);
 
                             await this.grafanaClient.CreateAndUpdateDashboard(template);
+
+                            await this.appConfigurationClient.SetValueAsync($"tenant:{item.TenantId}:grafanaUrl", $"{mainDashboardUid}/{mainDashboardName}");
                             await this.tableStorageClient.DeleteAsync(TableName, item);
                         }
 
@@ -304,16 +331,13 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                             string mainDashboardUid = item.TenantId.Substring(0, 8);
 
-                            string adminDashboardUid = item.TenantId.Substring(item.TenantId.Length - 8, 8);
-
-                            var tenant = await this.tableStorageClient.RetrieveAsync<TenantModel>(
-                                "tenant",
-                                item.TenantId.Substring(0, 1),
-                                item.TenantId);
+                            string adminDashboardUid = $"{mainDashboardUid}-adm";
 
                             await this.grafanaClient.DeleteDashboardByUid(mainDashboardUid);
 
                             await this.grafanaClient.DeleteDashboardByUid(adminDashboardUid);
+                            await this.appConfigurationClient.DeleteKeyAsync($"tenant:{item.TenantId}:grafanaUrl");
+
                             await this.tableStorageClient.DeleteAsync(TableName, item);
                         }
                     }
@@ -327,21 +351,28 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
             }
         }
 
-        private async Task<string> SetupEventHub(string tenantId)
+        private async Task<(string NamespaceName, string PrimaryKey)> SetupEventHub(string tenantId)
         {
-            string nameSpaceConnString = this.appConfigurationClient.GetValue($"tenant:{tenantId}:eventHubConn");
+            string nameSpacePrimaryKey = string.Empty;
             string eventHubNameSpace = string.Format(EventHubNamespaceFormat, tenantId.Substring(0, 8));
-
-            if (string.IsNullOrEmpty(nameSpaceConnString))
+            try
             {
-                await this.azureManagementClient.EventHubsManagementClient.CreateNamespaceIfNotExist(eventHubNameSpace);
-                nameSpaceConnString = await this.azureManagementClient.EventHubsManagementClient.GetPrimaryConnectionString(nameSpaceConnString);
-                await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubConn", nameSpaceConnString);
+                EHNamespace eventHubNamespace = await this.azureManagementClient.EventHubsManagementClient.RetrieveAsync(eventHubNameSpace, CancellationToken.None);
+
+                nameSpacePrimaryKey = this.appConfigurationClient.GetValue($"tenant:{tenantId}:eventHubPrimaryKey");
+            }
+            catch (Exception)
+            {
+                    await this.azureManagementClient.EventHubsManagementClient.CreateNamespaceIfNotExist(eventHubNameSpace);
+                    var accessKeys = await this.azureManagementClient.EventHubsManagementClient.GetPrimaryConnectionString(eventHubNameSpace);
+                    await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubConn", accessKeys.PrimaryConnectionString);
+                    await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubPrimaryKey", accessKeys.PrimaryKey);
+                    nameSpacePrimaryKey = accessKeys.PrimaryKey;
             }
 
             this.azureManagementClient.EventHubsManagementClient.CreateEventHub(eventHubNameSpace, $"{tenantId}-alerts");
 
-            return eventHubNameSpace;
+            return (eventHubNameSpace, nameSpacePrimaryKey);
         }
 
         private async Task ADXAlertsSetup(string tenantId, string databaseName, string eventHubNameSpace)
@@ -385,28 +416,29 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
             await this.azureManagementClient.KustoClusterManagementClient.AddEventHubDataConnectionAsync(dataConnectionName, databaseName, tableName, tableMappingName, eventHubNameSpace, eventHubName, consumerGroup);
 
             var alertsTableName = "Alerts";
-            var alertsTableMappingName = $"AlertsMapping-{tenantId}";
             var alertsTableSchema = new[]
             {
+                  Tuple.Create("Id", "System.String"),
+                  Tuple.Create("DateCreated", "System.Datetime"),
+                  Tuple.Create("DateModified", "System.Datetime"),
+                  Tuple.Create("Description", "System.String"),
+                  Tuple.Create("GroupId", "System.String"),
                   Tuple.Create("DeviceId", "System.String"),
-                  Tuple.Create("MessageId", "System.String"),
-                  Tuple.Create("Data", "System.Object"),
-                  Tuple.Create("TimeStamp", "System.Datetime"),
-            };
-            var alertsMappingSchema = new ColumnMapping[]
-            {
-                  new ColumnMapping() { ColumnName = "DeviceId", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.DeviceId" } } },
-                  new ColumnMapping() { ColumnName = "MessageId", ColumnType = "string", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.MessageId" } } },
-                  new ColumnMapping() { ColumnName = "Data", ColumnType = "dynamic", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.Data" } } },
-                  new ColumnMapping() { ColumnName = "TimeStamp", ColumnType = "datetime", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$.TimeStamp" } } },
+                  Tuple.Create("Status", "System.String"),
+                  Tuple.Create("RuleId", "System.String"),
+                  Tuple.Create("RuleSeverity", "System.String"),
+                  Tuple.Create("RuleDescription", "System.String"),
+                  Tuple.Create("IsDeleted", "System.Boolean"),
             };
 
-            this.ADXTableSetup(tenantId, databaseName, alertsTableName, alertsTableSchema, alertsTableMappingName, alertsMappingSchema);
+            this.ADXTableSetup(tenantId, databaseName, alertsTableName, alertsTableSchema);
 
             string functionName = "ProcessAlerts";
-            string functionQuery = $@"{tableName} \n | project \n DeviceId = tostring(Data[""deviceId""]), MessageId = iif(isempty(tostring(Data[""MessageId""])), tostring(new_guid()), tostring(Data[""MessageId""])), Data = Data, TimeStamp = unixtime_milliseconds_todatetime(todouble(Data[""created""]))";
+            string functionQueryFormat = @"{{ {0} | project Id = iif(isempty(tostring(Data[""id""])), tostring(new_guid()), tostring(Data[""id""])), DateCreated = unixtime_milliseconds_todatetime(todouble(Data[""created""])), DateModified = unixtime_milliseconds_todatetime(todouble(Data[""modified""])), Description = tostring(Data[""description""]), GroupId = tostring(Data[""groupId""]), DeviceId = tostring(Data[""deviceId""]), Status = tostring(Data[""status""]), RuleId = tostring(Data[""ruleId""]), RuleSeverity = tostring(Data[""ruleSeverity""]), ruleDescription = tostring(Data[""ruleDescription""]), IsDeleted = iif(isempty(tostring(Data[""isDeleted""])), false, tobool(Data[""isDeleted""]))}}";
 
-            this.kustoTableManagementClient.CreateOrAlterFunctionPolicy(functionName, null, functionQuery, databaseName);
+            string functionQuery = string.Format(functionQueryFormat, tableName);
+
+            this.kustoTableManagementClient.CreateOrAlterFunction(functionName, null, functionQuery, databaseName);
 
             DataUpdatePolicy alertsDataUpdatePolicy = new DataUpdatePolicy(
                                                 isEnabled: true,
@@ -416,7 +448,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                                 propagateIngestionProperties: false);
 
             List<DataUpdatePolicy> alertsPolicyList = new List<DataUpdatePolicy>();
-            policyList.Add(alertsDataUpdatePolicy);
+            alertsPolicyList.Add(alertsDataUpdatePolicy);
 
             this.kustoTableManagementClient.AlterTablePolicy(alertsTableName, databaseName, alertsPolicyList);
         }
@@ -426,12 +458,15 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
             string databaseName,
             string tableName,
             Tuple<string, string>[] tableSchema,
-            string tableMappingName,
-            ColumnMapping[] mappingSchema)
+            string tableMappingName = null,
+            ColumnMapping[] mappingSchema = null)
         {
             this.kustoTableManagementClient.CreateTable(tableName, tableSchema, databaseName);
 
-            this.kustoTableManagementClient.CreateTableMapping(tableMappingName, mappingSchema, tableName, databaseName);
+            if (tableMappingName != null && mappingSchema != null)
+            {
+                this.kustoTableManagementClient.CreateTableMapping(tableMappingName, mappingSchema, tableName, databaseName);
+            }
         }
     }
 }

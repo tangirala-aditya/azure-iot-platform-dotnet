@@ -25,6 +25,10 @@
       <Link>Tasks\ARMTemplates\sajob.json</Link>
       <LogicalName>sajob.json</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tasks\ARMTemplates\sajob_ADX.json">
+      <Link>Tasks\ARMTemplates\sajob_ADX.json</Link>
+      <LogicalName>sajob_ADX.json</LogicalName>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tasks\GrafanaTemplates\grafana-admin-dashboard.json">
       <Link>Tasks\GrafanaTemplates\grafana-admin-dashboard.json</Link>
       <LogicalName>grafana-admin-dashboard.json</LogicalName>

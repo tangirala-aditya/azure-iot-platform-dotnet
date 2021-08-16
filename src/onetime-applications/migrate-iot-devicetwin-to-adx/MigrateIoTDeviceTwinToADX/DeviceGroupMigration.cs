@@ -14,6 +14,8 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Logging;
 using MigrateIoTDeviceTwinToADX.Helpers;
 using MigrateIoTDeviceTwinToADX.Models;
+
+using Mmm.Iot.MigrateIoTDeviceTwinToADX.Config;
 using Mmm.Iot.MigrateIoTDeviceTwinToADX.Helpers;
 using Mmm.Iot.MigrateIoTDeviceTwinToADX.Models;
 using Newtonsoft.Json;
@@ -30,12 +32,14 @@ namespace Mmm.Iot.MigrateIoTDeviceTwinToADX
         private readonly TableStorageHelper tableStorageClient;
         private readonly TenantConnectionHelper tenantConnectionHelper;
         private readonly ILogger logger;
+        private readonly AppConfig appConfig;
 
-        public DeviceGroupMigration(TableStorageHelper tableStorageClient, TenantConnectionHelper tenantConnectionHelper, ILogger logger)
+        public DeviceGroupMigration(TableStorageHelper tableStorageClient, TenantConnectionHelper tenantConnectionHelper, ILogger logger, AppConfig appConfig)
         {
             this.tableStorageClient = tableStorageClient;
             this.tenantConnectionHelper = tenantConnectionHelper;
             this.logger = logger;
+            this.appConfig = appConfig;
         }
 
         public string TenantTableId => "tenant";
@@ -97,7 +101,8 @@ namespace Mmm.Iot.MigrateIoTDeviceTwinToADX
         public async Task<IEnumerable<DeviceGroup>> GetDeviceGroups(string tenantId)
         {
             var sqlQuery = CosmosOperations.GetDocumentsByCollectionId("CollectionId", "devicegroups");
-            CosmosOperations storageClient = await CosmosOperations.GetClientAsync();
+            string cosmosConnectionString = this.appConfig.Global.CosmosDb.DocumentDbConnectionString;
+            CosmosOperations storageClient = await CosmosOperations.GetClientAsync(cosmosConnectionString);
             var docs = await storageClient.QueryDocumentsAsync(
                "pcs-storage",
                $"pcs-{tenantId}",

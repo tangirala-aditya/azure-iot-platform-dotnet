@@ -35,7 +35,7 @@ namespace Mmm.Iot.AsaManager.Services.External.IotHubManager
                 }
 
                 var query = JsonConvert.SerializeObject(conditions);
-                var url = $"{this.ServiceUri}/devices?query={query}";
+                var url = $"{this.ServiceUri}/devices/iothub?query={query}";
                 return await this.RequestHelper.ProcessRequestAsync<DeviceListModel>(HttpMethod.Get, url, tenantId, headers);
             }
             catch (Exception e)

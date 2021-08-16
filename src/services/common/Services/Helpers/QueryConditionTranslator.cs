@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using MigrateIoTDeviceTwinToADX.Models;
+using Mmm.Iot.Common.Services.Models;
 using Newtonsoft.Json;
 
-namespace MigrateIoTDeviceTwinToADX.Helpers
+namespace Mmm.Iot.Common.Services.Helpers
 {
     public static class QueryConditionTranslator
     {

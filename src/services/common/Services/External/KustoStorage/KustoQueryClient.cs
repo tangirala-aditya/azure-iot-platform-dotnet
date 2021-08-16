@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Kusto.Cloud.Platform.Data;
@@ -78,7 +79,44 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
                     queryResults.Add(data.ToObject<TDestination>());
                 }
 
+                result.Close();
+
                 return queryResults;
+            }
+            catch (Exception e)
+            {
+                this.logger.LogError(e, "Error reading from kusto database {database}", databaseName);
+                throw;
+            }
+        }
+
+        public async Task<int> ExecuteCountQueryAsync(
+            string databaseName,
+            string query,
+            Dictionary<string, string> queryParameter)
+        {
+            int count = 0;
+            try
+            {
+                var clientRequestProperties = new ClientRequestProperties();
+
+                if (queryParameter != null)
+                {
+                    clientRequestProperties = new ClientRequestProperties(
+                                    options: null,
+                                    parameters: queryParameter);
+                }
+
+                clientRequestProperties.ClientRequestId = Guid.NewGuid().ToString();
+
+                using var reader = await this.client.ExecuteQueryAsync(databaseName, query, clientRequestProperties);
+
+                while (reader.Read())
+                {
+                    count = reader.GetInt32(0);
+                }
+
+                return count;
             }
             catch (Exception e)
             {

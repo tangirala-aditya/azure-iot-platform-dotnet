@@ -11,6 +11,7 @@ using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.AsaManager;
 using Mmm.Iot.Common.Services.External.CosmosDb;
+using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
 using Mmm.Iot.DeviceTelemetry.Services;
 using Mmm.Iot.DeviceTelemetry.Services.External;
@@ -28,6 +29,7 @@ namespace Mmm.Iot.DeviceTelemetry.WebService.Test.Controllers
         private readonly Mock<IHttpContextAccessor> httpContextAccessor;
         private readonly Mock<IAppConfigurationClient> appConfigHelper;
         private readonly Mock<IAsaManagerClient> asaManager;
+        private readonly Mock<IKustoQueryClient> kustoQuery;
         private bool disposedValue = false;
         private AlarmsByRuleController controller;
         private List<Alarm> sampleAlarms;
@@ -54,7 +56,7 @@ namespace Mmm.Iot.DeviceTelemetry.WebService.Test.Controllers
             var config = new AppConfig();
             this.storage = new StorageClient(config, new Mock<ILogger<StorageClient>>().Object);
             this.storage.CreateCollectionIfNotExistsAsync(config.DeviceTelemetryService.Alarms.Database, string.Empty);
-
+            this.kustoQuery = new Mock<IKustoQueryClient>();
             this.sampleAlarms = this.GetSampleAlarms();
             foreach (Alarm sampleAlarm in this.sampleAlarms)
             {
@@ -64,7 +66,7 @@ namespace Mmm.Iot.DeviceTelemetry.WebService.Test.Controllers
                     this.AlarmToDocument(sampleAlarm));
             }
 
-            Alarms alarmService = new Alarms(config, this.storage, new Mock<ILogger<Alarms>>().Object, this.httpContextAccessor.Object, this.appConfigHelper.Object);
+            Alarms alarmService = new Alarms(config, this.storage, new Mock<ILogger<Alarms>>().Object, this.httpContextAccessor.Object, this.appConfigHelper.Object, this.kustoQuery.Object);
             Rules rulesService = new Rules(storageAdapterClient.Object, this.asaManager.Object, new Mock<ILogger<Rules>>().Object, alarmService, new Mock<IDiagnosticsClient>().Object);
             this.controller = new AlarmsByRuleController(alarmService, rulesService, this.logger.Object, config);
         }

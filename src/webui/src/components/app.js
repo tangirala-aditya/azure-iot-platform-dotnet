@@ -41,7 +41,9 @@ class App extends Component {
     UNSAFE_componentWillMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
         IdentityGatewayService.getDashboardMode().subscribe((value) => {
-            this.setState({ isGrafana: value.toUpperCase() === "TRUE" });
+            this.setState({
+                isGrafana: (value && value.toUpperCase()) === "TRUE",
+            });
         });
     }
 

@@ -371,6 +371,86 @@ jobs:
           arguments: --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v$(certManagerVersion3)/cert-manager.crds.yaml
           outputFormat: name
 
+  - job: grafana
+    dependsOn:
+      - aks  
+    displayName: Provision Grafana Volume 
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+
+      - task: Kubernetes@1
+        displayName: Create Persistent Volume for Grafana
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          useConfigurationFile: true
+          configuration: pipelines/cd/grafana/persistent-volume.yaml
+
+      - task: Kubernetes@1
+        displayName: Create Persistent Volume Claim for Grafana
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          useConfigurationFile: true
+          configuration: pipelines/cd/grafana/persistent-volume-claim.yaml
+
+  - job: grafanaV3
+    dependsOn:
+      - aksV3  
+    displayName: Provision Grafana Volume V3 
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+
+      - task: Kubernetes@1
+        displayName: Create Persistent Volume for Grafana
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          useConfigurationFile: true
+          configuration: pipelines/cd/grafana/persistent-volume.yaml
+
+      - task: Kubernetes@1
+        displayName: Create Persistent Volume Claim for Grafana
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          useConfigurationFile: true
+          configuration: pipelines/cd/grafana/persistent-volume-claim.yaml
+                
   - job: storageAccount
     displayName: Provision Storage Account
     dependsOn:
@@ -405,6 +485,18 @@ jobs:
           csmParametersFile: $(armParametersDirectory)/$(storageAccountPartialName).json
           overrideParameters: -storageAccountName $(storageAccountName) -blobContainerName $(blobContainerName) -location ${{parameters.locationName}}
           deploymentMode: Incremental
+          addSpnToEnvironment: true
+
+      - task: AzureCLI@2
+        displayName: Create Azure File share for grafana dashboard
+        name: getStorageAccountConnectionString
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+           storageAccountConnectionString=$(az storage account show-connection-string -n $(storageAccountName) -g $(resourceGroupName) -o tsv)
+           az storage share create -n $(aksFileName) --connection-string $storageAccountConnectionString --quota 1
           addSpnToEnvironment: true
 
       - template: steps-delete-oldest-deployment.yaml
@@ -666,8 +758,10 @@ jobs:
           scriptType: bash
           inlineScript: |-
             az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            storageAccountKey=$(az storage account keys list --account-name $(storageAccountName) | jq -r .[0].value)
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
+            kubectl create secret generic --namespace=default azure-secret --from-literal=azurestorageaccountname=$(storageAccountName) --from-literal=azurestorageaccountkey=$storageAccountKey --dry-run=client -o yaml | kubectl apply -f -
 
   - job: globalsecretsV3
     displayName: Create K8s secrets
@@ -695,9 +789,10 @@ jobs:
           scriptType: bash
           inlineScript: |-
             az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            storageAccountKey=$(az storage account keys list --account-name $(storageAccountName) | jq -r .[0].value)
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
-
+            kubectl create secret generic --namespace=default azure-secret --from-literal=azurestorageaccountname=$(storageAccountName) --from-literal=azurestorageaccountkey=$storageAccountKey --dry-run=client -o yaml | kubectl apply -f -
 
   - job: appInsights
     displayName: Provision Application Insights

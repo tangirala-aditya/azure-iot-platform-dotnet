@@ -69,6 +69,8 @@ variables:
     value: false
   - name: loadGrafanaDashboard
     value: true
+  - name: aksFileName
+    value: grafanadashboard     
 
 
 

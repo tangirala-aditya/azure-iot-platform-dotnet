@@ -6,7 +6,7 @@ parameters:
   applicationCode:
   applicationShortCode:
   appInsightsLocation: 
-  environmentCategory:s
+  environmentCategory:
   kubernetesVersion:
   sendgridEmail:
   aksAgentVmSize: Standard_DS2_v2

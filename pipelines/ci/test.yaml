@@ -316,113 +316,113 @@ stages:
             artifact: $(commitsSinceLastReleaseArtifactName)
             displayName: Publish list of commits since last release
 
-  - stage: microsoftSecurityCodeAnalysis
-    displayName: Microsoft Security Code Analysis
-    dependsOn:
-      - build
-    jobs:
-      - job: microsoftSecurityCodeAnalysis
-        displayName: Microsoft Security Code Analysis
-        pool:
-          vmImage: windows-latest
-        steps:
-          - checkout: self
-            displayName: Checkout repository
+  # - stage: microsoftSecurityCodeAnalysis
+  #   displayName: Microsoft Security Code Analysis
+  #   dependsOn:
+  #     - build
+  #   jobs:
+  #     - job: microsoftSecurityCodeAnalysis
+  #       displayName: Microsoft Security Code Analysis
+  #       pool:
+  #         vmImage: windows-latest
+  #       steps:
+  #         - checkout: self
+  #           displayName: Checkout repository
 
-          - task: DownloadPipelineArtifact@2
-            displayName: Download artifacts
-            inputs:
-              source: current
-              artifact: $(publishedFilesArtifactName)
-              path: $(Build.SourcesDirectory)
+  #         - task: DownloadPipelineArtifact@2
+  #           displayName: Download artifacts
+  #           inputs:
+  #             source: current
+  #             artifact: $(publishedFilesArtifactName)
+  #             path: $(Build.SourcesDirectory)
 
-          - task: AntiMalware@3
-            displayName: Scan for malware
-            inputs:
-              InputType: 'Basic'
-              ScanType: 'CustomScan'
-              FileDirPath: '$(Build.SourcesDirectory)'
-              EnableServices: true
-              SupportLogOnError: true
-              TreatSignatureUpdateFailureAs: 'Warning'
-              SignatureFreshness: 'UpToDate'
-              TreatStaleSignatureAs: 'Warning'
+  #         - task: AntiMalware@3
+  #           displayName: Scan for malware
+  #           inputs:
+  #             InputType: 'Basic'
+  #             ScanType: 'CustomScan'
+  #             FileDirPath: '$(Build.SourcesDirectory)'
+  #             EnableServices: true
+  #             SupportLogOnError: true
+  #             TreatSignatureUpdateFailureAs: 'Warning'
+  #             SignatureFreshness: 'UpToDate'
+  #             TreatStaleSignatureAs: 'Warning'
 
-          - task: CredScan@2
-            displayName: Scan for credentials
-            inputs:
-              verboseOutput: true
+  #         - task: CredScan@2
+  #           displayName: Scan for credentials
+  #           inputs:
+  #             verboseOutput: true
 
-          - task: SdtReport@1
-            displayName: Generate report
-            inputs:
-              AllTools: false
-              BinSkim: true
-              BinSkimBreakOn: Error
-              CredScan: true
-              MSRD: false
-              RoslynAnalyzers: false
-              RoslynAnalyzersBreakOn: Error
-              TSLint: false
-              ToolLogsNotFoundAction: Standard
+  #         - task: SdtReport@1
+  #           displayName: Generate report
+  #           inputs:
+  #             AllTools: false
+  #             BinSkim: true
+  #             BinSkimBreakOn: Error
+  #             CredScan: true
+  #             MSRD: false
+  #             RoslynAnalyzers: false
+  #             RoslynAnalyzersBreakOn: Error
+  #             TSLint: false
+  #             ToolLogsNotFoundAction: Standard
 
-          - task: PublishSecurityAnalysisLogs@2
-            displayName: Publish report
-            inputs:
-              ArtifactName: CodeAnalysisLogs
-              ArtifactType: Container
-              AllTools: true
-              ToolLogsNotFoundAction: Standard
+  #         - task: PublishSecurityAnalysisLogs@2
+  #           displayName: Publish report
+  #           inputs:
+  #             ArtifactName: CodeAnalysisLogs
+  #             ArtifactType: Container
+  #             AllTools: true
+  #             ToolLogsNotFoundAction: Standard
 
-  - stage: unitTest
-    displayName: Unit test
-    dependsOn:
-      - build
-    jobs:
-      - job: unitTest
-        displayName: Unit test
-        variables:
-          - name: excludeFromCodeCoverage
-            value: "[Mmm.*.Test*]*%2C[Mmm.*.WebService]*Startup%2C[Mmm.*.WebService]*Program%2C[*]Mmm.Iot.Common.Services.Config.*%2C[*]*DependencyResolution*%2C[*]Mmm.*Model*"
-        steps:
-          - checkout: none
+  # - stage: unitTest
+  #   displayName: Unit test
+  #   dependsOn:
+  #     - build
+  #   jobs:
+  #     - job: unitTest
+  #       displayName: Unit test
+  #       variables:
+  #         - name: excludeFromCodeCoverage
+  #           value: "[Mmm.*.Test*]*%2C[Mmm.*.WebService]*Startup%2C[Mmm.*.WebService]*Program%2C[*]Mmm.Iot.Common.Services.Config.*%2C[*]*DependencyResolution*%2C[*]Mmm.*Model*"
+  #       steps:
+  #         - checkout: none
 
-          - task: DownloadPipelineArtifact@2
-            displayName: Download artifacts
-            inputs:
-              source: current
-              artifact: $(publishedFilesArtifactName)
-              path: $(Build.SourcesDirectory)
+  #         - task: DownloadPipelineArtifact@2
+  #           displayName: Download artifacts
+  #           inputs:
+  #             source: current
+  #             artifact: $(publishedFilesArtifactName)
+  #             path: $(Build.SourcesDirectory)
 
-          - task: UseDotNet@2
-            inputs:
-              packageType: 'sdk'
-              version: '3.1.x'
-              includePreviewVersions: true
+  #         - task: UseDotNet@2
+  #           inputs:
+  #             packageType: 'sdk'
+  #             version: '3.1.x'
+  #             includePreviewVersions: true
 
 
-          - task: DotNetCoreCLI@2
-            displayName: Run unit tests
-            inputs:
-              command: test
-              workingDirectory: $(Build.SourcesDirectory)
-              arguments: >-
-                --no-build
-                --configuration $(dotnetBuildConfiguration)
-                --runtime $(dotnetProductionRuntimeId)
-                --logger trx
-                /p:CollectCoverage=true
-                /p:CoverletOutputFormat=cobertura
-                "/p:Exclude=\"$(excludeFromCodeCoverage)\""
-          - script: |-
-              dotnet tool install --tool-path ./reportgenerator-tool dotnet-reportgenerator-globaltool
-              ./reportgenerator-tool/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:. -reporttypes:"Cobertura"
-            displayName: Generate coverage report
-          - task: PublishCodeCoverageResults@1
-            displayName: Publish test coverage
-            inputs:
-              codeCoverageTool: Cobertura
-              summaryFileLocation: Cobertura.xml
+  #         - task: DotNetCoreCLI@2
+  #           displayName: Run unit tests
+  #           inputs:
+  #             command: test
+  #             workingDirectory: $(Build.SourcesDirectory)
+  #             arguments: >-
+  #               --no-build
+  #               --configuration $(dotnetBuildConfiguration)
+  #               --runtime $(dotnetProductionRuntimeId)
+  #               --logger trx
+  #               /p:CollectCoverage=true
+  #               /p:CoverletOutputFormat=cobertura
+  #               "/p:Exclude=\"$(excludeFromCodeCoverage)\""
+  #         - script: |-
+  #             dotnet tool install --tool-path ./reportgenerator-tool dotnet-reportgenerator-globaltool
+  #             ./reportgenerator-tool/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:. -reporttypes:"Cobertura"
+  #           displayName: Generate coverage report
+  #         - task: PublishCodeCoverageResults@1
+  #           displayName: Publish test coverage
+  #           inputs:
+  #             codeCoverageTool: Cobertura
+  #             summaryFileLocation: Cobertura.xml
 
   - stage: buildFrontEndContainers
     displayName: Build front-end containers
@@ -479,6 +479,7 @@ stages:
               tags: |-
                 $(Build.BuildId)
                 $(Build.SourceVersion)
+
   - stage: buildServiceContainers
     displayName: Build service containers
     dependsOn:
@@ -559,6 +560,7 @@ stages:
                   $replyUrls.Add('$(authenticationCallbackUrl)')
                   Set-AzureADMSApplication -ObjectId $app.Id -Web @{ RedirectUris = $replyUrls }
                 }
+
   - stage: deployIngress
     displayName: Deploy ingress
     dependsOn: []
@@ -587,6 +589,7 @@ stages:
                   kubectl create namespace $(kubernetesNamespace) --output json
                 }
                 az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(kubernetesNamespaceWasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+
           - template: ../templates/steps-install-helm.yaml
             parameters:
               helmVersion: $(helmVersion)
@@ -615,6 +618,7 @@ stages:
                 --set letsEncryptEnvironment=staging
                 --timeout $(helmInstallTimeoutInSeconds)
                 --wait
+
           - task: AzureCLI@2
             displayName: Note ingress Helm chart was installed
             inputs:
@@ -624,6 +628,7 @@ stages:
               inlineScript: |-
                 set -Eeuxo pipefail
                 az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
+
           - task: AzureCLI@2
             displayName: Configure DNS
             name: configureDns
@@ -644,6 +649,7 @@ stages:
                   Start-Sleep -Seconds 10
                   $certificateIsReady = kubectl get certificates --namespace $(kubernetesNamespace) --output jsonpath="{.items[0].status.conditions[?(@.type=='Ready')].status}"
                 }
+
   - stage: deployServices
     displayName: Deploy services
     dependsOn:
@@ -688,6 +694,7 @@ stages:
               set -Eeuxo pipefail
               sed -i -e 's/replace_this_imageTag/$(Build.BuildId)/g' $(mmmIotPlatformServicesHelmChartValuesFile)
             displayName: Set image tag
+
           - task: HelmDeploy@0
             displayName: Install services Helm chart
             inputs:
@@ -708,6 +715,7 @@ stages:
                 --set secrets.globalsecrets.Global__AzureB2cBaseUri=https://login.microsoftonline.com/crsltestab2c.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_testpolicy&client_id=$(azureAdB2cAppRegistrationClientIdTest)&nonce=defaultNonce&redirect_uri=https%3A%2F%2Flocalhost%3A44367%2Fconnect%2Fcallback&scope=openid&response_type=id_token&prompt=login&response_mode=form_post
                 --timeout $(helmInstallTimeoutInSeconds)
                 --wait
+
           - task: AzureCLI@2
             displayName: Note services Helm chart was installed
             inputs:
@@ -717,133 +725,134 @@ stages:
               inlineScript: |-
                 set -Eeuxo pipefail
                 az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(mmmIotPlatformServicesHelmChartWasInstalledRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
-  - stage: functionalTest
-    displayName: Functional tests
-    dependsOn:
-      - deployIngress
-      - deployServices
-      - addAuthenticationCallbackUrl
-    jobs:
-      - job: addFunctionalTestAccount
-        displayName: Add Functional Test Account
-        dependsOn: []
-        steps:
-        - checkout: none
-        - task: AzureCLI@2
-          displayName: Add TestAccount details  to App Configuration
-          inputs:
-              azureSubscription: $(subscriptionName)
-              addSpnToEnvironment: true
-              scriptLocation: inlineScript
-              scriptType: bash
-              inlineScript: |-
-                set -Eeuxo pipefail
-                az appconfig kv set --key TestUserCredentials:Admin:Password --value $(testAdminPasskey) --name $(appConfigurationName)  --yes
-                az appconfig kv set --key TestUserCredentials:Admin:UserEmail --value $(testAdminEmail) --name $(appConfigurationName)  --yes
-                az appconfig kv set --key TestUserCredentials:Readonly:Password --value $(testUserPasskey) --name $(appConfigurationName)  --yes
-                az appconfig kv set --key TestUserCredentials:Readonly:UserEmail --value $(testUserEmail) --name $(appConfigurationName)  --yes
-                az appconfig kv set --key TestUserCredentials:SystemAdmin:Password --value $(testSystemAdminPasskey) --name $(appConfigurationName)  --yes
-                az appconfig kv set --key TestUserCredentials:SystemAdmin:UserEmail --value $(testSystemAdminEmail) --name $(appConfigurationName)  --yes          
-          
-        - task: AzurePowerShell@5
-          displayName: Verify and add Test Account in the User Table
-          inputs:
-            azureSubscription: $(subscriptionName)
-            azurePowerShellVersion: LatestVersion
-            ScriptType: InlineScript
-            Inline: |
-              Install-Module AzTable -force
-              $table = Get-AzTableTable -resourceGroup $(resourceGroupName) -tableName $(usersTableName) -storageAccountName $(storageAccountName)
-              $saTable = Get-AzTableTable -resourceGroup $(resourceGroupName) -tableName $(sysAdminTableName) -storageAccountName $(storageAccountName)
-              $datetimevariable = Get-Date -Format "yyyy-MM-ddTHH:mm:ss:fffffffZ"
-              $testUser = Get-AzTableRowByPartitionKeyRowKey -Table $table -PartitionKey $(testAccountUser) -RowKey $(serenityDevTenantId)
-              $testAdmin =Get-AzTableRowByPartitionKeyRowKey -Table $table -PartitionKey $(testAccountAdmin) -RowKey $(serenityDevTenantId)
-              $testSystemAdmin = Get-AzTableRowByPartitionKeyRowKey -Table $table -PartitionKey $(testAccountSysAdmin) -RowKey $(serenityDevTenantId)
-              $saTestSystemAdmin = Get-AzTableRowByPartitionKey -Table $saTable -PartitionKey $(testAccountSysAdmin)
-            
-              if(($testUser -eq $Null) -or ($testUser.Roles -ne '["readonly"]')){
-                  Add-AzTableRow `
-                  -table $table `
-                  -partitionKey $(testAccountUser) `
-                  -rowKey $(serenityDevTenantId) -property @{"Timestamp"=$datetimevariable;"Roles"='["readonly"]';"Name"="TestAccount - User";"Type"="Member"}
-              }
-              if(($testAdmin -eq $Null) -or ($testAdmin.Roles -ne '["admin"]')){
-                  Add-AzTableRow `
-                  -table $table `
-                  -partitionKey $(testAccountAdmin) `
-                  -rowKey $(serenityDevTenantId) -property @{"Timestamp"=$datetimevariable;"Roles"='["admin"]';"Name"="TestAccount - Admin";"Type"="Member"}
-              }
-              if(($testSystemAdmin -eq $Null) -or ($testSystemAdmin.Roles -ne '["admin"]')){
-                  Add-AzTableRow `
-                  -table $table `
-                  -partitionKey $(testAccountSysAdmin) `
-                  -rowKey $(serenityDevTenantId) -property @{"Timestamp"=$datetimevariable;"Roles"='["admin"]';"Name"="TestAccount - SystemAdmin";"Type"="Member"}
-              }
-              if($saTestSystemAdmin -eq $Null){
-                  Add-AzTableRow `
-                  -table $saTable `
-                  -partitionKey $(testAccountSysAdmin) `
-                  -rowKey $(testAccountSysAdmin) -property @{"Timestamp"=$datetimevariable;"Name"="TestAccount - SystemAdmin";"Type"="Member"}
-              }
-      - job: getPipelineVariables
-        displayName: Get pipeline variables
-        dependsOn: 
-          - addFunctionalTestAccount
-        steps:
-          - checkout: none
-          - task: AzureCLI@2
-            displayName: Get pipeline variables
-            name: getPipelineVariables
-            inputs:
-              azureSubscription: $(subscriptionName)
-              scriptType: bash
-              scriptLocation: inlineScript
-              inlineScript: |-
-                appConfigurationConnectionString=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(tableStorageAppConfigurationConnectionStringRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
-                echo "##vso[task.setvariable variable=appConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
-      - job: functionalTest
-        displayName: Functional test
-        dependsOn:
-          - getPipelineVariables
-        variables:
-          SerenityBaseUrl: https://$(testPipelineFqdn)
-          AppConfigurationConnectionString: $[dependencies.getPipelineVariables.outputs['getPipelineVariables.appConfigurationConnectionString']]
-          SerenityTenantId: $(serenityDevTenantId)
-        steps:
-          - checkout: azure-iot-functional-tests
-            displayName: Checkout repository
 
-          - task: AzureCLI@2
-            displayName: Wait for webui pod to be ready
-            name: getPipelineVariables
-            inputs:
-              azureSubscription: $(subscriptionName)
-              scriptType: bash
-              scriptLocation: inlineScript
-              inlineScript: |-
-                set -Eeuxo pipefail
-                az aks get-credentials --name $(aksName) --resource-group $(resourceGroupName) --overwrite-existing
-                kubectl get pods -n $(kubernetesNamespace)
-                kubectl wait pods --for=condition=Ready --selector app.kubernetes.io/name=webui -n $(kubernetesNamespace)
-                kubectl wait pods --for=condition=Ready --timeout=500s --selector app.kubernetes.io/name=reverse-proxy -n $(kubernetesNamespace)
-          - task: DotNetCoreCLI@2
-            displayName: Run functional tests
-            continueOnError: true
-            inputs:
-              command: test
-              arguments: >-
-                --configuration $(dotnetBuildConfiguration)
-                --logger trx
-                --filter 'Category!=Flaky'
-          - bash: |
-              if [ -d $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshots ]; then
-                echo "##vso[task.setvariable variable=testResultFileExists]true"
-              fi
-          - publish: $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshots
-            artifact: UITestScreenshots
-            displayName: Publish UI Test screenshots artifacts
-            condition: eq(variables.testResultFileExists, 'true')
-            continueOnError: true
+  # - stage: functionalTest
+  #   displayName: Functional tests
+  #   dependsOn:
+  #     - deployIngress
+  #     - deployServices
+  #     - addAuthenticationCallbackUrl
+  #   jobs:
+  #     - job: addFunctionalTestAccount
+  #       displayName: Add Functional Test Account
+  #       dependsOn: []
+  #       steps:
+  #       - checkout: none
+  #       - task: AzureCLI@2
+  #         displayName: Add TestAccount details  to App Configuration
+  #         inputs:
+  #             azureSubscription: $(subscriptionName)
+  #             addSpnToEnvironment: true
+  #             scriptLocation: inlineScript
+  #             scriptType: bash
+  #             inlineScript: |-
+  #               set -Eeuxo pipefail
+  #               az appconfig kv set --key TestUserCredentials:Admin:Password --value $(testAdminPasskey) --name $(appConfigurationName)  --yes
+  #               az appconfig kv set --key TestUserCredentials:Admin:UserEmail --value $(testAdminEmail) --name $(appConfigurationName)  --yes
+  #               az appconfig kv set --key TestUserCredentials:Readonly:Password --value $(testUserPasskey) --name $(appConfigurationName)  --yes
+  #               az appconfig kv set --key TestUserCredentials:Readonly:UserEmail --value $(testUserEmail) --name $(appConfigurationName)  --yes
+  #               az appconfig kv set --key TestUserCredentials:SystemAdmin:Password --value $(testSystemAdminPasskey) --name $(appConfigurationName)  --yes
+  #               az appconfig kv set --key TestUserCredentials:SystemAdmin:UserEmail --value $(testSystemAdminEmail) --name $(appConfigurationName)  --yes          
+          
+  #       - task: AzurePowerShell@5
+  #         displayName: Verify and add Test Account in the User Table
+  #         inputs:
+  #           azureSubscription: $(subscriptionName)
+  #           azurePowerShellVersion: LatestVersion
+  #           ScriptType: InlineScript
+  #           Inline: |
+  #             Install-Module AzTable -force
+  #             $table = Get-AzTableTable -resourceGroup $(resourceGroupName) -tableName $(usersTableName) -storageAccountName $(storageAccountName)
+  #             $saTable = Get-AzTableTable -resourceGroup $(resourceGroupName) -tableName $(sysAdminTableName) -storageAccountName $(storageAccountName)
+  #             $datetimevariable = Get-Date -Format "yyyy-MM-ddTHH:mm:ss:fffffffZ"
+  #             $testUser = Get-AzTableRowByPartitionKeyRowKey -Table $table -PartitionKey $(testAccountUser) -RowKey $(serenityDevTenantId)
+  #             $testAdmin =Get-AzTableRowByPartitionKeyRowKey -Table $table -PartitionKey $(testAccountAdmin) -RowKey $(serenityDevTenantId)
+  #             $testSystemAdmin = Get-AzTableRowByPartitionKeyRowKey -Table $table -PartitionKey $(testAccountSysAdmin) -RowKey $(serenityDevTenantId)
+  #             $saTestSystemAdmin = Get-AzTableRowByPartitionKey -Table $saTable -PartitionKey $(testAccountSysAdmin)
+            
+  #             if(($testUser -eq $Null) -or ($testUser.Roles -ne '["readonly"]')){
+  #                 Add-AzTableRow `
+  #                 -table $table `
+  #                 -partitionKey $(testAccountUser) `
+  #                 -rowKey $(serenityDevTenantId) -property @{"Timestamp"=$datetimevariable;"Roles"='["readonly"]';"Name"="TestAccount - User";"Type"="Member"}
+  #             }
+  #             if(($testAdmin -eq $Null) -or ($testAdmin.Roles -ne '["admin"]')){
+  #                 Add-AzTableRow `
+  #                 -table $table `
+  #                 -partitionKey $(testAccountAdmin) `
+  #                 -rowKey $(serenityDevTenantId) -property @{"Timestamp"=$datetimevariable;"Roles"='["admin"]';"Name"="TestAccount - Admin";"Type"="Member"}
+  #             }
+  #             if(($testSystemAdmin -eq $Null) -or ($testSystemAdmin.Roles -ne '["admin"]')){
+  #                 Add-AzTableRow `
+  #                 -table $table `
+  #                 -partitionKey $(testAccountSysAdmin) `
+  #                 -rowKey $(serenityDevTenantId) -property @{"Timestamp"=$datetimevariable;"Roles"='["admin"]';"Name"="TestAccount - SystemAdmin";"Type"="Member"}
+  #             }
+  #             if($saTestSystemAdmin -eq $Null){
+  #                 Add-AzTableRow `
+  #                 -table $saTable `
+  #                 -partitionKey $(testAccountSysAdmin) `
+  #                 -rowKey $(testAccountSysAdmin) -property @{"Timestamp"=$datetimevariable;"Name"="TestAccount - SystemAdmin";"Type"="Member"}
+  #             }
+  #     - job: getPipelineVariables
+  #       displayName: Get pipeline variables
+  #       dependsOn: 
+  #         - addFunctionalTestAccount
+  #       steps:
+  #         - checkout: none
+  #         - task: AzureCLI@2
+  #           displayName: Get pipeline variables
+  #           name: getPipelineVariables
+  #           inputs:
+  #             azureSubscription: $(subscriptionName)
+  #             scriptType: bash
+  #             scriptLocation: inlineScript
+  #             inlineScript: |-
+  #               appConfigurationConnectionString=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(tableStorageAppConfigurationConnectionStringRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+  #               echo "##vso[task.setvariable variable=appConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
+  #     - job: functionalTest
+  #       displayName: Functional test
+  #       dependsOn:
+  #         - getPipelineVariables
+  #       variables:
+  #         SerenityBaseUrl: https://$(testPipelineFqdn)
+  #         AppConfigurationConnectionString: $[dependencies.getPipelineVariables.outputs['getPipelineVariables.appConfigurationConnectionString']]
+  #         SerenityTenantId: $(serenityDevTenantId)
+  #       steps:
+  #         - checkout: azure-iot-functional-tests
+  #           displayName: Checkout repository
+
+  #         - task: AzureCLI@2
+  #           displayName: Wait for webui pod to be ready
+  #           name: getPipelineVariables
+  #           inputs:
+  #             azureSubscription: $(subscriptionName)
+  #             scriptType: bash
+  #             scriptLocation: inlineScript
+  #             inlineScript: |-
+  #               set -Eeuxo pipefail
+  #               az aks get-credentials --name $(aksName) --resource-group $(resourceGroupName) --overwrite-existing
+  #               kubectl get pods -n $(kubernetesNamespace)
+  #               kubectl wait pods --for=condition=Ready --selector app.kubernetes.io/name=webui -n $(kubernetesNamespace)
+  #               kubectl wait pods --for=condition=Ready --timeout=500s --selector app.kubernetes.io/name=reverse-proxy -n $(kubernetesNamespace)
+  #         - task: DotNetCoreCLI@2
+  #           displayName: Run functional tests
+  #           continueOnError: true
+  #           inputs:
+  #             command: test
+  #             arguments: >-
+  #               --configuration $(dotnetBuildConfiguration)
+  #               --logger trx
+  #               --filter 'Category!=Flaky'
+  #         - bash: |
+  #             if [ -d $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshots ]; then
+  #               echo "##vso[task.setvariable variable=testResultFileExists]true"
+  #             fi
+  #         - publish: $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshots
+  #           artifact: UITestScreenshots
+  #           displayName: Publish UI Test screenshots artifacts
+  #           condition: eq(variables.testResultFileExists, 'true')
+  #           continueOnError: true
 
   - stage: enumerateDependencies
     displayName: Enumerate dependencies
@@ -919,7 +928,6 @@ stages:
   - stage: cleanup
     displayName: Cleanup
     dependsOn:
-      - functionalTest
       - enumerateDependencies
       - deployServices
     condition: and(succeededOrFailed(), eq(variables['runCleanupStage'], 'true'))
@@ -944,6 +952,7 @@ stages:
                 echo "##vso[task.setvariable variable=mmmIotPlatformServicesHelmChartWasInstalled;isOutput=true]$mmmIotPlatformServicesHelmChartWasInstalled"
                 mmmIotPlatformIngressHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
                 echo "##vso[task.setvariable variable=mmmIotPlatformIngressHelmChartWasInstalled;isOutput=true]$mmmIotPlatformIngressHelmChartWasInstalled"
+
       - job: deleteDnsRecordSet
         displayName: Delete DNS record set
         dependsOn: []
@@ -962,6 +971,7 @@ stages:
                 if ($recordSetCount -gt 0) {
                   az network dns record-set a delete --name $(buildId) --zone-name $(testPipelineDomain) --resource-group "rg-iot-crsl-dev" --yes
                 }
+                
       - job: uninstallServicesChart
         displayName: Uninstall services Helm chart
         dependsOn:

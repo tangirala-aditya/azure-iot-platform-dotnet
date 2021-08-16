@@ -28,6 +28,7 @@ function New-GrafanaApiKey {
           $response = Invoke-RestMethod -Uri $uri -Method 'POST' -Headers $headers -Body $body
           $response = ($response | ConvertTo-Json | ConvertFrom-Json)
           $apiKey =  ConvertTo-SecureString $response.key -AsPlainText -Force
+
           Set-AzKeyVaultSecret -VaultName $keyvaultName -Name "Grafana--APIKey" -SecretValue $apiKey
           Write-Host "Added Key...."
      }
@@ -190,6 +191,7 @@ try {
      $cloudTable = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context
      $tableObject = (Get-AzStorageTable -Name "tenant" -Context $cloudTable).CloudTable
      $iotHubArray = (Get-AzTableRow -table $tableObject -CustomFilter 'IsIotHubDeployed eq true')
+     New-GrafanaApiKey -grafanabaseurl $grafanabaseurl -keyvaultName $keyvaultName
      $grafanaApiKey = Get-AzKeyVaultSecret -VaultName $keyvaultName -Name "Grafana--APIKey" -AsPlainText
      Write-Host $grafanaApiKey
 

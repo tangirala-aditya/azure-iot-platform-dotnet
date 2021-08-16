@@ -44,7 +44,7 @@ spec:
         - name: GF_USERS_AUTO_ASSIGN_ORG
           value: "true"
         name: grafana
-        image: docker.io/grafana/grafana:latest
+        image: docker.io/azureiot3m/grafana-custom:latest 
         resources:
           limits:
             memory: "512Mi"

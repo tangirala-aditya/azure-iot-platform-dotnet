@@ -17,8 +17,6 @@ spec:
                claimName: azurefile-pvc
       containers:
       - env:
-        - name: GF_INSTALL_PLUGINS
-          value: grafana-azure-data-explorer-datasource,grafana-worldmap-panel,grafana-simple-json-datasource
         - name: GF_AUTH_ANONYMOUS_ENABLED
           value: "false"
         - name: GF_SERVER_DOMAIN

@@ -179,7 +179,7 @@ try {
      $resourceGroupName = $resourceGroup
      $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
      $keyvaultName = $applicationCode + "-keyvault-" + $environmentCategory
-     $grafanabaseurl = "https://$applicationCode-aks-$environmentCategory.$location.cloudapp.azure.com/grafana/"
+     $grafanabaseurl = "https://$applicationCode-aks-$environmentCategory.$location.cloudapp.azure.com/grafana"
      
      #remove and reisntall pkmngr and install packages
      #Register-PackageSource -Name MyNuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet

@@ -121,7 +121,6 @@ export class GrafanaDashboard extends Component {
     render() {
         const {
                 timeInterval,
-                devices,
                 devicesIsPending,
                 activeDeviceGroup,
                 t,
@@ -169,8 +168,9 @@ export class GrafanaDashboard extends Component {
                         <Cell className={css("col-9")}>
                             <GrafanaTelemetryPanel
                                 t={t}
-                                devices={devices}
                                 grafanaUrl={grafanaUrl}
+                                activeDeviceGroup={activeDeviceGroup}
+                                timeInterval={timeInterval}
                             />
                         </Cell>
                         {Config.showWalkthroughExamples && (

@@ -724,6 +724,8 @@ try {
                 -eventhubsharedaccesspolicykey $eventhubsharedaccesspolicykey `
                 -resourceGroupName $resourceGroup
         }
+		
+		az appconfig kv set --name $appConfigurationName --key "tenant:refreshappconfig" --value $iotTenantId  --yes
     }
 }
 catch {

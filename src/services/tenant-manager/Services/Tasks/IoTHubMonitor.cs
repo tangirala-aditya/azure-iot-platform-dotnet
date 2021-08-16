@@ -221,7 +221,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
             // Set the Refresh Key to new connectionstring so the functions can update
             // values from AppConfiguration
-            await this.appConfigurationClient.SetValueAsync("tenant:refreshappconfig", true.ToString());
+            await this.appConfigurationClient.SetValueAsync("tenant:refreshappconfig", tenantId);
 
             return eventHubNameSpace;
         }

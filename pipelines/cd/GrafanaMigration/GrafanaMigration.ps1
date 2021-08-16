@@ -55,6 +55,7 @@ function New-Dashboards {
      # creation of Main Dashboard for Tenant
 
      $tenantSubString = $apptenantId.Split("-")[0]
+     $appConfigurationName = $applicationCode + "-appconfig-" + $environmentCategory
 
      $dashboardContent = Get-Content '.\pipelines\cd\GrafanaMigration\sample-dashboard_template.json' -raw 
 

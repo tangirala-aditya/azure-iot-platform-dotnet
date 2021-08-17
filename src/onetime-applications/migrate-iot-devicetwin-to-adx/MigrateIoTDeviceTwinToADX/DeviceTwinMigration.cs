@@ -3,10 +3,12 @@
 // </copyright>
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Messaging.EventHubs;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Shared;
@@ -54,8 +56,8 @@ namespace Mmm.Iot.MigrateIoTDeviceTwinToADX
                     List<Twin> deviceTwinList = await this.GetDevices(tenantId);
                     var connectionString = this.tenantConnectionHelper.GetEventHubConnectionString(Convert.ToString(tenantId));
                     EventHubHelper eventHubHelper = new EventHubHelper(connectionString);
-
-                    foreach (var deviceTwin in deviceTwinList)
+                    var eventDatas = new ConcurrentBag<EventData>();
+                    Parallel.ForEach(deviceTwinList, deviceTwin =>
                     {
                         JObject deviceTwinJson = new JObject();
                         deviceTwinJson.Add(DeviceId, deviceTwin.DeviceId);
@@ -69,9 +71,10 @@ namespace Mmm.Iot.MigrateIoTDeviceTwinToADX
                         var byteMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceTwinJson));
                         var eventDeviceTwinData = new Azure.Messaging.EventHubs.EventData(byteMessage);
                         eventDeviceTwinData.Properties.Add(DeviceId, deviceTwin.DeviceId);
+                        eventDatas.Add(eventDeviceTwinData);
+                    });
 
-                        await eventHubHelper.SendMessageToEventHub($"{tenantId}-devicetwin", new Azure.Messaging.EventHubs.EventData[] { eventDeviceTwinData });
-                    }
+                    await eventHubHelper.SendMessageToEventHub($"{tenantId}-devicetwin", eventDatas.ToList());
 
                     this.logger.LogInformation($"Completed device twin migration of tenant: {tenantId} ");
                 }

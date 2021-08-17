@@ -14,7 +14,6 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Logging;
 using MigrateIoTDeviceTwinToADX.Helpers;
 using MigrateIoTDeviceTwinToADX.Models;
-
 using Mmm.Iot.MigrateIoTDeviceTwinToADX.Config;
 using Mmm.Iot.MigrateIoTDeviceTwinToADX.Helpers;
 using Mmm.Iot.MigrateIoTDeviceTwinToADX.Models;
@@ -64,13 +63,14 @@ namespace Mmm.Iot.MigrateIoTDeviceTwinToADX
                     IEnumerable<DeviceGroup> deviceGroupList = await this.GetDeviceGroups(tenantId);
                     var connectionString = this.tenantConnectionHelper.GetEventHubConnectionString(Convert.ToString(tenantId));
                     EventHubHelper eventHubHelper = new EventHubHelper(connectionString);
-
+                    List<EventData> events = new List<EventData>();
                     foreach (var deviceGroup in deviceGroupList)
                     {
                         var result = this.GetDeviceGroupsForADX(deviceGroup);
-
-                        await eventHubHelper.SendMessageToEventHub($"{tenantId}-devicegroup", new Azure.Messaging.EventHubs.EventData[] { result });
+                        events.Add(result);
                     }
+
+                    await eventHubHelper.SendMessageToEventHub($"{tenantId}-devicegroup", events);
 
                     this.logger.LogInformation($"Completed device twin migration of tenant: {tenantId} ");
                 }

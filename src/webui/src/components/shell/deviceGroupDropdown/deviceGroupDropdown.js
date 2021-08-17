@@ -31,6 +31,9 @@ export class DeviceGroupDropdown extends Component {
             if (this.props.updateLoadMore) {
                 this.props.updateLoadMore();
             }
+            if (this.props.updateColumns) {
+                this.props.updateColumns(value);
+            }
         }
         this.props.logEvent(toDiagnosticsModel("DeviceFilter_Select", {}));
     };

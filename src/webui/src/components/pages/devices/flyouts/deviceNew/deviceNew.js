@@ -449,61 +449,64 @@ export class DeviceNew extends LinkedComponent {
             );
 
             if (this.state.formData.isSimulated) {
-                this.provisionSubscription = DeviceSimulationService.incrementSimulatedDeviceModel(
-                    formData.deviceModel,
-                    formData.count
-                ).subscribe(
-                    () => {
-                        this.setState({
-                            successCount: formData.count,
-                            isPending: false,
-                            changesApplied: true,
-                        });
-                        this.props.logEvent(
-                            toSinglePropertyDiagnosticsModel(
-                                "Devices_Created",
-                                "DeviceType",
-                                Config.deviceType.simulated
-                            )
-                        );
-                    },
-                    (error) => {
-                        this.setState({
-                            error,
-                            isPending: false,
-                            changesApplied: true,
-                        });
-                    }
-                );
+                this.provisionSubscription =
+                    DeviceSimulationService.incrementSimulatedDeviceModel(
+                        formData.deviceModel,
+                        formData.count
+                    ).subscribe(
+                        () => {
+                            this.setState({
+                                successCount: formData.count,
+                                isPending: false,
+                                changesApplied: true,
+                            });
+                            this.props.logEvent(
+                                toSinglePropertyDiagnosticsModel(
+                                    "Devices_Created",
+                                    "DeviceType",
+                                    Config.deviceType.simulated
+                                )
+                            );
+                        },
+                        (error) => {
+                            this.setState({
+                                error,
+                                isPending: false,
+                                changesApplied: true,
+                            });
+                        }
+                    );
             } else {
-                this.provisionSubscription = IoTHubManagerService.provisionDevice(
-                    toNewDeviceRequestModel(formData)
-                ).subscribe(
-                    (provisionedDevice) => {
-                        this.setState({
-                            provisionedDevice,
-                            successCount: formData.count,
-                            isPending: false,
-                            changesApplied: true,
-                        });
-                        this.props.insertDevices([provisionedDevice]);
-                        const metadata = {
-                            DeviceType: Config.deviceType.physical,
-                            DeviceID: provisionedDevice.id,
-                        };
-                        this.props.logEvent(
-                            toDiagnosticsModel("Devices_Created", metadata)
-                        );
-                        this.props.fetchDeviceStatistics();
-                    },
-                    (error) => {
-                        this.setState({
-                            error,
-                            isPending: false,
-                            changesApplied: true,
-                        });
-                    }
-                );
+                this.provisionSubscription =
+                    IoTHubManagerService.provisionDevice(
+                        toNewDeviceRequestModel(formData),
+                        this.props.mapping
+                    ).subscribe(
+                        (response) => {
+                            this.setState({
+                                provisionedDevice: response.items[0],
+                                successCount: formData.count,
+                                isPending: false,
+                                changesApplied: true,
+                            });
+                            this.props.insertDevices(response);
+                            const metadata = {
+                                DeviceType: Config.deviceType.physical,
+                                DeviceID: this.state.provisionedDevice.id,
+                            };
+                            this.props.logEvent(
+                                toDiagnosticsModel("Devices_Created", metadata)
+                            );
+                            this.props.fetchDeviceStatistics();
+                        },
+                        (error) => {
+                            this.setState({
+                                error,
+                                isPending: false,
+                                changesApplied: true,
+                            });
+                        }
+                    );
             }
         }
     };

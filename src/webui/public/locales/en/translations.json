@@ -30,7 +30,8 @@
         "rules": "Rules",
         "maintenance": "Maintenance",
         "packages": "Packages",
-        "deployments": "Deployments"
+        "deployments": "Deployments",
+        "columnMapping": "Column Mapping"
     },
     "errorFormat": "Error: {{message}}",
     "edgeAgentStatus": {
@@ -261,6 +262,9 @@
         "edit": "Edit a device group",
         "name": "Name",
         "namePlaceHolder": "Device group name",
+        "columnMapping": "Column Mapping",
+        "columnMappingPlaceholder": "Select column mapping",
+        "createNewMapping": "Create new",
         "save": "Save",
         "errorMsg": {
             "nameCantBeEmpty": "Name is required"
@@ -421,6 +425,7 @@
         "deviceSearchTitle": "Device Search",
         "deviceSearchTitleDescription": "Search across all devices.",
         "downloadDeviceReport": "Download",
+        "columnOptions":"Column Options",
         "showTelemetry": "Show telemetry",
         "returnToDevices": "Devices",
         "loadMore": "Load more",
@@ -1130,6 +1135,24 @@
         "panel": {
             "header": "Example Panel",
             "panelBody": "This is a new panel."
+        }
+    },
+    "columnMapping":{
+        "field": "Field",
+        "namePlaceHolder":"Enter Mapping Name",
+        "headerPlaceholder": "Enter Header Name",
+        "mappingPlaceholder": "Select Mapping",
+        "renderPlaceholder": "Select Renderer",
+        "descriptionPlaceholder": "Enter Description",
+        "errorMsg":{
+            "headerCannotBeEmpty": "Header Name is Required",
+            "nameIsDuplicated": "Name is Duplicated",
+            "mappingCannotBeEmpty": "Mapping is Required",
+            "mappingIsDuplicated": "Mapping is Duplicated",
+            "rendererCannotBeEmpty": "Renderer is Required"
+        },
+        "labels":{
+            "mappingName": "Column Mapping Name"
         }
     }
 }

@@ -358,7 +358,8 @@ namespace Mmm.Iot.Common.Services.Helpers
 
             var queryParameterCollection = new Dictionary<string, string>();
 
-            var queryParameterBuilder = new StringBuilder("declare query_parameters (");
+            var queryParameterTypeCollection = new Dictionary<string, string>();
+
             var queryBuilder = new StringBuilder($"{tableName}");
 
             if (uniqueRecordProperty != null)
@@ -375,9 +376,8 @@ namespace Mmm.Iot.Common.Services.Helpers
                 foreach (var p in devicesParameters)
                 {
                     queryParameterCollection.Add(p.Key, p.Value);
+                    queryParameterTypeCollection.Add(p.Key, "string");
                 }
-
-                queryParameterBuilder.Append($"{string.Join(", ", devicesParameters.Select(p => $"{p.Key}:string"))},");
             }
 
             if (!string.IsNullOrEmpty(byId) && !string.IsNullOrEmpty(byIdProperty))
@@ -388,7 +388,7 @@ namespace Mmm.Iot.Common.Services.Helpers
                 queryBuilder.AppendLine($" | where {byIdProperty} == byId");
 
                 queryParameterCollection.Add("byId", byId);
-                queryParameterBuilder.Append("byId:string,");
+                queryParameterTypeCollection.Add("byId", "string");
             }
 
             if (from.HasValue)
@@ -413,16 +413,22 @@ namespace Mmm.Iot.Common.Services.Helpers
                 foreach (var p in filterValueParameters)
                 {
                     queryParameterCollection.Add(p.Key, p.Value);
+                    queryParameterTypeCollection.Add(p.Key, "string");
                 }
-
-                queryParameterBuilder.Append($"{string.Join(", ", filterValueParameters.Select(p => $"{p.Key}:string"))},");
             }
 
             queryBuilder.AppendLine("| count");
 
-            queryParameterBuilder.Append(");");
+            if (queryParameterTypeCollection.Count > 0)
+            {
+                var queryParameterBuilder = new StringBuilder("declare query_parameters (");
 
-            queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());
+                queryParameterBuilder.Append($"{string.Join(", ", queryParameterTypeCollection.Select(p => $"{p.Key}:{p.Value}"))}");
+
+                queryParameterBuilder.Append(");");
+
+                queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());
+            }
 
             return (queryBuilder.ToString(), queryParameterCollection);
         }
@@ -457,8 +463,8 @@ namespace Mmm.Iot.Common.Services.Helpers
             ValidateInput(ref devicesProperty);
 
             var queryParameterCollection = new Dictionary<string, string>();
+            var queryParameterTypeCollection = new Dictionary<string, string>();
 
-            var queryParameterBuilder = new StringBuilder("declare query_parameters (");
             var queryBuilder = new StringBuilder($"{tableName}");
 
             if (uniqueRecordProperty != null)
@@ -475,9 +481,8 @@ namespace Mmm.Iot.Common.Services.Helpers
                 foreach (var p in devicesParameters)
                 {
                     queryParameterCollection.Add(p.Key, p.Value);
+                    queryParameterTypeCollection.Add(p.Key, "string");
                 }
-
-                queryParameterBuilder.Append($"{string.Join(", ", devicesParameters.Select(p => $"{p.Key}:string"))},");
             }
 
             if (!string.IsNullOrEmpty(byId) && !string.IsNullOrEmpty(byIdProperty))
@@ -488,7 +493,7 @@ namespace Mmm.Iot.Common.Services.Helpers
                 queryBuilder.AppendLine($" | where {byIdProperty} == byId");
 
                 queryParameterCollection.Add("byId", byId);
-                queryParameterBuilder.Append("byId:string,");
+                queryParameterTypeCollection.Add("byId", "string");
             }
 
             if (from.HasValue)
@@ -515,11 +520,18 @@ namespace Mmm.Iot.Common.Services.Helpers
             }
 
             queryParameterCollection.Add("topNumber", $"{skip + limit}");
-            queryParameterBuilder.Append("topNumber:int");
+            queryParameterTypeCollection.Add("topNumber", "int");
 
-            queryParameterBuilder.Append(");");
+            if (queryParameterTypeCollection.Count > 0)
+            {
+                var queryParameterBuilder = new StringBuilder("declare query_parameters (");
 
-            queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());
+                queryParameterBuilder.Append($"{string.Join(", ", queryParameterTypeCollection.Select(p => $"{p.Key}:{p.Value}"))}");
+
+                queryParameterBuilder.Append(");");
+
+                queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());
+            }
 
             return (queryBuilder.ToString(), queryParameterCollection);
         }
@@ -546,8 +558,8 @@ namespace Mmm.Iot.Common.Services.Helpers
             ValidateInput(ref valueProperty);
 
             var queryParameterCollection = new Dictionary<string, string>();
+            var queryParameterTypeCollection = new Dictionary<string, string>();
 
-            var queryParameterBuilder = new StringBuilder("declare query_parameters (");
             var queryBuilder = new StringBuilder($"{tableName}");
 
             if (uniqueRecordProperty != null)
@@ -564,9 +576,8 @@ namespace Mmm.Iot.Common.Services.Helpers
                 foreach (var p in devicesParameters)
                 {
                     queryParameterCollection.Add(p.Key, p.Value);
+                    queryParameterTypeCollection.Add(p.Key, "string");
                 }
-
-                queryParameterBuilder.Append($"{string.Join(", ", devicesParameters.Select(p => $"{p.Key}:string"))},");
             }
 
             if (order == null || string.Equals(order, "desc", StringComparison.OrdinalIgnoreCase))
@@ -579,11 +590,18 @@ namespace Mmm.Iot.Common.Services.Helpers
             }
 
             queryParameterCollection.Add("topNumber", $"{skip + limit}");
-            queryParameterBuilder.Append("topNumber:int");
+            queryParameterTypeCollection.Add("topNumber", "int");
 
-            queryParameterBuilder.Append(");");
+            if (queryParameterTypeCollection.Count > 0)
+            {
+                var queryParameterBuilder = new StringBuilder("declare query_parameters (");
 
-            queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());
+                queryParameterBuilder.Append($"{string.Join(", ", queryParameterTypeCollection.Select(p => $"{p.Key}:{p.Value}"))}");
+
+                queryParameterBuilder.Append(");");
+
+                queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());
+            }
 
             return (queryBuilder.ToString(), queryParameterCollection);
         }
@@ -602,15 +620,15 @@ namespace Mmm.Iot.Common.Services.Helpers
             ValidateInput(ref order);
             ValidateInput(ref orderProperty);
             var queryParameterCollection = new Dictionary<string, string>();
+            var queryParameterTypeCollection = new Dictionary<string, string>();
 
-            var queryParameterBuilder = new StringBuilder("declare query_parameters (");
             var queryBuilder = new StringBuilder($"{tableName}");
 
             if (!string.IsNullOrEmpty(deviceId))
             {
                 queryBuilder.Append($" | where {devicesProperty} == deviceParameter");
                 queryParameterCollection.Add("deviceParameter", deviceId);
-                queryParameterBuilder.Append("deviceParameter:string,");
+                queryParameterTypeCollection.Add("deviceParameter", "string");
             }
 
             if (order == null || string.Equals(order, "desc", StringComparison.OrdinalIgnoreCase))
@@ -623,10 +641,18 @@ namespace Mmm.Iot.Common.Services.Helpers
             }
 
             queryParameterCollection.Add("topNumber", limit.ToString());
-            queryParameterBuilder.Append("topNumber:int");
-            queryParameterBuilder.Append(");");
+            queryParameterTypeCollection.Add("topNumber", "int");
 
-            queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());
+            if (queryParameterTypeCollection.Count > 0)
+            {
+                var queryParameterBuilder = new StringBuilder("declare query_parameters (");
+
+                queryParameterBuilder.Append($"{string.Join(", ", queryParameterTypeCollection.Select(p => $"{p.Key}:{p.Value}"))}");
+
+                queryParameterBuilder.Append(");");
+
+                queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());
+            }
 
             return (queryBuilder.ToString(), queryParameterCollection);
         }
@@ -647,8 +673,8 @@ namespace Mmm.Iot.Common.Services.Helpers
             ValidateInput(ref valueProperty);
 
             var queryParameterCollection = new Dictionary<string, string>();
+            var queryParameterTypeCollection = new Dictionary<string, string>();
 
-            var queryParameterBuilder = new StringBuilder("declare query_parameters (");
             var queryBuilder = new StringBuilder($"{tableName}");
 
             if (uniqueRecordProperty != null)
@@ -665,14 +691,20 @@ namespace Mmm.Iot.Common.Services.Helpers
                 foreach (var p in devicesParameters)
                 {
                     queryParameterCollection.Add(p.Key, p.Value);
+                    queryParameterTypeCollection.Add(p.Key, "string");
                 }
-
-                queryParameterBuilder.Append($"{string.Join(", ", devicesParameters.Select(p => $"{p.Key}:string"))}");
             }
 
-            queryParameterBuilder.Append(");");
+            if (queryParameterTypeCollection.Count > 0)
+            {
+                var queryParameterBuilder = new StringBuilder("declare query_parameters (");
 
-            queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());
+                queryParameterBuilder.Append($"{string.Join(", ", queryParameterTypeCollection.Select(p => $"{p.Key}:{p.Value}"))}");
+
+                queryParameterBuilder.Append(");");
+
+                queryBuilder = queryParameterBuilder.AppendLine(queryBuilder.ToString());
+            }
 
             return (queryBuilder.ToString(), queryParameterCollection);
         }

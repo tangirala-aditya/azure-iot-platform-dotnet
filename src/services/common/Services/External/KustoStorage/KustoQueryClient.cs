@@ -113,7 +113,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
 
                 while (reader.Read())
                 {
-                    count = reader.GetInt32(0);
+                    count = (int)reader.GetInt64(0);
                 }
 
                 return count;

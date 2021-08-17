@@ -27,7 +27,7 @@ const defaultMappingObject = {
     c2DMessageCount: "c2DMessageCount",
     enabled: "enabled",
     lastStatusUpdated: "lastStatusUpdated",
-    ioTHubHostName: "IoTHubHostName",
+    ioTHubHostName: "iotHubHostName",
     eTag: "eTag",
     authentication: "authentication",
 };

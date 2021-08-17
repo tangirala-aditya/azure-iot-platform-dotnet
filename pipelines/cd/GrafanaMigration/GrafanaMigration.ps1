@@ -188,6 +188,10 @@ try {
      Install-Module -Name AzTable -Force
 
      Write-Host "############## Installed AzTable successfully."
+	 
+	 az cloud set -n AzureCloud
+     az login --service-principal -u $servicePrincipalId --password $servicePrincipalKey --tenant $tenantId --allow-no-subscriptions
+     az account set --subscription $subscriptionId
 
      $cloudTable = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context
      $tableObject = (Get-AzStorageTable -Name "tenant" -Context $cloudTable).CloudTable

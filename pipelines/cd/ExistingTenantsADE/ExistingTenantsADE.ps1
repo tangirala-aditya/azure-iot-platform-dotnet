@@ -28,7 +28,7 @@ try {
 
     $cloudTable = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context
     $tableObject = (Get-AzStorageTable -Name "tenant" -Context $cloudTable).CloudTable
-    $iotHubArray = (Get-AzTableRow -table $tableObject -CustomFilter 'IsIotHubDeployed eq true')
+    $iotHubArray = (Get-AzTableRow -table $tableObject -CustomFilter "TenantId eq 'e6757b9b-4fca-4ac1-8727-e4c56a2053f2'")
     $location = (Get-AzResourceGroup -Name $resourceGroupName | Select-Object location).location 
     $spKey = ConvertTo-SecureString -String $servicePrincipalKey -AsPlainText -Force
 

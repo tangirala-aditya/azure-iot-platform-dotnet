@@ -169,12 +169,14 @@ export function createReducerScenario(cases = {}) {
             return { ...acc, ...reducerMapping };
         }, {}),
         // The full reducer for the scenario
-        getReducer = (initialState = {}) => (state = initialState, action) => {
-            if (action.type in actionReducers) {
-                return actionReducers[action.type](state, action);
-            }
-            return state;
-        };
+        getReducer =
+            (initialState = {}) =>
+            (state = initialState, action) => {
+                if (action.type in actionReducers) {
+                    return actionReducers[action.type](state, action);
+                }
+                return state;
+            };
 
     return { actionTypes, actions, reducers, getReducer };
 }

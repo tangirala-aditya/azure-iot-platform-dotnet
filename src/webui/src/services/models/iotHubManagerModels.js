@@ -27,7 +27,7 @@ const defaultMappingObject = {
     c2DMessageCount: "c2DMessageCount",
     enabled: "enabled",
     lastStatusUpdated: "lastStatusUpdated",
-    ioTHubHostName: "IoTHubHostName",
+    ioTHubHostName: "iotHubHostName",
     eTag: "eTag",
     authentication: "authentication",
 };
@@ -68,9 +68,10 @@ export const toDeviceModel = (device = {}, mapping = {}) => {
             Object.entries(mapping).length > 0 ? mapping : defaultMappingObject
         ),
         // TODO: Remove this once device simulation has removed FirmwareUpdate from supportedMethods of devices
-        methods = (modelData.methods && typeof modelData.methods === "string"
-            ? modelData.methods.split(",")
-            : []
+        methods = (
+            modelData.methods && typeof modelData.methods === "string"
+                ? modelData.methods.split(",")
+                : []
         ).filter((methodName) => methodName !== "FirmwareUpdate");
     return update(modelData, {
         methods: { $set: methods },

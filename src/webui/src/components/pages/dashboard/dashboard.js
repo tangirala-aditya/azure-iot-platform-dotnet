@@ -189,10 +189,8 @@ export class Dashboard extends Component {
                         const devices = deviceIds.length
                                 ? deviceIds.join(",")
                                 : undefined,
-                            [
-                                currentIntervalParams,
-                                previousIntervalParams,
-                            ] = getIntervalParams(timeInterval),
+                            [currentIntervalParams, previousIntervalParams] =
+                                getIntervalParams(timeInterval),
                             currentParams = {
                                 ...currentIntervalParams,
                                 devices,
@@ -257,7 +255,8 @@ export class Dashboard extends Component {
                                             totalCriticalCount:
                                                 (acc.totalCriticalCount || 0) +
                                                 (isCritical ? 1 : 0),
-                                            alertsPerDeviceId: updatedAlertsPerDeviceId,
+                                            alertsPerDeviceId:
+                                                updatedAlertsPerDeviceId,
                                         };
                                     },
                                     { alertsPerDeviceId: {} }
@@ -286,19 +285,20 @@ export class Dashboard extends Component {
                                     .sort(compareByProperty("count"))
                                     .slice(0, Config.maxTopAlerts),
                                 // Find the previous counts for the current top analytics
-                                previousTopAlertsMap = previousActiveAlerts.reduce(
-                                    (acc, { ruleId, count }) =>
-                                        ruleId in acc
-                                            ? { ...acc, [ruleId]: count }
-                                            : acc,
-                                    currentTopAlerts.reduce(
-                                        (acc, { ruleId }) => ({
-                                            ...acc,
-                                            [ruleId]: 0,
-                                        }),
-                                        {}
-                                    )
-                                ),
+                                previousTopAlertsMap =
+                                    previousActiveAlerts.reduce(
+                                        (acc, { ruleId, count }) =>
+                                            ruleId in acc
+                                                ? { ...acc, [ruleId]: count }
+                                                : acc,
+                                        currentTopAlerts.reduce(
+                                            (acc, { ruleId }) => ({
+                                                ...acc,
+                                                [ruleId]: 0,
+                                            }),
+                                            {}
+                                        )
+                                    ),
                                 topAlerts = currentTopAlerts.map(
                                     ({ ruleId, count }) => ({
                                         ruleId,

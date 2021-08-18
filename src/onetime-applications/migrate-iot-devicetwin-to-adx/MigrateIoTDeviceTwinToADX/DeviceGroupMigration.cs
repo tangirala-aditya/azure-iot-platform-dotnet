@@ -28,6 +28,7 @@ namespace Mmm.Iot.MigrateIoTDeviceTwinToADX
         private const string DeviceGroupName = "DeviceGroupName";
         private const string DeviceGroupConditions = "DeviceGroupConditions";
         private const string TimeStamp = "TimeStamp";
+        private const string IsDeleted = "IsDeleted";
         private readonly TableStorageHelper tableStorageClient;
         private readonly TenantConnectionHelper tenantConnectionHelper;
         private readonly ILogger logger;
@@ -67,7 +68,11 @@ namespace Mmm.Iot.MigrateIoTDeviceTwinToADX
                     foreach (var deviceGroup in deviceGroupList)
                     {
                         var result = this.GetDeviceGroupsForADX(deviceGroup);
-                        events.Add(result);
+
+                        if (result != null)
+                        {
+                            events.Add(result);
+                        }
                     }
 
                     await eventHubHelper.SendMessageToEventHub($"{tenantId}-devicegroup", events);
@@ -133,6 +138,7 @@ namespace Mmm.Iot.MigrateIoTDeviceTwinToADX
             deviceGroupDeviceMappingJson.Add(DeviceGroupName, deviceGroup.DisplayName);
             deviceGroupDeviceMappingJson.Add(DeviceGroupConditions, QueryConditionTranslator.ToADXQueryString(JsonConvert.SerializeObject(deviceGroup.Conditions)));
             deviceGroupDeviceMappingJson.Add(TimeStamp, DateTime.UtcNow);
+            deviceGroupDeviceMappingJson.Add(IsDeleted, false);
             var byteMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceGroupDeviceMappingJson));
             var deviceMappingEventData = new EventData(byteMessage);
             return deviceMappingEventData;

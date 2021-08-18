@@ -42,6 +42,10 @@ namespace Mmm.Iot.DeviceTelemetry.Services.Test
                         Database = "database",
                         MaxDeleteRetries = 3,
                     },
+                    Messages = new MessagesConfig
+                    {
+                        TelemetryStorageType = "cosmosdb",
+                    },
                 },
             };
             this.storageClient = new Mock<IStorageClient>();

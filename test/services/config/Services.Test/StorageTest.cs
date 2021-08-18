@@ -199,6 +199,13 @@ namespace Mmm.Iot.Config.Services.Test
                     {
                         InstrumentationKey = "instrumentationkey",
                     },
+                    DeviceTelemetryService = new DeviceTelemetryServiceConfig
+                    {
+                        Messages = new MessagesConfig
+                        {
+                            TelemetryStorageType = "cosmosdb",
+                        },
+                    },
                 },
                 new Mock<IPackageEventLog>().Object,
                 new Mock<ILogger<Storage>>().Object,

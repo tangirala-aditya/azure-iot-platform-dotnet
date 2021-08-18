@@ -200,14 +200,14 @@ namespace Mmm.Iot.TenantManager.Services
                 throw new Exception("Unable to create the default device group for the new tenant.", e);
             }
 
-            string grafanaName = this.FormatResourceName(this.grafanaNameFormat, tenantId);
+            string grafanaTaskName = this.FormatResourceName(this.grafanaNameFormat, tenantId);
 
             if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
             {
                 // trigger grafana dashboard
                 try
                 {
-                    await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.GrafanaDashboardCreation, grafanaName));
+                    await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.GrafanaDashboardCreation, grafanaTaskName));
                 }
                 catch (Exception e)
                 {

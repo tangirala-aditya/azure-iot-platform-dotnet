@@ -51,6 +51,13 @@ namespace Mmm.Iot.Common.Services.Helpers
                 return conditions;
             }
 
+            clauses = clauses.Where(x => x.Key != null);
+
+            if (clauses.Count() == 0)
+            {
+                return string.Empty;
+            }
+
             var clauseStrings = clauses.Select(c =>
             {
                 string op;
@@ -91,6 +98,11 @@ namespace Mmm.Iot.Common.Services.Helpers
 
         private static string DeviceTwinKustoKeyBuilder(string twinPath)
         {
+            if (string.IsNullOrEmpty(twinPath))
+            {
+                return string.Empty;
+            }
+
             switch (twinPath)
             {
                 case var someVal when someVal.StartsWith(DeviceTwinTags, System.StringComparison.OrdinalIgnoreCase):
@@ -100,16 +112,20 @@ namespace Mmm.Iot.Common.Services.Helpers
                 case var someVal when someVal.StartsWith(DeviceTwinReported, System.StringComparison.OrdinalIgnoreCase):
                     return DeviceTwinKustoKey(someVal, DeviceTwinReported);
                 case var someVal when someVal.Equals(Id):
-                    return $"Twin.{DeviceId}";
+                    return $"Twin.['{DeviceId}']";
                 default:
+                    string[] subStringList = twinPath.Split('.').Select(x => $"['{x}']").ToArray();
+                    twinPath = string.Join('.', subStringList);
                     return $"Twin.{twinPath}";
             }
         }
 
         private static string DeviceTwinKustoKey(string twinPath, string twinPrefix)
         {
-            string subString = twinPath.Substring(twinPrefix.Length);
-            return $"Twin.{twinPrefix}{subString}";
+            string subString = twinPath.Substring(twinPrefix.Length + 1);
+            string[] subStringList = subString.Split('.').Select(x => $"['{x}']").ToArray();
+            subString = string.Join('.', subStringList);
+            return $"Twin.{twinPrefix}.{subString}";
         }
     }
 }

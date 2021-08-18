@@ -74,6 +74,22 @@ export class ColumnMapper extends LinkedComponent {
                     label: "authentication",
                     value: "authentication",
                 },
+                {
+                    label: "Properties.Reported.type",
+                    value: "Properties.Reported.type",
+                },
+                {
+                    label: "Properties.Reported.firmware.currentFwVersion",
+                    value: "Properties.Reported.firmware.currentFwVersion",
+                },
+                {
+                    label: "Properties.Reported.telemetry",
+                    value: "Properties.Reported.telemetry",
+                },
+                {
+                    label: "connected",
+                    value: "connected",
+                },
             ],
             rendererOptions: [
                 { label: "SimulatedRenderer", value: "IsSimulatedRenderer" },
@@ -118,7 +134,14 @@ export class ColumnMapper extends LinkedComponent {
         this.subscription =
             IoTHubManagerService.getDeviceProperties().subscribe(
                 (items) => {
-                    const filterOptions = items.map((item) => toOption(item));
+                    const filterOptions = items
+                        .filter(
+                            (item) =>
+                                !this.state.mappingOptions
+                                    .map((m) => m.value)
+                                    .includes(item)
+                        )
+                        .map((item) => toOption(item));
                     this.setState({
                         mappingOptions: [
                             ...this.state.mappingOptions,

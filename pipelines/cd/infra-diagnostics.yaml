@@ -203,7 +203,7 @@ stages:
           - task: AzureCLI@2
             displayName: Enable Azure Policy Add-on in AKS Cluster
             inputs:
-              azureSubscription: ${{parameters.subscriptionName}}
+              azureSubscription: $(subscriptionName)
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |-
@@ -218,7 +218,7 @@ stages:
           - task: AzureCLI@2
             displayName: Enable Secure transfer in Storage Account
             inputs:
-              azureSubscription: ${{parameters.subscriptionName}}
+              azureSubscription: $(subscriptionName)
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |-
@@ -229,7 +229,7 @@ stages:
           - task: AzureCLI@2
             displayName: Enable Secure transfer in Storage Account
             inputs:
-              azureSubscription: ${{parameters.subscriptionName}}
+              azureSubscription: $(subscriptionName)
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |-
@@ -239,7 +239,7 @@ stages:
           - task: AzureCLI@2
             displayName: Enable FTTPS in functionApp
             inputs:
-              azureSubscription: ${{parameters.subscriptionName}}
+              azureSubscription: $(subscriptionName)
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |-
@@ -249,7 +249,7 @@ stages:
           - task: AzureCLI@2
             displayName: Enable FTTPS in functionApp
             inputs:
-              azureSubscription: ${{parameters.subscriptionName}}
+              azureSubscription: $(subscriptionName)
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |-
@@ -263,7 +263,7 @@ stages:
           - task: AzureCLI@2
             displayName: Enable FTTPS in functionApp
             inputs:
-              azureSubscription: ${{parameters.subscriptionName}}
+              azureSubscription: $(subscriptionName)
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |-

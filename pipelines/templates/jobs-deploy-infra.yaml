@@ -1055,7 +1055,7 @@ jobs:
           scriptType: bash
           inlineScript: |-
            objectId=$(az functionapp identity show --name $(functionApp1Name) --resource-group $(resourceGroupName) | jq -r .principalId)
-           az keyvault set-policy --name myKeyVault --object-id $objectId --secret-permissions get list --key-permissions get list
+           az keyvault set-policy --name $(keyVaultName) --object-id $objectId --secret-permissions get list --key-permissions get list
 
   - job: function2
     displayName: Create App Config Function
@@ -1172,7 +1172,7 @@ jobs:
           inlineScript: |-
            function2Name=${{parameters.applicationCode}}-alertingactionsfuncapp-${{parameters.environmentCategory}}
            objectId=$(az functionapp identity show --name $functionApp2Name --resource-group $(resourceGroupName) | jq -r .principalId)
-           az keyvault set-policy --name myKeyVault --object-id $objectId --secret-permissions get list --key-permissions get list
+           az keyvault set-policy --name $(keyVaultName) --object-id $objectId --secret-permissions get list --key-permissions get list
 
 
   - job: function4
@@ -1251,7 +1251,7 @@ jobs:
           scriptType: bash
           inlineScript: |-
            objectId=$(az functionapp identity show --name $(functionApp4Name) --resource-group $(resourceGroupName) | jq -r .principalId)
-           az keyvault set-policy --name myKeyVault --object-id $objectId --secret-permissions get list --key-permissions get list
+           az keyvault set-policy --name $(keyVaultName) --object-id $objectId --secret-permissions get list --key-permissions get list
 
   - job: deployFunctions
     displayName: Deploy functions

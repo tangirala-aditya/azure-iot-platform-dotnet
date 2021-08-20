@@ -25,7 +25,7 @@ namespace Mmm.Iot.TenantManager.Services.External
 
         public GrafanaClient(AppConfig config, IExternalRequestHelper requestHelper, IKeyVaultClient keyVaultClient, IHttpClient httpClient)
         {
-            this.serviceUri = config.ExternalDependencies.GrafanaUrl;
+            this.serviceUri = config.Global.ExternalDependencies.GrafanaUrl;
             this.requestHelper = requestHelper;
             this.keyVaultClient = keyVaultClient;
             this.httpClient = httpClient;
@@ -59,11 +59,11 @@ namespace Mmm.Iot.TenantManager.Services.External
             }
             catch (JsonReaderException)
             {
-                return new StatusResultServiceModel(false, $"Unable to read the response from the DeviceGroups Status. The service may be down.");
+                return new StatusResultServiceModel(false, $"Unable to read the response from the Grafana Status. The service may be down.");
             }
             catch (Exception e)
             {
-                return new StatusResultServiceModel(false, $"Unable to get DeviceGroups Status: {e.Message}");
+                return new StatusResultServiceModel(false, $"Unable to get Grafana Status: {e.Message}");
             }
         }
 

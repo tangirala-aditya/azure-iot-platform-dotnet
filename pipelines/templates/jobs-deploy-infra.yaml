@@ -1054,8 +1054,8 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-           objectId=$(az functionapp identity show --name $(functionApp1Name) --resource-group $(resourceGroupName)) | jq -r .[0].principalId
-           az keyvault set-policy --name myKeyVault --object-id $objectId --secret-permissions "get list" --key-permissions "get list"
+           objectId=$(az functionapp identity show --name $(functionApp1Name) --resource-group $(resourceGroupName) | jq -r .principalId)
+           az keyvault set-policy --name myKeyVault --object-id $objectId --secret-permissions get list --key-permissions get list
 
   - job: function2
     displayName: Create App Config Function
@@ -1163,6 +1163,18 @@ jobs:
                 "ActionsEventHubConsumerGroup"="alertingactions" \
               --resource-group $(resourceGroupName)
 
+      - task: AzureCLI@2
+        displayName: Set FunctionApp Identity to keyvault Access Policy
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+           function2Name=${{parameters.applicationCode}}-alertingactionsfuncapp-${{parameters.environmentCategory}}
+           objectId=$(az functionapp identity show --name $functionApp2Name --resource-group $(resourceGroupName) | jq -r .principalId)
+           az keyvault set-policy --name myKeyVault --object-id $objectId --secret-permissions get list --key-permissions get list
+
+
   - job: function4
     displayName: Create azure iot Deployment Function
     dependsOn:
@@ -1230,6 +1242,16 @@ jobs:
                 "DeviceDeploymentHistoryConsumerGroup"="devicedeploymenthistory" \
                 "DeploymentsDatabaseId"="pcs-storage" \
               --resource-group $(resourceGroupName)
+
+      - task: AzureCLI@2
+        displayName: Set FunctionApp Identity to keyvault Access Policy
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+           objectId=$(az functionapp identity show --name $(functionApp4Name) --resource-group $(resourceGroupName) | jq -r .principalId)
+           az keyvault set-policy --name myKeyVault --object-id $objectId --secret-permissions get list --key-permissions get list
 
   - job: deployFunctions
     displayName: Deploy functions

@@ -66,7 +66,9 @@ export const toDeviceConditionModel = (condition = {}) => ({
     operator: condition.operator,
     // parse the value as a number or string depending on the value of condition.type and condition.value.
     value:
-        condition.type === "Number" && !isNaN(condition.value)
+        condition.type === "List"
+            ? condition.value
+            : condition.type === "Number" && !isNaN(condition.value)
             ? parseFloat(condition.value)
             : String(condition.value),
 });

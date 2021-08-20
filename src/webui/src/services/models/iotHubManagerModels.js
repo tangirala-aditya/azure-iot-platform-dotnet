@@ -324,6 +324,7 @@ export const toDeploymentRequestModel = (deploymentModel = {}) => ({
     CreatedDate: deploymentModel.CreatedDate,
     ModifiedBy: deploymentModel.ModifiedBy,
     ModifiedDate: deploymentModel.ModifiedDate,
+    DeviceIds: deploymentModel.deviceIds,
 });
 
 export const toEdgeAgentModel = (edgeAgent = {}) =>

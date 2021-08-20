@@ -43,6 +43,8 @@ spec:
           value: Viewer
         - name: GF_USERS_AUTO_ASSIGN_ORG
           value: "true"
+        - name: GF_LIVE_MAX_CONNECTIONS
+          value: '0'
         name: grafana
         image: docker.io/azureiot3m/grafana-custom:latest 
         resources:

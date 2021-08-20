@@ -206,11 +206,8 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                                 if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    (string eventHubNameSpace, string primaryKey) = await this.SetupEventHub(item.TenantId);
-                                    var databaseName = string.Format(IoTDatabaseNameFormat, item.TenantId);
-                                    await this.azureManagementClient.KustoClusterManagementClient.CreateDatabaseIfNotExistAsync(databaseName);
-
-                                    await this.ADXAlertsSetup(item.TenantId, databaseName, eventHubNameSpace);
+                                    string eventHubNameSpace = string.Format(EventHubNamespaceFormat, item.TenantId.Substring(0, 8));
+                                    string primaryKey = this.appConfigurationClient.GetValue($"tenant:{item.TenantId}:eventHubPrimaryKey");
                                     StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("sajob_ADX.json"));
 
                                     template = await reader.ReadToEndAsync();
@@ -348,124 +345,6 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                 }
 
                 await Task.Delay(15000, stoppingToken);
-            }
-        }
-
-        private async Task<(string NamespaceName, string PrimaryKey)> SetupEventHub(string tenantId)
-        {
-            string nameSpacePrimaryKey = string.Empty;
-            string eventHubNameSpace = string.Format(EventHubNamespaceFormat, tenantId.Substring(0, 8));
-            try
-            {
-                EHNamespace eventHubNamespace = await this.azureManagementClient.EventHubsManagementClient.RetrieveAsync(eventHubNameSpace, CancellationToken.None);
-
-                nameSpacePrimaryKey = this.appConfigurationClient.GetValue($"tenant:{tenantId}:eventHubPrimaryKey");
-            }
-            catch (Exception)
-            {
-                    await this.azureManagementClient.EventHubsManagementClient.CreateNamespaceIfNotExist(eventHubNameSpace);
-                    var accessKeys = await this.azureManagementClient.EventHubsManagementClient.GetPrimaryConnectionString(eventHubNameSpace);
-                    await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubConn", accessKeys.PrimaryConnectionString);
-                    await this.appConfigurationClient.SetValueAsync($"tenant:{tenantId}:eventHubPrimaryKey", accessKeys.PrimaryKey);
-                    nameSpacePrimaryKey = accessKeys.PrimaryKey;
-            }
-
-            this.azureManagementClient.EventHubsManagementClient.CreateEventHub(eventHubNameSpace, $"{tenantId}-alerts");
-
-            return (eventHubNameSpace, nameSpacePrimaryKey);
-        }
-
-        private async Task ADXAlertsSetup(string tenantId, string databaseName, string eventHubNameSpace)
-        {
-            Console.WriteLine($"Creating RawAlerts table and mapping in {tenantId} DB in Data Explorer");
-
-            var tableName = "RawAlerts";
-            var tableMappingName = $"RawAlertsMapping-{tenantId}";
-            var tableSchema = new[]
-            {
-                  Tuple.Create("Data", "System.Object"),
-            };
-            var mappingSchema = new ColumnMapping[]
-            {
-                  new ColumnMapping() { ColumnName = "Data", ColumnType = "dynamic", Properties = new Dictionary<string, string>() { { MappingConsts.Path, "$" } } },
-            };
-
-            string dataConnectionName = $"AlertsDataConnect-{tenantId.Substring(0, 8)}";
-            string eventHubName = $"{tenantId}-alerts";
-
-            this.ADXTableSetup(tenantId, databaseName, tableName, tableSchema, tableMappingName, mappingSchema);
-
-            this.kustoTableManagementClient.EnableStreamingIngestionPolicyToTable(tableName, databaseName);
-
-            DataUpdatePolicy dataUpdatePolicy = new DataUpdatePolicy(
-                                                isEnabled: false,
-                                                source: null,
-                                                query: null,
-                                                isTransactional: true,
-                                                propagateIngestionProperties: false);
-
-            List<DataUpdatePolicy> policyList = new List<DataUpdatePolicy>();
-            policyList.Add(dataUpdatePolicy);
-
-            this.kustoTableManagementClient.AlterTablePolicy(tableName, databaseName, policyList);
-
-            this.kustoTableManagementClient.AlterTableRetentionPolicy(tableName, databaseName, new TimeSpan(0, 0, 0, 0), DataRecoverability.Disabled);
-
-            string consumerGroup = "$Default";
-
-            await this.azureManagementClient.KustoClusterManagementClient.AddEventHubDataConnectionAsync(dataConnectionName, databaseName, tableName, tableMappingName, eventHubNameSpace, eventHubName, consumerGroup);
-
-            var alertsTableName = "Alerts";
-            var alertsTableSchema = new[]
-            {
-                  Tuple.Create("Id", "System.String"),
-                  Tuple.Create("DateCreated", "System.Datetime"),
-                  Tuple.Create("DateModified", "System.Datetime"),
-                  Tuple.Create("Description", "System.String"),
-                  Tuple.Create("GroupId", "System.String"),
-                  Tuple.Create("DeviceId", "System.String"),
-                  Tuple.Create("Status", "System.String"),
-                  Tuple.Create("RuleId", "System.String"),
-                  Tuple.Create("RuleSeverity", "System.String"),
-                  Tuple.Create("RuleDescription", "System.String"),
-                  Tuple.Create("IsDeleted", "System.Boolean"),
-            };
-
-            this.ADXTableSetup(tenantId, databaseName, alertsTableName, alertsTableSchema);
-
-            string functionName = "ProcessAlerts";
-            string functionQueryFormat = @"{{ {0} | project Id = iif(isempty(tostring(Data[""id""])), tostring(new_guid()), tostring(Data[""id""])), DateCreated = unixtime_milliseconds_todatetime(todouble(Data[""created""])), DateModified = unixtime_milliseconds_todatetime(todouble(Data[""modified""])), Description = tostring(Data[""description""]), GroupId = tostring(Data[""groupId""]), DeviceId = tostring(Data[""deviceId""]), Status = tostring(Data[""status""]), RuleId = tostring(Data[""ruleId""]), RuleSeverity = tostring(Data[""ruleSeverity""]), ruleDescription = tostring(Data[""ruleDescription""]), IsDeleted = iif(isempty(tostring(Data[""isDeleted""])), false, tobool(Data[""isDeleted""]))}}";
-
-            string functionQuery = string.Format(functionQueryFormat, tableName);
-
-            this.kustoTableManagementClient.CreateOrAlterFunction(functionName, null, functionQuery, databaseName);
-
-            DataUpdatePolicy alertsDataUpdatePolicy = new DataUpdatePolicy(
-                                                isEnabled: true,
-                                                source: tableName,
-                                                query: $"{functionName}()",
-                                                isTransactional: true,
-                                                propagateIngestionProperties: false);
-
-            List<DataUpdatePolicy> alertsPolicyList = new List<DataUpdatePolicy>();
-            alertsPolicyList.Add(alertsDataUpdatePolicy);
-
-            this.kustoTableManagementClient.AlterTablePolicy(alertsTableName, databaseName, alertsPolicyList);
-        }
-
-        private void ADXTableSetup(
-            string tenantId,
-            string databaseName,
-            string tableName,
-            Tuple<string, string>[] tableSchema,
-            string tableMappingName = null,
-            ColumnMapping[] mappingSchema = null)
-        {
-            this.kustoTableManagementClient.CreateTable(tableName, tableSchema, databaseName);
-
-            if (tableMappingName != null && mappingSchema != null)
-            {
-                this.kustoTableManagementClient.CreateTableMapping(tableMappingName, mappingSchema, tableName, databaseName);
             }
         }
     }

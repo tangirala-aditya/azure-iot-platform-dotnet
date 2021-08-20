@@ -1,4 +1,4 @@
-﻿param(
+param(
      [string] $applicationCode,
      [string] $environmentCategory,
      [string] $resourceGroup,

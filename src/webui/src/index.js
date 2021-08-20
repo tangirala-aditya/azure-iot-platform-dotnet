@@ -10,7 +10,7 @@ import { configureStore } from "store/configureStore";
 import { AppContainer as App } from "components/app.container";
 import { configureStore as configureWalkthroughStore } from "walkthrough/store/configureStore";
 import { AppContainer as WalkthroughApp } from "walkthrough/components/app.container";
-import registerServiceWorker from "registerServiceWorker";
+import { unregister } from "registerServiceWorker";
 import { AuthService } from "services/authService";
 import { epics as appEpics } from "store/reducers/appReducer";
 import { epics as tenantsEpics } from "store/reducers/tenantsReducer";
@@ -70,5 +70,5 @@ AuthService.onLoad(() => {
         document.getElementById("root")
     );
 
-    registerServiceWorker();
+    unregister();
 });

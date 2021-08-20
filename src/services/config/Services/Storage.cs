@@ -211,8 +211,9 @@ namespace Mmm.Iot.Config.Services
 
         public async Task DeleteDeviceGroupAsync(string id)
         {
+            DeviceGroup deviceGroup = await this.GetDeviceGroupAsync(id);
             await this.client.DeleteAsync(DeviceGroupCollectionId, id);
-            await this.DeleteDeviceGroupToADX(id);
+            await this.DeleteDeviceGroupToADX(deviceGroup);
             await this.asaManager.BeginDeviceGroupsConversionAsync();
         }
 
@@ -729,12 +730,11 @@ namespace Mmm.Iot.Config.Services
             }
         }
 
-        private async Task DeleteDeviceGroupToADX(string id)
+        private async Task DeleteDeviceGroupToADX(DeviceGroup deviceGroup)
         {
             bool isKustoEnabled = this.config.DeviceTelemetryService.Messages.TelemetryStorageType.Equals(Common.Services.Models.TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase);
             if (isKustoEnabled)
             {
-                DeviceGroup deviceGroup = await this.GetDeviceGroupAsync(id);
                 await this.AddDeviceGroupToADX(deviceGroup, true);
             }
         }

@@ -596,7 +596,7 @@ try {
         }
     }
 	
-	function Update_SAJobQueryForTenant {
+    function Update_SAJobQueryForTenant {
         param(
             [string] $tenantId,
             [string] $eventhubNamespace,
@@ -628,14 +628,36 @@ try {
                 -File $SAJobOutputFilePath `
                 -Name "Alerts"
 
-            Update-AzStreamAnalyticsTransformation -ResourceGroupName $resourceGroup `
-                -JobName $saJobName `
-                -Query $Query `
-                -Name "MyTransformation"
+            try {
+                Update-AzStreamAnalyticsTransformation -ResourceGroupName $resourceGroup `
+                    -JobName $saJobName `
+                    -Query $Query `
+                    -Name "SAQuery"
+
+                Write-Output "Query updated successfully for SAQuery Query"
+            }
+            catch {
+                Write-Host("An Error occured.")
+                Write-Host($_)
+            }
+
+            try {
+                Update-AzStreamAnalyticsTransformation -ResourceGroupName $resourceGroup `
+                    -JobName $saJobName `
+                    -Query $Query `
+                    -Name "MyTransformation"
+
+                Write-Output "Query updated successfully for MyTransformation Query"
+            }
+            catch {
+                Write-Host("An Error occured.")
+                Write-Host($_)
+            }
 
             Start-AzStreamAnalyticsJob -Name $saJobName -ResourceGroupName $resourceGroup
     
-            Write-Output "Query added successfully."
+            Write-Output "Started Job successfully."
+            
         }
         catch {
             Write-Host("An Error occured.")
@@ -659,8 +681,8 @@ try {
 		  
         #Place the EventHub Namespace primary connectionstting => appConfiguration
         $connectionString = Get-AzEventHubKey -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -AuthorizationRuleName RootManageSharedAccessKey
-        az appconfig kv set --name $appConfigurationName --key ("tenant:"+$iotTenantId+":eventHubConn") --value $connectionString.PrimaryConnectionString  --yes
-        az appconfig kv set --name $appConfigurationName --key ("tenant:"+$iotTenantId+":eventHubPrimaryKey") --value $connectionString.PrimaryKey  --yes
+        az appconfig kv set --name $appConfigurationName --key ("tenant:" + $iotTenantId + ":eventHubConn") --value $connectionString.PrimaryConnectionString  --yes
+        az appconfig kv set --name $appConfigurationName --key ("tenant:" + $iotTenantId + ":eventHubPrimaryKey") --value $connectionString.PrimaryKey  --yes
         
         Write-Host "############## Added Keys to Azure AppConfiguration"   
 
@@ -708,13 +730,13 @@ try {
             -databaseName $databaseName `
             -connStr $connStr
 			
-		Update_AlertsInfra -tenantId $iotTenantId `
-                -eventhubNamespace $eventhubNamespace `
-                -resourceGroupName $resourceGroup `
-                -clusterName $clusterName `
-                -clusterLocation $clusterLocation `
-                -databaseName $databaseName `
-                -connStr $connStr
+        Update_AlertsInfra -tenantId $iotTenantId `
+            -eventhubNamespace $eventhubNamespace `
+            -resourceGroupName $resourceGroup `
+            -clusterName $clusterName `
+            -clusterLocation $clusterLocation `
+            -databaseName $databaseName `
+            -connStr $connStr
 		  
 		  
         if ($iotHub.SAJobName) {
@@ -725,7 +747,7 @@ try {
                 -resourceGroupName $resourceGroup
         }
 		
-		az appconfig kv set --name $appConfigurationName --key "tenant:refreshappconfig" --value $iotTenantId  --yes
+        az appconfig kv set --name $appConfigurationName --key "tenant:refreshappconfig" --value $iotTenantId  --yes
     }
 }
 catch {

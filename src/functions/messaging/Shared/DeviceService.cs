@@ -196,7 +196,7 @@ namespace Mmm.Iot.Functions.Messaging.Shared
 
                         var timeStamp = new TelemetryTimestamp(Convert.ToDateTime(dateTimeReceived));
                         DeviceService deviceService = new DeviceService();
-                        await deviceService.SaveDeviceTwinOperationAsync(eventData, Convert.ToString(tenant), deviceId.ToString(), operationType.ToString(), timeStamp, eventHubHelper);
+                        await deviceService.SaveDeviceTwinOperationAsync(eventData, log, Convert.ToString(tenant), deviceId.ToString(), operationType.ToString(), timeStamp, eventHubHelper);
                     }
                 }
                 catch (Exception ex)
@@ -206,11 +206,11 @@ namespace Mmm.Iot.Functions.Messaging.Shared
             }
         }
 
-        public async Task SaveDeviceTwinOperationAsync(string eventData, string tenant, string deviceId, string operationType, TelemetryTimestamp timeStamp, EventHubHelper eventHubHelper)
+        public async Task SaveDeviceTwinOperationAsync(string eventData, ILogger log, string tenant, string deviceId, string operationType, TelemetryTimestamp timeStamp, EventHubHelper eventHubHelper)
         {
             try
             {
-                string deviceTwin = null;
+                string deviceTwin = eventData;
                 Twin twin = null;
                 JObject deviceTwinJson = new JObject();
                 deviceTwinJson.Add(DeviceTelemetryKeyConstants.DeviceId, deviceId.ToString());
@@ -221,15 +221,16 @@ namespace Mmm.Iot.Functions.Messaging.Shared
 
                 if (operationType.ToString().Equals("createDeviceIdentity"))
                 {
+                    deviceTwinJson.Add(DeviceTelemetryKeyConstants.DeviceCreatedDate, timeStamp.DateTime);
+
                     try
                     {
                         twin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
                         deviceTwin = twin.ToJson();
-                        deviceTwinJson.Add(DeviceTelemetryKeyConstants.DeviceCreatedDate, timeStamp.DateTime);
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
-                        deviceTwin = eventData;
+                        log.LogError($"Unable to fetch DeviceId: {deviceId} device twin from iothub of tenant: {tenant}.", e);
                     }
                 }
                 else
@@ -251,11 +252,18 @@ namespace Mmm.Iot.Functions.Messaging.Shared
                     {
                         deviceTwinJson.Add(DeviceTelemetryKeyConstants.DeviceCreatedDate, default(DateTime)); // Set Device Created Date to Default if twin is not present in storage.
 
-                        twin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
-
-                        if (twin != null)
+                        try
                         {
-                            previousTwin = JObject.Parse(twin.ToJson());
+                            twin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
+
+                            if (twin != null)
+                            {
+                                previousTwin = JObject.Parse(twin.ToJson());
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            log.LogError($"Unable to fetch DeviceId: {deviceId} device twin from iothub of tenant: {tenant}.", e);
                         }
                     }
 

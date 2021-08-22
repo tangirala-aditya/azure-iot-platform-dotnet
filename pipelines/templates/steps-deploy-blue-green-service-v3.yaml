@@ -129,4 +129,11 @@ steps:
         echo "_ $(type) _ Here is the type value"
 
         kubectl patch svc ${{parameters.serviceName}} -p '{"spec": {"selector": {"app.kubernetes.io/name":"${{parameters.serviceName}}", "type": "$(type)"},"unschedulable":true}}'
+        if [ $(type) == 'green' ]
+        then
+          kubectl scale deployment.v1.apps/${{parameters.blueServiceName}} --replicas=0
+        else
+          kubectl scale deployment.v1.apps/${{parameters.greenServiceName}} --replicas=0
+        fi
+
 

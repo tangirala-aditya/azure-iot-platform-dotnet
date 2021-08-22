@@ -70,5 +70,5 @@ stages:
           applicationShortCode: $(applicationShortCode)
           environmentCategory: $(environmentCategory)
           imageTag: $(imageTag)
-          blueGreen: false
+          blueGreen: true
           isHelmVersion3: true

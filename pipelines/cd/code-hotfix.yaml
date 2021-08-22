@@ -71,4 +71,4 @@ stages:
           environmentCategory: $(environmentCategory)
           imageTag: $(imageTag)
           blueGreen: false
-          isHelmVersion3: false
+          isHelmVersion3: true

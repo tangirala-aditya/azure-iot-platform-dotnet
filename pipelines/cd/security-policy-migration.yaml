@@ -310,7 +310,7 @@ stages:
               scriptType: bash
               inlineScript: |-
                devicetwinPropfn=$(functionApp1Name)
-               keyVaultSecretUri="https://$(applicationCode)-keyvault-${{parameters.environmentCategory}}.vault.azure.net"
+               keyVaultSecretUri="https://$(applicationCode)-keyvault-$(environmentCategory).vault.azure.net"
                az functionapp config appsettings set --name $devicetwinPropfn \
                --settings \
                 "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
@@ -321,8 +321,8 @@ stages:
                devicetwinPropObjectId=$(az functionapp identity show --name $(functionApp1Name) --resource-group $(resourceGroupName) | jq -r .principalId)
                az keyvault set-policy --name $(keyVaultName) --object-id $devicetwinPropObjectId --secret-permissions get list --key-permissions get list
                
-               alertingactionfn=$(applicationCode)-alertingactionsfuncapp-${{parameters.environmentCategory}}
-               keyVaultSecretUri="https://$(applicationCode)-keyvault-${{parameters.environmentCategory}}.vault.azure.net"
+               alertingactionfn=$(applicationCode)-alertingactionsfuncapp-$(environmentCategory)
+               keyVaultSecretUri="https://$(applicationCode)-keyvault-$(environmentCategory).vault.azure.net"
                az functionapp config appsettings set --name $alertingactionfn \
                --settings \
                 "ActionsEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/AlertingActionsFunction--ActionsEventHubConnectionString/)" \
@@ -332,7 +332,7 @@ stages:
                az keyvault set-policy --name $(keyVaultName) --object-id $alertingactionObjectId --secret-permissions get list --key-permissions get list
 
                iotdeploymentfn=$(functionApp4Name)
-               keyVaultSecretUri="https://$(applicationCode)-keyvault-${{parameters.environmentCategory}}.vault.azure.net"
+               keyVaultSecretUri="https://$(applicationCode)-keyvault-$(environmentCategory).vault.azure.net"
                az functionapp config appsettings set --name $iotdeploymentfn \
                --settings \
                 "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \

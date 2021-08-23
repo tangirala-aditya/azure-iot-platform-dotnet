@@ -273,20 +273,6 @@ stages:
                 az functionapp update --set clientCertEnabled=true --name "$(applicationCode)-iotdeploymentfuncapp-$(environmentCategory)" --resource-group $(resourceGroupName)
                 az functionapp update --set clientCertEnabled=true --name "$(applicationCode)-resourcedatacollector-$(environmentCategory)" --resource-group $(resourceGroupName)
 
-          - task: AzureCLI@2
-            displayName: 
-            inputs:
-              azureSubscription: $(subscriptionName)
-              scriptLocation: inlineScript
-              scriptType: bash
-              inlineScript: |-
-               set -Eeuxo pipefail
-               az webapp identity assign --name "$(applicationCode)-alertingactionsfuncapp-$(environmentCategory)" --resource-group myResourceGroup
-               az webapp identity assign --name "$(applicationCode)-appconfigfuncapp-$(environmentCategory)" --resource-group myResourceGroup
-               az webapp identity assign --name "$(applicationCode)-devicetwinfuncapp-$(environmentCategory)" --resource-group myResourceGroup
-               az webapp identity assign --name "$(applicationCode)-iotdeploymentfuncapp-$(environmentCategory)" --resource-group myResourceGroup
-               az webapp identity assign --name "$(applicationCode)-resourcedatacollector-$(environmentCategory)" --resource-group myResourceGroup
-
       - job: addkeyVaultReferencesToFunctionApp
         displayName: Add Key Vault References to FunctionApp 
         dependsOn:

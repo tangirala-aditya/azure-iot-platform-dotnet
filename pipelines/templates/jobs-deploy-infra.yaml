@@ -1153,10 +1153,10 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-            functionName=${{parameters.applicationCode}}-alertingactionsfuncapp-${{parameters.environmentCategory}}
+            functionApp2Name=${{parameters.applicationCode}}-alertingactionsfuncapp-${{parameters.environmentCategory}}
             keyVaultSecretUri="https://${{parameters.applicationCode}}-keyvault-${{parameters.environmentCategory}}.vault.azure.net"
             storageAccountConn=$(az keyvault secret show --name "Global--StorageAccountConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
-            az functionapp config appsettings set --name $functionName \
+            az functionapp config appsettings set --name $functionApp2Name \
               --settings \
                 "ActionsEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/AlertingActionsFunction--ActionsEventHubConnectionString/)" \
                 "SendGridApiKey"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/IdentityGatewayService--SendGridApiKey/)" \
@@ -1170,7 +1170,7 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-           function2Name=${{parameters.applicationCode}}-alertingactionsfuncapp-${{parameters.environmentCategory}}
+           functionApp2Name=${{parameters.applicationCode}}-alertingactionsfuncapp-${{parameters.environmentCategory}}
            objectId=$(az functionapp identity show --name $functionApp2Name --resource-group $(resourceGroupName) | jq -r .principalId)
            az keyvault set-policy --name $(keyVaultName) --object-id $objectId --secret-permissions get list --key-permissions get list
 

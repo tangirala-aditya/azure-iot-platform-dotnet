@@ -138,6 +138,9 @@
             "name": "[parameters('functionAppName')]",
             "apiVersion": "2016-08-01",
             "location": "[variables('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
             "scale": null,
             "properties": {
                 "enabled": true,

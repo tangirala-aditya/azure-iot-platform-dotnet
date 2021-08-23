@@ -50,11 +50,8 @@ export const withAccordion = (ComponentToWrap) => {
         };
 
         render() {
-            const {
-                accordionIsOpen,
-                accordionIsCollapsable,
-                toggleAccordion,
-            } = this.context;
+            const { accordionIsOpen, accordionIsCollapsable, toggleAccordion } =
+                this.context;
             return (
                 <ComponentToWrap
                     {...this.props}

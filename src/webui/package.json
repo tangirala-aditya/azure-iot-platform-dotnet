@@ -5,6 +5,7 @@
     "dependencies": {
         "@angular/common": "^8.2.2",
         "@angular/core": "^8.2.2",
+        "@fluentui/react": "^8.18.0",
         "@microsoft/azure-iot-ux-fluent-controls": "file:azure-iot-ux-fluent-controls",
         "@microsoft/azure-iot-ux-fluent-css": "file:azure-iot-ux-fluent-css",
         "adal-angular": "1.0.17",
@@ -51,7 +52,7 @@
         "eslint-plugin-prettier": "3.3.1",
         "eslint-plugin-react-hooks": "4.2.0",
         "eslint-webpack-plugin": "2.4.3",
-        "prettier": "2.2.1",
+        "prettier": "^2.2.1",
         "typescript": "3.4.3"
     },
     "scripts": {

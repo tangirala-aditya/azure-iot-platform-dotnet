@@ -12,6 +12,8 @@ namespace Mmm.Iot.Config.Services.Models
 
         public string DisplayName { get; set; }
 
+        public string MappingId { get; set; }
+
         public IEnumerable<DeviceGroupCondition> Conditions { get; set; }
 
         public IEnumerable<DeviceGroupSupportedMethods> SupportedMethods { get; set; }

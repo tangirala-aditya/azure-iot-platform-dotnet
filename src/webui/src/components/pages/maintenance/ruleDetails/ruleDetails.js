@@ -198,13 +198,8 @@ export class RuleDetails extends Component {
     }
 
     handleProps(nextProps) {
-        const {
-                alerts,
-                alertEntities,
-                deviceEntities,
-                match,
-                rulesEntities,
-            } = nextProps,
+        const { alerts, alertEntities, deviceEntities, match, rulesEntities } =
+                nextProps,
             selectedId = match.params.id,
             selectedRule = rulesEntities[selectedId],
             selectedAlert =
@@ -622,6 +617,7 @@ export class RuleDetails extends Component {
                                     <DevicesGridContainer
                                         t={t}
                                         domLayout="autoHeight"
+                                        useStaticCols={true}
                                         onGridReady={this.onDeviceGridReady}
                                         rowData={
                                             isPending

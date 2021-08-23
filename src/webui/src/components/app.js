@@ -25,6 +25,10 @@ import {
     DeploymentsRouter,
 } from "./pages";
 import { IdentityGatewayService } from "services";
+import { ColumnMappingsRouter } from "./pages/columnmapping/columnmapping.router";
+import { initializeIcons } from "@fluentui/font-icons-mdl2";
+
+initializeIcons();
 
 class App extends Component {
     constructor(props) {
@@ -102,6 +106,13 @@ class App extends Component {
                     svg: svgs.tabs.maintenance,
                     labelId: "tabs.maintenance",
                     component: MaintenanceContainer,
+                },
+                {
+                    to: "/columnMapping",
+                    exact: false,
+                    svg: svgs.tabs.maintenance,
+                    labelId: "tabs.columnMapping",
+                    component: ColumnMappingsRouter,
                 },
             ],
             crumbsConfig = [

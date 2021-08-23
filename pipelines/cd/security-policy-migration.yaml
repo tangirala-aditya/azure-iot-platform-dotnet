@@ -64,8 +64,8 @@ stages:
               fi
             displayName: Check parameters
 
-  - stage: deployInfrastructure
-    displayName: Deploy infrastructure
+  - stage: migrateSecurityRecommendations
+    displayName: Remediation of Non-Compliant Resources
     dependsOn:
       - checkParameters
     jobs:

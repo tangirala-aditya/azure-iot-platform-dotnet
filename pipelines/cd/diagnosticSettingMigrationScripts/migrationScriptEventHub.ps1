@@ -21,7 +21,7 @@ function createDiagnosticSettings([string]$resourceGroupName, [string]$subscript
     }
     }
     Write-Host "Creating Diagnostic Settings"
-    Set-AzDiagnosticSetting -Name $diagnosticSetting -ResourceId $resourceId -Category ArchiveLogs, OperationalLogs, AutoScaleLogs, KafkaUserErrorLogs -MetricCategory AllMetrics -Enabled $true -WorkspaceId $workSpaceID   
+    Set-AzDiagnosticSetting -Name $diagnosticSetting -ResourceId $resourceId -Category ArchiveLogs, OperationalLogs, AutoScaleLogs, KafkaUserErrorLogs,KafkaCoordinatorLogs -MetricCategory AllMetrics -Enabled $true -WorkspaceId $workSpaceID   
 }
 
 

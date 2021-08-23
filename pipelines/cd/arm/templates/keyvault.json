@@ -159,11 +159,7 @@
             "logs": [
               {
                 "category": "AuditEvent",
-                "enabled": true,
-                "retentionPolicy": {
-                  "enabled": true,
-                  "days": "10"
-                }
+                "enabled": true
               }
             ],
                 "metrics": [

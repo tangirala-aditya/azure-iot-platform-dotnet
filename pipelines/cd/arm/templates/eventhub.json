@@ -340,13 +340,21 @@
                             "logs": [
                                 {
                                     "category": "ArchiveLogs",
-                                    "enabled": true
+                                    "enabled": true,
+                                    "retentionPolicy": {
+                                        "enabled": true,
+                                        "days": "30"
+                                      }
                                 }
                             ],
                             "metrics": [
                                 {
                                     "category": "AllMetrics",
-                                    "enabled": true
+                                    "enabled": true,
+                                    "retentionPolicy": {
+                                        "enabled": true,
+                                        "days": "30"
+                                      }
                                 }
                             ]
                         }

@@ -45,6 +45,13 @@ namespace Mmm.Iot.Config.WebService.Controllers
             return new ColumnMappingApiModel(await this.storage.UpdateColumnMappingAsync(id, columnMappingApiModel.ToServiceModel(), this.GetClaimsUserDetails()));
         }
 
+        [HttpDelete("{id}")]
+        [Authorize("ReadAll")]
+        public async Task DeleteColumnMapping(string id)
+        {
+            await this.storage.DeleteColumnMappingAsync(id, this.GetClaimsUserDetails());
+        }
+
         [HttpGet("ColumnOptions")]
         [Authorize("ReadAll")]
         public async Task<ColumnOptionsListApiModel> GetDeviceGroupColumnOptions()

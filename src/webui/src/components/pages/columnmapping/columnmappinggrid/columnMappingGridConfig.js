@@ -5,12 +5,19 @@ import {
     TimeRenderer,
     SoftSelectLinkRenderer,
 } from "components/shared/cellRenderers";
-import { gridValueFormatters } from "components/shared/pcsGrid/pcsGridConfig";
+import {
+    gridValueFormatters,
+    checkboxColumn,
+} from "components/shared/pcsGrid/pcsGridConfig";
 
 const { checkForEmpty } = gridValueFormatters;
 
 /** A collection of column definitions for the devices grid */
 export const columnMappingGridColumnDefs = {
+    checkboxColumn: {
+        ...checkboxColumn,
+        headerCheckboxSelection: false,
+    },
     name: {
         headerName: "Name",
         field: "name",
@@ -45,5 +52,4 @@ export const defaultColumnMappingGridProps = {
     multiSelect: true,
     pagination: true,
     paginationPageSize: Config.paginationPageSize,
-    rowSelection: "multiple",
 };

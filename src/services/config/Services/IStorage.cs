@@ -66,6 +66,8 @@ namespace Mmm.Iot.Config.Services
 
         Task<ColumnMappingServiceModel> UpdateColumnMappingAsync(string id, ColumnMappingServiceModel columnMapping, string userId);
 
+        Task DeleteColumnMappingAsync(string id, string userId);
+
         Task<IEnumerable<ColumnOptionsServiceModel>> GetDeviceGroupColumnOptions();
 
         Task<ColumnOptionsServiceModel> AddColumnOptionsAsync(ColumnOptionsServiceModel columnOptions, string userId);

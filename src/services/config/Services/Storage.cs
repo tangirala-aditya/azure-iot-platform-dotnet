@@ -520,6 +520,38 @@ namespace Mmm.Iot.Config.Services
             return this.CreateColumnMappingServiceModel(response);
         }
 
+        public async Task DeleteColumnMappingAsync(string id, string userId)
+        {
+            var response = await this.GetColumnMappingAsync(id);
+            if (response != null)
+            {
+                // Delete Device group relation with current mapping
+                var deviceGroups = await this.GetAllDeviceGroupsAsync();
+                if (deviceGroups != null && deviceGroups.Any())
+                {
+                    var impactedDeviceGroups = deviceGroups.Where(dg => dg.MappingId == id).ToList();
+                    var columnOptions = await this.GetDeviceGroupColumnOptions();
+                    var optionsToRemove = response.ColumnMappingDefinitions.Select(d => d.Name).ToList();
+                    foreach (var item in impactedDeviceGroups)
+                    {
+                        item.MappingId = null;
+                        var deviceGroupColOptions = columnOptions.FirstOrDefault(co => co.DeviceGroupId == item.Id);
+
+                        // Remove column options from the list
+                        if (deviceGroupColOptions != null)
+                        {
+                            deviceGroupColOptions.SelectedOptions = deviceGroupColOptions.SelectedOptions.Except(optionsToRemove).ToArray();
+                            await this.UpdateColumnOptionsAsync(deviceGroupColOptions.Key, deviceGroupColOptions, userId);
+                        }
+
+                        await this.UpdateDeviceGroupAsync(item.Id, item, item.ETag);
+                    }
+                }
+
+                await this.client.DeleteAsync(ColumnMappingsCollectionId, id);
+            }
+        }
+
         public async Task<IEnumerable<ColumnOptionsServiceModel>> GetDeviceGroupColumnOptions()
         {
             var response = await this.client.GetAllAsync(ColumnOptionsCollectionId);

@@ -327,4 +327,14 @@ stages:
 
                iotdeploymentObjectId=$(az functionapp identity show --name $iotdeploymentfn --resource-group $(resourceGroupName) | jq -r .principalId)
                az keyvault set-policy --name $(keyVaultName) --object-id $iotdeploymentObjectId --secret-permissions get list --key-permissions get list
+               
+               resourcedatacollectorfn=$(functionApp5Name)
+               az functionapp config appsettings set --name $resourcedatacollectorfn \
+                --settings \
+                  "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
+                --resource-group $(resourceGroupName)
+
+               resourcedatacollectorObjectId=$(az functionapp identity show --name $resourcedatacollectorfn --resource-group $(resourceGroupName) | jq -r .principalId)
+               az keyvault set-policy --name $(keyVaultName) --object-id $resourcedatacollectorObjectId --secret-permissions get list --key-permissions get list
+
 

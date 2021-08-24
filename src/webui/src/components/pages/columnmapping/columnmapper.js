@@ -17,6 +17,8 @@ import {
     Indicator,
 } from "components/shared";
 import { ConfigService, IoTHubManagerService } from "services";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import dragIndicator from "assets/icons/drag_indicator.svg";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./columnMapping.module.scss"));
@@ -74,6 +76,22 @@ export class ColumnMapper extends LinkedComponent {
                     label: "authentication",
                     value: "authentication",
                 },
+                {
+                    label: "Properties.Reported.Type",
+                    value: "Properties.Reported.Type",
+                },
+                {
+                    label: "Properties.Reported.firmware.currentFwVersion",
+                    value: "Properties.Reported.firmware.currentFwVersion",
+                },
+                {
+                    label: "Properties.Reported.telemetry",
+                    value: "Properties.Reported.telemetry",
+                },
+                {
+                    label: "connected",
+                    value: "connected",
+                },
             ],
             rendererOptions: [
                 { label: "SimulatedRenderer", value: "IsSimulatedRenderer" },
@@ -95,6 +113,7 @@ export class ColumnMapper extends LinkedComponent {
                 (this.props.defaultColumnMapping || {}).mapping || [],
             isPending: true,
             error: undefined,
+            mappingsLink: this.linkTo("columnMappings"),
         };
 
         // State to input links
@@ -111,14 +130,21 @@ export class ColumnMapper extends LinkedComponent {
     }
 
     formIsValid() {
-        return [this.mappingsLink].every((link) => !link.error);
+        return [this.state.mappingsLink].every((link) => !link.error);
     }
 
     componentDidMount() {
         this.subscription =
             IoTHubManagerService.getDeviceProperties().subscribe(
                 (items) => {
-                    const filterOptions = items.map((item) => toOption(item));
+                    const filterOptions = items
+                        .filter(
+                            (item) =>
+                                !this.state.mappingOptions
+                                    .map((m) => m.value)
+                                    .includes(item)
+                        )
+                        .map((item) => toOption(item));
                     this.setState({
                         mappingOptions: [
                             ...this.state.mappingOptions,
@@ -164,6 +190,9 @@ export class ColumnMapper extends LinkedComponent {
 
     componentWillUnmount() {
         if (this.subscription) this.subscription.unsubscribe();
+        if (this.state.refreshDeviceData) {
+            this.props.fetchDevices();
+        }
     }
 
     apply = (event) => {
@@ -182,24 +211,30 @@ export class ColumnMapper extends LinkedComponent {
                 requestData
             ).subscribe(
                 (columnMapping) => {
-                    this.props.fetchColumnMappings();
-                    if (this.state.isDefault) {
-                        this.props.history.push(`/columnMapping/default`);
-                    } else {
-                        this.props.history.push(`/columnMapping/custom`);
-                    }
+                    this.redirect(true);
                 },
                 (error) => {}
             );
         } else {
             ConfigService.createColumnMappings(requestData).subscribe(
                 (columnMapping) => {
-                    this.props.fetchColumnMappings();
-                    if (this.state.isDefault) {
-                        this.props.history.push(`/columnMapping/default`);
-                    } else {
-                        this.props.history.push(`/columnMapping/custom`);
-                    }
+                    this.redirect(true);
+                },
+                (error) => {}
+            );
+        }
+    };
+
+    redirect = (afterSave = false) => {
+        if (afterSave) {
+            this.props.fetchColumnMappings();
+            this.setState({ refreshDeviceData: true });
+        }
+        if (this.state.isDefault) {
+            this.props.history.push(`/columnMapping/default`);
+        } else {
+            this.props.history.push(`/columnMapping/custom`);
+        }
                 },
                 (error) => {}
             );
@@ -210,19 +245,24 @@ export class ColumnMapper extends LinkedComponent {
         this.props.logEvent(
             toDiagnosticsModel("CreateColumnMapping_AddColumnMapping", {})
         );
-        return this.mappingsLink.set([
-            ...this.mappingsLink.value,
+        var mappingsLink = this.state.mappingsLink;
+        mappingsLink.set([
+            ...this.state.mappingsLink.value,
             newColumnMapping(),
         ]);
+        this.setState({ mappingsLink: mappingsLink });
+        return mappingsLink;
     };
 
     deleteCondition = (index) => () => {
         this.props.logEvent(
             toDiagnosticsModel("CreateColumnMapping_DeleteColumnMapping", {})
         );
-        return this.mappingsLink.set(
-            this.mappingsLink.value.filter((_, idx) => index !== idx)
-        );
+        var mappingsLink = this.state.mappingsLink;
+        mappingsLink.set([
+            ...this.state.mappingsLink.value.filter((_, idx) => index !== idx),
+        ]);
+        return this.setState({ mappingsLink: mappingsLink });
     };
 
     resetColumnMappings = () => {
@@ -269,20 +309,34 @@ export class ColumnMapper extends LinkedComponent {
         return optionArr;
     };
 
-    onFieldChange = (key) => {
-        // if (
-        //     this.state.deviceQueryConditions[key].field !== "connectionState" &&
-        //     (this.state.deviceQueryConditions[key].value === "Connected" ||
-        //         this.state.deviceQueryConditions[key].value === "Disconnected")
-        // ) {
-        //     this.state.deviceQueryConditions[key].value = "";
-        // }
+    handleOnDragEnd = (event) => {
+        if (!event.destination) return;
+        const items = Array.from(this.state.mappingsLink.value);
+        const [reorderedItem] = items.splice(event.source.index, 1);
+        items.splice(event.destination.index, 0, reorderedItem);
+        var mappingsLink = this.state.mappingsLink;
+        mappingsLink.set(items);
+        this.setState({ mappingsLink: mappingsLink });
     };
+
+    areMappingsSame() {
+        if (
+            this.props.columnMapping &&
+            this.props.columnMapping.mapping &&
+            this.state.mappingsLink
+        ) {
+            return (
+                JSON.stringify(this.state.mappingsLink.value) ===
+                JSON.stringify(this.props.columnMapping.mapping)
+            );
+        }
+        return false;
+    }
 
     render() {
         const { t } = this.props,
             // Create the state link for the dynamic form elements
-            mappingsLink = this.mappingsLink.getLinkedChildren(
+            mappingsLink = this.state.mappingsLink.getLinkedChildren(
                 (conditionLink) => {
                     let name = conditionLink
                             .forkTo("name")
@@ -444,6 +498,7 @@ export class ColumnMapper extends LinkedComponent {
                                 mappingsLink.length > 0) && (
                                 <Row>
                                     <Cell className="col-1 button"></Cell>
+                                    <Cell className="col-1 button"></Cell>
                                     <Cell className="col-3">Name</Cell>
                                     <Cell className="col-1"></Cell>
                                     <Cell className="col-2">Mapping</Cell>
@@ -474,9 +529,6 @@ export class ColumnMapper extends LinkedComponent {
                                                     "columnMapping.headerPlaceholder"
                                                 )}
                                                 link={condition.name}
-                                                onChange={this.onFieldChange(
-                                                    idx
-                                                )}
                                             />
                                         </Cell>
                                         <Cell className="col-1"></Cell>
@@ -532,81 +584,155 @@ export class ColumnMapper extends LinkedComponent {
                                         </Cell>
                                     </Row>
                                 ))}
-                            {mappingsLink.map((condition, idx) => (
-                                <Row
-                                    key={idx}
-                                    // className="deviceExplorer-conditions"
-                                >
-                                    <Cell className="col-1 button">
-                                        <Btn
-                                            className="btn-icon"
-                                            icon="cancel"
-                                            onClick={this.deleteCondition(idx)}
-                                        />
-                                    </Cell>
-                                    <Cell className="col-3">
-                                        <FormControl
-                                            type="text"
-                                            aria-label={t(
-                                                "columnMapping.field"
+                            <DragDropContext
+                                onDragEnd={(e) =>
+                                    this.handleOnDragEnd(e, mappingsLink)
+                                }
+                            >
+                                <Droppable droppableId="characters">
+                                    {(provided) => (
+                                        <div
+                                            className={css("list")}
+                                            {...provided.droppableProps}
+                                            ref={provided.innerRef}
+                                        >
+                                            {mappingsLink.map(
+                                                (condition, idx) => {
+                                                    return (
+                                                        <Draggable
+                                                            key={
+                                                                "draggable" +
+                                                                idx
+                                                            }
+                                                            draggableId={
+                                                                "draggable" +
+                                                                idx
+                                                            }
+                                                            index={idx}
+                                                        >
+                                                            {(provided) => (
+                                                                <Row
+                                                                    key={idx}
+                                                                    provided={
+                                                                        provided
+                                                                    }
+                                                                    onMouseEnter={
+                                                                        this
+                                                                            .onMouseEnter
+                                                                    }
+                                                                    className={css(
+                                                                        "item"
+                                                                    )}
+                                                                >
+                                                                    <img
+                                                                        className={css(
+                                                                            "dragIndicator"
+                                                                        )}
+                                                                        src={
+                                                                            dragIndicator
+                                                                        }
+                                                                        alt={t(
+                                                                            "deviceGroupsFlyout.unpinned"
+                                                                        )}
+                                                                    />
+                                                                    <Cell className="col-1 button">
+                                                                        <Btn
+                                                                            className="btn-icon"
+                                                                            icon="cancel"
+                                                                            onClick={this.deleteCondition(
+                                                                                idx
+                                                                            )}
+                                                                        />
+                                                                    </Cell>
+                                                                    <Cell className="col-3">
+                                                                        <FormControl
+                                                                            type="text"
+                                                                            aria-label={t(
+                                                                                "columnMapping.field"
+                                                                            )}
+                                                                            className="long"
+                                                                            searchable="false"
+                                                                            clearable="false"
+                                                                            placeholder={t(
+                                                                                "columnMapping.headerPlaceholder"
+                                                                            )}
+                                                                            link={
+                                                                                condition.name
+                                                                            }
+                                                                        />
+                                                                    </Cell>
+                                                                    <Cell className="col-1"></Cell>
+                                                                    <Cell className="col-2">
+                                                                        <FormControl
+                                                                            type="select"
+                                                                            aria-label={t(
+                                                                                "columnMapping.operator"
+                                                                            )}
+                                                                            className="long"
+                                                                            searchable="false"
+                                                                            clearable="false"
+                                                                            options={
+                                                                                this
+                                                                                    .state
+                                                                                    .mappingOptions
+                                                                            }
+                                                                            placeholder={t(
+                                                                                "columnMapping.mappingPlaceholder"
+                                                                            )}
+                                                                            link={
+                                                                                condition.mapping
+                                                                            }
+                                                                        />
+                                                                    </Cell>
+                                                                    <Cell className="col-1"></Cell>
+                                                                    <Cell className="col-2">
+                                                                        <FormControl
+                                                                            type="select"
+                                                                            aria-label={t(
+                                                                                "columnMapping.operator"
+                                                                            )}
+                                                                            className="long"
+                                                                            searchable="false"
+                                                                            clearable="false"
+                                                                            options={
+                                                                                this
+                                                                                    .state
+                                                                                    .rendererOptions
+                                                                            }
+                                                                            placeholder={t(
+                                                                                "columnMapping.renderPlaceholder"
+                                                                            )}
+                                                                            link={
+                                                                                condition.renderer
+                                                                            }
+                                                                        />
+                                                                    </Cell>
+                                                                    <Cell className="col-1"></Cell>
+                                                                    <Cell className="col-3">
+                                                                        <FormControl
+                                                                            type="text"
+                                                                            placeholder={t(
+                                                                                "columnMapping.descriptionPlaceholder"
+                                                                            )}
+                                                                            link={
+                                                                                condition.description
+                                                                            }
+                                                                            className={css(
+                                                                                "width-70"
+                                                                            )}
+                                                                        />
+                                                                    </Cell>
+                                                                </Row>
+                                                            )}
+                                                        </Draggable>
+                                                    );
+                                                }
                                             )}
-                                            className="long"
-                                            searchable="false"
-                                            clearable="false"
-                                            placeholder={t(
-                                                "columnMapping.headerPlaceholder"
-                                            )}
-                                            link={condition.name}
-                                            onChange={this.onFieldChange(idx)}
-                                        />
-                                    </Cell>
-                                    <Cell className="col-1"></Cell>
-                                    <Cell className="col-2">
-                                        <FormControl
-                                            type="select"
-                                            aria-label={t(
-                                                "columnMapping.operator"
-                                            )}
-                                            className="long"
-                                            searchable="false"
-                                            clearable="false"
-                                            options={this.state.mappingOptions}
-                                            placeholder={t(
-                                                "columnMapping.mappingPlaceholder"
-                                            )}
-                                            link={condition.mapping}
-                                        />
-                                    </Cell>
-                                    <Cell className="col-1"></Cell>
-                                    <Cell className="col-2">
-                                        <FormControl
-                                            type="select"
-                                            aria-label={t(
-                                                "columnMapping.operator"
-                                            )}
-                                            className="long"
-                                            searchable="false"
-                                            clearable="false"
-                                            options={this.state.rendererOptions}
-                                            placeholder={t(
-                                                "columnMapping.renderPlaceholder"
-                                            )}
-                                            link={condition.renderer}
-                                        />
-                                    </Cell>
-                                    <Cell className="col-1"></Cell>
-                                    <Cell className="col-3">
-                                        <FormControl
-                                            type="text"
-                                            placeholder={t(
-                                                "columnMapping.descriptionPlaceholder"
-                                            )}
-                                            link={condition.description}
-                                            className={css("width-70")}
-                                        />
-                                    </Cell>
-                                </Row>
-                            ))}
+                                            {provided.placeholder}
+                                        </div>
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
                         </Grid>
                         <Btn
                             className={css("add-btn")}
@@ -621,6 +747,7 @@ export class ColumnMapper extends LinkedComponent {
                                     primary
                                     disabled={
                                         !this.formIsValid() ||
+                                        this.areMappingsSame() ||
                                         conditionHasErrors ||
                                         (!this.state.isDefault &&
                                             this.mappingNameLink.error) ||

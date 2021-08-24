@@ -45,9 +45,15 @@ export class ManageDeviceGroups extends LinkedComponent {
                 },
                 (filtersError) => this.setState({ filtersError })
             );
-        const columnMappingsOptions = [...this.props.columnMappings].map(
-            (item) => toColumnMappingOptions(item)
-        );
+        const columnMappingsOptions = [
+            {
+                name: this.props.t(
+                    "deviceGroupsFlyout.columnMappingPlaceholder"
+                ),
+                value: undefined,
+            },
+            ...this.props.columnMappings,
+        ].map((item) => toColumnMappingOptions(item));
         this.setState({ columnMappingsOptions });
     }
 

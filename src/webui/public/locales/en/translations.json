@@ -238,13 +238,18 @@
         },
         "remove": "Remove condition",
         "add": "Add condition",
+        "enterDeviceID": "Enter Device ID",
+        "deviceID": "Device ID",
+        "devices": "Devices",
         "errorMsg": {
             "fieldCantBeEmpty": "Field is required",
             "operatorCantBeEmpty": "Operator is required",
             "valueCantBeEmpty": "Value is required",
             "typeCantBeEmpty": "Type is required",
             "selectedType": "Must be of the selected type",
-            "statusCantBeEmpty": "Status is Required"
+            "statusCantBeEmpty": "Status is Required",
+            "deviceIDExists": "DeviceID already exists",
+            "cannotAddMoreThan50Devices": "Cannot add more than 50 devices"
         },
         "status": "Status",
         "statusPlaceholder": "Select Status"
@@ -1156,6 +1161,20 @@
         },
         "labels":{
             "mappingName": "Column Mapping Name"
+        },
+        "delete": {
+            "title": "Delete",
+            "header": "Delete Column Mapping",
+            "description": "This action will delete the column mapping permanently from the platform.",
+            "summaryHeader": "Summary",
+            "affectedDeviceGroups": "Affected Device groups",
+            "addNewButton": "Add New",
+            "deleteButton": "Delete",
+            "apply": "Delete",
+            "cancel": "Cancel",
+            "close": "Close",
+            "onLabel": "Yes, delete the selected column mapping",
+            "offLabel": "No, do not delete the selected column mapping"
         }
     }
 }

@@ -79,7 +79,10 @@ export class Devices extends Component {
             this.state = {
                 ...this.state,
                 defaultColumnMappings: defaultColumnMappings,
-                ...this.setMappingsAndOptions(props),
+                ...this.setMappingsAndOptions(
+                    props,
+                    this.props.activeDeviceGroupId
+                ),
             };
 
             this.state = {
@@ -109,7 +112,6 @@ export class Devices extends Component {
                 c.deviceGroupId === (deviceGroupId ?? props.activeDeviceGroupId)
         );
         this.ColumnOptionsModel = colOption ?? null;
-
         return {
             selectedOptions: colOption ? colOption.selectedOptions : [],
         };
@@ -233,9 +235,11 @@ export class Devices extends Component {
             let tempState = {
                 ...this.state,
                 defaultColumnMappings: defaultColumnMappings,
-                ...this.setMappingsAndOptions(nextProps),
+                ...this.setMappingsAndOptions(
+                    nextProps,
+                    this.props.activeDeviceGroupId
+                ),
             };
-
             this.setState({
                 ...tempState,
                 ...this.setColumnOptions(tempState),
@@ -454,7 +458,6 @@ export class Devices extends Component {
                 ).subscribe(
                     (columnMapping) => {
                         this.ColumnOptionsModel = columnMapping;
-                        this.props.insertColumnOptions([columnMapping]);
                     },
                     (error) => {}
                 );

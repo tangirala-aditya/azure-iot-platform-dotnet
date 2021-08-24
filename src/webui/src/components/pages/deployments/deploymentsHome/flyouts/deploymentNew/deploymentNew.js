@@ -85,7 +85,16 @@ export class DeploymentNew extends LinkedComponent {
             this.setState({ deviceGroupName, deviceGroupId });
 
             this.setState({
-                deviceGroupQuery: JSON.stringify(deviceGroup.conditions),
+                deviceGroupQuery:
+                    deviceGroup.conditions.length === 1 &&
+                    deviceGroup.conditions[0].key === "id"
+                        ? JSON.stringify([])
+                        : JSON.stringify(deviceGroup.conditions),
+                deviceIds:
+                    deviceGroup.conditions.length === 1 &&
+                    deviceGroup.conditions[0].key === "id"
+                        ? deviceGroup.conditions[0].value
+                        : [],
             });
         }
         // Reset package selection
@@ -151,6 +160,7 @@ export class DeploymentNew extends LinkedComponent {
                 packageId,
                 packageType,
                 configType,
+                deviceIds,
             } = this.state;
 
         logEvent(
@@ -184,6 +194,7 @@ export class DeploymentNew extends LinkedComponent {
                 deviceGroupId,
                 name,
                 priority,
+                deviceIds,
             });
             this.setState({ changesApplied: true });
         }

@@ -44,7 +44,7 @@ namespace Mmm.Iot.IoTHubManager.Services
         private const string DevicesConnectedQuery = "connectionState = 'Connected'";
         private const string TwinChangeDatabase = "iot";
         private const string AppConfigTenantInfoKey = "tenant";
-        private const string AppConfigTwinChangeCollectionKey = "twin-change-collection";
+        private const string AppConfigLifecycleCollectionKey = "lifecycle-collection";
         private readonly ITenantConnectionHelper tenantConnectionHelper;
         private readonly IAsaManagerClient asaManager;
         private readonly IDeviceQueryCache deviceQueryCache;
@@ -620,7 +620,7 @@ namespace Mmm.Iot.IoTHubManager.Services
 
             var twinChangeResult = await this.storageClient.QueryDocumentsAsync(
                 TwinChangeDatabase,
-                this.GetTwinChangeCollectionId(tenantId),
+                this.GetLifecycleCollectionId(tenantId),
                 new FeedOptions
                 {
                     EnableCrossPartitionQuery = true,
@@ -631,10 +631,10 @@ namespace Mmm.Iot.IoTHubManager.Services
             return twinChangeResult.Select(x => x.Id).ToList();
         }
 
-        private string GetTwinChangeCollectionId(string tenantId)
+        private string GetLifecycleCollectionId(string tenantId)
         {
             return this.appConfigurationClient.GetValue(
-                $"{AppConfigTenantInfoKey}:{tenantId}:{AppConfigTwinChangeCollectionKey}");
+                $"{AppConfigTenantInfoKey}:{tenantId}:{AppConfigLifecycleCollectionKey}");
         }
 
         private async Task<ResultWithContinuationToken<List<T>>> GetIotDataQueryAsync<T>(

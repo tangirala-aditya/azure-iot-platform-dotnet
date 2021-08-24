@@ -502,6 +502,10 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
             ...setPending(fromAction.type, false),
         });
     },
+    deleteColumnMappingsReducer = (state, { payload }) =>
+        update(state, {
+            columnMappings: { $unset: [...payload] },
+        }),
     updateColumnOptionsReducer = (state, { payload, fromAction }) => {
         const {
             entities: { columnOptions },
@@ -516,8 +520,14 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
             entities: { columnOptions },
         } = normalize(payload, columnOptionsListSchema);
 
+        if (!state.columnOptions) {
+            return update(state, {
+                columnOptions: { $set: columnOptions },
+            });
+        }
+
         return update(state, {
-            deviceGroups: { $merge: columnOptions },
+            columnOptions: { $merge: columnOptions },
         });
     },
     updateSolutionSettingsReducer = (state, { payload, fromAction }) =>
@@ -682,6 +692,10 @@ export const redux = createReducerScenario({
     updateColumnMappings: {
         type: "APP_COLUMN_MAPPINGS_GETCH",
         reducer: updateColumnMappingsReducer,
+    },
+    deleteColumnMappings: {
+        type: "APP_COLUMN_MAPPINGS_DELETE",
+        reducer: deleteColumnMappingsReducer,
     },
     updateColumnOptions: {
         type: "APP_COLUMN_OPTIONS_FETCH",

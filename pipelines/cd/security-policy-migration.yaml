@@ -320,6 +320,18 @@ stages:
           #      iotdeploymentObjectId=$(az functionapp identity show --name $iotdeploymentfn --resource-group $(resourceGroupName) | jq -r .principalId)
           #      az keyvault set-policy --name $(keyVaultName) --object-id $iotdeploymentObjectId --secret-permissions get list --key-permissions get list
 
+          - task: AzureCLI@2
+            displayName: Enable Managed Assigned Identities to FunctionApp
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |-
+                az functionapp identity assign --name $(functionApp1Name) --resource-group rg-iot-acs-dev
+                az functionapp identity assign --name $(functionApp2Name) --resource-group rg-iot-acs-dev
+                az functionapp identity assign --name $(functionApp3Name) --resource-group rg-iot-acs-dev
+                az functionapp identity assign --name $(functionApp4Name) --resource-group rg-iot-acs-dev
+                az functionapp identity assign --name $(functionApp5Name) --resource-group rg-iot-acs-dev
 
           - task: AzureCLI@2
             displayName: Set app settings for Device Twin Azure Function
@@ -373,3 +385,5 @@ stages:
 
                 resourcedatacollectorObjectId=$(az functionapp identity show --name $(functionApp5Name) --resource-group $(resourceGroupName) | jq -r .principalId)
                 az keyvault set-policy --name $(keyVaultName) --object-id $resourcedatacollectorObjectId --secret-permissions get list --key-permissions get list
+
+

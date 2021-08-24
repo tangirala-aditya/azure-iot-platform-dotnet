@@ -134,7 +134,8 @@ stages:
             displayName: Print variables
 
       - job: powershellScripts
-        displayName: Provision DiagnosticLogs to Azure Resources 
+        displayName: Provision DiagnosticLogs to Azure Resources
+        condition: false 
         dependsOn:
           - printVariables
         variables:
@@ -186,6 +187,7 @@ stages:
 
       - job: compliantpolicies
         displayName: Resolve Non Compliance Policies 
+        condition: false
         dependsOn:
           - printVariables
         variables:
@@ -278,43 +280,61 @@ stages:
               applicationShortCode: $(applicationShortCode)
               environmentCategory: $(environmentCategory)
         steps:
+          # - task: AzureCLI@2
+          #   displayName: Replace Function App appsettings with KeyVault references
+          #   inputs:
+          #     azureSubscription: $(subscriptionName)
+          #     scriptLocation: inlineScript
+          #     scriptType: bash
+          #     inlineScript: |-
+          #      devicetwinPropfn=$(functionApp1Name)
+          #      keyVaultSecretUri="https://$(applicationCode)-keyvault-$(environmentCategory).vault.azure.net"
+          #      az functionapp config appsettings set --name $devicetwinPropfn \
+          #       --settings \
+          #       "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
+          #       "TelemetryEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TelemetryEventHubConnectionString/)" \
+          #       "LifecycleEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--LifecycleEventHubConnectionString/)" \
+          #       "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \ 
+          #       --resource-group $(resourceGroupName)
+          #      devicetwinPropObjectId=$(az functionapp identity show --name $(functionApp1Name) --resource-group $(resourceGroupName) | jq -r .principalId)
+          #      az keyvault set-policy --name $(keyVaultName) --object-id $devicetwinPropObjectId --secret-permissions get list --key-permissions get list
+               
+          #      alertingactionfn=$(applicationCode)-alertingactionsfuncapp-$(environmentCategory)
+          #      keyVaultSecretUri="https://$(applicationCode)-keyvault-$(environmentCategory).vault.azure.net"
+          #      az functionapp config appsettings set --name $alertingactionfn \
+          #       --settings \
+          #       "ActionsEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/AlertingActionsFunction--ActionsEventHubConnectionString/)" \
+          #       "SendGridApiKey"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/IdentityGatewayService--SendGridApiKey/)" \
+          #       --resource-group $(resourceGroupName)
+          #      alertingactionObjectId=$(az functionapp identity show --name $alertingactionfn --resource-group $(resourceGroupName) | jq -r .principalId)
+          #      az keyvault set-policy --name $(keyVaultName) --object-id $alertingactionObjectId --secret-permissions get list --key-permissions get list
+
+          #      iotdeploymentfn=$(functionApp4Name)
+          #      keyVaultSecretUri="https://$(applicationCode)-keyvault-$(environmentCategory).vault.azure.net"
+          #      az functionapp config appsettings set --name $iotdeploymentfn \
+          #       --settings \
+          #       "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
+          #       "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \
+          #       --resource-group $(resourceGroupName)
+
+          #      iotdeploymentObjectId=$(az functionapp identity show --name $iotdeploymentfn --resource-group $(resourceGroupName) | jq -r .principalId)
+          #      az keyvault set-policy --name $(keyVaultName) --object-id $iotdeploymentObjectId --secret-permissions get list --key-permissions get list
+
+
           - task: AzureCLI@2
-            displayName: Replace Function App appsettings with KeyVault references
+            displayName: Set app settings for Device Twin Azure Function
             inputs:
-              azureSubscription: $(subscriptionName)
+              azureSubscription: ${{parameters.subscriptionName}}
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |-
-               devicetwinPropfn=$(functionApp1Name)
-               keyVaultSecretUri="https://$(applicationCode)-keyvault-$(environmentCategory).vault.azure.net"
-               az functionapp config appsettings set --name $devicetwinPropfn \
-                --settings \
-                "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
-                "TelemetryEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TelemetryEventHubConnectionString/)" \
-                "LifecycleEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--LifecycleEventHubConnectionString/)" \
-                "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \ 
-                --resource-group $(resourceGroupName)
-               devicetwinPropObjectId=$(az functionapp identity show --name $(functionApp1Name) --resource-group $(resourceGroupName) | jq -r .principalId)
-               az keyvault set-policy --name $(keyVaultName) --object-id $devicetwinPropObjectId --secret-permissions get list --key-permissions get list
-               
-               alertingactionfn=$(applicationCode)-alertingactionsfuncapp-$(environmentCategory)
-               keyVaultSecretUri="https://$(applicationCode)-keyvault-$(environmentCategory).vault.azure.net"
-               az functionapp config appsettings set --name $alertingactionfn \
-                --settings \
-                "ActionsEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/AlertingActionsFunction--ActionsEventHubConnectionString/)" \
-                "SendGridApiKey"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/IdentityGatewayService--SendGridApiKey/)" \
-                --resource-group $(resourceGroupName)
-               alertingactionObjectId=$(az functionapp identity show --name $alertingactionfn --resource-group $(resourceGroupName) | jq -r .principalId)
-               az keyvault set-policy --name $(keyVaultName) --object-id $alertingactionObjectId --secret-permissions get list --key-permissions get list
-
-               iotdeploymentfn=$(functionApp4Name)
-               keyVaultSecretUri="https://$(applicationCode)-keyvault-$(environmentCategory).vault.azure.net"
-               az functionapp config appsettings set --name $iotdeploymentfn \
-                --settings \
-                "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
-                "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \
-                --resource-group $(resourceGroupName)
-
-               iotdeploymentObjectId=$(az functionapp identity show --name $iotdeploymentfn --resource-group $(resourceGroupName) | jq -r .principalId)
-               az keyvault set-policy --name $(keyVaultName) --object-id $iotdeploymentObjectId --secret-permissions get list --key-permissions get list
-
+                devicetwinPropfn=$(functionApp1Name)
+                keyVaultSecretUri="https://$(applicationCode)-keyvault-$(environmentCategory).vault.azure.net"
+                storageAccountConn=$(az keyvault secret show --name "Global--StorageAccountConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+                az functionapp config appsettings set --name $devicetwinPropfn \
+                  --settings \
+                    "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
+                    "TelemetryEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TelemetryEventHubConnectionString/)" \
+                    "LifecycleEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--LifecycleEventHubConnectionString/)" \
+                    "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \
+                  --resource-group $(resourceGroupName)               

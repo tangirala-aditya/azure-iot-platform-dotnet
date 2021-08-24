@@ -9,6 +9,7 @@ import {
     getDefaultColumnMapping,
     getColumnMappingPendingStatus,
 } from "store/reducers/appReducer";
+import { epics as devicesEpics } from "store/reducers/devicesReducer";
 
 const mapStateToProps = (state, props) => ({
         columnMapping: getColumnMappingById(state, props.mappingId),
@@ -20,6 +21,7 @@ const mapStateToProps = (state, props) => ({
             dispatch(appEpics.actions.fetchColumnMappings()),
         logEvent: (diagnosticsModel) =>
             dispatch(appEpics.actions.logEvent(diagnosticsModel)),
+        fetchDevices: () => dispatch(devicesEpics.actions.fetchDevices()),
     });
 
 export const ColumnMapperContainer = withTranslation()(

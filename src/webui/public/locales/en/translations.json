@@ -1158,6 +1158,20 @@
         },
         "labels":{
             "mappingName": "Column Mapping Name"
+        },
+        "delete": {
+            "title": "Delete",
+            "header": "Delete Column Mapping",
+            "description": "This action will delete the column mapping permanently from the platform.",
+            "summaryHeader": "Summary",
+            "affectedDeviceGroups": "Affected Device groups",
+            "addNewButton": "Add New",
+            "deleteButton": "Delete",
+            "apply": "Delete",
+            "cancel": "Cancel",
+            "close": "Close",
+            "onLabel": "Yes, delete the selected column mapping",
+            "offLabel": "No, do not delete the selected column mapping"
         }
     }
 }

@@ -2,16 +2,19 @@
 
 import React, { Component, Fragment } from "react";
 import { toDiagnosticsModel } from "services/models";
-import { PcsGrid, Btn } from "components/shared";
+import { PcsGrid, Btn, ComponentArray } from "components/shared";
 import {
     defaultColumnMappingGridProps,
     columnMappingGridColumnDefs,
     defaultColDef,
 } from "./columnMappingGridConfig";
 import { isFunc, translateColumnDefs, svgs } from "utilities";
+import { ColumnMappingDeleteContainer } from "../flyouts/columnMappingDelete";
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("../columnMapping.module.scss"));
-
+const closedModalState = {
+    openModalName: undefined,
+};
 /**
  * A grid for displaying users
  *
@@ -21,12 +24,21 @@ export class ColumnMappingsGrid extends Component {
     constructor(props) {
         super(props);
 
+        // Set the initial state
+        this.state = {
+            ...closedModalState,
+            hardSelectedMappings: [],
+        };
+
         // Default user grid columns
         this.columnDefs = [
+            columnMappingGridColumnDefs.checkboxColumn,
             columnMappingGridColumnDefs.name,
             columnMappingGridColumnDefs.createdBy,
             columnMappingGridColumnDefs.createdDate,
         ];
+
+        props.onContextMenuChange(this.getSingleSelectionContextBtns(false));
     }
 
     /**
@@ -60,18 +72,72 @@ export class ColumnMappingsGrid extends Component {
     /**
      * Handles context filter changes and calls any hard select props method
      *
-     * @param {Array} selectedUsers A list of currently selected users
+     * @param {Array} selectedMappings A list of currently selected packages
      */
-    onHardSelectChange = (selectedUsers) => {
+    onHardSelectChange = (selectedMappings) => {
         const { onContextMenuChange, onHardSelectChange } = this.props;
         if (isFunc(onContextMenuChange)) {
+            this.setState({
+                hardSelectedMappings: selectedMappings,
+            });
             onContextMenuChange(
-                selectedUsers.length > 0 ? this.contextBtns : null
+                selectedMappings.length >= 1
+                    ? this.getSingleSelectionContextBtns(true)
+                    : this.getSingleSelectionContextBtns(false)
             );
         }
         if (isFunc(onHardSelectChange)) {
-            onHardSelectChange(selectedUsers);
+            onHardSelectChange(selectedMappings);
         }
+    };
+
+    getSingleSelectionContextBtns = (isDelete = false) => {
+        return (
+            <ComponentArray>
+                {isDelete && (
+                    <Btn
+                        svg={svgs.trash}
+                        onClick={this.openModal("delete-mapping")}
+                    >
+                        {this.props.t("columnMapping.delete.deleteButton")}
+                    </Btn>
+                )}
+                <Btn
+                    className={css("btn-icon")}
+                    svg={svgs.plus}
+                    onClick={this.addNewColumnMapping}
+                >
+                    {this.props.t("columnMapping.delete.addNewButton")}
+                </Btn>
+            </ComponentArray>
+        );
+    };
+
+    closeModal = () => this.setState(closedModalState);
+
+    openModal = (modalName) => () =>
+        this.setState({
+            openModalName: modalName,
+        });
+
+    getOpenModal = () => {
+        if (
+            this.state.openModalName === "delete-mapping" &&
+            this.state.hardSelectedMappings[0]
+        ) {
+            return (
+                <ColumnMappingDeleteContainer
+                    columnMappingId={this.state.hardSelectedMappings[0].id}
+                    onClose={this.closeModal}
+                    onDelete={this.closeModal}
+                    title={this.props.t("deployments.modals.delete.title")}
+                    deleteInfo={this.props.t(
+                        "deployments.modals.delete.gridInfo"
+                    )}
+                />
+            );
+        }
+        return null;
     };
 
     onColumnMoved = () => {
@@ -118,16 +184,8 @@ export class ColumnMappingsGrid extends Component {
 
         return (
             <Fragment>
-                <div>
-                    <Btn
-                        className={css("btn-icon")}
-                        svg={svgs.plus}
-                        onClick={this.addNewColumnMapping}
-                    >
-                        Add New
-                    </Btn>
-                </div>
                 <PcsGrid key="columnmappings-grid-key" {...gridProps} />
+                {this.getOpenModal()}
             </Fragment>
         );
     }

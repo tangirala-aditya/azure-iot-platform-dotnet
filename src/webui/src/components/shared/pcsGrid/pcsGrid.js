@@ -91,6 +91,9 @@ export class PcsGrid extends Component {
                 JSON.stringify(nextProps.columnDefs) !==
                     JSON.stringify(this.props.columnDefs))
         ) {
+            if (this.gridApi) {
+                this.gridApi.setColumnDefs(nextProps.columnDefs);
+            }
             this.resizeEvents.next("r");
         }
     }
@@ -201,6 +204,7 @@ export class PcsGrid extends Component {
                     getSoftSelectId, // Pass soft select id logic to cell renderers
                 },
                 accentedSort: true,
+                applyColumnDefOrder: true,
             },
             { rowData, pcsLoadingTemplate } = this.props,
             loadingContainer = (

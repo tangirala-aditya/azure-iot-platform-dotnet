@@ -64,8 +64,8 @@ export class ColumnDialog extends React.Component {
                             options={columnOptions}
                             selected={this.state.selectedOptions}
                             onChange={this.onSelectionChange}
-                            // preserveSelectOrder
-                            // showOrderButtons
+                            preserveSelectOrder
+                            showOrderButtons
                             canFilter
                         />
                         <DialogFooter>

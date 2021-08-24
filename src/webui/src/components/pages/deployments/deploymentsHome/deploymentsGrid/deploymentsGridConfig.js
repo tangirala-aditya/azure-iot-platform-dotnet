@@ -21,7 +21,7 @@ export const deploymentsColumnDefs = {
         headerClass: checkboxColumn.headerClass,
         resizable: checkboxColumn.resizable,
         checkboxSelection: checkboxColumn.checkboxSelection,
-        headerCheckboxSelection: checkboxColumn.headerCheckboxSelection,
+        headerCheckboxSelection: false,
         headerCheckboxSelectionFilteredOnly:
             checkboxColumn.headerCheckboxSelectionFilteredOnly,
         suppressMovable: checkboxColumn.suppressMovable,

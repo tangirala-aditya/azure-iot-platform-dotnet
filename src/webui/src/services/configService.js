@@ -240,6 +240,12 @@ export class ConfigService {
         }).pipe(map(toColumnMapping));
     }
 
+    static deleteColumnMapping(id) {
+        return HttpClient.delete(`${ENDPOINT}columnmapping/${id}`).pipe(
+            map((_) => id)
+        );
+    }
+
     static getColumnOptions() {
         return HttpClient.get(`${ENDPOINT}columnmapping/ColumnOptions`).pipe(
             map(toColumnOptions)

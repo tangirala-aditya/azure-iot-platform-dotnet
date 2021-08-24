@@ -324,7 +324,7 @@ stages:
           - task: AzureCLI@2
             displayName: Set app settings for Device Twin Azure Function
             inputs:
-              azureSubscription: ${{parameters.subscriptionName}}
+              azureSubscription: $(subscriptionName)
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |-

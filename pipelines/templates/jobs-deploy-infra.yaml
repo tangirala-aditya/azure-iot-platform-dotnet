@@ -1155,11 +1155,12 @@ jobs:
           inlineScript: |-
             functionApp2Name=${{parameters.applicationCode}}-alertingactionsfuncapp-${{parameters.environmentCategory}}
             keyVaultSecretUri="https://${{parameters.applicationCode}}-keyvault-${{parameters.environmentCategory}}.vault.azure.net"
+            sendGridApiKey=$(az keyvault secret show --name "IdentityGatewayService--SendGridApiKey" --vault-name $(keyVaultName) --query [value] --output tsv)
             storageAccountConn=$(az keyvault secret show --name "Global--StorageAccountConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
             az functionapp config appsettings set --name $functionApp2Name \
               --settings \
                 "ActionsEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/AlertingActionsFunction--ActionsEventHubConnectionString/)" \
-                "SendGridApiKey"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/IdentityGatewayService--SendGridApiKey/)" \
+                "SendGridApiKey"="$sendGridApiKey" \
                 "ActionsEventHubConsumerGroup"="alertingactions" \
               --resource-group $(resourceGroupName)
 

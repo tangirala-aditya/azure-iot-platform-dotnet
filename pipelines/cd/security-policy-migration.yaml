@@ -243,11 +243,11 @@ stages:
               scriptType: bash
               inlineScript: |-
                 set -Eeuxo pipefail
-                az functionapp config set --name "$(applicationCode)-alertingactionsfuncapp-$(environmentCategory)" --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
+                az functionapp config set --name $(functionApp3Name) --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
                 az functionapp config set --name $(functionApp2Name) --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
                 az functionapp config set --name $(functionApp1Name) --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
                 az functionapp config set --name $(functionApp4Name) --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
-                az functionapp config set --name "$(applicationCode)-resourcedatacollector-$(environmentCategory)" --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
+                az functionapp config set --name $(functionApp5Name) --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
 
           - task: AzureCLI@2
             displayName: Enable Client Certificate for functionapps
@@ -257,11 +257,11 @@ stages:
               scriptType: bash
               inlineScript: |-
                 set -Eeuxo pipefail
-                az functionapp update --set clientCertEnabled=true --name "$(applicationCode)-alertingactionsfuncapp-$(environmentCategory)" --resource-group $(resourceGroupName)
+                az functionapp update --set clientCertEnabled=true --name $(functionApp3Name) --resource-group $(resourceGroupName)
                 az functionapp update --set clientCertEnabled=true --name $(functionApp2Name) --resource-group $(resourceGroupName)
                 az functionapp update --set clientCertEnabled=true --name $(functionApp1Name) --resource-group $(resourceGroupName)
                 az functionapp update --set clientCertEnabled=true --name $(functionApp4Name) --resource-group $(resourceGroupName)
-                az functionapp update --set clientCertEnabled=true --name "$(applicationCode)-resourcedatacollector-$(environmentCategory)" --resource-group $(resourceGroupName)
+                az functionapp update --set clientCertEnabled=true --name $(functionApp5Name) --resource-group $(resourceGroupName)
 
       - job: addkeyVaultReferencesToFunctionApp
         displayName: Add Key Vault References to FunctionApp 
@@ -307,25 +307,22 @@ stages:
                 "LifecycleEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--LifecycleEventHubConnectionString/)" \
                 "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \ 
                 --resource-group $(resourceGroupName)
-               devicetwinPropObjectId=$(az functionapp identity show --name $(functionApp1Name) --resource-group $(resourceGroupName) | jq -r .principalId)
+               devicetwinPropObjectId=$(az functionapp identity show --name $devicetwinPropfn --resource-group $(resourceGroupName) | jq -r .principalId)
                az keyvault set-policy --name $(keyVaultName) --object-id $devicetwinPropObjectId --secret-permissions get list --key-permissions get list
                
-               alertingactionfn=$(applicationCode)-alertingactionsfuncapp-$(environmentCategory)
-               keyVaultSecretUri="https://$(applicationCode)-keyvault-$(environmentCategory).vault.azure.net"
+               alertingactionfn=$(functionApp3Name)
                az functionapp config appsettings set --name $alertingactionfn \
                 --settings \
                 "ActionsEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/AlertingActionsFunction--ActionsEventHubConnectionString/)" \
-                "SendGridApiKey"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/IdentityGatewayService--SendGridApiKey/)" \
                 --resource-group $(resourceGroupName)
                alertingactionObjectId=$(az functionapp identity show --name $alertingactionfn --resource-group $(resourceGroupName) | jq -r .principalId)
                az keyvault set-policy --name $(keyVaultName) --object-id $alertingactionObjectId --secret-permissions get list --key-permissions get list
 
                iotdeploymentfn=$(functionApp4Name)
-               keyVaultSecretUri="https://$(applicationCode)-keyvault-$(environmentCategory).vault.azure.net"
                az functionapp config appsettings set --name $iotdeploymentfn \
                 --settings \
-                "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
-                "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \
+                "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
+                "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \
                 --resource-group $(resourceGroupName)
 
                iotdeploymentObjectId=$(az functionapp identity show --name $iotdeploymentfn --resource-group $(resourceGroupName) | jq -r .principalId)

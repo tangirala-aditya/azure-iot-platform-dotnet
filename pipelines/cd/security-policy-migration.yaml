@@ -135,7 +135,6 @@ stages:
 
       - job: powershellScripts
         displayName: Provision DiagnosticLogs to Azure Resources
-        condition: false 
         dependsOn:
           - printVariables
         variables:

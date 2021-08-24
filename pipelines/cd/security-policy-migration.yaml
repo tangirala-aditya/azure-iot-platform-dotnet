@@ -351,7 +351,7 @@ stages:
                     "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \
                   --resource-group $(resourceGroupName)
 
-                devicetwinObjectId=$(az functionapp identity show --name $(functionApp1Name) --resource-group $(resourceGroupName) | jq -r .principalId)
+                devicetwinObjectId=$(az functionapp identity show --name $devicetwinPropfn --resource-group $(resourceGroupName) | jq -r .principalId)
                 az keyvault set-policy --name $(keyVaultName) --object-id $devicetwinObjectId --secret-permissions get list --key-permissions get list
 
                 alertingactionfn=$(functionApp3Name)
@@ -362,7 +362,7 @@ stages:
                     "ActionsEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/AlertingActionsFunction--ActionsEventHubConnectionString/)" \
                     "SendGridApiKey"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/IdentityGatewayService--SendGridApiKey/)" \
                   --resource-group $(resourceGroupName)                  
-                alertingactionObjectId=$(az functionapp identity show --name $(functionApp3Name) --resource-group $(resourceGroupName) | jq -r .principalId)
+                alertingactionObjectId=$(az functionapp identity show --name $alertingactionfn --resource-group $(resourceGroupName) | jq -r .principalId)
                 az keyvault set-policy --name $(keyVaultName) --object-id $alertingactionObjectId --secret-permissions get list --key-permissions get list                  
 
                 iotdeploymentfn=$(functionApp4Name)
@@ -373,7 +373,7 @@ stages:
                     "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \
                   --resource-group $(resourceGroupName)
 
-                iotdeploymentObjectId=$(az functionapp identity show --name $(functionApp4Name) --resource-group $(resourceGroupName) | jq -r .principalId)
+                iotdeploymentObjectId=$(az functionapp identity show --name $iotdeploymentfn --resource-group $(resourceGroupName) | jq -r .principalId)
                 az keyvault set-policy --name $(keyVaultName) --object-id $iotdeploymentObjectId --secret-permissions get list --key-permissions get list 
 
                 resourcedatacollectorfn=$(functionApp5Name)
@@ -383,7 +383,7 @@ stages:
                     "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
                   --resource-group $(resourceGroupName)
 
-                resourcedatacollectorObjectId=$(az functionapp identity show --name $(functionApp5Name) --resource-group $(resourceGroupName) | jq -r .principalId)
+                resourcedatacollectorObjectId=$(az functionapp identity show --name $resourcedatacollectorfn --resource-group $(resourceGroupName) | jq -r .principalId)
                 az keyvault set-policy --name $(keyVaultName) --object-id $resourcedatacollectorObjectId --secret-permissions get list --key-permissions get list
 
 

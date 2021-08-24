@@ -148,41 +148,41 @@ stages:
               applicationShortCode: $(applicationShortCode)
               environmentCategory: $(environmentCategory)
         steps:
+        # - task: AzurePowerShell@5
+        #   displayName: Provision DiagnosticSettings to Event Hub
+        #   inputs:
+        #     azureSubscription: $(subscriptionName)
+        #     ScriptType: FilePath
+        #     ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptEventHub.ps1
+        #     ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
+        #     azurePowerShellVersion: LatestVersion
+
         - task: AzurePowerShell@5
-          displayName: Provision DiagnosticSettings to Event Hub
+          displayName: Provision DiagnosticSettings to  IoT Hub
           inputs:
             azureSubscription: $(subscriptionName)
             ScriptType: FilePath
-            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptEventHub.ps1
+            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptIoTHub.ps1
+            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
+            azurePowerShellVersion: LatestVersion
+
+        - task: AzurePowerShell@5
+          displayName: Provision DiagnosticSettings to Key Vault
+          inputs:
+            azureSubscription: $(subscriptionName)
+            ScriptType: FilePath
+            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptKeyVault.ps1
             ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
             azurePowerShellVersion: LatestVersion
 
         # - task: AzurePowerShell@5
-        #   displayName: Provision DiagnosticSettings to  IoT Hub
+        #   displayName: Provision DiagnosticSettings to Stream Analytics
         #   inputs:
         #     azureSubscription: $(subscriptionName)
         #     ScriptType: FilePath
-        #     ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptIoTHub.ps1
+        #     ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptStreamAnalytics.ps1
         #     ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
-        #     azurePowerShellVersion: LatestVersion
-
-        # - task: AzurePowerShell@5
-        #   displayName: Provision DiagnosticSettings to Key Vault
-        #   inputs:
-        #     azureSubscription: $(subscriptionName)
-        #     ScriptType: FilePath
-        #     ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptKeyVault.ps1
-        #     ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
-        #     azurePowerShellVersion: LatestVersion
-
-        - task: AzurePowerShell@5
-          displayName: Provision DiagnosticSettings to Stream Analytics
-          inputs:
-            azureSubscription: $(subscriptionName)
-            ScriptType: FilePath
-            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptStreamAnalytics.ps1
-            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
-            azurePowerShellVersion: LatestVersion           
+        #     azurePowerShellVersion: LatestVersion           
 
       - job: compliantpolicies
         displayName: Resolve Non Compliance Policies 

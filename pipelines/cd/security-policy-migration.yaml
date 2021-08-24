@@ -279,6 +279,19 @@ stages:
               environmentCategory: $(environmentCategory)
         steps:
           - task: AzureCLI@2
+            displayName: Enable Managed Assigned Identities to FunctionApp
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |-
+                az functionapp identity assign --name $(functionApp1Name) --resource-group rg-iot-acs-dev
+                az functionapp identity assign --name $(functionApp2Name) --resource-group rg-iot-acs-dev
+                az functionapp identity assign --name $(functionApp3Name) --resource-group rg-iot-acs-dev
+                az functionapp identity assign --name $(functionApp4Name) --resource-group rg-iot-acs-dev
+                az functionapp identity assign --name $(functionApp5Name) --resource-group rg-iot-acs-dev
+
+          - task: AzureCLI@2
             displayName: Replace Function App appsettings with KeyVault references
             inputs:
               azureSubscription: $(subscriptionName)

@@ -121,7 +121,7 @@
                         "[resourceId('Microsoft.Devices/IotHubs', '{0}')]"
                     ],
                     "properties": {{
-                        "workspaceId": "/subscriptions/{2}/resourcegroups/{3}/providers/microsoft.operationalinsights/workspaces/{10}",
+                        "workspaceId": "{10}",
                         "logs": [
                             {{
                                 "category": "Connections",

@@ -1153,14 +1153,13 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-            functionApp2Name=${{parameters.applicationCode}}-alertingactionsfuncapp-${{parameters.environmentCategory}}
+            alertingactionsfn=$(functionApp3Name)
             keyVaultSecretUri="https://${{parameters.applicationCode}}-keyvault-${{parameters.environmentCategory}}.vault.azure.net"
-            sendGridApiKey=$(az keyvault secret show --name "IdentityGatewayService--SendGridApiKey" --vault-name $(keyVaultName) --query [value] --output tsv)
             storageAccountConn=$(az keyvault secret show --name "Global--StorageAccountConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
-            az functionapp config appsettings set --name $functionApp2Name \
+            az functionapp config appsettings set --name $alertingactionsfn \
               --settings \
                 "ActionsEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/AlertingActionsFunction--ActionsEventHubConnectionString/)" \
-                "SendGridApiKey"="$sendGridApiKey" \
+                "SendGridApiKey"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/IdentityGatewayService--SendGridApiKey/)" \
                 "ActionsEventHubConsumerGroup"="alertingactions" \
               --resource-group $(resourceGroupName)
 
@@ -1171,8 +1170,7 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-           functionApp2Name=${{parameters.applicationCode}}-alertingactionsfuncapp-${{parameters.environmentCategory}}
-           objectId=$(az functionapp identity show --name $functionApp2Name --resource-group $(resourceGroupName) | jq -r .principalId)
+           objectId=$(az functionapp identity show --name $(functionApp3Name) --resource-group $(resourceGroupName) | jq -r .principalId)
            az keyvault set-policy --name $(keyVaultName) --object-id $objectId --secret-permissions get list --key-permissions get list
 
 
@@ -1228,12 +1226,12 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-            functionName=$(functionApp4Name)
+            iotdeploymentsynfn=$(functionApp4Name)
             keyVaultSecretUri="https://${{parameters.applicationCode}}-keyvault-${{parameters.environmentCategory}}.vault.azure.net"
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             blobStorageKey=$(az storage account keys list -g $(resourceGroupName) -n $(storageAccountName) --query "[?contains(keyName, 'key1')]".value --output tsv)
             blobStorageConnString="DefaultEndpointsProtocol=https;AccountName=$(storageAccountName);AccountKey=$blobStorageKey;EndpointSuffix=core.windows.net"
-            az functionapp config appsettings set --name $functionName \
+            az functionapp config appsettings set --name $iotdeploymentsynfn \
               --settings \
                 "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
                 "AppConfigurationConnectionString"="$appConfigurationConnectionString" \

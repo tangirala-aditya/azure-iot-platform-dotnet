@@ -314,6 +314,7 @@ stages:
                az functionapp config appsettings set --name $alertingactionfn \
                 --settings \
                 "ActionsEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/AlertingActionsFunction--ActionsEventHubConnectionString/)" \
+                "SendGridApiKey"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/IdentityGatewayService--SendGridApiKey/)" \
                 --resource-group $(resourceGroupName)
                alertingactionObjectId=$(az functionapp identity show --name $alertingactionfn --resource-group $(resourceGroupName) | jq -r .principalId)
                az keyvault set-policy --name $(keyVaultName) --object-id $alertingactionObjectId --secret-permissions get list --key-permissions get list
@@ -327,7 +328,7 @@ stages:
 
                iotdeploymentObjectId=$(az functionapp identity show --name $iotdeploymentfn --resource-group $(resourceGroupName) | jq -r .principalId)
                az keyvault set-policy --name $(keyVaultName) --object-id $iotdeploymentObjectId --secret-permissions get list --key-permissions get list
-               
+
                resourcedatacollectorfn=$(functionApp5Name)
                az functionapp config appsettings set --name $resourcedatacollectorfn \
                 --settings \

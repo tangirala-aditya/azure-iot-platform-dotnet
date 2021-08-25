@@ -21,6 +21,7 @@ namespace Mmm.Iot.Functions.Messaging
         [FunctionName("DeviceTwinMirror")]
         public static async Task Run([EventHubTrigger(eventHubName: "device-twin-mirror", Connection = "DeviceTwinMirrorEventHubConnectionString", ConsumerGroup = "%DeviceStreamConsumerGroup%")] EventData[] events, ILogger log)
         {
+            string[] eventOpTypes = { "createDeviceIdentity", "deviceConnected", "deviceDisconnected", "updateTwin", "deleteDeviceIdentity" };
             bool exceptionOccurred = false;
             List<Task> list = new List<Task>();
 
@@ -36,8 +37,13 @@ namespace Mmm.Iot.Functions.Messaging
                     {
                         var deviceId = eventGroup.Key.DeviceId;
 
-                        DeviceService deviceService = new DeviceService();
-                        list.Add(Task.Run(async () => await deviceService.ProcessDeviceTwin(eventGroup.ToArray(), log, Convert.ToString(tenant), deviceId.ToString())));
+                        EventData[] eventDatas = eventGroup.ToArray();
+                        eventDatas = eventDatas.Where(x => eventOpTypes.Contains(x.Properties["opType"])).ToArray();
+                        if (eventDatas.Count() > 0)
+                        {
+                            DeviceService deviceService = new DeviceService();
+                            list.Add(Task.Run(async () => await deviceService.ProcessDeviceTwin(eventDatas, log, Convert.ToString(tenant), deviceId.ToString())));
+                        }
                     }
                 }
                 catch (Exception ex)

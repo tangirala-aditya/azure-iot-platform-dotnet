@@ -12,6 +12,8 @@
         "captureTime": { "value": 300},
         "captureSize": { "value": 314572800},
         "subscriptionId": { "value": "403f2258-d6b0-4c0a-b565-4102510935aa"},
-        "resourceGroup": { "value": "rg-crslbbiot-dev"}
+        "resourceGroup": { "value": "rg-crslbbiot-dev"},
+        "environmentCategory": {"value": "dev"},
+        "applicationCode": {"value": "crslbbiot"}
     }
 }

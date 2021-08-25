@@ -88,6 +88,20 @@
             "metadata": {
                 "description": "Resource group name where storage account exists"
             }
+        },
+        "environmentCategory": {
+            "type": "string",
+            "defaultValue": "dev",
+            "metadata": {
+                "description": "Name of the Log Analytics Workspace"
+            }
+        },
+        "applicationCode": {
+            "type": "string",
+            "defaultValue": "crsliot",
+            "metadata": {
+                "description": "Name of the Log Analytics Workspace"
+            }
         }
     },
     "variables": {
@@ -97,7 +111,10 @@
         "actionsAuthorization": "actionroutes",
         "storageAccountName": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/Microsoft.Storage/storageAccounts/',parameters('storageAccountName'))]",
         "defaultSASKeyName": "RootManageSharedAccessKey",
-        "authRuleResourceId": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('namespaceName'), variables('defaultSASKeyName'))]"
+        "authRuleResourceId": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('namespaceName'), variables('defaultSASKeyName'))]",
+        "workSpaceID": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/microsoft.operationalinsights/workspaces/',parameters('applicationCode'),'-loganalyticsws-',parameters('environmentCategory'))]",
+        "settingsName":"[concat(parameters('applicationCode'),'-diagnosticsetting-',parameters('environmentCategory'))]"
+
     },
     "resources": [
         {
@@ -309,6 +326,47 @@
                             "properties": {}
                         }
                     ]
+                },
+                {
+                        "type": "providers/diagnosticSettings",
+                        "apiVersion": "2021-05-01-preview",
+                        "name": "[concat('/Microsoft.Insights/',variables('settingsName') )]",
+                        "location": "[parameters('location')]",
+                        "dependsOn": [
+                            "[concat('Microsoft.Eventhub/namespaces/', variables('namespaceName'))]"
+                        ],
+                        "properties": {
+                            "workspaceId": "[variables('workSpaceID')]",
+                            "logs": [
+                                {
+                                    "category": "ArchiveLogs",
+                                    "enabled": true
+                                },
+                                {
+                                    "category": "OperationalLogs",
+                                    "enabled": true
+
+                                },
+                                {
+                                    "category": "AutoScaleLogs",
+                                    "enabled": true
+                                },
+                                {
+                                    "category": "KafkaCoordinatorLogs",
+                                    "enabled": true
+                                },
+                                {
+                                    "category": "KafkaUserErrorLogs",
+                                    "enabled": true
+                                }
+                            ],
+                            "metrics": [
+                                {
+                                    "category": "AllMetrics",
+                                    "enabled": true
+                                }
+                            ]
+                        }
                 }
             ]
         }

@@ -18,6 +18,8 @@ variables:
   functionApp1PartialName: devicetwinfuncapp
   functionApp2PartialName: appconfigfuncapp
   functionApp4PartialName: iotdeploymentfuncapp
+  functionApp3PartialName: alertingactionsfuncapp
+  functionApp5PartialName: resourcedatacollector
   keyVaultPartialName: keyvault
   mapsPartialName: maps
   omsWorkspacePartialName: loganalyticsws

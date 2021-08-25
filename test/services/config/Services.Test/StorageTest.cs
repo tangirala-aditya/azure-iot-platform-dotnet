@@ -856,6 +856,22 @@ namespace Mmm.Iot.Config.Services.Test
         {
             var groupId = this.rand.NextString();
 
+            const string key = "DeviceGroup name";
+            var deviceGroup = new DeviceGroup
+            {
+                Id = string.Empty,
+                DisplayName = key,
+            };
+            var value = JsonConvert.SerializeObject(deviceGroup);
+
+            this.mockClient
+                .Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(new ValueApiModel
+                {
+                    Key = key,
+                    Data = value,
+                }));
+
             this.mockClient
                 .Setup(x => x.DeleteAsync(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(0));

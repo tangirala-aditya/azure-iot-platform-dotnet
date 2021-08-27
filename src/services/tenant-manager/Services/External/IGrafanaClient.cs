@@ -10,10 +10,22 @@ namespace Mmm.Iot.TenantManager.Services.External
 {
     public interface IGrafanaClient : IExternalServiceClient
     {
-        Task CreateAPIKeyIsNotFound();
+        Task CreateAPIKeyIfNotFound();
 
-        Task<GrafanaDashboardResponseModel> CreateAndUpdateDashboard(string dashboardTemplate);
+        Task<string> CreateAPIKey(string orgId);
 
-        Task DeleteDashboardByUid(string dashboardUid);
+        Task AddGlobalUser(GrafanaGlobalUserRequestModel user);
+
+        Task AddUserToOrg(string userLoginName, GrafanaRoleType role, string apiKey);
+
+        Task<string> CreateOrganization(string tenant);
+
+        Task<GrafanaDashboardResponseModel> CreateAndUpdateDashboard(string dashboardTemplate, string apikey);
+
+        Task DeleteDashboardByUid(string dashboardUid, string apikey);
+
+        Task DeleteOrganizationByUid(string orgId);
+
+        Task AddDataSource(string dataSourceTempete, string apiKey);
     }
 }

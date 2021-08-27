@@ -28,9 +28,9 @@ namespace Mmm.Iot.MigrateIoTDeviceTwinToADX
                 logger.LogInformation("Device Group Migration Completed");
 
                 DeviceTwinMigration deviceTwinMigration = new DeviceTwinMigration(tableStorageHelper, tenantConnectionHelper, logger);
-                logger.LogInformation("Device Group Migration Started");
+                logger.LogInformation("Device Twin Migration Started");
                 await deviceTwinMigration.Start();
-                logger.LogInformation("Device Group Migration Completed");
+                logger.LogInformation("Device Twin Migration Completed");
             }
             catch (System.Exception ex)
             {

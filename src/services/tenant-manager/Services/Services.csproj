@@ -37,6 +37,14 @@
       <Link>Tasks\GrafanaTemplates\grafana-main-dashboard.json</Link>
       <LogicalName>grafana-main-dashboard.json</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tasks\GrafanaTemplates\sample-azuremonitor-datasource-template.json">
+      <Link>Tasks\GrafanaTemplates\sample-azuremonitor-datasource-template.json</Link>
+      <LogicalName>sample-azuremonitor-datasource-template.json</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tasks\GrafanaTemplates\sample-dataexplorer-datasource-template.json">
+      <Link>Tasks\GrafanaTemplates\sample-dataexplorer-datasource-template.json</Link>
+      <LogicalName>sample-dataexplorer-datasource-template.json</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tasks\GrafanaTemplates\" />

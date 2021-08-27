@@ -1,0 +1,29 @@
+{{
+    "name": "Azure Data Explorer Datasource",
+    "type": "grafana-azure-data-explorer-datasource",
+    "typeLogoUrl": "",
+    "access": "proxy",
+    "url": "",
+    "password": "",
+    "user": "",
+    "database": "",
+    "basicAuth": false,
+    "basicAuthUser": "",
+    "basicAuthPassword": "",
+    "withCredentials": false,
+    "isDefault": false,
+    "jsonData": {{
+        "azureCloud": "azuremonitor",
+        "clientId": "{0}",
+        "clusterUrl": "{3}",
+        "dataConsistency": "strongconsistency",
+        "defaultEditorMode": "raw",
+        "tenantId": "{1}"
+    }},
+    "secureJsonData": {{
+        "clientSecret": "{2}"
+    }},
+    "secureJsonFields": {{
+        "clientSecret": true
+    }}
+}}

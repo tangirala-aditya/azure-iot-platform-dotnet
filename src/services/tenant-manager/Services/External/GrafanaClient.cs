@@ -67,7 +67,7 @@ namespace Mmm.Iot.TenantManager.Services.External
             }
         }
 
-        public async Task CreateAPIKeyIsNotFound()
+        public async Task CreateAPIKeyIfNotFound()
         {
             string value = string.Empty;
             try
@@ -99,10 +99,79 @@ namespace Mmm.Iot.TenantManager.Services.External
             }
         }
 
-        public async Task<GrafanaDashboardResponseModel> CreateAndUpdateDashboard(string dashboardTemplate)
+        public async Task<string> CreateAPIKey(string orgId)
         {
-            string apiKey = this.keyVaultClient.GetValue("Grafana--APIKey");
+            string url = this.RequestUrl("api/auth/keys");
+            UriBuilder uriBuilder = new UriBuilder(url);
+            uriBuilder.UserName = "admin";
+            uriBuilder.Password = "admin";
 
+            GrafanaAPIKeyRequestModel requestData = new GrafanaAPIKeyRequestModel("adminAPIKey", GrafanaRoleType.Admin);
+
+            HttpRequest request = new HttpRequest(uriBuilder.Uri);
+            request.Headers.Add("Accept", "application/json");
+
+            if (!string.IsNullOrEmpty(orgId))
+            {
+                request.Headers.Add("X-Grafana-Org-Id", orgId);
+            }
+
+            request.SetContent(requestData);
+
+            var response = await this.httpClient.PostAsync(request);
+            var result = JsonConvert.DeserializeObject<GrafanaAPIKeyResponseModel>(response.Content);
+
+            return result.Key;
+        }
+
+        public async Task AddGlobalUser(GrafanaGlobalUserRequestModel user)
+        {
+            string url = this.RequestUrl("api/admin/users");
+            UriBuilder uriBuilder = new UriBuilder(url);
+            uriBuilder.UserName = "admin";
+            uriBuilder.Password = "admin";
+
+            HttpRequest request = new HttpRequest(uriBuilder.Uri);
+            request.Headers.Add("Accept", "application/json");
+            request.SetContent(user);
+
+            await this.httpClient.PostAsync(request);
+        }
+
+        public async Task AddUserToOrg(string userLoginName, GrafanaRoleType role, string apiKey)
+        {
+            HttpRequest request = this.PrepareRequest(
+                "api/org/users",
+                apiKey);
+            request.Headers.Add("Accept", "application/json");
+            var requestContent = new { Role = role.ToString(), LoginOrEmail = userLoginName };
+            request.SetContent(requestContent);
+
+            await this.httpClient.PostAsync(request);
+        }
+
+        public async Task<string> CreateOrganization(string tenant)
+        {
+            string url = this.RequestUrl("/api/orgs");
+            UriBuilder uriBuilder = new UriBuilder(url);
+            uriBuilder.UserName = "admin";
+            uriBuilder.Password = "admin";
+
+            GrafanaOrganizationRequestModel requestData = new GrafanaOrganizationRequestModel($"Tenant-{tenant}");
+
+            HttpRequest request = new HttpRequest(uriBuilder.Uri);
+            request.Headers.Add("Accept", "application/json");
+            request.SetContent(requestData);
+
+            var response = await this.httpClient.PostAsync(request);
+
+            dynamic result = JsonConvert.DeserializeObject(response.Content);
+
+            return result.OrgId as string;
+        }
+
+        public async Task<GrafanaDashboardResponseModel> CreateAndUpdateDashboard(string dashboardTemplate, string apiKey)
+        {
             HttpRequest request = this.PrepareRequest(
                 "api/dashboards/db",
                 apiKey);
@@ -113,15 +182,37 @@ namespace Mmm.Iot.TenantManager.Services.External
             return JsonConvert.DeserializeObject<GrafanaDashboardResponseModel>(response.Content);
         }
 
-        public async Task DeleteDashboardByUid(string dashboardUid)
+        public async Task DeleteDashboardByUid(string dashboardUid, string apiKey)
         {
-            string apiKey = this.keyVaultClient.GetValue("Grafana--APIKey");
-
             HttpRequest request = this.PrepareRequest(
                 $"api/dashboards/uid/{dashboardUid}",
                 apiKey);
 
             await this.httpClient.DeleteAsync(request);
+        }
+
+        public async Task DeleteOrganizationByUid(string orgId)
+        {
+            string url = this.RequestUrl($"/api/orgs/{orgId}");
+            UriBuilder uriBuilder = new UriBuilder(url);
+            uriBuilder.UserName = "admin";
+            uriBuilder.Password = "admin";
+
+            HttpRequest request = new HttpRequest(url);
+            request.Headers.Add("Accept", "application/json");
+
+            await this.httpClient.DeleteAsync(request);
+        }
+
+        public async Task AddDataSource(string dataSourceTempete, string apiKey)
+        {
+            HttpRequest request = this.PrepareRequest(
+                "/api/datasources",
+                apiKey);
+
+            request.SetContent(dataSourceTempete);
+
+            await this.httpClient.PostAsync(request);
         }
 
         private HttpRequest PrepareRequest(

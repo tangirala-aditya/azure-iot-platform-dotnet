@@ -86,6 +86,8 @@ reverse-proxy:
 storage-adapter:
   nameOverride: storage-adapter
   appVersion: *appVersion
+  service:
+    port: 10080  
   deployment:
     image:
       tag: *imageTag
@@ -95,6 +97,8 @@ storage-adapter:
 tenant-manager:
   nameOverride: tenant-manager
   appVersion: *appVersion
+  service:
+    port: 10080  
   deployment:
     image:
       tag: *imageTag

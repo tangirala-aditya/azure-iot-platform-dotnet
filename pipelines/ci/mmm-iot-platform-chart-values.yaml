@@ -7,44 +7,68 @@ secretsRef: &secretsRef
 asa-manager:
   nameOverride: asa-manager
   appVersion: *appVersion
+  service:
+    port: 8084
   deployment:
     image:
       tag: *imageTag
+    port:
+      http: 8084        
     secretsRef: *secretsRef
 config:
   nameOverride: config
   appVersion: *appVersion
+  service:
+    port: 8084 
   deployment:
     image:
       tag: *imageTag
+    port:
+      http: 8084   
     secretsRef: *secretsRef
 device-telemetry:
   nameOverride: device-telemetry
   appVersion: *appVersion
+  service:
+    port: 8084  
   deployment:
     image:
       tag: *imageTag
+    port:
+      http: 8084
     secretsRef: *secretsRef
 diagnostics:
   nameOverride: diagnostics
   appVersion: *appVersion
+  service:
+    port: 8084   
   deployment:
     image:
       tag: *imageTag
+    port:
+      http: 8084      
     secretsRef: *secretsRef
 identity-gateway:
   nameOverride: identity-gateway
   appVersion: *appVersion
+  service:
+    port: 8084  
   deployment:
     image:
       tag: *imageTag
+    port:
+      http: 8084      
     secretsRef: *secretsRef
 iothub-manager:
   nameOverride: iothub-manager
   appVersion: *appVersion
+  service:
+    port: 8084
   deployment:
     image:
       tag: *imageTag
+    port:
+      http: 8084  
     secretsRef: *secretsRef
 reverse-proxy:
   nameOverride: reverse-proxy
@@ -65,6 +89,8 @@ storage-adapter:
   deployment:
     image:
       tag: *imageTag
+    port:
+      http: 8084  
     secretsRef: *secretsRef
 tenant-manager:
   nameOverride: tenant-manager
@@ -72,6 +98,8 @@ tenant-manager:
   deployment:
     image:
       tag: *imageTag
+    port:
+      http: 8084  
     secretsRef: *secretsRef
 webui:
   nameOverride: webui

@@ -31,8 +31,6 @@ variables:
     value: $(armDirectory)/parameters
   - name: armTemplatesDirectory
     value: $(armDirectory)/templates
-  - name: automationName
-    value: ${{parameters.applicationCode}}-$(automationPartialName)-${{parameters.environmentCategory}}
   - name: blobContainerName
     value: ${{parameters.applicationCode}}-$(blobContainerPartialName)-${{parameters.environmentCategory}}
   - name: cosmosDbAccountName

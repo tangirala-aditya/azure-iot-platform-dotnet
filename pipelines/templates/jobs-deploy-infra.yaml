@@ -58,7 +58,6 @@ jobs:
           echo "variable: appConfigurationPartialName: $(appConfigurationPartialName)"
           echo "variable: appInsightsPartialName: $(appInsightsPartialName)"
           echo "variable: armDirectory: $(armDirectory)"
-          echo "variable: automationPartialName: $(automationPartialName)"
           echo "variable: blobContainerPartialName: $(blobContainerPartialName)"
           echo "variable: cosmosDbName: $(cosmosDbName)"
           echo "variable: cosmosDbAccountPartialName: $(cosmosDbAccountPartialName)"
@@ -78,7 +77,6 @@ jobs:
           echo "variable: appInsightsName: $(appInsightsName)"
           echo "variable: armParametersDirectory: $(armParametersDirectory)"
           echo "variable: armTemplatesDirectory: $(armTemplatesDirectory)"
-          echo "variable: automationName: $(automationName)"
           echo "variable: blobContainerName: $(blobContainerName)"
           echo "variable: cosmosDbAccountName: $(cosmosDbAccountName)"
           echo "variable: eventHubName: $(eventHubName)"
@@ -877,7 +875,6 @@ jobs:
             az appconfig kv set --key Global:LogAnalytics:WorkspaceId             --value $(logAnalyticsWorkspaceId) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:DiagnosticSetting:Name               --value $(diagnosticSettingName) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:EventHubNamespaceName  --value $(eventHubName) --name $(appConfigurationName) --yes
-            az appconfig kv set --key TenantManagerService:AutomationAccountName  --value $(automationName) --name $(appConfigurationName) --yes
 
             appInsightKey=$(az resource show -g $(resourceGroupName) -n $(appInsightsName) --resource-type "Microsoft.Insights/components" --query properties.InstrumentationKey --output tsv)
             az appconfig kv set --key Global:InstrumentationKey --value $appInsightKey --name $(appConfigurationName) --yes
@@ -1320,8 +1317,8 @@ jobs:
           package: $(Build.SourcesDirectory)/$(functionName).zip
           deploymentMethod: zipDeploy
 
-  - job: automationAccount
-    displayName: Provision Azure Automation and Sendgrid accounts
+  - job: sendgridAccount
+    displayName: Provision Sendgrid account
     dependsOn:
       - aks
       - keyVault
@@ -1345,44 +1342,6 @@ jobs:
         parameters:
           environment: ${{parameters.environmentName}}
 
-      - task: AzureResourceGroupDeployment@2
-        displayName: Provision Azure Automation account
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          action: Create Or Update Resource Group
-          resourceGroupName: $(resourceGroupName)
-          location: ${{parameters.locationName}}
-          templateLocation: Linked artifact
-          csmFile: $(armTemplatesDirectory)/automationacct.json
-          csmParametersFile: $(armParametersDirectory)/automationacct.json
-          overrideParameters: -automationAccountName $(automationName) -location ${{parameters.locationName}}
-          deploymentMode: Incremental
-          addSpnToEnvironment: true
-
-      - template: steps-delete-oldest-deployment.yaml
-        parameters:
-          subscriptionName: ${{parameters.subscriptionName}}
-          deploymentPartialName: $(automationPartialName)
-          resourceGroupName: $(resourceGroupName)
-
-      - task: AzurePowerShell@3
-        displayName: Create certificate and connections on Azure Automation Account
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/automationAcctCert.ps1
-          ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}} -tenantId $(tenantId) -keyvaultName $(keyVaultName)
-          azurePowerShellVersion: LatestVersion
-
-      - task: AzurePowerShell@3
-        displayName: Import runbook code and create webhook
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/automationAcct.ps1
-          ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -scriptFolder $(System.DefaultWorkingDirectory)/src/services/tenant-manager/RunBookCode -keyvaultName $(keyVaultName)
-          azurePowerShellVersion: LatestVersion
-
       - task: AzurePowerShell@3
         displayName: Create SendGrid Acct and API Key
         inputs:
@@ -1392,8 +1351,8 @@ jobs:
           ScriptArguments: -location ${{parameters.locationName}} -resourceGroup $(resourceGroupName) -resourceName $(sendgridAccountName) -keyvaultName $(keyVaultName) -email ${{parameters.sendgridEmail}}
           azurePowerShellVersion: LatestVersion
 
-  - job: automationAccountV3
-    displayName: Provision Azure Automation and Sendgrid accounts
+  - job: sendgridAccountV3
+    displayName: Provision Sendgrid account
     dependsOn:
       - aksV3
       - keyVault
@@ -1416,44 +1375,6 @@ jobs:
       - template: apply-arm-tags.yaml
         parameters:
           environment: ${{parameters.environmentName}}
-
-      - task: AzureResourceGroupDeployment@2
-        displayName: Provision Azure Automation account
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          action: Create Or Update Resource Group
-          resourceGroupName: $(resourceGroupName)
-          location: ${{parameters.locationName}}
-          templateLocation: Linked artifact
-          csmFile: $(armTemplatesDirectory)/automationacct.json
-          csmParametersFile: $(armParametersDirectory)/automationacct.json
-          overrideParameters: -automationAccountName $(automationName) -location ${{parameters.locationName}}
-          deploymentMode: Incremental
-          addSpnToEnvironment: true
-
-      - template: steps-delete-oldest-deployment.yaml
-        parameters:
-          subscriptionName: ${{parameters.subscriptionName}}
-          deploymentPartialName: $(automationPartialName)
-          resourceGroupName: $(resourceGroupName)
-
-      - task: AzurePowerShell@3
-        displayName: Create certificate and connections on Azure Automation Account
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/automationAcctCert.ps1
-          ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}} -tenantId $(tenantId) -keyvaultName $(keyVaultName)
-          azurePowerShellVersion: LatestVersion
-
-      - task: AzurePowerShell@3
-        displayName: Import runbook code and create webhook
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/automationAcct.ps1
-          ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -scriptFolder $(System.DefaultWorkingDirectory)/src/services/tenant-manager/RunBookCode -keyvaultName $(keyVaultName)
-          azurePowerShellVersion: LatestVersion
 
       - task: AzurePowerShell@3
         displayName: Create SendGrid Acct and API Key

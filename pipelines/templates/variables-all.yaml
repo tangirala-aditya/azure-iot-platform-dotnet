@@ -12,7 +12,6 @@ variables:
   appConfigurationPartialName: appconfig
   appInsightsPartialName: appinsight
   blobContainerPartialName: telemetry
-  automationPartialName: automation
   cosmosDbAccountPartialName: cosmos
   eventHubPartialName: eventhub
   functionApp1PartialName: devicetwinfuncapp

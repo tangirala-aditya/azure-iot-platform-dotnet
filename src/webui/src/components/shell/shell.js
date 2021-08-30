@@ -8,7 +8,8 @@ import { Shell as FluentShell } from "@microsoft/azure-iot-ux-fluent-controls/li
 // App Components
 import Main from "./main/main";
 import { PageNotFoundContainer as PageNotFound } from "./pageNotFound";
-import { Svg } from "components/shared";
+import { Svg, Protected } from "components/shared";
+import { permissions } from "services/models";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./shell.module.scss"));
@@ -99,22 +100,26 @@ class Shell extends Component {
             children: pagesConfig.map((tabProps, i) => {
                 const label = t(tabProps.labelId);
                 return (
-                    <NavLink
-                        key={i}
-                        to={tabProps.to}
-                        className={css("global-nav-item")}
-                        activeClassName="global-nav-item-active"
-                        title={label}
-                        id={tabProps.labelId}
+                    <Protected
+                        permission={tabProps.permission ?? permissions.readAll}
                     >
-                        <Svg
-                            src={tabProps.svg}
-                            className={css("global-nav-item-icon")}
-                        />
-                        <div className={css("global-nav-item-text")}>
-                            {label}
-                        </div>
-                    </NavLink>
+                        <NavLink
+                            key={i}
+                            to={tabProps.to}
+                            className={css("global-nav-item")}
+                            activeClassName="global-nav-item-active"
+                            title={label}
+                            id={tabProps.labelId}
+                        >
+                            <Svg
+                                src={tabProps.svg}
+                                className={css("global-nav-item-icon")}
+                            />
+                            <div className={css("global-nav-item-text")}>
+                                {label}
+                            </div>
+                        </NavLink>
+                    </Protected>
                 );
             }),
         };

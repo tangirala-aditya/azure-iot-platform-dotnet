@@ -11,6 +11,9 @@ spec:
       labels:
         name: grafana
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsNonRoot: true  
       volumes:
          - name: grafana-storage
            persistentVolumeClaim: 

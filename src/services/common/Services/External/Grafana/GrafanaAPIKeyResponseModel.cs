@@ -2,11 +2,7 @@
 // Copyright (c) 3M. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Mmm.Iot.TenantManager.Services.Models
+namespace Mmm.Iot.Common.Services.External.Grafana
 {
     public class GrafanaAPIKeyResponseModel
     {

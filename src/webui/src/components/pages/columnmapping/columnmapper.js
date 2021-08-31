@@ -235,10 +235,6 @@ export class ColumnMapper extends LinkedComponent {
         } else {
             this.props.history.push(`/columnMapping/custom`);
         }
-                },
-                (error) => {}
-            );
-        }
     };
 
     addCondition = () => {

@@ -3,10 +3,8 @@
 // </copyright>
 
 using System.Threading.Tasks;
-using Mmm.Iot.Common.Services.External;
-using Mmm.Iot.TenantManager.Services.Models;
 
-namespace Mmm.Iot.TenantManager.Services.External
+namespace Mmm.Iot.Common.Services.External.Grafana
 {
     public interface IGrafanaClient : IExternalServiceClient
     {
@@ -24,8 +22,10 @@ namespace Mmm.Iot.TenantManager.Services.External
 
         Task DeleteDashboardByUid(string dashboardUid, string apikey);
 
-        Task DeleteOrganizationByUid(string orgId);
+        Task<bool> DeleteOrganizationByUid(string orgId);
 
         Task AddDataSource(string dataSourceTempete, string apiKey);
+
+        Task DeleteUser(string userName, string apiKey);
     }
 }

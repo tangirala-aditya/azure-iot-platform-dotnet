@@ -18,6 +18,7 @@ using Mmm.Iot.Common.Services.External.AsaManager;
 using Mmm.Iot.Common.Services.External.Azure;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.CosmosDb;
+using Mmm.Iot.Common.Services.External.Grafana;
 using Mmm.Iot.Common.Services.External.KeyVault;
 using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
@@ -64,6 +65,7 @@ namespace Mmm.Iot.Common.Services
             builder.RegisterType<BlobStorageClient>().As<IBlobStorageClient>().SingleInstance();
             builder.RegisterType<KustoTableManagementClient>().As<IKustoTableManagementClient>().SingleInstance();
             builder.RegisterType<KeyVaultClient>().As<IKeyVaultClient>().SingleInstance();
+            builder.RegisterType<GrafanaClient>().As<IGrafanaClient>().SingleInstance();
             this.SetupCustomRules(builder);
             var container = builder.Build();
             Factory.RegisterContainer(container);

@@ -9,18 +9,14 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Kusto.Data;
-using Kusto.Data.Common;
 using Microsoft.Azure.Cosmos.Table;
-using Microsoft.Azure.Management.EventHub.Models;
-using Microsoft.Azure.Management.IotHub.Models;
 using Microsoft.Extensions.Hosting;
-using Microsoft.WindowsAzure.Storage.Blob;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.Azure;
 using Mmm.Iot.Common.Services.External.BlobStorage;
+using Mmm.Iot.Common.Services.External.Grafana;
 using Mmm.Iot.Common.Services.External.KeyVault;
 using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.Services.External.TableStorage;
@@ -277,24 +273,29 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                         if (item.Type == TenantOperation.GrafanaDashboardCreation)
                         {
+                            Console.WriteLine($"Creating Grafana Organization.");
                             string orgId = await this.grafanaClient.CreateOrganization(item.TenantId);
 
-                            await this.appConfigurationClient.SetValueAsync($"grafana:{item.TenantId}:name", orgId);
+                            await this.appConfigurationClient.SetValueAsync($"grafana:{item.TenantId}:orgId", orgId);
 
+                            Console.WriteLine($"Creating APIKey for Organization:{orgId}");
                             string apiKey = await this.grafanaClient.CreateAPIKey(orgId);
 
                             await this.keyVaultClient.SetValueAsync($"Grafana--{item.TenantId}--APIKey", apiKey);
 
+                            Console.WriteLine($"Adding admin user to Organization:{orgId}");
                             await this.grafanaClient.AddUserToOrg("admin", GrafanaRoleType.Admin, apiKey);
 
-                            IdentityGatewayApiListModel systemAdmins = await this.identityGatewayClient.GetAllSystemAdminsAsync();
+                            Console.WriteLine($"Adding Tenant:{item.TenantId} users to Grafana Organization:{orgId}");
 
-                            foreach (var systemAdmin in systemAdmins.Models)
+                            IdentityGatewayApiListModel users = await this.identityGatewayClient.GetAllUsersForTenant(item.TenantId);
+
+                            foreach (var userDetals in users.Models)
                             {
-                                GrafanaGlobalUserRequestModel user = new GrafanaGlobalUserRequestModel(systemAdmin.Name, systemAdmin.Name, systemAdmin.UserId, "random");
+                                GrafanaGlobalUserRequestModel user = new GrafanaGlobalUserRequestModel(userDetals.Name, userDetals.Name, userDetals.UserId, "random");
                                 await this.grafanaClient.AddGlobalUser(user);
 
-                                await this.grafanaClient.AddUserToOrg(systemAdmin.UserId, GrafanaRoleType.Admin, apiKey);
+                                await this.grafanaClient.AddUserToOrg(userDetals.UserId, GrafanaRoleType.Admin, apiKey);
                             }
 
                             string tenantIdSubstring = item.TenantId.Substring(0, 8);
@@ -310,25 +311,29 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                 item.TenantId);
 
                             Assembly assembly = Assembly.GetExecutingAssembly();
-                            StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("sample-azuremonitor-datasource-template"));
+
+                            Console.WriteLine($"Adding Azure Monitor data source to Grafana Organization:{orgId}.");
+                            StreamReader reader = new StreamReader(assembly.GetManifestResourceStream("sample-azuremonitor-datasource-template.json"));
                             string template = await reader.ReadToEndAsync();
                             template = string.Format(
                                 template,
                                 this.config.Global.AzureActiveDirectory.AppId,
-                                this.config.Global.AzureActiveDirectory.AppSecret,
-                                this.config.Global.AzureActiveDirectory.TenantId);
+                                this.config.Global.AzureActiveDirectory.TenantId,
+                                this.config.Global.AzureActiveDirectory.AppSecret);
                             await this.grafanaClient.AddDataSource(template, apiKey);
 
-                            reader = new StreamReader(assembly.GetManifestResourceStream("sample-dataexplorer-datasource-template"));
+                            Console.WriteLine($"Adding Data Explorer data source to Grafana Organization:{orgId}.");
+                            reader = new StreamReader(assembly.GetManifestResourceStream("sample-dataexplorer-datasource-template.json"));
                             template = await reader.ReadToEndAsync();
                             template = string.Format(
                                 template,
                                 this.config.Global.AzureActiveDirectory.AppId,
-                                this.config.Global.AzureActiveDirectory.AppSecret,
                                 this.config.Global.AzureActiveDirectory.TenantId,
+                                this.config.Global.AzureActiveDirectory.AppSecret,
                                 $"https://{this.config.Global.DataExplorer.Name}.{this.config.Global.Location}.kusto.windows.net/");
                             await this.grafanaClient.AddDataSource(template, apiKey);
 
+                            Console.WriteLine($"Adding Main dashboard to Grafana Organization:{orgId}.");
                             reader = new StreamReader(assembly.GetManifestResourceStream("grafana-main-dashboard.json"));
                             template = await reader.ReadToEndAsync();
                             template = string.Format(
@@ -340,9 +345,11 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                 this.config.Global.LogAnalytics.Name,
                                 $"IoT-{item.TenantId}",
                                 mainDashboardUid,
-                                mainDashboardName);
+                                mainDashboardName,
+                                orgId);
                             await this.grafanaClient.CreateAndUpdateDashboard(template, apiKey);
 
+                            Console.WriteLine($"Adding Admin dashboard to Grafana Organization:{orgId}.");
                             reader = new StreamReader(assembly.GetManifestResourceStream("grafana-admin-dashboard.json"));
                             template = await reader.ReadToEndAsync();
                             template = string.Format(
@@ -356,7 +363,8 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                                 this.config.Global.EventHub.Name,
                                 this.config.Global.CosmosDb.AccountName,
                                 adminDashboardUid,
-                                adminDashboardName);
+                                adminDashboardName,
+                                orgId);
 
                             await this.grafanaClient.CreateAndUpdateDashboard(template, apiKey);
 
@@ -366,13 +374,16 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                         if (item.Type == TenantOperation.GrafanaDashboardDeletion)
                         {
-                            var orgId = this.keyVaultClient.GetValue($"Grafana--{item.TenantId}--APIKey");
+                            var orgId = this.appConfigurationClient.GetValue($"grafana:{item.TenantId}:orgId");
 
-                            await this.grafanaClient.DeleteOrganizationByUid(orgId);
+                            bool result = await this.grafanaClient.DeleteOrganizationByUid(orgId);
 
-                            await this.appConfigurationClient.DeleteKeyAsync($"tenant:{item.TenantId}:grafanaUrl");
-
-                            await this.tableStorageClient.DeleteAsync(TableName, item);
+                            if (result)
+                            {
+                                await this.appConfigurationClient.DeleteKeyAsync($"tenant:{item.TenantId}:grafanaUrl");
+                                await this.appConfigurationClient.DeleteKeyAsync($"grafana:{item.TenantId}:orgId");
+                                await this.tableStorageClient.DeleteAsync(TableName, item);
+                            }
                         }
                     }
                     catch (Exception e)

@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -254,6 +253,9 @@ namespace Mmm.Iot.IdentityGateway.Controllers
                     CreatedTime = DateTime.UtcNow,
                 };
                 await this.userTenantContainer.UpdateAsync(userTenant);
+
+                // Add user to grafana.
+                await this.userTenantContainer.AddUserToGrafana(userTenant);
 
                 UserSettingsInput userSettings = new UserSettingsInput()
                 {

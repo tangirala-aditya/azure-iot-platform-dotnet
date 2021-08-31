@@ -2,13 +2,7 @@
 // Copyright (c) 3M. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
-namespace Mmm.Iot.TenantManager.Services.Models
+namespace Mmm.Iot.Common.Services.External.Grafana
 {
     public class GrafanaOrganizationRequestModel
     {

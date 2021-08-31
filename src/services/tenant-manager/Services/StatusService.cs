@@ -8,6 +8,7 @@ using Mmm.Iot.Common.Services;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.CosmosDb;
+using Mmm.Iot.Common.Services.External.Grafana;
 using Mmm.Iot.Common.Services.External.TableStorage;
 using Mmm.Iot.TenantManager.Services.External;
 using Mmm.Iot.TenantManager.Services.Helpers;

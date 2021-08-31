@@ -3,18 +3,18 @@
 // </copyright>
 
 using System;
-using System.Collections.Specialized;
-using System.Net.Http;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.External.KeyVault;
 using Mmm.Iot.Common.Services.Helpers;
 using Mmm.Iot.Common.Services.Http;
 using Mmm.Iot.Common.Services.Models;
-using Mmm.Iot.TenantManager.Services.Models;
 using Newtonsoft.Json;
 
-namespace Mmm.Iot.TenantManager.Services.External
+namespace Mmm.Iot.Common.Services.External.Grafana
 {
     public class GrafanaClient : IGrafanaClient
     {
@@ -80,15 +80,13 @@ namespace Mmm.Iot.TenantManager.Services.External
 
             if (string.IsNullOrEmpty(value))
             {
-                string url = this.RequestUrl("api/auth/keys");
-                UriBuilder uriBuilder = new UriBuilder(url);
-                uriBuilder.UserName = "admin";
-                uriBuilder.Password = "admin";
+                string svcCredentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes("admin:admin"));
+                HttpRequest request = this.PrepareRequest(
+                    "api/auth/keys",
+                    svcCredentials,
+                    "BasicAuth");
 
                 GrafanaAPIKeyRequestModel requestData = new GrafanaAPIKeyRequestModel("adminAPIKey", GrafanaRoleType.Admin);
-
-                HttpRequest request = new HttpRequest(uriBuilder.Uri);
-                request.Headers.Add("Accept", "application/json");
 
                 request.SetContent(requestData);
 
@@ -101,15 +99,13 @@ namespace Mmm.Iot.TenantManager.Services.External
 
         public async Task<string> CreateAPIKey(string orgId)
         {
-            string url = this.RequestUrl("api/auth/keys");
-            UriBuilder uriBuilder = new UriBuilder(url);
-            uriBuilder.UserName = "admin";
-            uriBuilder.Password = "admin";
+            string svcCredentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes("admin:admin"));
+            HttpRequest request = this.PrepareRequest(
+                "api/auth/keys",
+                svcCredentials,
+                "BasicAuth");
 
             GrafanaAPIKeyRequestModel requestData = new GrafanaAPIKeyRequestModel("adminAPIKey", GrafanaRoleType.Admin);
-
-            HttpRequest request = new HttpRequest(uriBuilder.Uri);
-            request.Headers.Add("Accept", "application/json");
 
             if (!string.IsNullOrEmpty(orgId))
             {
@@ -126,55 +122,74 @@ namespace Mmm.Iot.TenantManager.Services.External
 
         public async Task AddGlobalUser(GrafanaGlobalUserRequestModel user)
         {
-            string url = this.RequestUrl("api/admin/users");
-            UriBuilder uriBuilder = new UriBuilder(url);
-            uriBuilder.UserName = "admin";
-            uriBuilder.Password = "admin";
-
-            HttpRequest request = new HttpRequest(uriBuilder.Uri);
-            request.Headers.Add("Accept", "application/json");
+            string svcCredentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes("admin:admin"));
+            HttpRequest request = this.PrepareRequest(
+                "api/admin/users",
+                svcCredentials,
+                "BasicAuth");
             request.SetContent(user);
-
             await this.httpClient.PostAsync(request);
+        }
+
+        public async Task DeleteUser(string userName, string apiKey)
+        {
+            HttpRequest request = this.PrepareRequest(
+                $"api/org/users/lookup",
+                apiKey,
+                "Token");
+
+            var response = await this.httpClient.GetAsync(request);
+
+            List<GrafanaUserModel> result = JsonConvert.DeserializeObject<List<GrafanaUserModel>>(response.Content);
+
+            GrafanaUserModel userDetails = result.FirstOrDefault(x => x.Login == userName);
+
+            if (userDetails != null)
+            {
+                HttpRequest deleteRequest = this.PrepareRequest(
+                    $"api/org/users/{userDetails.UserId}",
+                    apiKey,
+                    "Token");
+
+                await this.httpClient.DeleteAsync(deleteRequest);
+            }
         }
 
         public async Task AddUserToOrg(string userLoginName, GrafanaRoleType role, string apiKey)
         {
             HttpRequest request = this.PrepareRequest(
                 "api/org/users",
-                apiKey);
-            request.Headers.Add("Accept", "application/json");
+                apiKey,
+                "Token");
+
             var requestContent = new { Role = role.ToString(), LoginOrEmail = userLoginName };
             request.SetContent(requestContent);
-
             await this.httpClient.PostAsync(request);
         }
 
         public async Task<string> CreateOrganization(string tenant)
         {
-            string url = this.RequestUrl("/api/orgs");
-            UriBuilder uriBuilder = new UriBuilder(url);
-            uriBuilder.UserName = "admin";
-            uriBuilder.Password = "admin";
+            string svcCredentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes("admin:admin"));
+            HttpRequest request = this.PrepareRequest(
+                "api/orgs",
+                svcCredentials,
+                "BasicAuth");
 
             GrafanaOrganizationRequestModel requestData = new GrafanaOrganizationRequestModel($"Tenant-{tenant}");
-
-            HttpRequest request = new HttpRequest(uriBuilder.Uri);
-            request.Headers.Add("Accept", "application/json");
             request.SetContent(requestData);
 
             var response = await this.httpClient.PostAsync(request);
 
             dynamic result = JsonConvert.DeserializeObject(response.Content);
-
-            return result.OrgId as string;
+            return result?.orgId;
         }
 
         public async Task<GrafanaDashboardResponseModel> CreateAndUpdateDashboard(string dashboardTemplate, string apiKey)
         {
             HttpRequest request = this.PrepareRequest(
                 "api/dashboards/db",
-                apiKey);
+                apiKey,
+                "Token");
 
             request.SetContent(dashboardTemplate);
 
@@ -186,43 +201,55 @@ namespace Mmm.Iot.TenantManager.Services.External
         {
             HttpRequest request = this.PrepareRequest(
                 $"api/dashboards/uid/{dashboardUid}",
-                apiKey);
+                apiKey,
+                "Token");
 
             await this.httpClient.DeleteAsync(request);
         }
 
-        public async Task DeleteOrganizationByUid(string orgId)
+        public async Task<bool> DeleteOrganizationByUid(string orgId)
         {
-            string url = this.RequestUrl($"/api/orgs/{orgId}");
-            UriBuilder uriBuilder = new UriBuilder(url);
-            uriBuilder.UserName = "admin";
-            uriBuilder.Password = "admin";
+            string svcCredentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes("admin:admin"));
+            HttpRequest request = this.PrepareRequest(
+                $"api/orgs/{orgId}",
+                svcCredentials,
+                "BasicAuth");
 
-            HttpRequest request = new HttpRequest(url);
-            request.Headers.Add("Accept", "application/json");
-
-            await this.httpClient.DeleteAsync(request);
+            var result = await this.httpClient.DeleteAsync(request);
+            return result.IsSuccess;
         }
 
         public async Task AddDataSource(string dataSourceTempete, string apiKey)
         {
             HttpRequest request = this.PrepareRequest(
-                "/api/datasources",
-                apiKey);
+                "api/datasources",
+                apiKey,
+                "Token");
 
             request.SetContent(dataSourceTempete);
-
             await this.httpClient.PostAsync(request);
         }
 
         private HttpRequest PrepareRequest(
            string path,
-           string accessToken)
+           string accessToken,
+           string type)
         {
             Uri uri = new UriBuilder($"{this.serviceUri}/{path}").Uri;
             HttpRequest request = new HttpRequest(uri);
             request.Headers.Add("Accept", "application/json");
-            request.Headers.Add("Authorization", "Bearer " + accessToken);
+
+            switch (type)
+            {
+                case "BasicAuth":
+                    request.Headers.Add("Authorization", "Basic " + accessToken);
+                    break;
+                case "Token":
+                    request.Headers.Add("Authorization", "Bearer " + accessToken);
+                    break;
+                default:
+                    break;
+            }
 
             return request;
         }

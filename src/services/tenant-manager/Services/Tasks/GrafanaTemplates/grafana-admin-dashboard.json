@@ -28,7 +28,7 @@
       "title": "Back to Dashboard",
       "tooltip": "Admin Dashboard",
       "type": "link",
-      "url": "{0}/d/{1}?orgId=1"
+      "url": "{0}/d/{1}?orgId={10}"
     }}
   ],
   "panels": [
@@ -77,7 +77,7 @@
       "links": [
         {{
           "title": "Back to Dashboard",
-          "url": "\r\n{0}/d/{1}?orgId=1&${{__url_time_range}}&${{__all_variables}}&kiosk"
+          "url": "\r\n{0}/d/{1}?orgId={10}&${{__url_time_range}}&${{__all_variables}}&kiosk"
         }}
       ],
       "options": {{

@@ -380,7 +380,7 @@ stages:
 
       - job: upgradeCertManager
         displayName: Upgrade cert-manager with Non-Root User
-        condition: and(true,eq('${{parameters.isHelmVersion3}}',false)) 
+        condition: and(true,eq($(isHelmVersion3),false)) 
         dependsOn:
           - printVariables
         variables:
@@ -428,7 +428,7 @@ stages:
                 
       - job: upgradeCertManagerV3
         displayName: Upgrade cert-manager with Non-Root User
-        condition: and(true,eq('${{parameters.isHelmVersion3}}',true)) 
+        condition: and(true,eq($(isHelmVersion3),true)) 
         dependsOn:
           - printVariables
         variables:
@@ -464,7 +464,7 @@ stages:
             displayName: Upgrade cert-manager
             inputs:
               connectionType: Azure Resource Manager
-              azureSubscription: ${{parameters.subscriptionName}}
+              azureSubscription: $(subscriptionName)
               azureResourceGroup: $(resourceGroupName)
               kubernetesCluster: $(aksName)
               namespace: cert-manager

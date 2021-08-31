@@ -40,17 +40,17 @@
     }
   },
   "ExternalDependencies": {
-    "AsaManagerServiceUrl": "http://asa-manager:80/v1",
-    "AuthServiceUrl": "http://identity-gateway:80/v1",
-    "ConfigServiceUrl": "http://config:80/v1",
-    "DeviceSimulationServiceUrl": "http://device-simulation:80/v1",
+    "AsaManagerServiceUrl": "http://asa-manager:8084/v1",
+    "AuthServiceUrl": "http://identity-gateway:8084/v1",
+    "ConfigServiceUrl": "http://config:8084/v1",
+    "DeviceSimulationServiceUrl": "http://device-simulation:8084/v1",
     "DiagnosticsMaxLogRetries": "3",
-    "DiagnosticsServiceUrl": "http://diagnostics:80/v1",
-    "IdentityGatewayServiceUrl": "http://identity-gateway:80/v1",
-    "IotHubManagerServiceUrl": "http://iothub-manager:80/v1",
+    "DiagnosticsServiceUrl": "http://diagnostics:8084/v1",
+    "IdentityGatewayServiceUrl": "http://identity-gateway:8084/v1",
+    "IotHubManagerServiceUrl": "http://iothub-manager:8084/v1",
     "StorageAdapterServiceTimeout": "10000",
-    "StorageAdapterServiceUrl": "http://storage-adapter:80/v1",
-    "TelemetryServiceUrl": "http://device-telemetry:80/v1"
+    "StorageAdapterServiceUrl": "http://storage-adapter:8084/v1",
+    "TelemetryServiceUrl": "http://device-telemetry:8084/v1"
   },
   "Global": {
     "AuthRequired": "true",

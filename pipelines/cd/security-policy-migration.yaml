@@ -416,7 +416,7 @@ stages:
             displayName: Upgrade cert-manager
             inputs:
               connectionType: Azure Resource Manager
-              azureSubscription: ${{parameters.subscriptionName}}
+              azureSubscription: $(subscriptionName)
               azureResourceGroup: $(resourceGroupName)
               kubernetesCluster: $(aksName)
               namespace: cert-manager

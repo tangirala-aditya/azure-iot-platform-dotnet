@@ -33,7 +33,7 @@ function New-GrafanaApiKey {
           $response = ($response | ConvertTo-Json | ConvertFrom-Json)
           $apiKey =  ConvertTo-SecureString $response.key -AsPlainText -Force
 
-          Set-AzKeyVaultSecret -VaultName $keyvaultName -Name $orgKeyName -SecretValue $apiKey
+          $keyResult=Set-AzKeyVaultSecret -VaultName $keyvaultName -Name $orgKeyName -SecretValue $apiKey
           Write-Host "Added Key...."
 
           return $response.key
@@ -64,7 +64,7 @@ function New-GrafanaOrg {
           $response = Invoke-RestMethod -Uri $uri -Method 'POST' -Headers $headers -Body $body
           Write-Host $response
           $orgId = $response.orgId
-          az appconfig kv set --name $appConfigurationName --key $keyName --value $orgId --yes
+          $keyResult=az appconfig kv set --name $appConfigurationName --key $keyName --value $orgId --yes
           return $orgId
      }
      catch {
@@ -346,6 +346,7 @@ try {
           $orgId = New-GrafanaOrg -grafanabaseurl $grafanabaseurl `
                -appConfigurationName $appConfigurationName `
                -tenantId $iotTenantId
+			   
           if(![string]::IsNullOrWhiteSpace($orgId)){
           Write-Host "Created Org with Org Id:"+ $orgId
 
@@ -368,14 +369,31 @@ try {
                -grafanaApiKey $grafanaApiKey `
                -tenantId $iotTenantId
           
-          # Create DataSources required for Grafana Dashboards
+                    # Create DataSources required for Grafana Dashboards
           Write-Host "## Creating Data Sources"
-          New-DataSources -applicationCode $applicationCode -environmentCategory $environmentCategory -servicePrincipalId $servicePrincipalId -servicePrincipalKey $servicePrincipalKey -tenantId $tenantId -grafanabaseurl $grafanabaseurl -grafanaApiKey $grafanaApiKey
+          New-DataSources -applicationCode $applicationCode `
+                          -environmentCategory $environmentCategory `
+                          -servicePrincipalId $servicePrincipalId `
+                          -servicePrincipalKey $servicePrincipalKey `
+                          -tenantId $tenantId `
+                          -grafanabaseurl $grafanabaseurl `
+                          -grafanaApiKey $grafanaApiKey `
+                          -location $location
           Write-Host "## Data Sources are created"
 
           # Create Main and Admin Dashboards for each tenant.
-          New-Dashboards -applicationCode $applicationCode -environmentCategory $environmentCategory -resourceGroup $resourceGroup -servicePrincipalId $servicePrincipalId -servicePrincipalKey $servicePrincipalKey -subscriptionId $subscriptionId -tenantId $tenantId -grafanabaseurl $grafanabaseurl -apptenantId $iotHub.TenantId -grafanaApiKey $grafanaApiKey
-          Write-Host "Created Dashboard for Tenant:" + $iotTenantId        
+          New-Dashboards -applicationCode $applicationCode `
+                          -environmentCategory $environmentCategory `
+                          -resourceGroup $resourceGroup `
+                          -servicePrincipalId $servicePrincipalId `
+                          -servicePrincipalKey $servicePrincipalKey `
+                          -subscriptionId $subscriptionId `
+                          -tenantId $tenantId `
+                          -grafanabaseurl $grafanabaseurl `
+                          -apptenantId $iotHub.TenantId `
+                          -grafanaApiKey $grafanaApiKey `
+                          -orgId $orgId
+          Write-Host "Created Dashboard for Tenant:" + $iotTenantId       
      }
      }
 }

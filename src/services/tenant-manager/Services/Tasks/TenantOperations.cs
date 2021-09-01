@@ -31,6 +31,10 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
         private const string TableName = "tenantOperations";
         private const string EventHubNamespaceFormat = "eventhub-{0}";
         private const string IoTDatabaseNameFormat = "IoT-{0}";
+        private const string GrafanaOrgIdNameFormat = "tenant:{0}:grafanaOrgId";
+        private const string GrafanaAPIKeyNameFormat = "Grafana--{0}--APIKey";
+        private const string GrafanaUrlNameFormat = "tenant:{0}:grafanaUrl";
+        private const string GrafanaPassword = "admin";
         private readonly CancellationTokenSource stoppingCts = new CancellationTokenSource();
         private readonly IIdentityGatewayClient identityGatewayClient;
         private Task executingTask;
@@ -276,12 +280,12 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
                             Console.WriteLine($"Creating Grafana Organization.");
                             string orgId = await this.grafanaClient.CreateOrganization(item.TenantId);
 
-                            await this.appConfigurationClient.SetValueAsync($"grafana:{item.TenantId}:orgId", orgId);
+                            await this.appConfigurationClient.SetValueAsync(string.Format(GrafanaOrgIdNameFormat, item.TenantId), orgId);
 
                             Console.WriteLine($"Creating APIKey for Organization:{orgId}");
                             string apiKey = await this.grafanaClient.CreateAPIKey(orgId);
 
-                            await this.keyVaultClient.SetValueAsync($"Grafana--{item.TenantId}--APIKey", apiKey);
+                            await this.keyVaultClient.SetValueAsync(string.Format(GrafanaAPIKeyNameFormat, item.TenantId), apiKey);
 
                             Console.WriteLine($"Adding admin user to Organization:{orgId}");
                             await this.grafanaClient.AddUserToOrg("admin", GrafanaRoleType.Admin, apiKey);
@@ -292,7 +296,7 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                             foreach (var userDetals in users.Models)
                             {
-                                GrafanaGlobalUserRequestModel user = new GrafanaGlobalUserRequestModel(userDetals.Name, userDetals.Name, userDetals.UserId, "random");
+                                GrafanaGlobalUserRequestModel user = new GrafanaGlobalUserRequestModel(userDetals.Name, userDetals.Name, userDetals.UserId, GrafanaPassword);
                                 await this.grafanaClient.AddGlobalUser(user);
 
                                 await this.grafanaClient.AddUserToOrg(userDetals.UserId, GrafanaRoleType.Admin, apiKey);
@@ -368,20 +372,20 @@ namespace Mmm.Iot.TenantManager.Services.Tasks
 
                             await this.grafanaClient.CreateAndUpdateDashboard(template, apiKey);
 
-                            await this.appConfigurationClient.SetValueAsync($"tenant:{item.TenantId}:grafanaUrl", $"{mainDashboardUid}/{mainDashboardName}");
+                            await this.appConfigurationClient.SetValueAsync(string.Format(GrafanaUrlNameFormat, item.TenantId), $"{mainDashboardUid}/{mainDashboardName}");
                             await this.tableStorageClient.DeleteAsync(TableName, item);
                         }
 
                         if (item.Type == TenantOperation.GrafanaDashboardDeletion)
                         {
-                            var orgId = this.appConfigurationClient.GetValue($"grafana:{item.TenantId}:orgId");
+                            var orgId = this.appConfigurationClient.GetValue(string.Format(GrafanaOrgIdNameFormat, item.TenantId));
 
                             bool result = await this.grafanaClient.DeleteOrganizationByUid(orgId);
 
                             if (result)
                             {
-                                await this.appConfigurationClient.DeleteKeyAsync($"tenant:{item.TenantId}:grafanaUrl");
-                                await this.appConfigurationClient.DeleteKeyAsync($"grafana:{item.TenantId}:orgId");
+                                await this.appConfigurationClient.DeleteKeyAsync(string.Format(GrafanaUrlNameFormat, item.TenantId));
+                                await this.appConfigurationClient.DeleteKeyAsync(string.Format(GrafanaOrgIdNameFormat, item.TenantId));
                                 await this.tableStorageClient.DeleteAsync(TableName, item);
                             }
                         }

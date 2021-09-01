@@ -14,6 +14,7 @@ using Mmm.Iot.Common.Services.External.KeyVault;
 using Mmm.Iot.Common.Services.External.TableStorage;
 using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.IdentityGateway.Services.Models;
+using Newtonsoft.Json;
 
 namespace Mmm.Iot.IdentityGateway.Services
 {
@@ -192,7 +193,17 @@ namespace Mmm.Iot.IdentityGateway.Services
                 GrafanaGlobalUserRequestModel user = new GrafanaGlobalUserRequestModel(input.Name, input.Name, input.UserId, "random");
                 await this.grafanaClient.AddGlobalUser(user);
 
-                await this.grafanaClient.AddUserToOrg(input.UserId, GrafanaRoleType.Admin, apiKey);
+                string role = JsonConvert.DeserializeObject<List<string>>(input.Roles).FirstOrDefault();
+
+                GrafanaRoleType grafanaRole = role switch
+                {
+                    "admin" => GrafanaRoleType.Admin,
+                    "contributor" => GrafanaRoleType.Editer,
+                    "readonly" => GrafanaRoleType.Viewer,
+                    _ => GrafanaRoleType.Viewer,
+                };
+
+                await this.grafanaClient.AddUserToOrg(input.UserId, grafanaRole, apiKey);
             }
         }
 

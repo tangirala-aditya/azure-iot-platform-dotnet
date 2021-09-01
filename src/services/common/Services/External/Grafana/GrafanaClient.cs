@@ -175,7 +175,7 @@ namespace Mmm.Iot.Common.Services.External.Grafana
                 svcCredentials,
                 "BasicAuth");
 
-            GrafanaOrganizationRequestModel requestData = new GrafanaOrganizationRequestModel($"Tenant-{tenant}");
+            GrafanaOrganizationRequestModel requestData = new GrafanaOrganizationRequestModel(tenant);
             request.SetContent(requestData);
 
             var response = await this.httpClient.PostAsync(request);

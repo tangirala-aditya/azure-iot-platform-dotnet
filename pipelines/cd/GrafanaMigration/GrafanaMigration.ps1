@@ -56,7 +56,7 @@ function New-GrafanaOrg {
      $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f "admin", "admin")))
      $headers.Add("Authorization", "Basic " + $base64AuthInfo)
      $headers.Add("Content-Type", "application/json")
-     $keyName = "tenant:"+$tenantId+":orgId"
+     $keyName = "tenant:"+$tenantId+":grafanaOrgId"
 
      $body = "{`"name`":`"$tenantId`"}"
      Write-Host $body

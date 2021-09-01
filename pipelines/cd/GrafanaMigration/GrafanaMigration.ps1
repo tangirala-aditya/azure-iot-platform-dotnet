@@ -36,7 +36,7 @@ function New-GrafanaApiKey {
           Set-AzKeyVaultSecret -VaultName $keyvaultName -Name $orgKeyName -SecretValue $apiKey
           Write-Host "Added Key...."
 
-          return $apiKey
+          return $response.key
      }
      catch {
           Write-Host("An Error occured.")

@@ -145,6 +145,7 @@ stages:
         displayName: testing CLI and Powershell
         pool:
           vmImage: windows-latest
+        condition: false  
         dependsOn:
           - printVariables
         variables:

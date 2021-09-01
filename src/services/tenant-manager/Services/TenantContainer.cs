@@ -77,7 +77,7 @@ namespace Mmm.Iot.TenantManager.Services
         private string appConfigCollectionKeyFormat = "tenant:{0}:{1}-collection";  // format with a guid and collection name
         private string eventHubNamespaceFormat = "telemetry-eventhub-{0}";
         private string grafanaUrlFormat = "tenant:{0}:grafanaUrl";
-        private string grafanaOrgFormat = "tenant:{0}:OrgId";
+        private string grafanaOrgFormat = "tenant:{0}:orgId";
 
         public TenantContainer(
             ILogger<TenantContainer> logger,

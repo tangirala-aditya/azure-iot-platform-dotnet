@@ -24,7 +24,7 @@ function New-GrafanaApiKey {
      $headers.Add("Content-Type", "application/json")
      $headers.Add("X-Grafana-Org-Id", $orgId)
      $keyName = New-Guid
-     $orgKeyName = "Grafana-" + $tenantId + "-OrgId"
+     $orgKeyName = "Grafana--"+ $tenantId +"--APIKey"
 
      $body = "{`"name`":`"$keyName`", `"role`": `"Admin`"}"
      Write-Host $body
@@ -33,7 +33,7 @@ function New-GrafanaApiKey {
           $response = ($response | ConvertTo-Json | ConvertFrom-Json)
           $apiKey =  ConvertTo-SecureString $response.key -AsPlainText -Force
 
-          Set-AzKeyVaultSecret -VaultName $keyvaultName -Name "Grafana--APIKey" -SecretValue $apiKey
+          Set-AzKeyVaultSecret -VaultName $keyvaultName -Name $orgKeyName -SecretValue $apiKey
           Write-Host "Added Key...."
 
           return $apiKey
@@ -56,7 +56,7 @@ function New-GrafanaOrg {
      $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f "admin", "admin")))
      $headers.Add("Authorization", "Basic " + $base64AuthInfo)
      $headers.Add("Content-Type", "application/json")
-     $keyName = "Grafana-" + $tenantId + "-OrgId"
+     $keyName = "tenant:"+$tenantId+":orgId"
 
      $body = "{`"name`":`"$tenantId`"}"
      Write-Host $body
@@ -64,7 +64,7 @@ function New-GrafanaOrg {
           $response = Invoke-RestMethod -Uri $uri -Method 'POST' -Headers $headers -Body $body
           Write-Host $response
           $orgId = $response.orgId
-          #az appconfig kv set --name $appConfigurationName --key $keyName --value $orgId --yes
+          az appconfig kv set --name $appConfigurationName --key $keyName --value $orgId --yes
           return $orgId
      }
      catch {

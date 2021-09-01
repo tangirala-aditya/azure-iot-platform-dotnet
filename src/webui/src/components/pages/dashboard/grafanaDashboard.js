@@ -125,6 +125,8 @@ export class GrafanaDashboard extends Component {
                 activeDeviceGroup,
                 t,
                 grafanaUrl,
+                grafanaOrgId,
+                user,
             } = this.props,
             { lastRefreshed } = this.state;
 
@@ -169,8 +171,10 @@ export class GrafanaDashboard extends Component {
                             <GrafanaTelemetryPanel
                                 t={t}
                                 grafanaUrl={grafanaUrl}
+                                grafanaOrgId={grafanaOrgId}
                                 activeDeviceGroup={activeDeviceGroup}
                                 timeInterval={timeInterval}
+                                user={user}
                             />
                         </Cell>
                         {Config.showWalkthroughExamples && (

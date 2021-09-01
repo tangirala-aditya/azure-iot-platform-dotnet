@@ -85,4 +85,11 @@ export class TenantService {
             `${TENANT_MANAGER_ENDPOINT}tenant/GrafanaUrl`
         ).pipe(map((value) => value));
     }
+
+    /** Returns the configured grafana orgid of a tenant */
+    static getGrafanaOrgId() {
+        return HttpClient.get(
+            `${TENANT_MANAGER_ENDPOINT}tenant/GrafanaOrgId`
+        ).pipe(map((value) => value));
+    }
 }

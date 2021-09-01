@@ -91,5 +91,13 @@ namespace Mmm.Iot.TenantManager.WebService.Controllers
             string grafanaUrl = this.tenantContainer.GetGrafanaUrl(this.GetTenantId());
             return grafanaUrl;
         }
+
+        [HttpGet("GrafanaOrgId")]
+        [Authorize("ReadAll")]
+        public string GetGrafanaOrgId()
+        {
+            string grafanaOrgId = this.tenantContainer.GetGrafanaOrgId(this.GetTenantId());
+            return grafanaOrgId;
+        }
     }
 }

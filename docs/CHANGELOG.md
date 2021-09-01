@@ -10,6 +10,20 @@ git log --oneline --no-decorate --topo-order ^<previousRelease> master
 where <previousRelease> is the release name e.g 5.1.0
 -->
 
+## [5.4.4] - 2021-08-31
+### Add
+ - React version upgrade changes (#334)
+ - Display Device Twin data in tables using new Column Mapping and Column Options
+ - Create Device Groups by DeviceId or DeviceName
+ - Expired sessions no longer require loging off
+ - Added audit data under User Management
+
+### Fix
+ - Non-compliant resources based on security recommendations
+ - Fixed Getlink issue on Device Explorer when using "Load more"
+ - Added changes for refreshing cache
+
+
 ## [5.4.3] - 2020-02-02
 ### Add
  - Download data in Device Explorer and Device Search
@@ -162,6 +176,7 @@ where <previousRelease> is the release name e.g 5.1.0
 - Application configuration uses Azure App Configuration service in addition to Azure Key Vault
 - Code base rearchitected to use common library and reduce duplication
 
+[5.4.4]: https://github.com/3mcloud/azure-iot-platform-dotnet/releases/tag/5.4.4
 [5.4.3]: https://github.com/3mcloud/azure-iot-platform-dotnet/releases/tag/5.4.3
 [5.4.2]: https://github.com/3mcloud/azure-iot-platform-dotnet/releases/tag/5.4.2
 [5.4.1]: https://github.com/3mcloud/azure-iot-platform-dotnet/releases/tag/5.4.1

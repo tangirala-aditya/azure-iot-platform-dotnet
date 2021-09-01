@@ -230,6 +230,6 @@ stages:
           - script: >-
               dotnet run
               --force
-              --project src/onetime-applications/migrate-iot-devicetwin-to-adx/MigrateIoTDeviceTwinToADX
+              --project $(System.DefaultWorkingDirectory)/src/onetime-applications/migrate-iot-devicetwin-to-adx/MigrateIoTDeviceTwinToADX
               --runtime $(dotnetProductionRuntimeId)
             displayName: Run Application

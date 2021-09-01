@@ -43,7 +43,7 @@ export class GrafanaTelemetryPanel extends Component {
     }
 
     render() {
-        const { t, grafanaUrl } = this.props,
+        const { t, grafanaUrl, grafanaOrgId, user } = this.props,
             { deviceGroupId, from } = this.state;
         return (
             <Panel>
@@ -55,9 +55,16 @@ export class GrafanaTelemetryPanel extends Component {
                 <PanelContent className={css("telemetry-panel-container")}>
                     <iframe
                         title="Dashboard"
-                        src={`${Config.serviceUrls.grafana}d/${grafanaUrl}?from=${from}&to=now&orgId=1&var-deviceGroupId=${deviceGroupId}&theme=light&refresh=10s&kiosk`}
+                        src={`${Config.serviceUrls.grafana}d/${grafanaUrl}?from=${from}&to=now&orgId=${grafanaOrgId}&var-deviceGroupId=${deviceGroupId}&theme=light&refresh=10s&kiosk`}
                         width="100%"
                         height="100%"
+                        frameborder="0"
+                    ></iframe>
+                    <iframe
+                        title="Dashboard"
+                        src={`${Config.serviceUrls.grafana}login/?authHeader=${user.token}`}
+                        width="0"
+                        height="0"
                         frameborder="0"
                     ></iframe>
                 </PanelContent>

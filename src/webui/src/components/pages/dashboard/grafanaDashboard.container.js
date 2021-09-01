@@ -9,6 +9,8 @@ import {
     getTimeInterval,
     getActiveDeviceQueryConditions,
     getGrafanaUrl,
+    getGrafanaOrgId,
+    getUser,
 } from "store/reducers/appReducer";
 import {
     getDevicesError,
@@ -27,6 +29,8 @@ const mapStateToProps = (state) => ({
         timeInterval: getTimeInterval(state),
         activeDeviceQueryConditions: getActiveDeviceQueryConditions(state),
         grafanaUrl: getGrafanaUrl(state),
+        grafanaOrgId: getGrafanaOrgId(state),
+        user: getUser(state),
     }),
     // Wrap the dispatch method
     mapDispatchToProps = (dispatch) => ({

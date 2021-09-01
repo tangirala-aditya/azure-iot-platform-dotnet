@@ -314,5 +314,41 @@ namespace Mmm.Iot.IdentityGateway.Controllers
                 + "&access_token=" + accessTokenString;
             return this.Redirect(returnUri.Uri.ToString());
         }
+
+        [HttpGet("connect/validate")]
+        public ActionResult Validate([FromHeader(Name = "Authorization")] string authHeader)
+        {
+            if (authHeader == null || !authHeader.StartsWith("Bearer"))
+            {
+                throw new NoAuthorizationException("No Bearer Token Authorization Header was passed.");
+            }
+
+            // Extract Bearer token
+            string encodedToken = authHeader.Substring("Bearer ".Length).Trim();
+            var jwtHandler = new JwtSecurityTokenHandler();
+            if (!this.jwtHelper.TryValidateToken("IoTPlatform", encodedToken, this.HttpContext, out JwtSecurityToken jwt))
+            {
+                throw new NoAuthorizationException("The given token could not be read or validated.");
+            }
+
+            if (jwt?.Claims?.Count(c => c.Type == "sub") == 0)
+            {
+                throw new NoAuthorizationException("Not allowed access. No User Claims");
+            }
+
+            string sub = jwt?.Claims?.FirstOrDefault(c => c.Type == "sub").Value;
+
+            if (!string.IsNullOrWhiteSpace(sub))
+            {
+                // Set headers for paging
+                this.Response.Headers.Add("X-LoggedInUser", sub);
+
+                return this.StatusCode(200);
+            }
+            else
+            {
+                throw new NoAuthorizationException("Not allowed access to this tenant.");
+            }
+        }
     }
 }

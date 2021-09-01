@@ -69,6 +69,7 @@ export const epics = createEpicScenario({
             epics.actions.fetchTelemetryStatus(),
             epics.actions.fetchAlerting(),
             epics.actions.fetchGrafanaUrl(),
+            epics.actions.fetchGrafanaOrgId(),
         ],
     },
 
@@ -329,6 +330,15 @@ export const epics = createEpicScenario({
             ),
     },
 
+    fetchGrafanaOrgId: {
+        type: "APP_FETCH_GRAFANA_ORG",
+        epic: (fromAction) =>
+            TenantService.getGrafanaOrgId().pipe(
+                map(toActionCreator(redux.actions.getGrafanaOrgId, fromAction)),
+                catchError(handleError(fromAction))
+            ),
+    },
+
     /** Get solution's action settings */
     fetchActionSettings: {
         type: "APP_FETCH_SOLUTION_ACTION_SETTINGS",
@@ -409,6 +419,7 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
         version: undefined,
         releaseNotesUrl: undefined,
         grafanaUrl: undefined,
+        grafanaOrgId: undefined,
         timeSeriesExplorerUrl: undefined,
         logo: svgs.mmmLogo,
         name: "header.companyName",
@@ -598,6 +609,12 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
                 $set: payload,
             },
         }),
+    grafanaOrgIdReducer = (state, { payload }) =>
+        update(state, {
+            grafanaOrgId: {
+                $set: payload,
+            },
+        }),
     setDeviceGroupFlyoutReducer = (state, { payload }) =>
         update(state, {
             deviceGroupFlyoutIsOpen: { $set: !!payload },
@@ -725,6 +742,10 @@ export const redux = createReducerScenario({
         type: "APP_GET_GRAfANA_URL",
         reducer: grafanaUrlReducer,
     },
+    getGrafanaOrgId: {
+        type: "APP_GET_GRAfANA_ORG",
+        reducer: grafanaOrgIdReducer,
+    },
     setDeviceGroupFlyoutStatus: {
         type: "APP_SET_DEVICE_GROUP_FLYOUT_STATUS",
         reducer: setDeviceGroupFlyoutReducer,
@@ -842,6 +863,7 @@ export const getName = (state) => getAppReducer(state).name;
 export const isDefaultLogo = (state) => getAppReducer(state).isDefaultLogo;
 export const getReleaseNotes = (state) => getAppReducer(state).releaseNotesUrl;
 export const getGrafanaUrl = (state) => getAppReducer(state).grafanaUrl;
+export const getGrafanaOrgId = (state) => getAppReducer(state).grafanaOrgId;
 export const setLogoError = (state) =>
     getError(getAppReducer(state), epics.actionTypes.updateLogo);
 export const setLogoPendingStatus = (state) =>

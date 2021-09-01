@@ -32,7 +32,7 @@
                 "title": "Admin Dashboard",
                 "tooltip": "Admin Dashboard",
                 "type": "link",
-                "url": "{0}/d/{1}?orgId=1"
+                "url": "{0}/d/{1}?orgId={8}"
             }
         ],
         "panels": [
@@ -277,7 +277,7 @@
                                     "value": [
                                         {
                                             "title": "ADMIN dashboard",
-                                            "url": "\r\n{0}/d/{1}?orgId=1&${__url_time_range}&${__all_variables}&kiosk"
+                                            "url": "\r\n{0}/d/{1}?orgId={8}&${__url_time_range}&${__all_variables}&kiosk"
                                         }
                                     ]
                                 }
@@ -298,7 +298,7 @@
                                     "value": [
                                         {
                                             "title": "ADMIN Dashboard",
-                                            "url": "\r\n{0}/d/{1}?orgId=1&${__url_time_range}&${__all_variables}&kiosk"
+                                            "url": "\r\n{0}/d/{1}?orgId={8}&${__url_time_range}&${__all_variables}&kiosk"
                                         }
                                     ]
                                 }
@@ -319,7 +319,7 @@
                                     "value": [
                                         {
                                             "title": "ADMIN Dashboard",
-                                            "url": "\r\n{0}/d/{1}?orgId=1&${__url_time_range}&${__all_variables}&kiosk"
+                                            "url": "\r\n{0}/d/{1}?orgId={8}&${__url_time_range}&${__all_variables}&kiosk"
                                         }
                                     ]
                                 }
@@ -340,7 +340,7 @@
                                     "value": [
                                         {
                                             "title": "ADMIN Dashboard",
-                                            "url": "\r\n{0}/d/{1}?orgId=1&${__url_time_range}&${__all_variables}&kiosk"
+                                            "url": "\r\n{0}/d/{1}?orgId={8}&${__url_time_range}&${__all_variables}&kiosk"
                                         }
                                     ]
                                 }
@@ -361,7 +361,7 @@
                                     "value": [
                                         {
                                             "title": "ADMIN Dashboard",
-                                            "url": "\r\n{0}/d/{1}?orgId=1&${__url_time_range}&${__all_variables}&kiosk"
+                                            "url": "\r\n{0}/d/{1}?orgId={8}&${__url_time_range}&${__all_variables}&kiosk"
                                         }
                                     ]
                                 }
@@ -379,7 +379,7 @@
                 "links": [
                     {
                         "title": "ADMIN Dashboard",
-                        "url": "\r\n{0}/d/{1}?orgId=1&${__url_time_range}&${__all_variables}&kiosk"
+                        "url": "\r\n{0}/d/{1}?orgId={8}&${__url_time_range}&${__all_variables}&kiosk"
                     }
                 ],
                 "options": {
@@ -734,7 +734,7 @@
                         "links": [
                             {
                                 "title": "Telemetry",
-                                "url": "{0}/d/{6}/{7}?orgId=1&theme=light&refresh=10s&kiosk&${__url_time_range}&${deviceGroupId:queryparam}&var-selecteddeviceid=${__data.fields.DeviceId}"
+                                "url": "{0}/d/{6}/{7}?orgId={8}&theme=light&refresh=10s&kiosk&${__url_time_range}&${deviceGroupId:queryparam}&var-selecteddeviceid=${__data.fields.DeviceId}"
                             }
                         ],
                         "mappings": [],
@@ -980,7 +980,7 @@
                                     "value": [
                                         {
                                             "title": "Device Drill Down",
-                                            "url": "{0}/d/{6}/{7}?orgId=1&theme=light&refresh=10s&kiosk&${__url_time_range}&${deviceGroupId:queryparam}&var-selecteddeviceid=${__data.fields.Device}"
+                                            "url": "{0}/d/{6}/{7}?orgId={8}&theme=light&refresh=10s&kiosk&${__url_time_range}&${deviceGroupId:queryparam}&var-selecteddeviceid=${__data.fields.Device}"
                                         }
                                     ]
                                 },
@@ -1607,7 +1607,7 @@
                             {
                                 "targetBlank": false,
                                 "title": "Telemetry",
-                                "url": "{0}/d/{6}/{7}?orgId=1&theme=light&refresh=10s&kiosk&${__url_time_range}﻿﻿﻿&${deviceGroupId:queryparam}&${selecteddeviceid:queryparam}&var-fromtime=${__value.time}"
+                                "url": "{0}/d/{6}/{7}?orgId={8}&theme=light&refresh=10s&kiosk&${__url_time_range}﻿﻿﻿&${deviceGroupId:queryparam}&${selecteddeviceid:queryparam}&var-fromtime=${__value.time}"
                             }
                         ]
                     },

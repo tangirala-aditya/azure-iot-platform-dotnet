@@ -16,6 +16,9 @@ import {
     getSolutionSettingsError,
     getSolutionSettingsPendingStatus,
     getAlerting,
+    getGrafanaUrl,
+    getGrafanaOrgId,
+    getUser,
 } from "store/reducers/appReducer";
 import {
     isSimulationEnabled,
@@ -48,6 +51,9 @@ const mapStateToProps = (state) => ({
         diagnosticsOptIn: getDiagnosticsOptIn(state),
         getDiagnosticsError: getSolutionSettingsError(state),
         getDiagnosticsPending: getSolutionSettingsPendingStatus(state),
+        grafanaUrl: getGrafanaUrl(state),
+        grafanaOrgId: getGrafanaOrgId(state),
+        user: getUser(state),
     }),
     mapDispatchToProps = (dispatch) => ({
         changeTheme: (theme) => dispatch(appRedux.actions.changeTheme(theme)),

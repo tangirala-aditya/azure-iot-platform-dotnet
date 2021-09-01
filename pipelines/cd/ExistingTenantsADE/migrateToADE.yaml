@@ -215,7 +215,6 @@ stages:
         displayName: Build Services
         dependsOn:
           - preBuild
-          - testCLIPowershell
         variables:
           AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
         steps:

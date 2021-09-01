@@ -34,17 +34,21 @@ spec:
         - name: GF_AUTH_PROXY_HEADER_PROPERTY
           value: username
         - name: GF_AUTH_PROXY_AUTO_SIGN_UP
-          value: "true"
+          value: "false"
         - name: GF_AUTH_PROXY_SYNC_TTL
           value: "60"
         - name: GF_AUTH_PROXY_ENABLE_LOGIN_TOKEN
-          value: "false"
+          value: "true"
         - name: GF_USERS_AUTO_ASSIGN_ORG_ROLE
           value: Viewer
         - name: GF_USERS_AUTO_ASSIGN_ORG
-          value: "true"
+          value: "false"
         - name: GF_LIVE_MAX_CONNECTIONS
           value: '0'
+        - name: GF_AUTH_DISABLE_LOGIN_FORM
+          value: "true"
+        - name: GF_AUTH_DISABLE_SIGNOUT_MENU
+          value: "true"
         name: grafana
         image: docker.io/azureiot3m/grafana-custom:latest 
         resources:

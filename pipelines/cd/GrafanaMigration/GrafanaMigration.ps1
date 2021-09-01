@@ -235,8 +235,8 @@ function New-Dashboards {
      $admindashboardContent = $admindashboardContent -replace '\{3\}' , $resourceGroup
      $admindashboardContent = $admindashboardContent -replace '\{4\}' , ($applicationCode + "-loganalyticsws-" + $environmentCategory)
      $admindashboardContent = $admindashboardContent -replace '\{5\}' , ("iothub-" + $tenantSubString)
-     $admindashboardContent = $admindashboardContent -replace '\{6\}' , ($applicationCode + "-eventhub-" + $environmentCategoryacsagic)
-     $admindashboardContent = $admindashboardContent -replace '\{7\}' , ($applicationCode + "-cosmos-" + $environmentCategoryacsagic)
+     $admindashboardContent = $admindashboardContent -replace '\{6\}' , ($applicationCode + "-eventhub-" + $environmentCategory)
+     $admindashboardContent = $admindashboardContent -replace '\{7\}' , ($applicationCode + "-cosmos-" + $environmentCategory)
      $admindashboardContent = $admindashboardContent -replace '\{8\}' , ($tenantSubString + "-adm")
      $admindashboardContent = $admindashboardContent -replace '\{9\}' , ($tenantSubString + "-AdminDashboard")
      $admindashboardContent = $admindashboardContent -replace '\{10\}' , $orgId

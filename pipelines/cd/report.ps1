@@ -465,7 +465,7 @@ Function Get-AzureAksCredentials {
     )
 
     $serenityEnvironment = Get-SerenityEnvironment -Name $Environment
-    az aks get-credentials --name $serenityEnvironment.GetAzureAksName() --resource-group $serenityEnvironment.GetAzureResourceGroupName() --overwrite-existing
+    az aks get-credentials --name $serenityEnvironment.GetAzureAksName() --resource-group $serenityEnvironment.GetAzureResourceGroupName() --admin --overwrite-existing
 }
 
 Function Set-K8sContext {

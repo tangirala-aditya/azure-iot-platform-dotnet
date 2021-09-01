@@ -209,7 +209,7 @@ stages:
                 set -Eeuxo pipefail
                 az provider register --namespace Microsoft.PolicyInsights
                 az aks enable-addons --addons azure-policy --name $(aksName) --resource-group $(resourceGroupName)
-                az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+                az aks get-credentials -n $(aksName) -g $(resourceGroupName) --admin
                 kubectl get pods -n gatekeeper-system
                 kubectl get pods -n kube-system
                 az aks show --query addonProfiles.azurepolicy -g $(resourceGroupName) -n $(aksName)

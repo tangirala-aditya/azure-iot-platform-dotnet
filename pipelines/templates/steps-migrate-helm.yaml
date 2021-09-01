@@ -73,6 +73,7 @@ jobs:
           azureSubscription: ${{parameters.subscriptionName}}
           azureResourceGroup: $(resourceGroupName)
           kubernetesCluster: $(aksName)
+          useClusterAdmin: true
           namespace: default
           command: init
           arguments: --force-upgrade
@@ -106,7 +107,7 @@ jobs:
           scriptType: bash
           inlineScript: |-
               set -Eeuxo pipefail
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --admin --overwrite-existing
               helm3 plugin install https://github.com/helm/helm-2to3
               helm3 plugin list
               helm3 version --short
@@ -120,7 +121,7 @@ jobs:
           scriptType: bash
           inlineScript: |-
               set -Eeuxo pipefail
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --admin --overwrite-existing
               echo "y" | helm3 2to3 move config --dry-run
               echo "y" | helm3 2to3 move config
               helm3 repo list
@@ -137,7 +138,7 @@ jobs:
           scriptType: bash
           inlineScript: |-
               set -Eeuxo pipefail
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --admin --overwrite-existing
               echo "y" | helm3 2to3 cleanup --dry-run
               echo "y" | helm3 2to3 cleanup
 
@@ -149,7 +150,7 @@ jobs:
           scriptType: bash
           inlineScript: |-
             set -Eeuxo pipefail
-            az aks get-credentials -n $(aksName) -g $(resourceGroupName) --overwrite-existing
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName) --admin --overwrite-existing
             isChallengePresent=$(kubectl get challenge --output json | jq -j '.items | length')            
             if [ $isChallengePresent -gt 0 ]
             then

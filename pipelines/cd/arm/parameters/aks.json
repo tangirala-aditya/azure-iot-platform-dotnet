@@ -12,7 +12,7 @@
         "kubernetesVersion": { "value": "1.16.7" },
         "networkPlugin": { "value": "kubenet" },
         "omsWorkspaceName": { "value": "" },
-        "enableRBAC": { "value": false },
+        "enableRBAC": { "value": true },
         "enableOmsAgent": { "value": false },
         "enableHttpApplicationRouting": { "value": false }
     }

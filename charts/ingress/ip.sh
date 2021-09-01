@@ -1,5 +1,5 @@
 #!/bin/bash
-az aks get-credentials -n $1 -g $2
+az aks get-credentials -n $1 -g $2 --admin
 # Public IP address of your ingress controller
 n=1
 IP=""

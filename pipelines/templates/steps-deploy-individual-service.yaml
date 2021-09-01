@@ -33,6 +33,7 @@ steps:
       azureSubscription: ${{parameters.subscriptionName}}
       azureResourceGroup: ${{parameters.resourceGroupName}}
       kubernetesCluster: ${{parameters.aksName}}
+      useClusterAdmin: true
       namespace: default
       command: init
       arguments: --force-upgrade
@@ -43,7 +44,7 @@ steps:
       azureSubscription: ${{parameters.subscriptionName}}
       azureResourceGroup: ${{parameters.resourceGroupName}}
       kubernetesCluster: ${{parameters.aksName}}
-      useClusterAdmin: false
+      useClusterAdmin: true
       namespace: default
       command: upgrade
       chartType: FilePath

@@ -251,7 +251,7 @@ jobs:
             set -Eeuxo pipefail
             az provider register --namespace Microsoft.PolicyInsights
             az aks enable-addons --addons azure-policy --name $(aksName) --resource-group $(resourceGroupName)
-            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName) --admin
             kubectl get pods -n gatekeeper-system
             kubectl get pods -n kube-system
             az aks show --query addonProfiles.azurepolicy -g $(resourceGroupName) -n $(aksName)
@@ -381,7 +381,7 @@ jobs:
             set -Eeuxo pipefail
             az provider register --namespace Microsoft.PolicyInsights
             az aks enable-addons --addons azure-policy --name $(aksName) --resource-group $(resourceGroupName)
-            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName) --admin
             kubectl get pods -n gatekeeper-system
             kubectl get pods -n kube-system
             az aks show --query addonProfiles.azurepolicy -g $(resourceGroupName) -n $(aksName)
@@ -703,7 +703,7 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName) --admin
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
 
@@ -732,7 +732,7 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName) --admin
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
 
@@ -1495,6 +1495,7 @@ jobs:
           azureSubscription: ${{parameters.subscriptionName}}
           azureResourceGroup: $(resourceGroupName)
           kubernetesCluster: $(aksName)
+          useClusterAdmin: true
           namespace: default
           command: init
           arguments: --force-upgrade
@@ -1512,7 +1513,7 @@ jobs:
             n=0
             until [ $n -ge 5 ]
             do
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --admin
               # Use Helm to deploy an NGINX ingress controller
               helm upgrade ingress-controller stable/nginx-ingress \
                   --install \
@@ -1560,6 +1561,7 @@ jobs:
           azureResourceGroup: $(resourceGroupName)
           kubernetesCluster: $(aksName)
           namespace: cert-manager
+          useClusterAdmin: true
           command: upgrade
           chartType: Name
           releaseName: cert-manager
@@ -1650,7 +1652,7 @@ jobs:
             n=0
             until [ $n -ge 5 ]
             do
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+              az aks get-credentials -n $(aksName) -g $(resourceGroupName) --admin
               # Use Helm to deploy an NGINX ingress controller
               helm upgrade ingress-controller stable/nginx-ingress \
                   --install \
@@ -1688,6 +1690,7 @@ jobs:
           azureResourceGroup: $(resourceGroupName)
           kubernetesCluster: $(aksName)
           namespace: cert-manager
+          useClusterAdmin: true
           command: upgrade
           chartType: Name
           releaseName: cert-manager

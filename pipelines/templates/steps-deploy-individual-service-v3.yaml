@@ -32,7 +32,7 @@ steps:
       azureSubscription: ${{parameters.subscriptionName}}
       azureResourceGroup: ${{parameters.resourceGroupName}}
       kubernetesCluster: ${{parameters.aksName}}
-      useClusterAdmin: false
+      useClusterAdmin: true
       namespace: default
       command: upgrade
       chartType: FilePath

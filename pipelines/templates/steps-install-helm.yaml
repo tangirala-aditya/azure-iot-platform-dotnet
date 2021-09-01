@@ -18,6 +18,7 @@ steps:
       azureSubscriptionEndpoint: $(subscriptionName)
       azureResourceGroup: $(resourceGroupName)
       kubernetesCluster: $(aksName)
+      useClusterAdmin: true
       namespace: $(kubernetesNamespace)
       command: init
       arguments: --force-upgrade

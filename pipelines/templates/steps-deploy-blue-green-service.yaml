@@ -36,7 +36,7 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |-
         set -Eeuxo pipefail
-        az aks get-credentials --name ${{parameters.aksName}} --resource-group ${{parameters.resourceGroupName}} --overwrite-existing
+        az aks get-credentials --name ${{parameters.aksName}} --resource-group ${{parameters.resourceGroupName}} --admin --overwrite-existing
         kubectl get svc
         type=$(kubectl get svc ${{parameters.serviceName}} -o=jsonpath='{.spec.selector.type}')
         echo "$type is the type"
@@ -65,6 +65,7 @@ steps:
       azureSubscription: ${{parameters.subscriptionName}}
       azureResourceGroup: ${{parameters.resourceGroupName}}
       kubernetesCluster: ${{parameters.aksName}}
+      useClusterAdmin: true
       namespace: default
       command: init
       arguments: --force-upgrade
@@ -78,6 +79,7 @@ steps:
       azureResourceGroup: ${{parameters.resourceGroupName}}
       kubernetesCluster: ${{parameters.aksName}}
       namespace: default
+      useClusterAdmin: true
       command: upgrade
       chartType: FilePath
       chartPath: charts/mmm-iot-service-blue-green
@@ -95,6 +97,7 @@ steps:
       azureResourceGroup: ${{parameters.resourceGroupName}}
       kubernetesCluster: ${{parameters.aksName}}
       namespace: default
+      useClusterAdmin: true
       command: upgrade
       chartType: FilePath
       chartPath: charts/mmm-iot-service-blue-green
@@ -113,6 +116,7 @@ steps:
       azureResourceGroup: ${{parameters.resourceGroupName}}
       kubernetesCluster: ${{parameters.aksName}}
       namespace: default
+      useClusterAdmin: true
       command: upgrade
       chartType: FilePath
       chartPath: charts/mmm-iot-service-blue-green
@@ -130,7 +134,7 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |-
         set -Eeuxo pipefail
-        az aks get-credentials --name ${{parameters.aksName}} --resource-group ${{parameters.resourceGroupName}} --overwrite-existing
+        az aks get-credentials --name ${{parameters.aksName}} --resource-group ${{parameters.resourceGroupName}} --admin --overwrite-existing
         kubectl get pods 
         if [ $(type) == 'green' ]
         then

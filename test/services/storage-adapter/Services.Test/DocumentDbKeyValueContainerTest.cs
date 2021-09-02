@@ -153,10 +153,14 @@ namespace Mmm.Iot.StorageAdapter.Services.Test
             }
 
             this.mockClient
-                .Setup(x => x.QueryAllDocumentsAsync(
-                    It.IsAny<string>(),
-                    It.IsAny<string>()))
-                .ReturnsAsync(documents);
+                 .Setup(x => x.QueryDocumentsAsync(
+                 It.IsAny<string>(),
+                 It.IsAny<string>(),
+                 null,
+                 It.IsAny<SqlQuerySpec>(),
+                 It.IsAny<int>(),
+                 It.IsAny<int>()))
+                 .ReturnsAsync(documents);
 
             var result = (await this.container.GetAllAsync(collectionId)).ToList();
 
@@ -169,11 +173,15 @@ namespace Mmm.Iot.StorageAdapter.Services.Test
             }
 
             this.mockClient
-                .Verify(
-                    x => x.QueryAllDocumentsAsync(
-                        It.Is<string>(s => s == MockDatabaseId),
-                        It.Is<string>(s => s == MockCollectionId)),
-                    Times.Once);
+           .Verify(
+           x => x.QueryDocumentsAsync(
+           It.Is<string>(s => s == MockDatabaseId),
+           It.Is<string>(s => s == MockCollectionId),
+           null,
+           It.IsAny<SqlQuerySpec>(),
+           It.IsAny<int>(),
+           It.IsAny<int>()),
+           Times.Once);
         }
 
         [Fact]

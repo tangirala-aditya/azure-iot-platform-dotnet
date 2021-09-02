@@ -13,6 +13,7 @@ using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.CosmosDb;
+using Mmm.Iot.Common.Services.Helpers;
 using Mmm.Iot.Common.Services.Wrappers;
 using Mmm.Iot.StorageAdapter.Services.Helpers;
 using Mmm.Iot.StorageAdapter.Services.Models;
@@ -23,6 +24,7 @@ namespace Mmm.Iot.StorageAdapter.Services
     public class DocumentDbKeyValueContainer : IKeyValueContainer, IDisposable
     {
         private const string CollectionIdKeyFormat = "tenant:{0}:{1}-collection";
+        private const string CollectionId = "CollectionId";
         private readonly IAppConfigurationClient appConfigClient;
         private readonly AppConfig appConfig;
         private readonly IExceptionChecker exceptionChecker;
@@ -129,9 +131,15 @@ namespace Mmm.Iot.StorageAdapter.Services
 
         public async Task<IEnumerable<ValueServiceModel>> GetAllAsync(string collectionId)
         {
-            var query = await this.client.QueryAllDocumentsAsync(
-                this.DocumentDbDatabaseId,
-                this.DocumentDbCollectionId);
+            var sqlQuery = QueryBuilder.GetDocumentsByProperty(CollectionId, collectionId);
+
+            var query = await this.client.QueryDocumentsAsync(
+                                this.DocumentDbDatabaseId,
+                                this.DocumentDbCollectionId,
+                                null,
+                                sqlQuery,
+                                0,
+                                1000000);
             return await Task
                 .FromResult(query
                     .Select(doc => new ValueServiceModel(doc))

@@ -27,6 +27,8 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
         private const string FailedQueryName = "error";
         private const string SuccessQueryName = "current";
         private const int MaximumGetList = 1000;
+        private const int DeviceStatusLength = 10000;
+        private const string DeviceStatusesCollection = "deviceStatuses-{0}";
         private const string QueryPrefix = "SELECT * FROM devices";
         private const string ModuleQueryPrefix = "SELECT * FROM devices.modules";
         private const string DevicesConnectedQuery = "connectionState = 'Connected'";
@@ -104,7 +106,7 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
             var devicesStatuses = this.GetDeviceStatuses(tenantId, configuration);
             if (devicesStatuses != null && devicesStatuses.Keys.Count > 0)
             {
-                deployment.DeploymentMetrics.DeviceStatuses = devicesStatuses;
+                await this.SaveDeviceStatuses(devicesStatuses, deployment.Id, tenantId);
                 deployment.DeploymentMetrics.DeviceMetrics = this.CalculateDeviceMetrics(devicesStatuses);
             }
 
@@ -366,6 +368,69 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
             }
         }
 
+        private async Task<IDictionary<string, DeploymentStatus>> FetchDeviceStatuses(string tenantId, string deploymentId)
+        {
+            CosmosOperations storageClient = await CosmosOperations.GetClientAsync();
+            var sql = CosmosOperations.GetDocumentsByCollectionId("CollectionId", string.Format(DeviceStatusesCollection, deploymentId));
+            var statuses = new Dictionary<string, DeploymentStatus>();
+
+            var existingDeviceStatuses = await storageClient.QueryAllDocumentsAsync(
+                  "pcs-storage",
+                  $"pcs-{tenantId}",
+                  this.DefaultQueryOptions,
+                  sql);
+
+            if (existingDeviceStatuses != null && existingDeviceStatuses.Count > 0)
+            {
+                foreach (var item in existingDeviceStatuses.Select(doc => new ValueServiceModel(doc)))
+                {
+                    statuses = statuses.Union(JsonConvert.DeserializeObject<DeviceStatusServiceModel>(item.Data).DeviceStatuses).ToDictionary(k => k.Key, v => v.Value);
+                }
+            }
+
+            return statuses;
+        }
+
+        private async Task SaveDeviceStatuses(IDictionary<string, DeploymentStatus> deviceStatuses, string deploymentId, string tenantId)
+        {
+            CosmosOperations storageClient = await CosmosOperations.GetClientAsync();
+            var sql = CosmosOperations.GetDocumentsByCollectionId("CollectionId", string.Format(DeviceStatusesCollection, deploymentId));
+
+            var existingDeviceStatuses = await storageClient.QueryAllDocumentsAsync(
+                  "pcs-storage",
+                  $"pcs-{tenantId}",
+                  this.DefaultQueryOptions,
+                  sql);
+
+            if (existingDeviceStatuses != null && existingDeviceStatuses.Count > 0)
+            {
+                foreach (var item in existingDeviceStatuses)
+                {
+                    await storageClient.DeleteDocumentAsync(item.Id, this.GenerateCollectionLink(tenantId));
+                }
+            }
+
+            if (deviceStatuses != null)
+            {
+                for (int i = 0; i < deviceStatuses.Count; i = i + DeviceStatusLength)
+                {
+                    var items = deviceStatuses.Skip(i).Take(DeviceStatusLength).ToDictionary(p => p.Key, p => p.Value);
+                    var value = JsonConvert.SerializeObject(
+                                                        new DeviceStatusServiceModel
+                                                        {
+                                                            DeviceStatuses = items,
+                                                            DeploymentId = deploymentId,
+                                                        },
+                                                        Formatting.Indented,
+                                                        new JsonSerializerSettings
+                                                        {
+                                                            NullValueHandling = NullValueHandling.Ignore,
+                                                        });
+                    await storageClient.SaveDocumentAsync(string.Format(DeviceStatusesCollection, deploymentId), Guid.NewGuid().ToString(), new ValueServiceModel() { Data = value }, this.GenerateCollectionLink(tenantId));
+                }
+            }
+        }
+
         private async Task SaveDeployment(DeploymentServiceModel deployment, string tenantId)
         {
             CosmosOperations storageClient = await CosmosOperations.GetClientAsync();
@@ -608,7 +673,7 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
             List<TwinServiceModel> twins = new List<TwinServiceModel>();
             if (packageType == PackageType.EdgeManifest)
             {
-                IEnumerable<string> deviceIds = deploymentDetail.DeploymentMetrics.DeviceStatuses.Keys;
+                IEnumerable<string> deviceIds = deploymentDetail.DeploymentMetrics.DeviceStatuses != null ? deploymentDetail.DeploymentMetrics.DeviceStatuses.Keys : this.FetchDeviceStatuses(tenantId, deploymentDetail.Id).Result.Keys;
                 if (deviceIds != null && deviceIds.Count() > 0)
                 {
                     string moduleQuery = @"deviceId IN [{0}] AND moduleId = '$edgeAgent'";

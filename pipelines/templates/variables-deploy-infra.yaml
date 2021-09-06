@@ -47,6 +47,10 @@ variables:
     value: ${{parameters.applicationCode}}-$(functionApp2PartialName)-${{parameters.environmentCategory}}
   - name: functionApp4Name
     value: ${{parameters.applicationCode}}-$(functionApp4PartialName)-${{parameters.environmentCategory}}
+  - name: functionApp3Name
+    value: ${{parameters.applicationCode}}-$(functionApp3PartialName)-${{parameters.environmentCategory}}  
+  - name: functionApp5Name
+    value: ${{parameters.applicationCode}}-$(functionApp5PartialName)-${{parameters.environmentCategory}}
   - name: keyVaultName
     value: ${{parameters.applicationCode}}-$(keyVaultPartialName)-${{parameters.environmentCategory}}
   - name: mapsName
@@ -63,8 +67,12 @@ variables:
     value: SystemAdmin
   - name: inviteEmail
     value: iotplatformnoreply@iot.cld.3m.com
+  - name: logAnalyticsWorkspaceId
+    value: /subscriptions/${{parameters.subscriptionId}}/resourcegroups/$(resourceGroupName)/providers/microsoft.operationalinsights/workspaces/${{parameters.applicationCode}}-loganalyticsws-${{parameters.environmentCategory}}    
   - name: maxDeviceCount
     value: 5000
+  - name: diagnosticSettingName
+    value: ${{parameters.applicationCode}}-diagsetting-${{parameters.environmentCategory}}     
   - name: processIOTHubBeyondLimit
     value: false
   - name: loadGrafanaDashboard

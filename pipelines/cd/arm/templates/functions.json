@@ -138,11 +138,15 @@
             "name": "[parameters('functionAppName')]",
             "apiVersion": "2016-08-01",
             "location": "[variables('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
             "scale": null,
             "properties": {
                 "enabled": true,
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('functionAppName'))]",
 				"httpsOnly": true,
+                "ftpsState": "FtpsOnly",
                 "reserved": false,
                 "scmSiteAlsoStopped": false,
                 "hostingEnvironmentProfile": null,

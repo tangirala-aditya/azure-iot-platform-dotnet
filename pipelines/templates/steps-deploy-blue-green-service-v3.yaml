@@ -130,3 +130,21 @@ steps:
 
         kubectl patch svc ${{parameters.serviceName}} -p '{"spec": {"selector": {"app.kubernetes.io/name":"${{parameters.serviceName}}", "type": "$(type)"},"unschedulable":true}}'
 
+
+  - task: AzureCLI@2
+    displayName: Scale down previous deployment
+    name: scaleDownPreviousDeployment
+    inputs:
+      azureSubscription: ${{parameters.subscriptionName}}
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |-
+        set -Eeuxo pipefail
+        az aks get-credentials --name ${{parameters.aksName}} --resource-group ${{parameters.resourceGroupName}} --overwrite-existing
+        kubectl get pods 
+        if [ $(type) == 'green' ]
+        then
+          kubectl scale deployment.v1.apps/${{parameters.blueServiceName}} --replicas=0
+        else
+          kubectl scale deployment.v1.apps/${{parameters.greenServiceName}} --replicas=0
+        fi

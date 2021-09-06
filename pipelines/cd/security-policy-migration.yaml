@@ -1,0 +1,341 @@
+trigger: none
+pr: none
+pool:
+  vmImage: ubuntu-latest
+stages:
+  - stage: checkParameters
+    displayName: Check parameters
+    dependsOn: []
+    jobs:
+      - job: checkParameters
+        displayName: Check parameters
+        steps:
+          - checkout: none
+
+          - script: |-
+              set -Eeuxo pipefail
+              echo "Subscription name: '$(subscriptionName)'"
+              if [ -z "$(subscriptionName)" ]
+              then
+                echo "A value for the 'subscriptionName' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Location name: '$(locationName)'"
+              if [ -z "$(locationName)" ]
+              then
+                echo "A value for the 'locationName' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Environment name: '$(environmentName)'"
+              if [ -z "$(environmentName)" ]
+              then
+                echo "A value for the 'environmentName' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Subscription ID: '$(subscriptionId)'"
+              if [ -z "$(subscriptionId)" ]
+              then
+                echo "A value for the 'subscriptionId' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Application code: '$(applicationCode)'"
+              if [ -z "$(applicationCode)" ]
+              then
+                echo "A value for the 'applicationCode' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Application short code: '$(applicationShortCode)'"
+              if [ -z "$(applicationShortCode)" ]
+              then
+                echo "A value for the 'applicationShortCode' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Environment category: '$(environmentCategory)'"
+              if [ -z "$(environmentCategory)" ]
+              then
+                echo "A value for the 'environmentCategory' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+            displayName: Check parameters
+
+  - stage: migrateSecurityRecommendations
+    displayName: Remediation of Non-Compliant Resources
+    dependsOn:
+      - checkParameters
+    jobs:
+      - job: printVariables
+        displayName: Print variables
+        variables:
+          - template: ../templates/variables-deploy-infra.yaml
+            parameters:
+              subscriptionName: $(subscriptionName)
+              locationName: $(locationName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)
+        steps:
+          - checkout: none
+
+          - template: ../templates/print-pipeline-resource-variables.yaml
+            parameters:
+              pipelineResourceName: test
+
+          - script: |-
+              echo "parameter: subscriptionName: $(subscriptionName)"
+              echo "parameter: locationName: $(locationName)"
+              echo "parameter: environmentName: $environmentName)"
+              echo "parameter: subscriptionId: $(subscriptionId)"
+              echo "parameter: applicationCode: $(applicationCode)"
+              echo "parameter: applicationShortCode: $(applicationShortCode)"
+              echo "parameter: environmentCategory: $(environmentCategory)"
+              echo "variable: aksPartialName: $(aksPartialName)"
+              echo "variable: appConfigurationPartialName: $(appConfigurationPartialName)"
+              echo "variable: appInsightsPartialName: $(appInsightsPartialName)"
+              echo "variable: armDirectory: $(armDirectory)"
+              echo "variable: automationPartialName: $(automationPartialName)"
+              echo "variable: blobContainerPartialName: $(blobContainerPartialName)"
+              echo "variable: cosmosDbName: $(cosmosDbName)"
+              echo "variable: cosmosDbAccountPartialName: $(cosmosDbAccountPartialName)"
+              echo "variable: crslPlatformKeyVault: $(crslPlatformKeyVault)"
+              echo "variable: defaultSasKeyName: $(defaultSasKeyName)"
+              echo "variable: eventHubPartialName: $(eventHubPartialName)"
+              echo "variable: functionApp1PartialName: $(functionApp1PartialName)"
+              echo "variable: functionApp2PartialName: $(functionApp2PartialName)"
+              echo "variable: keyVaultPartialName: $(keyVaultPartialName)"
+              echo "variable: mapsPartialName: $(mapsPartialName)"
+              echo "variable: omsWorkspacePartialName: $(omsWorkspacePartialName)"
+              echo "variable: storageAccountPartialName: $(storageAccountPartialName)"
+              echo "variable: tenantId: $(tenantId)"
+              echo "variable: userObjId: $(userObjId)"
+              echo "variable: aksName: $(aksName)"
+              echo "variable: appConfigurationName: $(appConfigurationName)"
+              echo "variable: appInsightsName: $(appInsightsName)"
+              echo "variable: armParametersDirectory: $(armParametersDirectory)"
+              echo "variable: armTemplatesDirectory: $(armTemplatesDirectory)"
+              echo "variable: automationName: $(automationName)"
+              echo "variable: blobContainerName: $(blobContainerName)"
+              echo "variable: cosmosDbAccountName: $(cosmosDbAccountName)"
+              echo "variable: eventHubName: $(eventHubName)"
+              echo "variable: functionApp1Name: $(functionApp1Name)"
+              echo "variable: functionApp2Name: $(functionApp2Name)"
+              echo "variable: keyVaultName: $(keyVaultName)"
+              echo "variable: mapsName: $(mapsName)"
+              echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
+              echo "variable: resourceGroupName: $(resourceGroupName)"
+              echo "variable: storageAccountName: $(storageAccountName)"
+            displayName: Print variables
+
+      - job: powershellScripts
+        displayName: Provision DiagnosticLogs to Azure Resources 
+        dependsOn:
+          - printVariables
+        variables:
+          - template: ../templates/variables-deploy-infra.yaml
+            parameters:
+              subscriptionName: $(subscriptionName)
+              locationName: $(locationName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)
+        steps:
+        - task: AzurePowerShell@5
+          displayName: Provision DiagnosticSettings to Event Hub
+          inputs:
+            azureSubscription: $(subscriptionName)
+            ScriptType: FilePath
+            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptEventHub.ps1
+            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
+            azurePowerShellVersion: LatestVersion
+
+        - task: AzurePowerShell@5
+          displayName: Provision DiagnosticSettings to  IoT Hub
+          inputs:
+            azureSubscription: $(subscriptionName)
+            ScriptType: FilePath
+            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptIoTHub.ps1
+            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
+            azurePowerShellVersion: LatestVersion
+
+        - task: AzurePowerShell@5
+          displayName: Provision DiagnosticSettings to Key Vault
+          inputs:
+            azureSubscription: $(subscriptionName)
+            ScriptType: FilePath
+            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptKeyVault.ps1
+            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
+            azurePowerShellVersion: LatestVersion
+
+        - task: AzurePowerShell@5
+          displayName: Provision DiagnosticSettings to Stream Analytics
+          inputs:
+            azureSubscription: $(subscriptionName)
+            ScriptType: FilePath
+            ScriptPath: pipelines/cd/diagnosticSettingMigrationScripts/migrationScriptStreamAnalytics.ps1
+            ScriptArguments: -resourceGroupName $(resourceGroupName) -subscriptionId $(subscriptionId) -applicationCode $(applicationCode)
+            azurePowerShellVersion: LatestVersion           
+
+      - job: compliantpolicies
+        displayName: Resolve Non Compliance Policies 
+        dependsOn:
+          - printVariables
+        variables:
+          - template: ../templates/variables-deploy-infra.yaml
+            parameters:
+              subscriptionName: $(subscriptionName)
+              locationName: $(locationName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)
+        steps:
+          - task: AzureCLI@2
+            displayName: Enable Azure Policy Add-on in AKS Cluster
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |-
+                set -Eeuxo pipefail
+                az provider register --namespace Microsoft.PolicyInsights
+                az aks enable-addons --addons azure-policy --name $(aksName) --resource-group $(resourceGroupName)
+                az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+                kubectl get pods -n gatekeeper-system
+                kubectl get pods -n kube-system
+                az aks show --query addonProfiles.azurepolicy -g $(resourceGroupName) -n $(aksName)
+
+          - task: AzureCLI@2
+            displayName: Enable Secure transfer in Storage Account
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |-
+                set -Eeuxo pipefail
+                az storage account show -g $(resourceGroupName) -n $(storageAccountName)
+                az storage account update -g $(resourceGroupName) -n $(storageAccountName) --https-only true
+
+          - task: AzureCLI@2
+            displayName: Enable Soft delete in keyvault
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |-
+                set -Eeuxo pipefail
+                az keyvault update --subscription $(subscriptionId) -g $(resourceGroupName) -n $(keyVaultName) --enable-soft-delete true
+
+          - task: AzureCLI@2
+            displayName: Enable FTTPS in functionApp
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |-
+                set -Eeuxo pipefail
+                az functionapp config set --name $(functionApp3Name) --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
+                az functionapp config set --name $(functionApp2Name) --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
+                az functionapp config set --name $(functionApp1Name) --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
+                az functionapp config set --name $(functionApp4Name) --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
+                az functionapp config set --name $(functionApp5Name) --resource-group $(resourceGroupName) --ftps-state "FtpsOnly"
+
+          - task: AzureCLI@2
+            displayName: Enable Client Certificate for functionapps
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |-
+                set -Eeuxo pipefail
+                az functionapp update --set clientCertEnabled=true --name $(functionApp3Name) --resource-group $(resourceGroupName)
+                az functionapp update --set clientCertEnabled=true --name $(functionApp2Name) --resource-group $(resourceGroupName)
+                az functionapp update --set clientCertEnabled=true --name $(functionApp1Name) --resource-group $(resourceGroupName)
+                az functionapp update --set clientCertEnabled=true --name $(functionApp4Name) --resource-group $(resourceGroupName)
+                az functionapp update --set clientCertEnabled=true --name $(functionApp5Name) --resource-group $(resourceGroupName)
+
+      - job: addkeyVaultReferencesToFunctionApp
+        displayName: Add Key Vault References to FunctionApp 
+        dependsOn:
+          - printVariables
+        variables:
+          - template: ../templates/variables-deploy-infra.yaml
+            parameters:
+              subscriptionName: $(subscriptionName)
+              locationName: $(locationName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)
+        steps:
+          - task: AzureCLI@2
+            displayName: Enable Managed Assigned Identities to FunctionApp
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |-
+                az functionapp identity assign --name $(functionApp1Name) --resource-group $(resourceGroupName)
+                az functionapp identity assign --name $(functionApp2Name) --resource-group $(resourceGroupName)
+                az functionapp identity assign --name $(functionApp3Name) --resource-group $(resourceGroupName)
+                az functionapp identity assign --name $(functionApp4Name) --resource-group $(resourceGroupName)
+                az functionapp identity assign --name $(functionApp5Name) --resource-group $(resourceGroupName)
+
+          - task: AzureCLI@2
+            displayName: Replace Function App appsettings with KeyVault references
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |-
+               devicetwinPropfn=$(functionApp1Name)
+               keyVaultSecretUri="https://$(applicationCode)-keyvault-$(environmentCategory).vault.azure.net"
+               az functionapp config appsettings set --name $devicetwinPropfn \
+                --settings \
+                "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
+                "TelemetryEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TelemetryEventHubConnectionString/)" \
+                "LifecycleEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--LifecycleEventHubConnectionString/)" \
+                "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \
+                --resource-group $(resourceGroupName)
+               devicetwinPropObjectId=$(az functionapp identity show --name $devicetwinPropfn --resource-group $(resourceGroupName) | jq -r .principalId)
+               az keyvault set-policy --name $(keyVaultName) --object-id $devicetwinPropObjectId --secret-permissions get list --key-permissions get list
+               
+               alertingactionfn=$(functionApp3Name)
+               az functionapp config appsettings set --name $alertingactionfn \
+                --settings \
+                "ActionsEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/AlertingActionsFunction--ActionsEventHubConnectionString/)" \
+                "SendGridApiKey"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/IdentityGatewayService--SendGridApiKey/)" \
+                --resource-group $(resourceGroupName)
+               alertingactionObjectId=$(az functionapp identity show --name $alertingactionfn --resource-group $(resourceGroupName) | jq -r .principalId)
+               az keyvault set-policy --name $(keyVaultName) --object-id $alertingactionObjectId --secret-permissions get list --key-permissions get list
+
+               iotdeploymentfn=$(functionApp4Name)
+               az functionapp config appsettings set --name $iotdeploymentfn \
+                --settings \
+                "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
+                "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \
+                --resource-group $(resourceGroupName)
+
+               iotdeploymentObjectId=$(az functionapp identity show --name $iotdeploymentfn --resource-group $(resourceGroupName) | jq -r .principalId)
+               az keyvault set-policy --name $(keyVaultName) --object-id $iotdeploymentObjectId --secret-permissions get list --key-permissions get list
+
+               resourcedatacollectorfn=$(functionApp5Name)
+               az functionapp config appsettings set --name $resourcedatacollectorfn \
+                --settings \
+                  "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
+                --resource-group $(resourceGroupName)
+
+               resourcedatacollectorObjectId=$(az functionapp identity show --name $resourcedatacollectorfn --resource-group $(resourceGroupName) | jq -r .principalId)
+               az keyvault set-policy --name $(keyVaultName) --object-id $resourcedatacollectorObjectId --secret-permissions get list --key-permissions get list
+
+

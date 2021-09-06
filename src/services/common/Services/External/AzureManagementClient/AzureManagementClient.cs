@@ -71,7 +71,7 @@ namespace Mmm.Iot.Common.Services.External.Azure
 
             if (deploymentName == null)
             {
-                deploymentName = Guid.Empty.ToString();
+                deploymentName = Guid.NewGuid().ToString();
             }
 
             var result = await this.client.Deployments.Define(deploymentName)

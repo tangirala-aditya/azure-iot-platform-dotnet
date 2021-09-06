@@ -1504,8 +1504,9 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-            batchProcessorfn=${{parameters.applicationCode}}-batchprocessorfuncapp-${{parameters.environmentCategory}}
-            telemetryEvConn=$(az keyvault secret show --name "TenantManagerService--TelemetryEventHubConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
+            batchProcessorfn=$(functionApp6Name)
+            keyVaultSecretUri="https://${{parameters.applicationCode}}-keyvault-${{parameters.environmentCategory}}.vault.azure.net"
+            telemetryEvConn="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TelemetryEventHubConnectionString/)"
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             storageAccountConn=$(az keyvault secret show --name "Global--StorageAccountConnectionString" --vault-name $(keyVaultName) --query "value" --output tsv)
             az functionapp config appsettings set --name $batchProcessorfn \
@@ -1528,6 +1529,15 @@ jobs:
                 --settings AzureWebJobs.BatchTelemetryProcessor.Disabled=true
             fi
 
+      - task: AzureCLI@2
+        displayName: Set FunctionApp Identity to keyvault Access Policy
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+           objectId=$(az functionapp identity show --name $(functionApp6Name) --resource-group $(resourceGroupName) | jq -r .principalId)
+           az keyvault set-policy --name $(keyVaultName) --object-id $objectId --secret-permissions get list --key-permissions get list
 
   - job: deployFunctions
     displayName: Deploy functions

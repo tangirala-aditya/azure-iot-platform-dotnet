@@ -21,4 +21,4 @@ steps:
       useClusterAdmin: true
       namespace: $(kubernetesNamespace)
       command: init
-      arguments: --force-upgrade --tiller-image=ghcr.io/helm/tiller:v$(helmVersion)
+      arguments: --force-upgrade --service-account tiller --tiller-image=ghcr.io/helm/tiller:v$(helmVersion)

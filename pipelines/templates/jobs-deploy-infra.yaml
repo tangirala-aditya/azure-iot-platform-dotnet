@@ -1501,7 +1501,7 @@ jobs:
           arguments: --force-upgrade --tiller-image=ghcr.io/helm/tiller:v$(helmVersion2)
 
       - task: AzureCLI@2
-        displayName: Create K8s globalsecrets secret
+        displayName: Create Service account to tiller and assign permissions
         inputs:
           azureSubscription: ${{parameters.subscriptionName}}
           scriptLocation: inlineScript

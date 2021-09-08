@@ -76,7 +76,7 @@ jobs:
           useClusterAdmin: true
           namespace: default
           command: init
-          arguments: --force-upgrade --tiller-image=ghcr.io/helm/tiller:v$(helmVersion2)
+          arguments: --force-upgrade --service-account tiller --tiller-image=ghcr.io/helm/tiller:v$(helmVersion2)
 
       - task: AzureCLI@2
         displayName: Install Helm 3

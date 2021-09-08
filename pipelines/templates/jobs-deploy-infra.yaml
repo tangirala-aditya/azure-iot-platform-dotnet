@@ -1501,6 +1501,19 @@ jobs:
           arguments: --force-upgrade --tiller-image=ghcr.io/helm/tiller:v$(helmVersion2)
 
       - task: AzureCLI@2
+        displayName: Create K8s globalsecrets secret
+        inputs:
+          azureSubscription: ${{parameters.subscriptionName}}
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName) --admin
+            kubectl create serviceaccount --namespace kube-system tiller
+            kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+            kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'      
+            helm init --service-account tiller --upgrade --tiller-image=ghcr.io/helm/tiller:v$(helmVersion2)
+
+      - task: AzureCLI@2
         displayName: Install K8s Ingress Controller
         inputs:
           azureSubscription: ${{parameters.subscriptionName}}

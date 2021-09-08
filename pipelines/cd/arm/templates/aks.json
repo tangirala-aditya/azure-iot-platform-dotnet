@@ -131,7 +131,21 @@
             "metadata": {
                 "description": "Boolean flag to turn on and off of http application routing."
             }
-        }
+        },
+        "aadEnabled": {
+            "defaultValue": true,
+            "type": "bool",
+            "metadata": {
+              "description": "Specifies whether enabling AAD integration."
+            }
+        },
+        "aadProfileTenantId": {
+            "defaultValue": "[subscription().tenantId]",
+            "type": "string",
+            "metadata": {
+              "description": "Specifies the tenant id of the Azure Active Directory used by the AKS cluster for authentication."
+            }
+        } 
     },
     "resources": [
         {

@@ -145,7 +145,36 @@
             "metadata": {
               "description": "Specifies the tenant id of the Azure Active Directory used by the AKS cluster for authentication."
             }
-        } 
+        },
+        "aadProfileEnableAzureRBAC": {
+            "defaultValue": false,
+            "type": "bool",
+            "metadata": {
+              "description": "Specifies whether to  to enable Azure RBAC for Kubernetes authorization."
+            }
+        },
+        "aadProfileAdminGroupObjectIDs": {
+            "defaultValue": [],
+            "type": "array",
+            "metadata": {
+              "description": "Specifies the AAD group object IDs that will have admin role of the cluster."
+            }
+        },
+        "aadProfileManaged": {
+            "defaultValue": true,
+            "type": "bool",
+            "metadata": {
+              "description": "Specifies whether to enable managed AAD integration."
+            }
+        }
+    },
+    "variables": {
+        "aadProfileConfiguration": {
+            "managed": "[parameters('aadProfileManaged')]",
+            "enableAzureRBAC": "[parameters('aadProfileEnableAzureRBAC')]",
+            "adminGroupObjectIDs": "[parameters('aadProfileAdminGroupObjectIDs')]",
+            "tenantID": "[parameters('aadProfileTenantId')]"
+        }
     },
     "resources": [
         {
@@ -185,7 +214,8 @@
                             "logAnalyticsWorkspaceResourceID": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
                         }
                     }
-                }
+                },
+                "aadProfile": "[if(parameters('aadEnabled'), variables('aadProfileConfiguration'), json('null'))]"
             },
             "tags": {
                 "[concat('hidden-related:', resourceId('Microsoft.ContainerService/managedClusters', parameters('resourceName')))]": "Resource",

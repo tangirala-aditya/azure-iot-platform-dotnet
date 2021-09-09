@@ -94,6 +94,7 @@ jobs:
 
   - job: resourceGroup
     displayName: Provision resource group
+    condition: false
     dependsOn:
       - getApproval
     variables:
@@ -141,7 +142,7 @@ jobs:
 
   - job: aks
     displayName: Provision AKS
-    condition: and(true,eq('${{parameters.isHelmVersion3}}',false))
+    condition: false
     dependsOn:
       - resourceGroup
     variables:
@@ -289,7 +290,7 @@ jobs:
     displayName: Provision AKS V3
     dependsOn:
       - resourceGroup
-    condition: and(true,eq('${{parameters.isHelmVersion3}}',true))
+    condition: false
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -399,6 +400,7 @@ jobs:
 
   - job: storageAccount
     displayName: Provision Storage Account
+    condition: false
     dependsOn:
       - resourceGroup
     variables:
@@ -453,6 +455,7 @@ jobs:
 
   - job: addSysAdmins
     displayName: Add System Administrators
+    condition: false
     dependsOn:
       - storageAccount
     variables:
@@ -501,6 +504,7 @@ jobs:
 
   - job: eventHub
     displayName: Provision Event Hub
+    condition: false
     dependsOn:
       - storageAccount
     variables:
@@ -543,6 +547,7 @@ jobs:
 
   - job: keyVault
     displayName: Provision Key Vault
+    condition: false
     dependsOn:
       - resourceGroup
     variables:
@@ -596,6 +601,7 @@ jobs:
 
   - job: maps
     displayName: Provision Maps
+    condition: false
     dependsOn:
       - resourceGroup
     variables:
@@ -638,6 +644,7 @@ jobs:
 
   - job: appConfiguration
     displayName: Provision App Configuration
+    condition: false
     dependsOn:
       - resourceGroup
     variables:
@@ -680,6 +687,7 @@ jobs:
 
   - job: globalsecrets
     displayName: Create K8s secrets
+    condition: false
     dependsOn:
       - appConfiguration
       - aks
@@ -708,6 +716,7 @@ jobs:
             kubectl create secret generic --namespace=default globalsecrets --from-literal=AppConfigurationConnectionString=$appConfigurationConnectionString --dry-run -o yaml | kubectl apply -f -
 
   - job: globalsecretsV3
+    condition: false
     displayName: Create K8s secrets
     dependsOn:
       - appConfiguration
@@ -739,6 +748,7 @@ jobs:
 
   - job: appInsights
     displayName: Provision Application Insights
+    condition: false
     dependsOn:
       - resourceGroup
     variables:
@@ -780,6 +790,7 @@ jobs:
 
   - job: cosmosDb
     displayName: Provision CosmosDB
+    condition: false
     dependsOn:
       - resourceGroup
     variables:
@@ -820,6 +831,7 @@ jobs:
           resourceGroupName: $(resourceGroupName)
 
   - job: populateAppConfiguration
+    condition: false
     displayName: Populate App Configuration
     dependsOn:
       - appConfiguration
@@ -898,6 +910,7 @@ jobs:
 
   - job: populateKeyVault
     displayName: Populate Key Vault
+    condition: false
     dependsOn:
       - keyVault
       - storageAccount
@@ -978,10 +991,6 @@ jobs:
 
   - job: function1
     displayName: Create Device Twin Function
-    dependsOn:
-      - appInsights
-      - storageAccount
-      - populateKeyVault
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -1059,9 +1068,6 @@ jobs:
 
   - job: function2
     displayName: Create App Config Function
-    dependsOn:
-      - appInsights
-      - storageAccount
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -1103,10 +1109,6 @@ jobs:
 
   - job: function3
     displayName: Create Alerting Actions Function
-    dependsOn:
-      - appInsights
-      - storageAccount
-      - populateKeyVault
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -1176,10 +1178,6 @@ jobs:
 
   - job: function4
     displayName: Create azure iot Deployment Function
-    dependsOn:
-      - appInsights
-      - storageAccount
-      - populateKeyVault
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -1322,9 +1320,7 @@ jobs:
 
   - job: automationAccount
     displayName: Provision Azure Automation and Sendgrid accounts
-    dependsOn:
-      - aks
-      - keyVault
+    condition: false
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -1394,9 +1390,7 @@ jobs:
 
   - job: automationAccountV3
     displayName: Provision Azure Automation and Sendgrid accounts
-    dependsOn:
-      - aksV3
-      - keyVault
+    condition: false
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -1466,9 +1460,7 @@ jobs:
 
   - job: ingress
     displayName: Create K8s ingress
-    condition: and(true,eq('${{parameters.isHelmVersion3}}',false))
-    dependsOn:
-      - aks
+    condition: false
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -1614,9 +1606,7 @@ jobs:
 
   - job: ingressV3
     displayName: Create K8s ingress V3
-    dependsOn:
-      - aksV3
-    condition: and(true,eq('${{parameters.isHelmVersion3}}',true))
+    condition: false
     variables:
       - template: variables-deploy-infra.yaml
         parameters:

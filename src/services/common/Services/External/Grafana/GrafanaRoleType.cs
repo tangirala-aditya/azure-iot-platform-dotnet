@@ -11,7 +11,7 @@ namespace Mmm.Iot.Common.Services.External.Grafana
     public enum GrafanaRoleType
     {
         Viewer,
-        Editer,
+        Editor,
         Admin,
     }
 }

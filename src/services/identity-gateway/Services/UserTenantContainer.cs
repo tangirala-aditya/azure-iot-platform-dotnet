@@ -190,7 +190,7 @@ namespace Mmm.Iot.IdentityGateway.Services
             {
                 string apiKey = this.keyVaultClient.GetValue($"Grafana--{input.Tenant}--APIKey");
 
-                GrafanaGlobalUserRequestModel user = new GrafanaGlobalUserRequestModel(input.Name, input.Name, input.UserId, "random");
+                GrafanaGlobalUserRequestModel user = new GrafanaGlobalUserRequestModel(input.Name, input.Name, input.UserId, "admin");
                 await this.grafanaClient.AddGlobalUser(user);
 
                 string role = JsonConvert.DeserializeObject<List<string>>(input.Roles).FirstOrDefault();
@@ -198,7 +198,7 @@ namespace Mmm.Iot.IdentityGateway.Services
                 GrafanaRoleType grafanaRole = role switch
                 {
                     "admin" => GrafanaRoleType.Admin,
-                    "contributor" => GrafanaRoleType.Editer,
+                    "contributor" => GrafanaRoleType.Editor,
                     "readonly" => GrafanaRoleType.Viewer,
                     _ => GrafanaRoleType.Viewer,
                 };
@@ -213,7 +213,7 @@ namespace Mmm.Iot.IdentityGateway.Services
             {
                 string apiKey = this.keyVaultClient.GetValue($"Grafana--{input.Tenant}--APIKey");
 
-                await this.grafanaClient.DeleteUser(input.Tenant, apiKey);
+                await this.grafanaClient.DeleteUser(input.UserId, apiKey);
             }
         }
     }

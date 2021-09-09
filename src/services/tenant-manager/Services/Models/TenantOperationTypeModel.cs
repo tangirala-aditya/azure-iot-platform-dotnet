@@ -14,5 +14,7 @@ namespace Mmm.Iot.TenantManager.Services.Models
         SaJobCreation,
         GrafanaDashboardCreation,
         GrafanaDashboardDeletion,
+        ADXDatabaseDeletion,
+        EventHubDeletion,
     }
 }

@@ -202,6 +202,18 @@
             "resources": []
         },
         {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2021-01-15",
+            "name": "[concat(parameters('functionAppName'), '/web')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
+            ],
+            "properties": {
+                "ftpsState": "FtpsOnly"
+            }
+        },        
+        {
             "type": "Microsoft.Insights/components",
             "name": "[parameters('appInsightsName')]",
             "location": "[parameters('appInsightsLocation')]",

@@ -69,7 +69,7 @@
         },
         "kubernetesVersion": {
             "type": "string",
-            "defaultValue": "1.16.7",
+            "defaultValue": "1.19.13",
             "metadata": {
                 "description": "The version of Kubernetes."
             }
@@ -161,7 +161,7 @@
             }
         },
         "aadProfileManaged": {
-            "defaultValue": true,
+            "defaultValue": false,
             "type": "bool",
             "metadata": {
               "description": "Specifies whether to enable managed AAD integration."
@@ -215,7 +215,12 @@
                         }
                     }
                 },
-                "aadProfile": "[if(parameters('aadEnabled'), variables('aadProfileConfiguration'), json('null'))]"
+                "aadProfile": {
+                    "managed": "[parameters('aadProfileManaged')]",
+                    "enableAzureRBAC": "[parameters('aadProfileEnableAzureRBAC')]",
+                    "adminGroupObjectIDs": "[parameters('aadProfileAdminGroupObjectIDs')]",
+                    "tenantID": "[parameters('aadProfileTenantId')]"
+                }
             },
             "tags": {
                 "[concat('hidden-related:', resourceId('Microsoft.ContainerService/managedClusters', parameters('resourceName')))]": "Resource",

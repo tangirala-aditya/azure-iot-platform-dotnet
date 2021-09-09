@@ -1053,5 +1053,6 @@ stages:
               azureSubscriptionEndpoint: $(subscriptionName)
               azureResourceGroup: $(resourceGroupName)
               kubernetesCluster: $(aksName)
+              useClusterAdmin: true
               command: delete
               arguments: namespace $(kubernetesNamespace) --now=true --ignore-not-found=true

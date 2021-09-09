@@ -1029,6 +1029,7 @@ stages:
             inputs:
               connectionType: Azure Resource Manager
               azureSubscriptionEndpoint: $(subscriptionName)
+              useClusterAdmin: true
               azureResourceGroup: $(resourceGroupName)
               kubernetesCluster: $(aksName)
               command: delete

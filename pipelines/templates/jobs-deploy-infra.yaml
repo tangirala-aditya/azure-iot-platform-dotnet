@@ -232,6 +232,7 @@ jobs:
           azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
           azureResourceGroup: $(resourceGroupName)
           kubernetesCluster: $(aksName)
+          useClusterAdmin: true
           command: apply
           useConfigurationFile: true
           configurationType: inline
@@ -262,6 +263,7 @@ jobs:
           connectionType: Azure Resource Manager
           azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
           azureResourceGroup: $(resourceGroupName)
+          useClusterAdmin: true
           kubernetesCluster: $(aksName)
           command: apply
           arguments: --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/v$(certManagerVersion)/deploy/manifests/00-crds.yaml
@@ -274,6 +276,7 @@ jobs:
           azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
           azureResourceGroup: $(resourceGroupName)
           kubernetesCluster: $(aksName)
+          useClusterAdmin: true
           command: apply
           useConfigurationFile: true
           configurationType: inline
@@ -392,6 +395,7 @@ jobs:
           connectionType: Azure Resource Manager
           azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
           azureResourceGroup: $(resourceGroupName)
+          useClusterAdmin: true
           kubernetesCluster: $(aksName)
           command: apply
           arguments: --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v$(certManagerVersion3)/cert-manager.crds.yaml
@@ -1588,6 +1592,7 @@ jobs:
           azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
           azureResourceGroup: $(resourceGroupName)
           kubernetesCluster: $(aksName)
+          useClusterAdmin: true
           command: apply
           useConfigurationFile: true
           configuration: charts/ingress/cluster-issuer-prod.yaml
@@ -1599,6 +1604,7 @@ jobs:
           azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
           azureResourceGroup: $(resourceGroupName)
           kubernetesCluster: $(aksName)
+          useClusterAdmin: true
           command: apply
           useConfigurationFile: true
           configurationType: inline
@@ -1717,6 +1723,7 @@ jobs:
           azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
           azureResourceGroup: $(resourceGroupName)
           kubernetesCluster: $(aksName)
+          useClusterAdmin: true
           command: apply
           useConfigurationFile: true
           configuration: charts/ingress/cluster-issuer-prod.yaml
@@ -1728,6 +1735,7 @@ jobs:
           azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
           azureResourceGroup: $(resourceGroupName)
           kubernetesCluster: $(aksName)
+          useClusterAdmin: true
           command: apply
           useConfigurationFile: true
           configurationType: inline

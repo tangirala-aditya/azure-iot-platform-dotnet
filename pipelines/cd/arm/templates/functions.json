@@ -146,7 +146,6 @@
                 "enabled": true,
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('functionAppName'))]",
                 "httpsOnly": true,
-                "ftpsState": "FtpsOnly",
                 "reserved": false,
                 "scmSiteAlsoStopped": false,
                 "hostingEnvironmentProfile": null,
@@ -213,6 +212,18 @@
             },
             "properties": {
                 "applicationId": "[parameters('appInsightsName')]"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2021-01-15",
+            "name": "[concat(parameters('functionAppName'), '/web')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
+            ],
+            "properties": {
+                "ftpsState": "FtpsOnly"
             }
         }
     ],

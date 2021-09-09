@@ -161,7 +161,7 @@
             }
         },
         "aadProfileManaged": {
-            "defaultValue": false,
+            "defaultValue": true,
             "type": "bool",
             "metadata": {
               "description": "Specifies whether to enable managed AAD integration."
@@ -171,7 +171,6 @@
     "variables": {
         "aadProfileConfiguration": {
             "managed": "[parameters('aadProfileManaged')]",
-            "enableAzureRBAC": "[parameters('aadProfileEnableAzureRBAC')]",
             "adminGroupObjectIDs": "[parameters('aadProfileAdminGroupObjectIDs')]",
             "tenantID": "[parameters('aadProfileTenantId')]"
         }

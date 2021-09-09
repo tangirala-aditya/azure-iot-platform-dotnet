@@ -136,7 +136,7 @@
             "type": "Microsoft.Web/sites",
             "kind": "functionapp",
             "name": "[parameters('functionAppName')]",
-            "apiVersion": "2016-08-01",
+            "apiVersion": "2020-12-01",
             "location": "[variables('location')]",
             "identity": {
                 "type": "SystemAssigned"
@@ -200,18 +200,6 @@
                 "[resourceId('Microsoft.Insights/components', parameters('appInsightsName'))]"
             ],
             "resources": []
-        },
-        {
-            "type": "Microsoft.Web/sites/config",
-            "apiVersion": "2021-01-15",
-            "name": "[concat(parameters('functionAppName'), '/web')]",
-            "location": "Central US",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
-            ],
-            "properties": {
-                "ftpsState": "FtpsOnly"
-            }
         },        
         {
             "type": "Microsoft.Insights/components",

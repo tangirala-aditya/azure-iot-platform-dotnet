@@ -16,6 +16,7 @@
         "enableOmsAgent": { "value": false },
         "enableHttpApplicationRouting": { "value": false },
         "aadEnabled": { "value": true },
-        "aadProfileEnableAzureRBAC": { "value": true }
+        "aadProfileEnableAzureRBAC": { "value": true },
+        "aadProfileAdminGroupObjectIDs": { "value": [] }
     }
 }

@@ -150,7 +150,6 @@
                 "scmSiteAlsoStopped": false,
                 "hostingEnvironmentProfile": null,
                 "clientAffinityEnabled": false,
-                "clientCertMode": "Optional/Required",
                 "clientCertEnabled": true,
                 "hostNamesDisabled": false,
                 "containerSize": 1536,
@@ -213,18 +212,6 @@
             },
             "properties": {
                 "applicationId": "[parameters('appInsightsName')]"
-            }
-        },
-        {
-            "type": "Microsoft.Web/sites/config",
-            "apiVersion": "2021-01-15",
-            "name": "[concat(parameters('functionAppName'), '/web')]",
-            "location": "Central US",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
-            ],
-            "properties": {
-                "ftpsState": "FtpsOnly"
             }
         }
     ],

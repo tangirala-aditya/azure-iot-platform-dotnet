@@ -132,7 +132,7 @@
                 "description": "Boolean flag to turn on and off of http application routing."
             }
         },
-        "azurepolicy": {
+        "enableAzurePolicy": {
             "type": "bool",
             "defaultValue": true,
             "metadata": {

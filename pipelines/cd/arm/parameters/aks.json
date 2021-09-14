@@ -15,6 +15,6 @@
         "enableRBAC": { "value": false },
         "enableOmsAgent": { "value": false },
         "enableHttpApplicationRouting": { "value": false },
-        "azurepolicy": { "value": true }
+        "enableAzurePolicy": { "value": true }
     }
 }

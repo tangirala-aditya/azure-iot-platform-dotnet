@@ -131,7 +131,15 @@
             "metadata": {
                 "description": "Boolean flag to turn on and off of http application routing."
             }
-        }
+        },
+        "azurepolicy": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Boolean flag to turn on and off of azurepolicy"
+            }
+        }        
+
     },
     "resources": [
         {
@@ -162,6 +170,9 @@
                     "networkPlugin": "[parameters('networkPlugin')]"
                 },
                 "addonProfiles": {
+                    "azurepolicy": {
+                        "enabled": "[parameters('enableAzurePolicy')]"
+                    },
                     "httpApplicationRouting": {
                         "enabled": "[parameters('enableHttpApplicationRouting')]"
                     },

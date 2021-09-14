@@ -159,6 +159,7 @@
                 "phpVersion": "",
                 "use32BitWorkerProcess": true,
                 "siteConfig": {
+                    "ftpsState": "FtpsOnly",
                     "appSettings": [
                         {
                             "name": "AzureWebJobsStorage",

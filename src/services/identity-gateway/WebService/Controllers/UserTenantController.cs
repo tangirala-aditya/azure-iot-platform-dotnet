@@ -148,7 +148,7 @@ namespace Mmm.Iot.IdentityGateway.WebService.Controllers
             };
             var userTenantModel = await this.container.DeleteAsync(input);
 
-            // Add user to Grafana
+            // Delete user to Grafana
             await this.container.DeleteUserToGrafanaAsync(input);
 
             if (userTenantModel != null)

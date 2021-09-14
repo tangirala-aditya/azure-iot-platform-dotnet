@@ -75,7 +75,7 @@ jobs:
           kubernetesCluster: $(aksName)
           namespace: default
           command: init
-          arguments: --force-upgrade
+          arguments: --force-upgrade --tiller-image=ghcr.io/helm/tiller:v$(helmVersion2)
 
       - task: AzureCLI@2
         displayName: Install Helm 3

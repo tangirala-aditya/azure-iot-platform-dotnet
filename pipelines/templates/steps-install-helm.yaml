@@ -20,4 +20,4 @@ steps:
       kubernetesCluster: $(aksName)
       namespace: $(kubernetesNamespace)
       command: init
-      arguments: --force-upgrade
+      arguments: --force-upgrade --tiller-image=ghcr.io/helm/tiller:v$(helmVersion)

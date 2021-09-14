@@ -110,9 +110,10 @@ class App extends Component {
                 {
                     to: "/columnMapping",
                     exact: false,
-                    svg: svgs.tabs.maintenance,
+                    svg: svgs.tabs.columnMapping,
                     labelId: "tabs.columnMapping",
                     component: ColumnMappingsRouter,
+                    permission: permissions.updateDeviceGroups,
                 },
             ],
             crumbsConfig = [

@@ -130,7 +130,7 @@ namespace Mmm.Iot.Functions.DeploymentSync.Shared
         {
             try
             {
-                await this.client.DeleteDocumentAsync($"{collectionLink}/docs/{key}", new RequestOptions { PartitionKey = new PartitionKey(key) });
+                await this.client.DeleteDocumentAsync($"{collectionLink}/docs/{key}");
             }
             catch (DocumentClientException)
             {

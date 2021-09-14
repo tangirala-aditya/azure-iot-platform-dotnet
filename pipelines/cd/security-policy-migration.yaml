@@ -285,11 +285,11 @@ stages:
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |-
-                az functionapp identity assign --name $(functionApp1Name) --resource-group rg-iot-acs-dev
-                az functionapp identity assign --name $(functionApp2Name) --resource-group rg-iot-acs-dev
-                az functionapp identity assign --name $(functionApp3Name) --resource-group rg-iot-acs-dev
-                az functionapp identity assign --name $(functionApp4Name) --resource-group rg-iot-acs-dev
-                az functionapp identity assign --name $(functionApp5Name) --resource-group rg-iot-acs-dev
+                az functionapp identity assign --name $(functionApp1Name) --resource-group $(resourceGroupName)
+                az functionapp identity assign --name $(functionApp2Name) --resource-group $(resourceGroupName)
+                az functionapp identity assign --name $(functionApp3Name) --resource-group $(resourceGroupName)
+                az functionapp identity assign --name $(functionApp4Name) --resource-group $(resourceGroupName)
+                az functionapp identity assign --name $(functionApp5Name) --resource-group $(resourceGroupName)
 
           - task: AzureCLI@2
             displayName: Replace Function App appsettings with KeyVault references
@@ -305,7 +305,7 @@ stages:
                 "CosmosDbConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/Global--CosmosDb--DocumentDbConnectionString/)" \
                 "TelemetryEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TelemetryEventHubConnectionString/)" \
                 "LifecycleEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--LifecycleEventHubConnectionString/)" \
-                "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \ 
+                "TwinChangeEventHubConnectionString"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/TenantManagerService--TwinChangeEventHubConnectionString/)" \
                 --resource-group $(resourceGroupName)
                devicetwinPropObjectId=$(az functionapp identity show --name $devicetwinPropfn --resource-group $(resourceGroupName) | jq -r .principalId)
                az keyvault set-policy --name $(keyVaultName) --object-id $devicetwinPropObjectId --secret-permissions get list --key-permissions get list

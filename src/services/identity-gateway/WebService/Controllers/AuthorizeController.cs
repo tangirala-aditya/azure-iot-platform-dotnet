@@ -132,7 +132,6 @@ namespace Mmm.Iot.IdentityGateway.Controllers
         public async Task<IActionResult> GetTokenAsync()
         {
             // Acquire application token for Kusto:
-            // ClientCredential applicationCredentials = new ClientCredential("ef6d39b9-2e5d-4767-b118-0fd69259c8bc", "nl5jkfa~t-4m_z5isxU~4~vfaJ62i18qyR");
             ClientCredential applicationCredentials = new ClientCredential(this.config.Global.AzureActiveDirectory.AppId, this.config.Global.AzureActiveDirectory.AppSecret);
             AuthenticationResult result =
                     await this.authenticationContext.AcquireTokenAsync("https://acsagickustodev.centralus.kusto.windows.net", applicationCredentials);

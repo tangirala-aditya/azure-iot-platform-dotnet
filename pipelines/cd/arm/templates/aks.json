@@ -131,7 +131,15 @@
             "metadata": {
                 "description": "Boolean flag to turn on and off of http application routing."
             }
+        },
+        "enableAzurePolicy" :{
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Boolean flag to turn on and off of azure policy"
+            }  
         }
+
     },
     "resources": [
         {
@@ -164,6 +172,9 @@
                 "addonProfiles": {
                     "httpApplicationRouting": {
                         "enabled": "[parameters('enableHttpApplicationRouting')]"
+                    },
+                    "azurepolicy": {
+                        "enabled": "[parameters('enableAzurePolicy')]"
                     },
                     "omsagent": {
                         "enabled": "[parameters('enableOmsAgent')]",

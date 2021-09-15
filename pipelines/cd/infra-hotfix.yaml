@@ -124,9 +124,10 @@ stages:
           kubernetesVersion: $(kubernetesVersion)
           sendgridEmail: $(sendGridEmail)
           sysAdmins: $(sysAdmins)
+          aksAdminGroupObjectIDs: $(aksAdminGroupObjectIDs)
           aksAgentVmSize: $(aksAgentVmSize)
           azureDevOpsProjectId: AzurePlatform
           testPipelineId: 453
           runVersion: specific
           testPipelineRunId: $(testPipelineRunId)
-          isHelmVersion3: true
+          isHelmVersion3: false

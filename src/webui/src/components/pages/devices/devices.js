@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
-import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle";
 
 import { permissions, toDiagnosticsModel } from "services/models";
 import { DevicesGridContainer } from "./devicesGrid";
@@ -30,7 +29,8 @@ import {
     ConfigService,
 } from "services";
 import { ColumnDialog } from "./columnDialog";
-import { DefaultButton } from "@fluentui/react/lib/Button";
+import { ActionButton } from "@fluentui/react/lib/Button";
+import { Toggle } from "@fluentui/react/lib/Toggle";
 import {
     generateColumnOptionsFromMappings,
     generateColumnDefsFromSelectedOptions,
@@ -56,7 +56,7 @@ export class Devices extends Component {
             showColumnDialog: false,
             contextBtns: null,
             selectedDeviceGroupId: undefined,
-            loadMore: props.loadMoreState,
+            loadMore: this.props.loadMoreState,
             isDeviceSearch: false,
             columnOptions: [],
             selectedOptions: [],
@@ -358,18 +358,15 @@ export class Devices extends Component {
         return children;
     };
 
-    switchLoadMore = (value) => {
-        if (!value) {
-            this.setState({ loadMore: false });
-            return this.props.cancelDeviceCalls({
-                makeSubsequentCalls: false,
-            });
-        } else {
-            this.setState({ loadMore: true });
+    switchLoadMore = (event, checked) => {
+        this.setState({ loadMore: checked }, () =>
             this.props.cancelDeviceCalls({
-                makeSubsequentCalls: true,
-            });
-            return this.props.fetchDevicesByCToken();
+                makeSubsequentCalls: checked,
+            })
+        );
+
+        if (checked) {
+            this.props.fetchDevicesByCToken();
         }
     };
 
@@ -465,6 +462,41 @@ export class Devices extends Component {
         }
     };
 
+    getGridControls = () => {
+        const { t } = this.props;
+        const { isDeviceSearch } = this.state;
+
+        if (isDeviceSearch) {
+            return null;
+        }
+
+        return (
+            <>
+                <Toggle
+                    label={t("devices.loadMore")}
+                    inlineLabel
+                    onText="On"
+                    offText="Off"
+                    checked={this.state.loadMore}
+                    onChange={this.switchLoadMore}
+                    className={css("grid-control")}
+                />
+                <ActionButton
+                    iconProps={{ iconName: "Download" }}
+                    onClick={this.downloadFile}
+                    text={t("devices.downloadDeviceReport")}
+                    className={css("grid-control")}
+                />
+                <ActionButton
+                    iconProps={{ iconName: "ColumnOptions" }}
+                    onClick={this.openColumnOptions}
+                    text={t("devices.columnOptions")}
+                    className={css("grid-control")}
+                />
+            </>
+        );
+    };
+
     /**
      * Get the grid api options
      *
@@ -557,33 +589,6 @@ export class Devices extends Component {
                     />
                     {!!error && <AjaxError t={t} error={error} />}
                     {this.state.isDeviceSearch && <AdvanceSearchContainer />}
-                    {!this.state.isDeviceSearch && (
-                        <div className={css("cancel-right-div")}>
-                            <DefaultButton
-                                iconProps={{ iconName: "Download" }}
-                                onClick={this.downloadFile}
-                                text={t("devices.downloadDeviceReport")}
-                            />
-
-                            <DefaultButton
-                                iconProps={{ iconName: "ColumnOptions" }}
-                                onClick={this.openColumnOptions}
-                            />
-                            <Toggle
-                                attr={{
-                                    button: {
-                                        "aria-label": t("devices.loadMore"),
-                                        type: "button",
-                                    },
-                                }}
-                                className="TODO-AddClassToPositionControl"
-                                on={this.state.loadMore}
-                                onLabel={t("devices.loadMore")}
-                                offLabel={t("devices.loadMore")}
-                                onChange={this.switchLoadMore}
-                            />
-                        </div>
-                    )}
                     {!error && (
                         <DevicesGridContainer
                             useStaticCols={isDeviceSearch}
@@ -591,6 +596,7 @@ export class Devices extends Component {
                             {...routeProps}
                             openPropertyEditorModal={this.openModal}
                             columnDefs={this.state.columnDefinitions}
+                            gridControls={this.getGridControls()}
                         />
                     )}
                     {newDeviceFlyoutOpen && (

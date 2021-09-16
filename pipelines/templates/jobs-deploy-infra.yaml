@@ -91,7 +91,7 @@ jobs:
           echo "variable: resourceGroupName: $(resourceGroupName)"
           echo "variable: storageAccountName: $(storageAccountName)"
           echo "variable: isHelmVersion3:  ${{parameters.isHelmVersion3}}"
-          echo "variable: aksAdminGroupObjectIDs: $(aksAdminGroupObjectIDs)"
+          echo "variable: aksAdminGroupObjectIDs: ${{parameters.aksAdminGroupObjectIDs}}"
         displayName: Print variables
 
   - job: resourceGroup

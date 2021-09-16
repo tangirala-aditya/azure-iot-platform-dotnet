@@ -368,6 +368,7 @@ jobs:
             -omsWorkspaceName $(omsWorkspaceName)
             -kubernetesVersion ${{parameters.kubernetesVersion}}
             -agentVMSize ${{parameters.aksAgentVmSize}}
+            -aadProfileAdminGroupObjectIDs ${{parameters.aksAdminGroupObjectIDs}}
           deploymentMode: Incremental
           addSpnToEnvironment: true
 

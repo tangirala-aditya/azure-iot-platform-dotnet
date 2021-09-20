@@ -5,34 +5,51 @@
 @import 'src/styles/themes';
 
 .devices-container {
-  padding: $baseContentPadding;
-  
-  @include themify($themes) {
-    .status { color: themed('colorContentText'); }
-  }
+    padding: $baseContentPadding;
+
+    @include themify($themes) {
+        .status {
+            color: themed("colorContentText");
+        }
+    }
 }
 
-.search-left-div{
-  width: 50%; 
-  height: 10%; 
-  float: left;
+.search-left-div {
+    width: 50%;
+    height: 10%;
+    float: left;
 }
 
-.cancel-right-div{
-  display: flex;
-  justify-content: flex-end;
-  margin-left: 50%; 
-  height: 3%;
-  margin-top: 1.5%;
+.cancel-right-div {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 62%;
+    height: 3%;
+    margin-top: 1.5%;
 }
 
 .download-deviceReport > :global(.svg-container) {
-  &:global(.btn-icon){
-    transform: rotate(180deg) !important;
-  }
+    &:global(.btn-icon) {
+        transform: rotate(180deg) !important;
+    }
 }
 
+.download-deviceReport {
+    padding-bottom: 15px;
+}
 
-.download-deviceReport{
-  padding-bottom: 15px;
+:global(.ms-Button).grid-control {
+    @include themify($themes) {
+        color: themed("colorContentText");
+
+        &:hover {
+            color: rgb(0, 120, 212);
+        }
+    }
+}
+
+:global(.ms-Toggle).grid-control :global(.ms-Label) {
+    @include themify($themes) {
+        color: themed("colorContentText");
+    }
 }

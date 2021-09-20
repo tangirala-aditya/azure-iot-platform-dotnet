@@ -200,7 +200,7 @@
                 "[resourceId('Microsoft.Insights/components', parameters('appInsightsName'))]"
             ],
             "resources": []
-        },
+        },       
         {
             "type": "Microsoft.Insights/components",
             "name": "[parameters('appInsightsName')]",

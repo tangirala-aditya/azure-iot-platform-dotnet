@@ -201,7 +201,11 @@
             "tenantRoleColumn": "Role",
             "tenantActionColumn": "Action",
             "saveTenant": "Save",
-            "cancel": "Cancel"
+            "cancel": "Cancel",
+            "deleteTenantModal": {
+                "title": "Delete Tenant",
+                "confirmationMessage": "This action will delete the tenant permanently from the platform. Do you want to continue?"
+            }
         }
     },
     "resetActiveDeviceQuery": {

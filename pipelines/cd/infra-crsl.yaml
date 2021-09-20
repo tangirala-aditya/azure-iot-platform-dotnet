@@ -109,7 +109,7 @@ stages:
           runVersion: $(runVersion-crslQa)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-crslQa)
-          isHelmVersion3: false          
+          isHelmVersion3: true          
           aadSGId: $(aadSGId-crslQa)
           telemetryStorageType: $(telemetryStorageType-crslQa)
           

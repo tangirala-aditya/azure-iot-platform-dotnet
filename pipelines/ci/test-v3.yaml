@@ -950,7 +950,7 @@ stages:
       - functionalTest
       - deployServicesV3
       - enumerateDependencies
-    condition: and(succeededOrFailed(), eq(variables['runCleanupStage'], 'true'))
+    condition: and(always(), eq(variables['runCleanupStage'], 'true'))
     jobs:
       - job: getPipelineVariables
         displayName: Get pipeline variables

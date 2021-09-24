@@ -11,9 +11,9 @@ import { SearchInput } from "components/shared";
 
 import "../../../../node_modules/ag-grid-community/dist/styles/ag-grid.scss";
 import "../../../../node_modules/ag-grid-community/dist/styles/ag-theme-alpine/sass/ag-theme-alpine.scss";
-import { Btn } from "../forms";
 import { ComponentArray } from "../componentArray/componentArray";
 import { debounceTime, filter } from "rxjs/operators";
+import { ActionButton } from "@fluentui/react/lib/Button";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./pcsGrid.module.scss"));
@@ -181,6 +181,7 @@ export class PcsGrid extends Component {
                 softSelectId,
                 context = {},
                 style,
+                gridControls,
                 ...restProps
             } = this.props,
             gridParams = {
@@ -226,13 +227,13 @@ export class PcsGrid extends Component {
                             </div>
                         )}
                         <div className={css("flex-child")}>
-                            <Btn
+                            {gridControls}
+                            <ActionButton
+                                iconProps={{ iconName: "ChevronRightMed" }}
                                 onClick={this.expandColumns}
+                                text="Expand Columns"
                                 className={css("expand-columns")}
-                                icon="chevronRightMed"
-                            >
-                                Expand Columns
-                            </Btn>
+                            />
                         </div>
                     </div>
                 )}

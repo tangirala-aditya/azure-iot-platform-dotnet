@@ -353,6 +353,7 @@ export class DevicesGrid extends Component {
             onHardSelectChange: this.onHardSelectChange,
             onColumnMoved: this.onColumnMoved,
             onSortChanged: this.onSortChanged,
+            gridControls: this.props.gridControls,
         };
         return [
             <PcsGrid key="device-grid-key" {...gridProps} />,

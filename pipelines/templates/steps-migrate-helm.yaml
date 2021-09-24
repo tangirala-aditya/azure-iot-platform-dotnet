@@ -75,7 +75,7 @@ jobs:
           kubernetesCluster: $(aksName)
           namespace: default
           command: init
-          arguments: --force-upgrade
+          arguments: --force-upgrade --tiller-image=ghcr.io/helm/tiller:v$(helmVersion2)
 
       - task: AzureCLI@2
         displayName: Install Helm 3
@@ -159,12 +159,13 @@ jobs:
             helm3 uninstall cert-manager --namespace cert-manager           
             kubectl get Issuers,ClusterIssuers,Certificates,CertificateRequests,Orders,Challenges --all-namespaces
             kubectl delete -f https://raw.githubusercontent.com/jetstack/cert-manager/v$(certManagerVersion)/deploy/manifests/00-crds.yaml
-            kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.crds.yaml
+            kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v$(certManagerVersion3)/cert-manager.crds.yaml
             helm3 repo remove stable
             helm3 repo add "stable" "https://charts.helm.sh/stable" --force-update
             helm3 repo add jetstack https://charts.jetstack.io
             helm3 repo update
             helm3 upgrade cert-manager jetstack/cert-manager   --namespace cert-manager  --version v1.1.0  --create-namespace --install
+            sleep 5m
 
   - job: clusterissuer
     displayName: Create a Cluster Issuer

@@ -950,7 +950,7 @@ stages:
       - functionalTest
       - deployServicesV3
       - enumerateDependencies
-    condition: and(succeededOrFailed(), eq(variables['runCleanupStage'], 'true'))
+    condition: and(always(), eq(variables['runCleanupStage'], 'true'))
     jobs:
       - job: getPipelineVariables
         displayName: Get pipeline variables
@@ -1042,7 +1042,9 @@ stages:
         displayName: Delete namespace
         dependsOn:
           - getPipelineVariables
-        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesNamespaceWasCreated'], 'true'), not(failed()))
+          - uninstallIngressChart
+          - uninstallIngressChart
+        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesNamespaceWasCreated'], 'true'), always())
         steps:
           - checkout: none
 
@@ -1055,3 +1057,31 @@ stages:
               kubernetesCluster: $(aksName)
               command: delete
               arguments: namespace $(kubernetesNamespace) --now=true --ignore-not-found=true
+
+      - job: removeAuthenticationCallbackUrl
+        displayName: Remove auth callback URL
+        pool:
+          vmImage: windows-latest
+        steps:
+          - checkout: none
+
+          - task: PowerShell@2
+            displayName: Remove auth callback URL
+            inputs:
+              targetType: inline
+              script: |-
+                Install-Module AzureAD -Force
+                $password = ConvertTo-SecureString -String '$(azureAdB2cTenantPassword)' -AsPlainText -Force
+                $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList '$(azureAdB2cTenantUsername)', $password
+                $azContext = Connect-AzureAD -TenantId $(azureAdB2cAppRegistrationTenantId) -Credential $credential
+                if ($azContext.TenantId -ne '$(azureAdB2cAppRegistrationTenantId)') {
+                  throw 'You are not connected to the right tenant'
+                }
+                $app = Get-AzureADMSApplication -Filter "DisplayName eq '$(azureAdB2cAppRegistrationNameTest)'"
+                $replyUrls = $app.web.RedirectUris
+                Write-Host $replyUrls
+                if ($replyUrls.Contains('$(authenticationCallbackUrl)'))
+                {
+                  $replyUrls.Remove('$(authenticationCallbackUrl)')
+                  Set-AzureADMSApplication -ObjectId $app.Id -Web @{ RedirectUris = $replyUrls }
+                }

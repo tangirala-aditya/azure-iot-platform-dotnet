@@ -76,7 +76,7 @@ stages:
           runVersion: $(runVersion-chimQa)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-chimQa)
-          isHelmVersion3: false
+          isHelmVersion3: true
 
   - stage: chimProd
     displayName: CHIM prod

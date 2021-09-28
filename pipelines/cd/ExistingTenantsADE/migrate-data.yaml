@@ -100,8 +100,18 @@ stages:
 
       - job: preBuild
         displayName: Pre-build
+        variables:
+          - template: ../../templates/variables-deploy-infra.yaml
+            parameters:
+              subscriptionName: $(subscriptionName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)
         steps:
           - checkout: none
+
           - task: AzureCLI@2
             displayName: Get App Configuration connection string
             name: getAppConfigurationConnectionString

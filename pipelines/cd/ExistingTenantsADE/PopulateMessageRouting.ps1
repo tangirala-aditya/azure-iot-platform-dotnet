@@ -1,7 +1,7 @@
 param(
      [string] $applicationCode,
      [string] $environmentCategory,
-     [string] $resourceGroup,
+     [string] $resourceGroupName,
      [string] $servicePrincipalId, 
      [string] $servicePrincipalKey, 
      [string] $tenantId,

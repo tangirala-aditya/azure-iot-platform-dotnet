@@ -322,10 +322,6 @@ function New-DataSources {
 }
 
 try {       
-     # $resourceGroupName = $resourceGroup
-     # $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
-     #$keyvaultName = $applicationCode + "-keyvault-" + $environmentCategory
-     #$appConfigurationName = $applicationCode + "-appconfig-" + $environmentCategory
      $grafanabaseurl = "https://$applicationCode-aks-$environmentCategory.$location.cloudapp.azure.com/grafana"
 
      #remove and reisntall pkmngr and install packages

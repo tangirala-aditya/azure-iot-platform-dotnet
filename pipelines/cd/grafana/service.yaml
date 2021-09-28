@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: grafana
   labels:
-    name: grafana-service
+    name: grafana
 spec:
   type: ClusterIP
   ports:

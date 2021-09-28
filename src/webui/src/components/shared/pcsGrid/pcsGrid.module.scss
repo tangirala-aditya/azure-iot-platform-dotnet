@@ -164,13 +164,12 @@ $doublePadding: $baseContentPadding * 2;
   justify-content: flex-end;
 }
 
-:global(.btn).expand-columns {
-  @include rem-fallback(width, 15px);
-  @include rem-fallback(margin, 10px, 0px, 10px, 0px);
-
+:global(.ms-Button).expand-columns {
   @include themify($themes) {
-    :global(.btn):hover {
-      background-color: themed('color-bg-content');
+    color: themed('colorContentText');
+    
+    &:hover {
+      color: rgb(0, 120, 212);
     }
   }
 }

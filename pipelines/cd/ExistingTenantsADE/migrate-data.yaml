@@ -2,12 +2,6 @@ trigger: none
 pr: none
 pool:
   vmImage: ubuntu-latest
-variables:
-  - template: ../../templates/variables-all.yaml
-  - name: appConfigurationName
-    value: $(applicationCode)-$(appConfigurationPartialName)-$(environmentCategory)
-  - name: resourceGroupName
-    value: rg-iot-$(applicationShortCode)-$(environmentCategory)
 stages:
   - stage: checkParameters
     displayName: Check parameters
@@ -64,8 +58,8 @@ stages:
 
             displayName: Check parameters
 
-  - stage: deployInfrastructure
-    displayName: Deploy infrastructure
+  - stage: migrateData
+    displayName: Migrate Data
     dependsOn:
       - checkParameters
     jobs:
@@ -95,56 +89,19 @@ stages:
 
           - script: |-
               echo "parameter: subscriptionName: $(subscriptionName)"
-              echo "parameter: appInsightsLocation: $(appInsightsLocation)"
               echo "parameter: environmentName: $(environmentName)"
               echo "parameter: subscriptionId: $(subscriptionId)"
               echo "parameter: applicationCode: $(applicationCode)"
               echo "parameter: applicationShortCode: $(applicationShortCode)"
               echo "parameter: environmentCategory: $(environmentCategory)"
-              echo "parameter: kubernetesVersion: $(kubernetesVersion)"
-              echo "parameter: sendgridEmail: $(sendgridEmail)"
-              echo "variable: aksPartialName: $(aksPartialName)"
-              echo "variable: appConfigurationPartialName: $(appConfigurationPartialName)"
-              echo "variable: appInsightsPartialName: $(appInsightsPartialName)"
-              echo "variable: armDirectory: $(armDirectory)"
-              echo "variable: automationPartialName: $(automationPartialName)"
-              echo "variable: blobContainerPartialName: $(blobContainerPartialName)"
-              echo "variable: cosmosDbName: $(cosmosDbName)"
-              echo "variable: cosmosDbAccountPartialName: $(cosmosDbAccountPartialName)"
-              echo "variable: crslPlatformKeyVault: $(crslPlatformKeyVault)"
-              echo "variable: defaultSasKeyName: $(defaultSasKeyName)"
-              echo "variable: eventHubPartialName: $(eventHubPartialName)"
-              echo "variable: functionApp1PartialName: $(functionApp1PartialName)"
-              echo "variable: functionApp2PartialName: $(functionApp2PartialName)"
-              echo "variable: keyVaultPartialName: $(keyVaultPartialName)"
-              echo "variable: mapsPartialName: $(mapsPartialName)"
-              echo "variable: omsWorkspacePartialName: $(omsWorkspacePartialName)"
-              echo "variable: storageAccountPartialName: $(storageAccountPartialName)"
-              echo "variable: tenantId: $(tenantId)"
-              echo "variable: userObjId: $(userObjId)"
-              echo "variable: aksName: $(aksName)"
               echo "variable: appConfigurationName: $(appConfigurationName)"
-              echo "variable: appInsightsName: $(appInsightsName)"
-              echo "variable: armParametersDirectory: $(armParametersDirectory)"
-              echo "variable: armTemplatesDirectory: $(armTemplatesDirectory)"
-              echo "variable: automationName: $(automationName)"
-              echo "variable: blobContainerName: $(blobContainerName)"
-              echo "variable: cosmosDbAccountName: $(cosmosDbAccountName)"
-              echo "variable: eventHubName: $(eventHubName)"
-              echo "variable: functionApp1Name: $(functionApp1Name)"
-              echo "variable: functionApp2Name: $(functionApp2Name)"
-              echo "variable: keyVaultName: $(keyVaultName)"
-              echo "variable: mapsName: $(mapsName)"
-              echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
               echo "variable: resourceGroupName: $(resourceGroupName)"
-              echo "variable: storageAccountName: $(storageAccountName)"
             displayName: Print variables
 
       - job: preBuild
         displayName: Pre-build
         steps:
           - checkout: none
-
           - task: AzureCLI@2
             displayName: Get App Configuration connection string
             name: getAppConfigurationConnectionString

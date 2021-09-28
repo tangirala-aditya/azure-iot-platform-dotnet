@@ -245,21 +245,6 @@ jobs:
             metadata:
               name: ingress-basic
 
-      - task: AzureCLI@2
-        displayName: Enable Azure Policy Add-on in AKS Cluster
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-            set -Eeuxo pipefail
-            az provider register --namespace Microsoft.PolicyInsights
-            az aks enable-addons --addons azure-policy --name $(aksName) --resource-group $(resourceGroupName)
-            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
-            kubectl get pods -n gatekeeper-system
-            kubectl get pods -n kube-system
-            az aks show --query addonProfiles.azurepolicy -g $(resourceGroupName) -n $(aksName)
-
       - task: Kubernetes@1
         displayName: Install the K8s Custom Resource Definition
         inputs:
@@ -375,21 +360,6 @@ jobs:
           deploymentPartialName: $(aksPartialName)
           resourceGroupName: $(resourceGroupName)
 
-      - task: AzureCLI@2
-        displayName: Enable Azure Policy Add-on in AKS Cluster
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-            set -Eeuxo pipefail
-            az provider register --namespace Microsoft.PolicyInsights
-            az aks enable-addons --addons azure-policy --name $(aksName) --resource-group $(resourceGroupName)
-            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
-            kubectl get pods -n gatekeeper-system
-            kubectl get pods -n kube-system
-            az aks show --query addonProfiles.azurepolicy -g $(resourceGroupName) -n $(aksName)
-
       - task: Kubernetes@1
         displayName: Install the K8s Custom Resource Definition
         inputs:
@@ -403,7 +373,8 @@ jobs:
 
   - job: grafana
     dependsOn:
-      - aks  
+      - globalsecrets
+      - storageAccount 
     displayName: Provision Grafana Volume 
     variables:
       - template: variables-deploy-infra.yaml
@@ -442,8 +413,9 @@ jobs:
           configuration: pipelines/cd/grafana/persistent-volume-claim.yaml
 
   - job: grafanaV3
-    dependsOn:
-      - aksV3  
+    dependsOn: 
+      - globalsecretsV3
+      - storageAccount
     displayName: Provision Grafana Volume V3 
     variables:
       - template: variables-deploy-infra.yaml
@@ -537,7 +509,7 @@ jobs:
           scriptType: bash
           inlineScript: |-
            storageAccountConnectionString=$(az storage account show-connection-string -n $(storageAccountName) -g $(resourceGroupName) -o tsv)
-           az storage share create -n $(aksFileName) --connection-string $storageAccountConnectionString --quota 1
+           az storage share create -n $(azureFileShareName) --connection-string $storageAccountConnectionString --quota 1
           addSpnToEnvironment: true
 
       - template: steps-delete-oldest-deployment.yaml
@@ -1789,7 +1761,7 @@ jobs:
           kubernetesCluster: $(aksName)
           namespace: default
           command: init
-          arguments: --force-upgrade
+          arguments: --force-upgrade --tiller-image=ghcr.io/helm/tiller:v$(helmVersion2)
 
       - task: AzureCLI@2
         displayName: Install K8s Ingress Controller

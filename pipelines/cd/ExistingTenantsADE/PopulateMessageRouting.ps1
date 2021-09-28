@@ -5,7 +5,9 @@ param(
      [string] $servicePrincipalId, 
      [string] $servicePrincipalKey, 
      [string] $tenantId,
-     [string] $subscriptionId     
+     [string] $subscriptionId,
+     [string] $storageAccountName,
+     [string] $eventhubNamespace     
 )
       
      #remove and reinstall pkmngr and install packages
@@ -13,9 +15,6 @@ param(
 
      Write-Host "############## Installed AzTable successfully."
 
-     $resourceGroupName = $resourceGroup
-     $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
-     $eventhubNamespace = $applicationCode + "-eventhub-" + $environmentCategory
      $cloudTable = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context
      $tableObject = (Get-AzStorageTable -Name "tenant" -Context $cloudTable).CloudTable
      $iotHubArray = (Get-AzTableRow -table $tableObject -CustomFilter 'IsIotHubDeployed eq true')

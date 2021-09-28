@@ -1,19 +1,18 @@
 param(
     [string] $applicationCode,
     [string] $environmentCategory,
-    [string] $resourceGroup,
+    [string] $resourceGroupName,
     [string] $servicePrincipalId, 
-    [string] $servicePrincipalKey, 
+    [string] $servicePrincipalKey,
+    [string] $storageAccountName, 
     [string] $tenantId,
-    [string] $subscriptionId     
+    [string] $clusterName,
+    [string] $subscriptionId,
+    [string] $appConfigurationName
 )
 
 
 try {       
-    $resourceGroupName = $resourceGroup
-    $clusterName = $applicationCode + "kusto" + $environmentCategory
-    $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
-    $appConfigurationName = $applicationCode + "-appconfig-" + $environmentCategory
      
     #remove and reisntall pkmngr and install packages
     if (-not $(Get-PackageSource -Name MyNuGet -ProviderName NuGet -ErrorAction Ignore)) {
@@ -37,7 +36,7 @@ try {
     az account set --subscription $subscriptionId
 
 
-    function Update_TelemetryInfra {
+    function Update-TelemetryInfra {
         param(
             [string] $tenantId,
             [string] $eventhubNamespace,
@@ -51,7 +50,7 @@ try {
         $telemetryEventhubName = "$tenantId-telemetry"
 
         $isEventHubExists = Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $telemetryEventhubName -ErrorAction Ignore
-        if ($isEventHubExists -eq $null) {
+        if ($null -eq $isEventHubExists) {
             Write-Host "############## Creating EventHub $telemetryEventhubName" 
             New-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $telemetryEventhubName -MessageRetentionInDays 1
         }
@@ -64,7 +63,6 @@ try {
         $telmetryDataMappingName = $telmetryMappingName.Split("'")[1]
         $telemetryDataconnectionName = "TelemetryDataConnect-" + $tenantId.Split("-")[0]
 		  
-        Write-Host $connStr
 			   
         Get-AzKustoDatabase -ClusterName $clusterName -ResourceGroupName $resourceGroupName -Name $databaseName  
 
@@ -94,7 +92,7 @@ try {
 
     }
 
-    function Update_DeviceTwinInfra {
+    function Update-DeviceTwinInfra {
         param(
             [string] $tenantId,
             [string] $eventhubNamespace,
@@ -107,8 +105,8 @@ try {
 
         $deviceTwinEventhubName = "$tenantId-devicetwin"
 
-        $isdeviceTwinEventHubExists = Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $deviceTwinEventhubName -ErrorAction Ignore
-        if ($isdeviceTwinEventHubExists -eq $null) {
+        $isDeviceTwinEventHubExists = Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $deviceTwinEventhubName -ErrorAction Ignore
+        if ($null -eq $isDeviceTwinEventHubExists) {
             Write-Host "############## Creating EventHub $deviceTwinEventhubName" 
             New-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $deviceTwinEventhubName -MessageRetentionInDays 1
         }
@@ -121,7 +119,6 @@ try {
         $deviceTwinDataMappingName = $deviceTwinMappingName.Split("'")[1]
         $deviceTwinDataconnectionName = "DeviceTwinDataConnect-" + $tenantId.Split("-")[0]
 		  
-        Write-Host $connStr
 			   
         Get-AzKustoDatabase -ClusterName $clusterName -ResourceGroupName $resourceGroupName -Name $databaseName  
 
@@ -152,7 +149,7 @@ try {
     }
 
     function Get-SAJobQuery {
-        $SAJobQuery = @"
+        $saJobQuery = @"
                     {
                         "name":"MyTransformation",
                         "type":"Microsoft.StreamAnalytics/streamingjobs/transformations",
@@ -447,17 +444,17 @@ try {
                     }
 "@
 
-        Write-Output ($SAJobQuery | ConvertFrom-Json).properties.query
+        Write-Output ($saJobQuery | ConvertFrom-Json).properties.query
 
     }
 
     function Get-SAJobOutput {
         param(
-            [string] $alertsEventhubname,
-            [string] $eventhubnamespace,
-            [string] $eventhubsharedaccesspolicykey
+            [string] $alertsEventhubName,
+            [string] $eventhubNamespace,
+            [string] $eventhubSharedAccessPolicyKey
         )
-        $SAJobOutputDefinition = @"
+        $saJobOutputDefinition = @"
 {
     "name": "Alerts",
     "type": "Microsoft.StreamAnalytics/streamingjobs/outputs",
@@ -465,10 +462,10 @@ try {
         "datasource": {
             "type": "Microsoft.ServiceBus/EventHub",
              "properties": {
-                "eventHubName": "$($alertsEventhubname)",
-                "serviceBusNamespace": "$($eventhubnamespace)",
+                "eventHubName": "$($alertsEventhubName)",
+                "serviceBusNamespace": "$($eventhubNamespace)",
                 "sharedAccessPolicyName": "RootManageSharedAccessKey",  
-                "sharedAccessPolicyKey": "$($eventhubsharedaccesspolicykey)"  
+                "sharedAccessPolicyKey": "$($eventhubSharedAccessPolicyKey)"  
                 }
              },
              "serialization": {
@@ -482,12 +479,12 @@ try {
 }
 "@
 
-        $outputPSObj = $SAJobOutputDefinition | ConvertFrom-Json
+        $outputPSObj = $saJobOutputDefinition | ConvertFrom-Json
         Write-Output $outputPSObj | ConvertTo-Json -Depth 32
 
     }
 
-    function Update_DeviceGroupInfra {
+    function Update-DeviceGroupInfra {
         param(
             [string] $tenantId,
             [string] $eventhubNamespace,
@@ -500,8 +497,8 @@ try {
 
         $deviceGroupEventhubName = "$tenantId-devicegroup"
 
-        $isdeviceGroupEventHubExists = Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $deviceGroupEventhubName -ErrorAction Ignore
-        if ($isdeviceGroupEventHubExists -eq $null) {
+        $isDeviceGroupEventHubExists = Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $deviceGroupEventhubName -ErrorAction Ignore
+        if ($null -eq $isDeviceGroupEventHubExists) {
             Write-Host "############## Creating EventHub $deviceGroupEventhubName" 
             New-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $deviceGroupEventhubName -MessageRetentionInDays 1
         }
@@ -515,7 +512,6 @@ try {
         $deviceGroupDataMappingName = $deviceGroupMappingName.Split("'")[1]
         $deviceGroupDataconnectionName = "DeviceGroupDataConnect-" + $tenantId.Split("-")[0]
 		  
-        Write-Host $connStr
 			   
         Get-AzKustoDatabase -ClusterName $clusterName -ResourceGroupName $resourceGroupName -Name $databaseName  
 
@@ -545,7 +541,7 @@ try {
 
     }
 
-    function Update_AlertsInfra {
+    function Update-AlertsInfra {
         param(
             [string] $tenantId,
             [string] $eventhubNamespace,
@@ -557,18 +553,18 @@ try {
         )
   
   
-        $alertsEventhubname = "$tenantId-Alerts"
+        $alertsEventhubName = "$tenantId-Alerts"
 
-        $isAlertsEventHubExists = Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $alertsEventhubname -ErrorAction Ignore
-        if ($isAlertsEventHubExists -eq $null) {
-            Write-Host "############## Creating EventHub $alertsEventhubname" 
-            New-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $alertsEventhubname -MessageRetentionInDays 1
+        $isAlertsEventHubExists = Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $alertsEventhubName -ErrorAction Ignore
+        if ($null -eq $isAlertsEventHubExists) {
+            Write-Host "############## Creating EventHub $alertsEventhubName" 
+            New-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $alertsEventhubName -MessageRetentionInDays 1
         }
         else { 
-            Write-Host "############## EventHub Already exists $alertsEventhubname." 
+            Write-Host "############## EventHub Already exists $alertsEventhubName." 
         }
 		  
-        $alertsEventHubResourceId = (Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $alertsEventhubname).Id
+        $alertsEventHubResourceId = (Get-AzEventHub -ResourceGroupName $resourceGroupName -NamespaceName $eventhubNamespace -EventHubName $alertsEventhubName).Id
         $alertsMappingName = "'RawAlertsMapping-" + $tenantId + "'"
         $alertsDataMappingName = $alertsMappingName.Split("'")[1]
         $alertsDataconnectionName = "AlertsDataConnect-" + $tenantId.Split("-")[0]
@@ -596,42 +592,42 @@ try {
         }
     }
 	
-    function Update_SAJobQueryForTenant {
+    function Update-SAJobQueryForTenant {
         param(
             [string] $tenantId,
             [string] $eventhubNamespace,
-            [string] $eventhubsharedaccesspolicykey,
+            [string] $eventhubSharedAccessPolicyKey,
             [string] $resourceGroupName,
             [string] $saJobName
         )
+
   
-  
-        $alertsEventhubname = "$tenantId-Alerts"
+        $alertsEventhubName = "$tenantId-Alerts"
 
         # get the current path
         $currPath = (Get-Item -Path ".\").FullName
 
         try {
 
-            $JsonData = Get-SAJobOutput -alertsEventhubname $alertsEventhubname `
-                -eventhubnamespace $eventhubNamespace `
-                -eventhubsharedaccesspolicykey $eventhubsharedaccesspolicykey
-            $SAJobOutputFileName = "Alerts.json" 
-            $SAJobOutputFilePath = Join-Path $currPath $SAJobOutputFileName
-            $JsonData | Out-File $SAJobOutputFilePath
-            $Query = Get-SAJobQuery
+            $jsonData = Get-SAJobOutput -alertsEventhubName $alertsEventhubName `
+                -eventhubNamespace $eventhubNamespace `
+                -eventhubSharedAccessPolicyKey $eventhubSharedAccessPolicyKey
+            $saJobOutputFileName = "Alerts.json" 
+            $saJobOutputFilePath = Join-Path $currPath $saJobOutputFileName
+            $jsonData | Out-File $saJobOutputFilePath
+            $query = Get-SAJobQuery
 
-            Stop-AzStreamAnalyticsJob -Name $saJobName -ResourceGroupName $resourceGroup
+            Stop-AzStreamAnalyticsJob -Name $saJobName -ResourceGroupName $resourceGroupName
 
-            New-AzStreamAnalyticsOutput -ResourceGroupName $resourceGroup `
+            New-AzStreamAnalyticsOutput -ResourceGroupName $resourceGroupName `
                 -JobName $saJobName `
-                -File $SAJobOutputFilePath `
+                -File $saJobOutputFilePath `
                 -Name "Alerts"
 
             try {
-                Update-AzStreamAnalyticsTransformation -ResourceGroupName $resourceGroup `
+                Update-AzStreamAnalyticsTransformation -ResourceGroupName $resourceGroupName `
                     -JobName $saJobName `
-                    -Query $Query `
+                    -Query $query `
                     -Name "SAQuery"
 
                 Write-Output "Query updated successfully for SAQuery Query"
@@ -642,9 +638,9 @@ try {
             }
 
             try {
-                Update-AzStreamAnalyticsTransformation -ResourceGroupName $resourceGroup `
+                Update-AzStreamAnalyticsTransformation -ResourceGroupName $resourceGroupName `
                     -JobName $saJobName `
-                    -Query $Query `
+                    -Query $query `
                     -Name "MyTransformation"
 
                 Write-Output "Query updated successfully for MyTransformation Query"
@@ -654,7 +650,7 @@ try {
                 Write-Host($_)
             }
 
-            Start-AzStreamAnalyticsJob -Name $saJobName -ResourceGroupName $resourceGroup
+            Start-AzStreamAnalyticsJob -Name $saJobName -ResourceGroupName $resourceGroupName
     
             Write-Output "Started Job successfully."
             
@@ -686,7 +682,7 @@ try {
         
         Write-Host "############## Added Keys to Azure AppConfiguration"   
 
-        $eventhubsharedaccesspolicykey = $connectionString.PrimaryKey
+        $eventhubSharedAccessPolicyKey = $connectionString.PrimaryKey
 
         
         #$IotHubResourceId = (Get-AzIotHub -ResourceGroupName $resourceGroupName -Name $iotHub.IotHubName).Id
@@ -704,35 +700,34 @@ try {
         }
 
         $connStr = "Data Source=" + $clusterURI + ";Initial Catalog=" + $databaseName + ";Application Client Id=" + $servicePrincipalId + ";Application Key=" + $servicePrincipalKey + ";AAD Federated Security=True;dSTS Federated Security=False;Authority Id=" + $tenantId
-        Write-Host $connStr
 			   
-        Update_TelemetryInfra -tenantId $iotTenantId `
+        Update-TelemetryInfra -tenantId $iotTenantId `
             -eventhubNamespace $eventhubNamespace `
-            -resourceGroupName $resourceGroup `
+            -resourceGroupName $resourceGroupName `
             -clusterName $clusterName `
             -clusterLocation $clusterLocation `
             -databaseName $databaseName `
             -connStr $connStr
         
-        Update_DeviceTwinInfra -tenantId $iotTenantId `
+        Update-DeviceTwinInfra -tenantId $iotTenantId `
             -eventhubNamespace $eventhubNamespace `
-            -resourceGroupName $resourceGroup `
+            -resourceGroupName $resourceGroupName `
             -clusterName $clusterName `
             -clusterLocation $clusterLocation `
             -databaseName $databaseName `
             -connStr $connStr
         
-        Update_DeviceGroupInfra -tenantId $iotTenantId `
+        Update-DeviceGroupInfra -tenantId $iotTenantId `
             -eventhubNamespace $eventhubNamespace `
-            -resourceGroupName $resourceGroup `
+            -resourceGroupName $resourceGroupName `
             -clusterName $clusterName `
             -clusterLocation $clusterLocation `
             -databaseName $databaseName `
             -connStr $connStr
 			
-        Update_AlertsInfra -tenantId $iotTenantId `
+        Update-AlertsInfra -tenantId $iotTenantId `
             -eventhubNamespace $eventhubNamespace `
-            -resourceGroupName $resourceGroup `
+            -resourceGroupName $resourceGroupName `
             -clusterName $clusterName `
             -clusterLocation $clusterLocation `
             -databaseName $databaseName `
@@ -740,11 +735,11 @@ try {
 		  
 		  
         if ($iotHub.SAJobName) {
-            Update_SAJobQueryForTenant -tenantId $iotTenantId `
+            Update-SAJobQueryForTenant -tenantId $iotTenantId `
                 -saJobName $iotHub.SAJobName `
                 -eventhubNamespace $eventhubNamespace `
-                -eventhubsharedaccesspolicykey $eventhubsharedaccesspolicykey `
-                -resourceGroupName $resourceGroup
+                -eventhubSharedAccessPolicyKey $eventhubSharedAccessPolicyKey `
+                -resourceGroupName $resourceGroupName
         }
 		
         az appconfig kv set --name $appConfigurationName --key "tenant:refreshappconfig" --value $iotTenantId  --yes

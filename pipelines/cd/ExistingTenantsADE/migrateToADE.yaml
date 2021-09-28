@@ -2,12 +2,6 @@ trigger: none
 pr: none
 pool:
   vmImage: ubuntu-latest
-variables:
-  - template: ../../templates/variables-all.yaml
-  - name: appConfigurationName
-    value: $(applicationCode)-$(appConfigurationPartialName)-$(environmentCategory)
-  - name: resourceGroupName
-    value: rg-iot-$(applicationShortCode)-$(environmentCategory)
 stages:
   - stage: checkParameters
     displayName: Check parameters
@@ -61,11 +55,10 @@ stages:
                 echo "A value for the 'environmentCategory' variable must be provided" > /dev/stderr
                 exit 1
               fi
-
             displayName: Check parameters
 
-  - stage: deployInfrastructure
-    displayName: Deploy infrastructure
+  - stage: migrateResourcesForExistingTenants
+    displayName: Migrate Resources for Existing Tenants
     dependsOn:
       - checkParameters
     jobs:
@@ -101,48 +94,14 @@ stages:
               echo "parameter: applicationCode: $(applicationCode)"
               echo "parameter: applicationShortCode: $(applicationShortCode)"
               echo "parameter: environmentCategory: $(environmentCategory)"
-              echo "parameter: kubernetesVersion: $(kubernetesVersion)"
-              echo "parameter: sendgridEmail: $(sendgridEmail)"
-              echo "variable: aksPartialName: $(aksPartialName)"
-              echo "variable: appConfigurationPartialName: $(appConfigurationPartialName)"
-              echo "variable: appInsightsPartialName: $(appInsightsPartialName)"
-              echo "variable: armDirectory: $(armDirectory)"
-              echo "variable: automationPartialName: $(automationPartialName)"
-              echo "variable: blobContainerPartialName: $(blobContainerPartialName)"
-              echo "variable: cosmosDbName: $(cosmosDbName)"
-              echo "variable: cosmosDbAccountPartialName: $(cosmosDbAccountPartialName)"
-              echo "variable: crslPlatformKeyVault: $(crslPlatformKeyVault)"
-              echo "variable: defaultSasKeyName: $(defaultSasKeyName)"
-              echo "variable: eventHubPartialName: $(eventHubPartialName)"
-              echo "variable: functionApp1PartialName: $(functionApp1PartialName)"
-              echo "variable: functionApp2PartialName: $(functionApp2PartialName)"
-              echo "variable: keyVaultPartialName: $(keyVaultPartialName)"
-              echo "variable: mapsPartialName: $(mapsPartialName)"
-              echo "variable: omsWorkspacePartialName: $(omsWorkspacePartialName)"
-              echo "variable: storageAccountPartialName: $(storageAccountPartialName)"
               echo "variable: tenantId: $(tenantId)"
-              echo "variable: userObjId: $(userObjId)"
-              echo "variable: aksName: $(aksName)"
               echo "variable: appConfigurationName: $(appConfigurationName)"
-              echo "variable: appInsightsName: $(appInsightsName)"
-              echo "variable: armParametersDirectory: $(armParametersDirectory)"
-              echo "variable: armTemplatesDirectory: $(armTemplatesDirectory)"
-              echo "variable: automationName: $(automationName)"
-              echo "variable: blobContainerName: $(blobContainerName)"
-              echo "variable: cosmosDbAccountName: $(cosmosDbAccountName)"
-              echo "variable: eventHubName: $(eventHubName)"
-              echo "variable: functionApp1Name: $(functionApp1Name)"
-              echo "variable: functionApp2Name: $(functionApp2Name)"
-              echo "variable: keyVaultName: $(keyVaultName)"
-              echo "variable: mapsName: $(mapsName)"
-              echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
               echo "variable: resourceGroupName: $(resourceGroupName)"
-              echo "variable: storageAccountName: $(storageAccountName)"
             displayName: Print variables
 
 
-      - job: testCLIPowershell
-        displayName: testing CLI and Powershell
+      - job: provisionResourcesForExistingTenants
+        displayName: Create Resources for Existing Tenants
         pool:
           vmImage: windows-latest
         dependsOn:
@@ -161,7 +120,7 @@ stages:
             displayName: Checkout repository
 
           - task: AzureCLI@2
-            displayName: Get and set the ServicePrincipalId, Keys and TenantId
+            displayName: Set ServicePrincipal Details for Powershell scripts
             inputs:
               azureSubscription: $(subscriptionName)
               scriptLocation: inlineScript
@@ -169,7 +128,6 @@ stages:
               inlineScript: |-
                 echo "##vso[task.setvariable variable=servicePrincipalId]$servicePrincipalId"
                 echo "##vso[task.setvariable variable=servicePrincipalKey]$servicePrincipalKey"
-                echo "##vso[task.setvariable variable=TestVar]JustForTest"
               addSpnToEnvironment: true
 
           - task: AzurePowerShell@5
@@ -180,7 +138,7 @@ stages:
               ScriptType: FilePath
               workingDirectory: $(System.DefaultWorkingDirectory)
               ScriptPath: pipelines/cd/ExistingTenantsADE/ExistingTenantsADE.ps1
-              ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroup $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId) -subscriptionId $(subscriptionId)
+              ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroupName $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId) -subscriptionId $(subscriptionId) -storageAccountName $(storageAccountName) -appConfigurationName $(appConfigurationName) -clusterName $(dataExplorerClusterName)
               azurePowerShellVersion: LatestVersion
 
           - task: AzurePowerShell@5
@@ -191,45 +149,5 @@ stages:
               ScriptType: FilePath
               workingDirectory: $(System.DefaultWorkingDirectory)
               ScriptPath: pipelines/cd/ExistingTenantsADE/PopulateMessageRouting.ps1
-              ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroup $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId) -subscriptionId $(subscriptionId)
+              ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroupName $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId) -subscriptionId $(subscriptionId) -storageAccountName $(storageAccountName) -eventhubNamespace $(eventHubName)
               azurePowerShellVersion: LatestVersion
-
-      - job: preBuild
-        displayName: Pre-build
-        steps:
-          - checkout: none
-
-          - task: AzureCLI@2
-            displayName: Get App Configuration connection string
-            name: getAppConfigurationConnectionString
-            inputs:
-              azureSubscription: $(subscriptionName)
-              scriptType: pscore
-              scriptLocation: inlineScript
-              inlineScript: |-
-                $appConfigurationConnectionString = az appconfig credential list --name $(appConfigurationName) --resource-group $(resourceGroupName) --query "[?name=='Primary'].connectionString | [0]" --output tsv
-                echo "##vso[task.setvariable variable=AppConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
-
-      - job: build
-        displayName: Build Services
-        dependsOn:
-          - preBuild
-          - testCLIPowershell
-        variables:
-          AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
-        steps:
-          - checkout: self
-            displayName: Checkout repository
-
-          - task: UseDotNet@2
-            inputs:
-              packageType: 'sdk'
-              version: '3.1.x'
-              includePreviewVersions: true
-
-          - script: >-
-              dotnet run
-              --force
-              --project $(System.DefaultWorkingDirectory)/src/onetime-applications/migrate-iot-devicetwin-to-adx/MigrateIoTDeviceTwinToADX
-              --runtime $(dotnetProductionRuntimeId)
-            displayName: Run Application

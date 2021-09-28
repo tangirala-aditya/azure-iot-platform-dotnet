@@ -1,12 +1,15 @@
 param(
      [string] $applicationCode,
      [string] $environmentCategory,
-     [string] $resourceGroup,
+     [string] $resourceGroupName,
      [string] $servicePrincipalId, 
      [string] $servicePrincipalKey, 
      [string] $tenantId,
      [string] $subscriptionId,
-     [string] $location
+     [string] $location,
+     [string] $storageAccountName,
+     [string] $appConfigurationName,
+     [string] $keyvaultName
 )
 
 function New-GrafanaApiKey {
@@ -59,7 +62,7 @@ function New-GrafanaOrg {
      $keyName = "tenant:"+$tenantId+":grafanaOrgId"
 
      $body = "{`"name`":`"$tenantId`"}"
-     Write-Host $body
+     Write-Host "Body: " $body
      try {
           $response = Invoke-RestMethod -Uri $uri -Method 'POST' -Headers $headers -Body $body
           Write-Host $response
@@ -80,7 +83,7 @@ function Add-GrafanaAdminToOrg {
      )
      $orgUsersUri = $grafanabaseurl + "/api/orgs/" + $orgId + "/users"
 
-     Write-Host $orgUsersUri
+     Write-Host "OrganizationUsersUri: " $orgUsersUri
 
      $orgHeaders = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
      $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f "admin", "admin")))
@@ -88,7 +91,7 @@ function Add-GrafanaAdminToOrg {
      $orgHeaders.Add("Content-Type", "application/json")
 
      $orgUserbody = "{`"loginOrEmail`":`"admin`", `"role`": `"Admin`"}"
-     Write-Host $orgUserbody
+     Write-Host "OrganizationUserbody: " $orgUserbody
      try {
           $response = Invoke-RestMethod -Uri $orgUsersUri -Method 'POST' -Headers $orgHeaders -Body $orgUserbody
           $response = $response | ConvertTo-Json
@@ -107,7 +110,7 @@ function Add-GrafanaUsers {
           [string] $tenantId
      )
      
-     Write-Host $grafanaApiKey
+     # Write-Host $grafanaApiKey
 
      $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
      $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f "admin", "admin")))
@@ -130,7 +133,7 @@ function Add-GrafanaUsers {
      $userArray = (Get-AzTableRow -table $userTableObject -CustomFilter "(RowKey eq '$tenantId') and (Type ne 'Invited')")
 
      Foreach ($user in $userArray) {
-          Write-Host $user.PartitionKey
+          Write-Host "User PartitionKey: " $user.PartitionKey
           $userId = $user.PartitionKey;
           $userName = $user.Name;
           $role = "Viewer";
@@ -149,7 +152,7 @@ function Add-GrafanaUsers {
           }     
 
           $body = "{`"login`":`"$userId`", `"name`": `"$userName`", `"password`": `"$defaultPassword`"}"
-          Write-Host $body
+          Write-Host "Body: " $body
           try {
                $response = Invoke-RestMethod -Uri $globalUsersUri -Method 'POST' -Headers $headers -Body $body
                $response = $response | ConvertTo-Json
@@ -162,7 +165,7 @@ function Add-GrafanaUsers {
 
 
           $orgUserbody = "{`"loginOrEmail`":`"$userId`", `"role`": `"$role`"}"
-          Write-Host $orgUserbody
+          Write-Host "OrganizationUserBody: " $orgUserbody
           try {
                $response = Invoke-RestMethod -Uri $orgUsersUri -Method 'POST' -Headers $orgHeaders -Body $orgUserbody
                $response = $response | ConvertTo-Json
@@ -319,10 +322,10 @@ function New-DataSources {
 }
 
 try {       
-     $resourceGroupName = $resourceGroup
-     $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
-     $keyvaultName = $applicationCode + "-keyvault-" + $environmentCategory
-     $appConfigurationName = $applicationCode + "-appconfig-" + $environmentCategory
+     # $resourceGroupName = $resourceGroup
+     # $storageAccountName = $applicationCode + "storageacct" + $environmentCategory
+     #$keyvaultName = $applicationCode + "-keyvault-" + $environmentCategory
+     #$appConfigurationName = $applicationCode + "-appconfig-" + $environmentCategory
      $grafanabaseurl = "https://$applicationCode-aks-$environmentCategory.$location.cloudapp.azure.com/grafana"
 
      #remove and reisntall pkmngr and install packages
@@ -331,7 +334,7 @@ try {
 
      Write-Host "############## Installed AzTable successfully."
 
-     	 az cloud set -n AzureCloud
+     az cloud set -n AzureCloud
      az login --service-principal -u $servicePrincipalId --password $servicePrincipalKey --tenant $tenantId --allow-no-subscriptions
      az account set --subscription $subscriptionId
 

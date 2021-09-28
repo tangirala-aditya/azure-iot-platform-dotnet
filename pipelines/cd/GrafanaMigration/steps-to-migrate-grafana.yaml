@@ -2,12 +2,6 @@ trigger: none
 pr: none
 pool:
   vmImage: ubuntu-latest
-variables:
-  - template: ../../templates/variables-all.yaml
-  - name: appConfigurationName
-    value: $(applicationCode)-$(appConfigurationPartialName)-$(environmentCategory)
-  - name: resourceGroupName
-    value: rg-iot-$(applicationShortCode)-$(environmentCategory)
 stages:
   - stage: checkParameters
     displayName: Check parameters
@@ -63,8 +57,9 @@ stages:
                 exit 1
               fi
             displayName: Check parameters
-  - stage: deployInfrastructure
-    displayName: Deploy infrastructure
+
+  - stage: migrateGrafana
+    displayName: Migrate Grafana Dashboards
     dependsOn:
       - checkParameters
     jobs:
@@ -94,52 +89,20 @@ stages:
 
           - script: |-
               echo "parameter: subscriptionName: $(subscriptionName)"
-              echo "parameter: appInsightsLocation: $(appInsightsLocation)"
               echo "parameter: environmentName: $(environmentName)"
               echo "parameter: subscriptionId: $(subscriptionId)"
               echo "parameter: applicationCode: $(applicationCode)"
               echo "parameter: applicationShortCode: $(applicationShortCode)"
               echo "parameter: environmentCategory: $(environmentCategory)"
-              echo "parameter: kubernetesVersion: $(kubernetesVersion)"
-              echo "parameter: sendgridEmail: $(sendgridEmail)"
-              echo "variable: aksPartialName: $(aksPartialName)"
-              echo "variable: appConfigurationPartialName: $(appConfigurationPartialName)"
-              echo "variable: appInsightsPartialName: $(appInsightsPartialName)"
-              echo "variable: armDirectory: $(armDirectory)"
-              echo "variable: automationPartialName: $(automationPartialName)"
-              echo "variable: blobContainerPartialName: $(blobContainerPartialName)"
-              echo "variable: cosmosDbName: $(cosmosDbName)"
-              echo "variable: cosmosDbAccountPartialName: $(cosmosDbAccountPartialName)"
-              echo "variable: crslPlatformKeyVault: $(crslPlatformKeyVault)"
-              echo "variable: defaultSasKeyName: $(defaultSasKeyName)"
-              echo "variable: eventHubPartialName: $(eventHubPartialName)"
-              echo "variable: functionApp1PartialName: $(functionApp1PartialName)"
-              echo "variable: functionApp2PartialName: $(functionApp2PartialName)"
-              echo "variable: keyVaultPartialName: $(keyVaultPartialName)"
-              echo "variable: mapsPartialName: $(mapsPartialName)"
-              echo "variable: omsWorkspacePartialName: $(omsWorkspacePartialName)"
-              echo "variable: storageAccountPartialName: $(storageAccountPartialName)"
               echo "variable: tenantId: $(tenantId)"
-              echo "variable: userObjId: $(userObjId)"
-              echo "variable: aksName: $(aksName)"
               echo "variable: appConfigurationName: $(appConfigurationName)"
-              echo "variable: appInsightsName: $(appInsightsName)"
-              echo "variable: armParametersDirectory: $(armParametersDirectory)"
-              echo "variable: armTemplatesDirectory: $(armTemplatesDirectory)"
-              echo "variable: automationName: $(automationName)"
-              echo "variable: blobContainerName: $(blobContainerName)"
-              echo "variable: cosmosDbAccountName: $(cosmosDbAccountName)"
-              echo "variable: eventHubName: $(eventHubName)"
-              echo "variable: functionApp1Name: $(functionApp1Name)"
-              echo "variable: functionApp2Name: $(functionApp2Name)"
               echo "variable: keyVaultName: $(keyVaultName)"
-              echo "variable: mapsName: $(mapsName)"
-              echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
               echo "variable: resourceGroupName: $(resourceGroupName)"
               echo "variable: storageAccountName: $(storageAccountName)"
             displayName: Print variables
-      - job: testCLIPowershell
-        displayName: testing CLI and Powershell
+
+      - job: migrateGrafanaDashboards
+        displayName: Migrate Grafana Dashboards
         pool:
           vmImage: windows-latest
         dependsOn:
@@ -176,5 +139,10 @@ stages:
               ScriptType: FilePath
               workingDirectory: $(System.DefaultWorkingDirectory)
               ScriptPath: pipelines/cd/GrafanaMigration/GrafanaMigration.ps1
-              ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroup $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId) -subscriptionId $(subscriptionId) -location $(location)
+              ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroupName $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId) -subscriptionId $(subscriptionId) -location $(location) -storageAccountName $(storageAccountName) -appConfigurationName $(appConfigurationName) -keyvaultName $(keyvaultName)                              
               azurePowerShellVersion: LatestVersion
+
+          - task: DeleteFiles@1
+            displayName: Remove Grafana temaplate files file from Agent Machine
+            inputs:
+              Contents: '**/*.json' 

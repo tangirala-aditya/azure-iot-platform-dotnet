@@ -67,7 +67,7 @@ steps:
       kubernetesCluster: ${{parameters.aksName}}
       namespace: default
       command: init
-      arguments: --force-upgrade
+      arguments: --force-upgrade --tiller-image=ghcr.io/helm/tiller:v${{parameters.helmVersion}}
 
 
   - task: HelmDeploy@0

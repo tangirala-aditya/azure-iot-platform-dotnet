@@ -284,15 +284,14 @@ namespace Mmm.Iot.IoTHubManager.Services
             }
 
             DeviceServiceListModel resultModel = null;
-            string tenantId = this.tenantConnectionHelper.TenantId;
 
-            resultModel = await this.deviceQueryCache.GetCachedQueryResultAsync(tenantId, querytoBeCached);
-
-            if (resultModel != null)
-            {
-                return resultModel;
-            }
-
+            // Commented cache.
+            // string tenantId = this.tenantConnectionHelper.TenantId;
+            // resultModel = await this.deviceQueryCache.GetCachedQueryResultAsync(tenantId, querytoBeCached);
+            // if (resultModel != null)
+            // {
+            //     return resultModel;
+            // }
             string query = string.Empty;
             string deviceListValue = string.Empty;
             var allTwins = await this.GetTwinDataADXQueryAsync<DeviceTwinMirrorModel>(
@@ -310,15 +309,15 @@ namespace Mmm.Iot.IoTHubManager.Services
                     azureTwin.TimeStamp)),
                 allTwins.ContinuationToken);
 
-            this.deviceQueryCache.SetTenantQueryResult(
-                this.tenantConnectionHelper.TenantId,
-                querytoBeCached,
-                new DeviceQueryCacheResultServiceModel
-                {
-                    Result = resultModel,
-                    ResultTimestamp = DateTimeOffset.Now,
-                });
-
+            // Commented cache.
+            // this.deviceQueryCache.SetTenantQueryResult(
+            //    this.tenantConnectionHelper.TenantId,
+            //    querytoBeCached,
+            //    new DeviceQueryCacheResultServiceModel
+            //    {
+            //        Result = resultModel,
+            //        ResultTimestamp = DateTimeOffset.Now,
+            //    });
             return resultModel;
         }
 

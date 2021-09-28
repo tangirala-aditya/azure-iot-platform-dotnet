@@ -54,16 +54,6 @@ namespace Mmm.Iot.TenantManager.Services
             { "pcs", StorageAdapterDatabaseId },
         };
 
-        private readonly Dictionary<string, string> tenantADXDatabaseCollection = new Dictionary<string, string>
-        {
-            {
-                "telemetry", TelemetryADXDatabaseFormat
-            },
-            {
-                "iot", IoTADXDatabaseFormat
-            },
-        };
-
         private readonly List<string> tenantBlobContainers = new List<string>
         {
             string.Empty,
@@ -75,9 +65,9 @@ namespace Mmm.Iot.TenantManager.Services
         private string streamAnalyticsNameFormat = "sa-{0}";  // format with a guide
         private string grafanaNameFormat = "grafana-{0}";  // format with a guide
         private string appConfigCollectionKeyFormat = "tenant:{0}:{1}-collection";  // format with a guid and collection name
-        private string eventHubNamespaceFormat = "telemetry-eventhub-{0}";
+        private string eventHubNamespaceFormat = "eventhub-{0}";
         private string grafanaUrlFormat = "tenant:{0}:grafanaUrl";
-        private string grafanaOrgFormat = "tenant:{0}:orgId";
+        private string grafanaOrgFormat = "tenant:{0}:grafanaOrgId";
 
         public TenantContainer(
             ILogger<TenantContainer> logger,
@@ -335,8 +325,6 @@ namespace Mmm.Iot.TenantManager.Services
                 deletionRecord["alerting"] = false;
             }
 
-            string grafanaName = this.FormatResourceName(this.grafanaNameFormat, tenantId);
-
             // Delete collections
             foreach (KeyValuePair<string, string> collectionInfo in this.tenantCollections)
             {
@@ -417,27 +405,22 @@ namespace Mmm.Iot.TenantManager.Services
             // Delete Database from kusto
             if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
             {
-                foreach (var collectionInfo in this.tenantADXDatabaseCollection)
+                string kustoDatabase = string.Format(IoTADXDatabaseFormat, tenantId);
+                try
                 {
-                    string kustoDatabase = string.Format(collectionInfo.Value, tenantId);
-                    string deletionRecordValue = $"{collectionInfo.Key}ADXDatabase";
-
-                    try
-                    {
-                        await this.azureManagementClient.KustoClusterManagementClient.DeleteDatabaseAsync(kustoDatabase);
-                        deletionRecord[deletionRecordValue] = true;
-                    }
-                    catch (Exception e)
-                    {
-                        deletionRecord[deletionRecordValue] = false;
-                        this.logger.LogInformation(e, $"An error occurred while deleting the {kustoDatabase} kusto database for tenant {tenantId}", kustoDatabase, tenantId);
-                    }
+                    await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.ADXDatabaseDeletion, kustoDatabase));
+                    deletionRecord["ADXDatabase"] = true;
+                }
+                catch (Exception e)
+                {
+                    deletionRecord["ADXDatabase"] = false;
+                    this.logger.LogInformation(e, $"An error occurred while deleting the {kustoDatabase} kusto database for tenant {tenantId}", kustoDatabase, tenantId);
                 }
 
                 string eventHubNamespace = string.Format(this.eventHubNamespaceFormat, tenantId.Substring(0, 8));
                 try
                 {
-                    await this.azureManagementClient.EventHubsManagementClient.DeleteEventHubNameSpace(eventHubNamespace);
+                    await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.EventHubDeletion, eventHubNamespace));
                     deletionRecord["EventHubNameSpace"] = true;
                 }
                 catch (Exception e)
@@ -445,6 +428,8 @@ namespace Mmm.Iot.TenantManager.Services
                     deletionRecord["EventHubNameSpace"] = false;
                     this.logger.LogInformation(e, $"An error occurred while deleting the {eventHubNamespace} EventHub NameSpace for tenant {tenantId}", eventHubNamespace, tenantId);
                 }
+
+                string grafanaName = this.FormatResourceName(this.grafanaNameFormat, tenantId);
 
                 // trigger deletion grafana dashboard
                 try

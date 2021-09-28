@@ -129,9 +129,9 @@ stages:
               version: '3.1.x'
               includePreviewVersions: true
 
-          - script: >-
-              dotnet run
-              --force
-              --project src/onetime-applications/migrate-iot-devicetwin-to-adx/MigrateIoTDeviceTwinToADX
-              --runtime $(dotnetProductionRuntimeId)
-            displayName: Run Application
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'run'
+              arguments: '--force'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/src/onetime-applications/migrate-iot-devicetwin-to-adx/MigrateIoTDeviceTwinToADX'
+          

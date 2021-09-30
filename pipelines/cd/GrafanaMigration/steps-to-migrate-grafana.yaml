@@ -142,7 +142,3 @@ stages:
               ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroupName $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId) -subscriptionId $(subscriptionId) -location $(location) -storageAccountName $(storageAccountName) -appConfigurationName $(appConfigurationName) -keyvaultName $(keyvaultName)                              
               azurePowerShellVersion: LatestVersion
 
-          - task: DeleteFiles@1
-            displayName: Remove Grafana temaplate files file from Agent Machine
-            inputs:
-              Contents: '**/*.json' 

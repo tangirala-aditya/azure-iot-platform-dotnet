@@ -65,7 +65,9 @@ param(
             Write-Host "############## Added Routes IotHub $iotHubName"           
           }
           else {
-            Write-Host "############## Route $messageRoutes[$i] Already Exists with Source $dataSources[$i] for IotHub $iotHubName"            
+            $messageRoute = $messageRoutes[$i]
+            $dataSource = $dataSources[$i]
+            Write-Host "############## Message Route $messageRoute Already Exists with Source $dataSource for IotHub $iotHubName"            
           }          
          
          } 

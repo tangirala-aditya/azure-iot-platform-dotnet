@@ -100,6 +100,15 @@ stages:
 
       - job: preBuild
         displayName: Pre-build
+        variables:
+          - template: ../../templates/variables-deploy-infra.yaml
+            parameters:
+              subscriptionName: $(subscriptionName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)        
         steps:
           - checkout: none
           - task: AzureCLI@2
@@ -107,10 +116,10 @@ stages:
             name: getAppConfigurationConnectionString
             inputs:
               azureSubscription: $(subscriptionName)
-              scriptType: pscore
+              scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |-
-                $appConfigurationConnectionString = az appconfig credential list --name $(appConfigurationName) --resource-group $(resourceGroupName) --query "[?name=='Primary'].connectionString | [0]" --output tsv
+                appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) --resource-group $(resourceGroupName) --query "[?name=='Primary'].connectionString | [0]" --output tsv)
                 echo "##vso[task.setvariable variable=AppConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
 
       - job: build

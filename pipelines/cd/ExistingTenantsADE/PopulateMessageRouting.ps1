@@ -38,7 +38,7 @@ param(
           
           $isRoutingEndPointExists=(Get-AzIotHubRoutingEndpoint -ResourceGroupName $resourceGroupName -Name $iotHubName | Where-Object {$_.Name -eq $endpointName}).Count
 
-          if($isRoutingEndPointExists -ge 0) {
+          if($isRoutingEndPointExists -eq 0) {
           # This is used to Create/Add an endpoint to all IoT Hub   
           Add-AzIotHubRoutingEndpoint `
           -ResourceGroupName $resourceGroupName `

@@ -19,6 +19,8 @@ parameters:
   aadSGId:
   telemetryStorageType: 
 
+variables:
+  isTelemetryStorageTypeADE: $['${{ parameters.telemetryStorageType }}', 'ade')]
 jobs:
   - template: get-approval.yaml
     parameters:

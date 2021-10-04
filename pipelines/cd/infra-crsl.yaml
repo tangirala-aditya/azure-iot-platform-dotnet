@@ -63,7 +63,7 @@ stages:
     - group: acsDev
     dependsOn: checkParameters
     jobs:
-      - template: ../templates/jobs-deploy-infra.yaml
+      - template: ../templates/jobs-deploy-infra-test.yaml
         parameters:
           subscriptionName: $(subscriptionName-acsDev)
           locationName: $(locationName)

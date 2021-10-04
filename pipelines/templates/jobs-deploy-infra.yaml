@@ -17,6 +17,7 @@ parameters:
   testPipelineRunId:
   isHelmVersion3:
   aadSGId:
+  telemetryStorageType:
 
 jobs:
   - template: get-approval.yaml
@@ -93,8 +94,13 @@ jobs:
           echo "variable: isHelmVersion3:  ${{parameters.isHelmVersion3}}"
           echo "variable: dataExplorerClusterPartialName: $(dataExplorerClusterPartialName)"
           echo "variable: dataExplorerClusterName: $(dataExplorerClusterName)"
-          echo "variable: telemetryStorageType: $(telemetryStorageType)"
+          echo "variable: telemetryStorageType: ${{parameters.telemetryStorageType}}"
         displayName: Print variables
+
+  - job: toggleTelemetryStorage
+    steps:
+    - bash: echo "##vso[task.setvariable variable=toggleTelemetryStorageValue;isOutput=true]${{parameters.telemetryStorageType}}"
+      name: toggleTelemetryStorageName
 
   - job: resourceGroup
     displayName: Provision resource group
@@ -891,9 +897,10 @@ jobs:
 
   - job: dataExplorer
     displayName: Provision Azure Data Explorer Cluster
-    condition: and(succeeded(), eq(variables.telemetryStorageType, 'ade'))
+    condition: and(succeeded(), eq(dependencies.toggleTelemetryStorage.outputs['toggleTelemetryStorageName.toggleTelemetryStorageValue'], 'ade'))
     dependsOn:
       - resourceGroup
+      - toggleTelemetryStorage      
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -933,9 +940,10 @@ jobs:
 
   - job: removeDataExplorer
     displayName: Remove not in use Azure Data Explorer
-    condition: and(succeeded(), ne(variables.telemetryStorageType, 'ade'))
+    condition: and(succeeded(), ne(dependencies.toggleTelemetryStorage.outputs['toggleTelemetryStorageName.toggleTelemetryStorageValue'], 'ade'))
     dependsOn:
       - resourceGroup
+      - toggleTelemetryStorage
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -995,7 +1003,7 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-            telemetryStorageType=$(telemetryStorageType)
+            telemetryStorageType=${{parameters.telemetryStorageType}}
             set -Eeuxo pipefail
             az appconfig kv import --yes --name $(appConfigurationName) --format json --source file --path "$(System.DefaultWorkingDirectory)/pipelines/cd/app-config-template.json" --separator ":"
             echo "Checking for $(System.DefaultWorkingDirectory)/pipelines/cd/permissions-config/permissions-${{parameters.environmentName}}.json"
@@ -1207,7 +1215,7 @@ jobs:
                 "BatchThreshold"="12" \
                 "BatchWriteDelay"="85" \
               --resource-group $(resourceGroupName)
-            telemetryStorageType=$(telemetryStorageType)
+            telemetryStorageType=${{parameters.telemetryStorageType}}
             if [ ${telemetryStorageType,,} == "ade"  ]
             then
                 az functionapp config appsettings set --name $devicetwinPropfn \
@@ -1489,7 +1497,7 @@ jobs:
                 "BatchWriteDelay"="85" \
                 "AppConfigConnectionString"="$appConfigurationConnectionString" \
               --resource-group $(resourceGroupName)
-            telemetryStorageType=$(telemetryStorageType)
+            telemetryStorageType=${{parameters.telemetryStorageType}}
             if [ ${telemetryStorageType,,} == "ade"  ]
             then
                 az functionapp config appsettings set --name $batchProcessorfn \

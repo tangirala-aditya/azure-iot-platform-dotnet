@@ -940,7 +940,7 @@ jobs:
 
   - job: removeDataExplorer
     displayName: Remove not in use Azure Data Explorer
-    condition: and(succeeded(), ne(variables.telemetryStorageType, 'ade'))
+    condition: and(succeeded(), ne(dependencies.toggleTelemetryStorage.outputs['toggleTelemetryStorageName.toggleTelemetryStorageValue'], 'ade'))
     dependsOn:
       - resourceGroup
       - toggleTelemetryStorage

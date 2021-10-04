@@ -22,9 +22,9 @@ variables:
   - name: buildId
     value: build-$(Build.BuildId)
   - name: applicationCode
-    value: acshyd
+    value: acsagic
   - name: applicationShortCode
-    value: acs
+    value: acsagic
   - name: environmentCategory
     value: dev
   - name: subscriptionName

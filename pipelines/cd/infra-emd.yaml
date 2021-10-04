@@ -76,7 +76,7 @@ stages:
           runVersion: $(runVersion-emdQa)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-emdQa)
-          isHelmVersion3: false
+          isHelmVersion3: true
 
   - stage: emdCt
     displayName: EMD CT

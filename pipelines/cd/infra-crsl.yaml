@@ -35,7 +35,7 @@ stages:
     dependsOn: checkParameters
     condition: eq(variables['runCrslDevStage'], 'true')
     jobs:
-      - template: ../templates/jobs-deploy-infra-test.yaml
+      - template: ../templates/jobs-deploy-infra.yaml
         parameters:
           subscriptionName: $(subscriptionName-crslDev)
           locationName: $(locationName)

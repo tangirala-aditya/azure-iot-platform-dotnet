@@ -39,14 +39,16 @@ namespace Mmm.Iot.Config.WebService.Controllers
         [Authorize("CreateDeviceGroups")]
         public async Task<DeviceGroupApiModel> CreateAsync([FromBody] DeviceGroupApiModel input)
         {
-            return new DeviceGroupApiModel(await this.storage.CreateDeviceGroupAsync(input.ToServiceModel()));
+            var createdDeviceGroup = await this.storage.CreateDeviceGroupAsync(input.ToServiceModel());
+            return new DeviceGroupApiModel(createdDeviceGroup);
         }
 
         [HttpPut("{id}")]
         [Authorize("UpdateDeviceGroups")]
         public async Task<DeviceGroupApiModel> UpdateAsync(string id, [FromBody] DeviceGroupApiModel input)
         {
-            return new DeviceGroupApiModel(await this.storage.UpdateDeviceGroupAsync(id, input.ToServiceModel(), input.ETag));
+            var updatedDeviceGroup = await this.storage.UpdateDeviceGroupAsync(id, input.ToServiceModel(), input.ETag);
+            return new DeviceGroupApiModel(updatedDeviceGroup);
         }
 
         [HttpDelete("{id}")]
@@ -54,6 +56,13 @@ namespace Mmm.Iot.Config.WebService.Controllers
         public async Task DeleteAsync(string id)
         {
             await this.storage.DeleteDeviceGroupAsync(id);
+        }
+
+        [HttpPost("Migrate")]
+        [Authorize("CreateDeviceGroups")]
+        public async Task CreateAsync()
+        {
+            await this.storage.CreateDeviceGroupsAsync();
         }
     }
 }

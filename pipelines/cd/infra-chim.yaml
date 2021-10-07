@@ -50,7 +50,8 @@ stages:
           runVersion: $(runVersion-chimDev)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-chimDev)
-          isHelmVersion3: true          
+          isHelmVersion3: true
+          telemetryStorageType: $(telemetryStorageType-chimDev)          
 
   - stage: chimQa
     displayName: CHIM QA
@@ -77,6 +78,7 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-chimQa)
           isHelmVersion3: true
+          telemetryStorageType: $(telemetryStorageType-chimQa)
 
   - stage: chimProd
     displayName: CHIM prod
@@ -103,3 +105,4 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-chimProd)
           isHelmVersion3: false
+          telemetryStorageType: $(telemetryStorageType-chimProd)

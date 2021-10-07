@@ -117,6 +117,7 @@ export class ColumnMapper extends LinkedComponent {
         };
 
         // State to input links
+        this.mappingsLink = this.linkTo("columnMappings");
         this.defaultMappingsLink = this.linkTo("defaultColumnMappings");
         this.mappingNameLink = this.linkTo("mappingName").check(
             Validator.notEmpty,

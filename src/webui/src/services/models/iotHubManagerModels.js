@@ -30,6 +30,8 @@ const defaultMappingObject = {
     ioTHubHostName: "iotHubHostName",
     eTag: "eTag",
     authentication: "authentication",
+    modifiedDate: "modifiedDate",
+    deviceCreatedDate: "deviceCreatedDate",
 };
 
 const transformObject = (obj = []) => {

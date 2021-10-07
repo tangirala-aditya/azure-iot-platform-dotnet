@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.Management.IotHub.Models;
 using Microsoft.Rest.Azure;
+using Mmm.Iot.Common.Services.External.EventHub;
 using Mmm.Iot.Common.Services.External.TableStorage;
 
 namespace Mmm.Iot.Common.Services.External.Azure
@@ -20,6 +21,10 @@ namespace Mmm.Iot.Common.Services.External.Azure
         DpsManagementClient DpsManagmentClient { get; }
 
         AsaManagementClient AsaManagementClient { get; }
+
+        KustoClusterManagementClient KustoClusterManagementClient { get; }
+
+        EventHubsManagementClient EventHubsManagementClient { get; }
 
         Task DeployTemplateAsync(string template, string resourceGroup = null, string deploymentName = null);
     }

@@ -25,5 +25,7 @@ namespace Mmm.Iot.TenantManager.Services.External
         Task<IdentityGatewayApiListModel> GetAllTenantsForUserAsync(string userId);
 
         Task<IdentityGatewayApiListModel> GetAllSystemAdminsAsync();
+
+        Task<IdentityGatewayApiListModel> GetAllUsersForTenant(string tenantId);
     }
 }

@@ -123,7 +123,7 @@ namespace Mmm.Iot.AsaManager.Services
                     {
                         deviceMapping.Add(deviceGroup, new DeviceListModel()
                         {
-                        Items = completeDevicesList,
+                            Items = completeDevicesList,
                         });
                     }
                 }

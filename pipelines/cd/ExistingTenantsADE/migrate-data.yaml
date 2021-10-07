@@ -1,0 +1,146 @@
+trigger: none
+pr: none
+pool:
+  vmImage: ubuntu-latest
+stages:
+  - stage: checkParameters
+    displayName: Check parameters
+    dependsOn: []
+    jobs:
+      - job: checkParameters
+        displayName: Check parameters
+        steps:
+          - checkout: none
+
+          - script: |-
+              set -Eeuxo pipefail
+              echo "Subscription name: '$(subscriptionName)'"
+              if [ -z "$(subscriptionName)" ]
+              then
+                echo "A value for the 'subscriptionName' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Environment name: '$(environmentName)'"
+              if [ -z "$(environmentName)" ]
+              then
+                echo "A value for the 'environmentName' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Subscription ID: '$(subscriptionId)'"
+              if [ -z "$(subscriptionId)" ]
+              then
+                echo "A value for the 'subscriptionId' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Application code: '$(applicationCode)'"
+              if [ -z "$(applicationCode)" ]
+              then
+                echo "A value for the 'applicationCode' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Application short code: '$(applicationShortCode)'"
+              if [ -z "$(applicationShortCode)" ]
+              then
+                echo "A value for the 'applicationShortCode' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              echo "Environment category: '$(environmentCategory)'"
+              if [ -z "$(environmentCategory)" ]
+              then
+                echo "A value for the 'environmentCategory' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+            displayName: Check parameters
+
+  - stage: migrateData
+    displayName: Migrate Data
+    dependsOn:
+      - checkParameters
+    jobs:
+      - template: ../../templates/get-approval.yaml
+        parameters:
+          environmentName: $(environmentName)
+
+      - job: printVariables
+        displayName: Print variables
+        dependsOn:
+          - getApproval
+        variables:
+          - template: ../../templates/variables-deploy-infra.yaml
+            parameters:
+              subscriptionName: $(subscriptionName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)
+        steps:
+          - checkout: none
+
+          - template: ../../templates/print-pipeline-resource-variables.yaml
+            parameters:
+              pipelineResourceName: test
+
+          - script: |-
+              echo "parameter: subscriptionName: $(subscriptionName)"
+              echo "parameter: environmentName: $(environmentName)"
+              echo "parameter: subscriptionId: $(subscriptionId)"
+              echo "parameter: applicationCode: $(applicationCode)"
+              echo "parameter: applicationShortCode: $(applicationShortCode)"
+              echo "parameter: environmentCategory: $(environmentCategory)"
+              echo "variable: appConfigurationName: $(appConfigurationName)"
+              echo "variable: resourceGroupName: $(resourceGroupName)"
+            displayName: Print variables
+
+      - job: preBuild
+        displayName: Pre-build
+        variables:
+          - template: ../../templates/variables-deploy-infra.yaml
+            parameters:
+              subscriptionName: $(subscriptionName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)        
+        steps:
+          - checkout: none
+          - task: AzureCLI@2
+            displayName: Get App Configuration connection string
+            name: getAppConfigurationConnectionString
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |-
+                appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) --resource-group $(resourceGroupName) --query "[?name=='Primary'].connectionString | [0]" --output tsv)
+                echo "##vso[task.setvariable variable=AppConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
+
+      - job: build
+        displayName: Build and Run Application
+        dependsOn:
+          - preBuild
+        variables:
+          AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
+        steps:
+          - checkout: self
+            displayName: Checkout repository
+
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '3.1.x'
+              includePreviewVersions: true
+
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: 'run'
+              arguments: '--force'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/src/onetime-applications/migrate-iot-devicetwin-to-adx/MigrateIoTDeviceTwinToADX'
+          

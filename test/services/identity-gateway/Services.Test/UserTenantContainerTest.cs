@@ -9,6 +9,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Logging;
+using Mmm.Iot.Common.Services.Config;
+using Mmm.Iot.Common.Services.External.Grafana;
+using Mmm.Iot.Common.Services.External.KeyVault;
 using Mmm.Iot.Common.Services.External.TableStorage;
 using Mmm.Iot.Common.TestHelpers;
 using Mmm.Iot.IdentityGateway.Services.Models;
@@ -31,12 +34,30 @@ namespace Mmm.Iot.IdentityGateway.Services.Test
         private UserTenantInput someUserTenantInput = Builder<UserTenantInput>.CreateNew().Build();
         private IList<DynamicTableEntity> dynamicTableEntities;
         private AnonymousValueFixture any = new AnonymousValueFixture();
+        private Mock<IGrafanaClient> mockGrafanaClient;
+        private Mock<IKeyVaultClient> mockKeyVaultClient;
 
         public UserTenantContainerTest()
         {
             this.logger = new Mock<ILogger<UserTenantContainer>>();
             this.mockTableStorageClient = new Mock<ITableStorageClient> { DefaultValue = DefaultValue.Mock };
-            this.userTenantContainer = new UserTenantContainer(this.mockTableStorageClient.Object, this.logger.Object);
+            this.mockGrafanaClient = new Mock<IGrafanaClient>();
+            this.mockKeyVaultClient = new Mock<IKeyVaultClient>();
+            this.userTenantContainer = new UserTenantContainer(
+                this.mockTableStorageClient.Object,
+                this.logger.Object,
+                new AppConfig()
+                {
+                    DeviceTelemetryService = new DeviceTelemetryServiceConfig
+                    {
+                        Messages = new MessagesConfig
+                        {
+                            TelemetryStorageType = "cosmosdb",
+                        },
+                    },
+                },
+                this.mockGrafanaClient.Object,
+                this.mockKeyVaultClient.Object);
         }
 
         public static IEnumerable<object[]> GetRoleLists()

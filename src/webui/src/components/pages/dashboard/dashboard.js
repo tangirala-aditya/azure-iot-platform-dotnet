@@ -1,5 +1,3 @@
-// Copyright (c) Microsoft. All rights reserved.
-
 import React, { Component } from "react";
 import { EMPTY, forkJoin, merge, of, Subject } from "rxjs";
 import moment from "moment";

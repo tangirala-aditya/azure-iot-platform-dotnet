@@ -51,6 +51,7 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-emdDev)
           isHelmVersion3: true
+          telemetryStorageType: $(telemetryStorageType-emdDev)
 
   - stage: emdQa
     displayName: EMD QA
@@ -77,6 +78,7 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-emdQa)
           isHelmVersion3: true
+          telemetryStorageType: $(telemetryStorageType-emdQa)
 
   - stage: emdCt
     displayName: EMD CT
@@ -103,4 +105,5 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-emdCt)
           isHelmVersion3: false
+          telemetryStorageType: $(telemetryStorageType-emdCt)
           

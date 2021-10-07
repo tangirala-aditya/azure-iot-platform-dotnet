@@ -8,6 +8,7 @@ using Mmm.Iot.Common.Services;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.CosmosDb;
+using Mmm.Iot.Common.Services.External.Grafana;
 using Mmm.Iot.Common.Services.External.TableStorage;
 using Mmm.Iot.TenantManager.Services.External;
 using Mmm.Iot.TenantManager.Services.Helpers;
@@ -24,7 +25,8 @@ namespace Mmm.Iot.TenantManager.Services
             IStorageClient cosmosClient,
             ITableStorageClient tableStorageClient,
             IRunbookHelper runbookHelper,
-            IAppConfigurationClient appConfigClient)
+            IAppConfigurationClient appConfigClient,
+            IGrafanaClient grafanaClient)
                 : base(config)
         {
             this.Dependencies = new Dictionary<string, IStatusOperation>
@@ -35,6 +37,7 @@ namespace Mmm.Iot.TenantManager.Services
                 { "Identity Gateway", identityGatewayClient },
                 { "Config", deviceGroupsConfigClient },
                 { "App Config", appConfigClient },
+                { "Grafana", grafanaClient },
             };
         }
 

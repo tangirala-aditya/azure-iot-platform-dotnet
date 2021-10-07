@@ -1,0 +1,2048 @@
+{{"dashboard":{{
+        "annotations": {{
+            "list": [
+                {{
+                    "builtIn": 1,
+                    "datasource": "-- Grafana --",
+                    "enable": true,
+                    "hide": true,
+                    "iconColor": "rgba(0, 211, 255, 1)",
+                    "name": "Annotations & Alerts",
+                    "target": {{
+                        "limit": 100,
+                        "matchAny": false,
+                        "tags": [],
+                        "type": "dashboard"
+                    }},
+                    "type": "dashboard"
+                }}
+            ]
+        }},
+        "editable": true,
+        "gnetId": null,
+        "graphTooltip": 1,
+        "links": [
+            {{
+                "asDropdown": false,
+                "icon": "dashboard",
+                "includeVars": true,
+                "keepTime": true,
+                "tags": [],
+                "targetBlank": false,
+                "title": "Admin Dashboard",
+                "tooltip": "Admin Dashboard",
+                "type": "link",
+                "url": "{0}/d/{1}?orgId={8}"
+            }}
+        ],
+        "panels": [
+            {{
+                "collapsed": false,
+                "datasource": null,
+                "gridPos": {{
+                    "h": 1,
+                    "w": 24,
+                    "x": 0,
+                    "y": 0
+                }},
+                "id": 25,
+                "panels": [],
+                "title": "Device Stats",
+                "type": "row"
+            }},
+            {{
+                "datasource": "Azure Data Explorer Datasource",
+                "fieldConfig": {{
+                    "defaults": {{
+                        "color": {{
+                            "fixedColor": "text",
+                            "mode": "fixed"
+                        }},
+                        "mappings": [],
+                        "thresholds": {{
+                            "mode": "absolute",
+                            "steps": [
+                                {{
+                                    "color": "green",
+                                    "value": null
+                                }}
+                            ]
+                        }},
+                        "unit": "string"
+                    }},
+                    "overrides": []
+                }},
+                "gridPos": {{
+                    "h": 2,
+                    "w": 6,
+                    "x": 0,
+                    "y": 1
+                }},
+                "id": 51,
+                "options": {{
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "horizontal",
+                    "reduceOptions": {{
+                        "calcs": [
+                            "lastNotNull"
+                        ],
+                        "fields": "/.*/",
+                        "values": true
+                    }},
+                    "text": {{
+                        "valueSize": 20
+                    }},
+                    "textMode": "value"
+                }},
+                "pluginVersion": "8.0.5",
+                "targets": [
+                    {{
+                        "database": "{5}",
+                        "expression": {{
+                            "from": {{
+                                "property": {{
+                                    "name": "Alerts",
+                                    "type": "string"
+                                }},
+                                "type": "property"
+                            }},
+                            "groupBy": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "DeviceId",
+                                            "type": "string"
+                                        }},
+                                        "type": "groupBy"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "reduce": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "DeviceId",
+                                            "type": "string"
+                                        }},
+                                        "reduce": {{
+                                            "name": "count",
+                                            "type": "function"
+                                        }},
+                                        "type": "reduce"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "where": {{
+                                "expressions": [],
+                                "type": "and"
+                            }}
+                        }},
+                        "pluginVersion": "3.5.0",
+                        "query": "DeviceGroup\n| summarize arg_max(TimeStamp, *) by DeviceGroupId\n| where DeviceGroupId == '$deviceGroupId'\n| project DeviceGroupName",
+                        "querySource": "raw",
+                        "rawMode": true,
+                        "refId": "A",
+                        "resultFormat": "table"
+                    }}
+                ],
+                "type": "stat"
+            }},
+            {{
+                "circleMaxSize": "5",
+                "circleMinSize": 2,
+                "colors": [
+                    "#73BF69",
+                    "rgba(237, 129, 40, 0.89)",
+                    "#C4162A"
+                ],
+                "datasource": "Azure Data Explorer Datasource",
+                "decimals": 0,
+                "esMetric": "Count",
+                "gridPos": {{
+                    "h": 9,
+                    "w": 12,
+                    "x": 6,
+                    "y": 1
+                }},
+                "hideEmpty": false,
+                "hideZero": false,
+                "id": 15,
+                "initialZoom": "3",
+                "links": [],
+                "locationData": "table",
+                "mapCenter": "custom",
+                "mapCenterLatitude": "44.9537",
+                "mapCenterLongitude": "-93.0900",
+                "maxDataPoints": 1,
+                "mouseWheelZoom": false,
+                "showLegend": true,
+                "stickyLabels": false,
+                "tableQueryOptions": {{
+                    "geohashField": "geohash",
+                    "labelField": "DeviceId",
+                    "latitudeField": "latitude",
+                    "longitudeField": "longitude",
+                    "metricField": "metric",
+                    "queryType": "coordinates"
+                }},
+                "targets": [
+                    {{
+                        "database": "{5}",
+                        "expression": {{
+                            "groupBy": {{
+                                "expressions": [],
+                                "type": "and"
+                            }},
+                            "reduce": {{
+                                "expressions": [],
+                                "type": "and"
+                            }},
+                            "where": {{
+                                "expressions": [],
+                                "type": "and"
+                            }}
+                        }},
+                        "pluginVersion": "3.5.0",
+                        "query": "let deviceGroup= DeviceTwin\n| where $defaultQuery\n| $projection;\nlet devicetable = DeviceTwin\n| join kind= inner deviceGroup on DeviceId\n| summarize arg_max(TimeStamp, *) by DeviceId\n| where isnotnull(Twin.properties.reported.Latitude) and isnotnull(Twin.properties.reported.Longitude)\n| project DeviceId, latitude=Twin.properties.reported.Latitude, longitude=Twin.properties.reported.Longitude;\nlet alerts = Alerts\n| join kind = inner devicetable on DeviceId\n| where $__timeFilter(DateCreated)\n| summarize alertsCount=count() by DeviceId;\ndevicetable\n| join kind = leftouter alerts on DeviceId\n| extend metric = iff(isnotnull(alertsCount), alertsCount , 0)\n| project DeviceId, latitude, longitude, metric",
+                        "querySource": "raw",
+                        "rawMode": true,
+                        "refId": "A",
+                        "resultFormat": "table"
+                    }}
+                ],
+                "thresholds": "1,20",
+                "title": "Device Locations",
+                "type": "grafana-worldmap-panel",
+                "unitPlural": "Alerts",
+                "unitSingle": "",
+                "unitSingular": "Alert",
+                "valueName": "total"
+            }},
+            {{
+                "datasource": "Azure Monitor",
+                "fieldConfig": {{
+                    "defaults": {{
+                        "color": {{
+                            "mode": "thresholds"
+                        }},
+                        "mappings": [
+                            {{
+                                "options": {{
+                                    "Healthy": {{
+                                        "color": "green",
+                                        "index": 0,
+                                        "text": "Healthy"
+                                    }},
+                                    "Review": {{
+                                        "color": "text",
+                                        "index": 1,
+                                        "text": "Review"
+                                    }},
+                                    "Risk": {{
+                                        "color": "red",
+                                        "index": 2,
+                                        "text": "Risk"
+                                    }}
+                                }},
+                                "type": "value"
+                            }}
+                        ],
+                        "thresholds": {{
+                            "mode": "absolute",
+                            "steps": [
+                                {{
+                                    "color": "green",
+                                    "value": null
+                                }}
+                            ]
+                        }}
+                    }},
+                    "overrides": [
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "iotHubHealth"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "displayName",
+                                    "value": "IoT Hub"
+                                }},
+                                {{
+                                    "id": "links",
+                                    "value": [
+                                        {{
+                                            "title": "ADMIN dashboard",
+                                            "url": "\r\n{0}/d/{1}?orgId={8}&${{__url_time_range}}&${{__all_variables}}&kiosk"
+                                        }}
+                                    ]
+                                }}
+                            ]
+                        }},
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "cosmosdbHealth"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "displayName",
+                                    "value": "Cosmos DB"
+                                }},
+                                {{
+                                    "id": "links",
+                                    "value": [
+                                        {{
+                                            "title": "ADMIN Dashboard",
+                                            "url": "\r\n{0}/d/{1}?orgId={8}&${{__url_time_range}}&${{__all_variables}}&kiosk"
+                                        }}
+                                    ]
+                                }}
+                            ]
+                        }},
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "adxHealth"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "displayName",
+                                    "value": "Data Explorer"
+                                }},
+                                {{
+                                    "id": "links",
+                                    "value": [
+                                        {{
+                                            "title": "ADMIN Dashboard",
+                                            "url": "\r\n{0}/d/{1}?orgId={8}&${{__url_time_range}}&${{__all_variables}}&kiosk"
+                                        }}
+                                    ]
+                                }}
+                            ]
+                        }},
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "eventhubHealth"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "displayName",
+                                    "value": "Event Hub"
+                                }},
+                                {{
+                                    "id": "links",
+                                    "value": [
+                                        {{
+                                            "title": "ADMIN Dashboard",
+                                            "url": "\r\n{0}/d/{1}?orgId={8}&${{__url_time_range}}&${{__all_variables}}&kiosk"
+                                        }}
+                                    ]
+                                }}
+                            ]
+                        }},
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "aksHealth"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "displayName",
+                                    "value": "AKS"
+                                }},
+                                {{
+                                    "id": "links",
+                                    "value": [
+                                        {{
+                                            "title": "ADMIN Dashboard",
+                                            "url": "\r\n{0}/d/{1}?orgId={8}&${{__url_time_range}}&${{__all_variables}}&kiosk"
+                                        }}
+                                    ]
+                                }}
+                            ]
+                        }}
+                    ]
+                }},
+                "gridPos": {{
+                    "h": 9,
+                    "w": 6,
+                    "x": 18,
+                    "y": 1
+                }},
+                "id": 62,
+                "links": [
+                    {{
+                        "title": "ADMIN Dashboard",
+                        "url": "\r\n{0}/d/{1}?orgId={8}&${{__url_time_range}}&${{__all_variables}}&kiosk"
+                    }}
+                ],
+                "options": {{
+                    "colorMode": "value",
+                    "graphMode": "area",
+                    "justifyMode": "auto",
+                    "orientation": "horizontal",
+                    "reduceOptions": {{
+                        "calcs": [
+                            "lastNotNull"
+                        ],
+                        "fields": "/.*/",
+                        "values": true
+                    }},
+                    "text": {{
+                        "titleSize": 20,
+                        "valueSize": 20
+                    }},
+                    "textMode": "value_and_name"
+                }},
+                "pluginVersion": "8.0.5",
+                "targets": [
+                    {{
+                        "appInsights": {{
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        }},
+                        "azureLogAnalytics": {{
+                            "query": "let errorCount = AzureDiagnostics\r\n| where $__timeFilter(TimeGenerated)\r\n| where ResourceProvider == \"MICROSOFT.DEVICES\" and ResourceType == \"IOTHUBS\"\r\n| where Level == \"Error\" and ResultDescription == \"ThrottlingException\"\r\n| count;\r\nerrorCount\r\n| extend iotHubHealth = case(Count <= 3, \"Healthy\", \r\n                       Count <= 10, \"Review\", \r\n                       \"Risk\")\r\n| project iotHubHealth",
+                            "resource": "/subscriptions/{2}/resourceGroups/{3}/providers/Microsoft.OperationalInsights/workspaces/{4}",
+                            "resultFormat": "table",
+                            "workspace": "7602e0e4-8abe-4030-b1ae-b21e75801d7c"
+                        }},
+                        "azureMonitor": {{
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        }},
+                        "azureResourceGraph": {{
+                            "resultFormat": "table"
+                        }},
+                        "insightsAnalytics": {{
+                            "query": "",
+                            "resultFormat": "time_series"
+                        }},
+                        "queryType": "Azure Log Analytics",
+                        "refId": "IOTHUB",
+                        "subscription": "{2}"
+                    }},
+                    {{
+                        "appInsights": {{
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        }},
+                        "azureLogAnalytics": {{
+                            "query": "let errorCount = AzureDiagnostics\r\n| where $__timeFilter(TimeGenerated)\r\n| where ResourceProvider == \"MICROSOFT.DOCUMENTDB\"\r\n| where Level == \"Error\" and ResultDescription == \"ThrottlingException\"\r\n| count;\r\nerrorCount\r\n| extend cosmosdbHealth = case(Count <= 3, \"Healthy\", \r\n                       Count <= 10, \"Review\", \r\n                       \"Risk\")\r\n| project cosmosdbHealth",
+                            "resource": "/subscriptions/{2}/resourceGroups/{3}/providers/Microsoft.OperationalInsights/workspaces/{4}",
+                            "resultFormat": "table",
+                            "workspace": "7602e0e4-8abe-4030-b1ae-b21e75801d7c"
+                        }},
+                        "azureMonitor": {{
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        }},
+                        "azureResourceGraph": {{
+                            "resultFormat": "table"
+                        }},
+                        "hide": false,
+                        "insightsAnalytics": {{
+                            "query": "",
+                            "resultFormat": "time_series"
+                        }},
+                        "queryType": "Azure Log Analytics",
+                        "refId": "COSMOSDB",
+                        "subscription": "{2}"
+                    }},
+                    {{
+                        "appInsights": {{
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        }},
+                        "azureLogAnalytics": {{
+                            "query": "let errorCount = FailedIngestion\r\n| where $__timeFilter(TimeGenerated)\r\n| count;\r\nerrorCount\r\n| extend adxHealth = case(Count <= 3, \"Healthy\", \r\n                       Count <= 10, \"Review\", \r\n                       \"Risk\")\r\n| project adxHealth",
+                            "resource": "/subscriptions/{2}/resourceGroups/{3}/providers/Microsoft.OperationalInsights/workspaces/{4}",
+                            "resultFormat": "table",
+                            "workspace": "7602e0e4-8abe-4030-b1ae-b21e75801d7c"
+                        }},
+                        "azureMonitor": {{
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        }},
+                        "azureResourceGraph": {{
+                            "resultFormat": "table"
+                        }},
+                        "hide": false,
+                        "insightsAnalytics": {{
+                            "query": "",
+                            "resultFormat": "time_series"
+                        }},
+                        "queryType": "Azure Log Analytics",
+                        "refId": "ADX",
+                        "subscription": "{2}"
+                    }},
+                    {{
+                        "appInsights": {{
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        }},
+                        "azureLogAnalytics": {{
+                            "query": "let errorCount = AzureDiagnostics\r\n| where $__timeFilter(TimeGenerated)\r\n| where ResourceProvider == \"MICROSOFT.EVENTHUB\"\r\n| where Level == \"Error\" and ResultDescription == \"ThrottlingException\"\r\n| count;\r\nerrorCount\r\n| extend eventhubHealth = case(Count <= 3, \"Healthy\", \r\n                       Count <= 10, \"Review\", \r\n                       \"Risk\")\r\n| project eventhubHealth",
+                            "resource": "/subscriptions/{2}/resourceGroups/{3}/providers/Microsoft.OperationalInsights/workspaces/{4}",
+                            "resultFormat": "table",
+                            "workspace": "7602e0e4-8abe-4030-b1ae-b21e75801d7c"
+                        }},
+                        "azureMonitor": {{
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        }},
+                        "azureResourceGraph": {{
+                            "resultFormat": "table"
+                        }},
+                        "hide": false,
+                        "insightsAnalytics": {{
+                            "query": "",
+                            "resultFormat": "time_series"
+                        }},
+                        "queryType": "Azure Log Analytics",
+                        "refId": "EVENTHUB",
+                        "subscription": "{2}"
+                    }},
+                    {{
+                        "appInsights": {{
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        }},
+                        "azureLogAnalytics": {{
+                            "query": "let errorCount = KubePodInventory\r\n| where $__timeFilter(TimeGenerated)\r\n| summarize arg_max(TimeGenerated, *) by ServiceName\r\n| where PodStatus != \"Running\"\r\n| count;\r\nerrorCount\r\n| extend aksHealth = case(Count <= 1, \"Healthy\", \r\n                       Count <= 5, \"Review\", \r\n                       \"Risk\")\r\n| project aksHealth",
+                            "resource": "/subscriptions/{2}/resourceGroups/{3}/providers/Microsoft.OperationalInsights/workspaces/{4}",
+                            "resultFormat": "time_series",
+                            "workspace": "7602e0e4-8abe-4030-b1ae-b21e75801d7c"
+                        }},
+                        "azureMonitor": {{
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        }},
+                        "azureResourceGraph": {{
+                            "resultFormat": "table"
+                        }},
+                        "hide": false,
+                        "insightsAnalytics": {{
+                            "query": "",
+                            "resultFormat": "time_series"
+                        }},
+                        "queryType": "Azure Log Analytics",
+                        "refId": "AKS",
+                        "subscription": "{2}"
+                    }}
+                ],
+                "title": "Health",
+                "type": "stat"
+            }},
+            {{
+                "datasource": "Azure Data Explorer Datasource",
+                "fieldConfig": {{
+                    "defaults": {{
+                        "color": {{
+                            "fixedColor": "text",
+                            "mode": "fixed"
+                        }},
+                        "mappings": [],
+                        "thresholds": {{
+                            "mode": "absolute",
+                            "steps": [
+                                {{
+                                    "color": "green",
+                                    "value": null
+                                }}
+                            ]
+                        }},
+                        "unit": "string"
+                    }},
+                    "overrides": [
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "DeviceGroupName"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "displayName",
+                                    "value": "Device Group name"
+                                }}
+                            ]
+                        }}
+                    ]
+                }},
+                "gridPos": {{
+                    "h": 7,
+                    "w": 6,
+                    "x": 0,
+                    "y": 3
+                }},
+                "id": 50,
+                "options": {{
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "horizontal",
+                    "reduceOptions": {{
+                        "calcs": [
+                            "lastNotNull"
+                        ],
+                        "fields": "/.*/",
+                        "values": true
+                    }},
+                    "text": {{
+                        "titleSize": 20,
+                        "valueSize": 20
+                    }},
+                    "textMode": "auto"
+                }},
+                "pluginVersion": "8.0.5",
+                "targets": [
+                    {{
+                        "database": "{5}",
+                        "expression": {{
+                            "groupBy": {{
+                                "expressions": [],
+                                "type": "and"
+                            }},
+                            "reduce": {{
+                                "expressions": [],
+                                "type": "and"
+                            }},
+                            "where": {{
+                                "expressions": [],
+                                "type": "and"
+                            }}
+                        }},
+                        "hide": false,
+                        "pluginVersion": "3.5.0",
+                        "query": "let deviceGroup= DeviceTwin\n| where $defaultQuery\n| $projection;\nDeviceTwin\n| join kind= inner deviceGroup on DeviceId\n| summarize arg_max(TimeStamp, *) by DeviceId \n| where IsDeleted == false\n| count as Registered;",
+                        "querySource": "raw",
+                        "rawMode": true,
+                        "refId": "B",
+                        "resultFormat": "table"
+                    }},
+                    {{
+                        "database": "{5}",
+                        "expression": {{
+                            "from": {{
+                                "property": {{
+                                    "name": "Alerts",
+                                    "type": "string"
+                                }},
+                                "type": "property"
+                            }},
+                            "groupBy": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "DeviceId",
+                                            "type": "string"
+                                        }},
+                                        "type": "groupBy"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "reduce": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "DeviceId",
+                                            "type": "string"
+                                        }},
+                                        "reduce": {{
+                                            "name": "count",
+                                            "type": "function"
+                                        }},
+                                        "type": "reduce"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "where": {{
+                                "expressions": [],
+                                "type": "and"
+                            }}
+                        }},
+                        "pluginVersion": "3.5.0",
+                        "query": "let deviceGroup= DeviceTwin\n| where $defaultQuery\n| $projection;\nTelemetry\n| join kind= inner deviceGroup on DeviceId\n| where TimeStamp >= now()-180s and TimeStamp < now()\n| summarize arg_max(TimeStamp, *) by DeviceId\n| project DeviceId\n| count as Connected",
+                        "querySource": "raw",
+                        "rawMode": true,
+                        "refId": "A",
+                        "resultFormat": "table"
+                    }}
+                ],
+                "title": "Device Insights",
+                "type": "stat"
+            }},
+            {{
+                "collapsed": false,
+                "datasource": null,
+                "gridPos": {{
+                    "h": 1,
+                    "w": 24,
+                    "x": 0,
+                    "y": 10
+                }},
+                "id": 60,
+                "panels": [],
+                "title": "Telemetry",
+                "type": "row"
+            }},
+            {{
+                "datasource": "Azure Data Explorer Datasource",
+                "fieldConfig": {{
+                    "defaults": {{
+                        "color": {{
+                            "mode": "thresholds"
+                        }},
+                        "custom": {{
+                            "align": "auto",
+                            "displayMode": "color-text",
+                            "filterable": true
+                        }},
+                        "links": [
+                            {{
+                                "title": "Telemetry",
+                                "url": "{0}/d/{6}/{7}?orgId={8}&theme=light&refresh=10s&kiosk&${{__url_time_range}}&${{deviceGroupId:queryparam}}&var-selecteddeviceid=${{__data.fields.DeviceId}}"
+                            }}
+                        ],
+                        "mappings": [],
+                        "thresholds": {{
+                            "mode": "absolute",
+                            "steps": [
+                                {{
+                                    "color": "green",
+                                    "value": null
+                                }},
+                                {{
+                                    "color": "red",
+                                    "value": 80
+                                }}
+                            ]
+                        }}
+                    }},
+                    "overrides": []
+                }},
+                "gridPos": {{
+                    "h": 9,
+                    "w": 6,
+                    "x": 0,
+                    "y": 11
+                }},
+                "id": 56,
+                "options": {{
+                    "showHeader": true,
+                    "sortBy": []
+                }},
+                "pluginVersion": "8.0.5",
+                "targets": [
+                    {{
+                        "database": "{5}",
+                        "expression": {{
+                            "groupBy": {{
+                                "expressions": [],
+                                "type": "and"
+                            }},
+                            "reduce": {{
+                                "expressions": [],
+                                "type": "and"
+                            }},
+                            "where": {{
+                                "expressions": [],
+                                "type": "and"
+                            }}
+                        }},
+                        "pluginVersion": "3.5.0",
+                        "query": "let deviceGroup= DeviceTwin\n| where $defaultQuery\n| $projection;\nTelemetry\n| join kind= inner deviceGroup on DeviceId\n| where $__timeFilter(TimeStamp)\n| summarize arg_max(TimeStamp, *) by DeviceId\n| project DeviceId\n| order by DeviceId asc ",
+                        "querySource": "raw",
+                        "rawMode": true,
+                        "refId": "A",
+                        "resultFormat": "time_series"
+                    }}
+                ],
+                "title": "Devices with Active Telemetry",
+                "type": "table"
+            }},
+            {{
+                "datasource": "Azure Data Explorer Datasource",
+                "fieldConfig": {{
+                    "defaults": {{
+                        "color": {{
+                            "mode": "palette-classic"
+                        }},
+                        "custom": {{
+                            "axisLabel": "",
+                            "axisPlacement": "auto",
+                            "barAlignment": 0,
+                            "drawStyle": "line",
+                            "fillOpacity": 0,
+                            "gradientMode": "none",
+                            "hideFrom": {{
+                                "legend": false,
+                                "tooltip": false,
+                                "viz": false
+                            }},
+                            "lineInterpolation": "linear",
+                            "lineWidth": 1,
+                            "pointSize": 5,
+                            "scaleDistribution": {{
+                                "type": "linear"
+                            }},
+                            "showPoints": "always",
+                            "spanNulls": true,
+                            "stacking": {{
+                                "group": "A",
+                                "mode": "none"
+                            }},
+                            "thresholdsStyle": {{
+                                "mode": "off"
+                            }}
+                        }},
+                        "mappings": [],
+                        "noValue": "No Data to Display",
+                        "thresholds": {{
+                            "mode": "absolute",
+                            "steps": [
+                                {{
+                                    "color": "green",
+                                    "value": null
+                                }},
+                                {{
+                                    "color": "red",
+                                    "value": 80
+                                }}
+                            ]
+                        }}
+                    }},
+                    "overrides": []
+                }},
+                "gridPos": {{
+                    "h": 9,
+                    "w": 18,
+                    "x": 6,
+                    "y": 11
+                }},
+                "hideTimeOverride": true,
+                "id": 47,
+                "options": {{
+                    "legend": {{
+                        "calcs": [],
+                        "displayMode": "table",
+                        "placement": "right"
+                    }},
+                    "tooltip": {{
+                        "mode": "single"
+                    }}
+                }},
+                "targets": [
+                    {{
+                        "database": "{5}",
+                        "expression": {{
+                            "from": {{
+                                "property": {{
+                                    "name": "Telemetry",
+                                    "type": "string"
+                                }},
+                                "type": "property"
+                            }},
+                            "groupBy": {{
+                                "expressions": [
+                                    {{
+                                        "interval": {{
+                                            "name": "$__timeInterval",
+                                            "type": "interval"
+                                        }},
+                                        "property": {{
+                                            "name": "TimeStamp",
+                                            "type": "dateTime"
+                                        }},
+                                        "type": "groupBy"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "reduce": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "",
+                                            "type": "string"
+                                        }},
+                                        "reduce": {{
+                                            "name": "",
+                                            "type": "function"
+                                        }},
+                                        "type": "reduce"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "where": {{
+                                "expressions": [],
+                                "type": "and"
+                            }}
+                        }},
+                        "pluginVersion": "3.5.0",
+                        "query": "let deviceGroup= DeviceTwin\n| where $defaultQuery\n| $projection;\nTelemetry\n| join kind= inner \n    deviceGroup\n on DeviceId\n| where iff(isnotnull('$selecteddeviceid') and isnotempty('$selecteddeviceid'), DeviceId == '$selecteddeviceid',1==1) \n| where TimeStamp >= unixtime_milliseconds_todatetime($__to)-30m and TimeStamp < unixtime_milliseconds_todatetime($__to)\n| evaluate bag_unpack(Data)\n| project-away deviceId*, iothub*, _*, messageId*,DeviceId1,Message*\n| order by TimeStamp asc\n| take 5000  ",
+                        "querySource": "raw",
+                        "rawMode": true,
+                        "refId": "A",
+                        "resultFormat": "time_series"
+                    }}
+                ],
+                "timeFrom": "30m",
+                "timeShift": null,
+                "title": "Telemetry",
+                "type": "timeseries"
+            }},
+            {{
+                "collapsed": false,
+                "datasource": null,
+                "gridPos": {{
+                    "h": 1,
+                    "w": 24,
+                    "x": 0,
+                    "y": 20
+                }},
+                "id": 58,
+                "panels": [],
+                "title": "Alerts",
+                "type": "row"
+            }},
+            {{
+                "datasource": "Azure Data Explorer Datasource",
+                "fieldConfig": {{
+                    "defaults": {{
+                        "color": {{
+                            "mode": "thresholds"
+                        }},
+                        "custom": {{
+                            "align": "auto",
+                            "displayMode": "color-text",
+                            "filterable": false
+                        }},
+                        "links": [],
+                        "mappings": [],
+                        "thresholds": {{
+                            "mode": "absolute",
+                            "steps": [
+                                {{
+                                    "color": "green",
+                                    "value": null
+                                }},
+                                {{
+                                    "color": "red",
+                                    "value": 80
+                                }}
+                            ]
+                        }}
+                    }},
+                    "overrides": [
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "Device"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "links",
+                                    "value": [
+                                        {{
+                                            "title": "Device Drill Down",
+                                            "url": "{0}/d/{6}/{7}?orgId={8}&theme=light&refresh=10s&kiosk&${{__url_time_range}}&${{deviceGroupId:queryparam}}&var-selecteddeviceid=${{__data.fields.Device}}"
+                                        }}
+                                    ]
+                                }},
+                                {{
+                                    "id": "custom.width",
+                                    "value": null
+                                }}
+                            ]
+                        }}
+                    ]
+                }},
+                "gridPos": {{
+                    "h": 7,
+                    "w": 7,
+                    "x": 0,
+                    "y": 21
+                }},
+                "id": 5,
+                "options": {{
+                    "showHeader": true,
+                    "sortBy": []
+                }},
+                "pluginVersion": "8.0.5",
+                "targets": [
+                    {{
+                        "database": "{5}",
+                        "expression": {{
+                            "from": {{
+                                "property": {{
+                                    "name": "Alerts",
+                                    "type": "string"
+                                }},
+                                "type": "property"
+                            }},
+                            "groupBy": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "DeviceId",
+                                            "type": "string"
+                                        }},
+                                        "type": "groupBy"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "reduce": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "DeviceId",
+                                            "type": "string"
+                                        }},
+                                        "reduce": {{
+                                            "name": "count",
+                                            "type": "function"
+                                        }},
+                                        "type": "reduce"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "where": {{
+                                "expressions": [],
+                                "type": "and"
+                            }}
+                        }},
+                        "pluginVersion": "3.5.0",
+                        "query": "let deviceGroup= DeviceTwin\n| where $defaultQuery\n| $projection;\nAlerts\n| join kind= inner deviceGroup on DeviceId\n| where $__timeFilter(DateCreated)\n| summarize Count=count() by Device=DeviceId\n| order by Device asc nulls last ",
+                        "querySource": "raw",
+                        "rawMode": true,
+                        "refId": "A",
+                        "resultFormat": "table"
+                    }}
+                ],
+                "title": "Alerts By Device",
+                "type": "table"
+            }},
+            {{
+                "datasource": "Azure Data Explorer Datasource",
+                "fieldConfig": {{
+                    "defaults": {{
+                        "color": {{
+                            "mode": "palette-classic"
+                        }},
+                        "custom": {{
+                            "hideFrom": {{
+                                "legend": false,
+                                "tooltip": false,
+                                "viz": false
+                            }}
+                        }},
+                        "mappings": []
+                    }},
+                    "overrides": [
+                        {{
+                            "__systemRef": "hideSeriesFrom",
+                            "matcher": {{
+                                "id": "byNames",
+                                "options": {{
+                                    "mode": "exclude",
+                                    "names": [
+                                        "value",
+                                        "Critical"
+                                    ],
+                                    "prefix": "All except:",
+                                    "readOnly": true
+                                }}
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "custom.hideFrom",
+                                    "value": {{
+                                        "legend": false,
+                                        "tooltip": false,
+                                        "viz": true
+                                    }}
+                                }}
+                            ]
+                        }},
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "metric"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "mappings",
+                                    "value": [
+                                        {{
+                                            "options": {{
+                                                "Critical": {{
+                                                    "color": "light-red",
+                                                    "index": 0,
+                                                    "text": "Critical"
+                                                }}
+                                            }},
+                                            "type": "value"
+                                        }}
+                                    ]
+                                }}
+                            ]
+                        }},
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "Critical"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "color",
+                                    "value": {{
+                                        "fixedColor": "dark-red",
+                                        "mode": "fixed"
+                                    }}
+                                }}
+                            ]
+                        }},
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "Warning"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "color",
+                                    "value": {{
+                                        "fixedColor": "semi-dark-yellow",
+                                        "mode": "fixed"
+                                    }}
+                                }}
+                            ]
+                        }},
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "Info"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "color",
+                                    "value": {{
+                                        "fixedColor": "light-blue",
+                                        "mode": "fixed"
+                                    }}
+                                }}
+                            ]
+                        }}
+                    ]
+                }},
+                "gridPos": {{
+                    "h": 7,
+                    "w": 9,
+                    "x": 7,
+                    "y": 21
+                }},
+                "id": 6,
+                "options": {{
+                    "displayLabels": [
+                        "percent",
+                        "name",
+                        "value"
+                    ],
+                    "legend": {{
+                        "displayMode": "list",
+                        "placement": "bottom",
+                        "values": []
+                    }},
+                    "pieType": "pie",
+                    "reduceOptions": {{
+                        "calcs": [
+                            "sum"
+                        ],
+                        "fields": "/^value$/",
+                        "limit": 100000,
+                        "values": true
+                    }},
+                    "tooltip": {{
+                        "mode": "single"
+                    }}
+                }},
+                "pluginVersion": "8.0.3",
+                "targets": [
+                    {{
+                        "database": "{5}",
+                        "expression": {{
+                            "from": {{
+                                "property": {{
+                                    "name": "Alerts",
+                                    "type": "string"
+                                }},
+                                "type": "property"
+                            }},
+                            "groupBy": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "DeviceId",
+                                            "type": "string"
+                                        }},
+                                        "type": "groupBy"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "reduce": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "DeviceId",
+                                            "type": "string"
+                                        }},
+                                        "reduce": {{
+                                            "name": "count",
+                                            "type": "function"
+                                        }},
+                                        "type": "reduce"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "where": {{
+                                "expressions": [],
+                                "type": "and"
+                            }}
+                        }},
+                        "pluginVersion": "3.5.0",
+                        "query": "let deviceGroup= DeviceTwin\n| where $defaultQuery\n| $projection;\nAlerts\n| join kind= inner deviceGroup on DeviceId\n| where $__timeFilter(DateCreated)\n| summarize value=count() by metric=tostring(RuleSeverity)",
+                        "querySource": "raw",
+                        "rawMode": true,
+                        "refId": "A",
+                        "resultFormat": "table"
+                    }}
+                ],
+                "title": "Alerts By Severity",
+                "type": "piechart"
+            }},
+            {{
+                "datasource": "Azure Data Explorer Datasource",
+                "fieldConfig": {{
+                    "defaults": {{
+                        "color": {{
+                            "mode": "palette-classic"
+                        }},
+                        "custom": {{
+                            "hideFrom": {{
+                                "legend": false,
+                                "tooltip": false,
+                                "viz": false
+                            }}
+                        }},
+                        "mappings": []
+                    }},
+                    "overrides": [
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "count_ closed"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "displayName",
+                                    "value": "Closed"
+                                }}
+                            ]
+                        }},
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "count_ open"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "displayName",
+                                    "value": "Open"
+                                }}
+                            ]
+                        }}
+                    ]
+                }},
+                "gridPos": {{
+                    "h": 7,
+                    "w": 8,
+                    "x": 16,
+                    "y": 21
+                }},
+                "id": 7,
+                "options": {{
+                    "displayLabels": [
+                        "percent",
+                        "name",
+                        "value"
+                    ],
+                    "legend": {{
+                        "displayMode": "hidden",
+                        "placement": "bottom"
+                    }},
+                    "pieType": "donut",
+                    "reduceOptions": {{
+                        "calcs": [
+                            "lastNotNull"
+                        ],
+                        "fields": "",
+                        "values": true
+                    }},
+                    "tooltip": {{
+                        "mode": "single"
+                    }}
+                }},
+                "pluginVersion": "8.0.3",
+                "targets": [
+                    {{
+                        "database": "{5}",
+                        "expression": {{
+                            "from": {{
+                                "property": {{
+                                    "name": "Alerts",
+                                    "type": "string"
+                                }},
+                                "type": "property"
+                            }},
+                            "groupBy": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "Data.status",
+                                            "type": "string"
+                                        }},
+                                        "type": "groupBy"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "reduce": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "DeviceId",
+                                            "type": "string"
+                                        }},
+                                        "reduce": {{
+                                            "name": "count",
+                                            "type": "function"
+                                        }},
+                                        "type": "reduce"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "timeshift": {{
+                                "property": {{
+                                    "name": null,
+                                    "type": "string"
+                                }},
+                                "type": "property"
+                            }},
+                            "where": {{
+                                "expressions": [],
+                                "type": "and"
+                            }}
+                        }},
+                        "hide": false,
+                        "pluginVersion": "3.5.0",
+                        "query": "let deviceGroup= DeviceTwin\n| where $defaultQuery\n| $projection;\nAlerts\n| join kind= inner deviceGroup on DeviceId\n| where $__timeFilter(DateCreated)\n| summarize value=count() by metric=tostring(Status)",
+                        "querySource": "raw",
+                        "rawMode": true,
+                        "refId": "B",
+                        "resultFormat": "table"
+                    }}
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "Alerts By Status",
+                "type": "piechart"
+            }},
+            {{
+                "collapsed": false,
+                "datasource": null,
+                "gridPos": {{
+                    "h": 1,
+                    "w": 24,
+                    "x": 0,
+                    "y": 28
+                }},
+                "id": 49,
+                "panels": [],
+                "repeat": "selecteddeviceid",
+                "title": "Device Info - $selecteddeviceid",
+                "type": "row"
+            }},
+            {{
+                "datasource": "Azure Monitor",
+                "gridPos": {{
+                    "h": 8,
+                    "w": 24,
+                    "x": 0,
+                    "y": 29
+                }},
+                "id": 54,
+                "options": {{
+                    "dedupStrategy": "none",
+                    "enableLogDetails": true,
+                    "prettifyLogMessage": false,
+                    "showCommonLabels": false,
+                    "showLabels": false,
+                    "showTime": true,
+                    "sortOrder": "Descending",
+                    "wrapLogMessage": false
+                }},
+                "targets": [
+                    {{
+                        "appInsights": {{
+                            "dimension": [],
+                            "metricName": "select",
+                            "timeGrain": "auto"
+                        }},
+                        "azureLogAnalytics": {{
+                            "query": "AzureDiagnostics\n| where ResourceProvider == \"MICROSOFT.DEVICES\" and ResourceType == \"IOTHUBS\"\n| where TimeGenerated > ago(1d)\n| extend parsed_json = parse_json(properties_s)\n| extend DeviceId = tostring(parsed_json.deviceId)\n| where  isnotempty(DeviceId) and DeviceId == '$selecteddeviceid'\n| extend DeviceOp = strcat(DeviceId, \"-Operation-\",OperationName) \n| distinct TimeGenerated, DeviceOp,DeviceId,ResultType,ResultDescription",
+                            "resource": "/subscriptions/{2}/resourceGroups/{3}/providers/Microsoft.OperationalInsights/workspaces/{4}",
+                            "resultFormat": "table",
+                            "workspace": "7602e0e4-8abe-4030-b1ae-b21e75801d7c"
+                        }},
+                        "azureMonitor": {{
+                            "aggOptions": [],
+                            "dimensionFilter": "*",
+                            "dimensionFilters": [],
+                            "timeGrain": "auto",
+                            "timeGrains": [],
+                            "top": "10"
+                        }},
+                        "azureResourceGraph": {{
+                            "resultFormat": "table"
+                        }},
+                        "insightsAnalytics": {{
+                            "query": "",
+                            "resultFormat": "time_series"
+                        }},
+                        "queryType": "Azure Log Analytics",
+                        "refId": "A",
+                        "subscription": "{2}"
+                    }}
+                ],
+                "title": "Device Logs",
+                "type": "logs"
+            }},
+            {{
+                "datasource": "Azure Data Explorer Datasource",
+                "fieldConfig": {{
+                    "defaults": {{
+                        "color": {{
+                            "mode": "palette-classic"
+                        }},
+                        "custom": {{
+                            "hideFrom": {{
+                                "legend": false,
+                                "tooltip": false,
+                                "viz": false
+                            }}
+                        }},
+                        "mappings": []
+                    }},
+                    "overrides": [
+                        {{
+                            "__systemRef": "hideSeriesFrom",
+                            "matcher": {{
+                                "id": "byNames",
+                                "options": {{
+                                    "mode": "exclude",
+                                    "names": [
+                                        "value",
+                                        "Test2",
+                                        "Default1"
+                                    ],
+                                    "prefix": "All except:",
+                                    "readOnly": true
+                                }}
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "custom.hideFrom",
+                                    "value": {{
+                                        "legend": false,
+                                        "tooltip": false,
+                                        "viz": true
+                                    }}
+                                }}
+                            ]
+                        }}
+                    ]
+                }},
+                "gridPos": {{
+                    "h": 6,
+                    "w": 10,
+                    "x": 0,
+                    "y": 37
+                }},
+                "id": 13,
+                "options": {{
+                    "legend": {{
+                        "displayMode": "list",
+                        "placement": "bottom"
+                    }},
+                    "pieType": "pie",
+                    "reduceOptions": {{
+                        "calcs": [
+                            "sum"
+                        ],
+                        "fields": "/^value$/",
+                        "limit": 100000,
+                        "values": true
+                    }},
+                    "tooltip": {{
+                        "mode": "single"
+                    }}
+                }},
+                "pluginVersion": "8.0.3",
+                "targets": [
+                    {{
+                        "database": "{5}",
+                        "expression": {{
+                            "from": {{
+                                "property": {{
+                                    "name": "Alerts",
+                                    "type": "string"
+                                }},
+                                "type": "property"
+                            }},
+                            "groupBy": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "DeviceId",
+                                            "type": "string"
+                                        }},
+                                        "type": "groupBy"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "reduce": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "DeviceId",
+                                            "type": "string"
+                                        }},
+                                        "reduce": {{
+                                            "name": "count",
+                                            "type": "function"
+                                        }},
+                                        "type": "reduce"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "where": {{
+                                "expressions": [],
+                                "type": "and"
+                            }}
+                        }},
+                        "pluginVersion": "3.5.0",
+                        "query": "Alerts\n| where $__timeFilter(DateCreated)\n| where DeviceId == '$selecteddeviceid'\n| summarize value=count() by metric=tostring(Status)",
+                        "querySource": "raw",
+                        "rawMode": true,
+                        "refId": "A",
+                        "resultFormat": "table"
+                    }}
+                ],
+                "title": "Alerts Of Device - $selecteddeviceid",
+                "type": "piechart"
+            }},
+            {{
+                "aliasColors": {{
+                    "Closed": "dark-green",
+                    "Open": "dark-yellow"
+                }},
+                "bars": true,
+                "dashLength": 10,
+                "dashes": false,
+                "datasource": "Azure Data Explorer Datasource",
+                "fieldConfig": {{
+                    "defaults": {{
+                        "links": [
+                            {{
+                                "targetBlank": false,
+                                "title": "Telemetry",
+                                "url": "{0}/d/{6}/{7}?orgId={8}&theme=light&refresh=10s&kiosk&${{__url_time_range}}﻿﻿﻿&${{deviceGroupId:queryparam}}&${{selecteddeviceid:queryparam}}&var-fromtime=${{__value.time}}"
+                            }}
+                        ]
+                    }},
+                    "overrides": [
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "count_ closed"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "displayName",
+                                    "value": "Closed"
+                                }}
+                            ]
+                        }},
+                        {{
+                            "matcher": {{
+                                "id": "byName",
+                                "options": "count_ open"
+                            }},
+                            "properties": [
+                                {{
+                                    "id": "displayName",
+                                    "value": "Open"
+                                }}
+                            ]
+                        }}
+                    ]
+                }},
+                "fill": 1,
+                "fillGradient": 0,
+                "gridPos": {{
+                    "h": 6,
+                    "w": 14,
+                    "x": 10,
+                    "y": 37
+                }},
+                "hiddenSeries": false,
+                "id": 46,
+                "legend": {{
+                    "avg": false,
+                    "current": false,
+                    "max": false,
+                    "min": false,
+                    "show": true,
+                    "total": false,
+                    "values": false
+                }},
+                "lines": true,
+                "linewidth": 1,
+                "nullPointMode": "null",
+                "options": {{
+                    "alertThreshold": true
+                }},
+                "percentage": false,
+                "pluginVersion": "8.0.5",
+                "pointradius": 2,
+                "points": false,
+                "renderer": "flot",
+                "seriesOverrides": [],
+                "spaceLength": 10,
+                "stack": true,
+                "steppedLine": false,
+                "targets": [
+                    {{
+                        "database": "{5}",
+                        "expression": {{
+                            "from": {{
+                                "property": {{
+                                    "name": "Alerts",
+                                    "type": "string"
+                                }},
+                                "type": "property"
+                            }},
+                            "groupBy": {{
+                                "expressions": [
+                                    {{
+                                        "interval": {{
+                                            "name": "1h",
+                                            "type": "interval"
+                                        }},
+                                        "property": {{
+                                            "name": "TimeStamp",
+                                            "type": "dateTime"
+                                        }},
+                                        "type": "groupBy"
+                                    }},
+                                    {{
+                                        "property": {{
+                                            "name": "Data.status",
+                                            "type": "string"
+                                        }},
+                                        "type": "groupBy"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "reduce": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "DeviceId",
+                                            "type": "string"
+                                        }},
+                                        "reduce": {{
+                                            "name": "count",
+                                            "type": "function"
+                                        }},
+                                        "type": "reduce"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "timeshift": {{
+                                "property": {{
+                                    "name": null,
+                                    "type": "string"
+                                }},
+                                "type": "property"
+                            }},
+                            "where": {{
+                                "expressions": [
+                                    {{
+                                        "expressions": [
+                                            {{
+                                                "operator": {{
+                                                    "name": "==",
+                                                    "value": "$deviceid"
+                                                }},
+                                                "property": {{
+                                                    "name": "DeviceId",
+                                                    "type": "string"
+                                                }},
+                                                "type": "operator"
+                                            }}
+                                        ],
+                                        "type": "or"
+                                    }}
+                                ],
+                                "type": "and"
+                            }}
+                        }},
+                        "hide": false,
+                        "pluginVersion": "3.5.0",
+                        "query": "Alerts\n| where $__timeFilter(DateCreated)\n| where DeviceId == '$selecteddeviceid'\n| summarize count() by bin(DateCreated, 10m), tostring(Status)\n| order by DateCreated asc",
+                        "querySource": "raw",
+                        "rawMode": true,
+                        "refId": "B",
+                        "resultFormat": "time_series"
+                    }}
+                ],
+                "thresholds": [],
+                "timeFrom": null,
+                "timeRegions": [],
+                "timeShift": null,
+                "title": "Alerts By Status - $selecteddeviceid",
+                "tooltip": {{
+                    "shared": false,
+                    "sort": 0,
+                    "value_type": "individual"
+                }},
+                "type": "graph",
+                "xaxis": {{
+                    "buckets": null,
+                    "mode": "time",
+                    "name": null,
+                    "show": true,
+                    "values": []
+                }},
+                "yaxes": [
+                    {{
+                        "$$hashKey": "object:77",
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    }},
+                    {{
+                        "$$hashKey": "object:78",
+                        "format": "short",
+                        "label": null,
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true
+                    }}
+                ],
+                "yaxis": {{
+                    "align": false,
+                    "alignLevel": null
+                }}
+            }},
+            {{
+                "datasource": "Azure Data Explorer Datasource",
+                "fieldConfig": {{
+                    "defaults": {{
+                        "color": {{
+                            "mode": "palette-classic"
+                        }},
+                        "custom": {{
+                            "axisLabel": "",
+                            "axisPlacement": "auto",
+                            "barAlignment": 0,
+                            "drawStyle": "line",
+                            "fillOpacity": 0,
+                            "gradientMode": "none",
+                            "hideFrom": {{
+                                "legend": false,
+                                "tooltip": false,
+                                "viz": false
+                            }},
+                            "lineInterpolation": "linear",
+                            "lineWidth": 1,
+                            "pointSize": 5,
+                            "scaleDistribution": {{
+                                "type": "linear"
+                            }},
+                            "showPoints": "always",
+                            "spanNulls": true,
+                            "stacking": {{
+                                "group": "A",
+                                "mode": "none"
+                            }},
+                            "thresholdsStyle": {{
+                                "mode": "off"
+                            }}
+                        }},
+                        "mappings": [],
+                        "noValue": "No Data to Display",
+                        "thresholds": {{
+                            "mode": "absolute",
+                            "steps": [
+                                {{
+                                    "color": "green",
+                                    "value": null
+                                }},
+                                {{
+                                    "color": "red",
+                                    "value": 80
+                                }}
+                            ]
+                        }}
+                    }},
+                    "overrides": []
+                }},
+                "gridPos": {{
+                    "h": 7,
+                    "w": 24,
+                    "x": 0,
+                    "y": 43
+                }},
+                "hideTimeOverride": false,
+                "id": 52,
+                "options": {{
+                    "legend": {{
+                        "calcs": [],
+                        "displayMode": "list",
+                        "placement": "bottom"
+                    }},
+                    "tooltip": {{
+                        "mode": "single"
+                    }}
+                }},
+                "targets": [
+                    {{
+                        "database": "{5}",
+                        "expression": {{
+                            "from": {{
+                                "property": {{
+                                    "name": "Telemetry",
+                                    "type": "string"
+                                }},
+                                "type": "property"
+                            }},
+                            "groupBy": {{
+                                "expressions": [
+                                    {{
+                                        "interval": {{
+                                            "name": "$__timeInterval",
+                                            "type": "interval"
+                                        }},
+                                        "property": {{
+                                            "name": "TimeStamp",
+                                            "type": "dateTime"
+                                        }},
+                                        "type": "groupBy"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "reduce": {{
+                                "expressions": [
+                                    {{
+                                        "property": {{
+                                            "name": "",
+                                            "type": "string"
+                                        }},
+                                        "reduce": {{
+                                            "name": "",
+                                            "type": "function"
+                                        }},
+                                        "type": "reduce"
+                                    }}
+                                ],
+                                "type": "and"
+                            }},
+                            "where": {{
+                                "expressions": [],
+                                "type": "and"
+                            }}
+                        }},
+                        "pluginVersion": "3.5.0",
+                        "query": "Telemetry\n| where TimeStamp >= unixtime_milliseconds_todatetime($fromtime)-15m and TimeStamp < (iff((unixtime_milliseconds_todatetime($fromtime)+15m) > now(),now(),unixtime_milliseconds_todatetime($fromtime)+15m))\n| where DeviceId == '$selecteddeviceid'\n| evaluate bag_unpack(Data)\n| project-away deviceId*, iothub*, _*, messageId*,Message*\n| order by TimeStamp asc ",
+                        "querySource": "raw",
+                        "rawMode": true,
+                        "refId": "A",
+                        "resultFormat": "time_series"
+                    }}
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "Telemetry - $selecteddeviceid",
+                "type": "timeseries"
+            }}
+        ],
+        "refresh": "10s",
+        "schemaVersion": 30,
+        "style": "dark",
+        "tags": [],
+        "templating": {{
+            "list": [
+                {{
+                    "current": {{
+                        "selected": false,
+                        "text": "Azure Monitor",
+                        "value": "Azure Monitor"
+                    }},
+                    "description": null,
+                    "error": null,
+                    "hide": 2,
+                    "includeAll": false,
+                    "label": null,
+                    "multi": false,
+                    "name": "Subscription",
+                    "options": [],
+                    "query": "grafana-azure-monitor-datasource",
+                    "refresh": 1,
+                    "regex": "",
+                    "skipUrlSync": false,
+                    "type": "datasource"
+                }},
+                {{
+                    "description": null,
+                    "error": null,
+                    "hide": 2,
+                    "label": null,
+                    "name": "selecteddeviceid",
+                    "query": "",
+                    "skipUrlSync": false,
+                    "type": "constant"
+                }},
+                {{
+                    "description": null,
+                    "error": null,
+                    "hide": 2,
+                    "label": null,
+                    "name": "fromtime",
+                    "query": "1626361200000",
+                    "skipUrlSync": false,
+                    "type": "constant"
+                }},
+                {{
+                    "allValue": null,
+                    "current": {{}},
+                    "datasource": "Azure Data Explorer Datasource",
+                    "definition": "database(\"{5}\").DeviceGroup\n| summarize arg_max(TimeStamp, *) by DeviceGroupId\n| where IsDeleted == false\n| order by TimeStamp desc\n| take 1\n| project DeviceGroupId ",
+                    "description": null,
+                    "error": null,
+                    "hide": 2,
+                    "includeAll": false,
+                    "label": null,
+                    "multi": false,
+                    "name": "deviceGroupId",
+                    "options": [],
+                    "query": "database(\"{5}\").DeviceGroup\n| summarize arg_max(TimeStamp, *) by DeviceGroupId\n| where IsDeleted == false\n| order by TimeStamp desc\n| take 1\n| project DeviceGroupId ",
+                    "refresh": 1,
+                    "regex": "",
+                    "skipUrlSync": false,
+                    "sort": 0,
+                    "type": "query"
+                }},
+                {{
+                    "description": null,
+                    "error": null,
+                    "hide": 2,
+                    "label": null,
+                    "name": "projection",
+                    "query": "summarize arg_max(TimeStamp,*) by DeviceId | where IsDeleted == false | project DeviceId",
+                    "skipUrlSync": false,
+                    "type": "constant"
+                }},
+                {{
+                    "allValue": null,
+                    "current": {{}},
+                    "datasource": "Azure Data Explorer Datasource",
+                    "definition": "database(\"{5}\").DeviceGroup\n| summarize arg_max(TimeStamp,*) by DeviceGroupId\n| where DeviceGroupId == \"$deviceGroupId\" and IsDeleted == false\n| project DeviceGroupConditions=iff(isempty(DeviceGroupConditions),\"1==1\",DeviceGroupConditions)",
+                    "description": null,
+                    "error": null,
+                    "hide": 2,
+                    "includeAll": false,
+                    "label": null,
+                    "multi": false,
+                    "name": "defaultQuery",
+                    "options": [],
+                    "query": "database(\"{5}\").DeviceGroup\n| summarize arg_max(TimeStamp,*) by DeviceGroupId\n| where DeviceGroupId == \"$deviceGroupId\" and IsDeleted == false\n| project DeviceGroupConditions=iff(isempty(DeviceGroupConditions),\"1==1\",DeviceGroupConditions)",
+                    "refresh": 1,
+                    "regex": "",
+                    "skipUrlSync": false,
+                    "sort": 0,
+                    "type": "query"
+                }}
+            ]
+        }},
+        "time": {{
+            "from": "now-7d",
+            "to": "now"
+        }},
+        "timepicker": {{
+            "hidden": false
+        }},
+        "timezone": "",
+        "title": "{7}",
+        "uid": "{6}"
+    }}
+    }}

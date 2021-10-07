@@ -145,7 +145,7 @@
             "properties": {
                 "enabled": true,
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('functionAppName'))]",
-				"httpsOnly": true,
+                "httpsOnly": true,
                 "reserved": false,
                 "scmSiteAlsoStopped": false,
                 "hostingEnvironmentProfile": null,

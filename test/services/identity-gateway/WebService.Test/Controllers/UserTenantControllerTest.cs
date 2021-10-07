@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.Common.Services;
+using Mmm.Iot.Common.Services.Config;
+using Mmm.Iot.Common.Services.External.Grafana;
+using Mmm.Iot.Common.Services.External.KeyVault;
 using Mmm.Iot.Common.TestHelpers;
 using Mmm.Iot.IdentityGateway.Services;
 using Mmm.Iot.IdentityGateway.Services.Helpers;
@@ -238,7 +241,20 @@ namespace Mmm.Iot.IdentityGateway.WebService.Test.Controllers
         {
             this.mockJwtHelper = new Mock<IJwtHelpers> { DefaultValue = DefaultValue.Mock };
             this.logger = new Mock<ILogger<UserTenantContainer>>();
-            this.mockUserTenantContainer = new Mock<UserTenantContainer>(this.logger.Object);
+            this.mockUserTenantContainer = new Mock<UserTenantContainer>(
+               this.logger.Object,
+               new AppConfig()
+               {
+                   DeviceTelemetryService = new DeviceTelemetryServiceConfig
+                   {
+                       Messages = new MessagesConfig
+                       {
+                           TelemetryStorageType = "cosmosdb",
+                       },
+                   },
+               },
+               new Mock<IGrafanaClient>().Object,
+               new Mock<IKeyVaultClient>().Object);
             this.settingsLogger = new Mock<ILogger<UserSettingsContainer>>();
             this.mockUserSettingsContainer = new Mock<UserSettingsContainer>(this.settingsLogger.Object);
             this.mockHttpContext = new Mock<HttpContext> { DefaultValue = DefaultValue.Mock };

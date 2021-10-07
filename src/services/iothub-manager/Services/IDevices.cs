@@ -13,6 +13,10 @@ namespace Mmm.Iot.IoTHubManager.Services
     {
         Task<DeviceServiceListModel> GetListAsync(string query, string continuationToken);
 
+        Task<DeviceServiceListModel> GetListFromIoTHubAsync(string inputQuery, string continuationToken);
+
+        Task<DeviceServiceListModel> GetListFromADXAsync(string query);
+
         Task<DeviceStatisticsServiceModel> GetDeviceStatisticsAsync(string query);
 
         Task<DeviceTwinName> GetDeviceTwinNamesAsync();

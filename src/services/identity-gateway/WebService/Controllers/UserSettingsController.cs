@@ -142,6 +142,12 @@ namespace Mmm.Iot.IdentityGateway.WebService.Controllers
             return new UserSettingsModel() { Value = this.config.Global.BuildNumber.ToString() };
         }
 
+        [HttpGet("DashboardMode")]
+        public UserSettingsModel GetDashboardMode()
+        {
+            return new UserSettingsModel() { Value = this.config.Global.LoadGrafanaDashboard.ToString() };
+        }
+
         private string GetUserActiveDeviceGroupKey()
         {
             return $"{this.GetTenantId()}-ActiveDeviceGroup";

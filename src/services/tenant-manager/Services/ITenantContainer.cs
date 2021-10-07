@@ -20,5 +20,9 @@ namespace Mmm.Iot.TenantManager.Services
         Task<TenantModel> UpdateTenantAsync(string tenantId, string tenantName);
 
         Task<UserTenantListModel> GetAllTenantsAsync(string userId);
+
+        string GetGrafanaUrl(string tenantId);
+
+        string GetGrafanaOrgId(string tenantId);
     }
 }

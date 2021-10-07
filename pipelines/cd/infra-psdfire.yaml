@@ -52,6 +52,7 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-psdfireDev)
           isHelmVersion3: true
+          telemetryStorageType: $(telemetryStorageType-psdfireDev)
 
   - stage: psdfireQa
     displayName: PSDFire Qa
@@ -77,6 +78,7 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-psdfireQa)
           isHelmVersion3: false
+          telemetryStorageType: $(telemetryStorageType-psdfireQa)
 
   - stage: psdfireCt
     displayName: PSDFire CT
@@ -102,6 +104,7 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-psdfireCt)
           isHelmVersion3: false
+          telemetryStorageType: $(telemetryStorageType-psdfireCt)
     
   - stage: psdfireProd
     displayName: PSDFire Prod
@@ -127,4 +130,5 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-psdfireProd)
           isHelmVersion3: false
+          telemetryStorageType: $(telemetryStorageType-psdProd)
           

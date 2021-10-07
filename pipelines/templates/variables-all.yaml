@@ -20,9 +20,11 @@ variables:
   functionApp4PartialName: iotdeploymentfuncapp
   functionApp3PartialName: alertingactionsfuncapp
   functionApp5PartialName: resourcedatacollector
+  functionApp6PartialName: batchprocessorfuncapp
   keyVaultPartialName: keyvault
   mapsPartialName: maps
   omsWorkspacePartialName: loganalyticsws
   resourceGroupPartialName: rg
   storageAccountPartialName: storageacct
   sendgridAccountPartialName: sendgrid
+  dataExplorerClusterPartialName: kusto

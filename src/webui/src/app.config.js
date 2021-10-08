@@ -15,7 +15,7 @@ const baseUrl = process.env.REACT_APP_BASE_SERVICE_URL || "",
             grafana: `${baseUrl}/grafana/`,
             privacy: "https://privacy.microsoft.com/privacystatement",
             gitHubReleases:
-                "https://api.github.com/repos/3mcloud/azure-iot-platform-dotnet/releases/tags/5.4.4",
+                "https://api.github.com/repos/3mcloud/azure-iot-platform-dotnet/releases/tags/5.5.0",
         },
         contextHelpUrls: {
             accessDenied:

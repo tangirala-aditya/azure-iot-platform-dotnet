@@ -622,7 +622,7 @@ try {
 
                 Write-Output "SAJob is stoped"
             }
-            catch catch {
+            catch {
                 Write-Host("An Error occured.")
                 Write-Host($_)
             }

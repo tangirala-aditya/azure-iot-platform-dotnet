@@ -60,6 +60,9 @@
                 "tier": "Standard",
                 "capacity": 2
             },
+            "identity": {
+                "type": "None"
+            },
             "properties": {
                 "enableStreamingIngest": true
             },

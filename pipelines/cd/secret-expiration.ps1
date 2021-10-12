@@ -103,4 +103,4 @@ function Send-ExpiringDetails {
     $response = Invoke-RestMethod -Uri https://api.sendgrid.com/v3/mail/send -Method Post -Headers $headers -Body $bodyJson
 }
 
-Send-ExpiringDetails -sendgridAPIKey $(sendgridAPIKey) -destEmailAddress $(destEmailAddress)
+Send-ExpiringDetails -sendgridAPIKey $sendgridAPIKey -destEmailAddress $destEmailAddress

@@ -13,7 +13,7 @@ function Send-ExpiringDetails {
     $fromEmailAddress="iotplatformnoreply@mmm.com"
     $appRegList= @( "95d3c662-23ea-4e2d-8d3d-ea2448706934", "68ca44b8-9e1b-46a0-b258-307f8b450218", "eb99f9dd-a07f-4674-8294-2c44eaa7f09f", "51c5ac78-b4fb-4772-9918-976b95f3d50f", "4c98e61d-61c3-423b-9eb1-f5bee4c3d719" )
     $expiredDetails = @()
-    $currDate = (Get-Date).AddDays(0).ToString("yyyy-MM-ddThh:mm:ssK")
+    $currDate = (Get-Date).AddDays(60).ToString("yyyy-MM-ddThh:mm:ssK")
 
     foreach($appReg in $appRegList)
     {

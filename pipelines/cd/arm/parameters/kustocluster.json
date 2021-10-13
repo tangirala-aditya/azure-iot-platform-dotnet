@@ -8,6 +8,10 @@
         "principalIdForCluster": { "value": "" },
         "roleForClusterPrincipal": { "value": "AllDatabasesAdmin" },
         "tenantIdForClusterPrincipal": { "value": "" },
-        "principalTypeForCluster": { "value": "Group" }
+        "principalTypeForCluster": { "value": "Group" },
+        "skuName": { "value": "Standard_D11_v2" },
+        "skuTier": { "value":  "Standard" },
+        "skuCapacity": { "value":  2 }
+
     }
 }

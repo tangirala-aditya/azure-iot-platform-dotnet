@@ -6,7 +6,6 @@ parameters:
   applicationShortCode:
   imageTag:
   blueGreen:
-  isHelmVersion3:
 
 jobs:
   - template: get-approval.yaml
@@ -89,35 +88,6 @@ jobs:
 
         displayName: Print job variables
 
-      - ${{ if eq(parameters.isHelmVersion3,false) }}:
-        - ${{ if eq(parameters.blueGreen,false) }}: 
-          - template: steps-deploy-individual-service.yaml
-            parameters:
-              aksName: $(aksName)
-              resourceGroupName: $(resourceGroupName)
-              subscriptionName: ${{parameters.subscriptionName}}
-              serviceName: $(serviceName)
-              servicePort: $(servicePort)
-              serviceProbesEnabled: $(serviceProbesEnabled)
-              helmVersion: $(helmVersion2)
-              imageTag: ${{parameters.imageTag}}
-
-        - ${{ if eq(parameters.blueGreen,true) }}:
-          - template: steps-deploy-blue-green-service.yaml
-            parameters:
-              aksName: $(aksName)
-              resourceGroupName: $(resourceGroupName)
-              subscriptionName: ${{parameters.subscriptionName}}
-              serviceName: $(serviceName)
-              blueServiceName: $(serviceName)-blue
-              greenServiceName: $(serviceName)-green
-              servicePort: $(servicePort)
-              serviceProbesEnabled: $(serviceProbesEnabled)
-              helmVersion: $(helmVersion2)
-              imageTag: ${{parameters.imageTag}}
-              type: blue
-
-      - ${{ if eq(parameters.isHelmVersion3,true) }}:
         - ${{ if eq(parameters.blueGreen,true) }}:
           - template: steps-deploy-blue-green-service-v3.yaml
             parameters:

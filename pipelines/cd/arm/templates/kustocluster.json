@@ -16,6 +16,24 @@
                 "description": "Location for all resources."
             }
         },
+        "skuName": {
+            "type": "string",
+            "metadata": {
+                "description": "SKU Name of the ADE Cluster"
+            }
+        },
+        "skuTier": {
+            "type": "string",
+            "metadata": {
+                "description": "SKU Tier of the ADE Cluster"
+            }
+        },        
+        "skuCapacity": {
+            "type": "int",
+            "metadata": {
+                "description": "SKU Capacity of the ADE Cluster"
+            }
+        },
         "clusterPrincipalAssignmentName": {
             "type": "string",
             "defaultValue": "principalAssignment",
@@ -56,9 +74,9 @@
             "name": "[parameters('kustoClusterName')]",
             "type": "Microsoft.Kusto/Clusters",
             "sku": {
-                "name": "Standard_D11_v2",
-                "tier": "Standard",
-                "capacity": 2
+                "name": "[parameters('skuName')]",
+                "tier": "[parameters('skuTier')]",
+                "capacity": "[parameters('skuCapacity')]"
             },
             "identity": {
                 "type": "None"

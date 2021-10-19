@@ -1,5 +1,6 @@
 variables:
   helmVersion: 3.4.0
+  helmVersion2: 2.16.7
   certManagerVersion: 1.1.0
   dotnetBuildConfiguration: Release
   dotnetCoreRuntimeVersion: 3.1

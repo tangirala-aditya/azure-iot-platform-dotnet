@@ -55,8 +55,6 @@ variables:
     value: $(buildId)
   - name: dockerfile
     value: Dockerfile
-  - name: helmVersion
-    value: $(helmVersion)
   - name: mmmIotPlatformServicesHelmChartName
     value: mmm-iot-platform-services 
   - name: mmmIotPlatformIngressHelmChartName

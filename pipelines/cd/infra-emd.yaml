@@ -50,7 +50,6 @@ stages:
           runVersion: $(runVersion-emdDev)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-emdDev)
-          isHelmVersion3: true
           aadSGId: $(aadSGId-emdDev)
           telemetryStorageType: $(telemetryStorageType-emdDev)
 
@@ -78,7 +77,6 @@ stages:
           runVersion: $(runVersion-emdQa)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-emdQa)
-          isHelmVersion3: true
           aadSGId: $(aadSGId-emdQa)
           telemetryStorageType: $(telemetryStorageType-emdQa)
 
@@ -106,7 +104,6 @@ stages:
           runVersion: $(runVersion-emdCt)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-emdCt)
-          isHelmVersion3: false
           aadSGId: $(aadSGId-emdCt)
           telemetryStorageType: $(telemetryStorageType-emdCt)
           

@@ -78,13 +78,11 @@ jobs:
           echo "resourceGroupPartialName: ${{parameters.resourceGroupPartialName}}"
           echo "aksName: $(aksName)"
           echo "resourceGroupName: $(resourceGroupName)"
-          echo "helmVersion2: $(helmVersion2)"
-          echo "helmVersion3: $(helmVersion3)"          
+          echo "helmVersion: $(helmVersion)"          
           echo "serviceName: $(serviceName)"
           echo "servicePort: $(servicePort)"
           echo "serviceProbesEnabled: $(serviceProbesEnabled)"
           echo "blueGreen: ${{parameters.blueGreen}}"
-          echo "isHelmVersion3: ${{parameters.isHelmVersion3}}"
 
         displayName: Print job variables
 
@@ -99,7 +97,7 @@ jobs:
               greenServiceName: $(serviceName)-green
               servicePort: $(servicePort)
               serviceProbesEnabled: $(serviceProbesEnabled)
-              helmVersion: $(helmVersion3)
+              helmVersion: $(helmVersion)
               imageTag: ${{parameters.imageTag}}
               type: blue
 
@@ -112,7 +110,7 @@ jobs:
               serviceName: $(serviceName)
               servicePort: $(servicePort)
               serviceProbesEnabled: $(serviceProbesEnabled)
-              helmVersion: $(helmVersion3)
+              helmVersion: $(helmVersion)
               imageTag: ${{parameters.imageTag}}              
 
   - job: addKey

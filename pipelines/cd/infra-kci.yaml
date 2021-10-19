@@ -49,7 +49,6 @@ stages:
           runVersion: $(runVersion-kciDev)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-kciDev)
-          isHelmVersion3: true
           aadSGId: $(aadSGId-kciDev)
           telemetryStorageType: $(telemetryStorageType-kciDev)
 
@@ -77,7 +76,6 @@ stages:
           runVersion: $(runVersion-kciQa)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-kciQa)
-          isHelmVersion3: false
           aadSGId: $(aadSGId-kciQa)
           telemetryStorageType: $(telemetryStorageType-kciQa)
           
@@ -105,7 +103,6 @@ stages:
           runVersion: $(runVersion-kciCt)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-kciCt)
-          isHelmVersion3: false
           aadSGId: $(aadSGId-kciCt)
           telemetryStorageType: $(telemetryStorageType-kciCt)
 
@@ -133,7 +130,6 @@ stages:
           runVersion: $(runVersion-kciPr)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-kciPr)
-          isHelmVersion3: false
           aadSGId: $(aadSGId-kciPr)
           telemetryStorageType: $(telemetryStorageType-kciPr)
           

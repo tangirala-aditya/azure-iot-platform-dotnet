@@ -2,8 +2,8 @@ trigger: none
 pr: none
 resources:
   pipelines:
-    - pipeline: testV3
-      source: azure-iot-platform-dotnet.ci.test-v3
+    - pipeline: test
+      source: azure-iot-platform-dotnet.ci.test
       trigger:
         branches:
           - master          
@@ -66,7 +66,7 @@ stages:
 
           - template: ../templates/print-pipeline-resource-variables.yaml
             parameters:
-              pipelineResourceName: testV3
+              pipelineResourceName: test
 
   - stage: crslDev
     displayName: CRSL dev
@@ -85,7 +85,6 @@ stages:
           environmentCategory: $(environmentCategory-crslDev)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: true
           subscriptionId: $(subscriptionId-crslDev)
 
   - stage: acsDev
@@ -104,7 +103,6 @@ stages:
           environmentCategory: $(environmentCategory-acsDev)
           imageTag: $(_imageTag)
           blueGreen: false
-          isHelmVersion3: false          
           subscriptionId: $(subscriptionId-acsDev)
 
   - stage: crslQa
@@ -123,7 +121,6 @@ stages:
           environmentCategory: $(environmentCategory-crslQa)
           imageTag: $(_imageTag)
           blueGreen: false
-          isHelmVersion3: true          
           subscriptionId: $(subscriptionId-crslQa)
 
   - stage: crslWkbnch
@@ -142,7 +139,6 @@ stages:
           environmentCategory: $(environmentCategory-crslWkbnch)
           imageTag: $(_imageTag)
           blueGreen: false
-          isHelmVersion3: false
           subscriptionId: $(subscriptionId-crslWkbnch)
 
   - stage: chimDev
@@ -161,7 +157,6 @@ stages:
           environmentCategory: $(environmentCategory-chimDev)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: true
           subscriptionId: $(subscriptionId-chimDev)
 
   - stage: chimQa
@@ -180,7 +175,6 @@ stages:
           environmentCategory: $(environmentCategory-chimQa)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: true
           subscriptionId: $(subscriptionId-chimQa)
 
   - stage: chimProd
@@ -199,7 +193,6 @@ stages:
           environmentCategory: $(environmentCategory-chimProd)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: false
           subscriptionId: $(subscriptionId-chimProd)
 
   - stage: psdDev
@@ -218,7 +211,6 @@ stages:
           environmentCategory: $(environmentCategory-psdDev)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: true
           subscriptionId: $(subscriptionId-psdDev)
           
   - stage: psdTest
@@ -237,7 +229,6 @@ stages:
           environmentCategory: $(environmentCategory-psdTest)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: true
           subscriptionId: $(subscriptionId-psdTest)
 
   - stage: psdQa
@@ -256,7 +247,6 @@ stages:
           environmentCategory: $(environmentCategory-psdQa)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: true
           subscriptionId: $(subscriptionId-psdQa)
 
   - stage: psdEu
@@ -275,7 +265,6 @@ stages:
           environmentCategory: $(environmentCategory-psdEu)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: false
           subscriptionId: $(subscriptionId-psdEu)
 
   - stage: psdStg
@@ -294,7 +283,6 @@ stages:
           environmentCategory: $(environmentCategory-psdStg)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: false
           subscriptionId: $(subscriptionId-psdStg)
 
   - stage: psdProd
@@ -313,7 +301,6 @@ stages:
           environmentCategory: $(environmentCategory-psdProd)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: false
           subscriptionId: $(subscriptionId-psdProd)
 
   - stage: emdDev
@@ -332,7 +319,6 @@ stages:
           environmentCategory: $(environmentCategory-emdDev)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: true
           subscriptionId: $(subscriptionId-emdDev)
 
   - stage: emdQa
@@ -351,7 +337,6 @@ stages:
           environmentCategory: $(environmentCategory-emdQa)
           imageTag: $(_imageTag)
           blueGreen: false
-          isHelmVersion3: true
           subscriptionId: $(subscriptionId-emdQa)
 
   - stage: emdCt
@@ -370,7 +355,6 @@ stages:
           environmentCategory: $(environmentCategory-emdCt)
           imageTag: $(_imageTag)
           blueGreen: false
-          isHelmVersion3: false
           subscriptionId: $(subscriptionId-emdCt)
 
   - stage: kciDev
@@ -389,7 +373,6 @@ stages:
           environmentCategory: $(environmentCategory-kciDev)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: true
           subscriptionId: $(subscriptionId-kciDev)
 
   - stage: kciQa
@@ -408,7 +391,6 @@ stages:
           environmentCategory: $(environmentCategory-kciQa)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: false
           subscriptionId: $(subscriptionId-kciQa)  
 
   - stage: kciCt
@@ -427,7 +409,6 @@ stages:
           environmentCategory: $(environmentCategory-kciCt)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: false
           subscriptionId: $(subscriptionId-kciCt)
 
   - stage: kciPr
@@ -446,7 +427,6 @@ stages:
           environmentCategory: $(environmentCategory-kciPr)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: false
           subscriptionId: $(subscriptionId-kciPr)
 
   - stage: psdfireDev
@@ -465,7 +445,6 @@ stages:
           environmentCategory: $(environmentCategory-psdfireDev)
           imageTag: $(_imageTag)
           blueGreen: false
-          isHelmVersion3: true
           subscriptionId: $(subscriptionId-psdfireDev)
 
   - stage: psdfireQa
@@ -484,7 +463,6 @@ stages:
           environmentCategory: $(environmentCategory-psdfireQa)
           imageTag: $(_imageTag)
           blueGreen: false
-          isHelmVersion3: false
           subscriptionId: $(subscriptionId-psdfireQa)
 
   - stage: psdfireCt
@@ -503,7 +481,6 @@ stages:
           environmentCategory: $(environmentCategory-psdfireCt)
           imageTag: $(_imageTag)
           blueGreen: false
-          isHelmVersion3: false
           subscriptionId: $(subscriptionId-psdfireCt)
 
   - stage: psdfireProd
@@ -522,5 +499,4 @@ stages:
           environmentCategory: $(environmentCategory-psdfireProd)
           imageTag: $(_imageTag)
           blueGreen: false
-          isHelmVersion3: false
           subscriptionId: $(subscriptionId-psdfireProd)

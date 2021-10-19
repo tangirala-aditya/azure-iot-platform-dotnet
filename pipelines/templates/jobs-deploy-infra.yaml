@@ -15,7 +15,6 @@ parameters:
   testPipelineId:
   runVersion:
   testPipelineRunId:
-  isHelmVersion3:
   aadSGId:
   telemetryStorageType:
 
@@ -91,7 +90,6 @@ jobs:
           echo "variable: omsWorkspaceName: $(omsWorkspaceName)"
           echo "variable: resourceGroupName: $(resourceGroupName)"
           echo "variable: storageAccountName: $(storageAccountName)"
-          echo "variable: isHelmVersion3:  ${{parameters.isHelmVersion3}}"
           echo "variable: dataExplorerClusterPartialName: $(dataExplorerClusterPartialName)"
           echo "variable: dataExplorerClusterName: $(dataExplorerClusterName)"
           echo "variable: telemetryStorageType: ${{parameters.telemetryStorageType}}"
@@ -242,7 +240,7 @@ jobs:
           azureResourceGroup: $(resourceGroupName)
           kubernetesCluster: $(aksName)
           command: apply
-          arguments: --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v$(certManagerVersion3)/cert-manager.crds.yaml
+          arguments: --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v$(certManagerVersion)/cert-manager.crds.yaml
           outputFormat: name
 
   - job: grafana
@@ -1536,7 +1534,6 @@ jobs:
     displayName: Create K8s ingress 
     dependsOn:
       - aks
-    condition: and(true,eq('${{parameters.isHelmVersion3}}',true))
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -1554,7 +1551,7 @@ jobs:
       - task: HelmInstaller@1
         displayName: Install Helm 
         inputs:
-          helmVersionToInstall: $(helmVersion3)
+          helmVersionToInstall: $(helmVersion)
 
 
       - task: AzureCLI@2
@@ -1612,7 +1609,7 @@ jobs:
           chartType: Name
           releaseName: cert-manager
           chartName: jetstack/cert-manager
-          arguments: --version v$(certManagerVersion3) --install --create-namespace
+          arguments: --version v$(certManagerVersion) --install --create-namespace
 
       - task: Kubernetes@1
         displayName: Create Cluster Issuer

@@ -53,7 +53,6 @@ stages:
           runVersion: $(runVersion-psdDev)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-psdDev)
-          isHelmVersion3: true
           aadSGId: $(aadSGId-psdDev)
           telemetryStorageType: $(telemetryStorageType-psdDev)
 
@@ -82,7 +81,6 @@ stages:
           runVersion: $(runVersion-psdTest)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-psdTest)
-          isHelmVersion3: true
           aadSGId: $(aadSGId-psdTest)
           telemetryStorageType: $(telemetryStorageType-psdTest)
 
@@ -110,7 +108,6 @@ stages:
           runVersion: $(runVersion-psdQa)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-psdQa)
-          isHelmVersion3: true
           aadSGId: $(aadSGId-psdQa)
           telemetryStorageType: $(telemetryStorageType-psdQa)
 
@@ -138,7 +135,6 @@ stages:
           runVersion: $(runVersion-psdEu)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-psdEu)
-          isHelmVersion3: false
           aadSGId: $(aadSGId-psdEu)
           telemetryStorageType: $(telemetryStorageType-psdEu)
 
@@ -166,7 +162,6 @@ stages:
           runVersion: $(runVersion-psdStg)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-psdStg)
-          isHelmVersion3: false
           aadSGId: $(aadSGId-psdStg)
           telemetryStorageType: $(telemetryStorageType-psdStg)
 
@@ -194,6 +189,5 @@ stages:
           runVersion: $(runVersion-psdProd)
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-psdProd)
-          isHelmVersion3: false
           aadSGId: $(aadSGId-psdProd)
           telemetryStorageType: $(telemetryStorageType-psdProd)

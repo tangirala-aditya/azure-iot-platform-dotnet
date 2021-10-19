@@ -56,11 +56,11 @@ variables:
   - name: dockerfile
     value: Dockerfile
   - name: helmVersion
-    value: $(helmVersion3)
+    value: $(helmVersion)
   - name: mmmIotPlatformServicesHelmChartName
-    value: mmm-iot-platform-services-v3 
+    value: mmm-iot-platform-services 
   - name: mmmIotPlatformIngressHelmChartName
-    value: mmm-iot-platform-ingress-v3
+    value: mmm-iot-platform-ingress
   - name: helmInstallTimeoutInSeconds
     value: 1000s    
   - name: grafanaImage
@@ -549,15 +549,15 @@ stages:
     dependsOn: []
     jobs:
 
-      - job: addAuthenticationCallbackUrlV3
-        displayName: Add auth callback URL for V3
+      - job: addAuthenticationCallbackUrl
+        displayName: Add auth callback URL
         pool:
           vmImage: windows-latest
         steps:
           - checkout: none
 
           - task: PowerShell@2
-            displayName: Add auth callback URL for V3
+            displayName: Add auth callback URL
             inputs:
               targetType: inline
               script: |-
@@ -576,12 +576,12 @@ stages:
                   Set-AzureADMSApplication -ObjectId $app.Id -Web @{ RedirectUris = $replyUrls }
                 }
 
-  - stage: deployIngressV3
-    displayName: Deploy ingress V3
+  - stage: deployIngress
+    displayName: Deploy ingress
     dependsOn: []
     jobs:
-      - job: deployIngressV3
-        displayName: Deploy ingress V3
+      - job: deployIngress
+        displayName: Deploy ingress
         steps:
           - checkout: self
             displayName: Checkout repository
@@ -606,7 +606,7 @@ stages:
 
                 az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(kubernetesNamespaceWasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
-          - template: ../templates/steps-install-helm-v3.yaml
+          - template: ../templates/steps-install-helm.yaml
             parameters:
               helmVersion: $(helmVersion)
 
@@ -617,7 +617,7 @@ stages:
             displayName: Update helm local dependencies
 
           - task: HelmDeploy@0
-            displayName: Install ingress HelmV3 chart
+            displayName: Install ingress Helm chart
             inputs:
               connectionType: Azure Resource Manager
               azureSubscriptionEndpoint: $(subscriptionName)
@@ -637,7 +637,7 @@ stages:
                 --wait
 
           - task: AzureCLI@2
-            displayName: Note ingress HelmV3 chart was installed
+            displayName: Note ingress Helm chart was installed
             inputs:
               azureSubscription: $(subscriptionName)
               scriptType: bash
@@ -667,8 +667,8 @@ stages:
                   $certificateIsReady = kubectl get certificates --namespace $(kubernetesNamespace) --output jsonpath="{.items[0].status.conditions[?(@.type=='Ready')].status}"
                 }
 
-  - stage: deployServicesV3
-    displayName: Deploy services V3
+  - stage: deployServices
+    displayName: Deploy services
     dependsOn:
       - buildFrontEndContainers
       - buildServiceContainers
@@ -690,8 +690,8 @@ stages:
                 appConfigurationConnectionString=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(tableStorageAppConfigurationConnectionStringRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
                 echo "##vso[task.setvariable variable=appConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
 
-      - job: deployServicesV3
-        displayName: Deploy services V3
+      - job: deployServices
+        displayName: Deploy services
         dependsOn:
           - getPipelineVariables
         variables:
@@ -700,7 +700,7 @@ stages:
           - checkout: self
             displayName: Checkout repository
 
-          - template: ../templates/steps-install-helm-v3.yaml
+          - template: ../templates/steps-install-helm.yaml
             parameters:
               helmVersion: $(helmVersion)
 
@@ -728,7 +728,7 @@ stages:
                 kubectl expose deployment grafana -n $(kubernetesNamespace) --port=80 --target-port=3000 --protocol=TCP
 
           - task: HelmDeploy@0
-            displayName: Install services Helm chart V3
+            displayName: Install services Helm chart
             inputs:
               connectionType: Azure Resource Manager
               azureSubscriptionEndpoint: $(subscriptionName)
@@ -748,7 +748,7 @@ stages:
                 --wait
 
           - task: AzureCLI@2
-            displayName: Note services HelmV3 chart was installed
+            displayName: Note services Helm chart was installed
             inputs:
               azureSubscription: $(subscriptionName)
               scriptType: bash
@@ -761,8 +761,8 @@ stages:
     displayName: Functional tests
     dependsOn:
       - addAuthenticationCallbackUrl
-      - deployServicesV3
-      - deployIngressV3
+      - deployServices
+      - deployIngress
     jobs:
       - job: addFunctionalTestAccount
         displayName: Add Functional Test Account
@@ -844,8 +844,8 @@ stages:
                 appConfigurationConnectionString=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(tableStorageAppConfigurationConnectionStringRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
                 echo "##vso[task.setvariable variable=appConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
 
-      - job: functionalTestV3
-        displayName: Functional test V3
+      - job: functionalTest
+        displayName: Functional test
         dependsOn:
           - getPipelineVariables
         variables:
@@ -884,7 +884,7 @@ stages:
                 echo "##vso[task.setvariable variable=testResultFileExists]true"
               fi
           - publish: $(System.DefaultWorkingDirectory)/src/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/screenshots
-            artifact: UITestScreenshotsV3
+            artifact: UITestScreenshots
             displayName: Publish UI Test screenshots artifacts
             condition: eq(variables.testResultFileExists, 'true')
             continueOnError: true
@@ -892,8 +892,8 @@ stages:
   - stage: enumerateDependencies
     displayName: Enumerate dependencies
     dependsOn:
-      - deployIngressV3
-      - deployServicesV3
+      - deployIngress
+      - deployServices
     jobs:
       - job: enumerateDependencies
         displayName: Enumerate dependencies
@@ -936,12 +936,12 @@ stages:
                   Sort-Object |
                   Set-Content (Join-Path $(dependenciesReportArtifactName) npm.txt)
 
-          - template: ../templates/steps-install-helm-v3.yaml
+          - template: ../templates/steps-install-helm.yaml
             parameters:
               helmVersion: $(helmVersion)
 
           - task: AzureCLI@2
-            displayName: Enumerate HelmV3 chart dependencies
+            displayName: Enumerate Helm chart dependencies
             inputs:
               azureSubscription: $(subscriptionName)
               scriptType: pscore
@@ -959,11 +959,11 @@ stages:
             artifact: $(dependenciesReportArtifactName)
             displayName: Publish dependencies report
 
-  - stage: cleanupV3
-    displayName: Cleanup V3
+  - stage: cleanup
+    displayName: Cleanup
     dependsOn:
       - functionalTest
-      - deployServicesV3
+      - deployServices
       - enumerateDependencies
     condition: and(always(), eq(variables['runCleanupStage'], 'true'))
     jobs:
@@ -1015,7 +1015,7 @@ stages:
         steps:
           - checkout: none
 
-          - template: ../templates/steps-install-helm-v3.yaml
+          - template: ../templates/steps-install-helm.yaml
             parameters:
               helmVersion: $(helmVersion)
 
@@ -1050,7 +1050,7 @@ stages:
         steps:
           - checkout: none
 
-          - template: ../templates/steps-install-helm-v3.yaml
+          - template: ../templates/steps-install-helm.yaml
             parameters:
               helmVersion: $(helmVersion)
 

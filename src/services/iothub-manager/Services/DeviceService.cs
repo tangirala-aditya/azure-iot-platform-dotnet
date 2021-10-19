@@ -11,6 +11,8 @@ using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.IoTHubManager.Services.Helpers;
 using Mmm.Iot.IoTHubManager.Services.Models;
 
+using Newtonsoft.Json.Linq;
+
 namespace Mmm.Iot.IoTHubManager.Services
 {
     public class DeviceService : IDeviceService
@@ -48,6 +50,30 @@ namespace Mmm.Iot.IoTHubManager.Services
         public async Task SendCloudToDeviceMessage(string deviceId, string message)
         {
             await this.serviceClient.SendAsync(deviceId, new Message(Encoding.ASCII.GetBytes(message)));
+        }
+
+        public async Task<MethodResultServiceModel> InvokeDeviceMethodAsync(string deviceId, string moduleId, MethodParameterServiceModel parameterServiceModel)
+        {
+            CloudToDeviceMethod cloudToDeviceMethod = new CloudToDeviceMethod("GetModuleLogs");
+            JObject jobject = JObject.Parse(@"{
+                        'schemaVersion': '1.0',
+                        'items': [
+                        {
+                        'id': 'edgeAgent',
+                        'filter': {
+                        'tail': 10
+                        }
+                        }
+                        ],
+                        'encoding': 'none',
+                        'contentType': 'text'
+                        }
+                    ");
+            cloudToDeviceMethod.SetPayloadJson(jobject.ToString());
+            var result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, moduleId, cloudToDeviceMethod);
+
+            // var result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, moduleId, parameterServiceModel.ToAzureModel());
+            return new MethodResultServiceModel(result);
         }
     }
 }

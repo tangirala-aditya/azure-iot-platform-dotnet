@@ -37,6 +37,7 @@ export class DevicesGrid extends Component {
         this.state = {
             ...closedFlyoutState,
             isDeviceSearch: false,
+            showDeviceLinkButton: true,
         };
 
         // Default device grid columns
@@ -48,6 +49,7 @@ export class DevicesGrid extends Component {
             deviceColumnDefs.firmware,
             deviceColumnDefs.telemetry,
             deviceColumnDefs.status,
+            deviceColumnDefs.isEdge,
             deviceColumnDefs.lastConnection,
         ];
 
@@ -76,6 +78,9 @@ export class DevicesGrid extends Component {
                 </Protected>
                 <Btn icon="areaChart" onClick={this.goToTelemetryScreen}>
                     {props.t("devices.showTelemetry")}
+                </Btn>                
+                <Btn icon="areaChart" onClick={this.goToTelemetryScreen}>
+                    {props.t("devices.LinkOrUnLink")}
                 </Btn>
             </ComponentArray>
         );

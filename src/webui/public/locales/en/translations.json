@@ -420,6 +420,7 @@
         "deviceSearchTitleDescription": "Search across all devices.",
         "downloadDeviceReport": "Download",
         "showTelemetry": "Show telemetry",
+        "LinkOrUnLink": "Link or Unlink Device",
         "returnToDevices": "Devices",
         "loadMore": "Load more",
         "grid": {
@@ -501,6 +502,12 @@
                     "deploymentName": "Deployment name",
                     "firmwareVersion": "Firmware Version",
                     "date": "Date"
+                },
+                "linkedDevices": {
+                    "title": "Linked Devices",
+                    "description": "Linked Devices to the edge device",
+                    "noneExist": "No devices linked to the selected edge device",
+                    "deviceName": "Device name"
                 }
             },
             "delete": {

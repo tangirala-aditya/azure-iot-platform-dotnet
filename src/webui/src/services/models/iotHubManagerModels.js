@@ -19,6 +19,7 @@ export const toDeviceModel = (device = {}) => {
             lastActivity: "lastActivity",
             connected: "connected",
             isSimulated: "isSimulated",
+            isEdgeDevice: "isEdgeDevice",
             "properties.reported.supportedMethods": "methods",
             "properties.reported.telemetry": "telemetry",
             "properties.reported.type": "type",
@@ -64,6 +65,39 @@ export const toDeviceModel = (device = {}) => {
                 : dot.pick("PreviousProperties.Reported.Firmware", device),
         },
     });
+};
+
+
+export const toEdgeDevicesModel = (response = {}) => {
+    var items = getItems(response).map(toEdgeDeviceModel);
+    return { items, continuationToken: response.ContinuationToken };
+};
+
+export const toEdgeDeviceModel = (device = {}) => {
+    const modelData = camelCaseReshape(device, {
+            id: "id",
+            lastActivity: "lastActivity",
+            connected: "connected",
+            isSimulated: "isSimulated",
+            isEdgeDevice: "isEdgeDevice",
+            "properties.reported.supportedMethods": "methods",
+            "properties.reported.telemetry": "telemetry",
+            "properties.reported.type": "type",
+            "properties.reported.firmware.currentFwVersion": "currentFwVersion",
+            "previousProperties.reported.firmware.currentFwVersion":
+                "previousFwVersion",
+            "properties.reported.firmware.lastFwUpdateStartTime":
+                "lastFwUpdateStartTime",
+            "properties.reported.firmware.lastFwUpdateEndTime":
+                "lastFwUpdateEndTime",
+            c2DMessageCount: "c2DMessageCount",
+            enabled: "enabled",
+            lastStatusUpdated: "lastStatusUpdated",
+            ioTHubHostName: "iotHubHostName",
+            eTag: "eTag",
+            authentication: "authentication",
+        });
+    return modelData;
 };
 
 export const toModuleFieldsModel = (response = {}) =>

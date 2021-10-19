@@ -167,40 +167,44 @@ export class ExampleFlyout extends Component {
                             error={error}
                         />
                     )}
-                    {/** If changes are not yet applied, show the buttons for applying changes and closing the flyout. */
-                    !changesApplied && (
-                        <BtnToolbar>
-                            <Btn
-                                svg={svgs.reconfigure}
-                                primary={true}
-                                disabled={isPending || itemCount === 0}
-                                type="submit"
-                            >
-                                {t(
-                                    "walkthrough.pageWithFlyout.flyouts.example.apply"
-                                )}
-                            </Btn>
-                            <Btn svg={svgs.cancelX} onClick={onClose}>
-                                {t(
-                                    "walkthrough.pageWithFlyout.flyouts.example.cancel"
-                                )}
-                            </Btn>
-                        </BtnToolbar>
-                    )}
-                    {/**
-                     * If changes are applied, show only the close button.
-                     * Other text or component might be included here as well.
-                     * For example, you might provide a link to the detail page for a newly submitted job.
-                     * */
-                    !!changesApplied && (
-                        <BtnToolbar>
-                            <Btn svg={svgs.cancelX} onClick={onClose}>
-                                {t(
-                                    "walkthrough.pageWithFlyout.flyouts.example.close"
-                                )}
-                            </Btn>
-                        </BtnToolbar>
-                    )}
+                    {
+                        /** If changes are not yet applied, show the buttons for applying changes and closing the flyout. */
+                        !changesApplied && (
+                            <BtnToolbar>
+                                <Btn
+                                    svg={svgs.reconfigure}
+                                    primary={true}
+                                    disabled={isPending || itemCount === 0}
+                                    type="submit"
+                                >
+                                    {t(
+                                        "walkthrough.pageWithFlyout.flyouts.example.apply"
+                                    )}
+                                </Btn>
+                                <Btn svg={svgs.cancelX} onClick={onClose}>
+                                    {t(
+                                        "walkthrough.pageWithFlyout.flyouts.example.cancel"
+                                    )}
+                                </Btn>
+                            </BtnToolbar>
+                        )
+                    }
+                    {
+                        /**
+                         * If changes are applied, show only the close button.
+                         * Other text or component might be included here as well.
+                         * For example, you might provide a link to the detail page for a newly submitted job.
+                         * */
+                        !!changesApplied && (
+                            <BtnToolbar>
+                                <Btn svg={svgs.cancelX} onClick={onClose}>
+                                    {t(
+                                        "walkthrough.pageWithFlyout.flyouts.example.close"
+                                    )}
+                                </Btn>
+                            </BtnToolbar>
+                        )
+                    }
                 </form>
             </Flyout>
         );

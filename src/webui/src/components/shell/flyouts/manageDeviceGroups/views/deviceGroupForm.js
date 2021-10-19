@@ -474,24 +474,30 @@ class DeviceGroupForm extends LinkedComponent {
                                     >
                                         {t("deviceGroupsFlyout.cancel")}
                                     </Btn>
-                                    {// Don't show delete btn if it is a new group or the group is currently active
-                                    this.state.isEdit && (
-                                        <Protected
-                                            permission={
-                                                permissions.deleteDeviceGroups
-                                            }
-                                        >
-                                            <Btn
-                                                svg={svgs.trash}
-                                                onClick={this.deleteDeviceGroup}
-                                                disabled={this.state.isPending}
+                                    {
+                                        // Don't show delete btn if it is a new group or the group is currently active
+                                        this.state.isEdit && (
+                                            <Protected
+                                                permission={
+                                                    permissions.deleteDeviceGroups
+                                                }
                                             >
-                                                {t(
-                                                    "deviceQueryConditions.delete"
-                                                )}
-                                            </Btn>
-                                        </Protected>
-                                    )}
+                                                <Btn
+                                                    svg={svgs.trash}
+                                                    onClick={
+                                                        this.deleteDeviceGroup
+                                                    }
+                                                    disabled={
+                                                        this.state.isPending
+                                                    }
+                                                >
+                                                    {t(
+                                                        "deviceQueryConditions.delete"
+                                                    )}
+                                                </Btn>
+                                            </Protected>
+                                        )
+                                    }
                                 </BtnToolbar>
                                 {this.state.error && (
                                     <AjaxError t={t} error={this.state.error} />

@@ -86,6 +86,8 @@ export class DeviceDetails extends Component {
             deviceUploads: undefined,
             deviceDeployments: undefined,
             expandedValue: false,
+            isEdgeDevice: false,
+            linkedDevices: undefined,
         };
         this.baseState = this.state;
         this.columnDefs = [
@@ -120,10 +122,15 @@ export class DeviceDetails extends Component {
                 device = {},
                 device: { telemetry: { interval = "0" } = {} } = {},
             } = this.props,
-            deviceId = device.id;
+            deviceId = device.id,
+            isEdgeDevice = device.isEdgeDevice;
+        this.setState({ isEdgeDevice: isEdgeDevice });
         this.fetchAlerts(deviceId);
         this.fetchDeviceUploads(deviceId);
         this.fetchDeviceDeployments(deviceId);
+        if (isEdgeDevice) {
+            this.fetchLinkedDevices(deviceId);
+        }
 
         const [hours = 0, minutes = 0, seconds = 0] = interval
                 .split(":")
@@ -306,6 +313,22 @@ export class DeviceDetails extends Component {
             });
         });
     };
+    fetchLinkedDevices = (deviceId) => {
+        IoTHubManagerService.getLinkedDevices(deviceId).subscribe(
+            (childDevices) => {
+                var filteredLinkedDevices = [];
+                debugger;
+                childDevices.items.forEach((device) => {
+                    if (device) {
+                        filteredLinkedDevices.push(device);
+                    }
+                });
+                this.setState({
+                    linkedDevices: filteredLinkedDevices,
+                });
+            }
+        );
+    };
 
     downloadFile = (relativePath, fileName) => {
         TelemetryService.getDeviceUploadsFileContent(relativePath).subscribe(
@@ -370,6 +393,7 @@ export class DeviceDetails extends Component {
             properties = Object.entries(device.properties || {}),
             deviceUploads = this.state.deviceUploads || [],
             deviceDeployments = this.state.deviceDeployments || [],
+            linkedDevices = this.state.linkedDevices || [],
             moduleQuerySuccessful =
                 currentModuleStatus &&
                 currentModuleStatus !== {} &&
@@ -1091,6 +1115,52 @@ export class DeviceDetails extends Component {
                                     </div>
                                 </Section.Content>
                             </Section.Container>
+                            {this.state.isEdgeDevice && (
+                                <Section.Container>
+                                    <Section.Header>
+                                        {t("devices.flyouts.details.linkedDevices.title")}
+                                    </Section.Header>
+                                    <Section.Content>
+                                        <SectionDesc>
+                                            {t(
+                                                "devices.flyouts.details.linkedDevices.description"
+                                            )}
+                                        </SectionDesc>
+                                    <div className="device-details-deviceDeployments-contentbox">
+                                        {linkedDevices.length === 0 &&
+                                            t(
+                                                "devices.flyouts.details.linkedDevices.noneExist"
+                                            )}
+                                        {linkedDevices.length >= 0 && (
+                                            <Grid className="device-details-deviceDeployments">
+                                                <GridHeader>
+                                                    <Row>
+                                                        <Cell className="col-4">
+                                                            {t(
+                                                                "devices.flyouts.details.linkedDevices.deviceName"
+                                                            )}
+                                                        </Cell>
+                                                    </Row>
+                                                </GridHeader>
+                                                <GridBody>
+                                                    {linkedDevices.map(
+                                                        (device, idx) => (
+                                                            <Row key={idx}>
+                                                                <Cell className="col-4">
+                                                                    {
+                                                                        device.id
+                                                                    }
+                                                                </Cell>
+                                                            </Row>
+                                                        )
+                                                    )}
+                                                </GridBody>
+                                            </Grid>
+                                        )}
+                                    </div>
+                                    </Section.Content>
+                                </Section.Container>
+                            )}
                         </div>
                     )}
                     <BtnToolbar>

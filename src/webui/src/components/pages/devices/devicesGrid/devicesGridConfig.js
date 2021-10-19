@@ -6,6 +6,7 @@ import {
     ConnectionStatusRenderer,
     TimeRenderer,
     SoftSelectLinkRenderer,
+    IsActivePackageRenderer,
 } from "components/shared/cellRenderers";
 import {
     EMPTY_FIELD_VAL,
@@ -42,6 +43,11 @@ export const deviceColumnDefs = {
         field: "telemetry",
         valueFormatter: ({ value }) =>
             Object.keys(value || {}).join("; ") || EMPTY_FIELD_VAL,
+    },
+    isEdge: {
+        headerName: "isEdge",
+        field: "isEdgeDevice",
+        cellRendererFramework: IsActivePackageRenderer,
     },
     status: {
         headerName: "devices.grid.status",

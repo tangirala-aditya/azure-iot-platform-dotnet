@@ -12,5 +12,7 @@ namespace Mmm.Iot.IoTHubManager.Services
         Task<MethodResultServiceModel> InvokeDeviceMethodAsync(string deviceId, MethodParameterServiceModel parameter);
 
         Task SendCloudToDeviceMessage(string deviceId, string message);
+
+        Task<MethodResultServiceModel> InvokeDeviceMethodAsync(string deviceId, string moduleId, MethodParameterServiceModel parameter);
     }
 }

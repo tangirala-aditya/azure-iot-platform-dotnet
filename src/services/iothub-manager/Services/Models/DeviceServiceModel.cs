@@ -77,6 +77,11 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
         {
         }
 
+        public DeviceServiceModel(Device azureDevice)
+        {
+            this.Id = azureDevice.Id;
+        }
+
         public string Etag { get; set; }
 
         public string Id { get; set; }

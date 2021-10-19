@@ -155,6 +155,30 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             return this.File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("LinkToGateway")]
+        public async Task<BulkOperationResult> LinkToGateway(string deviceId, string edgeDeviceId)
+        {
+            return await this.devices.LinkDevicesToGateway(new List<string>() { deviceId }, edgeDeviceId);
+        }
+
+        [HttpGet("GetLinkedDevices/{edgeDeviceId}")]
+        public async Task<DeviceListApiModel> GetChildDevices(string edgeDeviceId)
+        {
+            return new DeviceListApiModel(await this.devices.GetChildDevices(edgeDeviceId));
+        }
+
+        [HttpGet("GetModuleLogs")]
+        public async Task<MethodResultApiModel> GetModuleLogs()
+        {
+            return new MethodResultApiModel(await this.deviceService.InvokeDeviceMethodAsync("edge-device-2", "$edgeAgent", new MethodParameterServiceModel()));
+        }
+
+        [HttpGet("RestartModule")]
+        public async Task<MethodResultApiModel> RestartModule()
+        {
+            return new MethodResultApiModel(await this.deviceService.InvokeDeviceMethodAsync("edge-device-2", "$edgeAgent", new MethodParameterServiceModel()));
+        }
+
         private void CreatePartsForExcel(SpreadsheetDocument document, List<DeviceReportApiModel> data)
         {
             SheetData partSheetData = this.GenerateSheetdataForDetails(data);

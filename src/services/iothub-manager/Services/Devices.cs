@@ -455,6 +455,53 @@ namespace Mmm.Iot.IoTHubManager.Services
             return devices;
         }
 
+        public async Task<bool> LinkToGateway(string deviceId, string edgeDeviceId)
+        {
+            var edgeDevice = await this.tenantConnectionHelper.GetRegistry().GetDeviceAsync(edgeDeviceId);
+            var leafDevice = await this.tenantConnectionHelper.GetRegistry().GetDeviceAsync(deviceId);
+            leafDevice.Scope = edgeDevice.Scope;
+            var updatedDevice = await this.tenantConnectionHelper.GetRegistry().UpdateDeviceAsync(leafDevice);
+            return updatedDevice != null;
+        }
+
+        public async Task<BulkOperationResult> LinkDevicesToGateway(List<string> deviceIds, string parentDeviceId)
+        {
+            var parentDevice = await this.GetDeviceFromHub(parentDeviceId);
+            List<Device> leafDevices = new List<Device>();
+            foreach (string deviceId in deviceIds)
+            {
+                var leafDevice = await this.tenantConnectionHelper.GetRegistry().GetDeviceAsync(deviceId);
+                leafDevice.Scope = parentDevice.Scope;
+                leafDevices.Add(leafDevice);
+            }
+
+            var result = await this.tenantConnectionHelper.GetRegistry().UpdateDevices2Async(leafDevices);
+            return new BulkOperationResult(result);
+        }
+
+        public async Task<DeviceServiceListModel> GetChildDevices(string edgeDeviceId)
+        {
+            var edgeDevice = await this.tenantConnectionHelper.GetRegistry().GetDeviceAsync(edgeDeviceId);
+            var deviceScopeQuery = $"deviceScope ='{edgeDevice.Scope}' AND deviceId <> '{edgeDeviceId}'";
+            var data = await this.GetIotDataQueryAsync<Device>(QueryPrefix, deviceScopeQuery, null, string.Empty, 100);
+
+            // List<string> deviceIds = new List<string>();
+            // deviceIds = data.Result.Select(x => x.Id).ToList();
+            // return deviceIds;
+            List<DeviceServiceModel> devices = new List<DeviceServiceModel>();
+            foreach (var x in data.Result)
+            {
+                devices.Add(new DeviceServiceModel(x));
+            }
+
+            return new DeviceServiceListModel(devices);
+        }
+
+        private async Task<Device> GetDeviceFromHub(string deviceId)
+        {
+            return await this.tenantConnectionHelper.GetRegistry().GetDeviceAsync(deviceId);
+        }
+
         private async Task GetDevices(string query, string continuationToken, List<DeviceReportServiceModel> devices)
         {
             DeviceServiceListModel devicesFromQuery = null;

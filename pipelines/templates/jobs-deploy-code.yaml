@@ -86,32 +86,32 @@ jobs:
 
         displayName: Print job variables
 
-        - ${{ if eq(parameters.blueGreen,true) }}:
-          - template: steps-deploy-blue-green-service-v3.yaml
-            parameters:
-              aksName: $(aksName)
-              resourceGroupName: $(resourceGroupName)
-              subscriptionName: ${{parameters.subscriptionName}}
-              serviceName: $(serviceName)
-              blueServiceName: $(serviceName)-blue
-              greenServiceName: $(serviceName)-green
-              servicePort: $(servicePort)
-              serviceProbesEnabled: $(serviceProbesEnabled)
-              helmVersion: $(helmVersion)
-              imageTag: ${{parameters.imageTag}}
-              type: blue
+      - ${{ if eq(parameters.blueGreen,true) }}:
+        - template: steps-deploy-blue-green-service-v3.yaml
+          parameters:
+            aksName: $(aksName)
+            resourceGroupName: $(resourceGroupName)
+            subscriptionName: ${{parameters.subscriptionName}}
+            serviceName: $(serviceName)
+            blueServiceName: $(serviceName)-blue
+            greenServiceName: $(serviceName)-green
+            servicePort: $(servicePort)
+            serviceProbesEnabled: $(serviceProbesEnabled)
+            helmVersion: $(helmVersion)
+            imageTag: ${{parameters.imageTag}}
+            type: blue
 
-        - ${{ if eq(parameters.blueGreen,false) }}:
-          - template: steps-deploy-individual-service-v3.yaml
-            parameters:
-              aksName: $(aksName)
-              resourceGroupName: $(resourceGroupName)
-              subscriptionName: ${{parameters.subscriptionName}}
-              serviceName: $(serviceName)
-              servicePort: $(servicePort)
-              serviceProbesEnabled: $(serviceProbesEnabled)
-              helmVersion: $(helmVersion)
-              imageTag: ${{parameters.imageTag}}              
+      - ${{ if eq(parameters.blueGreen,false) }}:
+        - template: steps-deploy-individual-service-v3.yaml
+          parameters:
+            aksName: $(aksName)
+            resourceGroupName: $(resourceGroupName)
+            subscriptionName: ${{parameters.subscriptionName}}
+            serviceName: $(serviceName)
+            servicePort: $(servicePort)
+            serviceProbesEnabled: $(serviceProbesEnabled)
+            helmVersion: $(helmVersion)
+            imageTag: ${{parameters.imageTag}}              
 
   - job: addKey
     displayName: Update Application Configuration with BuildNumber

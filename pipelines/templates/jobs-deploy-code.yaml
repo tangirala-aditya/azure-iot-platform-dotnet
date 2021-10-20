@@ -87,7 +87,7 @@ jobs:
         displayName: Print job variables
 
       - ${{ if eq(parameters.blueGreen,true) }}:
-        - template: steps-deploy-blue-green-service-v3.yaml
+        - template: steps-deploy-blue-green-service.yaml
           parameters:
             aksName: $(aksName)
             resourceGroupName: $(resourceGroupName)
@@ -102,7 +102,7 @@ jobs:
             type: blue
 
       - ${{ if eq(parameters.blueGreen,false) }}:
-        - template: steps-deploy-individual-service-v3.yaml
+        - template: steps-deploy-individual-service.yaml
           parameters:
             aksName: $(aksName)
             resourceGroupName: $(resourceGroupName)

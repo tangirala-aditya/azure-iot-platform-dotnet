@@ -6,11 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
+using Mmm.Iot.Common.Services.External.Azure;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.CosmosDb;
+using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.Services.External.TableStorage;
+using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.TenantManager.Services.External;
 using Mmm.Iot.TenantManager.Services.Helpers;
 using Mmm.Iot.TenantManager.Services.Models;
@@ -20,6 +24,8 @@ namespace Mmm.Iot.TenantManager.Services
     public class TenantContainer : ITenantContainer
     {
         private const string IotDatabaseId = "iot";
+        private const string IoTADXDatabaseFormat = "IoT-{0}";
+        private const string TelemetryADXDatabaseFormat = "Telemery-{0}";
         private const string StorageAdapterDatabaseId = "pcs-storage";
         private const string TenantTableId = "tenant";
         private const string TenantOperationTable = "tenantOperations";
@@ -36,6 +42,8 @@ namespace Mmm.Iot.TenantManager.Services
         private readonly ITableStorageClient tableStorageClient;
         private readonly IAppConfigurationClient appConfigClient;
         private readonly IBlobStorageClient blobStorageClient;
+        private readonly AppConfig config;
+        private readonly IAzureManagementClient azureManagementClient;
 
         private readonly Dictionary<string, string> tenantCollections = new Dictionary<string, string>
         {
@@ -55,7 +63,11 @@ namespace Mmm.Iot.TenantManager.Services
         private string iotHubNameFormat = "iothub-{0}";  // format with a guid
         private string dpsNameFormat = "dps-{0}";  // format with a guid
         private string streamAnalyticsNameFormat = "sa-{0}";  // format with a guide
+        private string grafanaNameFormat = "grafana-{0}";  // format with a guide
         private string appConfigCollectionKeyFormat = "tenant:{0}:{1}-collection";  // format with a guid and collection name
+        private string eventHubNamespaceFormat = "eventhub-{0}";
+        private string grafanaUrlFormat = "tenant:{0}:grafanaUrl";
+        private string grafanaOrgFormat = "tenant:{0}:grafanaOrgId";
 
         public TenantContainer(
             ILogger<TenantContainer> logger,
@@ -65,7 +77,9 @@ namespace Mmm.Iot.TenantManager.Services
             IIdentityGatewayClient identityGatewayClient,
             IDeviceGroupsConfigClient deviceGroupConfigClient,
             IAppConfigurationClient appConfigHelper,
-            IBlobStorageClient blobStorageClient)
+            IBlobStorageClient blobStorageClient,
+            AppConfig config,
+            IAzureManagementClient azureManagementClient)
         {
             this.logger = logger;
             this.runbookHelper = runbookHelper;
@@ -75,6 +89,8 @@ namespace Mmm.Iot.TenantManager.Services
             this.deviceGroupClient = deviceGroupConfigClient;
             this.appConfigClient = appConfigHelper;
             this.blobStorageClient = blobStorageClient;
+            this.config = config;
+            this.azureManagementClient = azureManagementClient;
         }
 
         public async Task<bool> TenantIsReadyAsync(string tenantId)
@@ -85,7 +101,7 @@ namespace Mmm.Iot.TenantManager.Services
             return tenant != null && tenant.IsIotHubDeployed;  // True if the tenant's IoTHub is fully deployed, false otherwise
         }
 
-        public async Task<CreateTenantModel> CreateTenantAsync(string tenantId, string userId)
+        public async Task<CreateTenantModel> CreateTenantAsync(string tenantId, string userId, string createdBy)
         {
             /* Creates a new tenant */
             string iotHubName = this.FormatResourceName(this.iotHubNameFormat, tenantId);
@@ -100,7 +116,7 @@ namespace Mmm.Iot.TenantManager.Services
             // Give the requesting user an admin role to the new tenant
             try
             {
-                await this.identityGatewayClient.AddTenantForUserAsync(userId, tenantId, CreatedRole);
+                await this.identityGatewayClient.AddTenantForUserAsync(userId, tenantId, CreatedRole, null, createdBy);
             }
             catch (Exception e)
             {
@@ -141,7 +157,7 @@ namespace Mmm.Iot.TenantManager.Services
                 {
                     if (systemAdmin.UserId != userId)
                     {
-                        await this.identityGatewayClient.AddTenantForUserAsync(systemAdmin.UserId, tenantId, CreatedRole, systemAdmin.Name);
+                        await this.identityGatewayClient.AddTenantForUserAsync(systemAdmin.UserId, tenantId, CreatedRole, systemAdmin.Name, createdBy);
                     }
                 }
             }
@@ -173,6 +189,21 @@ namespace Mmm.Iot.TenantManager.Services
             catch (Exception e)
             {
                 throw new Exception("Unable to create the default device group for the new tenant.", e);
+            }
+
+            string grafanaTaskName = this.FormatResourceName(this.grafanaNameFormat, tenantId);
+
+            if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
+            {
+                // trigger grafana dashboard
+                try
+                {
+                    await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.GrafanaDashboardCreation, grafanaTaskName));
+                }
+                catch (Exception e)
+                {
+                    this.logger.LogInformation(e, "Unable to create grafana dashboard for tenant {tenantId}", tenantId);
+                }
             }
 
             return new CreateTenantModel(tenantId);
@@ -371,6 +402,48 @@ namespace Mmm.Iot.TenantManager.Services
                 }
             }
 
+            // Delete Database from kusto
+            if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
+            {
+                string kustoDatabase = string.Format(IoTADXDatabaseFormat, tenantId);
+                try
+                {
+                    await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.ADXDatabaseDeletion, kustoDatabase));
+                    deletionRecord["ADXDatabase"] = true;
+                }
+                catch (Exception e)
+                {
+                    deletionRecord["ADXDatabase"] = false;
+                    this.logger.LogInformation(e, $"An error occurred while deleting the {kustoDatabase} kusto database for tenant {tenantId}", kustoDatabase, tenantId);
+                }
+
+                string eventHubNamespace = string.Format(this.eventHubNamespaceFormat, tenantId.Substring(0, 8));
+                try
+                {
+                    await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.EventHubDeletion, eventHubNamespace));
+                    deletionRecord["EventHubNameSpace"] = true;
+                }
+                catch (Exception e)
+                {
+                    deletionRecord["EventHubNameSpace"] = false;
+                    this.logger.LogInformation(e, $"An error occurred while deleting the {eventHubNamespace} EventHub NameSpace for tenant {tenantId}", eventHubNamespace, tenantId);
+                }
+
+                string grafanaName = this.FormatResourceName(this.grafanaNameFormat, tenantId);
+
+                // trigger deletion grafana dashboard
+                try
+                {
+                    await this.tableStorageClient.InsertAsync(TenantOperationTable, new TenantOperationModel(tenantId, TenantOperation.GrafanaDashboardDeletion, grafanaName));
+                    deletionRecord["grafana"] = true;
+                }
+                catch (Exception e)
+                {
+                    this.logger.LogInformation(e, "Unable to to successfully add Delete grafana dashboard for tenant {tenantId}", tenantId);
+                    deletionRecord["grafana"] = false;
+                }
+            }
+
             return new DeleteTenantModel(tenantId, deletionRecord, ensureFullyDeployed);
         }
 
@@ -429,6 +502,32 @@ namespace Mmm.Iot.TenantManager.Services
             catch (Exception e)
             {
                 throw new Exception("Unable to retrieve the tenants", e);
+            }
+        }
+
+        public string GetGrafanaUrl(string tenantId)
+        {
+            if (this.config.Global.LoadGrafanaDashboard)
+            {
+                string grafanaUrlKey = string.Format(this.grafanaUrlFormat, tenantId);
+                return this.appConfigClient.GetValue(grafanaUrlKey);
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public string GetGrafanaOrgId(string tenantId)
+        {
+            if (this.config.Global.LoadGrafanaDashboard)
+            {
+                string grafanaUrlKey = string.Format(this.grafanaOrgFormat, tenantId);
+                return this.appConfigClient.GetValue(grafanaUrlKey);
+            }
+            else
+            {
+                return string.Empty;
             }
         }
 

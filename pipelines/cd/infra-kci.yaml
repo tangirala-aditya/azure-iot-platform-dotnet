@@ -1,0 +1,139 @@
+trigger: none
+pr: none
+pool:
+  vmImage: ubuntu-latest
+variables:
+- group: kciDev
+- group: kciQa 
+- group: kciCt
+- group: kciPr
+- name: locationName
+  value: centralus
+stages:
+  - stage: checkParameters
+    displayName: Check parameters
+    dependsOn: []
+    jobs:
+     - job: checkParameters
+       displayName: Check parameters
+       steps:
+         - checkout: none
+         - script: |-
+                set -Eeuxo pipefail
+                echo "testPipelineRunId : '$(testPipelineRunId)'"
+                if [ -z "$(testPipelineRunId)" ]
+                then
+                echo "A value for the 'testPipelineRunId' variable must be provided" > /dev/stderr
+                exit 1
+                fi
+  - stage: kciDev
+    displayName: KCI dev
+    variables:
+    - group: kciDev
+    dependsOn: checkParameters
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-kciDev)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-kciDev)
+          environmentName: $(environmentName-kciDev)
+          subscriptionId: $(subscriptionId-kciDev)
+          applicationCode: $(applicationCode-kciDev)
+          applicationShortCode: $(applicationShortCode-kciDev)
+          environmentCategory: $(environmentCategory-kciDev)
+          kubernetesVersion: $(kubernetesVersion-kciDev)
+          sendgridEmail: $(sendgridEmail-kciDev)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-kciDev)
+          testPipelineId: $(testPipelineId-kciDev)
+          runVersion: $(runVersion-kciDev)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-kciDev)
+          isHelmVersion3: true
+          aadSGId: $(aadSGId-kciDev)
+          telemetryStorageType: $(telemetryStorageType-kciDev)
+
+  - stage: kciQa
+    displayName: KCI QA
+    variables:
+    - group: kciQa
+    dependsOn:
+      - kciDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-kciQa)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-kciQa)
+          subscriptionId: $(subscriptionId-kciQa)
+          applicationCode: $(applicationCode-kciQa)
+          applicationShortCode: $(applicationShortCode-kciQa)
+          environmentCategory: $(environmentCategory-kciQa)
+          environmentName: $(environmentName-kciQa)
+          kubernetesVersion: $(kubernetesVersion-kciQa)
+          sendgridEmail: $(sendgridEmail-kciQa)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-kciQa)
+          testPipelineId: $(testPipelineId-kciQa)
+          runVersion: $(runVersion-kciQa)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-kciQa)
+          isHelmVersion3: false
+          aadSGId: $(aadSGId-kciQa)
+          telemetryStorageType: $(telemetryStorageType-kciQa)
+          
+  - stage: kciCt
+    displayName: KCI CT
+    variables:
+    - group: kciCt
+    dependsOn:
+      - kciQa
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-kciCt)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-kciCt)
+          subscriptionId: $(subscriptionId-kciCt)
+          applicationCode: $(applicationCode-kciCt)
+          applicationShortCode: $(applicationShortCode-kciCt)
+          environmentCategory: $(environmentCategory-kciCt)
+          environmentName: $(environmentName-kciCt)
+          kubernetesVersion: $(kubernetesVersion-kciCt)
+          sendgridEmail: $(sendgridEmail-kciCt)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-kciCt)
+          testPipelineId: $(testPipelineId-kciCt)
+          runVersion: $(runVersion-kciCt)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-kciCt)
+          isHelmVersion3: false
+          aadSGId: $(aadSGId-kciCt)
+          telemetryStorageType: $(telemetryStorageType-kciCt)
+
+  - stage: kciPr
+    displayName: KCI PR
+    variables:
+    - group: kciPr
+    dependsOn:
+      - kciCt
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-kciPr)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-kciPr)
+          subscriptionId: $(subscriptionId-kciPr)
+          applicationCode: $(applicationCode-kciPr)
+          applicationShortCode: $(applicationShortCode-kciPr)
+          environmentCategory: $(environmentCategory-kciPr)
+          environmentName: $(environmentName-kciPr)
+          kubernetesVersion: $(kubernetesVersion-kciPr)
+          sendgridEmail: $(sendgridEmail-kciPr)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-kciPr)
+          testPipelineId: $(testPipelineId-kciPr)
+          runVersion: $(runVersion-kciPr)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-kciPr)
+          isHelmVersion3: false
+          aadSGId: $(aadSGId-kciPr)
+          telemetryStorageType: $(telemetryStorageType-kciPr)
+          

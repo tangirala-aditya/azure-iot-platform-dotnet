@@ -1,0 +1,199 @@
+trigger: none
+pr: none
+pool:
+  vmImage: ubuntu-latest
+variables:
+- group: psdDev
+- group: psdTest
+- group: psdQa
+- group: psdEu
+- group: psdStg
+- group: psdProd
+- name: locationName
+  value: centralus
+stages:
+  - stage: checkParameters
+    displayName: Check parameters
+    dependsOn: []
+    jobs:
+     - job: checkParameters
+       displayName: Check parameters
+       steps:
+         - checkout: none
+
+         - script: |-
+                set -Eeuxo pipefail
+                echo "testPipelineRunId : '$(testPipelineRunId)'"
+                if [ -z "$(testPipelineRunId)" ]
+                then
+                echo "A value for the 'testPipelineRunId' variable must be provided" > /dev/stderr
+                exit 1
+                fi
+
+  - stage: psdDev
+    displayName: PSD dev
+    variables:
+    - group: psdDev
+    dependsOn: checkParameters
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-psdDev)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-psdDev)
+          subscriptionId: $(subscriptionId-psdDev)
+          applicationCode: $(applicationCode-psdDev)
+          applicationShortCode: $(applicationShortCode-psdDev)
+          environmentCategory: $(environmentCategory-psdDev)
+          environmentName: $(environmentName-psdDev)
+          kubernetesVersion: $(kubernetesVersion-psdDev)
+          sendgridEmail: $(sendgridEmail-psdDev)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-psdDev)
+          testPipelineId: $(testPipelineId-psdDev)
+          runVersion: $(runVersion-psdDev)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-psdDev)
+          isHelmVersion3: true
+          aadSGId: $(aadSGId-psdDev)
+          telemetryStorageType: $(telemetryStorageType-psdDev)
+
+          
+  - stage: psdTest
+    displayName: PSD Test
+    variables:
+    - group: psdTest
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-psdTest)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-psdTest)
+          subscriptionId: $(subscriptionId-psdTest)
+          applicationCode: $(applicationCode-psdTest)
+          applicationShortCode: $(applicationShortCode-psdTest)
+          environmentCategory: $(environmentCategory-psdTest)
+          environmentName: $(environmentName-psdTest)
+          kubernetesVersion: $(kubernetesVersion-psdTest)
+          sendgridEmail: $(sendgridEmail-psdTest)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-psdTest)
+          testPipelineId: $(testPipelineId-psdTest)
+          runVersion: $(runVersion-psdTest)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-psdTest)
+          isHelmVersion3: true
+          aadSGId: $(aadSGId-psdTest)
+          telemetryStorageType: $(telemetryStorageType-psdTest)
+
+  - stage: psdQa
+    displayName: PSD QA
+    variables:
+    - group: psdQa
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-psdQa)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-psdQa)
+          subscriptionId: $(subscriptionId-psdQa)
+          applicationCode: $(applicationCode-psdQa)
+          applicationShortCode: $(applicationShortCode-psdQa)
+          environmentCategory: $(environmentCategory-psdQa)
+          environmentName: $(environmentName-psdQa)
+          kubernetesVersion: $(kubernetesVersion-psdQa)
+          sendgridEmail: $(sendgridEmail-psdQa)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-psdQa)
+          testPipelineId: $(testPipelineId-psdQa)
+          runVersion: $(runVersion-psdQa)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-psdQa)
+          isHelmVersion3: true
+          aadSGId: $(aadSGId-psdQa)
+          telemetryStorageType: $(telemetryStorageType-psdQa)
+
+  - stage: psdEu
+    displayName: PSD EU
+    variables:
+    - group: psdEu
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-psdEu)
+          locationName: $(locationName-psdEu)
+          appInsightsLocation: $(appInsightsLocation-psdEu)
+          subscriptionId: $(subscriptionId-psdEu)
+          applicationCode: $(applicationCode-psdEu)
+          applicationShortCode: $(applicationShortCode-psdEu)
+          environmentCategory: $(environmentCategory-psdEu)
+          environmentName: $(environmentName-psdEu)
+          kubernetesVersion: $(kubernetesVersion-psdEu)
+          sendgridEmail: $(sendgridEmail-psdEu)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-psdEu)
+          testPipelineId: $(testPipelineId-psdEu)
+          runVersion: $(runVersion-psdEu)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-psdEu)
+          isHelmVersion3: false
+          aadSGId: $(aadSGId-psdEu)
+          telemetryStorageType: $(telemetryStorageType-psdEu)
+
+  - stage: psdStg
+    displayName: PSD staging
+    variables:
+    - group: psdStg
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-psdStg)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-psdStg)
+          subscriptionId: $(subscriptionId-psdStg)
+          applicationCode: $(applicationCode-psdStg)
+          applicationShortCode: $(applicationShortCode-psdStg)
+          environmentCategory: $(environmentCategory-psdStg)
+          environmentName: $(environmentName-psdStg)
+          kubernetesVersion: $(kubernetesVersion-psdStg)
+          sendgridEmail: $(sendgridEmail-psdStg)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-psdStg)
+          testPipelineId: $(testPipelineId-psdStg)
+          runVersion: $(runVersion-psdStg)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-psdStg)
+          isHelmVersion3: false
+          aadSGId: $(aadSGId-psdStg)
+          telemetryStorageType: $(telemetryStorageType-psdStg)
+
+  - stage: psdProd
+    displayName: PSD Prod
+    variables:
+    - group: psdProd
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-psdProd)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-psdProd)
+          subscriptionId: $(subscriptionId-psdProd)
+          applicationCode: $(applicationCode-psdProd)
+          applicationShortCode: $(applicationShortCode-psdProd)
+          environmentCategory: $(environmentCategory-psdProd)
+          environmentName: $(environmentName-psdProd)
+          kubernetesVersion: $(kubernetesVersion-psdProd)
+          sendgridEmail: $(sendgridEmail-psdProd)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-psdProd)
+          testPipelineId: $(testPipelineId-psdProd)
+          runVersion: $(runVersion-psdProd)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-psdProd)
+          isHelmVersion3: false
+          aadSGId: $(aadSGId-psdProd)
+          telemetryStorageType: $(telemetryStorageType-psdProd)

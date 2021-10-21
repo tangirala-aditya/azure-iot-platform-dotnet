@@ -1,0 +1,112 @@
+trigger: none
+pr: none
+pool:
+  vmImage: ubuntu-latest
+variables:
+- group: emdDev
+- group: emdQa
+- group: emdCt
+- name: locationName
+  value: centralus
+stages:
+  - stage: checkParameters
+    displayName: Check parameters
+    dependsOn: []
+    jobs:
+     - job: checkParameters
+       displayName: Check parameters
+       steps:
+         - checkout: none
+
+         - script: |-
+                set -Eeuxo pipefail
+                echo "testPipelineRunId : '$(testPipelineRunId)'"
+                if [ -z "$(testPipelineRunId)" ]
+                then
+                echo "A value for the 'testPipelineRunId' variable must be provided" > /dev/stderr
+                exit 1
+                fi
+
+  - stage: emdDev
+    displayName: EMD dev
+    variables:
+    - group: emdDev
+    dependsOn: checkParameters
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-emdDev)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-emdDev)
+          subscriptionId: $(subscriptionId-emdDev)
+          applicationCode: $(applicationCode-emdDev)
+          applicationShortCode: $(applicationShortCode-emdDev)
+          environmentCategory: $(environmentCategory-emdDev)
+          environmentName: $(environmentName-emdDev)
+          kubernetesVersion: $(kubernetesVersion-emdDev)
+          sendgridEmail: $(sendgridEmail-emdDev)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-emdDev)
+          testPipelineId: $(testPipelineId-emdDev)
+          runVersion: $(runVersion-emdDev)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-emdDev)
+          isHelmVersion3: true
+          aadSGId: $(aadSGId-emdDev)
+          telemetryStorageType: $(telemetryStorageType-emdDev)
+
+  - stage: emdQa
+    displayName: EMD QA
+    variables:
+    - group: emdQa
+    dependsOn:
+      - emdDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-emdQa)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-emdQa)
+          subscriptionId: $(subscriptionId-emdQa)
+          applicationCode: $(applicationCode-emdQa)
+          applicationShortCode: $(applicationShortCode-emdQa)
+          environmentCategory: $(environmentCategory-emdQa)
+          environmentName: $(environmentName-emdQa)
+          kubernetesVersion: $(kubernetesVersion-emdQa)
+          sendgridEmail: $(sendgridEmail-emdQa)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-emdQa)
+          testPipelineId: $(testPipelineId-emdQa)
+          runVersion: $(runVersion-emdQa)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-emdQa)
+          isHelmVersion3: true
+          aadSGId: $(aadSGId-emdQa)
+          telemetryStorageType: $(telemetryStorageType-emdQa)
+
+  - stage: emdCt
+    displayName: EMD CT
+    variables:
+    - group: emdCt
+    dependsOn:
+      - emdQa
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-emdCt)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-emdCt)
+          subscriptionId: $(subscriptionId-emdCt)
+          applicationCode: $(applicationCode-emdCt)
+          applicationShortCode: $(applicationShortCode-emdCt)
+          environmentCategory: $(environmentCategory-emdCt)
+          environmentName: $(environmentName-emdCt)
+          kubernetesVersion: $(kubernetesVersion-emdCt)
+          sendgridEmail: $(sendgridEmail-emdCt)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-emdCt)
+          testPipelineId: $(testPipelineId-emdCt)
+          runVersion: $(runVersion-emdCt)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-emdCt)
+          isHelmVersion3: false
+          aadSGId: $(aadSGId-emdCt)
+          telemetryStorageType: $(telemetryStorageType-emdCt)
+          

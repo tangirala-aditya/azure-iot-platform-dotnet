@@ -7,7 +7,8 @@ import { toDiagnosticsModel } from "services/models";
 import { svgs, compareByProperty } from "utilities";
 import { ComponentArray, Btn, CopyModal } from "components/shared";
 
-import "./deviceGroupDropdown.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deviceGroupDropdown.module.scss"));
 
 const closedModalState = {
     openModalName: undefined,
@@ -29,6 +30,9 @@ export class DeviceGroupDropdown extends Component {
             this.props.changeDeviceGroup(value);
             if (this.props.updateLoadMore) {
                 this.props.updateLoadMore();
+            }
+            if (this.props.updateColumns) {
+                this.props.updateColumns(value);
             }
         }
         this.props.logEvent(toDiagnosticsModel("DeviceFilter_Select", {}));
@@ -103,16 +107,16 @@ export class DeviceGroupDropdown extends Component {
             <ComponentArray>
                 <SelectInput
                     name="device-group-dropdown"
-                    className="device-group-dropdown"
+                    className={css("device-group-dropdown")}
                     attr={{
                         select: {
-                            className: "device-group-dropdown-select",
+                            className: css("device-group-dropdown-select"),
                             "aria-label": this.props.t(
                                 "deviceGroupDropDown.ariaLabel"
                             ),
                         },
                         chevron: {
-                            className: "device-group-dropdown-chevron",
+                            className: css("device-group-dropdown-chevron"),
                         },
                     }}
                     options={this.deviceGroupsToOptions(deviceGroups)}
@@ -123,10 +127,10 @@ export class DeviceGroupDropdown extends Component {
                     Get Link
                 </Btn>
                 <div>
-                    <label className="devices-loaded-label">
+                    <label className={css("devices-loaded-label")}>
                         Devices Loaded
                     </label>
-                    <p className="devices-loaded-value">
+                    <p className={css("devices-loaded-value")}>
                         {" "}
                         {deviceStatistics
                             ? deviceStatistics.loadedDeviceCount

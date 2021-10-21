@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { Observable } from "rxjs";
+import { EMPTY } from "rxjs";
 import update from "immutability-helper";
+import { catchError, mergeMap } from "rxjs/operators";
+import { ofType } from "redux-observable";
 
 // A collection of helper objects for reducing store/redux-observable boilerplate
 
@@ -20,7 +22,7 @@ export const createAction = (type, staticPayload) => {
 function handleUncaughtError(type) {
     return (error) => {
         console.error(`Uncaught error in epic "${type}":`, error);
-        return Observable.empty();
+        return EMPTY;
     };
 }
 
@@ -31,13 +33,16 @@ function handleUncaughtError(type) {
 function chooseEpicParam(type, epic, rawEpic) {
     if (rawEpic) {
         return (action$, store) =>
-            rawEpic(action$, store, type).catch(handleUncaughtError(type));
+            rawEpic(action$, store, type).pipe(
+                catchError(handleUncaughtError(type))
+            );
     }
     return (action$, store) =>
-        action$
-            .ofType(type)
-            .flatMap((action) => epic(action, store, action$))
-            .catch(handleUncaughtError(type));
+        action$.pipe(
+            ofType(type),
+            mergeMap((action) => epic(action, store, action$)),
+            catchError(handleUncaughtError(type))
+        );
 }
 
 /**
@@ -164,12 +169,14 @@ export function createReducerScenario(cases = {}) {
             return { ...acc, ...reducerMapping };
         }, {}),
         // The full reducer for the scenario
-        getReducer = (initialState = {}) => (state = initialState, action) => {
-            if (action.type in actionReducers) {
-                return actionReducers[action.type](state, action);
-            }
-            return state;
-        };
+        getReducer =
+            (initialState = {}) =>
+            (state = initialState, action) => {
+                if (action.type in actionReducers) {
+                    return actionReducers[action.type](state, action);
+                }
+                return state;
+            };
 
     return { actionTypes, actions, reducers, getReducer };
 }

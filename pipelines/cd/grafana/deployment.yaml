@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+spec:
+  selector:
+    matchLabels:
+        name: grafana
+  template:
+    metadata:
+      labels:
+        name: grafana
+    spec:
+      volumes:
+         - name: grafana-storage
+           persistentVolumeClaim: 
+               claimName: azurefile-pvc
+      containers:
+      - env:
+        - name: GF_AUTH_ANONYMOUS_ENABLED
+          value: "false"
+        - name: GF_SERVER_DOMAIN
+          value: localhost
+        - name: GF_SERVER_SERVE_FROM_SUB_PATH
+          value: "true"
+        - name: GF_SERVER_ROOT_URL
+          value: '%(protocol)s://%(domain)s:%(http_port)s/grafana/'
+        - name: GF_SECURITY_ALLOW_EMBEDDING
+          value: "true"
+        - name: GF_AUTH_PROXY_ENABLED
+          value: "true"
+        - name: GF_AUTH_PROXY_HEADER_NAME
+          value: X-WEBAUTH-USER
+        - name: GF_AUTH_PROXY_HEADER_PROPERTY
+          value: username
+        - name: GF_AUTH_PROXY_AUTO_SIGN_UP
+          value: "false"
+        - name: GF_AUTH_PROXY_SYNC_TTL
+          value: "60"
+        - name: GF_AUTH_PROXY_ENABLE_LOGIN_TOKEN
+          value: "true"
+        - name: GF_USERS_AUTO_ASSIGN_ORG_ROLE
+          value: Viewer
+        - name: GF_USERS_AUTO_ASSIGN_ORG
+          value: "false"
+        - name: GF_LIVE_MAX_CONNECTIONS
+          value: '0'
+        - name: GF_AUTH_DISABLE_LOGIN_FORM
+          value: "true"
+        - name: GF_AUTH_DISABLE_SIGNOUT_MENU
+          value: "true"
+        name: grafana
+        image: docker.io/azureiot3m/grafana-custom:latest 
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "128Mi"
+            cpu: "100m" 
+        volumeMounts:
+          - name: grafana-storage
+            mountPath: /var/lib/grafana 
+            readOnly: false                     
+        ports:
+        - containerPort: 3000
+  replicas: 1

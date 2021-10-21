@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { Devices } from "./devices";
 import {
     epics as devicesEpics,
     redux as devicesRedux,
-    getDevices,
+    getDevicesWithMappings,
     getDevicesError,
     getDevicesLastUpdated,
     getDevicesPendingStatus,
@@ -22,11 +22,16 @@ import {
     getDeviceGroupError,
     getActiveDeviceQueryConditions,
     getActiveDeviceGroupConditions,
+    getActiveDeviceGroupId,
+    getColumnMappings,
+    getColumnMappingPendingStatus,
+    getColumnOptionsList,
+    getColumnOptionsPendingStatus,
 } from "store/reducers/appReducer";
 
 // Pass the devices status
 const mapStateToProps = (state) => ({
-        devices: getDevices(state),
+        devices: getDevicesWithMappings(state),
         deviceError: getDevicesError(state),
         isPending: getDevicesPendingStatus(state),
         devicesByCondition: getDevicesByCondition(state),
@@ -38,6 +43,11 @@ const mapStateToProps = (state) => ({
         activeDeviceQueryConditions: getActiveDeviceQueryConditions(state),
         activeDeviceGroupConditions: getActiveDeviceGroupConditions(state),
         loadMoreState: getLoadMoreToggleState(state),
+        activeDeviceGroupId: getActiveDeviceGroupId(state),
+        columnMappings: getColumnMappings(state),
+        isColumnMappingsPending: getColumnMappingPendingStatus(state),
+        columnOptions: getColumnOptionsList(state),
+        isColumnOptionsPending: getColumnOptionsPendingStatus(state),
     }),
     // Wrap the dispatch method
     mapDispatchToProps = (dispatch) => ({
@@ -54,8 +64,10 @@ const mapStateToProps = (state) => ({
             dispatch(appRedux.actions.checkTenantAndSwitch(payload)),
         resetDeviceByCondition: () =>
             dispatch(devicesRedux.actions.resetDeviceByCondition()),
+        insertColumnOptions: (columnOptions) =>
+            dispatch(appRedux.actions.insertColumnOptions(columnOptions)),
     });
 
-export const DevicesContainer = withNamespaces()(
+export const DevicesContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(Devices)
 );

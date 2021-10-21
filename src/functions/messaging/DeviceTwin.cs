@@ -47,7 +47,7 @@ namespace Mmm.Iot.Functions.Messaging
                         string eventData = Encoding.UTF8.GetString(message.Body.Array);
                         message.SystemProperties.TryGetValue("iothub-connection-device-id", out object deviceId);
                         DeviceService deviceService = new DeviceService();
-                        list.Add(Task.Run(async () => await deviceService.SaveDeviceTwinAsync(eventData, Convert.ToString(tenant), deviceId.ToString(), telemetryTimestamp.EpochTimestamp)));
+                        list.Add(Task.Run(async () => await deviceService.SaveDeviceTwinChangeAsync(eventData, Convert.ToString(tenant), deviceId.ToString(), telemetryTimestamp.EpochTimestamp)));
                     }
                     else
                     {

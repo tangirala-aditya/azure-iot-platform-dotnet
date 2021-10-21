@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import "rxjs";
-import { Observable } from "rxjs";
+import { of } from "rxjs";
 import moment from "moment";
 import { schema, normalize } from "normalizr";
 import update from "immutability-helper";
@@ -18,21 +18,21 @@ import {
     getPending,
     getError,
 } from "store/utilities";
+import { catchError, map } from "rxjs/operators";
 
 // ========================= Epics - START
 const handleError = (fromAction) => (error) =>
-    Observable.of(
-        redux.actions.registerError(fromAction.type, { error, fromAction })
-    );
+    of(redux.actions.registerError(fromAction.type, { error, fromAction }));
 
 export const epics = createEpicScenario({
     /** Load all tenants for the user */
     fetchTenants: {
         type: "TENANTS_FETCH",
         epic: (fromAction, store) => {
-            return TenantService.getAllTenants()
-                .map(toActionCreator(redux.actions.updateTenants, fromAction))
-                .catch(handleError(fromAction));
+            return TenantService.getAllTenants().pipe(
+                map(toActionCreator(redux.actions.updateTenants, fromAction)),
+                catchError(handleError(fromAction))
+            );
         },
     },
 });

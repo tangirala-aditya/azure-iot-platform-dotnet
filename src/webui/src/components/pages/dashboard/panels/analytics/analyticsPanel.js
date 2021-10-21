@@ -18,7 +18,8 @@ import {
     PanelMsg,
 } from "components/pages/dashboard/panel";
 
-import "./analyticsPanel.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./analyticsPanel.module.scss"));
 
 const barChartId = "analytics-bar-chart-container",
     pieChartId = "analytics-pie-chart-container";
@@ -52,7 +53,7 @@ export class AnalyticsPanel extends Component {
         window.removeEventListener("focus", this.handleWindowFocus);
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    UNSAFE_componentWillUpdate(nextProps, nextState) {
         const staticTime = "";
 
         // ================== Bar chart - START
@@ -149,32 +150,52 @@ export class AnalyticsPanel extends Component {
                         {t("dashboard.panels.analytics.header")}
                     </PanelHeaderLabel>
                 </PanelHeader>
-                <PanelContent className="analytics-panel-container">
-                    <div className="analytics-cell full-width read-more">
-                        <div className="analytics-header">
+                <PanelContent className={css("analytics-panel-container")}>
+                    <div
+                        className={css(
+                            "analytics-cell",
+                            "full-width",
+                            "read-more"
+                        )}
+                    >
+                        <div className={css("analytics-header")}>
                             {t("dashboard.panels.analytics.topRule")}
                         </div>
-                        <div className="chart-container" id={barChartId} />
+                        <div
+                            className={css("chart-container")}
+                            id={barChartId}
+                        />
                     </div>
-                    <div className="analytics-cell">
-                        <div className="analytics-header">
+                    <div className={css("analytics-cell")}>
+                        <div className={css("analytics-header")}>
                             {t("dashboard.panels.analytics.deviceGroupAlerts")}
                         </div>
-                        <div className="chart-container" id={pieChartId} />
+                        <div
+                            className={css("chart-container")}
+                            id={pieChartId}
+                        />
                     </div>
-                    <div className="analytics-cell">
-                        <div className="analytics-header">
+                    <div className={css("analytics-cell")}>
+                        <div className={css("analytics-header")}>
                             {t("dashboard.panels.analytics.criticalAlerts")}
                         </div>
-                        <div className="critical-alerts">
+                        <div className={css("critical-alerts")}>
                             {!showOverlay && (
-                                <div className="analytics-percentage-container">
-                                    <div className="analytics-value">
+                                <div
+                                    className={css(
+                                        "analytics-percentage-container"
+                                    )}
+                                >
+                                    <div className={css("analytics-value")}>
                                         {!isNaN(criticalAlertsChange)
                                             ? criticalAlertsChange
                                             : 0}
                                     </div>
-                                    <div className="analytics-percentage-sign">
+                                    <div
+                                        className={css(
+                                            "analytics-percentage-sign"
+                                        )}
+                                    >
                                         %
                                     </div>
                                 </div>

@@ -37,9 +37,11 @@ namespace Mmm.Iot.TenantManager.WebService.Controllers
             // Generate new tenant Id
             string tenantGuid = Guid.NewGuid().ToString();
             string userId = this.GetClaimsUserId();
+            string createdBy = this.GetClaimsUserDetails();
+
             try
             {
-                return await this.tenantContainer.CreateTenantAsync(tenantGuid, userId);
+                return await this.tenantContainer.CreateTenantAsync(tenantGuid, userId, createdBy);
             }
             catch (Exception e)
             {
@@ -77,9 +79,25 @@ namespace Mmm.Iot.TenantManager.WebService.Controllers
 
         [HttpPut("{tenantId}")]
         [Authorize("ReadAll")]
-        public async Task<TenantModel> UpdateAsync(string tenantId, [FromBody]string tenantName)
+        public async Task<TenantModel> UpdateAsync(string tenantId, [FromBody] string tenantName)
         {
             return await this.tenantContainer.UpdateTenantAsync(tenantId, tenantName);
+        }
+
+        [HttpGet("GrafanaUrl")]
+        [Authorize("ReadAll")]
+        public string GetGrafanaUrl()
+        {
+            string grafanaUrl = this.tenantContainer.GetGrafanaUrl(this.GetTenantId());
+            return grafanaUrl;
+        }
+
+        [HttpGet("GrafanaOrgId")]
+        [Authorize("ReadAll")]
+        public string GetGrafanaOrgId()
+        {
+            string grafanaOrgId = this.tenantContainer.GetGrafanaOrgId(this.GetTenantId());
+            return grafanaOrgId;
         }
     }
 }

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { DeviceDelete } from "./deviceDelete";
 import {
     epics as devicesEpics,
@@ -16,6 +16,6 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(devicesEpics.actions.fetchDeviceStatistics()),
 });
 
-export const DeviceDeleteContainer = withNamespaces()(
+export const DeviceDeleteContainer = withTranslation()(
     connect(null, mapDispatchToProps)(DeviceDelete)
 );

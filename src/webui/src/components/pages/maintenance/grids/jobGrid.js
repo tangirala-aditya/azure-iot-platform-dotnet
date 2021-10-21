@@ -46,9 +46,16 @@ const columnDefs = [
     },
 ];
 
+export const defaultColDef = {
+    sortable: true,
+    lockPinned: true,
+    resizable: true,
+};
+
 export const JobGrid = ({ t, ...props }) => {
     const gridProps = {
         columnDefs: translateColumnDefs(t, columnDefs),
+        defaultColDef: defaultColDef,
         context: { t },
         sizeColumnsToFit: true,
         ...props,

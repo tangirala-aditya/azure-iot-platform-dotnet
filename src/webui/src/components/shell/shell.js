@@ -8,9 +8,11 @@ import { Shell as FluentShell } from "@microsoft/azure-iot-ux-fluent-controls/li
 // App Components
 import Main from "./main/main";
 import { PageNotFoundContainer as PageNotFound } from "./pageNotFound";
-import { Svg } from "components/shared";
+import { Svg, Protected } from "components/shared";
+import { permissions } from "services/models";
 
-import "./shell.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./shell.module.scss"));
 
 /** The base component for the app shell */
 class Shell extends Component {
@@ -39,9 +41,9 @@ class Shell extends Component {
                 masthead={this.getMastheadProps()}
             >
                 {denyAccess && (
-                    <div className="app">
+                    <div className={css("app")}>
                         <Main>
-                            <div className="access-denied">
+                            <div className={css("access-denied")}>
                                 <Trans i18nKey={"accessDenied.message"}>
                                     You don't have permissions.
                                 </Trans>
@@ -51,7 +53,7 @@ class Shell extends Component {
                     </div>
                 )}
                 {!denyAccess && pagesConfig && (
-                    <div className="app">
+                    <div className={css("app")}>
                         <Main>
                             <Switch>
                                 <Redirect
@@ -98,20 +100,26 @@ class Shell extends Component {
             children: pagesConfig.map((tabProps, i) => {
                 const label = t(tabProps.labelId);
                 return (
-                    <NavLink
-                        key={i}
-                        to={tabProps.to}
-                        className="global-nav-item"
-                        activeClassName="global-nav-item-active"
-                        title={label}
-                        id={tabProps.labelId}
+                    <Protected
+                        permission={tabProps.permission ?? permissions.readAll}
                     >
-                        <Svg
-                            path={tabProps.svg}
-                            className="global-nav-item-icon"
-                        />
-                        <div className="global-nav-item-text">{label}</div>
-                    </NavLink>
+                        <NavLink
+                            key={i}
+                            to={tabProps.to}
+                            className={css("global-nav-item")}
+                            activeClassName="global-nav-item-active"
+                            title={label}
+                            id={tabProps.labelId}
+                        >
+                            <Svg
+                                src={tabProps.svg}
+                                className={css("global-nav-item-icon")}
+                            />
+                            <div className={css("global-nav-item-text")}>
+                                {label}
+                            </div>
+                        </NavLink>
+                    </Protected>
                 );
             }),
         };
@@ -180,16 +188,16 @@ class Shell extends Component {
     getMastheadBranding() {
         const { appName, appLogo, getLogoError, isDefaultLogo, t } = this.props;
         return (
-            <div className="nav-item">
+            <div className={css("nav-item")}>
                 {(isDefaultLogo || getLogoError) && (
-                    <Svg path={appLogo} className="nav-item-icon" />
+                    <Svg src={appLogo} className={css("nav-item-icon")} />
                 )}
                 {!isDefaultLogo && (
-                    <div className="nav-item-icon">
+                    <div className={css("nav-item-icon")}>
                         <img src={appLogo} alt="Logo" />
                     </div>
                 )}
-                <div className="nav-item-text">{t(appName)}</div>
+                <div className={css("nav-item-text")}>{t(appName)}</div>
             </div>
         );
     }

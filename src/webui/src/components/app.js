@@ -25,16 +25,26 @@ import {
     DeploymentsRouter,
 } from "./pages";
 import { IdentityGatewayService } from "services";
+import { ColumnMappingsRouter } from "./pages/columnmapping/columnmapping.router";
+import { initializeIcons } from "@fluentui/font-icons-mdl2";
+import { GrafanaDashboardContainer } from "./pages/dashboard/grafanaDashboard.container";
+
+initializeIcons();
 
 class App extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { openFlyout: "" };
+        this.state = { openFlyout: "", isGrafana: false };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
+        IdentityGatewayService.getDashboardMode().subscribe((value) => {
+            this.setState({
+                isGrafana: (value && value.toUpperCase()) === "TRUE",
+            });
+        });
     }
 
     closeFlyout = () => this.setState({ openFlyout: "" });
@@ -52,7 +62,9 @@ class App extends Component {
                     exact: true,
                     svg: svgs.tabs.dashboard,
                     labelId: "tabs.dashboard",
-                    component: DashboardContainer,
+                    component: this.state.isGrafana
+                        ? GrafanaDashboardContainer
+                        : DashboardContainer,
                 },
                 {
                     to: "/devices",
@@ -102,6 +114,14 @@ class App extends Component {
                     svg: svgs.tabs.maintenance,
                     labelId: "tabs.maintenance",
                     component: MaintenanceContainer,
+                },
+                {
+                    to: "/columnMapping",
+                    exact: false,
+                    svg: svgs.tabs.columnMapping,
+                    labelId: "tabs.columnMapping",
+                    component: ColumnMappingsRouter,
+                    permission: permissions.updateDeviceGroups,
                 },
             ],
             crumbsConfig = [

@@ -1,4 +1,4 @@
-﻿// <copyright file="DeviceService.cs" company="3M">
+// <copyright file="DeviceService.cs" company="3M">
 // Copyright (c) 3M. All rights reserved.
 // </copyright>
 
@@ -7,8 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.EventHubs;
 using Microsoft.Extensions.Logging;
+using Mmm.Iot.Functions.Messaging.Shared.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -72,7 +74,7 @@ namespace Mmm.Iot.Functions.Messaging.Shared
             }
         }
 
-        public async Task SaveDeviceTwinAsync(string eventData, string tenant, string deviceId, double timeReceived)
+        public async Task SaveDeviceTwinChangeAsync(string eventData, string tenant, string deviceId, double timeReceived)
         {
             try
             {
@@ -174,6 +176,149 @@ namespace Mmm.Iot.Functions.Messaging.Shared
             if (!this.success)
             {
                 throw new Exception("Failed to process one or more telemetry messages.");
+            }
+        }
+
+        public async Task ProcessDeviceTwin(EventData[] source, ILogger log, string tenant, string deviceId)
+        {
+            foreach (EventData message in source)
+            {
+                try
+                {
+                    if (tenant != null)
+                    {
+                        var connectionString = TenantConnectionHelper.GetEventHubConnectionString(Convert.ToString(tenant));
+                        EventHubHelper eventHubHelper = new EventHubHelper(connectionString);
+
+                        string eventData = Encoding.UTF8.GetString(message.Body.Array);
+                        message.Properties.TryGetValue("opType", out object operationType);
+                        message.SystemProperties.TryGetValue(DeviceTelemetryKeyConstants.IotHubEnqueuedTime, out object dateTimeReceived);
+
+                        var timeStamp = new TelemetryTimestamp(Convert.ToDateTime(dateTimeReceived));
+                        DeviceService deviceService = new DeviceService();
+                        await deviceService.SaveDeviceTwinOperationAsync(eventData, log, Convert.ToString(tenant), deviceId.ToString(), operationType.ToString(), timeStamp, eventHubHelper);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.LogError($"Error occurrred in for loop: {ex.Message} StackTrace: {ex.StackTrace}  Inner Exception: {(string.IsNullOrEmpty(ex.StackTrace) ? string.Empty : ex.StackTrace)}");
+                }
+            }
+        }
+
+        public async Task SaveDeviceTwinOperationAsync(string eventData, ILogger log, string tenant, string deviceId, string operationType, TelemetryTimestamp timeStamp, EventHubHelper eventHubHelper)
+        {
+            try
+            {
+                string deviceTwin = eventData;
+                Twin twin = null;
+                JObject deviceTwinJson = new JObject();
+                deviceTwinJson.Add(DeviceTelemetryKeyConstants.DeviceId, deviceId.ToString());
+                deviceTwinJson.Add(DeviceTelemetryKeyConstants.TimeStamp, timeStamp.DateTime);
+                deviceTwinJson.Add(DeviceTelemetryKeyConstants.TimeReceived, timeStamp.EpochTimestamp);
+                deviceTwinJson.Add(DeviceTelemetryKeyConstants.EventOpType, operationType);
+                deviceTwinJson.Add(DeviceTelemetryKeyConstants.IsDeleted, false);
+
+                if (operationType.ToString().Equals("createDeviceIdentity"))
+                {
+                    deviceTwinJson.Add(DeviceTelemetryKeyConstants.DeviceCreatedDate, timeStamp.DateTime);
+
+                    try
+                    {
+                        twin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
+                        deviceTwin = twin.ToJson();
+                    }
+                    catch (Exception e)
+                    {
+                        log.LogError($"Unable to fetch DeviceId: {deviceId} device twin from iothub of tenant: {tenant}.", e);
+                    }
+                }
+                else
+                {
+                    JObject previousTwin = null;
+                    KustoOperations kustoClient = await KustoOperations.GetClientAsync();
+
+                    string kustoQuery = $"DeviceTwin | where DeviceId == \"{deviceId}\" | summarize arg_max(TimeStamp, *) by DeviceId | where IsDeleted == false";
+                    var deviceTwinList = await kustoClient.QueryAsync<DeviceTwinModel>($"IoT-{tenant}", kustoQuery, null);
+
+                    DeviceTwinModel preDeviceTwin = deviceTwinList.FirstOrDefault();
+
+                    if (preDeviceTwin != null)
+                    {
+                        previousTwin = preDeviceTwin.Twin;
+                        deviceTwinJson.Add(DeviceTelemetryKeyConstants.DeviceCreatedDate, preDeviceTwin.DeviceCreatedDate);
+                    }
+                    else
+                    {
+                        deviceTwinJson.Add(DeviceTelemetryKeyConstants.DeviceCreatedDate, default(DateTime)); // Set Device Created Date to Default if twin is not present in storage.
+
+                        try
+                        {
+                            twin = await TenantConnectionHelper.GetRegistry(Convert.ToString(tenant)).GetTwinAsync(deviceId.ToString());
+
+                            if (twin != null)
+                            {
+                                previousTwin = JObject.Parse(twin.ToJson());
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            log.LogError($"Unable to fetch DeviceId: {deviceId} device twin from iothub of tenant: {tenant}.", e);
+                        }
+                    }
+
+                    switch (operationType)
+                    {
+                        case "deviceConnected":
+                            if (preDeviceTwin != null)
+                            {
+                                previousTwin["connectionState"] = "Connected";
+                                previousTwin["lastActivityTime"] = timeStamp.DateTime;
+                            }
+
+                            break;
+                        case "deviceDisconnected":
+                            if (preDeviceTwin != null)
+                            {
+                                previousTwin["connectionState"] = "Disconnected";
+                                previousTwin["lastActivityTime"] = timeStamp.DateTime;
+                            }
+
+                            break;
+                        case "updateTwin":
+                            if (preDeviceTwin != null)
+                            {
+                                JObject twinFragment = JObject.Parse(eventData);
+                                previousTwin = previousTwin.UpdateJson(twinFragment);
+                            }
+                            else
+                            {
+                                previousTwin = JObject.Parse(eventData);
+                            }
+
+                            break;
+                        case "deleteDeviceIdentity":
+                            deviceTwinJson[DeviceTelemetryKeyConstants.IsDeleted] = true;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    deviceTwin = previousTwin?.ToString();
+                }
+
+                deviceTwinJson.Add(DeviceTelemetryKeyConstants.Data, deviceTwin);
+
+                // Save the Device Twin Data to EventHub for further processing
+                var byteMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceTwinJson));
+                var eventDeviceTwinData = new Azure.Messaging.EventHubs.EventData(byteMessage);
+                eventDeviceTwinData.Properties.Add("deviceid", deviceId.ToString());
+
+                await eventHubHelper.SendMessageToEventHub($"{tenant}-devicetwin", new Azure.Messaging.EventHubs.EventData[] { eventDeviceTwinData });
+            }
+            catch (Exception exception)
+            {
+                throw new ApplicationException($"Save Device Twin operation failed: {exception}, operation type: {operationType}, tenant: {tenant}, deviceId {deviceId}");
             }
         }
 

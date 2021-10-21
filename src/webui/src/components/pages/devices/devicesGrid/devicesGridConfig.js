@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import Config from "app.config";
+import { checkboxColumn } from "components/shared/pcsGrid/pcsGridConfig";
+
 import {
     IsSimulatedRenderer,
     ConnectionStatusRenderer,
@@ -16,49 +18,82 @@ import {
 const { checkForEmpty } = gridValueFormatters;
 
 /** A collection of column definitions for the devices grid */
-export const deviceColumnDefs = {
-    id: {
+export const deviceGridColumns = [
+    checkboxColumn,
+    {
         headerName: "devices.grid.deviceName",
         field: "id",
-        sort: "asc",
         cellRendererFramework: SoftSelectLinkRenderer,
+        suppressSizeToFit: true,
     },
-    isSimulated: {
+    {
         headerName: "devices.grid.simulated",
         field: "isSimulated",
         cellRendererFramework: IsSimulatedRenderer,
     },
-    deviceType: {
+    {
         headerName: "devices.grid.deviceType",
         field: "type",
         valueFormatter: ({ value }) => checkForEmpty(value),
     },
-    firmware: {
+    {
         headerName: "devices.grid.firmware",
         field: "firmware",
         valueFormatter: ({ value }) => checkForEmpty(value),
     },
-    telemetry: {
+    {
         headerName: "devices.grid.telemetry",
         field: "telemetry",
         valueFormatter: ({ value }) =>
             Object.keys(value || {}).join("; ") || EMPTY_FIELD_VAL,
     },
-    isEdge: {
+    {
         headerName: "isEdge",
         field: "isEdgeDevice",
         cellRendererFramework: IsActivePackageRenderer,
     },
-    status: {
+    {
         headerName: "devices.grid.status",
         field: "connected",
         cellRendererFramework: ConnectionStatusRenderer,
     },
-    lastConnection: {
+    {
         headerName: "devices.grid.lastConnection",
         field: "lastActivity",
         cellRendererFramework: TimeRenderer,
+        suppressSizeToFit: true,
     },
+    {
+        headerName: "Device Modified Date",
+        field: "modifiedDate",
+        cellRendererFramework: TimeRenderer,
+        suppressSizeToFit: true,
+    },
+    {
+        headerName: "Device Created Date",
+        field: "deviceCreatedDate",
+        cellRendererFramework: TimeRenderer,
+        suppressSizeToFit: true,
+        sort: "desc",
+    },
+];
+
+export const defaultDeviceColumns = [
+    checkboxColumn,
+    {
+        headerName: "devices.grid.deviceName",
+        field: "id",
+        sort: "asc",
+        cellRendererFramework: SoftSelectLinkRenderer,
+        suppressSizeToFit: true,
+    },
+];
+
+/** Default column definitions*/
+export const defaultColDef = {
+    sortable: true,
+    lockPinned: true,
+    resizable: true,
 };
 
 /** Given a device object, extract and return the device Id */
@@ -72,3 +107,34 @@ export const defaultDeviceGridProps = {
     paginationPageSize: Config.paginationPageSize,
     rowSelection: "multiple",
 };
+
+export const defaultDownloadMappings = [
+    {
+        name: "Device name",
+        mapping: "Id",
+    },
+    {
+        name: "Simulated",
+        mapping: "IsSimulated",
+    },
+    {
+        name: "Device Type",
+        mapping: "DeviceType",
+    },
+    {
+        name: "Firmware",
+        mapping: "Firmware",
+    },
+    {
+        name: "Telemetry",
+        mapping: "Telemetry",
+    },
+    {
+        name: "Status",
+        mapping: "Connected",
+    },
+    {
+        name: "Last connection",
+        mapping: "LastActivity",
+    },
+];

@@ -34,8 +34,9 @@ import {
     BalloonAlignment,
 } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Balloon/Balloon";
 
-import "./deployments.scss";
 import { IdentityGatewayService } from "services";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deployments.module.scss"));
 
 const closedFlyoutState = { openFlyoutName: undefined };
 
@@ -55,7 +56,7 @@ export class Deployments extends Component {
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (this.props.location && this.props.location.search) {
             const tenantId = getTenantIdParam(this.props.location);
             this.props.checkTenantAndSwitch({
@@ -69,7 +70,7 @@ export class Deployments extends Component {
         IdentityGatewayService.VerifyAndRefreshCache();
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.isPending &&
             nextProps.isPending !== this.props.isPending
@@ -176,12 +177,13 @@ export class Deployments extends Component {
             this.setState({
                 openFlyoutName: "deployment-status",
                 deployment: selectedDeployment.data,
-                relatedDeployments: selectedDeployment.node.gridOptionsWrapper.gridOptions.rowData.filter(
-                    (x) =>
-                        x.deviceGroupId ===
-                            selectedDeployment.data.deviceGroupId &&
-                        x.id !== selectedDeployment.data.id
-                ),
+                relatedDeployments:
+                    selectedDeployment.node.gridOptionsWrapper.gridOptions.rowData.filter(
+                        (x) =>
+                            x.deviceGroupId ===
+                                selectedDeployment.data.deviceGroupId &&
+                            x.id !== selectedDeployment.data.id
+                    ),
                 flyoutLink: flyoutLink,
             });
         }
@@ -247,12 +249,12 @@ export class Deployments extends Component {
                         />
                     </ContextMenuAlign>
                 </ContextMenu>
-                <PageContent className="deployments-page-container">
+                <PageContent className={css("deployments-page-container")}>
                     <PageTitle
-                        className="deployments-title"
+                        className={css("deployments-title")}
                         titleValue={t("deployments.title")}
                     />
-                    <h2 className="right-corner">
+                    <h2 className={css("right-corner")}>
                         <Balloon
                             position={BalloonPosition.Bottom}
                             align={BalloonAlignment.End}

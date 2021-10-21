@@ -17,7 +17,8 @@ import { DeviceDetailsContainer } from "components/pages/devices/flyouts/deviceD
 import { toDiagnosticsModel } from "services/models";
 import { AzureMap } from "./azureMap";
 
-import "./mapPanel.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./mapPanel.module.scss"));
 
 const AzureMaps = window.atlas,
     nominalDeviceLayer = "devices-nominal-layer",
@@ -43,7 +44,7 @@ export class MapPanel extends Component {
         this.state = { selectedDeviceId: undefined };
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.calculatePins(nextProps);
     }
 
@@ -62,7 +63,10 @@ export class MapPanel extends Component {
                 const [pin] = event.features;
                 this.popup.setPopupOptions({
                     position: pin.geometry.coordinates,
-                    content: this.buildDevicePopup(pin.properties, classname),
+                    content: this.buildDevicePopup(
+                        pin.properties,
+                        css(classname)
+                    ),
                 });
                 this.props.logEvent(toDiagnosticsModel("Map_DeviceClick", {}));
                 this.popup.open(map);
@@ -77,17 +81,17 @@ export class MapPanel extends Component {
 
     buildDevicePopup = (properties, classname) => {
         const popupContentBox = document.createElement("div");
-        popupContentBox.classList.add("popup-content-box");
-        popupContentBox.classList.add(classname);
+        popupContentBox.classList.add(css("popup-content-box"));
+        popupContentBox.classList.add(css(classname));
 
         const type = document.createElement("div");
-        type.classList.add("popup-type");
+        type.classList.add(css("popup-type"));
         type.innerText = properties.cluster
             ? "Device Cluster"
             : properties.type;
 
         const name = document.createElement("div");
-        name.classList.add("popup-device-name");
+        name.classList.add(css("popup-device-name"));
         name.innerText = properties.cluster
             ? `Devices: ${properties.point_count}`
             : properties.id;
@@ -234,31 +238,29 @@ export class MapPanel extends Component {
     closeDeviceDetails = () => this.setState({ selectedDeviceId: undefined });
 
     render() {
-        const {
-                t,
-                isPending,
-                mapKeyIsPending,
-                azureMapsKey,
-                error,
-            } = this.props,
+        const { t, isPending, mapKeyIsPending, azureMapsKey, error } =
+                this.props,
             showOverlay = !error && isPending && mapKeyIsPending;
         return (
-            <Panel className="map-panel-container">
+            <Panel className={css("map-panel-container")}>
                 <PanelHeader>
                     <PanelHeaderLabel>
                         {t("dashboard.panels.map.header")}
                     </PanelHeaderLabel>
                 </PanelHeader>
-                <PanelContent className="map-panel-container">
+                <PanelContent className={css("map-panel-container")}>
                     <AzureMap
                         azureMapsKey={azureMapsKey}
                         onMapReady={this.onMapReady}
                     />
-                    <button className="zoom-btn zoom-in" onClick={this.zoomIn}>
+                    <button
+                        className={css("zoom-btn", "zoom-in")}
+                        onClick={this.zoomIn}
+                    >
                         +
                     </button>
                     <button
-                        className="zoom-btn zoom-out"
+                        className={css("zoom-btn", "zoom-out")}
                         onClick={this.zoomOut}
                     >
                         -

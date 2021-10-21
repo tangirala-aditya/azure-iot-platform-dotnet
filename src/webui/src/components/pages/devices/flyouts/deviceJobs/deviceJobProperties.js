@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Observable } from "rxjs";
+import { from } from "rxjs";
 import update from "immutability-helper";
 
 import { IoTHubManagerService } from "services";
@@ -34,6 +34,9 @@ import {
     SummarySection,
     Svg,
 } from "components/shared";
+import { distinct, filter, map, mergeMap, reduce } from "rxjs/operators";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deviceJobs.module.scss"));
 
 update.extend("$autoArray", (val, obj) => update(obj || [], val));
 
@@ -81,7 +84,7 @@ export class DeviceJobProperties extends LinkedComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.devices &&
             (this.props.devices || []).length !== nextProps.devices.length
@@ -139,101 +142,111 @@ export class DeviceJobProperties extends LinkedComponent {
             return { id: device.id, properties };
         });
 
-        this.populateStateSubscription = Observable.from(devicesWithProps)
-            .map(({ properties }) => new Set(Object.keys(properties)))
-            .reduce((commonProperties, deviceProperties) =>
-                commonProperties
-                    ? new Set(
-                          [...commonProperties].filter((property) =>
-                              deviceProperties.has(property)
+        this.populateStateSubscription = from(devicesWithProps)
+            .pipe(
+                map(({ properties }) => new Set(Object.keys(properties))),
+                reduce((commonProperties, deviceProperties) =>
+                    commonProperties
+                        ? new Set(
+                              [...commonProperties].filter((property) =>
+                                  deviceProperties.has(property)
+                              )
                           )
-                      )
-                    : deviceProperties
-            ) // At this point, a stream of a single event. A common set of properties.
-            .flatMap((commonPropertiesSet) =>
-                Observable.from(devicesWithProps)
-                    .flatMap(({ properties }) => Object.entries(properties))
-                    .filter(([property]) => commonPropertiesSet.has(property))
-            )
-            .distinct(
-                ([propertyName, propertyVal]) =>
-                    `${propertyName} ${propertyVal.display}`
-            )
-            .reduce(
-                (acc, [propertyName, propertyVal]) =>
-                    update(acc, {
-                        [propertyName]: {
-                            $autoArray: {
-                                $push: [propertyVal],
-                            },
-                        },
-                    }),
-                {}
-            )
-            .flatMap((propertyToValMap) => Object.entries(propertyToValMap))
-            .reduce(
-                (newState, [name, values]) => {
-                    const valueData = values.reduce(
-                        (
-                            valAcc,
-                            { reported, desired, display, inSync, isJSON }
-                        ) => {
-                            if (!valAcc.reported) {
-                                valAcc.reported = reported;
-                                valAcc.display = display;
-                            }
-                            if (!inSync) {
-                                valAcc.anyOutOfSync = true;
-                            }
-                            if (reported !== valAcc.reported) {
-                                valAcc.reported =
-                                    propertyJobConstants.multipleValues;
-                                valAcc.display = valAcc.anyOutOfSync
-                                    ? t(
-                                          "devices.flyouts.jobs.properties.syncing",
-                                          {
-                                              reportedPropertyValue:
-                                                  propertyJobConstants.multipleValues,
-                                              desiredPropertyValue: "",
-                                          }
-                                      )
-                                    : propertyJobConstants.multipleValues;
-                            }
-                            if (!isNumeric(reported)) {
-                                valAcc.type = propertyJobConstants.stringType;
-                            }
-                            valAcc.isJSON = isJSON;
-                            return valAcc;
-                        },
-                        {
-                            reported: undefined,
-                            display: undefined,
-                            anyOutOfSync: false,
-                            type: propertyJobConstants.numberType,
-                            isJSON: false,
-                        }
-                    );
-                    return update(newState, {
-                        commonProperties: {
-                            $push: [
-                                {
-                                    name,
-                                    value: valueData.display,
-                                    jsonValue: {
-                                        jsObject: valueData.display,
-                                    },
-                                    type: valueData.type,
-                                    readOnly:
-                                        name ===
-                                            propertyJobConstants.firmware ||
-                                        valueData.anyOutOfSync,
-                                    isJSON: valueData.isJSON,
+                        : deviceProperties
+                ), // At this point, a stream of a single event. A common set of properties.
+                mergeMap((commonPropertiesSet) =>
+                    from(devicesWithProps).pipe(
+                        mergeMap(({ properties }) =>
+                            Object.entries(properties)
+                        ),
+                        filter(([property]) =>
+                            commonPropertiesSet.has(property)
+                        )
+                    )
+                ),
+                distinct(
+                    ([propertyName, propertyVal]) =>
+                        `${propertyName} ${propertyVal.display}`
+                ),
+                reduce(
+                    (acc, [propertyName, propertyVal]) =>
+                        update(acc, {
+                            [propertyName]: {
+                                $autoArray: {
+                                    $push: [propertyVal],
                                 },
-                            ],
-                        },
-                    });
-                },
-                { ...initialState, jobName: this.state.jobName }
+                            },
+                        }),
+                    {}
+                ),
+                mergeMap((propertyToValMap) =>
+                    Object.entries(propertyToValMap)
+                ),
+                reduce(
+                    (newState, [name, values]) => {
+                        const valueData = values.reduce(
+                            (
+                                valAcc,
+                                { reported, desired, display, inSync, isJSON }
+                            ) => {
+                                if (!valAcc.reported) {
+                                    valAcc.reported = reported;
+                                    valAcc.display = display;
+                                }
+                                if (!inSync) {
+                                    valAcc.anyOutOfSync = true;
+                                }
+                                if (reported !== valAcc.reported) {
+                                    valAcc.reported =
+                                        propertyJobConstants.multipleValues;
+                                    valAcc.display = valAcc.anyOutOfSync
+                                        ? t(
+                                              "devices.flyouts.jobs.properties.syncing",
+                                              {
+                                                  reportedPropertyValue:
+                                                      propertyJobConstants.multipleValues,
+                                                  desiredPropertyValue: "",
+                                              }
+                                          )
+                                        : propertyJobConstants.multipleValues;
+                                }
+                                if (!isNumeric(reported)) {
+                                    valAcc.type =
+                                        propertyJobConstants.stringType;
+                                }
+                                valAcc.isJSON = isJSON;
+                                return valAcc;
+                            },
+                            {
+                                reported: undefined,
+                                display: undefined,
+                                anyOutOfSync: false,
+                                type: propertyJobConstants.numberType,
+                                isJSON: false,
+                            }
+                        );
+                        return update(newState, {
+                            commonProperties: {
+                                $push: [
+                                    {
+                                        name,
+                                        value: valueData.display,
+                                        jsonValue: {
+                                            jsObject: valueData.display,
+                                        },
+                                        type: valueData.type,
+                                        readOnly:
+                                            name ===
+                                                propertyJobConstants.firmware ||
+                                            valueData.anyOutOfSync,
+                                        isJSON: valueData.isJSON,
+                                    },
+                                ],
+                            },
+                        });
+                    },
+                    { ...initialState, jobName: this.state.jobName }
+                )
             )
             .subscribe((newState) => this.setState(newState));
     };
@@ -355,13 +368,8 @@ export class DeviceJobProperties extends LinkedComponent {
     };
 
     render() {
-        const {
-                t,
-                onClose,
-                devices,
-                theme,
-                openPropertyEditorModal,
-            } = this.props,
+        const { t, onClose, devices, theme, openPropertyEditorModal } =
+                this.props,
             {
                 isPending,
                 error,
@@ -435,7 +443,7 @@ export class DeviceJobProperties extends LinkedComponent {
 
         return (
             <form onSubmit={this.apply}>
-                <FormSection className="device-job-properties-container">
+                <FormSection className={css("device-job-properties-container")}>
                     <SectionHeader>
                         {t("devices.flyouts.jobs.properties.title")}
                     </SectionHeader>
@@ -447,7 +455,7 @@ export class DeviceJobProperties extends LinkedComponent {
                         <FormLabel>
                             {t("devices.flyouts.jobs.jobName")}
                         </FormLabel>
-                        <div className="help-message">
+                        <div className={css("help-message")}>
                             {t("devices.flyouts.jobs.jobNameHelpMessage")}
                         </div>
                         <FormControl
@@ -458,7 +466,7 @@ export class DeviceJobProperties extends LinkedComponent {
                         />
                     </FormGroup>
 
-                    <Grid className="data-grid">
+                    <Grid className={css("data-grid")}>
                         <GridHeader>
                             <Row>
                                 <Cell className="col-2">
@@ -480,7 +488,7 @@ export class DeviceJobProperties extends LinkedComponent {
                         </GridHeader>
                         {Object.keys(commonProperties).length === 0 &&
                             summaryCount === 1 && (
-                                <div className="device-jobs-info">
+                                <div className={css("device-jobs-info")}>
                                     {t(
                                         "devices.flyouts.details.properties.noneExist"
                                     )}
@@ -488,7 +496,7 @@ export class DeviceJobProperties extends LinkedComponent {
                             )}
                         {Object.keys(commonProperties).length === 0 &&
                             summaryCount > 1 && (
-                                <ErrorMsg className="device-jobs-error">
+                                <ErrorMsg className={css("device-jobs-error")}>
                                     {t(
                                         "devices.flyouts.jobs.properties.noneExist"
                                     )}
@@ -510,12 +518,12 @@ export class DeviceJobProperties extends LinkedComponent {
                                         },
                                         idx
                                     ) => (
-                                        <ComponentArray>
+                                        <ComponentArray key={idx}>
                                             <Row
                                                 id={idx}
                                                 className={
                                                     error
-                                                        ? "error-data-row"
+                                                        ? css("error-data-row")
                                                         : ""
                                                 }
                                             >
@@ -524,7 +532,11 @@ export class DeviceJobProperties extends LinkedComponent {
                                                     &nbsp;&nbsp;&nbsp;
                                                 </Cell>
                                                 <Cell className="col-6">
-                                                    <div className="jsonValueDivMaxHeight">
+                                                    <div
+                                                        className={css(
+                                                            "jsonValueDivMaxHeight"
+                                                        )}
+                                                    >
                                                         {isJSON.value && (
                                                             <FormControl
                                                                 className="small"
@@ -574,7 +586,9 @@ export class DeviceJobProperties extends LinkedComponent {
                                                         {isJSON.value &&
                                                             !readOnly.value && (
                                                                 <Btn
-                                                                    className="linkToButton"
+                                                                    className={css(
+                                                                        "linkToButton"
+                                                                    )}
                                                                     svg={
                                                                         svgs.linkTo
                                                                     }
@@ -593,7 +607,11 @@ export class DeviceJobProperties extends LinkedComponent {
                                                 </Cell>
                                             </Row>
                                             {error ? (
-                                                <Row className="error-msg-row">
+                                                <Row
+                                                    className={css(
+                                                        "error-msg-row"
+                                                    )}
+                                                >
                                                     <ErrorMsg>{error}</ErrorMsg>
                                                 </Row>
                                             ) : null}
@@ -613,8 +631,8 @@ export class DeviceJobProperties extends LinkedComponent {
                             {this.state.isPending && <Indicator />}
                             {completedSuccessfully && (
                                 <Svg
-                                    className="summary-icon"
-                                    path={svgs.apply}
+                                    className={css("summary-icon")}
+                                    src={svgs.apply}
                                 />
                             )}
                         </SummaryBody>
@@ -622,7 +640,7 @@ export class DeviceJobProperties extends LinkedComponent {
 
                     {error && (
                         <AjaxError
-                            className="device-jobs-error"
+                            className={css("device-jobs-error")}
                             t={t}
                             error={error}
                         />

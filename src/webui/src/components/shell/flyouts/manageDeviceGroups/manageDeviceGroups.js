@@ -10,11 +10,16 @@ import Flyout from "components/shared/flyout";
 import DeviceGroupForm from "./views/deviceGroupForm";
 import DeviceGroups from "./views/deviceGroups";
 
-import "./manageDeviceGroups.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./manageDeviceGroups.module.scss"));
 
 const toOption = (value, label) => ({
     label: label || value,
     value,
+});
+const toColumnMappingOptions = (mapping) => ({
+    label: mapping.name,
+    value: mapping.id,
 });
 
 export class ManageDeviceGroups extends LinkedComponent {
@@ -32,13 +37,24 @@ export class ManageDeviceGroups extends LinkedComponent {
     }
 
     componentDidMount() {
-        this.subscription = IoTHubManagerService.getDeviceProperties().subscribe(
-            (items) => {
-                const filterOptions = items.map((item) => toOption(item));
-                this.setState({ filterOptions });
+        this.subscription =
+            IoTHubManagerService.getDeviceProperties().subscribe(
+                (items) => {
+                    const filterOptions = items.map((item) => toOption(item));
+                    this.setState({ filterOptions });
+                },
+                (filtersError) => this.setState({ filtersError })
+            );
+        const columnMappingsOptions = [
+            {
+                name: this.props.t(
+                    "deviceGroupsFlyout.columnMappingPlaceholder"
+                ),
+                value: undefined,
             },
-            (filtersError) => this.setState({ filtersError })
-        );
+            ...this.props.columnMappings,
+        ].map((item) => toColumnMappingOptions(item));
+        this.setState({ columnMappingsOptions });
     }
 
     componentWillUnmount() {
@@ -98,7 +114,7 @@ export class ManageDeviceGroups extends LinkedComponent {
                     this.expandFlyout();
                 }}
             >
-                <div className="manage-filters-flyout-container">
+                <div className={css("manage-filters-flyout-container")}>
                     {this.state.addNewDeviceGroup ||
                     !!this.state.selectedDeviceGroup ? (
                         <DeviceGroupForm
@@ -112,7 +128,7 @@ export class ManageDeviceGroups extends LinkedComponent {
                                 permission={permissions.createDeviceGroups}
                             >
                                 <Btn
-                                    className="add-btn"
+                                    className={css("add-btn")}
                                     style={btnStyle}
                                     svg={svgs.plus}
                                     onClick={this.toggleNewFilter}

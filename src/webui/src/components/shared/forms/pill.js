@@ -5,16 +5,17 @@ import PropTypes from "prop-types";
 
 import { Btn } from "components/shared";
 
-import "./styles/pill.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./styles/pill.module.scss"));
 
 export const Pill = ({ svg, label, onSvgClick, altSvgText }) => (
-    <div className="pill">
+    <div className={css("pill")}>
         {label}
         {svg && (
             <Btn
                 onClick={onSvgClick}
                 svg={svg}
-                className="pill-icon"
+                className={css("pill-icon")}
                 alt={altSvgText}
             />
         )}

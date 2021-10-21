@@ -3,6 +3,7 @@
 import Config from "app.config";
 import { HttpClient } from "utilities/httpClient";
 import { toUserTenantModel } from "./models";
+import { map } from "rxjs/operators";
 
 const ENDPOINT = Config.serviceUrls.identityGateway;
 
@@ -10,34 +11,37 @@ const ENDPOINT = Config.serviceUrls.identityGateway;
 export class IdentityGatewayService {
     /** Returns a list of users */
     static getUsers() {
-        return HttpClient.get(`${ENDPOINT}tenants/users`)
-            .map((res = { Models: [] }) => res.Models)
-            .map(toUserTenantModel);
+        return HttpClient.get(`${ENDPOINT}tenants/users`).pipe(
+            map((res = { Models: [] }) => res.Models),
+            map(toUserTenantModel)
+        );
     }
 
     /** Returns all the users who are not currently super users */
     static getAllNonSystemAdmins() {
         return HttpClient.get(
             `${ENDPOINT}systemAdmin/getAllNonSystemAdmins`
-        ).map((res = { Models: [] }) => res.Models);
+        ).pipe(map((res = { Models: [] }) => res.Models));
     }
 
     /** Retuns all the current super users in the system */
     static getAllSystemAdmins() {
-        return HttpClient.get(`${ENDPOINT}systemAdmin/getAllSystemAdmins`).map(
-            (res = { Models: [] }) => res.Models
+        return HttpClient.get(`${ENDPOINT}systemAdmin/getAllSystemAdmins`).pipe(
+            map((res = { Models: [] }) => res.Models)
         );
     }
 
     /** Delete a User */
     static deleteUser(id) {
-        return HttpClient.delete(`${ENDPOINT}tenants/${id}`).map((t) => id);
+        return HttpClient.delete(`${ENDPOINT}tenants/${id}`).pipe(
+            map((t) => id)
+        );
     }
 
     static deleteSystemAdmin(id) {
-        return HttpClient.delete(`${ENDPOINT}systemAdmin/${id}`).map((t) => {
-            return id;
-        });
+        return HttpClient.delete(`${ENDPOINT}systemAdmin/${id}`).pipe(
+            map((t) => id)
+        );
     }
 
     static addSystemAdmin(userId, name) {
@@ -52,7 +56,7 @@ export class IdentityGatewayService {
         return HttpClient.post(`${ENDPOINT}tenants/invite`, {
             email_address: email,
             role: role,
-        }).map((t) => toUserTenantModel([t]));
+        }).pipe(map((t) => toUserTenantModel([t])));
     }
 
     /** Add a new Service Principal */
@@ -63,24 +67,24 @@ export class IdentityGatewayService {
             Roles: `['${role}']`,
             Type: "Client Credentials",
             Name: appid,
-        }).map((t) => toUserTenantModel([t]));
+        }).pipe(map((t) => toUserTenantModel([t])));
     }
 
     static getUserActiveDeviceGroup() {
-        return HttpClient.get(`${ENDPOINT}settings/ActiveDeviceGroup`).map(
-            (setting) => setting && setting.value
+        return HttpClient.get(`${ENDPOINT}settings/ActiveDeviceGroup`).pipe(
+            map((setting) => setting && setting.value)
         );
     }
 
     static updateUserActiveDeviceGroup(value) {
         return HttpClient.put(
             `${ENDPOINT}settings/ActiveDeviceGroup/${value}`
-        ).map((setting) => setting && setting.value);
+        ).pipe(map((setting) => setting && setting.value));
     }
 
     static VerifyAndRefreshCache() {
         HttpClient.get(`${ENDPOINT}settings/LatestBuildNumber`)
-            .map((setting) => setting && setting.value)
+            .pipe(map((setting) => setting && setting.value))
             .subscribe((value) => {
                 if (
                     HttpClient.getLocalStorageValue("latestBuildNumber") !==
@@ -90,5 +94,12 @@ export class IdentityGatewayService {
                     HttpClient.setLocalStorageValue("latestBuildNumber", value);
                 }
             });
+    }
+
+    /* Method that returns the mode of the dashboard*/
+    static getDashboardMode() {
+        return HttpClient.get(`${ENDPOINT}settings/DashboardMode`).pipe(
+            map((setting) => setting && setting.value)
+        );
     }
 }

@@ -20,6 +20,9 @@ import {
     Svg,
 } from "components/shared";
 
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../manageDeviceGroups.module.scss"));
+
 export class DeviceGroupDelete extends Component {
     constructor(props) {
         super(props);
@@ -40,7 +43,7 @@ export class DeviceGroupDelete extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.setState({
             id: this.props.id,
             deviceGroupName: this.props.displayName,
@@ -61,13 +64,17 @@ export class DeviceGroupDelete extends Component {
         event.preventDefault();
         this.setState({ isPending: true, error: null });
         this.props.logEvent(toDiagnosticsModel("DeviceGroup_Delete", {}));
+        if (this.props.activeDeviceGroupId === this.state.id) {
+            var list = this.props.deviceGroups.filter(
+                (x) => x.id !== this.state.id
+            );
+            this.props.updateActiveDeviceGroup(list[0].id); // First update in store
+            this.props.changeDeviceGroup(list[0].id); // Then make service call
+        }
         this.subscription = ConfigService.deleteDeviceGroup(
             this.state.id
         ).subscribe(
             (deletedGroupId) => {
-                if (this.props.activeDeviceGroupId === deletedGroupId) {
-                    this.props.changeDeviceGroup(this.props.deviceGroups[0].id);
-                }
                 this.props.deleteDeviceGroups([deletedGroupId]);
             },
             (error) =>
@@ -126,7 +133,7 @@ export class DeviceGroupDelete extends Component {
                     className="device-group-delete-container"
                     onSubmit={this.deleteDeviceGroup}
                 >
-                    <div className="device-group-delete-header">
+                    <div className={css("device-group-delete-header")}>
                         {t("deviceGroupsFlyout.delete.header")}
                     </div>
                     <div className="device-group-delete-descr">
@@ -161,8 +168,8 @@ export class DeviceGroupDelete extends Component {
                             {this.state.isPending && <Indicator />}
                             {completedSuccessfully && (
                                 <Svg
-                                    className="summary-icon"
-                                    path={svgs.apply}
+                                    className={css("summary-icon")}
+                                    src={svgs.apply}
                                 />
                             )}
                         </SummaryBody>
@@ -170,7 +177,7 @@ export class DeviceGroupDelete extends Component {
 
                     {error && (
                         <AjaxError
-                            className="device-group-delete-error"
+                            className={css("device-group-delete-error")}
                             t={t}
                             error={error}
                         />

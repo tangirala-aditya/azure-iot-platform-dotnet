@@ -14,7 +14,7 @@ export class AzureMap extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!this.map && nextProps.azureMapsKey) {
             this.initializeMap(nextProps.azureMapsKey);
         }

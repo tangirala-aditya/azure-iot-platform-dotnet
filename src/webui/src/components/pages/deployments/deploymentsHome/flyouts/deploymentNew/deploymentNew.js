@@ -43,7 +43,8 @@ import {
     ThemedSvgContainer,
 } from "components/shared";
 
-import "./deploymentNew.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deploymentNew.module.scss"));
 
 const isPositiveInteger = (str) =>
     /^\+?(0|[1-9]\d*)$/.test(str) && str <= 2147483647;
@@ -71,7 +72,7 @@ export class DeploymentNew extends LinkedComponent {
         this.expandFlyout = this.expandFlyout.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const { devices, packages, deviceGroups, deviceGroupId } = nextProps;
         if (devices && devices.length > 0) {
             this.setState({ targetedDeviceCount: devices.length });
@@ -84,7 +85,16 @@ export class DeploymentNew extends LinkedComponent {
             this.setState({ deviceGroupName, deviceGroupId });
 
             this.setState({
-                deviceGroupQuery: JSON.stringify(deviceGroup.conditions),
+                deviceGroupQuery:
+                    deviceGroup.conditions.length === 1 &&
+                    deviceGroup.conditions[0].key === "id"
+                        ? JSON.stringify([])
+                        : JSON.stringify(deviceGroup.conditions),
+                deviceIds:
+                    deviceGroup.conditions.length === 1 &&
+                    deviceGroup.conditions[0].key === "id"
+                        ? deviceGroup.conditions[0].value
+                        : [],
             });
         }
         // Reset package selection
@@ -150,6 +160,7 @@ export class DeploymentNew extends LinkedComponent {
                 packageId,
                 packageType,
                 configType,
+                deviceIds,
             } = this.state;
 
         logEvent(
@@ -183,6 +194,7 @@ export class DeploymentNew extends LinkedComponent {
                 deviceGroupId,
                 name,
                 priority,
+                deviceIds,
             });
             this.setState({ changesApplied: true });
         }
@@ -392,16 +404,19 @@ export class DeploymentNew extends LinkedComponent {
                     this.expandFlyout();
                 }}
             >
-                <div className="new-deployment-content">
-                    <form className="new-deployment-form" onSubmit={this.apply}>
-                        <FormGroup className="new-deployment-formGroup">
+                <div className={css("new-deployment-content")}>
+                    <form
+                        className={css("new-deployment-form")}
+                        onSubmit={this.apply}
+                    >
+                        <FormGroup className={css("new-deployment-formGroup")}>
                             <FormLabel isRequired="true">
                                 {t("deployments.flyouts.new.name")}
                             </FormLabel>
                             {!completedSuccessfully && (
                                 <FormControl
                                     type="text"
-                                    className="long"
+                                    className={css("long")}
                                     link={this.nameLink}
                                     onBlur={(event) =>
                                         this.genericOnChange(
@@ -416,12 +431,16 @@ export class DeploymentNew extends LinkedComponent {
                                 />
                             )}
                             {completedSuccessfully && (
-                                <FormLabel className="new-deployment-success-labels">
+                                <FormLabel
+                                    className={css(
+                                        "new-deployment-success-labels"
+                                    )}
+                                >
                                     {name}
                                 </FormLabel>
                             )}
                         </FormGroup>
-                        <FormGroup className="new-deployment-formGroup">
+                        <FormGroup className={css("new-deployment-formGroup")}>
                             <FormLabel isRequired="true">
                                 {t("deployments.flyouts.new.packageType")}
                             </FormLabel>
@@ -431,7 +450,7 @@ export class DeploymentNew extends LinkedComponent {
                                     ariaLabel={t(
                                         "deployments.flyouts.new.packageType"
                                     )}
-                                    className="long"
+                                    className={css("long")}
                                     link={this.packageTypeLink}
                                     onChange={this.onPackageTypeSelected}
                                     options={packageTypeSelectOptions}
@@ -443,13 +462,19 @@ export class DeploymentNew extends LinkedComponent {
                                 />
                             )}
                             {completedSuccessfully && (
-                                <FormLabel className="new-deployment-success-labels">
+                                <FormLabel
+                                    className={css(
+                                        "new-deployment-success-labels"
+                                    )}
+                                >
                                     {packageType}
                                 </FormLabel>
                             )}
                         </FormGroup>
                         {configTypeEnabled && (
-                            <FormGroup className="new-deployment-formGroup">
+                            <FormGroup
+                                className={css("new-deployment-formGroup")}
+                            >
                                 <FormLabel isRequired="true">
                                     {t("deployments.flyouts.new.configType")}
                                 </FormLabel>
@@ -459,7 +484,7 @@ export class DeploymentNew extends LinkedComponent {
                                         ariaLabel={t(
                                             "deployments.flyouts.new.configType"
                                         )}
-                                        className="config-type-select"
+                                        className={css("config-type-select")}
                                         onChange={this.configTypeChange}
                                         link={this.configTypeLink}
                                         options={configTypeSelectOptions}
@@ -475,20 +500,26 @@ export class DeploymentNew extends LinkedComponent {
                                     /** Displays an error message if one occurs while fetching configTypes. */
                                     configTypesError && (
                                         <AjaxError
-                                            className="new-deployment-flyout-error"
+                                            className={css(
+                                                "new-deployment-flyout-error"
+                                            )}
                                             t={t}
                                             error={configTypesError}
                                         />
                                     )
                                 }
                                 {completedSuccessfully && (
-                                    <FormLabel className="new-deployment-success-labels">
+                                    <FormLabel
+                                        className={css(
+                                            "new-deployment-success-labels"
+                                        )}
+                                    >
                                         {configType}
                                     </FormLabel>
                                 )}
                             </FormGroup>
                         )}
-                        <FormGroup className="new-deployment-formGroup">
+                        <FormGroup className={css("new-deployment-formGroup")}>
                             <FormLabel isRequired="true">
                                 {t("deployments.flyouts.new.package")}
                             </FormLabel>
@@ -498,7 +529,7 @@ export class DeploymentNew extends LinkedComponent {
                                     ariaLabel={t(
                                         "deployments.flyouts.new.package"
                                     )}
-                                    className="long"
+                                    className={css("long")}
                                     disabled={!isPackageTypeSelected}
                                     link={this.packageIdLink}
                                     options={this.packageOptionsLink.value}
@@ -525,19 +556,25 @@ export class DeploymentNew extends LinkedComponent {
                                 /** Displays an error message if one occurs while fetching packages. */
                                 packagesError && (
                                     <AjaxError
-                                        className="new-deployment-flyout-error"
+                                        className={css(
+                                            "new-deployment-flyout-error"
+                                        )}
                                         t={t}
                                         error={packagesError}
                                     />
                                 )
                             }
                             {completedSuccessfully && (
-                                <FormLabel className="new-deployment-success-labels">
+                                <FormLabel
+                                    className={css(
+                                        "new-deployment-success-labels"
+                                    )}
+                                >
                                     {packageName}
                                 </FormLabel>
                             )}
                         </FormGroup>
-                        <FormGroup className="new-deployment-formGroup">
+                        <FormGroup className={css("new-deployment-formGroup")}>
                             <FormLabel isRequired="true">
                                 {t("deployments.flyouts.new.priority")}
                                 <Balloon
@@ -572,7 +609,7 @@ export class DeploymentNew extends LinkedComponent {
                             {!completedSuccessfully && (
                                 <FormControl
                                     type="text"
-                                    className="long"
+                                    className={css("long")}
                                     link={this.priorityLink}
                                     onBlur={(event) =>
                                         this.genericOnChange(
@@ -587,12 +624,18 @@ export class DeploymentNew extends LinkedComponent {
                                 />
                             )}
                             {completedSuccessfully && (
-                                <FormLabel className="new-deployment-success-labels">
+                                <FormLabel
+                                    className={css(
+                                        "new-deployment-success-labels"
+                                    )}
+                                >
                                     {priority}
                                 </FormLabel>
                             )}
                         </FormGroup>
-                        <SummarySection className="new-deployment-summary">
+                        <SummarySection
+                            className={css("new-deployment-summary")}
+                        >
                             <SummaryBody>
                                 {
                                     /** Displays targeted devices count once device goup is selected. */
@@ -608,8 +651,8 @@ export class DeploymentNew extends LinkedComponent {
                                         </SectionDesc>
                                         {completedSuccessfully && (
                                             <Svg
-                                                className="summary-icon"
-                                                path={svgs.apply}
+                                                className={css("summary-icon")}
+                                                src={svgs.apply}
                                             />
                                         )}
                                     </ComponentArray>
@@ -624,8 +667,16 @@ export class DeploymentNew extends LinkedComponent {
                             {
                                 /** Displays a info message if package type selected is edge Manifest */
                                 !changesApplied && (
-                                    <div className="new-deployment-info-text">
-                                        <strong className="new-deployment-info-star">
+                                    <div
+                                        className={css(
+                                            "new-deployment-info-text"
+                                        )}
+                                    >
+                                        <strong
+                                            className={css(
+                                                "new-deployment-info-star"
+                                            )}
+                                        >
                                             *{" "}
                                         </strong>
                                         {t("deployments.flyouts.new.infoText")}
@@ -635,7 +686,11 @@ export class DeploymentNew extends LinkedComponent {
                             {
                                 /** Displays a success message if deployment is created successfully */
                                 completedSuccessfully && (
-                                    <div className="new-deployment-info-text">
+                                    <div
+                                        className={css(
+                                            "new-deployment-info-text"
+                                        )}
+                                    >
                                         <Trans
                                             i18nKey={
                                                 "deployments.flyouts.new.successText"
@@ -644,7 +699,7 @@ export class DeploymentNew extends LinkedComponent {
                                             View your deployment status detail
                                             for
                                             <Link
-                                                className="link"
+                                                className={css("link")}
                                                 to={`/deployments/${createdDeploymentId}`}
                                             >
                                                 {{ deploymentName: name }}
@@ -658,7 +713,9 @@ export class DeploymentNew extends LinkedComponent {
                                 /** Displays an error message if one occurs while creating deployment. */
                                 changesApplied && createError && (
                                     <AjaxError
-                                        className="new-deployment-flyout-error"
+                                        className={css(
+                                            "new-deployment-flyout-error"
+                                        )}
                                         t={t}
                                         error={createError}
                                     />

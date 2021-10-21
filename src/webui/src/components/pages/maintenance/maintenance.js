@@ -18,8 +18,7 @@ import {
     IdentityGatewayService,
 } from "services";
 import { toDiagnosticsModel } from "services/models";
-
-import "./maintenance.scss";
+import { map, mergeMap, toArray } from "rxjs/operators";
 
 const alertSchema = new schema.Entity("alerts"),
     alertListSchema = new schema.Array(alertSchema);
@@ -81,19 +80,23 @@ export class Maintenance extends Component {
         this.clearSubscriptions();
         this.subscriptions.push(
             TelemetryService.getActiveAlerts(params)
-                .flatMap((alerts) => alerts)
-                .flatMap((alert) =>
-                    // Get the last occurrence of the alert and the counts per alert status
-                    TelemetryService.getAlertsForRule(alert.ruleId, {
-                        ...params,
-                        order: "desc",
-                    }).map((alerts) => ({
-                        ...alert,
-                        alerts,
-                        lastOccurrence: (alerts[0] || {}).dateCreated,
-                    }))
+                .pipe(
+                    mergeMap((alerts) => alerts),
+                    mergeMap((alert) =>
+                        // Get the last occurrence of the alert and the counts per alert status
+                        TelemetryService.getAlertsForRule(alert.ruleId, {
+                            ...params,
+                            order: "desc",
+                        }).pipe(
+                            map((alerts) => ({
+                                ...alert,
+                                alerts,
+                                lastOccurrence: (alerts[0] || {}).dateCreated,
+                            }))
+                        )
+                    ),
+                    toArray()
                 )
-                .toArray()
                 .subscribe(
                     (alertedRules) => {
                         const {
@@ -179,22 +182,19 @@ export class Maintenance extends Component {
         );
     };
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
     }
 
     componentDidMount() {
-        const {
-            devicesIsPending,
-            deviceLastUpdated,
-            deviceEntities,
-        } = this.props;
+        const { devicesIsPending, deviceLastUpdated, deviceEntities } =
+            this.props;
         if (!devicesIsPending && deviceLastUpdated) {
             this.getData(deviceEntities);
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const {
             devicesIsPending,
             deviceLastUpdated,

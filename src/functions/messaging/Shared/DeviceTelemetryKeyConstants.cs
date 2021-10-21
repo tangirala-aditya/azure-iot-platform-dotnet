@@ -12,6 +12,11 @@ namespace Mmm.Iot.Functions.Messaging.Shared
         public const string DateTimeReceived = "_dateTimeReceived";
         public const string TimeReceived = "_timeReceived";
         public const string Schema = "_schema";
+        public const string Data = "data";
+        public const string TimeStamp = "timeStamp";
+        public const string IsDeleted = "isDeleted";
+        public const string DeviceCreatedDate = "deviceCreatedDate";
+        public const string EventOpType = "eventOperationType";
 
         public const string MessageSchema = "message";
 
@@ -31,5 +36,6 @@ namespace Mmm.Iot.Functions.Messaging.Shared
         public const string TelemetrySchema = "message";
         public const string TwinChangeSchema = "twinchange";
         public const string LifecycleSchema = "lifecycle";
+        public const string DeviceTwinSchema = "deviceTwin";
     }
 }

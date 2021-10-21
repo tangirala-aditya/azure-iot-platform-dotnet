@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 import React, { Component } from "react";
-import { joinClasses } from "utilities";
 import { Btn } from "components/shared";
 import { Dropdown } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Dropdown";
 
-import "./contextMenu.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./contextMenu.module.scss"));
 
 /**
  * ContextMenuAgile shows the menu buttons in dropdown when these are crowded in menu.
@@ -215,31 +215,27 @@ export class ContextMenuAgile extends Component {
     render() {
         const { visible } = this.state;
         const { priorityChildren, farChildren } = this.props;
-        const [priorityChildrenArray, extraChildrenArray] = this.updateMenu(
-            priorityChildren
-        );
+        const [priorityChildrenArray, extraChildrenArray] =
+            this.updateMenu(priorityChildren);
         return (
-            <div
-                className={joinClasses("context-menu-container")}
-                ref={this.container}
-            >
+            <div className={css("context-menu-container")} ref={this.container}>
                 {priorityChildrenArray && (
                     <div
-                        className={joinClasses(
-                            "context-menu-align-container",
-                            "left"
-                        )}
+                        className={css("context-menu-align-container", "left")}
                     >
                         <div
                             ref={this.priorityMenu}
-                            className="context-menu-align-item"
+                            className={css("context-menu-align-item")}
                         >
                             {priorityChildrenArray.length > 0 &&
                                 priorityChildrenArray
                                     .filter((x) => x)
                                     .map((item, i) => (
                                         <div
-                                            className={`context-menu-align-item item-${i}`}
+                                            className={css(
+                                                `context-menu-align-item`,
+                                                `item-${i}`
+                                            )}
                                             key={`item-${i}`}
                                         >
                                             {item}
@@ -249,14 +245,17 @@ export class ContextMenuAgile extends Component {
                         {extraChildrenArray && extraChildrenArray.length > 0 && (
                             <div
                                 ref={this.extraMenu}
-                                className="context-menu-align-item"
+                                className={css("context-menu-align-item")}
                             >
                                 <Dropdown
                                     dropdown={extraChildrenArray
                                         .filter((x) => x)
                                         .map((item, i) => (
                                             <div
-                                                className={`extraMenuDropdown-option dropdown-item-${i}`}
+                                                className={css(
+                                                    "extra-menu-dropdown-option",
+                                                    `dropdown-item-${i}`
+                                                )}
                                                 key={`dropdown-item-${i}`}
                                             >
                                                 {item}
@@ -271,14 +270,16 @@ export class ContextMenuAgile extends Component {
                                     onOuterEvent={this.dropdownClose}
                                     attr={{
                                         dropdown: {
-                                            className: "extraMenuDropdown",
+                                            className: css(
+                                                "extra-menu-dropdown"
+                                            ),
                                             onClick: this.dropdownClose,
                                         },
                                     }}
                                 >
                                     <Btn
                                         icon="more"
-                                        className="dropdown-icon"
+                                        className={css("dropdown-icon")}
                                         onClick={this.toggleDropdown}
                                     />
                                 </Dropdown>
@@ -288,16 +289,16 @@ export class ContextMenuAgile extends Component {
                 )}
                 {farChildren && (
                     <div
-                        className={joinClasses(
-                            "context-menu-align-container",
-                            "right"
-                        )}
+                        className={css("context-menu-align-container", "right")}
                         ref={this.farMenu}
                     >
                         {farChildren.length > 0 &&
                             farChildren.map((item, i) => (
                                 <div
-                                    className={`context-menu-align-item far-item-${i}`}
+                                    className={css(
+                                        `context-menu-align-item`,
+                                        `far-item-${i}`
+                                    )}
                                     key={`far-item-${i}`}
                                 >
                                     {item}

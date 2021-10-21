@@ -19,6 +19,9 @@ import { TimeIntervalDropdownContainer as TimeIntervalDropdown } from "component
 import { IoTHubManagerService } from "services";
 import { toDiagnosticsModel } from "services/models";
 
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../maintenance.module.scss"));
+
 export class JobDetails extends Component {
     constructor(props) {
         super(props);
@@ -40,7 +43,7 @@ export class JobDetails extends Component {
         this.props.logEvent(toDiagnosticsModel("JobDetails_Click", {}));
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.handleNewProps(nextProps);
     }
 
@@ -167,7 +170,7 @@ export class JobDetails extends Component {
                         />
                     </ContextMenuAlign>
                 </ContextMenu>
-                <PageContent className="maintenance-container">
+                <PageContent className={css("maintenance-container")}>
                     <PageTitle
                         titleValue={selectedJob ? selectedJob.jobId : ""}
                     />
@@ -181,7 +184,7 @@ export class JobDetails extends Component {
                                 <JobStatusGrid {...jobStatusGridProps} />
                             )}
                             {
-                                <h4 className="maintenance-sub-header">
+                                <h4 className={css("maintenance-sub-header")}>
                                     {t("maintenance.devices")}
                                 </h4>
                             }
@@ -189,6 +192,7 @@ export class JobDetails extends Component {
                                 <DevicesGridContainer
                                     t={t}
                                     domLayout="autoHeight"
+                                    useStaticCols={true}
                                     rowData={this.state.selectedDevices}
                                     onContextMenuChange={
                                         this.onContextMenuChange

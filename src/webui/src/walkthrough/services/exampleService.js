@@ -2,7 +2,8 @@
 
 // <service>
 
-import { Observable } from "rxjs";
+import { of } from "rxjs";
+import { delay, map } from "rxjs/operators";
 import { toExampleItemModel, toExampleItemsModel } from "./models";
 
 /** Normally, you'll need to define the endpoint URL.
@@ -17,15 +18,15 @@ import { toExampleItemModel, toExampleItemsModel } from "./models";
 export class ExampleService {
     /** Returns an example item */
     static getExampleItem(id) {
-        return Observable.of({
+        return of({
             ID: id,
             Description: "This is an example item.",
-        }).map(toExampleItemModel);
+        }).pipe(map(toExampleItemModel));
     }
 
     /** Returns a list of example items */
     static getExampleItems() {
-        return Observable.of({
+        return of({
             items: [
                 { ID: "123", Description: "This is item 123." },
                 { ID: "188", Description: "This is item ONE-DOUBLE-EIGHT." },
@@ -34,12 +35,12 @@ export class ExampleService {
                 { ID: "413", Description: "This is item FOUR-THIRTEEN." },
                 { ID: "789", Description: "This is item 789." },
             ],
-        }).map(toExampleItemsModel);
+        }).pipe(map(toExampleItemsModel));
     }
 
     /** Mimics a server call by adding a delay */
     static updateExampleItems() {
-        return this.getExampleItems().delay(2000);
+        return this.getExampleItems().pipe(delay(2000));
     }
 }
 // </service>

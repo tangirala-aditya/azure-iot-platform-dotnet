@@ -11,7 +11,7 @@ namespace Mmm.Iot.TenantManager.Services
     {
         Task<TenantModel> GetTenantAsync(string tenantGuid);
 
-        Task<CreateTenantModel> CreateTenantAsync(string tenantGuid, string userId);
+        Task<CreateTenantModel> CreateTenantAsync(string tenantGuid, string userId, string createdBy);
 
         Task<DeleteTenantModel> DeleteTenantAsync(string tenantGuid, string userId, bool ensureFullyDeployed = true);
 
@@ -20,5 +20,9 @@ namespace Mmm.Iot.TenantManager.Services
         Task<TenantModel> UpdateTenantAsync(string tenantId, string tenantName);
 
         Task<UserTenantListModel> GetAllTenantsAsync(string userId);
+
+        string GetGrafanaUrl(string tenantId);
+
+        string GetGrafanaOrgId(string tenantId);
     }
 }

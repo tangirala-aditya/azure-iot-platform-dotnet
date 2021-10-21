@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 import "react-app-polyfill/stable";
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -10,7 +10,7 @@ import { configureStore } from "store/configureStore";
 import { AppContainer as App } from "components/app.container";
 import { configureStore as configureWalkthroughStore } from "walkthrough/store/configureStore";
 import { AppContainer as WalkthroughApp } from "walkthrough/components/app.container";
-import registerServiceWorker from "registerServiceWorker";
+import { unregister } from "registerServiceWorker";
 import { AuthService } from "services/authService";
 import { epics as appEpics } from "store/reducers/appReducer";
 import { epics as tenantsEpics } from "store/reducers/tenantsReducer";
@@ -56,13 +56,19 @@ AuthService.onLoad(() => {
 
     // Create the React app
     ReactDOM.render(
-        <Provider store={store}>
-            <Router>
-                {Config.showWalkthroughExamples ? <WalkthroughApp /> : <App />}
-            </Router>
-        </Provider>,
+        <Suspense fallback={<h1>Loading...</h1>}>
+            <Provider store={store}>
+                <Router>
+                    {Config.showWalkthroughExamples ? (
+                        <WalkthroughApp />
+                    ) : (
+                        <App />
+                    )}
+                </Router>
+            </Provider>
+        </Suspense>,
         document.getElementById("root")
     );
 
-    registerServiceWorker();
+    unregister();
 });

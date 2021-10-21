@@ -45,7 +45,7 @@ export class Packages extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (this.props.location && this.props.location.search) {
             const tenantId = getTenantIdParam(this.props.location);
             this.props.checkTenantAndSwitch({
@@ -59,7 +59,7 @@ export class Packages extends Component {
         IdentityGatewayService.VerifyAndRefreshCache();
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.isPending &&
             nextProps.isPending !== this.props.isPending
@@ -159,20 +159,13 @@ export class Packages extends Component {
 
     onCellClicked = (selectedPackage) => {
         if (selectedPackage.colDef.field === "id") {
-            console.log(selectedPackage);
             copyToClipboard(selectedPackage.data.id);
         }
     };
 
     render() {
-        const {
-                t,
-                packages,
-                error,
-                isPending,
-                fetchPackages,
-                lastUpdated,
-            } = this.props,
+        const { t, packages, error, isPending, fetchPackages, lastUpdated } =
+                this.props,
             gridProps = {
                 onGridReady: this.onGridReady,
                 onFirstDataRendered: this.onFirstDataRendered,

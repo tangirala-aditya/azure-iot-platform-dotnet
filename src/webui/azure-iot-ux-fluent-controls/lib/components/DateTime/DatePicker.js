@@ -207,7 +207,7 @@ class DatePicker extends React.Component {
      *
      * @param newProps new DatePickerProps
      */
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         if (
             (this.props.initialValue !== newProps.initialValue ||
                 this.props.localTimezone !== newProps.localTimezone) &&

@@ -115,7 +115,7 @@ namespace Mmm.Iot.DeviceTelemetry.WebService.Controllers
 
         [HttpPost("v1/[controller]!delete")]
         [Authorize("DeleteAlarms")]
-        public void Delete([FromBody] AlarmIdListApiModel alarmList)
+        public async Task DeleteAsync([FromBody] AlarmIdListApiModel alarmList)
         {
             if (alarmList.Items == null || !alarmList.Items.Any())
             {
@@ -127,7 +127,7 @@ namespace Mmm.Iot.DeviceTelemetry.WebService.Controllers
                 throw new InvalidInputException("Cannot delete more than 1000 alarms");
             }
 
-            this.alarmService.Delete(alarmList.Items);
+            await this.alarmService.Delete(alarmList.Items);
         }
 
         private async Task<AlarmListApiModel> ListHelperAsync(

@@ -7,13 +7,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
+using Azure.Messaging.EventHubs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Devices;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Mmm.Iot.Common.Services;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
+using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.AsaManager;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
 using Mmm.Iot.Common.Services.Helpers;
@@ -40,24 +45,37 @@ namespace Mmm.Iot.Config.Services
         public const string DateFormat = "yyyy-MM-dd'T'HH:mm:sszzz";
         public const string AppInsightDateFormat = "yyyy-MM-dd HH:mm:ss";
         public const string SoftwarePackageStore = "software-package";
+        public const string ColumnMappingsCollectionId = "columnmappings";
+        public const string ColumnOptionsCollectionId = "columnoptions";
+        private const string DeviceGroupId = "DeviceGroupId";
+        private const string DeviceGroupName = "DeviceGroupName";
+        private const string DeviceGroupConditions = "DeviceGroupConditions";
+        private const string TimeStamp = "TimeStamp";
+        private const string IsDeleted = "IsDeleted";
         private readonly IStorageAdapterClient client;
         private readonly IAsaManagerClient asaManager;
         private readonly AppConfig config;
         private readonly IPackageEventLog packageLog;
         private readonly ILogger logger;
+        private readonly TenantConnectionHelper tenantConnectionHelper;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public Storage(
             IStorageAdapterClient client,
             IAsaManagerClient asaManager,
             AppConfig config,
             IPackageEventLog packageLog,
-            ILogger<Storage> logger)
+            ILogger<Storage> logger,
+            IHttpContextAccessor httpContextAccessor,
+            IAppConfigurationClient appConfigurationClient)
         {
             this.client = client;
             this.asaManager = asaManager;
             this.config = config;
             this.packageLog = packageLog;
             this.logger = logger;
+            this.tenantConnectionHelper = new TenantConnectionHelper(appConfigurationClient);
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Theme> GetThemeAsync()
@@ -172,6 +190,7 @@ namespace Mmm.Iot.Config.Services
             var value = JsonConvert.SerializeObject(input, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             var response = await this.client.CreateAsync(DeviceGroupCollectionId, value);
             var responseModel = this.CreateGroupServiceModel(response);
+            await this.AddDeviceGroupToADX(responseModel);
             await this.asaManager.BeginDeviceGroupsConversionAsync();
             return responseModel;
         }
@@ -186,12 +205,15 @@ namespace Mmm.Iot.Config.Services
             var value = JsonConvert.SerializeObject(input, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             var response = await this.client.UpdateAsync(DeviceGroupCollectionId, id, value, etag);
             await this.asaManager.BeginDeviceGroupsConversionAsync();
+            await this.AddDeviceGroupToADX(this.CreateGroupServiceModel(response));
             return this.CreateGroupServiceModel(response);
         }
 
         public async Task DeleteDeviceGroupAsync(string id)
         {
+            DeviceGroup deviceGroup = await this.GetDeviceGroupAsync(id);
             await this.client.DeleteAsync(DeviceGroupCollectionId, id);
+            await this.DeleteDeviceGroupToADX(deviceGroup);
             await this.asaManager.BeginDeviceGroupsConversionAsync();
         }
 
@@ -472,6 +494,156 @@ namespace Mmm.Iot.Config.Services
             return this.CreatePackageServiceModel(response);
         }
 
+        public async Task<ColumnMappingServiceModel> GetColumnMappingAsync(string id)
+        {
+            var response = await this.client.GetAsync(ColumnMappingsCollectionId, id);
+            return this.CreateColumnMappingServiceModel(response);
+        }
+
+        public async Task<IEnumerable<ColumnMappingServiceModel>> GetColumnMappingsAsync()
+        {
+            var response = await this.client.GetAllAsync(ColumnMappingsCollectionId);
+            return response.Items
+                .Select(this.CreateColumnMappingServiceModel);
+        }
+
+        public async Task<ColumnMappingServiceModel> AddColumnMappingAsync(ColumnMappingServiceModel columnMapping, string userId)
+        {
+            ValueApiModel response = null;
+            AuditHelper.AddAuditingData(columnMapping, userId);
+
+            // Make ETag as empty to make sure that is inserted as new entity;
+            columnMapping.ETag = null;
+            if (columnMapping.IsDefault)
+            {
+                columnMapping.Id = columnMapping.Name;
+                response = await this.SaveColumnMappingWithKeyAsync(columnMapping);
+            }
+            else
+            {
+                response = await this.SaveColumnMappingAsync(columnMapping);
+            }
+
+            return this.CreateColumnMappingServiceModel(response);
+        }
+
+        public async Task<ColumnMappingServiceModel> UpdateColumnMappingAsync(string id, ColumnMappingServiceModel columnMapping, string userId)
+        {
+            ColumnMappingServiceModel existingColumnMapping = await this.GetColumnMappingAsync(id);
+
+            existingColumnMapping.ColumnMappingDefinitions = columnMapping.ColumnMappingDefinitions;
+
+            AuditHelper.UpdateAuditingData(existingColumnMapping, userId);
+
+            ValueApiModel response = await this.SaveColumnMappingWithKeyAsync(existingColumnMapping);
+
+            return this.CreateColumnMappingServiceModel(response);
+        }
+
+        public async Task DeleteColumnMappingAsync(string id, string userId)
+        {
+            var response = await this.GetColumnMappingAsync(id);
+            if (response != null)
+            {
+                // Delete Device group relation with current mapping
+                var deviceGroups = await this.GetAllDeviceGroupsAsync();
+                if (deviceGroups != null && deviceGroups.Any())
+                {
+                    var impactedDeviceGroups = deviceGroups.Where(dg => dg.MappingId == id).ToList();
+                    var columnOptions = await this.GetDeviceGroupColumnOptions();
+                    var optionsToRemove = response.ColumnMappingDefinitions.Select(d => d.Name).ToList();
+                    foreach (var item in impactedDeviceGroups)
+                    {
+                        item.MappingId = null;
+                        var deviceGroupColOptions = columnOptions.FirstOrDefault(co => co.DeviceGroupId == item.Id);
+
+                        // Remove column options from the list
+                        if (deviceGroupColOptions != null)
+                        {
+                            deviceGroupColOptions.SelectedOptions = deviceGroupColOptions.SelectedOptions.Except(optionsToRemove).ToArray();
+                            await this.UpdateColumnOptionsAsync(deviceGroupColOptions.Key, deviceGroupColOptions, userId);
+                        }
+
+                        await this.UpdateDeviceGroupAsync(item.Id, item, item.ETag);
+                    }
+                }
+
+                await this.client.DeleteAsync(ColumnMappingsCollectionId, id);
+            }
+        }
+
+        public async Task<IEnumerable<ColumnOptionsServiceModel>> GetDeviceGroupColumnOptions()
+        {
+            var response = await this.client.GetAllAsync(ColumnOptionsCollectionId);
+            return response.Items.Select(this.CreateColumnOptionsServiceModel);
+        }
+
+        public async Task<ColumnOptionsServiceModel> AddColumnOptionsAsync(ColumnOptionsServiceModel columnOptions, string userId)
+        {
+            ValueApiModel response = null;
+            AuditHelper.AddAuditingData(columnOptions, userId);
+
+            var value = JsonConvert.SerializeObject(columnOptions, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            response = await this.client.CreateAsync(ColumnOptionsCollectionId, value);
+            return this.CreateColumnOptionsServiceModel(response);
+        }
+
+        public async Task<ColumnOptionsServiceModel> UpdateColumnOptionsAsync(string id, ColumnOptionsServiceModel columnOptions, string userId)
+        {
+            AuditHelper.UpdateAuditingData(columnOptions, userId);
+
+            var value = JsonConvert.SerializeObject(columnOptions, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var response = await this.client.UpdateAsync(ColumnOptionsCollectionId, id, value, columnOptions.ETag);
+
+            return this.CreateColumnOptionsServiceModel(response);
+        }
+
+        public async Task CreateDeviceGroupsAsync()
+        {
+            var deviceGroups = await this.GetAllDeviceGroupsAsync();
+            foreach (DeviceGroup deviceGroup in deviceGroups)
+            {
+                await this.AddDeviceGroupToADX(deviceGroup);
+            }
+        }
+
+        private ColumnOptionsServiceModel CreateColumnOptionsServiceModel(ValueApiModel input)
+        {
+            var output = JsonConvert.DeserializeObject<ColumnOptionsServiceModel>(input.Data);
+            output.ETag = input.ETag;
+            output.Key = input.Key;
+            return output;
+        }
+
+        private async Task<ValueApiModel> SaveColumnMappingWithKeyAsync(ColumnMappingServiceModel columnMapping)
+        {
+            var value = JsonConvert.SerializeObject(
+                columnMapping,
+                Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                });
+
+            var response = await this.client.UpdateAsync(ColumnMappingsCollectionId, columnMapping.Id, value, columnMapping.ETag);
+            return response;
+        }
+
+        private async Task<ValueApiModel> SaveColumnMappingAsync(ColumnMappingServiceModel columnMapping)
+        {
+            var value = JsonConvert.SerializeObject(
+                columnMapping,
+                Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                });
+
+            var response = await this.client.CreateAsync(ColumnMappingsCollectionId, value);
+
+            return response;
+        }
+
         private string GetBlobSasUri(CloudBlobClient cloudBlobClient, string containerName, string blobName, string timeoutDuration)
         {
             string[] time = timeoutDuration.Split(':');
@@ -559,6 +731,57 @@ namespace Mmm.Iot.Config.Services
             {
                 return packages;
             }
+        }
+
+        private ColumnMappingServiceModel CreateColumnMappingServiceModel(ValueApiModel input)
+        {
+            var output = JsonConvert.DeserializeObject<ColumnMappingServiceModel>(input.Data);
+            output.Id = input.Key;
+            output.ETag = input.ETag;
+            if (output.Tags == null)
+            {
+                output.Tags = new List<string>();
+            }
+
+            return output;
+        }
+
+        private async Task AddDeviceGroupToADX(DeviceGroup deviceGroup, bool isDeleted = false)
+        {
+            bool isKustoEnabled = this.config.DeviceTelemetryService.Messages.TelemetryStorageType.Equals(Common.Services.Models.TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase);
+            if (isKustoEnabled)
+            {
+                string tenantId = this.httpContextAccessor.HttpContext.Request.GetTenant();
+                var connectionString = this.tenantConnectionHelper.GetEventHubConnectionString(tenantId);
+                if (!string.IsNullOrWhiteSpace(connectionString))
+                {
+                    EventHubHelper eventHubHelper = new EventHubHelper(connectionString);
+                    var result = this.GetDeviceGroupsForADX(deviceGroup, isDeleted);
+                    await eventHubHelper.SendMessageToEventHub($"{tenantId}-devicegroup", new EventData[] { result });
+                }
+            }
+        }
+
+        private async Task DeleteDeviceGroupToADX(DeviceGroup deviceGroup)
+        {
+            bool isKustoEnabled = this.config.DeviceTelemetryService.Messages.TelemetryStorageType.Equals(Common.Services.Models.TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase);
+            if (isKustoEnabled)
+            {
+                await this.AddDeviceGroupToADX(deviceGroup, true);
+            }
+        }
+
+        private EventData GetDeviceGroupsForADX(DeviceGroup deviceGroup, bool isDeleted)
+        {
+            JObject deviceGroupDeviceMappingJson = new JObject();
+            deviceGroupDeviceMappingJson.Add(DeviceGroupId, deviceGroup.Id);
+            deviceGroupDeviceMappingJson.Add(DeviceGroupName, deviceGroup.DisplayName);
+            deviceGroupDeviceMappingJson.Add(DeviceGroupConditions, QueryConditionTranslator.ToADXQueryString(JsonConvert.SerializeObject(deviceGroup.Conditions)));
+            deviceGroupDeviceMappingJson.Add(TimeStamp, DateTime.UtcNow);
+            deviceGroupDeviceMappingJson.Add(IsDeleted, isDeleted);
+            var byteMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceGroupDeviceMappingJson));
+            var deviceMappingEventData = new EventData(byteMessage);
+            return deviceMappingEventData;
         }
     }
 }

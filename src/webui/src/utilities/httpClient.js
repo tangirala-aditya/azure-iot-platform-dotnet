@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { Observable } from "rxjs";
+import { zip, range, throwError, of } from "rxjs";
 import { AuthService } from "services";
 import Config from "app.config";
 import { AjaxError, RetryableAjaxError } from "./ajaxModels";
+import { map, mergeMap, catchError, retryWhen, delay } from "rxjs/operators";
+import { ajax } from "rxjs/ajax";
 
 /**
  * A class of static methods for creating ajax requests
@@ -80,21 +82,18 @@ export class HttpClient {
      */
     static ajax(url, options = {}, withAuth = true) {
         const { retryWaitTime, maxRetryAttempts } = Config;
-        return (
-            HttpClient.createAjaxRequest({ ...options, url }, withAuth)
-                .flatMap(Observable.ajax)
-                // If success, extract the response object and enforce camelCase keys if json response
-                .map((ajaxResponse) =>
-                    ajaxResponse.responseType === "json"
-                        ? ajaxResponse.response
-                        : ajaxResponse
-                )
-                // Classify errors as retryable or not
-                .catch((ajaxError) =>
-                    Observable.throw(classifyError(ajaxError))
-                )
-                // Retry any retryable errors
-                .retryWhen(retryHandler(maxRetryAttempts, retryWaitTime))
+        return HttpClient.createAjaxRequest({ ...options, url }, withAuth).pipe(
+            mergeMap(ajax),
+            // If success, extract the response object and enforce camelCase keys if json response
+            map((ajaxResponse) =>
+                ajaxResponse.responseType === "json"
+                    ? ajaxResponse.response
+                    : ajaxResponse
+            ),
+            // Classify errors as retryable or not
+            catchError((ajaxError) => throwError(classifyError(ajaxError))),
+            // Retry any retryable errors
+            retryWhen(retryHandler(maxRetryAttempts, retryWaitTime))
         );
     }
 
@@ -102,24 +101,27 @@ export class HttpClient {
      * A helper method for constructing ajax request objects
      */
     static createAjaxRequest(options, withAuth) {
-        return (withAuth ? AuthService.getAccessToken() : Observable.of(null))
-            .map((token) => ({
-                // Create the final headers options
-                ...jsonHeaders,
-                ...(options.headers || {}),
-                ...(token ? authenticationHeaders(token) : {}),
-            }))
-            .map(({ "Content-Type": contentType, ...headers }) => {
+        return (withAuth ? AuthService.getAccessToken() : of(null)).pipe(
+            map((token) => {
+                return {
+                    // Create the final headers options
+                    ...jsonHeaders,
+                    ...(options.headers || {}),
+                    ...(token ? authenticationHeaders(token) : {}),
+                };
+            }),
+            map(({ "Content-Type": contentType, ...headers }) => {
                 if (contentType) {
                     return { ...headers, "Content-Type": contentType };
                 }
                 return headers;
-            })
-            .map((headers) => ({
+            }),
+            map((headers) => ({
                 ...options,
                 headers,
                 timeout: options.timeout || Config.defaultAjaxTimeout,
-            }));
+            }))
+        );
     }
 
     static getLocalStorageValue(key) {
@@ -138,14 +140,15 @@ export class HttpClient {
 
 /** A helper function containing the logic for retrying ajax requests */
 export const retryHandler = (retryAttempts, retryDelay) => (error$) =>
-    error$
-        .zip(Observable.range(0, retryAttempts + 1)) // Plus 1 to not count initial call
-        .flatMap(([error, attempt]) =>
+    zip(error$, range(0, retryAttempts + 1)).pipe(
+        // Plus 1 to not count initial call
+        mergeMap(([error, attempt]) =>
             !isRetryable(error) || attempt === retryAttempts
-                ? Observable.throw(error)
-                : Observable.of(error)
-        )
-        .delay(retryDelay);
+                ? throwError(error)
+                : of(error)
+        ),
+        delay(retryDelay)
+    );
 
 /** A helper function for checking if a value is a retryable error */
 const isRetryable = (error) => error instanceof RetryableAjaxError;

@@ -4,9 +4,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
@@ -18,8 +16,6 @@ using Mmm.Iot.IdentityGateway.Services;
 using Mmm.Iot.IdentityGateway.Services.Helpers;
 using Mmm.Iot.IdentityGateway.Services.Models;
 using Newtonsoft.Json;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 
 namespace Mmm.Iot.IdentityGateway.WebService.Controllers
 {
@@ -108,6 +104,8 @@ namespace Mmm.Iot.IdentityGateway.WebService.Controllers
                 Roles = model.Roles,
                 Name = model.Name,
                 Type = string.IsNullOrWhiteSpace(model.Type) ? "Member" : model.Type,
+                CreatedTime = DateTime.UtcNow,
+                CreatedBy = !string.IsNullOrWhiteSpace(model.CreatedBy) ? model.CreatedBy : this.GetCreatedBy(),
             };
             return await this.container.CreateAsync(input);
         }
@@ -149,6 +147,10 @@ namespace Mmm.Iot.IdentityGateway.WebService.Controllers
                 Tenant = this.GetTenantId(),
             };
             var userTenantModel = await this.container.DeleteAsync(input);
+
+            // Delete user to Grafana
+            await this.container.DeleteUserToGrafanaAsync(input);
+
             if (userTenantModel != null)
             {
                 await this.CleanupUserSettingsIfUserHasNoOtherTenants(userTenantModel);
@@ -196,6 +198,7 @@ namespace Mmm.Iot.IdentityGateway.WebService.Controllers
                 new Claim("role", invitation.Role),
                 new Claim("tenant", this.GetTenantId()),
                 new Claim("userId", input.UserId),
+                new Claim("invitedby", this.GetClaimsUserDetails()),
             };
 
             string forwardedFor = null;
@@ -220,6 +223,10 @@ namespace Mmm.Iot.IdentityGateway.WebService.Controllers
             // Send email
             var client = this.sendGridClientFactory.CreateSendGridClient();
             var response = await client.SendEmailAsync(msg);
+
+            // Add Audit Data,i.e, who invited the user
+            input.CreatedBy = this.GetClaimsUserDetails();
+            input.CreatedTime = DateTime.UtcNow;
 
             return await this.container.CreateAsync(input);
         }
@@ -260,6 +267,18 @@ namespace Mmm.Iot.IdentityGateway.WebService.Controllers
             }
 
             return false;
+        }
+
+        private string GetCreatedBy()
+        {
+            try
+            {
+                return this.GetClaimsUserDetails();
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
         }
     }
 }

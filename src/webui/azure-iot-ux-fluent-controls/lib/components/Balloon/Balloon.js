@@ -53,7 +53,7 @@ class Balloon extends React.Component {
             align: this.props.align,
         };
     }
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         this.setState({
             visible: this.state.hovered || newProps.expanded,
             position: newProps.position,

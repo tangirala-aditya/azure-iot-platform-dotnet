@@ -4,6 +4,13 @@
     "parameters": {
       "resourceName": { "value": "crslkeyvaultdev" },
       "userObjId": { "value": "562b0a82-a156-4a88-987d-5c8eb71c2b9b" },
-      "applicationObjId": { "value": "562b0a82-a156-4a88-987d-5c8eb71c2b9b" }
+      "applicationObjId": { "value": "562b0a82-a156-4a88-987d-5c8eb71c2b9b" },
+      "settingName": { "value": "someName" },
+      "subscriptionId": { "value": "403f2258-d6b0-4c0a-b565-4102510935aa"},
+      "resourceGroup": { "value": "rg-crslbbiot-dev"},
+      "environmentCategory": {"value": "dev"},
+      "applicationCode": {"value": "crslbbiot"},
+      "enableSoftDelete": { "value": true },
+      "softDeleteRetentionInDays": { "value": 90 }
     }
   }

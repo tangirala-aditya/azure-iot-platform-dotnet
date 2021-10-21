@@ -52,6 +52,8 @@ namespace Mmm.Iot.IoTHubManager.Services
         private const string DeploymentDevicePropertiesCollection = "deploymentdevices-{0}";
         private const string DeploymentEdgeModulePropertiesCollection = "deploymentedgemodules-{0}";
         private const string DeploymentModuleHistoryPropertiesCollection = "deploymentModulesHistory-{0}_{1}";
+        private const string DeviceStatusesCollection = "deviceStatuses-{0}";
+        private const int DeviceStatusLength = 10000;
         private const string DeleteTag = "reserved.isDeleted";
         private const string LatestTag = "reserved.latest";
         private const string InActiveTag = "reserved.inactive";
@@ -255,7 +257,7 @@ namespace Mmm.Iot.IoTHubManager.Services
                 throw new ArgumentNullException(nameof(deploymentId));
             }
 
-            DeploymentServiceModel deployment = await this.GetDeploymentFromStorageAsync(deploymentId);
+            DeploymentServiceModel deployment = await this.GetDeploymentFromStorageAsync(deploymentId, true);
             isLatest = deployment.Tags.Contains(LatestTag);
             if (isLatest)
             {
@@ -319,6 +321,8 @@ namespace Mmm.Iot.IoTHubManager.Services
                     if (currentDeployment != null)
                     {
                         existingDeployment.DeploymentMetrics = currentDeployment.DeploymentMetrics;
+                        existingDeployment.DeploymentMetrics.DeviceStatuses = null;
+                        this.SaveDeviceStatuses(currentDeployment.DeploymentMetrics.DeviceStatuses, existingDeployment.Id);
                     }
                 }
 
@@ -528,13 +532,13 @@ namespace Mmm.Iot.IoTHubManager.Services
 
                     query = $" deviceId IN [{deviceListValue}]";
 
-                    var devices = await this.devices.GetListAsync(query, null);
+                    var devices = await this.devices.GetListFromIoTHubAsync(query, null);
 
                     allDevices.Items.AddRange(devices.Items);
 
                     while (!string.IsNullOrWhiteSpace(devices.ContinuationToken))
                     {
-                        devices = await this.devices.GetListAsync(query, null);
+                        devices = await this.devices.GetListFromIoTHubAsync(query, null);
                         allDevices.Items.AddRange(devices.Items);
                     }
                 }
@@ -603,6 +607,52 @@ namespace Mmm.Iot.IoTHubManager.Services
             return conf.Labels != null &&
                    conf.Labels.ContainsKey(RmCreatedLabel) &&
                    bool.TryParse(conf.Labels[RmCreatedLabel], out var res) && res;
+        }
+
+        private async Task<IDictionary<string, DeploymentStatus>> FetchDeviceStatuses(string deploymentId)
+        {
+            var response = await this.client.GetAllAsync(string.Format(DeviceStatusesCollection, deploymentId));
+            var statuses = new Dictionary<string, DeploymentStatus>();
+
+            if (response != null && response.Items.Count > 0)
+            {
+                foreach (var item in response.Items)
+                {
+                    statuses = statuses.Union(JsonConvert.DeserializeObject<DeviceStatusServiceModel>(item.Data).DeviceStatuses).ToDictionary(k => k.Key, v => v.Value);
+                }
+            }
+
+            return statuses;
+        }
+
+        private void SaveDeviceStatuses(IDictionary<string, DeploymentStatus> deviceStatuses, string deploymentId)
+        {
+            var existingDeviceStatuses = this.client.GetAllAsync(string.Format(DeviceStatusesCollection, deploymentId)).Result;
+
+            if (existingDeviceStatuses != null && existingDeviceStatuses.Items.Count > 0)
+            {
+                existingDeviceStatuses.Items.ToList().ForEach(e => this.client.DeleteAsync(string.Format(DeviceStatusesCollection, deploymentId), e.Key));
+            }
+
+            if (deviceStatuses != null)
+            {
+                for (int i = 0; i < deviceStatuses.Count; i = i + DeviceStatusLength)
+                {
+                    var items = deviceStatuses.Skip(i).Take(DeviceStatusLength).ToDictionary(p => p.Key, p => p.Value);
+                    var value = JsonConvert.SerializeObject(
+                                                        new DeviceStatusServiceModel
+                                                        {
+                                                            DeviceStatuses = items,
+                                                            DeploymentId = deploymentId,
+                                                        },
+                                                        Formatting.Indented,
+                                                        new JsonSerializerSettings
+                                                        {
+                                                            NullValueHandling = NullValueHandling.Ignore,
+                                                        });
+                    this.client.CreateAsync(string.Format(DeviceStatusesCollection, deploymentId), value);
+                }
+            }
         }
 
         private IDictionary<string, DeploymentStatus> GetDeviceStatuses(Configuration deployment)
@@ -756,7 +806,8 @@ namespace Mmm.Iot.IoTHubManager.Services
                     // Update the Device Statuses for the DeploymentId for future references.
                     currentDeployment.DeploymentMetrics = new DeploymentMetricsServiceModel(deploymentDetails.SystemMetrics, deploymentDetails.Metrics);
 
-                    currentDeployment.DeploymentMetrics.DeviceStatuses = this.GetDeviceStatuses(deploymentDetails);
+                    // Save device statuses in a separate collection
+                    this.SaveDeviceStatuses(this.GetDeviceStatuses(deploymentDetails), deployment.Id);
 
                     if (string.IsNullOrWhiteSpace(currentDeployment.TargetCondition))
                     {
@@ -824,10 +875,22 @@ namespace Mmm.Iot.IoTHubManager.Services
             return deployment;
         }
 
-        private async Task<DeploymentServiceModel> GetDeploymentFromStorageAsync(string deploymentId)
+        private async Task<DeploymentServiceModel> GetDeploymentFromStorageAsync(string deploymentId, bool includeStatus = false)
         {
             var response = await this.client.GetAsync(DeploymentsCollection, deploymentId);
-            return this.CreateDeploymentServiceModel(response);
+            var result = this.CreateDeploymentServiceModel(response);
+
+            if (result.DeploymentMetrics == null)
+            {
+                result.DeploymentMetrics = new DeploymentMetricsServiceModel();
+            }
+
+            if (includeStatus && result.DeploymentMetrics.DeviceStatuses == null)
+            {
+                result.DeploymentMetrics.DeviceStatuses = await this.FetchDeviceStatuses(deploymentId);
+            }
+
+            return result;
         }
 
         private DeploymentServiceModel CreateDeploymentServiceModel(ValueApiModel response)
@@ -986,12 +1049,27 @@ namespace Mmm.Iot.IoTHubManager.Services
 
         private async Task<DeploymentServiceListModel> GetListAsync()
         {
-            IEnumerable<DeploymentServiceModel> deployments = null;
+            var deployments = new List<DeploymentServiceModel>();
             var response = await this.client.GetAllAsync(DeploymentsCollection);
 
             if (response != null && response.Items.Count > 0)
             {
-                deployments = response.Items.Select(this.CreateDeploymentServiceModel);
+                var result = response.Items.Select(this.CreateDeploymentServiceModel);
+
+                foreach (var item in result)
+                {
+                    if (item.DeploymentMetrics == null)
+                    {
+                        item.DeploymentMetrics = new DeploymentMetricsServiceModel();
+                    }
+
+                    if (item.DeploymentMetrics.DeviceStatuses == null)
+                    {
+                        item.DeploymentMetrics.DeviceStatuses = await this.FetchDeviceStatuses(item.Id);
+                    }
+
+                    deployments.Add(item);
+                }
             }
 
             return new DeploymentServiceListModel(deployments?.OrderByDescending(x => x.CreatedDateTimeUtc).ToList());

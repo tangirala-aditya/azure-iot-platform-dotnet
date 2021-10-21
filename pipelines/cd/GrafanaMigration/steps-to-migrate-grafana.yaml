@@ -1,0 +1,144 @@
+trigger: none
+pr: none
+pool:
+  vmImage: ubuntu-latest
+stages:
+  - stage: checkParameters
+    displayName: Check parameters
+    dependsOn: []
+    jobs:
+      - job: checkParameters
+        displayName: Check parameters
+        steps:
+          - checkout: none
+
+          - script: |-
+              set -Eeuxo pipefail
+              echo "Subscription name: '$(subscriptionName)'"
+              if [ -z "$(subscriptionName)" ]
+              then
+                echo "A value for the 'subscriptionName' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+              echo "Environment name: '$(environmentName)'"
+              if [ -z "$(environmentName)" ]
+              then
+                echo "A value for the 'environmentName' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+              echo "Subscription ID: '$(subscriptionId)'"
+              if [ -z "$(subscriptionId)" ]
+              then
+                echo "A value for the 'subscriptionId' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+              echo "Application code: '$(applicationCode)'"
+              if [ -z "$(applicationCode)" ]
+              then
+                echo "A value for the 'applicationCode' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+              echo "Application short code: '$(applicationShortCode)'"
+              if [ -z "$(applicationShortCode)" ]
+              then
+                echo "A value for the 'applicationShortCode' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+              echo "Environment category: '$(environmentCategory)'"
+              if [ -z "$(environmentCategory)" ]
+              then
+                echo "A value for the 'environmentCategory' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+              echo "Location: '$(location)'"
+              if [ -z "$(location)" ]
+              then
+                echo "A value for the 'location' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+            displayName: Check parameters
+
+  - stage: migrateGrafana
+    displayName: Migrate Grafana Dashboards
+    dependsOn:
+      - checkParameters
+    jobs:
+      - template: ../../templates/get-approval.yaml
+        parameters:
+          environmentName: $(environmentName)
+
+      - job: printVariables
+        displayName: Print variables
+        dependsOn:
+          - getApproval
+        variables:
+          - template: ../../templates/variables-deploy-infra.yaml
+            parameters:
+              subscriptionName: $(subscriptionName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)
+        steps:
+          - checkout: none
+
+          - template: ../../templates/print-pipeline-resource-variables.yaml
+            parameters:
+              pipelineResourceName: test
+
+          - script: |-
+              echo "parameter: subscriptionName: $(subscriptionName)"
+              echo "parameter: environmentName: $(environmentName)"
+              echo "parameter: subscriptionId: $(subscriptionId)"
+              echo "parameter: applicationCode: $(applicationCode)"
+              echo "parameter: applicationShortCode: $(applicationShortCode)"
+              echo "parameter: environmentCategory: $(environmentCategory)"
+              echo "variable: tenantId: $(tenantId)"
+              echo "variable: appConfigurationName: $(appConfigurationName)"
+              echo "variable: keyVaultName: $(keyVaultName)"
+              echo "variable: resourceGroupName: $(resourceGroupName)"
+              echo "variable: storageAccountName: $(storageAccountName)"
+            displayName: Print variables
+
+      - job: migrateGrafanaDashboards
+        displayName: Migrate Grafana Dashboards
+        pool:
+          vmImage: windows-latest
+        dependsOn:
+          - printVariables
+        variables:
+          - template: ../../templates/variables-deploy-infra.yaml
+            parameters:
+              subscriptionName: $(subscriptionName)
+              environmentName: $(environmentName)
+              subscriptionId: $(subscriptionId)
+              applicationCode: $(applicationCode)
+              applicationShortCode: $(applicationShortCode)
+              environmentCategory: $(environmentCategory)
+        steps:
+          - checkout: self
+            displayName: Checkout repository
+
+          - task: AzureCLI@2
+            displayName: Update Service Principal details
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |-
+                echo "##vso[task.setvariable variable=servicePrincipalId]$servicePrincipalId"
+                echo "##vso[task.setvariable variable=servicePrincipalKey]$servicePrincipalKey"
+              addSpnToEnvironment: true
+
+          - task: AzurePowerShell@5
+            displayName: Grafana Migration 
+            name: grafanaMigration
+            inputs:
+              azureSubscription: $(subscriptionName)
+              ScriptType: FilePath
+              workingDirectory: $(System.DefaultWorkingDirectory)
+              ScriptPath: pipelines/cd/GrafanaMigration/GrafanaMigration.ps1
+              ScriptArguments: -applicationCode $(applicationCode) -environmentCategory $(environmentCategory) -resourceGroupName $(resourceGroupName) -servicePrincipalId $(servicePrincipalId) -servicePrincipalKey $(servicePrincipalKey) -tenantId $(tenantId) -subscriptionId $(subscriptionId) -location $(location) -storageAccountName $(storageAccountName) -appConfigurationName $(appConfigurationName) -keyvaultName $(keyvaultName)                              
+              azurePowerShellVersion: LatestVersion
+

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
-import { Observable } from "rxjs";
+import { from } from "rxjs";
 import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle";
 
 import { AjaxError, Btn, BtnToolbar, Protected } from "components/shared";
@@ -10,8 +10,10 @@ import { TelemetryService } from "services";
 import { permissions, toEditRuleRequestModel } from "services/models";
 import Flyout from "components/shared/flyout";
 import { RuleSummaryContainer as RuleSummary } from "../ruleSummary";
+import { mergeMap, map } from "rxjs/operators";
 
-import "./ruleStatus.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./ruleStatus.module.scss"));
 
 export class RuleStatus extends Component {
     constructor(props) {
@@ -33,7 +35,7 @@ export class RuleStatus extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const { rules } = nextProps;
         this.setState({
             rules,
@@ -63,12 +65,19 @@ export class RuleStatus extends Component {
             ...rule,
             enabled: status,
         }));
-        this.subscription = Observable.from(requestPropList)
-            .flatMap((rule) =>
-                TelemetryService.updateRule(
-                    rule.id,
-                    toEditRuleRequestModel(rule)
-                ).map((updatedRule) => ({ ...rule, eTag: updatedRule.eTag }))
+        this.subscription = from(requestPropList)
+            .pipe(
+                mergeMap((rule) =>
+                    TelemetryService.updateRule(
+                        rule.id,
+                        toEditRuleRequestModel(rule)
+                    ).pipe(
+                        map((updatedRule) => ({
+                            ...rule,
+                            eTag: updatedRule.eTag,
+                        }))
+                    )
+                )
             )
             .subscribe(
                 (updatedRule) => {
@@ -114,9 +123,9 @@ export class RuleStatus extends Component {
                 <Protected permission={permissions.updateRules}>
                     <form
                         onSubmit={this.changeRuleStatus}
-                        className="disable-rule-flyout-container"
+                        className={css("disable-rule-flyout-container")}
                     >
-                        <div className="padded-top-bottom">
+                        <div className={css("padded-top-bottom")}>
                             <Toggle
                                 name="rules-flyouts-status-enable"
                                 attr={{
@@ -145,7 +154,7 @@ export class RuleStatus extends Component {
 
                         {error && (
                             <AjaxError
-                                className="rule-status-error"
+                                className={css("rule-status-error")}
                                 t={t}
                                 error={error}
                             />

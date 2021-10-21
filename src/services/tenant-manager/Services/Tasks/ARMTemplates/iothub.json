@@ -5,7 +5,7 @@
     }},
     "resources": [
         {{
-            "apiVersion": "2020-04-01",
+            "apiVersion": "2021-03-31",
             "type": "Microsoft.Devices/IotHubs",
             "name": "{0}",
             "location": "{1}",
@@ -23,7 +23,8 @@
                             "endpointNames": [
                                 "event-hub-telemetry",
                                 "event-hub-twin-change",
-                                "event-hub-lifecycle"
+                                "event-hub-lifecycle",
+				                "event-hub-device-twin-mirror"
                             ]
                         }},
                         {{
@@ -58,6 +59,12 @@
                             {{
                                 "connectionString": "{8}",
                                 "name": "event-hub-lifecycle",
+                                "subscriptionId": "{2}",
+                                "resourceGroup": "{3}"
+                            }},
+			                {{
+                                "connectionString": "{9}",
+                                "name": "event-hub-device-twin-mirror",
                                 "subscriptionId": "{2}",
                                 "resourceGroup": "{3}"
                             }}
@@ -100,17 +107,78 @@
                                 "events"
                             ],
                             "isEnabled": true
-                        }}
+                        }},
+                        {{
+                                "name": "deviceTwinMirrorDeviceConnectionState",
+                                "source": "DeviceConnectionStateEvents",
+                                "condition": "true",
+                                "endpointNames": [
+                                    "event-hub-device-twin-mirror"
+                                ],
+                                "isEnabled": true
+                        }},
+                        {{
+                            "name": "deviceTwinMirrorLifecycle",
+                            "source": "DeviceLifecycleEvents",
+                            "condition": "true",
+                            "endpointNames": [
+                                "event-hub-device-twin-mirror"
+                            ],
+                            "isEnabled": true
+                        }},
+                        {{
+                            "name": "deviceTwinMirrorTwinChange",
+                            "source": "TwinChangeEvents",
+                            "condition": "true",
+                            "endpointNames": [
+                                "event-hub-device-twin-mirror"
+                            ],
+                            "isEnabled": true
+                        }},
                     ]
                 }},
                 "storageEndpoints": {{
                     "$default": {{
                         "sasTtlAsIso8601": "PT1H",
-                        "connectionString": "{9}",
+                        "connectionString": "{10}",
                         "containerName": "{4}-iot-file-upload"
                     }}
                 }}
-            }}
+                
+            }},
+            "resources": [
+                {{
+                    "type": "providers/diagnosticSettings",
+                    "apiVersion": "2021-05-01-preview",
+                    "name": "[concat('/Microsoft.Insights/', '{12}')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Devices/IotHubs', '{0}')]"
+                    ],
+                    "properties": {{
+                        "workspaceId": "{11}",
+                        "logs": [
+                            {{
+                                "category": "Connections",
+                                "enabled": true
+                            }},
+                            {{
+                                "category": "DeviceTelemetry",
+                                "enabled": true
+                            }},
+                            {{
+                                "category": "Routes",
+                                "enabled": true
+                            }}
+                        ],
+                        "metrics": [
+                            {{
+                                "category": "AllMetrics",
+                                "enabled": true
+                            }}
+                        ]
+                    }}
+                }}
+            ]            
         }}
     ]
 }}

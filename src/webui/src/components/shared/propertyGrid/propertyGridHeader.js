@@ -3,14 +3,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { joinClasses } from "utilities";
-
-import "./propertyGrid.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./propertyGrid.module.scss"));
 
 export const PropertyGridHeader = (props) => (
-    <div className={joinClasses("grid-header", props.className)}>
-        {props.children}
-    </div>
+    <div className={css("grid-header", props.className)}>{props.children}</div>
 );
 
 PropertyGridHeader.propTypes = {

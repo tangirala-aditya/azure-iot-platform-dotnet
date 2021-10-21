@@ -19,9 +19,9 @@ export const deploymentsColumnDefs = {
         lockPosition: checkboxColumn.lockPosition,
         cellClass: checkboxColumn.cellClass,
         headerClass: checkboxColumn.headerClass,
-        suppressResize: checkboxColumn.suppressResize,
+        resizable: checkboxColumn.resizable,
         checkboxSelection: checkboxColumn.checkboxSelection,
-        headerCheckboxSelection: checkboxColumn.headerCheckboxSelection,
+        headerCheckboxSelection: false,
         headerCheckboxSelectionFilteredOnly:
             checkboxColumn.headerCheckboxSelectionFilteredOnly,
         suppressMovable: checkboxColumn.suppressMovable,
@@ -110,12 +110,17 @@ export const deploymentsColumnDefs = {
     },
 };
 
+/** Default column definitions*/
+export const defaultColDef = {
+    sortable: true,
+    lockPinned: true,
+    resizable: true,
+};
+
 export const defaultDeploymentsGridProps = {
     enableColResize: true,
     pagination: true,
     paginationPageSize: Config.paginationPageSize,
-    enableSorting: true,
-    unSortIcon: true,
     sizeColumnsToFit: true,
-    deltaRowDataMode: true,
+    immutableData: true,
 };

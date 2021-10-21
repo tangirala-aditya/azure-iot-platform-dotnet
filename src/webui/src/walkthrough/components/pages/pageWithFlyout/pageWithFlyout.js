@@ -11,8 +11,8 @@ import {
 import { svgs } from "utilities";
 import { ExampleFlyoutContainer } from "./flyouts/exampleFlyout";
 
-import "./pageWithFlyout.scss";
-
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./pageWithFlyout.module.scss"));
 const closedFlyoutState = { openFlyoutName: undefined };
 
 export class PageWithFlyout extends Component {
@@ -40,7 +40,7 @@ export class PageWithFlyout extends Component {
                         {t("walkthrough.pageWithFlyout.open")}
                     </Btn>
                 </ContextMenu>
-                <PageContent className="page-with-flyout-container">
+                <PageContent className={css("page-with-flyout-container")}>
                     {t("walkthrough.pageWithFlyout.pageBody")}
                     {isExampleFlyoutOpen && (
                         <ExampleFlyoutContainer onClose={this.closeFlyout} />

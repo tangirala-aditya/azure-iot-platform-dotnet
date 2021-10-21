@@ -32,7 +32,9 @@ import {
 } from "utilities";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
 
-import "./summary.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./summary.module.scss"));
+const maintenanceCss = classnames.bind(require("../maintenance.module.scss"));
 
 export class Summary extends Component {
     constructor(props) {
@@ -42,7 +44,7 @@ export class Summary extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (this.props.location && this.props.location.search) {
             const tenantId = getTenantIdParam(this.props.location);
             this.props.checkTenantAndSwitch({
@@ -107,9 +109,13 @@ export class Summary extends Component {
                         />
                     </ContextMenuAlign>
                 </ContextMenu>
-                <PageContent className="maintenance-container summary-container">
+                <PageContent
+                    className={`${maintenanceCss(
+                        "maintenance-container"
+                    )}  ${css("summary-container")}`}
+                >
                     <PageTitle titleValue={this.props.t("maintenance.title")} />
-                    <StatSection className="summary-stat-container">
+                    <StatSection className={css("summary-stat-container")}>
                         {this.props.alerting.jobState === "Running" && (
                             <StatGroup>
                                 <StatProperty
@@ -131,7 +137,7 @@ export class Summary extends Component {
                                     )}
                                     label={this.props.t("maintenance.critical")}
                                     svg={svgs.critical}
-                                    svgClassName="stat-critical"
+                                    svgClassName={css("stat-critical")}
                                 />
                                 <StatProperty
                                     value={renderUndefined(
@@ -139,7 +145,7 @@ export class Summary extends Component {
                                     )}
                                     label={this.props.t("maintenance.warning")}
                                     svg={svgs.warning}
-                                    svgClassName="stat-warning"
+                                    svgClassName={css("stat-warning")}
                                 />
                             </StatGroup>
                         )}
@@ -165,12 +171,12 @@ export class Summary extends Component {
                             />
                         </StatGroup>
                     </StatSection>
-                    <div className="tab-container">
+                    <div className={maintenanceCss("tab-container")}>
                         {this.props.alerting.jobState === "Running" && (
                             <NavLink
                                 to={"/maintenance/notifications"}
-                                className="tab"
-                                activeClassName="active"
+                                className={maintenanceCss("tab")}
+                                activeClassName={maintenanceCss("active")}
                                 onClick={this.tabClickHandler.bind(
                                     this,
                                     "AlertsTab"
@@ -181,14 +187,14 @@ export class Summary extends Component {
                         )}
                         <NavLink
                             to={"/maintenance/jobs"}
-                            className="tab"
-                            activeClassName="active"
+                            className={maintenanceCss("tab")}
+                            activeClassName={maintenanceCss("active")}
                             onClick={this.tabClickHandler.bind(this, "JobsTab")}
                         >
                             {this.props.t("maintenance.jobs")}
                         </NavLink>
                     </div>
-                    <div className="grid-container">
+                    <div className={css("grid-container")}>
                         <Switch>
                             {this.props.alerting.jobState === "Running" && (
                                 <Route

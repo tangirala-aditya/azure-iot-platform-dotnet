@@ -7,6 +7,7 @@ import { Btn, ComponentArray, PcsGrid } from "components/shared";
 import {
     exampleColumnDefs,
     defaultExampleGridProps,
+    defaultColDef,
 } from "./exampleGridConfig";
 import { isFunc, svgs, translateColumnDefs } from "utilities";
 import { checkboxColumn } from "components/shared/pcsGrid/pcsGridConfig";
@@ -115,13 +116,12 @@ export class ExampleGrid extends Component {
             /* Grid Properties */
             ...defaultExampleGridProps,
             columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
+            defaultColDef: defaultColDef,
             sizeColumnsToFit: true,
             getSoftSelectId: this.getSoftSelectId,
             softSelectId: (this.state.softSelectedDevice || {}).id,
             ...this.props, // Allow default property overrides
-            deltaRowDataMode: true,
-            enableSorting: true,
-            unSortIcon: true,
+            immutableData: true,
             getRowNodeId: ({ id }) => id,
             context: {
                 t: this.props.t,

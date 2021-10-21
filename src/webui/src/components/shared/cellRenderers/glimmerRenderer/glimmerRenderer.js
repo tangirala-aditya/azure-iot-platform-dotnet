@@ -5,7 +5,10 @@ import React from "react";
 import { svgs } from "utilities";
 import { Svg } from "components/shared/svg/svg";
 
-import "../cellRenderer.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../cellRenderer.module.scss"));
 
 export const GlimmerRenderer = (props) =>
-    props.value ? <Svg path={svgs.glimmer} className="glimmer-icon" /> : null;
+    props.value ? (
+        <Svg src={svgs.glimmer} className={css("glimmer-icon")} />
+    ) : null;

@@ -1,0 +1,143 @@
+trigger: none
+pr: none
+pool:
+  vmImage: ubuntu-latest
+variables:
+- group: crslDev
+- group: acsDev
+- group: crslQa
+- group: crslWkbnch
+- name: locationName
+  value: centralus
+stages:
+  - stage: checkParameters
+    displayName: Check parameters
+    dependsOn: []
+    jobs:
+     - job: checkParameters
+       displayName: Check parameters
+       steps:
+         - checkout: none
+
+         - script: |-
+                set -Eeuxo pipefail
+                echo "testPipelineRunId : '$(testPipelineRunId)'"
+                if [ -z "$(testPipelineRunId)" ]
+                then
+                echo "A value for the 'testPipelineRunId' variable must be provided" > /dev/stderr
+                exit 1
+                fi
+
+  - stage: crslDev
+    displayName: CRSL dev
+    variables:
+    - group: crslDev
+    dependsOn: checkParameters
+    condition: eq(variables['runCrslDevStage'], 'true')
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-crslDev)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-crslDev)
+          environmentName: $(environmentName-crslDev)
+          subscriptionId: $(subscriptionId-crslDev)
+          applicationCode: $(applicationCode-crslDev)
+          applicationShortCode: $(applicationShortCode-crslDev)
+          environmentCategory: $(environmentCategory-crslDev)
+          kubernetesVersion: $(kubernetesVersion-crslDev)
+          sendgridEmail: $(sendgridEmail-crslDev)
+          aksAgentVmSize: Standard_D8_v3
+          azureDevOpsProjectId: $(azureDevOpsProjectId-crslDev)
+          testPipelineId: $(testPipelineId-crslDev)
+          runVersion: $(runVersion-crslDev)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-crslDev)
+          isHelmVersion3: true
+          aadSGId: $(aadSGId-crslDev)
+          telemetryStorageType: $(telemetryStorageType-crslDev)
+
+  - stage: acsDev
+    displayName: ACS dev
+    variables:
+    - group: acsDev
+    dependsOn: checkParameters
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-acsDev)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-acsDev)
+          environmentName: $(environmentName-acsDev)
+          subscriptionId: $(subscriptionId-acsDev)
+          applicationCode: $(applicationCode-acsDev)
+          applicationShortCode: $(applicationShortCode-acsDev)
+          environmentCategory: $(environmentCategory-acsDev)
+          kubernetesVersion: $(kubernetesVersion-acsDev)
+          sendgridEmail: $(sendgridEmail-acsDev)
+          azureDevOpsProjectId: $(azureDevOpsProjectId-acsDev)
+          testPipelineId: $(testPipelineId-acsDev)
+          runVersion: $(runVersion-acsDev)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-acsDev)
+          isHelmVersion3: false
+          aadSGId: $(aadSGId-acsDev)
+          telemetryStorageType: $(telemetryStorageType-acsDev)
+
+  - stage: crslQa
+    displayName: CRSL QA
+    variables:
+    - group: crslQa
+    dependsOn:
+      - crslDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-crslQa)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-crslQa)
+          environmentName: $(environmentName-crslQa)
+          subscriptionId: $(subscriptionId-crslQa)
+          applicationCode: $(applicationCode-crslQa)
+          applicationShortCode: $(applicationShortCode-crslQa)
+          environmentCategory: $(environmentCategory-crslQa)
+          kubernetesVersion: $(kubernetesVersion-crslQa)
+          sendgridEmail: $(sendgridEmail-crslQa)
+          aksAgentVmSize: Standard_DS1_v2
+          azureDevOpsProjectId: $(azureDevOpsProjectId-crslQa)
+          testPipelineId: $(testPipelineId-crslQa)
+          runVersion: $(runVersion-crslQa)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-crslQa)
+          isHelmVersion3: true          
+          aadSGId: $(aadSGId-crslQa)
+          telemetryStorageType: $(telemetryStorageType-crslQa)
+          
+  - stage: crslWkbnch
+    displayName: CRSL workbench
+    variables:
+    - group: crslWkbnch
+    dependsOn:
+      - crslQa
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: $(subscriptionName-crslWkbnch)
+          locationName: $(locationName)
+          appInsightsLocation: $(appInsightsLocation-crslWkbnch)
+          environmentName: $(environmentName-crslWkbnch)
+          subscriptionId: $(subscriptionId-crslWkbnch)
+          applicationCode: $(applicationCode-crslWkbnch)
+          applicationShortCode: $(applicationShortCode-crslWkbnch)
+          environmentCategory: $(environmentCategory-crslWkbnch)
+          kubernetesVersion: $(kubernetesVersion-crslWkbnch)
+          sendgridEmail: $(sendgridEmail-crslWkbnch)
+          aksAgentVmSize: Standard_DS2_v2
+          azureDevOpsProjectId: $(azureDevOpsProjectId-crslWkbnch)
+          testPipelineId: $(testPipelineId-crslWkbnch)
+          runVersion: $(runVersion-crslWkbnch)
+          testPipelineRunId: $(testPipelineRunId)
+          sysAdmins: $(sysAdmins-crslWkbnch)
+          isHelmVersion3: false
+          aadSGId: $(aadSGId-crslWkbnch)
+          telemetryStorageType: $(telemetryStorageType-crslWkbnch)

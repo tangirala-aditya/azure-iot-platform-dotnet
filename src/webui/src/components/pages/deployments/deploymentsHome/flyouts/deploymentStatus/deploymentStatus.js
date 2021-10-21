@@ -15,6 +15,11 @@ import { Toggle } from "@microsoft/azure-iot-ux-fluent-controls/lib/components/T
 import "./deploymentStatus.scss";
 import { IoTHubManagerService } from "services";
 
+const classnames = require("classnames/bind");
+const css = classnames.bind(
+    require("../deploymentNew/deploymentNew.module.scss")
+);
+
 export class DeploymentStatus extends LinkedComponent {
     constructor(props) {
         super(props);
@@ -27,9 +32,8 @@ export class DeploymentStatus extends LinkedComponent {
             changesApplied: false,
             expandedValue: false,
         };
-        this.activateOrInactivateDeployment = this.activateOrInactivateDeployment.bind(
-            this
-        );
+        this.activateOrInactivateDeployment =
+            this.activateOrInactivateDeployment.bind(this);
         this.expandFlyout = this.expandFlyout.bind(this);
     }
 
@@ -47,7 +51,7 @@ export class DeploymentStatus extends LinkedComponent {
         }
     }
 
-    componentWillReceiveProps(nextprops) {
+    UNSAFE_componentWillReceiveProps(nextprops) {
         this.setState({
             isActive: nextprops.selectedDeployment.isActive,
         });
@@ -76,9 +80,9 @@ export class DeploymentStatus extends LinkedComponent {
     activateOrInactivateDeployment(deploymentId) {
         this.setState({ changesApplied: true });
         if (this.state.isActive) {
-            IoTHubManagerService.reactivateDeployment(
-                deploymentId
-            ).subscribe(() => this.postUpdatingDeployment());
+            IoTHubManagerService.reactivateDeployment(deploymentId).subscribe(
+                () => this.postUpdatingDeployment()
+            );
         } else {
             IoTHubManagerService.deleteDeployment(
                 deploymentId,
@@ -121,8 +125,11 @@ export class DeploymentStatus extends LinkedComponent {
                 }}
                 flyoutLink={flyoutLink}
             >
-                <div className="new-deployment-content">
-                    <form className="new-deployment-form" onSubmit={this.apply}>
+                <div className={css("new-deployment-content")}>
+                    <form
+                        className={css("new-deployment-form")}
+                        onSubmit={this.apply}
+                    >
                         <div>
                             {t(
                                 "deployments.flyouts.status.deploymentLimitText"
@@ -132,7 +139,7 @@ export class DeploymentStatus extends LinkedComponent {
                         <h3>{this.props.selectedDeployment.name}</h3>
                         <br />
                         <Toggle
-                            className="simulation-toggle-button"
+                            className={css("simulation-toggle-button")}
                             name={t("this.props.selectedDeployment.name")}
                             attr={{
                                 button: {

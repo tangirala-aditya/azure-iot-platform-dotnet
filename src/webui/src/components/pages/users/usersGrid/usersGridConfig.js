@@ -2,6 +2,7 @@
 
 import Config from "app.config";
 import { gridValueFormatters } from "components/shared/pcsGrid/pcsGridConfig";
+import { TimeRenderer } from "components/shared/cellRenderers";
 
 const { checkForEmpty } = gridValueFormatters;
 
@@ -28,10 +29,27 @@ export const userColumnDefs = {
         field: "type",
         valueFormatter: ({ value }) => checkForEmpty(value),
     },
+    dateCreated: {
+        headerName: "users.grid.dateCreated",
+        field: "dateCreated",
+        cellRendererFramework: TimeRenderer,
+    },
+    createdBy: {
+        headerName: "users.grid.createdBy",
+        field: "createdBy",
+        valueFormatter: ({ value }) => checkForEmpty(value),
+    },
 };
 
 /** Given a user object, extract and return the user Id */
 export const getSoftSelectId = ({ Id, name }) => Id + name;
+
+/** Default column definitions*/
+export const defaultColDef = {
+    sortable: true,
+    lockPinned: true,
+    resizable: true,
+};
 
 /** Shared user grid AgGrid properties */
 export const defaultUserGridProps = {

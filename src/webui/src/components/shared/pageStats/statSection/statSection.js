@@ -4,9 +4,12 @@ import React from "react";
 
 import { joinClasses } from "utilities";
 
-import "./statSection.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./statSection.module.scss"));
 
 /** A presentational component containing one or many StatGroup */
 export const StatSection = ({ children, className }) => (
-    <div className={joinClasses("stat-container", className)}>{children}</div>
+    <div className={joinClasses(css("stat-container"), className)}>
+        {children}
+    </div>
 );

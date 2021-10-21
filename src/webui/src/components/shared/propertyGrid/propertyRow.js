@@ -3,12 +3,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { joinClasses } from "utilities";
-
-import "./propertyGrid.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./propertyGrid.module.scss"));
 
 export const PropertyRow = (props) => (
-    <div className={joinClasses("row", props.className)}>{props.children}</div>
+    <div
+        ref={props.provided?.innerRef}
+        {...props.provided?.draggableProps}
+        {...props.provided?.dragHandleProps}
+        className={css("row", props.className)}
+    >
+        {" "}
+        {props.children}{" "}
+    </div>
 );
 
 PropertyRow.propTypes = {

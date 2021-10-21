@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { Packages } from "./packages";
 import {
     epics as packagesEpics,
@@ -39,6 +39,6 @@ const mapStateToProps = (state) => ({
             dispatch(appRedux.actions.checkTenantAndSwitch(payload)),
     });
 
-export const PackagesContainer = withNamespaces()(
+export const PackagesContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(Packages)
 );

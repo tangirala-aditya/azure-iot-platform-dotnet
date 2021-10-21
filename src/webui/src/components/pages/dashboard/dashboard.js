@@ -1,7 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-
 import React, { Component } from "react";
-import { Observable, Subject } from "rxjs";
+import { EMPTY, forkJoin, merge, of, Subject } from "rxjs";
 import moment from "moment";
 
 import Config from "app.config";
@@ -40,8 +38,19 @@ import {
 } from "components/shared";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
 
-import "./dashboard.scss";
 import { HttpClient } from "utilities/httpClient";
+import {
+    delay,
+    map,
+    mergeMap,
+    retryWhen,
+    startWith,
+    switchMap,
+    tap,
+} from "rxjs/operators";
+
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./dashboard.module.scss"));
 
 const initialState = {
         // Telemetry data
@@ -89,7 +98,7 @@ export class Dashboard extends Component {
         this.props.updateCurrentWindow("Dashboard");
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const redirectUrl = HttpClient.getLocalStorageValue("redirectUrl");
         HttpClient.removeLocalStorageItem("redirectUrl");
         if (redirectUrl) {
@@ -126,58 +135,60 @@ export class Dashboard extends Component {
                 this.setState({ telemetryIsPending: true }),
             getTelemetryStream = ({ deviceIds = [] }) =>
                 deviceIds.length === 0
-                    ? Observable.from(() => {})
-                    : TelemetryService.getTelemetryByDeviceId(
-                          deviceIds,
-                          TimeIntervalDropdown.getTimeIntervalDropdownValue()
-                      )
-                          .flatMap((items) => {
-                              this.setState({
-                                  telemetryQueryExceededLimit:
-                                      items.length >=
-                                      Config.telemetryQueryResultLimit,
-                              });
-                              return Observable.of(items);
-                          })
-                          .merge(
-                              this.telemetryRefresh$ // Previous request complete
-                                  .delay(Config.telemetryRefreshInterval) // Wait to refresh
-                                  .do(onPendingStart)
-                                  .flatMap((_) =>
-                                      TelemetryService.getTelemetryByDeviceIdP1M(
-                                          deviceIds
-                                      )
+                    ? EMPTY
+                    : merge(
+                          TelemetryService.getTelemetryByDeviceId(
+                              deviceIds,
+                              TimeIntervalDropdown.getTimeIntervalDropdownValue()
+                          ).pipe(
+                              mergeMap((items) => {
+                                  this.setState({
+                                      telemetryQueryExceededLimit:
+                                          items.length >=
+                                          Config.telemetryQueryResultLimit,
+                                  });
+                                  return of(items);
+                              })
+                          ),
+                          this.telemetryRefresh$.pipe(
+                              // Previous request complete
+                              delay(Config.telemetryRefreshInterval), // Wait to refresh
+                              tap(onPendingStart),
+                              mergeMap((_) =>
+                                  TelemetryService.getTelemetryByDeviceIdP1M(
+                                      deviceIds
                                   )
+                              )
                           )
-                          .flatMap(
+                      ).pipe(
+                          mergeMap(
                               transformTelemetryResponse(
                                   () => this.state.telemetry
                               )
-                          )
-                          .map((telemetry) => ({
+                          ),
+                          map((telemetry) => ({
                               telemetry,
                               telemetryIsPending: false,
-                          })) // Stream emits new state
+                          })), // Stream emits new state
                           // Retry any retryable errors
-                          .retryWhen(
+                          retryWhen(
                               retryHandler(maxRetryAttempts, retryWaitTime)
-                          ),
+                          )
+                      ),
             // Telemetry stream - END
 
             // Analytics stream - START
             getAnalyticsStream = ({ deviceIds = [], timeInterval }) =>
-                this.panelsRefresh$
-                    .delay(Config.dashboardRefreshInterval)
-                    .startWith(0)
-                    .do((_) => this.setState({ analyticsIsPending: true }))
-                    .flatMap((_) => {
+                this.panelsRefresh$.pipe(
+                    delay(Config.dashboardRefreshInterval),
+                    startWith(0),
+                    tap((_) => this.setState({ analyticsIsPending: true })),
+                    mergeMap((_) => {
                         const devices = deviceIds.length
                                 ? deviceIds.join(",")
                                 : undefined,
-                            [
-                                currentIntervalParams,
-                                previousIntervalParams,
-                            ] = getIntervalParams(timeInterval),
+                            [currentIntervalParams, previousIntervalParams] =
+                                getIntervalParams(timeInterval),
                             currentParams = {
                                 ...currentIntervalParams,
                                 devices,
@@ -187,21 +198,21 @@ export class Dashboard extends Component {
                                 devices,
                             };
                         if (this.props.alerting.isActive) {
-                            return Observable.forkJoin(
+                            return forkJoin([
                                 TelemetryService.getActiveAlerts(currentParams),
                                 TelemetryService.getActiveAlerts(
                                     previousParams
                                 ),
 
                                 TelemetryService.getAlerts(currentParams),
-                                TelemetryService.getAlerts(previousParams)
-                            );
+                                TelemetryService.getAlerts(previousParams),
+                            ]);
                         } else {
                             this.setState({ analyticsIsPending: false });
-                            return Observable.forkJoin([], [], [], []);
+                            return forkJoin([[], [], [], []]);
                         }
-                    })
-                    .map(
+                    }),
+                    map(
                         ([
                             currentActiveAlerts,
                             previousActiveAlerts,
@@ -242,7 +253,8 @@ export class Dashboard extends Component {
                                             totalCriticalCount:
                                                 (acc.totalCriticalCount || 0) +
                                                 (isCritical ? 1 : 0),
-                                            alertsPerDeviceId: updatedAlertsPerDeviceId,
+                                            alertsPerDeviceId:
+                                                updatedAlertsPerDeviceId,
                                         };
                                     },
                                     { alertsPerDeviceId: {} }
@@ -271,19 +283,20 @@ export class Dashboard extends Component {
                                     .sort(compareByProperty("count"))
                                     .slice(0, Config.maxTopAlerts),
                                 // Find the previous counts for the current top analytics
-                                previousTopAlertsMap = previousActiveAlerts.reduce(
-                                    (acc, { ruleId, count }) =>
-                                        ruleId in acc
-                                            ? { ...acc, [ruleId]: count }
-                                            : acc,
-                                    currentTopAlerts.reduce(
-                                        (acc, { ruleId }) => ({
-                                            ...acc,
-                                            [ruleId]: 0,
-                                        }),
-                                        {}
-                                    )
-                                ),
+                                previousTopAlertsMap =
+                                    previousActiveAlerts.reduce(
+                                        (acc, { ruleId, count }) =>
+                                            ruleId in acc
+                                                ? { ...acc, [ruleId]: count }
+                                                : acc,
+                                        currentTopAlerts.reduce(
+                                            (acc, { ruleId }) => ({
+                                                ...acc,
+                                                [ruleId]: 0,
+                                            }),
+                                            {}
+                                        )
+                                    ),
                                 topAlerts = currentTopAlerts.map(
                                     ({ ruleId, count }) => ({
                                         ruleId,
@@ -337,9 +350,10 @@ export class Dashboard extends Component {
                                 devicesInAlert,
                             };
                         }
-                    )
+                    ),
                     // Retry any retryable errors
-                    .retryWhen(retryHandler(maxRetryAttempts, retryWaitTime));
+                    retryWhen(retryHandler(maxRetryAttempts, retryWaitTime))
+                );
         // Analytics stream - END
 
         this.subscriptions.push(
@@ -347,27 +361,37 @@ export class Dashboard extends Component {
         );
 
         this.subscriptions.push(
-            this.dashboardRefresh$.switchMap(getTelemetryStream).subscribe(
-                (telemetryState) =>
-                    this.setState(
-                        { ...telemetryState, lastRefreshed: moment() },
-                        () => this.telemetryRefresh$.next("r")
-                    ),
-                (telemetryError) =>
-                    this.setState({ telemetryError, telemetryIsPending: false })
-            )
+            this.dashboardRefresh$
+                .pipe(switchMap(getTelemetryStream))
+                .subscribe(
+                    (telemetryState) =>
+                        this.setState(
+                            { ...telemetryState, lastRefreshed: moment() },
+                            () => this.telemetryRefresh$.next("r")
+                        ),
+                    (telemetryError) =>
+                        this.setState({
+                            telemetryError,
+                            telemetryIsPending: false,
+                        })
+                )
         );
 
         this.subscriptions.push(
-            this.dashboardRefresh$.switchMap(getAnalyticsStream).subscribe(
-                (analyticsState) =>
-                    this.setState(
-                        { ...analyticsState, lastRefreshed: moment() },
-                        () => this.panelsRefresh$.next("r")
-                    ),
-                (analyticsError) =>
-                    this.setState({ analyticsError, analyticsIsPending: false })
-            )
+            this.dashboardRefresh$
+                .pipe(switchMap(getAnalyticsStream))
+                .subscribe(
+                    (analyticsState) =>
+                        this.setState(
+                            { ...analyticsState, lastRefreshed: moment() },
+                            () => this.panelsRefresh$.next("r")
+                        ),
+                    (analyticsError) =>
+                        this.setState({
+                            analyticsError,
+                            analyticsIsPending: false,
+                        })
+                )
         );
 
         // Start polling all panels
@@ -385,7 +409,7 @@ export class Dashboard extends Component {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             nextProps.deviceLastUpdated !== this.props.deviceLastUpdated ||
             nextProps.timeInterval !== this.props.timeInterval
@@ -508,7 +532,6 @@ export class Dashboard extends Component {
             },
             {}
         );
-
         return (
             <ComponentArray>
                 <ContextMenu>
@@ -545,9 +568,9 @@ export class Dashboard extends Component {
                         />
                     </ContextMenuAlign>
                 </ContextMenu>
-                <PageContent className="dashboard-container">
+                <PageContent className={css("dashboard-container")}>
                     <Grid>
-                        <Cell className="col-1 devices-overview-cell">
+                        <Cell className={css("col-1", "devices-overview-cell")}>
                             <OverviewPanel
                                 activeDeviceGroup={activeDeviceGroup}
                                 openWarningCount={openWarningCount}
@@ -567,7 +590,7 @@ export class Dashboard extends Component {
                                 t={t}
                             />
                         </Cell>
-                        <Cell className="col-5">
+                        <Cell className={css("col-5")}>
                             <PanelErrorBoundary
                                 msg={t("dashboard.panels.map.runtimeError")}
                             >
@@ -589,7 +612,7 @@ export class Dashboard extends Component {
                                 />
                             </PanelErrorBoundary>
                         </Cell>
-                        <Cell className="col-3">
+                        <Cell className={css("col-3")}>
                             <AlertsPanel
                                 alerts={currentActiveAlertsWithName}
                                 isPending={analyticsIsPending || rulesIsPending}
@@ -599,7 +622,7 @@ export class Dashboard extends Component {
                                 isAlertingActive={alerting.isActive}
                             />
                         </Cell>
-                        <Cell className="col-6">
+                        <Cell className={css("col-6")}>
                             <TelemetryPanel
                                 timeSeriesExplorerUrl={timeSeriesParamUrl}
                                 telemetry={telemetry}
@@ -612,7 +635,7 @@ export class Dashboard extends Component {
                                 t={t}
                             />
                         </Cell>
-                        <Cell className="col-4">
+                        <Cell className={css("col-4")}>
                             <AnalyticsPanel
                                 timeSeriesExplorerUrl={timeSeriesParamUrl}
                                 topAlerts={topAlertsWithName}
@@ -633,7 +656,7 @@ export class Dashboard extends Component {
                             />
                         </Cell>
                         {Config.showWalkthroughExamples && (
-                            <Cell className="col-4">
+                            <Cell className={css("col-4")}>
                                 <ExamplePanel t={t} />
                             </Cell>
                         )}

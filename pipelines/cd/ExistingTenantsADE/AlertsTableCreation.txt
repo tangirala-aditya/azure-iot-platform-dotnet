@@ -1,0 +1,12 @@
+.create table RawAlerts (Data:dynamic)
+.create-or-alter table RawAlerts ingestion json mapping MAPPINGNAME '[{"column":"Data","path":"$","datatype":"dynamic"}]'
+.alter table RawAlerts policy streamingingestion enable
+.alter table RawAlerts policy update @'[{"IsTransactional": true}]'
+
+.create table Alerts (Id: string, DateCreated: datetime, DateModified: datetime, Description: string, GroupId: string, DeviceId: string, Status: string, RuleId: string, RuleSeverity: string, RuleDescription: string, IsDeleted: bool)
+
+.create-or-alter function  ProcessAlerts { RawAlerts | project Id = iif(isempty(tostring(Data["id"])), tostring(new_guid()), tostring(Data["id"])),DateCreated = unixtime_milliseconds_todatetime(todouble(Data["created"])), DateModified = unixtime_milliseconds_todatetime(todouble(Data["modified"])), Description = tostring(Data["description"]), GroupId = tostring(Data["groupId"]), DeviceId = tostring(Data["deviceId"]), Status = tostring(Data["status"]), RuleId = tostring(Data["ruleId"]), RuleSeverity = tostring(Data["ruleSeverity"]), RuleDescription = tostring(Data["ruleDescription"]), IsDeleted = iif(isempty(tostring(Data["isDeleted"])), false, tobool(Data["isDeleted"]))}
+        
+.alter table Alerts policy update @'[{"IsEnabled": true, "Source": "RawAlerts", "Query": "ProcessAlerts()", "IsTransactional": true, "PropagateIngestionProperties": false}]'
+
+.alter-merge table RawAlerts policy retention softdelete = 0sec recoverability = disabled

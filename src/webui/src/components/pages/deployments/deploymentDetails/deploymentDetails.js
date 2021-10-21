@@ -36,7 +36,8 @@ import {
 import { DeploymentDetailsGrid } from "./deploymentDetailsGrid/deploymentDetailsGrid";
 import Config from "app.config";
 
-import "./deploymentDetails.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./deploymentDetails.module.scss"));
 
 const closedModalState = {
     openModalName: undefined,
@@ -67,13 +68,8 @@ export class DeploymentDetails extends Component {
     }
 
     getOpenModal = () => {
-        const {
-            t,
-            deleteIsPending,
-            deleteError,
-            deleteItem,
-            logEvent,
-        } = this.props;
+        const { t, deleteIsPending, deleteError, deleteItem, logEvent } =
+            this.props;
         if (
             this.state.openModalName === "delete-deployment" &&
             this.props.currentDeployment
@@ -157,9 +153,9 @@ export class DeploymentDetails extends Component {
 
     activateOrInactivateDeployment = (deploymentId, isActive) => {
         if (!isActive) {
-            IoTHubManagerService.reactivateDeployment(
-                deploymentId
-            ).subscribe(() => this.closeAndNavigateBack(true));
+            IoTHubManagerService.reactivateDeployment(deploymentId).subscribe(
+                () => this.closeAndNavigateBack(true)
+            );
         } else {
             IoTHubManagerService.deleteDeployment(
                 deploymentId,
@@ -250,7 +246,7 @@ export class DeploymentDetails extends Component {
                     </ContextMenuAlign>
                     <ContextMenuAlign>
                         <Protected permission={permissions.createDevices}>
-                            <div className="toggle-button">
+                            <div className={css("toggle-button")}>
                                 <Toggle
                                     attr={{
                                         button: {
@@ -281,7 +277,7 @@ export class DeploymentDetails extends Component {
                         </Protected>
                         <Btn
                             svg={svgs.upload}
-                            className="download-deploymentStatus"
+                            className={css("download-deploymentStatus")}
                             onClick={this.downloadFile}
                         >
                             {t("deployments.details.downloadReport")}
@@ -295,19 +291,37 @@ export class DeploymentDetails extends Component {
                         />
                     </ContextMenuAlign>
                 </ContextMenu>
-                <PageContent className="deployments-details-container">
+                <PageContent className={css("deployments-details-container")}>
                     {error && <AjaxError t={t} error={error} />}
                     {isPending && <Indicator />}
                     {!isPending && (
-                        <div className="deployment-details-summary-container">
-                            <div className="deployment-details-summary-labels">
+                        <div
+                            className={css(
+                                "deployment-details-summary-container"
+                            )}
+                        >
+                            <div
+                                className={css(
+                                    "deployment-details-summary-labels"
+                                )}
+                            >
                                 {t("deployments.details.deploymentName")}
                             </div>
-                            <div className="deployment-name">{name}</div>
+                            <div className={css("deployment-name")}>{name}</div>
                             <StatSection>
-                                <StatGroup className="summary-container-groups">
-                                    <StatSection className="summary-container-row1">
-                                        <StatGroup className="summary-container-columns">
+                                <StatGroup
+                                    className={css("summary-container-groups")}
+                                >
+                                    <StatSection
+                                        className={css(
+                                            "summary-container-row1"
+                                        )}
+                                    >
+                                        <StatGroup
+                                            className={css(
+                                                "summary-container-columns"
+                                            )}
+                                        >
                                             <StatProperty
                                                 value={renderUndefined(
                                                     appliedCount
@@ -318,7 +332,11 @@ export class DeploymentDetails extends Component {
                                                 size="large"
                                             />
                                         </StatGroup>
-                                        <StatGroup className="summary-container-columns">
+                                        <StatGroup
+                                            className={css(
+                                                "summary-container-columns"
+                                            )}
+                                        >
                                             <StatProperty
                                                 value={renderUndefined(
                                                     failedCount
@@ -333,13 +351,23 @@ export class DeploymentDetails extends Component {
                                                         ? svgs.failed
                                                         : undefined
                                                 }
-                                                svgClassName="stat-failed"
+                                                svgClassName={css(
+                                                    "stat-failed"
+                                                )}
                                                 size="large"
                                             />
                                         </StatGroup>
                                     </StatSection>
-                                    <StatSection className="summary-container-row2">
-                                        <StatGroup className="summary-container-columns">
+                                    <StatSection
+                                        className={css(
+                                            "summary-container-row2"
+                                        )}
+                                    >
+                                        <StatGroup
+                                            className={css(
+                                                "summary-container-columns"
+                                            )}
+                                        >
                                             <StatProperty
                                                 value={renderUndefined(
                                                     targetedCount
@@ -350,9 +378,15 @@ export class DeploymentDetails extends Component {
                                                 size="large"
                                             />
                                         </StatGroup>
-                                        <StatGroup className="summary-container-columns">
+                                        <StatGroup
+                                            className={css(
+                                                "summary-container-columns"
+                                            )}
+                                        >
                                             <StatProperty
-                                                className="summary-container-succeeded"
+                                                className={css(
+                                                    "summary-container-succeeded"
+                                                )}
                                                 value={renderUndefined(
                                                     succeededCount
                                                 )}
@@ -362,7 +396,9 @@ export class DeploymentDetails extends Component {
                                                 size="small"
                                             />
                                             <StatProperty
-                                                className="summary-container-pending"
+                                                className={css(
+                                                    "summary-container-pending"
+                                                )}
                                                 value={renderUndefined(
                                                     pendingCount
                                                 )}
@@ -375,13 +411,20 @@ export class DeploymentDetails extends Component {
                                     </StatSection>
                                 </StatGroup>
                                 {
-                                    <StatGroup className="summary-container-columns summary-custom-column">
+                                    <StatGroup
+                                        className={css(
+                                            "summary-container-columns",
+                                            "summary-custom-column"
+                                        )}
+                                    >
                                         <div>
                                             {customArray.map(
                                                 (customKey, idx) => (
                                                     <StatProperty
                                                         key={idx}
-                                                        className="summary-container-customMetric"
+                                                        className={css(
+                                                            "summary-container-customMetric"
+                                                        )}
                                                         value={
                                                             customMetrics
                                                                 ? customMetrics[
@@ -397,9 +440,19 @@ export class DeploymentDetails extends Component {
                                         </div>
                                     </StatGroup>
                                 }
-                                <StatGroup className="summary-container-groups">
-                                    <StatSection className="summary-container-row1">
-                                        <StatGroup className="summary-container-columns">
+                                <StatGroup
+                                    className={css("summary-container-groups")}
+                                >
+                                    <StatSection
+                                        className={css(
+                                            "summary-container-row1"
+                                        )}
+                                    >
+                                        <StatGroup
+                                            className={css(
+                                                "summary-container-columns"
+                                            )}
+                                        >
                                             <StatPropertyPair
                                                 label={t(
                                                     "deployments.details.deviceGroup"
@@ -407,7 +460,11 @@ export class DeploymentDetails extends Component {
                                                 value={deviceGroupName}
                                             />
                                         </StatGroup>
-                                        <StatGroup className="summary-container-columns">
+                                        <StatGroup
+                                            className={css(
+                                                "summary-container-columns"
+                                            )}
+                                        >
                                             <StatPropertyPair
                                                 label={t(
                                                     "deployments.details.packageType"
@@ -423,8 +480,16 @@ export class DeploymentDetails extends Component {
                                             />
                                         </StatGroup>
                                     </StatSection>
-                                    <StatSection className="summary-container-row2">
-                                        <StatGroup className="summary-container-columns">
+                                    <StatSection
+                                        className={css(
+                                            "summary-container-row2"
+                                        )}
+                                    >
+                                        <StatGroup
+                                            className={css(
+                                                "summary-container-columns"
+                                            )}
+                                        >
                                             <StatPropertyPair
                                                 label={t(
                                                     "deployments.details.start"
@@ -434,7 +499,11 @@ export class DeploymentDetails extends Component {
                                                 )}
                                             />
                                         </StatGroup>
-                                        <StatGroup className="summary-container-columns">
+                                        <StatGroup
+                                            className={css(
+                                                "summary-container-columns"
+                                            )}
+                                        >
                                             <StatPropertyPair
                                                 label={t(
                                                     "deployments.details.package"
@@ -445,8 +514,16 @@ export class DeploymentDetails extends Component {
                                     </StatSection>
                                 </StatGroup>
                                 <StatGroup>
-                                    <StatSection className="summary-container-row1">
-                                        <StatGroup className="summary-container-columns">
+                                    <StatSection
+                                        className={css(
+                                            "summary-container-row1"
+                                        )}
+                                    >
+                                        <StatGroup
+                                            className={css(
+                                                "summary-container-columns"
+                                            )}
+                                        >
                                             <StatPropertyPair
                                                 label={t(
                                                     "deployments.details.priority"
@@ -455,9 +532,17 @@ export class DeploymentDetails extends Component {
                                             />
                                         </StatGroup>
                                     </StatSection>
-                                    <StatSection className="summary-container-row2">
+                                    <StatSection
+                                        className={css(
+                                            "summary-container-row2"
+                                        )}
+                                    >
                                         {isADMDeployment && (
-                                            <StatGroup className="summary-container-columns">
+                                            <StatGroup
+                                                className={css(
+                                                    "summary-container-columns"
+                                                )}
+                                            >
                                                 <StatPropertyPair
                                                     label={t(
                                                         "deployments.details.configType"
@@ -478,13 +563,13 @@ export class DeploymentDetails extends Component {
                             </StatSection>
                         </div>
                     )}
-                    <h4 className="deployment-details-devices-affected">
+                    <h4 className={css("deployment-details-devices-affected")}>
                         {t("deployments.details.devicesAffected")}
                     </h4>
                     {isDeployedDevicesPending && <Indicator />}
                     {deployedDevicesError && (
                         <AjaxError
-                            className="deployed-devices-grid-error"
+                            className={css("deployed-devices-grid-error")}
                             t={t}
                             error={deployedDevicesError}
                         />

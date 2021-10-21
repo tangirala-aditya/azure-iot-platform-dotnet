@@ -11,7 +11,6 @@ stages:
         displayName: Check parameters
         steps:
           - checkout: none
-
           - script: |-
               set -Eeuxo pipefail
               echo "Environment name: '$(environmentName)'"
@@ -70,4 +69,5 @@ stages:
           applicationShortCode: $(applicationShortCode)
           environmentCategory: $(environmentCategory)
           imageTag: $(imageTag)
-          blueGreen: false
+          blueGreen: true
+          isHelmVersion3: true

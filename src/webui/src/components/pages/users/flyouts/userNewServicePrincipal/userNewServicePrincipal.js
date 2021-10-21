@@ -21,11 +21,13 @@ import {
     SummarySection,
     Svg,
 } from "components/shared";
-
-import "./userNewServicePrincipal.scss";
 import { Policies } from "utilities";
 
-const isGuidRegex = /^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$/,
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./userNewServicePrincipal.module.scss"));
+
+const isGuidRegex =
+        /^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$/,
     guid = (x) => x.match(isGuidRegex),
     userOptions = {
         labelName: "users.flyouts.new.servicePrincipal.label",
@@ -129,12 +131,12 @@ export class UserNewServicePrincipal extends LinkedComponent {
                 this.state.formData.appid,
                 this.state.formData.role
             ).subscribe(
-                function (user) {
+                (user) => {
                     this.setState({
                         successCount: this.state.successCount + 1,
                     });
                     this.props.insertUsers(user);
-                }.bind(this),
+                },
                 (error) =>
                     this.setState({
                         error,
@@ -197,10 +199,10 @@ export class UserNewServicePrincipal extends LinkedComponent {
             >
                 <Protected permission={permissions.inviteUsers}>
                     <form
-                        className="users-new-container"
+                        className={css("users-new-container")}
                         onSubmit={this.invite}
                     >
-                        <div className="users-new-content">
+                        <div className={css("users-new-content")}>
                             <FormGroup>
                                 <FormLabel>
                                     {t(userOptions.labelName)}
@@ -234,7 +236,7 @@ export class UserNewServicePrincipal extends LinkedComponent {
 
                         {error && (
                             <AjaxError
-                                className="users-new-error"
+                                className={css("users-new-error")}
                                 t={t}
                                 error={error}
                             />
@@ -273,8 +275,8 @@ export class UserNewServicePrincipal extends LinkedComponent {
                                         {this.state.isPending && <Indicator />}
                                         {completedSuccessfully && (
                                             <Svg
-                                                className="summary-icon"
-                                                path={svgs.apply}
+                                                className={css("summary-icon")}
+                                                src={svgs.apply}
                                             />
                                         )}
                                     </SummaryBody>

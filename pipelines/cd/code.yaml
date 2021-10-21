@@ -1,0 +1,526 @@
+trigger: none
+pr: none
+resources:
+  pipelines:
+    - pipeline: testV3
+      source: azure-iot-platform-dotnet.ci.test-v3
+      trigger:
+        branches:
+          - master          
+pool:
+  vmImage: ubuntu-latest
+variables:
+- group: crslDev
+- group: acsDev
+- group: crslQa
+- group: crslWkbnch
+- group: chimDev
+- group: chimQa
+- group: chimProd
+- group: psdDev
+- group: psdTest
+- group: psdQa
+- group: psdEu
+- group: psdStg
+- group: psdProd
+- group: emdDev
+- group: emdQa
+- group: emdCt
+- group: kciDev
+- group: kciQa 
+- group: kciCt
+- group: kciPr
+- group: psdfireDev
+- group: psdfireQa
+- group: psdfireCt
+- group: psdfireProd
+- template: ../templates/imageTagVariable.yaml
+
+stages:
+  - stage: checkParameters
+    displayName: Check parameters
+    dependsOn: []
+    jobs:
+      - job: checkParameters
+        displayName: Check parameters
+        steps:
+          - checkout: none
+
+          - script: |-
+              set -Eeuxo pipefail
+              echo "Image tag: '$(_imageTag)'"
+              if [ -z "$(_imageTag)" ]
+              then
+                echo "A value for the 'imageTag' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+            displayName: Check parameters
+  - stage: printPipelineResourceVariables
+    displayName: Print pipeline resource variables
+    dependsOn: []
+    jobs:
+      - job: printPipelineResourceVariables
+        displayName: Print pipeline resource variables
+        steps:
+          - checkout: none
+
+          - template: ../templates/print-pipeline-resource-variables.yaml
+            parameters:
+              pipelineResourceName: testV3
+
+  - stage: crslDev
+    displayName: CRSL dev
+    variables:
+    - group: crslDev
+    dependsOn:
+      - checkParameters
+    condition: and(succeeded(), eq(variables['runCrslDevStage'], 'true'))
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-crslDev)
+          subscriptionName: $(subscriptionName-crslDev)
+          applicationCode: $(applicationCode-crslDev)
+          applicationShortCode: $(applicationShortCode-crslDev)
+          environmentCategory: $(environmentCategory-crslDev)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: true
+          subscriptionId: $(subscriptionId-crslDev)
+
+  - stage: acsDev
+    displayName: ACS dev
+    variables:
+    - group: acsDev
+    dependsOn:
+      - checkParameters
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-acsDev)
+          subscriptionName: $(subscriptionName-acsDev)
+          applicationCode: $(applicationCode-acsDev)
+          applicationShortCode: $(applicationShortCode-acsDev)
+          environmentCategory: $(environmentCategory-acsDev)
+          imageTag: $(_imageTag)
+          blueGreen: false
+          isHelmVersion3: false          
+          subscriptionId: $(subscriptionId-acsDev)
+
+  - stage: crslQa
+    displayName: CRSL QA
+    variables:
+    - group: crslQa
+    dependsOn:
+      - crslDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-crslQa)
+          subscriptionName: $(subscriptionName-crslQa)
+          applicationCode: $(applicationCode-crslQa)
+          applicationShortCode: $(applicationShortCode-crslQa)
+          environmentCategory: $(environmentCategory-crslQa)
+          imageTag: $(_imageTag)
+          blueGreen: false
+          isHelmVersion3: true          
+          subscriptionId: $(subscriptionId-crslQa)
+
+  - stage: crslWkbnch
+    displayName: CRSL workbench
+    variables:
+    - group: crslWkbnch
+    dependsOn:
+      - crslQa
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-crslWkbnch)
+          subscriptionName: $(subscriptionName-crslWkbnch)
+          applicationCode: $(applicationCode-crslWkbnch)
+          applicationShortCode: $(applicationShortCode-crslWkbnch)
+          environmentCategory: $(environmentCategory-crslWkbnch)
+          imageTag: $(_imageTag)
+          blueGreen: false
+          isHelmVersion3: false
+          subscriptionId: $(subscriptionId-crslWkbnch)
+
+  - stage: chimDev
+    displayName: CHIM dev
+    variables:
+    - group: chimDev
+    dependsOn:
+      - crslWkbnch
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-chimDev)
+          subscriptionName: $(subscriptionName-chimDev)
+          applicationCode: $(applicationCode-chimDev)
+          applicationShortCode: $(applicationShortCode-chimDev)
+          environmentCategory: $(environmentCategory-chimDev)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: true
+          subscriptionId: $(subscriptionId-chimDev)
+
+  - stage: chimQa
+    displayName: CHIM QA
+    variables:
+    - group: chimQa
+    dependsOn:
+      - chimDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-chimQa)
+          subscriptionName: $(subscriptionName-chimQa)
+          applicationCode: $(applicationCode-chimQa)
+          applicationShortCode: $(applicationShortCode-chimQa)
+          environmentCategory: $(environmentCategory-chimQa)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: true
+          subscriptionId: $(subscriptionId-chimQa)
+
+  - stage: chimProd
+    displayName: CHIM prod
+    variables:
+    - group: chimProd
+    dependsOn:
+      - chimQa
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-chimProd)
+          subscriptionName: $(subscriptionName-chimProd)
+          applicationCode: $(applicationCode-chimProd)
+          applicationShortCode: $(applicationShortCode-chimProd)
+          environmentCategory: $(environmentCategory-chimProd)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: false
+          subscriptionId: $(subscriptionId-chimProd)
+
+  - stage: psdDev
+    displayName: PSD dev
+    variables:
+    - group: psdDev
+    dependsOn:
+      - crslWkbnch
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-psdDev)
+          subscriptionName: $(subscriptionName-psdDev)
+          applicationCode: $(applicationCode-psdDev)
+          applicationShortCode: $(applicationShortCode-psdDev)
+          environmentCategory: $(environmentCategory-psdDev)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: true
+          subscriptionId: $(subscriptionId-psdDev)
+          
+  - stage: psdTest
+    displayName: PSD Test
+    variables:
+    - group: psdTest
+    dependsOn:
+      - crslWkbnch
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-psdTest)
+          subscriptionName: $(subscriptionName-psdTest)
+          applicationCode: $(applicationCode-psdTest)
+          applicationShortCode: $(applicationShortCode-psdTest)
+          environmentCategory: $(environmentCategory-psdTest)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: true
+          subscriptionId: $(subscriptionId-psdTest)
+
+  - stage: psdQa
+    displayName: PSD QA
+    variables:
+    - group: psdQa
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-psdQa)
+          subscriptionName: $(subscriptionName-psdQa)
+          applicationCode: $(applicationCode-psdQa)
+          applicationShortCode: $(applicationShortCode-psdQa)
+          environmentCategory: $(environmentCategory-psdQa)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: true
+          subscriptionId: $(subscriptionId-psdQa)
+
+  - stage: psdEu
+    displayName: PSD EU
+    variables:
+    - group: psdEu
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-psdEu)
+          subscriptionName: $(subscriptionName-psdEu)
+          applicationCode: $(applicationCode-psdEu)
+          applicationShortCode: $(applicationShortCode-psdEu)
+          environmentCategory: $(environmentCategory-psdEu)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: false
+          subscriptionId: $(subscriptionId-psdEu)
+
+  - stage: psdStg
+    displayName: PSD staging
+    variables:
+    - group: psdStg
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-psdStg)
+          subscriptionName: $(subscriptionName-psdStg)
+          applicationCode: $(applicationCode-psdStg)
+          applicationShortCode: $(applicationShortCode-psdStg)
+          environmentCategory: $(environmentCategory-psdStg)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: false
+          subscriptionId: $(subscriptionId-psdStg)
+
+  - stage: psdProd
+    displayName: PSD Prod
+    variables:
+    - group: psdProd
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-psdProd)
+          subscriptionName: $(subscriptionName-psdProd)
+          applicationCode: $(applicationCode-psdProd)
+          applicationShortCode: $(applicationShortCode-psdProd)
+          environmentCategory: $(environmentCategory-psdProd)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: false
+          subscriptionId: $(subscriptionId-psdProd)
+
+  - stage: emdDev
+    displayName: EMD dev
+    variables:
+    - group: emdDev
+    dependsOn:
+      - crslWkbnch
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-emdDev)
+          subscriptionName: $(subscriptionName-emdDev)
+          applicationCode: $(applicationCode-emdDev)
+          applicationShortCode: $(applicationShortCode-emdDev)
+          environmentCategory: $(environmentCategory-emdDev)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: true
+          subscriptionId: $(subscriptionId-emdDev)
+
+  - stage: emdQa
+    displayName: EMD QA
+    variables:
+    - group: emdQa
+    dependsOn:
+      - emdDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-emdQa)
+          subscriptionName: $(subscriptionName-emdQa)
+          applicationCode: $(applicationCode-emdQa)
+          applicationShortCode: $(applicationShortCode-emdQa)
+          environmentCategory: $(environmentCategory-emdQa)
+          imageTag: $(_imageTag)
+          blueGreen: false
+          isHelmVersion3: true
+          subscriptionId: $(subscriptionId-emdQa)
+
+  - stage: emdCt
+    displayName: EMD CT
+    variables:
+    - group: emdCt
+    dependsOn:
+      - emdQa
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-emdCt)
+          subscriptionName: $(subscriptionName-emdCt)
+          applicationCode: $(applicationCode-emdCt)
+          applicationShortCode: $(applicationShortCode-emdCt)
+          environmentCategory: $(environmentCategory-emdCt)
+          imageTag: $(_imageTag)
+          blueGreen: false
+          isHelmVersion3: false
+          subscriptionId: $(subscriptionId-emdCt)
+
+  - stage: kciDev
+    displayName: KCI dev
+    variables:
+    - group: kciDev
+    dependsOn:
+      - crslWkbnch
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-kciDev)
+          subscriptionName: $(subscriptionName-kciDev)
+          applicationCode: $(applicationCode-kciDev)
+          applicationShortCode: $(applicationShortCode-kciDev)
+          environmentCategory: $(environmentCategory-kciDev)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: true
+          subscriptionId: $(subscriptionId-kciDev)
+
+  - stage: kciQa
+    displayName: KCI qa
+    variables:
+    - group: kciQa
+    dependsOn:
+      - kciDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters: 
+          environmentName: $(environmentName-kciQa)
+          subscriptionName: $(subscriptionName-kciQa)
+          applicationCode: $(applicationCode-kciQa)
+          applicationShortCode: $(applicationShortCode-kciQa)
+          environmentCategory: $(environmentCategory-kciQa)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: false
+          subscriptionId: $(subscriptionId-kciQa)  
+
+  - stage: kciCt
+    displayName: KCI ct
+    variables:
+    - group: kciCt
+    dependsOn:
+      - kciQa
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-kciCt)
+          subscriptionName: $(subscriptionName-kciCt)
+          applicationCode: $(applicationCode-kciCt)
+          applicationShortCode: $(applicationShortCode-kciCt)
+          environmentCategory: $(environmentCategory-kciCt)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: false
+          subscriptionId: $(subscriptionId-kciCt)
+
+  - stage: kciPr
+    displayName: KCI Pr
+    variables:
+    - group: kciPr
+    dependsOn:
+      - kciCt
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-kciPr)
+          subscriptionName: $(subscriptionName-kciPr)
+          applicationCode: $(applicationCode-kciPr)
+          applicationShortCode: $(applicationShortCode-kciPr)
+          environmentCategory: $(environmentCategory-kciPr)
+          imageTag: $(_imageTag)
+          blueGreen: true
+          isHelmVersion3: false
+          subscriptionId: $(subscriptionId-kciPr)
+
+  - stage: psdfireDev
+    displayName: PSDFire Dev
+    variables:
+    - group: psdfireDev
+    dependsOn:
+      - crslWkbnch
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-psdfireDev)
+          subscriptionName: $(subscriptionName-psdfireDev)
+          applicationCode: $(applicationCode-psdfireDev)
+          applicationShortCode: $(applicationShortCode-psdfireDev)
+          environmentCategory: $(environmentCategory-psdfireDev)
+          imageTag: $(_imageTag)
+          blueGreen: false
+          isHelmVersion3: true
+          subscriptionId: $(subscriptionId-psdfireDev)
+
+  - stage: psdfireQa
+    displayName: PSDFire QA
+    variables:
+    - group: psdfireQa
+    dependsOn:
+      - psdfireDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-psdfireQa)
+          subscriptionName: $(subscriptionName-psdfireQa)
+          applicationCode: $(applicationCode-psdfireQa)
+          applicationShortCode: $(applicationShortCode-psdfireQa)
+          environmentCategory: $(environmentCategory-psdfireQa)
+          imageTag: $(_imageTag)
+          blueGreen: false
+          isHelmVersion3: false
+          subscriptionId: $(subscriptionId-psdfireQa)
+
+  - stage: psdfireCt
+    displayName: PSDFire CT
+    variables:
+    - group: psdfireCt
+    dependsOn:
+      - psdfireQa
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-psdfireCt)
+          subscriptionName: $(subscriptionName-psdfireCt)
+          applicationCode: $(applicationCode-psdfireCt)
+          applicationShortCode: $(applicationShortCode-psdfireCt)
+          environmentCategory: $(environmentCategory-psdfireCt)
+          imageTag: $(_imageTag)
+          blueGreen: false
+          isHelmVersion3: false
+          subscriptionId: $(subscriptionId-psdfireCt)
+
+  - stage: psdfireProd
+    displayName: PSDFire Prod
+    variables:
+    - group: psdfireProd
+    dependsOn:
+      - psdfireCt
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: $(environmentName-psdfireProd)
+          subscriptionName: $(subscriptionName-psdfireProd)
+          applicationCode: $(applicationCode-psdfireProd)
+          applicationShortCode: $(applicationShortCode-psdfireProd)
+          environmentCategory: $(environmentCategory-psdfireProd)
+          imageTag: $(_imageTag)
+          blueGreen: false
+          isHelmVersion3: false
+          subscriptionId: $(subscriptionId-psdfireProd)

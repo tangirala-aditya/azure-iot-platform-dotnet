@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import "rxjs";
-import { Observable } from "rxjs";
+import { forkJoin, of } from "rxjs";
 import moment from "moment";
 import { schema, normalize } from "normalizr";
 import update from "immutability-helper";
@@ -25,12 +25,11 @@ import {
     toActionCreator,
 } from "store/utilities";
 import { packagesEnum } from "services/models";
+import { catchError, map, mergeMap } from "rxjs/operators";
 
 // ========================= Epics - START
 const handleError = (fromAction) => (error) =>
-        Observable.of(
-            redux.actions.registerError(fromAction.type, { error, fromAction })
-        ),
+        of(redux.actions.registerError(fromAction.type, { error, fromAction })),
     getDeployedDeviceIds = (payload) => {
         return Object.keys(dot.pick("deviceStatuses", payload))
             .map((id) => `'${id}'`)
@@ -44,11 +43,12 @@ export const epics = createEpicScenario({
     fetchDeployments: {
         type: "DEPLOYMENTS_FETCH",
         epic: (fromAction) =>
-            IoTHubManagerService.getDeployments()
-                .map(
+            IoTHubManagerService.getDeployments().pipe(
+                map(
                     toActionCreator(redux.actions.updateDeployments, fromAction)
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Loads a single Deployment */
     fetchDeployment: {
@@ -57,15 +57,16 @@ export const epics = createEpicScenario({
             IoTHubManagerService.getDeployment(
                 fromAction.payload.id,
                 fromAction.payload.isLatest
-            )
-                .flatMap((response) => [
+            ).pipe(
+                mergeMap((response) => [
                     toActionCreator(
                         redux.actions.updateDeployment,
                         fromAction
                     )(response),
                     epics.actions.fetchDeployedDevices(response),
-                ])
-                .catch(handleError(fromAction)),
+                ]),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Loads the queried edgeAgents and devices */
     fetchDeployedDevices: {
@@ -78,16 +79,17 @@ export const epics = createEpicScenario({
                 return IoTHubManagerService.getDevicesByQueryForDeployment(
                     fromAction.payload.id,
                     fromAction.payload.isLatest
-                )
-                    .map(
+                ).pipe(
+                    map(
                         toActionCreator(
                             redux.actions.updateADMDeployedDevices,
                             fromAction
                         )
-                    )
-                    .catch(handleError(fromAction));
+                    ),
+                    catchError(handleError(fromAction))
+                );
             }
-            return Observable.forkJoin(
+            return forkJoin([
                 IoTHubManagerService.getModulesByQueryForDeployment(
                     fromAction.payload.id,
                     createEdgeAgentQuery(
@@ -98,48 +100,52 @@ export const epics = createEpicScenario({
                 IoTHubManagerService.getDevicesByQueryForDeployment(
                     fromAction.payload.id,
                     fromAction.payload.isLatest
-                )
-            )
-                .map(
+                ),
+            ]).pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateDeployedDevices,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction));
+                ),
+                catchError(handleError(fromAction))
+            );
         },
     },
     /** Create a new deployment */
     createDeployment: {
         type: "DEPLOYMENTS_CREATE",
         epic: (fromAction) =>
-            IoTHubManagerService.createDeployment(fromAction.payload)
-                .map(
+            IoTHubManagerService.createDeployment(fromAction.payload).pipe(
+                map(
                     toActionCreator(redux.actions.insertDeployment, fromAction)
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Delete deployment */
     deleteDeployment: {
         type: "DEPLOYMENTS_DELETE",
         epic: (fromAction) =>
-            IoTHubManagerService.deleteDeployment(fromAction.payload)
-                .map(
+            IoTHubManagerService.deleteDeployment(fromAction.payload).pipe(
+                map(
                     toActionCreator(redux.actions.deleteDeployment, fromAction)
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
     reactivateDeployment: {
         type: "DEPLOYMENTS_REACTIVATE",
         epic: (fromAction) =>
-            IoTHubManagerService.reactivateDeployment(fromAction.payload)
-                .map(
+            IoTHubManagerService.reactivateDeployment(fromAction.payload).pipe(
+                map(
                     toActionCreator(
                         redux.actions.reactivateDeployment,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 });
 // ========================= Epics - END
@@ -243,8 +249,8 @@ const deploymentSchema = new schema.Entity("deployments"),
                     ...acc,
                     [deviceId]: {
                         id: deviceId,
-                        start:
-                            normalizedDevices[deviceId].lastFwUpdateStartTime,
+                        start: normalizedDevices[deviceId]
+                            .lastFwUpdateStartTime,
                         end: normalizedDevices[deviceId].lastFwUpdateEndTime,
                         firmware: normalizedDevices[deviceId].firmware,
                         previousFirmware:

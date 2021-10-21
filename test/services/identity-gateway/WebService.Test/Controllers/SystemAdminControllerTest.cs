@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.Common.Services;
+using Mmm.Iot.Common.Services.Config;
+using Mmm.Iot.Common.Services.External.Grafana;
+using Mmm.Iot.Common.Services.External.KeyVault;
 using Mmm.Iot.Common.TestHelpers;
 using Mmm.Iot.IdentityGateway.Services;
 using Mmm.Iot.IdentityGateway.Services.Helpers;
@@ -25,6 +28,7 @@ namespace Mmm.Iot.IdentityGateway.WebService.Test.Controllers
     {
         private const string SomeUserId = "someUserId";
         private const string SomeSub = "someSub";
+        private const string SomeName = "someName";
         private const string SomeSetting = "someSetting";
         private const string SomeValue = "someValue";
         private bool disposedValue = false;
@@ -115,7 +119,20 @@ namespace Mmm.Iot.IdentityGateway.WebService.Test.Controllers
             this.logger = new Mock<ILogger<SystemAdminContainer>>();
             this.userLogger = new Mock<ILogger<UserTenantContainer>>();
             this.mockSystemAdminContainer = new Mock<SystemAdminContainer>(this.logger.Object);
-            this.mockUserTenantContainer = new Mock<UserTenantContainer>(this.userLogger.Object);
+            this.mockUserTenantContainer = new Mock<UserTenantContainer>(
+               this.userLogger.Object,
+               new AppConfig()
+               {
+                   DeviceTelemetryService = new DeviceTelemetryServiceConfig
+                   {
+                       Messages = new MessagesConfig
+                       {
+                           TelemetryStorageType = "cosmosdb",
+                       },
+                   },
+               },
+               new Mock<IGrafanaClient>().Object,
+               new Mock<IKeyVaultClient>().Object);
             this.mockHttpContext = new Mock<HttpContext> { DefaultValue = DefaultValue.Mock };
             this.mockHttpRequest = new Mock<HttpRequest> { DefaultValue = DefaultValue.Mock };
             this.controller = new SystemAdminController(this.mockSystemAdminContainer.Object, this.mockUserTenantContainer.Object)
@@ -141,7 +158,11 @@ namespace Mmm.Iot.IdentityGateway.WebService.Test.Controllers
             {
                 {
                     RequestExtension.ContextKeyUserClaims,
-                    new List<Claim> { new Claim(RequestExtension.UserObjectIdClaimType, SomeSub) }
+                    new List<Claim>
+                    {
+                        new Claim(RequestExtension.UserObjectIdClaimType, SomeSub),
+                        new Claim(RequestExtension.ClaimKeyUserName, SomeName),
+                    }
                 },
             };
             this.mockHttpContext.Setup(m => m.Items).Returns(this.contextItems);

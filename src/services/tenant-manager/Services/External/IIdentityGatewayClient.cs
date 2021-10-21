@@ -10,7 +10,7 @@ namespace Mmm.Iot.TenantManager.Services.External
 {
     public interface IIdentityGatewayClient : IExternalServiceClient
     {
-        Task<IdentityGatewayApiModel> AddTenantForUserAsync(string userId, string tenantId, string roles, string name = null);
+        Task<IdentityGatewayApiModel> AddTenantForUserAsync(string userId, string tenantId, string roles, string name = null, string createdBy = null);
 
         Task<IdentityGatewayApiModel> GetTenantForUserAsync(string userId, string tenantId);
 
@@ -25,5 +25,7 @@ namespace Mmm.Iot.TenantManager.Services.External
         Task<IdentityGatewayApiListModel> GetAllTenantsForUserAsync(string userId);
 
         Task<IdentityGatewayApiListModel> GetAllSystemAdminsAsync();
+
+        Task<IdentityGatewayApiListModel> GetAllUsersForTenant(string tenantId);
     }
 }

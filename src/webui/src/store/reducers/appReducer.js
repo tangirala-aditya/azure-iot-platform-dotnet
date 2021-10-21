@@ -1,12 +1,25 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import "rxjs";
-import { Observable } from "rxjs";
+import { EMPTY, of, interval, scheduled } from "rxjs";
 import dot from "dot-object";
 import moment from "moment";
 import { schema, normalize } from "normalizr";
 import { createSelector } from "reselect";
 import update from "immutability-helper";
+import { ofType } from "redux-observable";
+import {
+    map,
+    distinctUntilChanged,
+    switchMap,
+    catchError,
+    mergeMap,
+    first,
+    filter,
+    take,
+    mergeAll,
+    delay,
+} from "rxjs/operators";
 
 import Config from "app.config";
 import {
@@ -31,14 +44,15 @@ import {
     getError,
 } from "store/utilities";
 import { svgs, compareByProperty } from "utilities";
-import { toSinglePropertyDiagnosticsModel } from "services/models";
+import {
+    toSinglePropertyDiagnosticsModel,
+    SystemDefaultMapping,
+} from "services/models";
 import { HttpClient } from "utilities/httpClient";
 
 // ========================= Epics - START
 const handleError = (fromAction) => (error) =>
-    Observable.of(
-        redux.actions.registerError(fromAction.type, { error, fromAction })
-    );
+    of(redux.actions.registerError(fromAction.type, { error, fromAction }));
 
 export const epics = createEpicScenario({
     /** Initializes the redux state */
@@ -46,12 +60,16 @@ export const epics = createEpicScenario({
         type: "APP_INITIALIZE",
         epic: () => [
             epics.actions.fetchUser(),
+            epics.actions.fetchColumnMappings(),
+            epics.actions.fetchColumnOptions(),
             epics.actions.fetchDeviceGroups(),
             epics.actions.fetchLogo(),
             epics.actions.fetchReleaseInformation(),
             epics.actions.fetchSolutionSettings(),
             epics.actions.fetchTelemetryStatus(),
             epics.actions.fetchAlerting(),
+            epics.actions.fetchGrafanaUrl(),
+            epics.actions.fetchGrafanaOrgId(),
         ],
     },
 
@@ -59,21 +77,20 @@ export const epics = createEpicScenario({
     logEvent: {
         type: "APP_LOG_EVENT",
         epic: ({ payload }, store) => {
-            const diagnosticsOptIn = getDiagnosticsOptIn(store.getState());
+            const diagnosticsOptIn = getDiagnosticsOptIn(store.value);
             if (diagnosticsOptIn) {
-                payload.sessionId = getSessionId(store.getState());
+                payload.sessionId = getSessionId(store.value);
                 payload.eventProperties.CurrentWindow = getCurrentWindow(
-                    store.getState()
+                    store.value
                 );
-                return (
-                    DiagnosticsService.logEvent(payload)
-                        /* We don't want anymore action to be executed after this call
+                return DiagnosticsService.logEvent(payload).pipe(
+                    /* We don't want anymore action to be executed after this call
               and hence return empty observable in flatMap */
-                        .flatMap((_) => Observable.empty())
-                        .catch((_) => Observable.empty())
+                    mergeMap((_) => EMPTY),
+                    catchError((_) => EMPTY)
                 );
             }
-            return Observable.empty();
+            return EMPTY;
         },
     },
 
@@ -81,52 +98,56 @@ export const epics = createEpicScenario({
     fetchUser: {
         type: "APP_USER_FETCH",
         epic: (fromAction, store) =>
-            AuthService.getCurrentUser()
-                .map(toActionCreator(redux.actions.updateUser, fromAction))
-                .catch(handleError(fromAction)),
+            AuthService.getCurrentUser().pipe(
+                map(toActionCreator(redux.actions.updateUser, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Get the Alerting Status */
     fetchAlerting: {
         type: "APP_ALERTING_FETCH",
         epic: (fromAction, store) =>
-            TenantService.getAlertingStatus(true)
-                .map(toActionCreator(redux.actions.updateAlerting, fromAction))
-                .catch(handleError(fromAction)),
+            TenantService.getAlertingStatus(true).pipe(
+                map(toActionCreator(redux.actions.updateAlerting, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Get solution settings */
     fetchSolutionSettings: {
         type: "APP_FETCH_SOLUTION_SETTINGS",
         epic: (fromAction) =>
-            ConfigService.getSolutionSettings()
-                .map(
+            ConfigService.getSolutionSettings().pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateSolutionSettings,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Get Telemetry Status */
     fetchTelemetryStatus: {
         type: "APP_FETCH_TELEMETRY_STATUS",
         epic: (fromAction) =>
-            TelemetryService.getStatus()
-                .map(
+            TelemetryService.getStatus().pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateTelemetryProperties,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Update solution settings */
     updateDiagnosticsOptIn: {
         type: "APP_UPDATE_DIAGNOSTICS_OPTOUT",
         epic: (fromAction, store) => {
-            const currSettings = getSettings(store.getState()),
+            const currSettings = getSettings(store.value),
                 settings = {
                     name: currSettings.name,
                     description: currSettings.description,
@@ -139,20 +160,21 @@ export const epics = createEpicScenario({
                     "isEnabled",
                     isDiagnosticOptIn
                 );
-            logPayload.sessionId = getSessionId(store.getState());
+            logPayload.sessionId = getSessionId(store.value);
             logPayload.eventProperties.CurrentWindow = getCurrentWindow(
-                store.getState()
+                store.value
             );
             DiagnosticsService.logEvent(logPayload).subscribe();
 
-            return ConfigService.updateSolutionSettings(settings)
-                .map(
+            return ConfigService.updateSolutionSettings(settings).pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateSolutionSettings,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction));
+                ),
+                catchError(handleError(fromAction))
+            );
         },
     },
 
@@ -160,8 +182,8 @@ export const epics = createEpicScenario({
     fetchDeviceGroups: {
         type: "APP_DEVICE_GROUPS_FETCH",
         epic: (fromAction, store) =>
-            ConfigService.getDeviceGroups()
-                .flatMap((payload) => {
+            ConfigService.getDeviceGroups().pipe(
+                mergeMap((payload) => {
                     const deviceGroups = payload.sort(
                             compareByProperty("displayName", true)
                         ),
@@ -174,26 +196,56 @@ export const epics = createEpicScenario({
                     );
                     actions.push(epics.actions.fetchSelectedDeviceGroup());
                     return actions;
-                })
-                .catch(handleError(fromAction)),
+                }),
+                catchError(handleError(fromAction))
+            ),
+    },
+
+    fetchColumnMappings: {
+        type: "APP_COLUMN_MAPPINGS_GETCH",
+        epic: (fromAction, store) =>
+            ConfigService.getColumnMappings().pipe(
+                map(
+                    toActionCreator(
+                        redux.actions.updateColumnMappings,
+                        fromAction
+                    )
+                ),
+                catchError(handleError(fromAction))
+            ),
+    },
+
+    fetchColumnOptions: {
+        type: "APP_COLUMN_OPTIONS_FETCH",
+        epic: (fromAction, store) =>
+            ConfigService.getColumnOptions().pipe(
+                map(
+                    toActionCreator(
+                        redux.actions.updateColumnOptions,
+                        fromAction
+                    )
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     fetchSelectedDeviceGroup: {
         type: "APP_SELECTED_DEVICE_GROUP_FETCH",
         epic: (fromAction, store) =>
-            IdentityGatewayService.getUserActiveDeviceGroup()
-                .map(
+            IdentityGatewayService.getUserActiveDeviceGroup().pipe(
+                map(
                     (value) =>
                         value ||
-                        Object.keys(getDeviceGroupEntities(store.getState()))[0]
-                )
-                .map(
+                        Object.keys(getDeviceGroupEntities(store.value))[0]
+                ),
+                map(
                     toActionCreator(
                         redux.actions.updateActiveDeviceGroup,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     updateActiveDeviceGroup: {
@@ -201,33 +253,36 @@ export const epics = createEpicScenario({
         epic: (fromAction) =>
             IdentityGatewayService.updateUserActiveDeviceGroup(
                 fromAction.payload
-            )
-                .map(
+            ).pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateActiveDeviceGroup,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Listen to route events and emit a route change event when the url changes */
     detectRouteChange: {
         type: "APP_ROUTE_EVENT",
         rawEpic: (action$, store, actionType) =>
-            action$
-                .ofType(actionType)
-                .map(({ payload }) => payload) // payload === pathname
-                .distinctUntilChanged()
-                .map(createAction("EPIC_APP_ROUTE_CHANGE")),
+            action$.pipe(
+                ofType(actionType),
+                map(({ payload }) => payload), // payload === pathname
+                distinctUntilChanged(),
+                map(createAction("EPIC_APP_ROUTE_CHANGE"))
+            ),
     },
 
     /** Get the logo and company name from the config service */
     fetchLogo: {
         type: "APP_FETCH_LOGO",
         epic: (fromAction) =>
-            ConfigService.getLogo()
-                .map(toActionCreator(redux.actions.updateLogo, fromAction))
-                .catch(handleError(fromAction)),
+            ConfigService.getLogo().pipe(
+                map(toActionCreator(redux.actions.updateLogo, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Set the logo and/or company name in the config service */
@@ -237,81 +292,107 @@ export const epics = createEpicScenario({
             ConfigService.setLogo(
                 fromAction.payload.logo,
                 fromAction.payload.headers
-            )
-                .map(toActionCreator(redux.actions.updateLogo, fromAction))
-                .catch(handleError(fromAction)),
+            ).pipe(
+                map(toActionCreator(redux.actions.updateLogo, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Update alerting */
     updateAlerting: {
         type: "APP_UPDATE_ALERTING",
         epic: (fromAction) =>
-            Observable.of(fromAction.payload)
-                .map(toActionCreator(redux.actions.updateAlerting, fromAction))
-                .catch(handleError(fromAction)),
+            of(fromAction.payload).pipe(
+                map(toActionCreator(redux.actions.updateAlerting, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
     /** Get the current release version and release notes link from GitHub */
     fetchReleaseInformation: {
         type: "APP_FETCH_RELEASE_INFO",
         epic: (fromAction) =>
-            GitHubService.getReleaseInfo()
-                .map(
+            GitHubService.getReleaseInfo().pipe(
+                map(
                     toActionCreator(
                         redux.actions.getReleaseInformation,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
+    },
+
+    fetchGrafanaUrl: {
+        type: "APP_FETCH_GRAFANA_URL",
+        epic: (fromAction) =>
+            TenantService.getGrafanaUrl().pipe(
+                map(toActionCreator(redux.actions.getGrafanaUrl, fromAction)),
+                catchError(handleError(fromAction))
+            ),
+    },
+
+    fetchGrafanaOrgId: {
+        type: "APP_FETCH_GRAFANA_ORG",
+        epic: (fromAction) =>
+            TenantService.getGrafanaOrgId().pipe(
+                map(toActionCreator(redux.actions.getGrafanaOrgId, fromAction)),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Get solution's action settings */
     fetchActionSettings: {
         type: "APP_FETCH_SOLUTION_ACTION_SETTINGS",
         epic: (fromAction) =>
-            ConfigService.getActionSettings()
-                .map(
+            ConfigService.getActionSettings().pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateActionSettings,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction)),
+                ),
+                catchError(handleError(fromAction))
+            ),
     },
 
     /** Poll the server for the action settings. */
     pollActionSettings: {
         type: "APP_POLL_SOLUTION_ACTION_SETTINGS",
         rawEpic: (action$, store, actionType) =>
-            action$.ofType(actionType).switchMap((fromAction) => {
-                const poll$ = Observable.interval(
-                        Config.actionSetupPollingInterval
-                    )
-                        .switchMap((_) => ConfigService.getActionSettings())
-                        .map(
-                            toActionCreator(
-                                redux.actions.updateActionSettings,
-                                fromAction
-                            )
-                        )
-                        .filter((updateAction) => {
-                            const {
-                                    entities: { actionSettings },
-                                } = normalize(
-                                    updateAction.payload,
-                                    actionSettingsListSchema
-                                ),
-                                isEnabled = dot.pick(
-                                    "Email.isEnabled",
-                                    actionSettings
-                                );
-                            return isEnabled;
-                        })
-                        .take(1)
-                        .catch(handleError(fromAction)),
-                    timeout$ = Observable.of(
-                        redux.actions.updateActionPollingTimeout()
-                    ).delay(Config.actionSetupPollingTimeLimit);
-                return Observable.merge(poll$, timeout$).first();
-            }),
+            action$.pipe(
+                ofType(actionType),
+                switchMap((fromAction) => {
+                    const poll$ = interval(
+                            Config.actionSetupPollingInterval
+                        ).pipe(
+                            switchMap((_) => ConfigService.getActionSettings()),
+                            map(
+                                toActionCreator(
+                                    redux.actions.updateActionSettings,
+                                    fromAction
+                                )
+                            ),
+                            filter((updateAction) => {
+                                const {
+                                        entities: { actionSettings },
+                                    } = normalize(
+                                        updateAction.payload,
+                                        actionSettingsListSchema
+                                    ),
+                                    isEnabled = dot.pick(
+                                        "Email.isEnabled",
+                                        actionSettings
+                                    );
+                                return isEnabled;
+                            }),
+                            take(1),
+                            catchError(handleError(fromAction))
+                        ),
+                        timeout$ = of(
+                            redux.actions.updateActionPollingTimeout()
+                        ).pipe(delay(Config.actionSetupPollingTimeLimit));
+                    return scheduled(poll$, timeout$).pipe(mergeAll(), first());
+                })
+            ),
     },
 });
 // ========================= Epics - END
@@ -321,6 +402,10 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
     deviceGroupListSchema = new schema.Array(deviceGroupSchema),
     actionSettingsSchema = new schema.Entity("actionSettings"),
     actionSettingsListSchema = new schema.Array(actionSettingsSchema),
+    columnMappingSchema = new schema.Entity("columnMappings"),
+    columnMappingListSchema = new schema.Array(columnMappingSchema),
+    columnOptionsSchema = new schema.Entity("columnOptions"),
+    columnOptionsListSchema = new schema.Array(columnOptionsSchema),
     // ========================= Schemas - END
 
     // ========================= Reducers - START
@@ -333,6 +418,8 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
         theme: "mmm",
         version: undefined,
         releaseNotesUrl: undefined,
+        grafanaUrl: undefined,
+        grafanaOrgId: undefined,
         timeSeriesExplorerUrl: undefined,
         logo: svgs.mmmLogo,
         name: "header.companyName",
@@ -360,6 +447,8 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
             jobState: "Not Enabled",
             isActive: false,
         },
+        columnMappings: [],
+        columnOptions: [],
     },
     updateUserReducer = (state, { payload, fromAction }) => {
         return update(state, {
@@ -412,6 +501,46 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
             deviceGroups: { $merge: deviceGroups },
         });
     },
+    updateColumnMappingsReducer = (state, { payload, fromAction }) => {
+        if (!payload.find((p) => p.id === "Default")) {
+            payload.push(SystemDefaultMapping);
+        }
+        const {
+            entities: { columnMappings },
+        } = normalize(payload, columnMappingListSchema);
+        return update(state, {
+            columnMappings: { $set: columnMappings },
+            ...setPending(fromAction.type, false),
+        });
+    },
+    deleteColumnMappingsReducer = (state, { payload }) =>
+        update(state, {
+            columnMappings: { $unset: [...payload] },
+        }),
+    updateColumnOptionsReducer = (state, { payload, fromAction }) => {
+        const {
+            entities: { columnOptions },
+        } = normalize(payload, columnOptionsListSchema);
+        return update(state, {
+            columnOptions: { $set: columnOptions },
+            ...setPending(fromAction.type, false),
+        });
+    },
+    insertColumnOptionsReducer = (state, { payload }) => {
+        const {
+            entities: { columnOptions },
+        } = normalize(payload, columnOptionsListSchema);
+
+        if (!state.columnOptions) {
+            return update(state, {
+                columnOptions: { $set: columnOptions },
+            });
+        }
+
+        return update(state, {
+            columnOptions: { $merge: columnOptions },
+        });
+    },
     updateSolutionSettingsReducer = (state, { payload, fromAction }) =>
         update(state, {
             settings: { $merge: payload },
@@ -444,7 +573,7 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
             ...setPending(epics.actionTypes.pollActionSettings, false),
         });
     },
-    updateActiveDeviceGroupsReducer = (state, { payload }) => {
+    updateActiveDeviceGroupReducer = (state, { payload }) => {
         if (state.deviceGroups[payload]) {
             return update(state, { activeDeviceGroupId: { $set: payload } });
         }
@@ -473,6 +602,18 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
         update(state, {
             version: { $set: payload.version },
             releaseNotesUrl: { $set: payload.releaseNotesUrl },
+        }),
+    grafanaUrlReducer = (state, { payload }) =>
+        update(state, {
+            grafanaUrl: {
+                $set: payload,
+            },
+        }),
+    grafanaOrgIdReducer = (state, { payload }) =>
+        update(state, {
+            grafanaOrgId: {
+                $set: payload,
+            },
         }),
     setDeviceGroupFlyoutReducer = (state, { payload }) =>
         update(state, {
@@ -535,6 +676,8 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
         epics.actionTypes.fetchSolutionSettings,
         epics.actionTypes.fetchTelemetryStatus,
         epics.actionTypes.fetchAlerting,
+        epics.actionTypes.fetchColumnMappings,
+        epics.actionTypes.fetchColumnOptions,
     ];
 
 export const redux = createReducerScenario({
@@ -561,7 +704,23 @@ export const redux = createReducerScenario({
     },
     updateActiveDeviceGroup: {
         type: "APP_ACTIVE_DEVICE_GROUP_UPDATE",
-        reducer: updateActiveDeviceGroupsReducer,
+        reducer: updateActiveDeviceGroupReducer,
+    },
+    updateColumnMappings: {
+        type: "APP_COLUMN_MAPPINGS_GETCH",
+        reducer: updateColumnMappingsReducer,
+    },
+    deleteColumnMappings: {
+        type: "APP_COLUMN_MAPPINGS_DELETE",
+        reducer: deleteColumnMappingsReducer,
+    },
+    updateColumnOptions: {
+        type: "APP_COLUMN_OPTIONS_FETCH",
+        reducer: updateColumnOptionsReducer,
+    },
+    insertColumnOptions: {
+        type: "APP_COLUMN_OPTIONS_INSERT",
+        reducer: insertColumnOptionsReducer,
     },
     changeTheme: { type: "APP_CHANGE_THEME", reducer: updateThemeReducer },
     registerError: { type: "APP_REDUCER_ERROR", reducer: errorReducer },
@@ -579,6 +738,14 @@ export const redux = createReducerScenario({
         reducer: updateActionPollingTimeoutReducer,
     },
     getReleaseInformation: { type: "APP_GET_VERSION", reducer: releaseReducer },
+    getGrafanaUrl: {
+        type: "APP_GET_GRAfANA_URL",
+        reducer: grafanaUrlReducer,
+    },
+    getGrafanaOrgId: {
+        type: "APP_GET_GRAfANA_ORG",
+        reducer: grafanaOrgIdReducer,
+    },
     setDeviceGroupFlyoutStatus: {
         type: "APP_SET_DEVICE_GROUP_FLYOUT_STATUS",
         reducer: setDeviceGroupFlyoutReducer,
@@ -651,10 +818,52 @@ export const getActiveDeviceGroupConditions = createSelector(
     getActiveDeviceGroup,
     (activeDeviceGroup) => (activeDeviceGroup || {}).conditions
 );
+export const getActiveDeviceGroupMappingId = createSelector(
+    getActiveDeviceGroup,
+    (activeDeviceGroup) => (activeDeviceGroup || {}).mappingId
+);
+export const getColumnMappings = (state) =>
+    getAppReducer(state).columnMappings || [];
+export const getColumnOptions = (state) =>
+    getAppReducer(state).columnOptions || [];
+export const getColumnOptionsPendingStatus = (state) =>
+    getPending(getAppReducer(state), epics.actionTypes.fetchColumnOptions);
+export const getActiveDeviceGroupMapping = createSelector(
+    getColumnMappings,
+    getActiveDeviceGroupMappingId,
+    (mappings, mappingId) => mappings[mappingId]
+);
+export const getColumnMappingsList = createSelector(
+    getColumnMappings,
+    (columnMappings) =>
+        Object.keys(columnMappings)
+            .filter(function (elem) {
+                //return false for the element that matches Default
+                return elem !== "Default";
+            })
+            .map((id) => columnMappings[id])
+);
+export const getColumnOptionsList = createSelector(
+    getColumnOptions,
+    (columnOptions) =>
+        Object.keys(columnOptions).map(
+            (deviceGroupId) => columnOptions[deviceGroupId]
+        )
+);
+export const getDefaultColumnMapping = createSelector(
+    getColumnMappings,
+    (mappings) => mappings["Default"]
+);
+export const getColumnMappingById = (state, id) => getColumnMappings(state)[id];
+export const getColumnMappingPendingStatus = (state) =>
+    getPending(getAppReducer(state), epics.actionTypes.fetchColumnMappings);
+
 export const getLogo = (state) => getAppReducer(state).logo;
 export const getName = (state) => getAppReducer(state).name;
 export const isDefaultLogo = (state) => getAppReducer(state).isDefaultLogo;
 export const getReleaseNotes = (state) => getAppReducer(state).releaseNotesUrl;
+export const getGrafanaUrl = (state) => getAppReducer(state).grafanaUrl;
+export const getGrafanaOrgId = (state) => getAppReducer(state).grafanaOrgId;
 export const setLogoError = (state) =>
     getError(getAppReducer(state), epics.actionTypes.updateLogo);
 export const setLogoPendingStatus = (state) =>

@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import { Trans } from "react-i18next";
-import { Observable, Subject } from "rxjs";
+import { EMPTY, merge, of, Subject } from "rxjs";
 
 import Config from "app.config";
 import { permissions, toDiagnosticsModel } from "services/models";
@@ -21,7 +21,6 @@ import {
 } from "components/shared";
 import {
     svgs,
-    joinClasses,
     renderUndefined,
     getDeviceGroupParam,
     getTenantIdParam,
@@ -45,8 +44,19 @@ import { AlertOccurrencesGrid } from "components/pages/maintenance/grids";
 import { ROW_HEIGHT } from "components/shared/pcsGrid/pcsGridConfig";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
 
-import "./ruleDetails.scss";
+import {
+    delay,
+    distinctUntilChanged,
+    map,
+    mergeMap,
+    switchMap,
+    tap,
+    toArray,
+} from "rxjs/operators";
 
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./ruleDetails.module.scss"));
+const maintenanceCss = classnames.bind(require("../maintenance.module.scss"));
 const tabIds = {
         all: "all",
         devices: "devices",
@@ -88,8 +98,8 @@ export class RuleDetails extends Component {
         this.subscriptions = [];
     }
 
-    componentWillMount() {
-        if (this.props.location && this.props.location.search) {
+    UNSAFE_componentWillMount() {
+        if (this.props.location.search) {
             const tenantId = getTenantIdParam(this.props.location);
             this.props.checkTenantAndSwitch({
                 tenantId: tenantId,
@@ -116,47 +126,56 @@ export class RuleDetails extends Component {
 
         this.subscriptions.push(
             this.restartTelemetry$
-                .distinctUntilChanged()
-                .map((deviceIds) =>
-                    deviceIds.split(idDelimiter).filter((id) => id)
-                )
-                .do(() =>
-                    this.setState({ telemetry: {}, telemetryIsPending: false })
-                )
-                .switchMap((deviceIds) => {
-                    if (deviceIds.length > 0) {
-                        return TelemetryService.getTelemetryByDeviceIdP15M(
-                            deviceIds
-                        )
-                            .flatMap((items) => {
-                                this.setState({
-                                    telemetryQueryExceededLimit:
-                                        items.length >= 1000,
-                                });
-                                return Observable.of(items);
-                            })
-                            .merge(
-                                this.telemetryRefresh$ // Previous request complete
-                                    .delay(Config.telemetryRefreshInterval) // Wait to refresh
-                                    .do(onPendingStart)
-                                    .flatMap((_) =>
+                .pipe(
+                    distinctUntilChanged(),
+                    map((deviceIds) =>
+                        deviceIds.split(idDelimiter).filter((id) => id)
+                    ),
+                    tap(() =>
+                        this.setState({
+                            telemetry: {},
+                            telemetryIsPending: false,
+                        })
+                    ),
+                    switchMap((deviceIds) => {
+                        if (deviceIds.length > 0) {
+                            return merge(
+                                TelemetryService.getTelemetryByDeviceIdP15M(
+                                    deviceIds
+                                ).pipe(
+                                    mergeMap((items) => {
+                                        this.setState({
+                                            telemetryQueryExceededLimit:
+                                                items.length >= 1000,
+                                        });
+                                        return of(items);
+                                    })
+                                ),
+                                this.telemetryRefresh$.pipe(
+                                    // Previous request complete
+                                    delay(Config.telemetryRefreshInterval), // Wait to refresh
+                                    tap(onPendingStart),
+                                    mergeMap((_) =>
                                         TelemetryService.getTelemetryByDeviceIdP1M(
                                             deviceIds
                                         )
                                     )
-                            )
-                            .flatMap(
-                                transformTelemetryResponse(
-                                    () => this.state.telemetry
                                 )
-                            )
-                            .map((telemetry) => ({
-                                telemetry,
-                                telemetryIsPending: false,
-                            }));
-                    }
-                    return Observable.empty();
-                })
+                            ).pipe(
+                                mergeMap(
+                                    transformTelemetryResponse(
+                                        () => this.state.telemetry
+                                    )
+                                ),
+                                map((telemetry) => ({
+                                    telemetry,
+                                    telemetryIsPending: false,
+                                }))
+                            );
+                        }
+                        return EMPTY;
+                    })
+                )
                 .subscribe(
                     (telemetryState) =>
                         this.setState(telemetryState, () =>
@@ -174,18 +193,13 @@ export class RuleDetails extends Component {
         this.props.logEvent(toDiagnosticsModel("AlertDetails_Click", {}));
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.handleProps(nextProps);
     }
 
     handleProps(nextProps) {
-        const {
-                alerts,
-                alertEntities,
-                deviceEntities,
-                match,
-                rulesEntities,
-            } = nextProps,
+        const { alerts, alertEntities, deviceEntities, match, rulesEntities } =
+                nextProps,
             selectedId = match.params.id,
             selectedRule = rulesEntities[selectedId],
             selectedAlert =
@@ -223,19 +237,21 @@ export class RuleDetails extends Component {
 
     updateAlertStatus = (selectedAlerts, status) =>
         this.subscriptions.push(
-            Observable.of(selectedAlerts)
-                .do(() => this.setState({ updatingAlertStatus: true }))
-                .flatMap((alerts) => alerts)
-                .flatMap(({ id }) =>
-                    TelemetryService.updateAlertStatus(id, status)
-                )
-                .toArray() // Use toArray to wait for all calls to succeed
+            of(selectedAlerts)
+                .pipe(
+                    tap(() => this.setState({ updatingAlertStatus: true })),
+                    mergeMap((alerts) => alerts),
+                    mergeMap(({ id }) =>
+                        TelemetryService.updateAlertStatus(id, status)
+                    ),
+                    toArray()
+                ) // Use toArray to wait for all calls to succeed
                 .subscribe(
                     () => {
                         this.props.setAlertStatus(selectedAlerts, status);
                         this.onAlertGridHardSelectChange([]);
                     },
-                    undefined, // TODO: Handle error
+                    () => undefined, // TODO: Handle error
                     () => this.setState({ updatingAlertStatus: false })
                 )
         );
@@ -248,7 +264,7 @@ export class RuleDetails extends Component {
                 () => {
                     this.refreshData();
                 },
-                undefined, // TODO: Handle error
+                () => undefined, // TODO: Handle error
                 () => this.setState({ updatingAlertStatus: false })
             )
         );
@@ -372,7 +388,7 @@ export class RuleDetails extends Component {
             alertsGridProps = {
                 domLayout: "autoHeight",
                 rowSelection: "multiple",
-                deltaRowDataMode: true,
+                immutableData: true,
                 getRowNodeId: ({ id }) => id,
                 rowData: isPending ? undefined : this.state.occurrences,
                 sizeColumnsToFit: true,
@@ -392,7 +408,9 @@ export class RuleDetails extends Component {
             { counts = {} } = selectedAlert;
         return (
             <ComponentArray>
-                <ContextMenu className="rule-details-context-menu-container">
+                <ContextMenu
+                    className={css("rule-details-context-menu-container")}
+                >
                     <ContextMenuAlign left={true}>
                         <DeviceGroupDropdown
                             deviceGroupIdFromUrl={
@@ -411,7 +429,7 @@ export class RuleDetails extends Component {
                     </ContextMenuAlign>
                     <ContextMenuAlign>
                         {this.state.updatingAlertStatus && (
-                            <div className="alert-indicator-container">
+                            <div className={css("alert-indicator-container")}>
                                 <Indicator />
                             </div>
                         )}
@@ -432,51 +450,65 @@ export class RuleDetails extends Component {
                         />
                     </ContextMenuAlign>
                 </ContextMenu>
-                <PageContent className="maintenance-container rule-details-container">
+                <PageContent
+                    className={`${maintenanceCss(
+                        "maintenance-container"
+                    )} ${css("rule-details-container")}`}
+                >
                     <PageTitle titleValue={alertName} />
                     {!this.props.error ? (
                         <div>
-                            <div className="header-container">
-                                <div className="rule-stat-container">
-                                    <div className="rule-stat-cell">
-                                        <div className="rule-stat-header">
+                            <div className={maintenanceCss("header-container")}>
+                                <div className={css("rule-stat-container")}>
+                                    <div className={css("rule-stat-cell")}>
+                                        <div
+                                            className={css("rule-stat-header")}
+                                        >
                                             {t("maintenance.total")}
                                         </div>
-                                        <div className="rule-stat-value">
+                                        <div className={css("rule-stat-value")}>
                                             {renderUndefined(counts.total)}
                                         </div>
                                     </div>
-                                    <div className="rule-stat-cell">
-                                        <div className="rule-stat-header">
+                                    <div className={css("rule-stat-cell")}>
+                                        <div
+                                            className={css("rule-stat-header")}
+                                        >
                                             {t("maintenance.open")}
                                         </div>
-                                        <div className="rule-stat-value">
+                                        <div className={css("rule-stat-value")}>
                                             {renderUndefined(counts.open)}
                                         </div>
                                     </div>
-                                    <div className="rule-stat-cell">
-                                        <div className="rule-stat-header">
+                                    <div className={css("rule-stat-cell")}>
+                                        <div
+                                            className={css("rule-stat-header")}
+                                        >
                                             {t("maintenance.acknowledged")}
                                         </div>
-                                        <div className="rule-stat-value">
+                                        <div className={css("rule-stat-value")}>
                                             {renderUndefined(
                                                 counts.acknowledged
                                             )}
                                         </div>
                                     </div>
-                                    <div className="rule-stat-cell">
-                                        <div className="rule-stat-header">
+                                    <div className={css("rule-stat-cell")}>
+                                        <div
+                                            className={css("rule-stat-header")}
+                                        >
                                             {t("maintenance.closed")}
                                         </div>
-                                        <div className="rule-stat-value">
+                                        <div className={css("rule-stat-value")}>
                                             {renderUndefined(counts.closed)}
                                         </div>
                                     </div>
-                                    <div className="rule-stat-cell">
-                                        <div className="rule-stat-header">
+                                    <div className={css("rule-stat-cell")}>
+                                        <div
+                                            className={css("rule-stat-header")}
+                                        >
                                             {t("maintenance.lastEvent")}
                                         </div>
-                                        <div className="rule-stat-value">
+                                        <div className={css("rule-stat-value")}>
                                             {selectedAlert.lastOccurrence ? (
                                                 <TimeRenderer
                                                     value={
@@ -488,11 +520,13 @@ export class RuleDetails extends Component {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="rule-stat-cell">
-                                        <div className="rule-stat-header">
+                                    <div className={css("rule-stat-cell")}>
+                                        <div
+                                            className={css("rule-stat-header")}
+                                        >
                                             {t("maintenance.severity")}
                                         </div>
-                                        <div className="rule-stat-value">
+                                        <div className={css("rule-stat-value")}>
                                             {selectedAlert.severity ? (
                                                 <SeverityRenderer
                                                     context={{
@@ -509,10 +543,10 @@ export class RuleDetails extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="details-description">
+                            <div className={css("details-description")}>
                                 {t("maintenance.ruleDetailsDesc")}
                             </div>
-                            <h4 className="sub-heading">
+                            <h4 className={css("sub-heading")}>
                                 {t("maintenance.ruleDetail")}
                             </h4>
                             <RulesGrid
@@ -539,44 +573,36 @@ export class RuleDetails extends Component {
                                 userPermissions={this.props.userPermissions}
                             />
 
-                            <h4 className="sub-heading">
+                            <h4 className={css("sub-heading")}>
                                 {t("maintenance.alertOccurrences")}
                             </h4>
                             <AlertOccurrencesGrid {...alertsGridProps} />
 
-                            <h4 className="sub-heading">
+                            <h4 className={css("sub-heading")}>
                                 {t("maintenance.relatedInfo")}
                             </h4>
-                            <div className="tab-container">
+                            <div className={maintenanceCss("tab-container")}>
                                 <button
-                                    className={joinClasses(
-                                        "tab",
-                                        selectedTab === tabIds.all
-                                            ? "active"
-                                            : ""
-                                    )}
+                                    className={maintenanceCss("tab", {
+                                        active: selectedTab === tabIds.all,
+                                    })}
                                     onClick={this.setTab(tabIds.all)}
                                 >
                                     {t("maintenance.all")}
                                 </button>
                                 <button
-                                    className={joinClasses(
-                                        "tab",
-                                        selectedTab === tabIds.devices
-                                            ? "active"
-                                            : ""
-                                    )}
+                                    className={maintenanceCss("tab", {
+                                        active: selectedTab === tabIds.devices,
+                                    })}
                                     onClick={this.setTab(tabIds.devices)}
                                 >
                                     {t("maintenance.devices")}
                                 </button>
                                 <button
-                                    className={joinClasses(
-                                        "tab",
-                                        selectedTab === tabIds.telemetry
-                                            ? "active"
-                                            : ""
-                                    )}
+                                    className={maintenanceCss("tab", {
+                                        active:
+                                            selectedTab === tabIds.telemetry,
+                                    })}
                                     onClick={this.setTab(tabIds.telemetry)}
                                 >
                                     {t("maintenance.telemetry")}
@@ -585,12 +611,13 @@ export class RuleDetails extends Component {
                             {(selectedTab === tabIds.all ||
                                 selectedTab === tabIds.devices) && (
                                 <ComponentArray>
-                                    <h4 className="sub-heading">
+                                    <h4 className={css("sub-heading")}>
                                         {t("maintenance.alertedDevices")}
                                     </h4>
                                     <DevicesGridContainer
                                         t={t}
                                         domLayout="autoHeight"
+                                        useStaticCols={true}
                                         onGridReady={this.onDeviceGridReady}
                                         rowData={
                                             isPending
@@ -613,12 +640,16 @@ export class RuleDetails extends Component {
                                 Object.keys(this.state.telemetry).length >
                                     0 && (
                                     <ComponentArray>
-                                        <h4 className="sub-heading">
+                                        <h4 className={css("sub-heading")}>
                                             {t(
                                                 "maintenance.alertedDeviceTelemetry"
                                             )}
                                         </h4>
-                                        <div className="details-chart-container">
+                                        <div
+                                            className={maintenanceCss(
+                                                "details-chart-container"
+                                            )}
+                                        >
                                             <TelemetryChart
                                                 telemetry={this.state.telemetry}
                                                 t={t}

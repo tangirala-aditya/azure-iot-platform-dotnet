@@ -17,6 +17,18 @@ export class Validator {
         return !!x;
     };
 
+    static notDuplicated = (x, array) => {
+        return array.filter((i) => i === x).length < 2;
+    };
+
+    static listNotDuplicated = (x, array) => {
+        return array.filter((i) => i === x).length < 1;
+    };
+
+    static arrayExceedsLimit = (limit) => (x, array) => {
+        return array.length < limit;
+    };
+
     constructor(validator = {}) {
         this.validators = validator.validators || [];
         this.rejectors = validator.rejectors || [];
@@ -26,10 +38,15 @@ export class Validator {
      * Adds a checking function to the validator list
      * If the function returns false, validation fails
      */
-    check(checker, msg = true) {
+    check(checker, msg = true, optionalParam = null) {
         this.validators = [
             ...this.validators,
-            (value) => (checker(value) ? "" : isFunc(msg) ? msg(value) : msg),
+            (value) =>
+                checker(value, optionalParam)
+                    ? ""
+                    : isFunc(msg)
+                    ? msg(value)
+                    : msg,
         ];
         return this;
     }

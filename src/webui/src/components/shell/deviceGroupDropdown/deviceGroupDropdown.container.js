@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from "react-redux";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import {
     epics as appEpics,
     getDeviceGroups,
@@ -26,6 +26,6 @@ const mapStateToProps = (state) => ({
             dispatch(appEpics.actions.logEvent(diagnosticsModel)),
     });
 
-export const DeviceGroupDropdownContainer = withNamespaces()(
+export const DeviceGroupDropdownContainer = withTranslation()(
     connect(mapStateToProps, mapDispatchToProps)(DeviceGroupDropdown)
 );

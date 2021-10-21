@@ -3,22 +3,13 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Azure.Management.Fluent;
-using Microsoft.Azure.Management.IotHub;
-using Microsoft.Azure.Management.IotHub.Models;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
-using Microsoft.Azure.Management.ResourceManager.Models;
-using Microsoft.Rest.Azure;
-using Microsoft.Rest.ClientRuntime;
 using Mmm.Iot.Common.Services.Config;
-using Mmm.Iot.Common.Services.Exceptions;
-using Mmm.Iot.Common.Services.External.TableStorage;
+using Mmm.Iot.Common.Services.External.EventHub;
 using Mmm.Iot.Common.Services.Models;
 using Newtonsoft.Json.Linq;
 using DeploymentMode = Microsoft.Azure.Management.ResourceManager.Fluent.Models.DeploymentMode;
@@ -40,6 +31,8 @@ namespace Mmm.Iot.Common.Services.External.Azure
             this.IotHubManagementClient = clientFactory.CreateIoTHubManagementClient();
             this.DpsManagmentClient = new DpsManagementClient(this.rmClient, this.config);
             this.AsaManagementClient = clientFactory.CreateAsaManagementClient();
+            this.KustoClusterManagementClient = clientFactory.CreateKustoClusterManagementClient();
+            this.EventHubsManagementClient = clientFactory.CreateEventHubsManagementClient();
         }
 
         public IoTHubManagementClient IotHubManagementClient { get; }
@@ -47,6 +40,10 @@ namespace Mmm.Iot.Common.Services.External.Azure
         public DpsManagementClient DpsManagmentClient { get; }
 
         public AsaManagementClient AsaManagementClient { get; }
+
+        public KustoClusterManagementClient KustoClusterManagementClient { get; }
+
+        public EventHubsManagementClient EventHubsManagementClient { get; }
 
         public async Task<StatusResultServiceModel> StatusAsync()
         {
@@ -74,7 +71,7 @@ namespace Mmm.Iot.Common.Services.External.Azure
 
             if (deploymentName == null)
             {
-                deploymentName = Guid.Empty.ToString();
+                deploymentName = Guid.NewGuid().ToString();
             }
 
             var result = await this.client.Deployments.Define(deploymentName)

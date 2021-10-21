@@ -6,17 +6,18 @@ import { NavLink } from "react-router-dom";
 import { Svg } from "components/shared/svg/svg";
 import { svgs } from "utilities";
 
-import "../cellRenderer.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../cellRenderer.module.scss"));
 
 export const LinkRenderer = ({ to, svgPath, ariaLabel, onLinkClick }) => {
     return (
-        <div className="pcs-renderer-cell">
+        <div className={css("pcs-renderer-cell")}>
             <NavLink
                 to={to}
                 aria-label={ariaLabel}
-                className="pcs-renderer-link"
+                className={css("pcs-renderer-link")}
             >
-                <Svg path={svgPath || svgs.ellipsis} onClick={onLinkClick} />
+                <Svg src={svgPath || svgs.ellipsis} onClick={onLinkClick} />
             </NavLink>
         </div>
     );

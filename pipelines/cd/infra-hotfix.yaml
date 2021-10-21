@@ -97,6 +97,28 @@ stages:
                 echo "A value for the 'testPipelineRunId' variable must be provided" > /dev/stderr
                 exit 1
               fi
+
+              echo "appInsightsLocation: '$(appInsightsLocation)'"
+              if [ -z "$(appInsightsLocation)" ]
+              then
+                echo "A value for the 'appInsightsLocation' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+
+              telemetryStorageType=$(telemetryStorageType)
+              echo "telemetryStorageType: $telemetryStorageType"
+              if [ -z $telemetryStorageType ] || [ ${telemetryStorageType,,} != 'ade' ] && [ ${telemetryStorageType,,} != 'cosmosdb' ] && [ ${telemetryStorageType,,} != 'tsi' ]
+              then
+                echo "A value for the 'telemetryStorageType' variable must be provided and allowed values are ade, cosmosdb and tsi" > /dev/stderr
+                exit 1
+              fi
+
+              echo "AADSGId: '$(aadSGId)'"
+              if [ ${telemetryStorageType,,} == 'ade' ] && [ -z "$(aadSGId)" ]
+              then
+                echo "A value for the 'aadSGId'(ADD security group ID) variable must be provided" > /dev/stderr
+                exit 1
+              fi
             displayName: Check parameters
 
   - stage: deployInfrastructure
@@ -108,7 +130,7 @@ stages:
         parameters:
           subscriptionName: $(subscriptionName)
           locationName: $(locationName)
-          appInsightsLocation: eastus
+          appInsightsLocation: $(appInsightsLocation)
           environmentName: $(environmentName)
           subscriptionId: $(subscriptionId)
           applicationCode: $(applicationCode)
@@ -122,3 +144,6 @@ stages:
           testPipelineId: 453
           runVersion: specific
           testPipelineRunId: $(testPipelineRunId)
+          isHelmVersion3: true
+          aadSGId: $(aadSGId)
+          telemetryStorageType: $(telemetryStorageType)

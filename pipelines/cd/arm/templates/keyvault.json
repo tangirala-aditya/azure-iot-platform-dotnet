@@ -9,6 +9,40 @@
           "description": "Name of the the Keyvault"
         }
       },
+      "settingName": {
+        "type": "string",
+        "metadata": {
+          "description": "Setting Name of the Application to be added to Access policy"
+        }
+      },
+        "subscriptionId": {
+            "type": "string",
+            "defaultValue": "403f2258-d6b0-4c0a-b565-4102510935aa",
+            "metadata": {
+                "description": "Subscription Id where storage account exists"
+            }
+        },
+        "resourceGroup": {
+            "type": "string",
+            "defaultValue": "rg-crsliot-dev",
+            "metadata": {
+                "description": "Resource group name where storage account exists"
+            }
+        },
+        "environmentCategory": {
+            "type": "string",
+            "defaultValue": "dev",
+            "metadata": {
+                "description": "Name of the Log Analytics Workspace"
+            }
+        },
+        "applicationCode": {
+            "type": "string",
+            "defaultValue": "crsliot",
+            "metadata": {
+                "description": "Name of the Log Analytics Workspace"
+            }
+        },      
       "userObjId": {
         "type": "string",
         "metadata": {
@@ -20,10 +54,24 @@
         "metadata": {
           "description": "Object Id of the Application to be added to Access policy"
         }
+      },
+      "enableSoftDelete": {
+        "type": "bool",
+        "metadata": {
+          "description": "Enable SoftDelete feature in key vault"
+        }
+    },  
+    "softDeleteRetentionInDays": {
+       "type": "int",
+       "metadata": {
+        "description": "Set the retention period for soft-delete"
       }
+    }  
     },
     "variables": {
-      "location": "[resourceGroup().location]"
+      "location": "[resourceGroup().location]",
+      "workSpaceID": "[concat('/subscriptions/',parameters('subscriptionId'),'/resourceGroups/',parameters('resourceGroup'),'/providers/microsoft.operationalinsights/workspaces/',parameters('applicationCode'),'-loganalyticsws-',parameters('environmentCategory'))]",
+      "settingsName": "[concat(parameters('applicationCode'),'-diagnosticsetting-',parameters('environmentCategory'))]"
     },
     "resources": [
       {
@@ -37,6 +85,8 @@
             "family": "A",
             "name": "standard"
           },
+          "enableSoftDelete": "[parameters('enableSoftDelete')]",
+          "softDeleteRetentionInDays": "[parameters('softDeleteRetentionInDays')]",
           "tenantId": "[subscription().tenantId]",
           "accessPolicies": [
             {
@@ -94,8 +144,34 @@
               }
             }
           ]
+        },
+        "resources":[
+          {
+          "type": "providers/diagnosticsettings",
+          "name": "[concat('/Microsoft.Insights/', variables('settingsName'))]",
+          "apiVersion": "2021-05-01-preview",
+          "location": "[variables('location')]",
+          "dependsOn": [
+            "[concat('Microsoft.KeyVault/vaults/', parameters('resourceName'))]"
+        ],
+          "properties": {
+            "workspaceId": "[variables('workSpaceID')]",
+            "logs": [
+              {
+                "category": "AuditEvent",
+                "enabled": true
+              }
+            ],
+                "metrics": [
+                  {
+                    "category": "AllMetrics",
+                    "enabled": true
+                  }
+                ]
+          }
         }
-      }
+          ]
+    }   
     ],
     "outputs": {
       "CloudResourceName": {

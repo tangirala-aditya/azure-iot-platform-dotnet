@@ -89,13 +89,13 @@ class Dropdown extends React.Component {
             ? 0
             : null;
     }
-    componentWillReceiveProps() {
+    UNSAFE_componentWillReceiveProps() {
         this.setState({
             positionIndex: this.getPositionIndex(),
         });
         this.positionFailed = false;
     }
-    componentWillUpdate() {
+    UNSAFE_componentWillUpdate() {
         this.saveScrollOffset();
         if (this.dropdown.parentElement === this.fixedContainer) {
             this.container.appendChild(this.dropdown);

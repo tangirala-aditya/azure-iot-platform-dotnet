@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import "rxjs";
-import { Observable } from "rxjs";
+import { of } from "rxjs";
 import moment from "moment";
 import { schema, normalize } from "normalizr";
 import update from "immutability-helper";
@@ -19,47 +19,49 @@ import {
     getPending,
     getError,
 } from "store/utilities";
+import { catchError, map } from "rxjs/operators";
 
 // ========================= Epics - START
 const handleError = (fromAction) => (error) =>
-    Observable.of(
-        redux.actions.registerError(fromAction.type, { error, fromAction })
-    );
+    of(redux.actions.registerError(fromAction.type, { error, fromAction }));
 
 export const epics = createEpicScenario({
     /** Loads the users */
     fetchUsers: {
         type: "USERS_FETCH",
         epic: (fromAction, store) => {
-            return IdentityGatewayService.getUsers()
-                .map(toActionCreator(redux.actions.updateUsers, fromAction))
-                .catch(handleError(fromAction));
+            return IdentityGatewayService.getUsers().pipe(
+                map(toActionCreator(redux.actions.updateUsers, fromAction)),
+                catchError(handleError(fromAction))
+            );
         },
     },
     fetchAllNonSystemAdmins: {
         type: "USERS_ALL_FETCH",
         epic: (fromAction, store) => {
-            return IdentityGatewayService.getAllNonSystemAdmins()
-                .map(
+            return IdentityGatewayService.getAllNonSystemAdmins().pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateAllNonSystemAdmins,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction));
+                ),
+                catchError(handleError(fromAction))
+            );
         },
     },
     fetchAllSystemAdmins: {
         type: "SUPER_USERS_ALL_FETCH",
         epic: (fromAction, store) => {
-            return IdentityGatewayService.getAllSystemAdmins()
-                .map(
+            return IdentityGatewayService.getAllSystemAdmins().pipe(
+                map(
                     toActionCreator(
                         redux.actions.updateAllSystemAdmins,
                         fromAction
                     )
-                )
-                .catch(handleError(fromAction));
+                ),
+                catchError(handleError(fromAction))
+            );
         },
     },
 });

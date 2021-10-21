@@ -3,20 +3,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { joinClasses } from "utilities";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./styles/formGroup.module.scss"));
 
 export const FormLabel = (props) => {
-    const {
-            formGroupId,
-            className,
-            children,
-            htmlFor,
-            isRequired,
-            ...rest
-        } = props,
+    const { formGroupId, className, children, htmlFor, isRequired, ...rest } =
+            props,
         labelProps = {
             ...rest,
-            className: joinClasses("form-group-label", className),
+            className: css("form-group-label", className),
             htmlFor: htmlFor || formGroupId,
         };
     return (

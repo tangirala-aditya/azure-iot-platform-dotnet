@@ -13,6 +13,7 @@ using Mmm.Iot.AsaManager.Services.Models;
 using Mmm.Iot.AsaManager.Services.Models.DeviceGroups;
 using Mmm.Iot.AsaManager.Services.Test.Helpers;
 using Mmm.Iot.Common.Services.Exceptions;
+using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.BlobStorage;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
 using Mmm.Iot.Common.TestHelpers;
@@ -29,6 +30,7 @@ namespace Mmm.Iot.AsaManager.Services.Test
         private Mock<IStorageAdapterClient> mockStorageAdapterClient;
         private Mock<IIotHubManagerClient> mockIotHubManagerClient;
         private Mock<ILogger<DeviceGroupsConverter>> mockLog;
+        private Mock<IAppConfigurationClient> mockConfig;
         private DeviceGroupsConverter converter;
         private CreateEntityHelper entityHelper;
 
@@ -38,6 +40,7 @@ namespace Mmm.Iot.AsaManager.Services.Test
             this.mockStorageAdapterClient = new Mock<IStorageAdapterClient>();
             this.mockIotHubManagerClient = new Mock<IIotHubManagerClient>();
             this.mockLog = new Mock<ILogger<DeviceGroupsConverter>>();
+            this.mockConfig = new Mock<IAppConfigurationClient>();
             this.rand = new Random();
             this.entityHelper = new CreateEntityHelper(this.rand);
 

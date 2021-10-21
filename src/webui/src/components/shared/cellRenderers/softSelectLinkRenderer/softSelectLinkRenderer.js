@@ -5,7 +5,8 @@ import React, { Component } from "react";
 import { isFunc } from "utilities";
 import { GlimmerRenderer } from "components/shared/cellRenderers";
 
-import "../cellRenderer.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../cellRenderer.module.scss"));
 
 export class SoftSelectLinkRenderer extends Component {
     onClick = (event) => {
@@ -22,18 +23,24 @@ export class SoftSelectLinkRenderer extends Component {
     render() {
         const { value, context, data } = this.props;
         return (
-            <div className="pcs-renderer-cell">
+            <div className={css("pcs-renderer-cell")}>
                 <GlimmerRenderer value={data.isNew} />
                 {isFunc(context.onSoftSelectChange) ? (
                     <button
                         type="button"
-                        className="link pcs-renderer-link soft-select-link"
+                        className={css(
+                            "link",
+                            "pcs-renderer-link",
+                            "soft-select-link"
+                        )}
                         onClick={this.onClick}
                     >
                         {value}
                     </button>
                 ) : (
-                    <div className="link soft-select-text">{value}</div>
+                    <div className={css("link", "soft-select-text")}>
+                        {value}
+                    </div>
                 )}
             </div>
         );

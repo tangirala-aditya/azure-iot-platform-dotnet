@@ -16,7 +16,9 @@ import {
     RuleStatusRenderer,
     LastTriggerRenderer,
 } from "components/shared/cellRenderers";
+import { gridValueFormatters } from "components/shared/pcsGrid/pcsGridConfig";
 
+const { checkForEmpty } = gridValueFormatters;
 /** Tests if a value is a function */
 export const isFunc = (value) => typeof value === "function";
 
@@ -78,6 +80,29 @@ export const camelCaseKeys = (data) => {
     return data;
 };
 
+/**
+ * Convert object keys to be camelCased with Dot
+ */
+export const camelCaseWithDotKeys = (data) => {
+    if (Array.isArray(data)) {
+        return data.map(camelCaseWithDotKeys);
+    } else if (data !== null && isObject(data)) {
+        return Object.entries(data).reduce((acc, [key, value]) => {
+            var afterKey = /[.]/g.test(key)
+                ? key
+                      .split(".")
+                      .map((x) => {
+                          return toCamelcase(x);
+                      })
+                      .join(".")
+                : toCamelcase(key);
+            acc[afterKey] = camelCaseWithDotKeys(value);
+            return acc;
+        }, {});
+    }
+    return data;
+};
+
 /** Takes an object and converts it to another structure using dot-notation */
 export const reshape = (response, model) => {
     return Object.keys(model).reduce(
@@ -99,26 +124,63 @@ export const camelCaseReshape = (response, model) => {
  */
 export const translateColumnDefs = (t, columnDefs) => {
     return columnDefs.map((columnDef) => {
-        if (columnDef.valueFormatter) {
-            columnDef.tooltip = columnDef.valueFormatter;
-        } else if (columnDef.cellRendererFramework) {
-            columnDef.tooltip = tooltipRenderer;
+        var tempColumnDef = { ...columnDef };
+        if (
+            tempColumnDef.cellRendererFramework &&
+            typeof tempColumnDef.cellRendererFramework === "string"
+        ) {
+            tempColumnDef = getRendererFramework(
+                tempColumnDef.cellRendererFramework,
+                tempColumnDef
+            );
+        }
+        if (tempColumnDef.valueFormatter) {
+            tempColumnDef.tooltipValueGetter = tempColumnDef.valueFormatter;
+        } else if (tempColumnDef.cellRendererFramework) {
+            tempColumnDef.tooltipValueGetter = tooltipRenderer;
         } else {
-            columnDef.tooltipField = columnDef.field;
+            tempColumnDef.tooltipField = tempColumnDef.field;
         }
 
-        const headerName = columnDef.headerName
-                ? t(columnDef.headerName)
+        const headerName = tempColumnDef.headerName
+                ? t(tempColumnDef.headerName)
                 : undefined,
-            headerTooltip = columnDef.headerTooltip
-                ? t(columnDef.headerTooltip)
+            headerTooltip = tempColumnDef.headerTooltip
+                ? t(tempColumnDef.headerTooltip)
                 : headerName;
         return {
-            ...columnDef,
+            ...tempColumnDef,
             headerName,
             headerTooltip,
         };
     });
+};
+
+/**
+ *
+ */
+export const getRendererFramework = (name, columnDef) => {
+    switch (name) {
+        case "TimeRenderer":
+            columnDef.cellRendererFramework = TimeRenderer;
+            break;
+        case "IsSimulatedRenderer":
+            columnDef.cellRendererFramework = IsSimulatedRenderer;
+            break;
+        case "ConnectionStatusRenderer":
+            columnDef.cellRendererFramework = ConnectionStatusRenderer;
+            break;
+        case "DefaultRenderer":
+            delete columnDef.cellRendererFramework;
+            columnDef = {
+                ...columnDef,
+                valueFormatter: ({ value }) => checkForEmpty(value),
+            };
+            break;
+        default:
+            break;
+    }
+    return columnDef;
 };
 
 export const tooltipRenderer = ({ value, context: { t }, colDef }) => {
@@ -394,4 +456,10 @@ export const getFlyoutLink = (
 
 export const userHasPermission = (permission, userPermissions) => {
     return (userPermissions || new Set()).has(permission);
+};
+
+export const toPascalCase = (data) => {
+    return toCamelcase(data, {
+        pascalCase: true,
+    });
 };

@@ -5,10 +5,13 @@ import PropTypes from "prop-types";
 
 import { joinClasses } from "utilities";
 
-import "./propertyGrid.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./propertyGrid.module.scss"));
 
 export const PropertyGrid = (props) => (
-    <div className={joinClasses("property-grid-container", props.className)}>
+    <div
+        className={joinClasses(css("property-grid-container"), props.className)}
+    >
         {props.children}
     </div>
 );

@@ -138,16 +138,19 @@
             "name": "[parameters('functionAppName')]",
             "apiVersion": "2016-08-01",
             "location": "[variables('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
             "scale": null,
             "properties": {
                 "enabled": true,
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('functionAppName'))]",
-				"httpsOnly": true,
+                "httpsOnly": true,
                 "reserved": false,
                 "scmSiteAlsoStopped": false,
                 "hostingEnvironmentProfile": null,
                 "clientAffinityEnabled": false,
-                "clientCertEnabled": false,
+                "clientCertEnabled": true,
                 "hostNamesDisabled": false,
                 "containerSize": 1536,
                 "dailyMemoryTimeQuota": 0,
@@ -155,6 +158,7 @@
                 "phpVersion": "",
                 "use32BitWorkerProcess": true,
                 "siteConfig": {
+                    "ftpsState": "FtpsOnly",
                     "appSettings": [
                         {
                             "name": "AzureWebJobsStorage",
@@ -196,7 +200,7 @@
                 "[resourceId('Microsoft.Insights/components', parameters('appInsightsName'))]"
             ],
             "resources": []
-        },
+        },       
         {
             "type": "Microsoft.Insights/components",
             "name": "[parameters('appInsightsName')]",

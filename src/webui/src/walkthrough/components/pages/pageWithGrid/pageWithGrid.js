@@ -11,7 +11,8 @@ import {
 } from "components/shared";
 import { ExampleGrid } from "./exampleGrid";
 
-import "./pageWithGrid.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./pageWithGrid.module.scss"));
 
 export class PageWithGrid extends Component {
     constructor(props) {
@@ -29,14 +30,8 @@ export class PageWithGrid extends Component {
     onContextMenuChange = (contextBtns) => this.setState({ contextBtns });
 
     render() {
-        const {
-                t,
-                data,
-                error,
-                isPending,
-                lastUpdated,
-                fetchData,
-            } = this.props,
+        const { t, data, error, isPending, lastUpdated, fetchData } =
+                this.props,
             gridProps = {
                 rowData: isPending ? undefined : data || [],
                 onContextMenuChange: this.onContextMenuChange,
@@ -46,7 +41,7 @@ export class PageWithGrid extends Component {
         return (
             <ComponentArray>
                 <ContextMenu>{this.state.contextBtns}</ContextMenu>
-                <PageContent className="page-with-grid-container">
+                <PageContent className={css("page-with-grid-container")}>
                     <RefreshBar
                         refresh={fetchData}
                         time={lastUpdated}

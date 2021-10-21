@@ -2,8 +2,9 @@
 
 import React from "react";
 
-import { joinClasses } from "utilities";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("./panel.module.scss"));
 
 export const PanelHeader = ({ children, className }) => (
-    <div className={joinClasses("panel-header", className)}>{children}</div>
+    <div className={css("panel-header", className)}>{children}</div>
 );

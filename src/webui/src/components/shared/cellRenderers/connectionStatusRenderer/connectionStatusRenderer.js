@@ -5,17 +5,18 @@ import React from "react";
 import { Svg } from "components/shared/svg/svg";
 import { svgs } from "utilities";
 
-import "../cellRenderer.scss";
+const classnames = require("classnames/bind");
+const css = classnames.bind(require("../cellRenderer.module.scss"));
 
 export const ConnectionStatusRenderer = ({ value, context: { t } }) => {
-    const cellClasses = `pcs-renderer-cell ${value ? "highlight" : ""}`;
+    const cellClasses = css("pcs-renderer-cell", { highlight: value });
 
     return (
         <div className={cellClasses}>
             {value ? null : (
-                <Svg path={svgs.disabled} className="pcs-renderer-icon" />
+                <Svg src={svgs.disabled} className={css("pcs-renderer-icon")} />
             )}
-            <div className="pcs-renderer-text">
+            <div className={css("pcs-renderer-text")}>
                 {value
                     ? t("devices.grid.connected")
                     : t("devices.grid.offline")}

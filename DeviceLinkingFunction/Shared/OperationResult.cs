@@ -1,4 +1,4 @@
-// <copyright file="BulkOperationResult.cs" company="3M">
+// <copyright file="OperationResult.cs" company="3M">
 // Copyright (c) 3M. All rights reserved.
 // </copyright>
 
@@ -6,17 +6,17 @@ using System.Collections.Generic;
 using Microsoft.Azure.Devices;
 using Newtonsoft.Json;
 
-namespace Mmm.Iot.IoTHubManager.Services.Models
+namespace Mmm.Iot.Functions.DeviceLinking.Shared
 {
-    public class BulkOperationResult
+    public class OperationResult
     {
-        public BulkOperationResult(BulkRegistryOperationResult bulkRegistryOperationResult)
+        public OperationResult(BulkRegistryOperationResult bulkRegistryOperationResult)
         {
             this.IsSuccessful = bulkRegistryOperationResult.IsSuccessful;
             this.Errors = bulkRegistryOperationResult.Errors;
         }
 
-        public BulkOperationResult()
+        public OperationResult()
         {
         }
 
@@ -24,12 +24,6 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
         //     Whether or not the operation was successful.
         [JsonProperty(PropertyName = "isSuccessful", Required = Required.Always)]
         public bool IsSuccessful
-        {
-            get;
-            set;
-        }
-
-        public IEnumerable<string> ValidationMessages
         {
             get;
             set;
@@ -44,7 +38,5 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
             get;
             set;
         }
-
-        public string JobId { get; set; }
     }
 }

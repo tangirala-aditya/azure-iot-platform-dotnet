@@ -5,7 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Azure.Messaging.EventHubs;
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.Documents;
@@ -16,6 +18,7 @@ using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.AsaManager;
 using Mmm.Iot.Common.Services.External.CosmosDb;
 using Mmm.Iot.Common.Services.External.KustoStorage;
+using Mmm.Iot.Common.Services.External.StorageAdapter;
 using Mmm.Iot.Common.Services.Helpers;
 using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.IoTHubManager.Services.Extensions;
@@ -45,12 +48,15 @@ namespace Mmm.Iot.IoTHubManager.Services
         private const string TwinChangeDatabase = "iot";
         private const string AppConfigTenantInfoKey = "tenant";
         private const string AppConfigLifecycleCollectionKey = "lifecycle-collection";
+        private const string DeviceLinkingJobsCollection = "devicelinkingjobs-{0}";
         private readonly ITenantConnectionHelper tenantConnectionHelper;
         private readonly IAsaManagerClient asaManager;
         private readonly IDeviceQueryCache deviceQueryCache;
         private readonly IStorageClient storageClient;
         private readonly IAppConfigurationClient appConfigurationClient;
         private readonly IKustoQueryClient kustoQueryClient;
+        private readonly IStorageAdapterClient storageAdapterclient;
+        private readonly AppConfig config;
         private readonly bool kustoEnabled;
 
         public Devices(
@@ -60,7 +66,8 @@ namespace Mmm.Iot.IoTHubManager.Services
             IDeviceQueryCache deviceQueryCache,
             IStorageClient storageClient,
             IAppConfigurationClient appConfigurationClient,
-            IKustoQueryClient kustoQueryClient)
+            IKustoQueryClient kustoQueryClient,
+            IStorageAdapterClient storageAdapterclient)
         {
             if (config == null)
             {
@@ -76,6 +83,8 @@ namespace Mmm.Iot.IoTHubManager.Services
             this.deviceQueryCache = deviceQueryCache;
             this.storageClient = storageClient;
             this.appConfigurationClient = appConfigurationClient;
+            this.storageAdapterclient = storageAdapterclient;
+            this.config = config;
         }
 
         public Devices(
@@ -83,12 +92,14 @@ namespace Mmm.Iot.IoTHubManager.Services
             string ioTHubHostName,
             IAsaManagerClient asaManagerClient,
             IDeviceQueryCache deviceQueryCache,
-            IStorageClient storageClient)
+            IStorageClient storageClient,
+            IStorageAdapterClient storageAdapterclient)
         {
             this.tenantConnectionHelper = tenantConnectionHelper ?? throw new ArgumentNullException("tenantConnectionHelper " + ioTHubHostName);
             this.asaManager = asaManagerClient;
             this.deviceQueryCache = deviceQueryCache;
             this.storageClient = storageClient;
+            this.storageAdapterclient = storageAdapterclient;
         }
 
         public virtual string DocumentDataType
@@ -552,19 +563,37 @@ namespace Mmm.Iot.IoTHubManager.Services
             return updatedDevice != null;
         }
 
-        public async Task<BulkOperationResult> LinkDevicesToGateway(List<string> deviceIds, string parentDeviceId)
+        public async Task<BulkOperationResult> LinkDevicesToGateway(IEnumerable<string> deviceIds, string parentDeviceId, string userId)
         {
-            var parentDevice = await this.GetDeviceFromHub(parentDeviceId);
-            List<Device> leafDevices = new List<Device>();
-            foreach (string deviceId in deviceIds)
+            if (deviceIds != null && deviceIds.Count() <= 5)
             {
-                var leafDevice = await this.tenantConnectionHelper.GetRegistry().GetDeviceAsync(deviceId);
-                leafDevice.Scope = parentDevice.Scope;
-                leafDevices.Add(leafDevice);
-            }
+                var parentDevice = await this.GetDeviceFromHub(parentDeviceId);
+                List<Device> leafDevices = new List<Device>();
+                foreach (string deviceId in deviceIds)
+                {
+                    var leafDevice = await this.tenantConnectionHelper.GetRegistry().GetDeviceAsync(deviceId);
+                    leafDevices.Add(leafDevice);
+                }
 
-            var result = await this.tenantConnectionHelper.GetRegistry().UpdateDevices2Async(leafDevices);
-            return new BulkOperationResult(result);
+                bool isLinkedToOtherEdgeDevices = leafDevices.Any(l => !string.IsNullOrWhiteSpace(l.Scope) && l.Scope != parentDevice.Scope);
+
+                if (isLinkedToOtherEdgeDevices)
+                {
+                    return new BulkOperationResult() { IsSuccessful = false, ValidationMessages = new List<string> { "Some Devices are linked to other Edge Devices" } };
+                }
+
+                var result = await this.tenantConnectionHelper.GetRegistry().UpdateDevices2Async(leafDevices);
+                return new BulkOperationResult(result);
+            }
+            else
+            {
+                return await this.CreateDeviceLinkingJob(SourceCategory.Devices, parentDeviceId, string.Empty, deviceIds, userId);
+            }
+        }
+
+        public async Task<BulkOperationResult> LinkDeviceGroupToGateway(string deviceGroupId, string parentDeviceId, string userId)
+        {
+            return await this.CreateDeviceLinkingJob(SourceCategory.DeviceGroup, parentDeviceId, deviceGroupId, null, userId);
         }
 
         public async Task<DeviceServiceListModel> GetChildDevices(string edgeDeviceId)
@@ -727,6 +756,59 @@ namespace Mmm.Iot.IoTHubManager.Services
             var results = await this.kustoQueryClient.ExecuteQueryAsync<T>(database, conditionQuery, null);
 
             return new ResultWithContinuationToken<List<T>>(results, null);
+        }
+
+        private async Task<BulkOperationResult> CreateDeviceLinkingJob(SourceCategory category, string parentDeviceId, string deviceGroupId, IEnumerable<string> deviceIds, string userId)
+        {
+            DeviceLinkingJobServiceModel deviceLinkingJob = new DeviceLinkingJobServiceModel()
+            {
+                Category = category,
+                DeviceGroupId = deviceGroupId,
+                DeviceIds = deviceIds,
+                JobId = Guid.NewGuid().ToString(),
+                JobStatus = "Pending",
+            };
+
+            AuditHelper.AddAuditingData(deviceLinkingJob, userId);
+
+            var value = JsonConvert.SerializeObject(
+                                        deviceLinkingJob,
+                                        Formatting.Indented,
+                                        new JsonSerializerSettings
+                                        {
+                                            NullValueHandling = NullValueHandling.Ignore,
+                                        });
+
+            var response = await this.storageAdapterclient.UpdateAsync(string.Format(DeviceLinkingJobsCollection, parentDeviceId), deviceLinkingJob.JobId, value, null);
+
+            try
+            {
+                List<EventData> events = new List<EventData>();
+
+                DeviceLinkingRequest deviceLinkingRequest = new DeviceLinkingRequest()
+                {
+                    JobId = deviceLinkingJob.JobId,
+                    Category = category,
+                    ParentDeviceId = parentDeviceId,
+                    DeviceGroupId = deviceGroupId,
+                    DeviceIds = deviceIds,
+                };
+                var byteMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceLinkingRequest));
+                var deviceLinkingJobEventData = new Azure.Messaging.EventHubs.EventData(byteMessage);
+                events.Add(deviceLinkingJobEventData);
+
+                var eventHubConnString = this.config.TenantManagerService.LifecycleEventHubConnectionString;
+                var eventHubName = this.config.Global.EventHub.Name;
+                EventHubHelper eventHubHelper = new EventHubHelper(eventHubConnString);
+
+                await eventHubHelper.SendMessageToEventHub(eventHubName, events.ToArray());
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Unable to Send DeviceLinkingRequest to EventHub", e);
+            }
+
+            return new BulkOperationResult() { IsSuccessful = true, JobId = deviceLinkingJob.JobId };
         }
 
         private class ResultWithContinuationToken<T>

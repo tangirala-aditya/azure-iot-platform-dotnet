@@ -162,9 +162,15 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
         }
 
         [HttpGet("LinkToGateway")]
-        public async Task<BulkOperationResult> LinkToGateway(string deviceId, string edgeDeviceId)
+        public async Task<BulkOperationResult> LinkToGateway(IEnumerable<string> deviceIds, string edgeDeviceId)
         {
-            return await this.devices.LinkDevicesToGateway(new List<string>() { deviceId }, edgeDeviceId);
+            return await this.devices.LinkDevicesToGateway(deviceIds, edgeDeviceId, this.GetClaimsUserDetails());
+        }
+
+        [HttpGet("LinkDeviceGroupToGateway")]
+        public async Task<BulkOperationResult> LinkDeviceGroupToGateway(string deviceGroupId, string edgeDeviceId)
+        {
+            return await this.devices.LinkDeviceGroupToGateway(deviceGroupId, edgeDeviceId, this.GetClaimsUserDetails());
         }
 
         [HttpGet("GetLinkedDevices/{edgeDeviceId}")]

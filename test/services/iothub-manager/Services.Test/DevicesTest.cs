@@ -55,7 +55,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Test
                         It.IsAny<DeviceQueryCacheResultServiceModel>()));
             this.mockStorageClient = new Mock<IStorageClient>();
 
-            this.devices = new Devices(this.mockTenantHelper.Object, this.ioTHubHostName, this.mockAsaManager.Object, this.mockCache.Object, this.mockStorageClient.Object);
+            this.devices = new Devices(this.mockTenantHelper.Object, this.ioTHubHostName, this.mockAsaManager.Object, this.mockCache.Object, this.mockStorageClient.Object, null);
         }
 
         [Theory]

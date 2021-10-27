@@ -563,7 +563,7 @@ namespace Mmm.Iot.IoTHubManager.Services
             return updatedDevice != null;
         }
 
-        public async Task<BulkOperationResult> LinkDevicesToGateway(IEnumerable<string> deviceIds, string parentDeviceId, string userId)
+        public async Task<BulkOperationResult> LinkDevicesToGateway(IEnumerable<string> deviceIds, string parentDeviceId, string tenantId, string userId)
         {
             if (deviceIds != null && deviceIds.Count() <= 5)
             {
@@ -598,7 +598,7 @@ namespace Mmm.Iot.IoTHubManager.Services
             }
             else
             {
-                return await this.CreateDeviceLinkingJob(SourceCategory.Devices, parentDeviceId, string.Empty, deviceIds, userId);
+                return await this.CreateDeviceLinkingJob(SourceCategory.Devices, parentDeviceId, string.Empty, deviceIds, tenantId, userId);
             }
         }
 
@@ -625,9 +625,9 @@ namespace Mmm.Iot.IoTHubManager.Services
             return bulkResult;
         }
 
-        public async Task<BulkOperationResult> LinkDeviceGroupToGateway(string deviceGroupId, string parentDeviceId, string userId)
+        public async Task<BulkOperationResult> LinkDeviceGroupToGateway(string deviceGroupId, string parentDeviceId, string tenantId, string userId)
         {
-            return await this.CreateDeviceLinkingJob(SourceCategory.DeviceGroup, parentDeviceId, deviceGroupId, null, userId);
+            return await this.CreateDeviceLinkingJob(SourceCategory.DeviceGroup, parentDeviceId, deviceGroupId, null, tenantId, userId);
         }
 
         public async Task<DeviceServiceListModel> GetChildDevices(string edgeDeviceId)
@@ -646,6 +646,29 @@ namespace Mmm.Iot.IoTHubManager.Services
             }
 
             return new DeviceServiceListModel(devices);
+        }
+
+        public async Task<DeviceLinkingJobServiceListModel> GetDeviceLinkingJobs(string edgeDeviceId, string tenantId)
+        {
+            var sql = QueryBuilder.GetDocumentsByProperty("CollectionId", $"devicelinkingjobs-{edgeDeviceId}");
+            FeedOptions queryOptions = new FeedOptions
+            {
+                EnableCrossPartitionQuery = true,
+                EnableScanInQuery = true,
+            };
+            List<Document> docs = await this.storageClient.QueryDocumentsAsync(
+                this.DocumentDbDatabaseId,
+                $"{this.DocumentDataType}-{tenantId}",
+                queryOptions,
+                sql,
+                0,
+                1000);
+
+            return docs == null
+                 ? new DeviceLinkingJobServiceListModel()
+                 : new DeviceLinkingJobServiceListModel(docs
+                    .Select(doc => new ValueServiceModel(doc)).Select(x => JsonConvert.DeserializeObject<DeviceLinkingJobServiceModel>(x.Data))
+                    .ToList());
         }
 
         private async Task<Device> GetDeviceFromHub(string deviceId)
@@ -792,7 +815,7 @@ namespace Mmm.Iot.IoTHubManager.Services
             return new ResultWithContinuationToken<List<T>>(results, null);
         }
 
-        private async Task<BulkOperationResult> CreateDeviceLinkingJob(SourceCategory category, string parentDeviceId, string deviceGroupId, IEnumerable<string> deviceIds, string userId)
+        private async Task<BulkOperationResult> CreateDeviceLinkingJob(SourceCategory category, string parentDeviceId, string deviceGroupId, IEnumerable<string> deviceIds, string tenantId, string userId)
         {
             DeviceLinkingJobServiceModel deviceLinkingJob = new DeviceLinkingJobServiceModel()
             {
@@ -829,8 +852,9 @@ namespace Mmm.Iot.IoTHubManager.Services
                 };
                 var byteMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceLinkingRequest));
                 var deviceLinkingJobEventData = new Azure.Messaging.EventHubs.EventData(byteMessage);
+                deviceLinkingJobEventData.Properties.Add("tenant", tenantId);
                 events.Add(deviceLinkingJobEventData);
-                
+
                 var eventHubConnString = this.config.TenantManagerService.LifecycleEventHubConnectionString;
                 var eventHubName = this.config.Global.EventHub.Name;
                 EventHubHelper eventHubHelper = new EventHubHelper(eventHubConnString);

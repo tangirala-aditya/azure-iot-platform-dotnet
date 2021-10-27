@@ -167,11 +167,11 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
         {
             if (!string.IsNullOrWhiteSpace(deviceLinkApiModel.DeviceGroupId))
             {
-                return await this.devices.LinkDeviceGroupToGateway(deviceLinkApiModel.DeviceGroupId, deviceLinkApiModel.ParentDeviceId, this.GetClaimsUserDetails());
+                return await this.devices.LinkDeviceGroupToGateway(deviceLinkApiModel.DeviceGroupId, deviceLinkApiModel.ParentDeviceId, this.GetTenantId(), this.GetClaimsUserDetails());
             }
             else if (deviceLinkApiModel.DeviceIds != null && deviceLinkApiModel.DeviceIds.Count > 0)
             {
-                return await this.devices.LinkDevicesToGateway(deviceLinkApiModel.DeviceIds, deviceLinkApiModel.ParentDeviceId, this.GetClaimsUserDetails());
+                return await this.devices.LinkDevicesToGateway(deviceLinkApiModel.DeviceIds, deviceLinkApiModel.ParentDeviceId, this.GetTenantId(), this.GetClaimsUserDetails());
             }
             else
             {
@@ -188,13 +188,19 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
         [HttpGet("LinkDeviceGroupToGateway")]
         public async Task<BulkOperationResult> LinkDeviceGroupToGateway(string deviceGroupId, string edgeDeviceId)
         {
-            return await this.devices.LinkDeviceGroupToGateway(deviceGroupId, edgeDeviceId, this.GetClaimsUserDetails());
+            return await this.devices.LinkDeviceGroupToGateway(deviceGroupId, edgeDeviceId, this.GetTenantId(), this.GetClaimsUserDetails());
         }
 
         [HttpGet("GetLinkedDevices/{edgeDeviceId}")]
         public async Task<DeviceListApiModel> GetChildDevices(string edgeDeviceId)
         {
             return new DeviceListApiModel(await this.devices.GetChildDevices(edgeDeviceId));
+        }
+
+        [HttpGet("GetDeviceLinkingJobs/{edgeDeviceId}")]
+        public async Task<DeviceLinkingJobApiListModel> GetDeviceLinkingJobs(string edgeDeviceId)
+        {
+            return new DeviceLinkingJobApiListModel(await this.devices.GetDeviceLinkingJobs(edgeDeviceId, this.GetTenantId()));
         }
 
         [HttpGet("GetModuleLogs")]

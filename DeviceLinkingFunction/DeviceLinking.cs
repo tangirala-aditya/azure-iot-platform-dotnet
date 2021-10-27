@@ -1,7 +1,7 @@
 // <copyright file="DeviceLinking.cs" company="3M">
 // Copyright (c) 3M. All rights reserved.
 // </copyright>
-/*
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,7 @@ namespace Mmm.Iot.Functions.DeviceLinking
     public static class DeviceLinking
     {
         [FunctionName("DeviceLinking")]
-        public static async Task Run([EventHubTrigger("devicelinking-hub", Connection = "")] EventData[] events, ILogger log)
+        public static async Task Run([EventHubTrigger("devicelinkingjobhub", Connection = "DeviceLinkingEventHubConnectionString", ConsumerGroup = "%DeviceLinkingConsumerGroup%")] EventData[] events, ILogger log)
         {
             var exceptions = new List<Exception>();
 
@@ -58,4 +58,3 @@ namespace Mmm.Iot.Functions.DeviceLinking
         }
     }
 }
-*/

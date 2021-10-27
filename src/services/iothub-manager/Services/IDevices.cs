@@ -43,9 +43,11 @@ namespace Mmm.Iot.IoTHubManager.Services
 
         Task<DeviceServiceListModel> GetChildDevices(string edgeDeviceId);
 
-        Task<BulkOperationResult> LinkDevicesToGateway(IEnumerable<string> deviceIds, string parentDeviceId, string userId);
+        Task<BulkOperationResult> LinkDevicesToGateway(IEnumerable<string> deviceIds, string parentDeviceId, string tenantId, string userId);
 
-        Task<BulkOperationResult> LinkDeviceGroupToGateway(string deviceGroupId, string parentDeviceId, string userId);
+        Task<BulkOperationResult> LinkDeviceGroupToGateway(string deviceGroupId, string parentDeviceId, string tenantId, string userId);
+
+        Task<DeviceLinkingJobServiceListModel> GetDeviceLinkingJobs(string edgeDeviceId, string tenantId);
 
         Task<BulkOperationResult> UnlinkFromGateway(List<string> deviceIds);
     }

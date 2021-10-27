@@ -219,6 +219,14 @@
         "allDevices": "All Devices",
         "nameAlreadyExists": "A device group was already created with these conditions."
     },
+    "linkDeviceGroupGateway": {
+        "title": "Link to Edge Device",
+        "description": "Used to link the devices in the selected device group to the edge device",
+        "link": "Link",
+        "edgeDevice": "Edge Device",
+        "edgeDevicePlaceHolder": "Select Edge Device",
+        "reset": "Reset"
+    },
     "deviceQueryConditions": {
         "condition": "Condition {{headerCount}}",
         "delete": "Delete",
@@ -436,6 +444,7 @@
         "searchPlaceholder": "Search devices...",
         "noneFound": "No devices found.",
         "refresh": "Refresh",
+        "edgeDeviceExplorerTitle": "Edge Device Explorer",
         "deviceSearchTitle": "Device Search",
         "deviceSearchTitleDescription": "Search across all devices.",
         "downloadDeviceReport": "Download",
@@ -696,6 +705,31 @@
                 "operator": {
                     "telefonica": "Telefónica"
                 }
+            },
+            "linkOrUnlinkDevice": {
+                "linkDevice": {
+                    "hint": "Link Device"
+                },
+                "unlinkDevice": {
+                    "hint": "Unlink Device"
+                },
+                "deviceGroup" : {
+                    "hint": "Device Group"
+                },
+                "edgeDevice" : {
+                    "hint": "Edge Device"
+                },
+                "iotDevice" : {
+                    "hint": "Selected IOT Devices"
+                },
+                "linkDevicestitle": "Link Edge Device",
+                "linkOrUnlinkDevicestitle": "Link/Unlink Edge Device",
+                "linkDevicesDescription": "Used to link the selected devices to the edge device",
+                "linkOrUnlinkDevicesDescription": "Used to link the selected devices to the edge device or unlink the selected devices from parent device",
+                "deviceGroupLabel" : "Device Group",
+                "edgeDeviceLabel" : "Edge Device",
+                "deviceGroupPlaceholder" : "Select Device Group",
+                "edgeDevicePlaceholder" : "Select Edge Device"
             }
         }
     },

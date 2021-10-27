@@ -4,6 +4,7 @@ import React from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { DevicesContainer } from "./devices.container";
 import { DeviceTelemetryContainer } from "./deviceTelemetry/deviceTelemetry.container";
+import { EdgeDevicesContainer } from "./edgeDevices/edgeDevices.container";
 
 export const DevicesRouter = () => (
     <Switch>
@@ -34,6 +35,11 @@ export const DevicesRouter = () => (
             render={(routeProps) => (
                 <DeviceTelemetryContainer {...routeProps} />
             )}
+        />
+        <Route
+            exact
+            path={"/edge-devices"}
+            render={(routeProps) => <EdgeDevicesContainer {...routeProps} />}
         />
         <Redirect to="/devices" />
     </Switch>

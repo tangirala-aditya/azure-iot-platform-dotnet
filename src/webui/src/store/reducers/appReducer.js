@@ -426,6 +426,7 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
         isDefaultLogo: true,
         deviceGroupFlyoutIsOpen: false,
         createDeviceQueryFlyoutIsOpen: false,
+        linkDeviceGroupGatewayFlyputIsOpen: false,
         timeInterval: "PT1H",
         settings: {
             azureMapsKey: "",
@@ -623,6 +624,10 @@ const deviceGroupSchema = new schema.Entity("deviceGroups"),
         update(state, {
             createDeviceQueryFlyoutIsOpen: { $set: !!payload },
         }),
+    setLinkDeviceGroupGatewayFlyoutReducer = (state, { payload }) =>
+        update(state, {
+            linkDeviceGroupGatewayFlyoutIsOpen: { $set: !!payload },
+        }),
     setActiveDeviceQueryConditionsReducer = (state, { payload }) =>
         update(state, {
             activeDeviceQueryConditions: { $set: payload },
@@ -758,6 +763,10 @@ export const redux = createReducerScenario({
         type: "APP_SET_CREATE_DEVICE_QUERY_FLYOUT_STATUS",
         reducer: setCreateDeviceQueryFlyoutReducer,
     },
+    setlinkDeviceGroupGatewayFlyoutStatus: {
+        type: "APP_SET_LINK_DEVICEGROUP_GATEWAY_FLYOUT_STATUS",
+        reducer: setLinkDeviceGroupGatewayFlyoutReducer,
+    },
     updateTimeInterval: {
         type: "APP_UPDATE_TIME_INTERVAL",
         reducer: updateTimeInterval,
@@ -796,6 +805,8 @@ export const getDeviceGroupFlyoutStatus = (state) =>
     getAppReducer(state).deviceGroupFlyoutIsOpen;
 export const getCreateDeviceQueryFlyoutStatus = (state) =>
     getAppReducer(state).createDeviceQueryFlyoutIsOpen;
+export const getLinkDeviceGroupGatewayFlyoutStatus = (state) =>
+    getAppReducer(state).linkDeviceGroupGatewayFlyoutIsOpen;
 export const getDeviceGroupsError = (state) =>
     getError(getAppReducer(state), epics.actionTypes.fetchDeviceGroups);
 export const getDeviceGroupsPendingStatus = (state) =>

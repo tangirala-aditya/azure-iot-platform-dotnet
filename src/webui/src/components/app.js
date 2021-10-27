@@ -28,6 +28,7 @@ import { IdentityGatewayService } from "services";
 import { ColumnMappingsRouter } from "./pages/columnmapping/columnmapping.router";
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { GrafanaDashboardContainer } from "./pages/dashboard/grafanaDashboard.container";
+import { LinkDeviceGroupGatewayContainer } from "./shell/flyouts/linkDeviceGroupGateway";
 
 initializeIcons();
 
@@ -54,7 +55,11 @@ class App extends Component {
     openUserProfile = () => this.setState({ openFlyout: "profile" });
 
     render() {
-        const { deviceGroupFlyoutIsOpen, deviceQueryFlyoutIsOpen } = this.props,
+        const {
+                deviceGroupFlyoutIsOpen,
+                deviceQueryFlyoutIsOpen,
+                linkDeviceGroupGatewayFlyoutIsOpen,
+            } = this.props,
             { openFlyout } = this.state,
             pagesConfig = [
                 {
@@ -71,6 +76,13 @@ class App extends Component {
                     exact: false,
                     svg: svgs.tabs.devices,
                     labelId: "tabs.devices",
+                    component: DevicesRouter,
+                },
+                {
+                    to: "/edge-devices",
+                    exact: false,
+                    svg: svgs.tabs.devices,
+                    labelId: "Edge Devices Explorer",
                     component: DevicesRouter,
                 },
                 {
@@ -259,6 +271,9 @@ class App extends Component {
                         )}
                         {deviceQueryFlyoutIsOpen && (
                             <CreateDeviceQueryContainer />
+                        )}
+                        {linkDeviceGroupGatewayFlyoutIsOpen && (
+                            <LinkDeviceGroupGatewayContainer />
                         )}
                         {openFlyout === "settings" && (
                             <SettingsContainer onClose={this.closeFlyout} />

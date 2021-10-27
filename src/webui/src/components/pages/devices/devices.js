@@ -39,6 +39,8 @@ import {
     generateMappingObjectForDownload,
 } from "./devicesGrid/deviceColumnHelper";
 
+import "./devices.module.scss";
+import { LinkDeviceGroupGatewayBtnContainer as LinkDeviceGroupGatewayBtn } from "components/shell/linkDeviceGroupGatewayBtn";
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./devices.module.scss"));
 
@@ -329,7 +331,8 @@ export class Devices extends Component {
                 <Protected permission={permissions.updateDeviceGroups}>
                     <ManageDeviceGroupsBtn />
                 </Protected>,
-                <CreateDeviceQueryBtn />
+                <CreateDeviceQueryBtn />,
+                <LinkDeviceGroupGatewayBtn />
             );
         }
 

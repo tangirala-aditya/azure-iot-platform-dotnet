@@ -19,6 +19,7 @@ using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.IoTHubManager.Services;
 using Mmm.Iot.IoTHubManager.Services.Models;
 using Mmm.Iot.IoTHubManager.WebService.Models;
+
 using Newtonsoft.Json.Linq;
 
 namespace Mmm.Iot.IoTHubManager.WebService.Controllers
@@ -161,10 +162,27 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             return this.File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
-        [HttpGet("LinkToGateway")]
-        public async Task<BulkOperationResult> LinkToGateway(IEnumerable<string> deviceIds, string edgeDeviceId)
+        [HttpPost("LinkToGateway")]
+        public async Task<BulkOperationResult> LinkToGateway([FromBody] DeviceLinkApiModel deviceLinkApiModel)
         {
-            return await this.devices.LinkDevicesToGateway(deviceIds, edgeDeviceId, this.GetClaimsUserDetails());
+            if (!string.IsNullOrWhiteSpace(deviceLinkApiModel.DeviceGroupId))
+            {
+                return await this.devices.LinkDeviceGroupToGateway(deviceLinkApiModel.DeviceGroupId, deviceLinkApiModel.ParentDeviceId, this.GetClaimsUserDetails());
+            }
+            else if (deviceLinkApiModel.DeviceIds != null && deviceLinkApiModel.DeviceIds.Count > 0)
+            {
+                return await this.devices.LinkDevicesToGateway(deviceLinkApiModel.DeviceIds, deviceLinkApiModel.ParentDeviceId, this.GetClaimsUserDetails());
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        [HttpPost("UnlinkFromGateway")]
+        public async Task<BulkOperationResult> UnlinkFromGateway([FromBody] DeviceLinkApiModel deviceLinkApiModel)
+        {
+            return await this.devices.UnlinkFromGateway(deviceLinkApiModel.DeviceIds);
         }
 
         [HttpGet("LinkDeviceGroupToGateway")]

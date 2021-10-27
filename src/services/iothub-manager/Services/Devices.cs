@@ -579,16 +579,50 @@ namespace Mmm.Iot.IoTHubManager.Services
 
                 if (isLinkedToOtherEdgeDevices)
                 {
-                    return new BulkOperationResult() { IsSuccessful = false, ValidationMessages = new List<string> { "Some Devices are linked to other Edge Devices" } };
+                    return new BulkOperationResult() { IsSuccessful = false, ValidationMessages = new List<string> { "Some of the selected devices are linked to other Edge Devices, Please uncheck and try linking again" } };
                 }
 
-                var result = await this.tenantConnectionHelper.GetRegistry().UpdateDevices2Async(leafDevices);
-                return new BulkOperationResult(result);
+                bool isSuccess = true;
+                foreach (var leafDevice in leafDevices)
+                {
+                    leafDevice.Scope = parentDevice.Scope;
+
+                    // var result = await this.tenantConnectionHelper.GetRegistry().UpdateDevices2Async(leafDevices);
+                    var result = await this.tenantConnectionHelper.GetRegistry().UpdateDeviceAsync(leafDevice);
+                    isSuccess = isSuccess && result != null;
+                }
+
+                BulkOperationResult bulkResult = new BulkOperationResult();
+                bulkResult.IsSuccessful = isSuccess;
+                return bulkResult;
             }
             else
             {
                 return await this.CreateDeviceLinkingJob(SourceCategory.Devices, parentDeviceId, string.Empty, deviceIds, userId);
             }
+        }
+
+        public async Task<BulkOperationResult> UnlinkFromGateway(List<string> deviceIds)
+        {
+            List<Device> leafDevices = new List<Device>();
+            foreach (string deviceId in deviceIds)
+            {
+                var leafDevice = await this.tenantConnectionHelper.GetRegistry().GetDeviceAsync(deviceId);
+                leafDevice.Scope = null;
+                leafDevices.Add(leafDevice);
+            }
+
+            bool isSuccess = true;
+            foreach (var leafDevice in leafDevices)
+            {
+                // var result = await this.tenantConnectionHelper.GetRegistry().UpdateDevices2Async(leafDevices);
+                var result = await this.tenantConnectionHelper.GetRegistry().UpdateDeviceAsync(leafDevice);
+                isSuccess = isSuccess && result != null;
+            }
+
+            BulkOperationResult bulkResult = new BulkOperationResult();
+            bulkResult.IsSuccessful = isSuccess;
+            return bulkResult;
         }
 
         public async Task<BulkOperationResult> LinkDeviceGroupToGateway(string deviceGroupId, string parentDeviceId, string userId)
@@ -796,7 +830,7 @@ namespace Mmm.Iot.IoTHubManager.Services
                 var byteMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(deviceLinkingRequest));
                 var deviceLinkingJobEventData = new Azure.Messaging.EventHubs.EventData(byteMessage);
                 events.Add(deviceLinkingJobEventData);
-
+                
                 var eventHubConnString = this.config.TenantManagerService.LifecycleEventHubConnectionString;
                 var eventHubName = this.config.Global.EventHub.Name;
                 EventHubHelper eventHubHelper = new EventHubHelper(eventHubConnString);

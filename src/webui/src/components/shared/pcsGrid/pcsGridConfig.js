@@ -27,3 +27,15 @@ export const checkboxColumn = {
     suppressMovable: true,
     width: 25,
 };
+
+export const singleSelectCheckboxColumn = {
+    lockPosition: true,
+    cellClass: FIRST_COLUMN_CLASS,
+    headerClass: CHECKBOX_COLUMN_CLASS,
+    suppressResize: true,
+    checkboxSelection: true,
+    headerCheckboxSelection: false,
+    headerCheckboxSelectionFilteredOnly: true,
+    suppressMovable: true,
+    width: 25,
+};

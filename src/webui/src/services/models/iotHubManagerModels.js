@@ -32,6 +32,7 @@ const defaultMappingObject = {
     authentication: "authentication",
     modifiedDate: "modifiedDate",
     deviceCreatedDate: "deviceCreatedDate",
+    isEdgeDevice: "isEdgeDevice",
 };
 
 const transformObject = (obj = []) => {
@@ -100,7 +101,6 @@ export const toDeviceModel = (device = {}, mapping = {}) => {
     });
 };
 
-
 export const toEdgeDevicesModel = (response = {}) => {
     var items = getItems(response).map(toEdgeDeviceModel);
     return { items, continuationToken: response.ContinuationToken };
@@ -108,28 +108,37 @@ export const toEdgeDevicesModel = (response = {}) => {
 
 export const toEdgeDeviceModel = (device = {}) => {
     const modelData = camelCaseReshape(device, {
-            id: "id",
-            lastActivity: "lastActivity",
-            connected: "connected",
-            isSimulated: "isSimulated",
-            isEdgeDevice: "isEdgeDevice",
-            "properties.reported.supportedMethods": "methods",
-            "properties.reported.telemetry": "telemetry",
-            "properties.reported.type": "type",
-            "properties.reported.firmware.currentFwVersion": "currentFwVersion",
-            "previousProperties.reported.firmware.currentFwVersion":
-                "previousFwVersion",
-            "properties.reported.firmware.lastFwUpdateStartTime":
-                "lastFwUpdateStartTime",
-            "properties.reported.firmware.lastFwUpdateEndTime":
-                "lastFwUpdateEndTime",
-            c2DMessageCount: "c2DMessageCount",
-            enabled: "enabled",
-            lastStatusUpdated: "lastStatusUpdated",
-            ioTHubHostName: "iotHubHostName",
-            eTag: "eTag",
-            authentication: "authentication",
-        });
+        id: "id",
+        lastActivity: "lastActivity",
+        connected: "connected",
+        isSimulated: "isSimulated",
+        isEdgeDevice: "isEdgeDevice",
+        "properties.reported.supportedMethods": "methods",
+        "properties.reported.telemetry": "telemetry",
+        "properties.reported.type": "type",
+        "properties.reported.firmware.currentFwVersion": "currentFwVersion",
+        "previousProperties.reported.firmware.currentFwVersion":
+            "previousFwVersion",
+        "properties.reported.firmware.lastFwUpdateStartTime":
+            "lastFwUpdateStartTime",
+        "properties.reported.firmware.lastFwUpdateEndTime":
+            "lastFwUpdateEndTime",
+        c2DMessageCount: "c2DMessageCount",
+        enabled: "enabled",
+        lastStatusUpdated: "lastStatusUpdated",
+        ioTHubHostName: "iotHubHostName",
+        eTag: "eTag",
+        authentication: "authentication",
+    });
+    return modelData;
+};
+
+export const toDeviceLinkResponseModel = (response = {}) => {
+    const modelData = camelCaseReshape(response, {
+        validationMessages: "validationMessages",
+        jobId: "jobId",
+        isSuccessful: "isSuccessful",
+    });
     return modelData;
 };
 
@@ -360,6 +369,16 @@ export const toDeploymentRequestModel = (deploymentModel = {}) => ({
     ModifiedBy: deploymentModel.ModifiedBy,
     ModifiedDate: deploymentModel.ModifiedDate,
     DeviceIds: deploymentModel.deviceIds,
+});
+
+export const toDeviceLinkModel = (
+    selectedDeviceIds,
+    parentDeviceId,
+    deviceGroupId
+) => ({
+    DeviceIds: selectedDeviceIds,
+    ParentDeviceId: parentDeviceId,
+    DeviceGroupId: deviceGroupId,
 });
 
 export const toEdgeAgentModel = (edgeAgent = {}) =>

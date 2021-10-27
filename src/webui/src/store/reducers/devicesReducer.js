@@ -509,6 +509,11 @@ export const getDevicesWithMappings = createSelector(
     getItems,
     (entitiesWithMappings, items) => items.map((id) => entitiesWithMappings[id])
 );
+export const getEdgeDevices = createSelector(
+    getEntities,
+    getItems,
+    (entities, items) => items.filter((x) => x.isEdge).map((id) => entities[id])
+);
 export const getDeviceById = (state, id) => getEntities(state)[id];
 export const getDeviceByConditionById = (state, id) =>
     getDevicesByConditionEntities(state)[id];

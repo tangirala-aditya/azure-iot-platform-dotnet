@@ -19,6 +19,8 @@ import {
     toEdgeAgentsModel,
     toDevicesDeploymentHistoryModel,
     toEdgeDevicesModel,
+    toDeviceLinkModel,
+    toDeviceLinkResponseModel,
 } from "./models";
 import { map } from "rxjs/operators";
 
@@ -86,13 +88,6 @@ export class IoTHubManagerService {
 
     /** Returns the account's device group filters */
     static getDeviceProperties() {
-        // return Observable
-        //   .forkJoin(
-        //     HttpClient.get(`${ENDPOINT}deviceproperties`),
-        //     HttpClient.get(`${Config.serviceUrls.deviceSimulation}devicemodelproperties`)
-        //   )
-        //   .map(([iotResponse, dsResponse]) => toDevicePropertiesModel(iotResponse, dsResponse));
-
         // Stop Gap until Device Sim is online
         return forkJoin(
             HttpClient.get(`${ENDPOINT}deviceproperties`) //,
@@ -225,5 +220,35 @@ export class IoTHubManagerService {
             { responseType: "blob", timeout: 120000 }
         );
         return response;
+    }
+    static linkDevicestoGateway(
+        selectedIds,
+        parentId,
+        deviceGroupId,
+        toBeLinked = true
+    ) {
+        if (toBeLinked) {
+            return this.linkSelectedDevicesToEdge(
+                selectedIds,
+                parentId,
+                deviceGroupId
+            );
+        } else {
+            return this.unlinkSelectedDevices(selectedIds);
+        }
+    }
+
+    static linkSelectedDevicesToEdge(selectedIds, edgeDeviceId, deviceGroupId) {
+        return HttpClient.post(
+            `https://localhost:5001/v1/Devices/LinkToGateway`,
+            toDeviceLinkModel(selectedIds, edgeDeviceId, deviceGroupId)
+        ).pipe(map(toDeviceLinkResponseModel));
+    }
+
+    static unlinkSelectedDevices(selectedIds) {
+        return HttpClient.post(
+            `https://localhost:5001/v1/devices/unlinkFromGateway`,
+            toDeviceLinkModel(selectedIds, null, null)
+        );
     }
 }

@@ -13,6 +13,7 @@ import {
     getLogoPendingStatus,
     getLogoError,
     isDefaultLogo,
+    getLinkDeviceGroupGatewayFlyoutStatus,
 } from "store/reducers/appReducer";
 import App from "./app";
 
@@ -20,6 +21,8 @@ const mapStateToProps = (state) => ({
         theme: getTheme(state),
         deviceGroupFlyoutIsOpen: getDeviceGroupFlyoutStatus(state),
         deviceQueryFlyoutIsOpen: getCreateDeviceQueryFlyoutStatus(state),
+        linkDeviceGroupGatewayFlyoutIsOpen:
+            getLinkDeviceGroupGatewayFlyoutStatus(state),
         appLogo: getLogo(state),
         appName: getName(state),
         logoPendingStatus: getLogoPendingStatus(state),

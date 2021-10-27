@@ -327,7 +327,6 @@ export class DeviceDetails extends Component {
         IoTHubManagerService.getLinkedDevices(deviceId).subscribe(
             (childDevices) => {
                 var filteredLinkedDevices = [];
-                debugger;
                 childDevices.items.forEach((device) => {
                     if (device) {
                         filteredLinkedDevices.push(device);
@@ -1173,7 +1172,9 @@ export class DeviceDetails extends Component {
                             {this.state.isEdgeDevice && (
                                 <Section.Container>
                                     <Section.Header>
-                                        {t("devices.flyouts.details.linkedDevices.title")}
+                                        {t(
+                                            "devices.flyouts.details.linkedDevices.title"
+                                        )}
                                     </Section.Header>
                                     <Section.Content>
                                         <SectionDesc>
@@ -1181,38 +1182,38 @@ export class DeviceDetails extends Component {
                                                 "devices.flyouts.details.linkedDevices.description"
                                             )}
                                         </SectionDesc>
-                                    <div className="device-details-deviceDeployments-contentbox">
-                                        {linkedDevices.length === 0 &&
-                                            t(
-                                                "devices.flyouts.details.linkedDevices.noneExist"
+                                        <div className="device-details-deviceDeployments-contentbox">
+                                            {linkedDevices.length === 0 &&
+                                                t(
+                                                    "devices.flyouts.details.linkedDevices.noneExist"
+                                                )}
+                                            {linkedDevices.length >= 0 && (
+                                                <Grid className="device-details-deviceDeployments">
+                                                    <GridHeader>
+                                                        <Row>
+                                                            <Cell className="col-4">
+                                                                {t(
+                                                                    "devices.flyouts.details.linkedDevices.deviceName"
+                                                                )}
+                                                            </Cell>
+                                                        </Row>
+                                                    </GridHeader>
+                                                    <GridBody>
+                                                        {linkedDevices.map(
+                                                            (device, idx) => (
+                                                                <Row key={idx}>
+                                                                    <Cell className="col-4">
+                                                                        {
+                                                                            device.id
+                                                                        }
+                                                                    </Cell>
+                                                                </Row>
+                                                            )
+                                                        )}
+                                                    </GridBody>
+                                                </Grid>
                                             )}
-                                        {linkedDevices.length >= 0 && (
-                                            <Grid className="device-details-deviceDeployments">
-                                                <GridHeader>
-                                                    <Row>
-                                                        <Cell className="col-4">
-                                                            {t(
-                                                                "devices.flyouts.details.linkedDevices.deviceName"
-                                                            )}
-                                                        </Cell>
-                                                    </Row>
-                                                </GridHeader>
-                                                <GridBody>
-                                                    {linkedDevices.map(
-                                                        (device, idx) => (
-                                                            <Row key={idx}>
-                                                                <Cell className="col-4">
-                                                                    {
-                                                                        device.id
-                                                                    }
-                                                                </Cell>
-                                                            </Row>
-                                                        )
-                                                    )}
-                                                </GridBody>
-                                            </Grid>
-                                        )}
-                                    </div>
+                                        </div>
                                     </Section.Content>
                                 </Section.Container>
                             )}

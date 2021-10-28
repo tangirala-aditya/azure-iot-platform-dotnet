@@ -66,22 +66,37 @@ export class LinkDeviceGroupGateway extends LinkedComponent {
         });
     };
 
+    componentDidMount() {
+        this.fetchEdgeDevices();
+    }
+
+    fetchEdgeDevices = () => {
+        IoTHubManagerService.getDevicesByQuery(
+            "capabilities.iotEdge=true"
+        ).subscribe((edgeDevices) => {
+            this.setState({
+                edgeDeviceOptions: edgeDevices
+                    ? edgeDevices.items.map((device) => ({
+                          label: device.id,
+                          value: device.id,
+                      }))
+                    : [],
+            });
+        });
+    };
+
     apply = (event) => {
         event.preventDefault();
         const { formData } = this.state;
-        console.log(this.props.activeDeviceGroupId);
-
         if (this.formIsValid()) {
             this.setState({ isPending: true, error: null });
             if (
                 this.props.activeDeviceGroupId != null &&
                 this.props.activeDeviceGroupId !== ""
             ) {
-                IoTHubManagerService.linkDevicestoGateway(
-                    "",
-                    formData.selectedEdgeDeviceId,
+                IoTHubManagerService.linkSelectedDeviceGroupToEdge(
                     this.props.activeDeviceGroupId,
-                    formData.isLinkSelected
+                    formData.selectedEdgeDeviceId
                 ).subscribe(
                     function (response) {
                         this.setState({
@@ -129,16 +144,8 @@ export class LinkDeviceGroupGateway extends LinkedComponent {
     }
 
     render() {
-        const { t, devices } = this.props,
-            { isPending, error, changesApplied } = this.state,
-            edgeDeviceSelectOptions = devices
-                ? devices
-                      .filter((x) => x.isEdgeDevice)
-                      .map((device) => ({
-                          label: device.id,
-                          value: device.id,
-                      }))
-                : [];
+        const { t } = this.props,
+            { isPending, error, changesApplied } = this.state;
 
         return (
             <Flyout
@@ -169,7 +176,7 @@ export class LinkDeviceGroupGateway extends LinkedComponent {
                                     className="long"
                                     link={this.edgeDeviceLink}
                                     onChange={this.onEdgeDeviceSelected}
-                                    options={edgeDeviceSelectOptions}
+                                    options={this.state.edgeDeviceOptions}
                                     placeholder={t(
                                         "devices.flyouts.linkOrUnlinkDevice.edgeDevicePlaceholder"
                                     )}

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Mmm.Iot.Functions.DeviceLinking.Shared.Models
 {
-    public class DeviceLinkingJob
+    public class DeviceLinkingJob : Audit
     {
         public string JobId { get; set; }
 

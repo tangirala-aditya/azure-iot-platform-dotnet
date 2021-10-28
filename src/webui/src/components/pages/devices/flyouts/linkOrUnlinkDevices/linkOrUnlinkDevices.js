@@ -74,6 +74,25 @@ export class LinkOrUnlinkDevice extends LinkedComponent {
         }
     }
 
+    componentDidMount() {
+        this.fetchEdgeDevices();
+    }
+
+    fetchEdgeDevices = () => {
+        IoTHubManagerService.getDevicesByQuery(
+            "capabilities.iotEdge=true"
+        ).subscribe((edgeDevices) => {
+            this.setState({
+                edgeDeviceOptions: edgeDevices
+                    ? edgeDevices.items.map((device) => ({
+                          label: device.id,
+                          value: device.id,
+                      }))
+                    : [],
+            });
+        });
+    };
+
     formIsValid() {
         return [this.linkOrUnlinkDeviceLink, this.edgeDeviceLink].every(
             (link) => !link.error
@@ -135,11 +154,9 @@ export class LinkOrUnlinkDevice extends LinkedComponent {
                 selectedDeviceIds.length < 5
             ) {
                 if (formData.isLinkSelected) {
-                    IoTHubManagerService.linkDevicestoGateway(
+                    IoTHubManagerService.linkSelectedDevicesToEdge(
                         selectedDeviceIds,
-                        formData.selectedEdgeDeviceId,
-                        "",
-                        formData.isLinkSelected
+                        formData.selectedEdgeDeviceId
                     ).subscribe(
                         function (response) {
                             if (response.isSuccessful) {
@@ -230,16 +247,8 @@ export class LinkOrUnlinkDevice extends LinkedComponent {
     }
 
     render() {
-        const { t, devices } = this.props,
-            { isPending, error, changesApplied } = this.state,
-            edgeDeviceSelectOptions = devices
-                ? devices
-                      .filter((x) => x.isEdgeDevice)
-                      .map((device) => ({
-                          label: device.id,
-                          value: device.id,
-                      }))
-                : [];
+        const { t } = this.props,
+            { isPending, error, changesApplied } = this.state;
 
         return (
             <Flyout
@@ -314,7 +323,7 @@ export class LinkOrUnlinkDevice extends LinkedComponent {
                                         className="long"
                                         link={this.edgeDeviceLink}
                                         onChange={this.onEdgeDeviceSelected}
-                                        options={edgeDeviceSelectOptions}
+                                        options={this.state.edgeDeviceOptions}
                                         placeholder={t(
                                             "devices.flyouts.linkOrUnlinkDevice.edgeDevicePlaceholder"
                                         )}

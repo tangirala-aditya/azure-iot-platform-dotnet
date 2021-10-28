@@ -25,6 +25,10 @@ namespace Mmm.Iot.IoTHubManager.WebService.Models
             this.DeviceGroupId = deviceLinkingJobServiceModel.DeviceGroupId;
             this.DeviceIds = deviceLinkingJobServiceModel.DeviceIds;
             this.JobStatus = deviceLinkingJobServiceModel.JobStatus;
+            this.CreatedDate = deviceLinkingJobServiceModel.CreatedDate;
+            this.CreatedBy = deviceLinkingJobServiceModel.CreatedBy;
+            this.ModifiedBy = deviceLinkingJobServiceModel.ModifiedBy;
+            this.ModifiedDate = deviceLinkingJobServiceModel.ModifiedDate;
         }
 
         public string JobId { get; set; }

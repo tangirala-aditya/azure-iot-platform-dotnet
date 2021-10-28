@@ -823,6 +823,7 @@ namespace Mmm.Iot.IoTHubManager.Services
                 DeviceGroupId = deviceGroupId,
                 DeviceIds = deviceIds,
                 JobId = Guid.NewGuid().ToString(),
+                ParentDeviceId = parentDeviceId,
                 JobStatus = "Pending",
             };
 

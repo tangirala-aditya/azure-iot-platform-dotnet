@@ -122,7 +122,7 @@ export class IoTHubManagerService {
 
     /** Queries Devices */
     static getDevicesByQuery(query) {
-        return HttpClient.post(`${ENDPOINT}devices/query`, query).pipe(
+        return HttpClient.get(`${ENDPOINT}devices?query=` + query).pipe(
             map(toDevicesModel)
         );
     }
@@ -199,8 +199,8 @@ export class IoTHubManagerService {
 
     static getLinkedDevices(deviceId) {
         return HttpClient.get(
-            `${ENDPOINT}devices/GetLinkedDevices/${deviceId}`
-        ).map(toEdgeDevicesModel);
+            `https://localhost:5001/v1/devices/GetLinkedDevices/${deviceId}`
+        ).pipe(map(toEdgeDevicesModel));
     }
 
     /** Returns a device statistics */
@@ -221,27 +221,18 @@ export class IoTHubManagerService {
         );
         return response;
     }
-    static linkDevicestoGateway(
-        selectedIds,
-        parentId,
-        deviceGroupId,
-        toBeLinked = true
-    ) {
-        if (toBeLinked) {
-            return this.linkSelectedDevicesToEdge(
-                selectedIds,
-                parentId,
-                deviceGroupId
-            );
-        } else {
-            return this.unlinkSelectedDevices(selectedIds);
-        }
-    }
 
-    static linkSelectedDevicesToEdge(selectedIds, edgeDeviceId, deviceGroupId) {
+    static linkSelectedDevicesToEdge(selectedIds, edgeDeviceId) {
         return HttpClient.post(
             `https://localhost:5001/v1/Devices/LinkToGateway`,
-            toDeviceLinkModel(selectedIds, edgeDeviceId, deviceGroupId)
+            toDeviceLinkModel(selectedIds, edgeDeviceId, null)
+        ).pipe(map(toDeviceLinkResponseModel));
+    }
+
+    static linkSelectedDeviceGroupToEdge(deviceGroupId, edgeDeviceId) {
+        return HttpClient.post(
+            `https://localhost:5001/v1/Devices/LinkToGateway`,
+            toDeviceLinkModel(null, edgeDeviceId, deviceGroupId)
         ).pipe(map(toDeviceLinkResponseModel));
     }
 

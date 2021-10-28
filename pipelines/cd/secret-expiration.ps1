@@ -94,7 +94,7 @@ function Send-ExpiringDetails {
     content = @(
         @{
             type = "text/plain"
-            value = "Please find the detils of expired, near expiring secrets and certificates in the attachment"
+            value = "Please find the details of expired, near expiring secrets and certificates in the attachment`n The following is the link which guides you to create appregistration secret along with configuration changes to other dependent services `n https://skydrive3m.sharepoint.com/teams/Serenity-IoT-Community/Shared%20Documents/ClientSecretCreationAndConfigUpdation.docx?d=wb9e87120c35a47c4854a1db7e86de329  `n `n Note: This link is accessible to all 3M Team Members "
         }
     )
     }

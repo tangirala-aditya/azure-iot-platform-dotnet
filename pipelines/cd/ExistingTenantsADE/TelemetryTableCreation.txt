@@ -1,0 +1,3 @@
+.create table Telemetry (DeviceId:string, Data:dynamic, TimeStamp:datetime)
+.create table Telemetry ingestion json mapping MAPPINGNAME '[{"column":"DeviceId","path":"$.deviceId","datatype":"string"},{"column":"Data","path":"$.data","datatype":"dynamic"},{"column":"TimeStamp","path":"$.dateTimeReceived","datatype":"datetime"}]'
+.alter table Telemetry policy streamingingestion enable

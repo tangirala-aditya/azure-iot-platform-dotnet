@@ -4,6 +4,7 @@
 
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.Management.IotHub;
+using Mmm.Iot.Common.Services.External.EventHub;
 
 namespace Mmm.Iot.Common.Services.External.Azure
 {
@@ -14,5 +15,9 @@ namespace Mmm.Iot.Common.Services.External.Azure
         IoTHubManagementClient CreateIoTHubManagementClient();
 
         AsaManagementClient CreateAsaManagementClient();
+
+        KustoClusterManagementClient CreateKustoClusterManagementClient();
+
+        EventHubsManagementClient CreateEventHubsManagementClient();
     }
 }

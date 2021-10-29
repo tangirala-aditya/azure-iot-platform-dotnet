@@ -50,6 +50,8 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-kciDev)
           isHelmVersion3: true
+          aadSGId: $(aadSGId-kciDev)
+          telemetryStorageType: $(telemetryStorageType-kciDev)
 
   - stage: kciQa
     displayName: KCI QA
@@ -76,6 +78,8 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-kciQa)
           isHelmVersion3: false
+          aadSGId: $(aadSGId-kciQa)
+          telemetryStorageType: $(telemetryStorageType-kciQa)
           
   - stage: kciCt
     displayName: KCI CT
@@ -102,6 +106,8 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-kciCt)
           isHelmVersion3: false
+          aadSGId: $(aadSGId-kciCt)
+          telemetryStorageType: $(telemetryStorageType-kciCt)
 
   - stage: kciPr
     displayName: KCI PR
@@ -128,4 +134,6 @@ stages:
           testPipelineRunId: $(testPipelineRunId)
           sysAdmins: $(sysAdmins-kciPr)
           isHelmVersion3: false
+          aadSGId: $(aadSGId-kciPr)
+          telemetryStorageType: $(telemetryStorageType-kciPr)
           

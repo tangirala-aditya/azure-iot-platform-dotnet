@@ -165,6 +165,43 @@ jobs:
             set -Eeuxo pipefail
             az appconfig kv set --key Global:BuildNumber --value $(Build.BuildId) --name $(appConfigurationName)  --yes
 
+  - job: grafana
+    displayName: Deploy Grafana
+    variables:
+      - template: variables-deploy-infra.yaml
+        parameters:
+          subscriptionName: ${{parameters.subscriptionName}}
+          locationName: ${{parameters.locationName}}
+          environmentName: ${{parameters.environmentName}}
+          subscriptionId: ${{parameters.subscriptionId}}
+          applicationCode: ${{parameters.applicationCode}}
+          applicationShortCode: ${{parameters.applicationShortCode}}
+          environmentCategory: ${{parameters.environmentCategory}}
+    steps:
+      - checkout: self
+        displayName: Checkout repository
+
+      - task: Kubernetes@1
+        displayName: Create Grafana Deployment
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          useConfigurationFile: true
+          configuration: pipelines/cd/grafana/deployment.yaml
+
+      - task: Kubernetes@1
+        displayName: Create Grafana service
+        inputs:
+          connectionType: Azure Resource Manager
+          azureSubscriptionEndpoint: ${{parameters.subscriptionName}}
+          azureResourceGroup: $(resourceGroupName)
+          kubernetesCluster: $(aksName)
+          command: apply
+          useConfigurationFile: true
+          configuration: pipelines/cd/grafana/service.yaml
 
 
 

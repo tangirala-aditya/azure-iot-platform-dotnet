@@ -1,0 +1,3 @@
+.create table DeviceGroup (DeviceGroupId:string,DeviceGroupName:string,DeviceGroupConditions:string, TimeStamp:datetime,IsDeleted: bool)
+.create-or-alter table DeviceGroup ingestion json mapping MAPPINGNAME '[{"column":"DeviceGroupId","path":"$.DeviceGroupId","datatype":"string"},{"column":"DeviceGroupName","path":"$.DeviceGroupName","datatype":"string"},{"column":"DeviceGroupConditions","path":"$.DeviceGroupConditions","datatype":"string"},{"column":"TimeStamp","path":"$.TimeStamp","datatype":"datetime"},{"column":"IsDeleted","path":"$.IsDeleted","datatype":"bool"}]'
+.alter table DeviceGroup policy streamingingestion enable

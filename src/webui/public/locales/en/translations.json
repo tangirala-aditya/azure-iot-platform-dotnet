@@ -173,9 +173,11 @@
                     "uniqueId": "Parent only. UniqueId used to attach to a Firmware Package creation."
                 }
             }
-        }
-    },
-    "helpFlyout": {
+        },
+        "editGrafanaDashboard":"Edit Grafana Dashboard",
+        "editGrafanaDashboardHeader": "Grafana Dashboard"
+   },
+   "helpFlyout": {
         "platformTitle": "Platform Documentation",
         "microsoftTitle": "Microsoft Documentation"
     },
@@ -344,6 +346,9 @@
                 "header": "Telemetry",
                 "timezoneDisplay": "Displaying in local timezone:",
                 "limitExceededWarning": "Maximum number of messages received. Earlier data may be truncated."
+            },
+            "dashboard":{
+                "header": "Dashboard"
             }
         }
     },

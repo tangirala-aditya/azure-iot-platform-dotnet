@@ -73,5 +73,7 @@ namespace Mmm.Iot.Config.Services
         Task<ColumnOptionsServiceModel> AddColumnOptionsAsync(ColumnOptionsServiceModel columnOptions, string userId);
 
         Task<ColumnOptionsServiceModel> UpdateColumnOptionsAsync(string id, ColumnOptionsServiceModel columnOptions, string userId);
+
+        Task CreateDeviceGroupsAsync();
     }
 }

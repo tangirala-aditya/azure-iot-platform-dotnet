@@ -21,7 +21,9 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
             DateTime lastStatusUpdated,
             TwinServiceModel twin,
             AuthenticationMechanismServiceModel authentication,
-            string ioTHubHostName)
+            string ioTHubHostName,
+            DateTime? deviceCreatedDate = null,
+            DateTime? modifiedDate = null)
         {
             this.Etag = etag;
             this.Id = id;
@@ -34,6 +36,8 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
             this.Twin = twin;
             this.IoTHubHostName = ioTHubHostName;
             this.Authentication = authentication;
+            this.DeviceCreatedDate = deviceCreatedDate;
+            this.ModifiedDate = modifiedDate;
         }
 
         public DeviceServiceModel(Device azureDevice, Twin azureTwin, string ioTHubHostName, bool isConnected)
@@ -77,6 +81,24 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
         {
         }
 
+        public DeviceServiceModel(Twin azureTwin, string ioTHubHostName, bool isConnected, DateTime deviceCreatedDate, DateTime modifiedDate)
+    : this(
+        etag: azureTwin.ETag,
+        id: azureTwin.DeviceId,
+        c2DMessageCount: azureTwin.CloudToDeviceMessageCount ?? azureTwin.CloudToDeviceMessageCount ?? 0,
+        lastActivity: azureTwin.LastActivityTime ?? azureTwin.LastActivityTime ?? default,
+        connected: isConnected || azureTwin.ConnectionState.Equals(DeviceConnectionState.Connected),
+        enabled: azureTwin.Status.Equals(DeviceStatus.Enabled),
+        isEdgeDevice: azureTwin.Capabilities?.IotEdge ?? azureTwin.Capabilities?.IotEdge ?? false,
+        lastStatusUpdated: azureTwin.StatusUpdatedTime ?? azureTwin.StatusUpdatedTime ?? default,
+        twin: new TwinServiceModel(azureTwin),
+        ioTHubHostName: ioTHubHostName,
+        authentication: null,
+        deviceCreatedDate: deviceCreatedDate,
+        modifiedDate: modifiedDate)
+        {
+        }
+
         public string Etag { get; set; }
 
         public string Id { get; set; }
@@ -92,6 +114,10 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
         public bool IsEdgeDevice { get; set; }
 
         public DateTime LastStatusUpdated { get; set; }
+
+        public DateTime? DeviceCreatedDate { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
 
         public TwinServiceModel Twin { get; set; }
 

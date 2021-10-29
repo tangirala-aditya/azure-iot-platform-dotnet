@@ -9,9 +9,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
+using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.AsaManager;
 using Mmm.Iot.Common.Services.External.StorageAdapter;
 using Mmm.Iot.Common.Services.Models;
@@ -153,6 +155,8 @@ namespace Mmm.Iot.Config.Services.Test
         private readonly string azureMapsKey;
         private readonly Mock<IStorageAdapterClient> mockClient;
         private readonly Mock<IAsaManagerClient> mockAsaManager;
+        private readonly Mock<IHttpContextAccessor> mockHttpContextAccessor;
+        private readonly Mock<IAppConfigurationClient> mockAppConfigurationClient;
         private readonly Storage storage;
         private readonly Random rand;
         private string packageId = "myId";
@@ -174,6 +178,8 @@ namespace Mmm.Iot.Config.Services.Test
             this.azureMapsKey = this.rand.NextString();
             this.mockClient = new Mock<IStorageAdapterClient>();
             this.mockAsaManager = new Mock<IAsaManagerClient>();
+            this.mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            this.mockAppConfigurationClient = new Mock<IAppConfigurationClient>();
             TelemetryClient mockTelemetryClient = this.InitializeMockTelemetryChannel();
 
             this.mockAsaManager
@@ -193,9 +199,18 @@ namespace Mmm.Iot.Config.Services.Test
                     {
                         InstrumentationKey = "instrumentationkey",
                     },
+                    DeviceTelemetryService = new DeviceTelemetryServiceConfig
+                    {
+                        Messages = new MessagesConfig
+                        {
+                            TelemetryStorageType = "cosmosdb",
+                        },
+                    },
                 },
                 new Mock<IPackageEventLog>().Object,
-                new Mock<ILogger<Storage>>().Object);
+                new Mock<ILogger<Storage>>().Object,
+                new Mock<IHttpContextAccessor>().Object,
+                new Mock<IAppConfigurationClient>().Object);
         }
 
         [Fact]
@@ -840,6 +855,22 @@ namespace Mmm.Iot.Config.Services.Test
         public async Task DeleteDeviceGroupAsyncTest()
         {
             var groupId = this.rand.NextString();
+
+            const string key = "DeviceGroup name";
+            var deviceGroup = new DeviceGroup
+            {
+                Id = string.Empty,
+                DisplayName = key,
+            };
+            var value = JsonConvert.SerializeObject(deviceGroup);
+
+            this.mockClient
+                .Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(new ValueApiModel
+                {
+                    Key = key,
+                    Data = value,
+                }));
 
             this.mockClient
                 .Setup(x => x.DeleteAsync(It.IsAny<string>(), It.IsAny<string>()))

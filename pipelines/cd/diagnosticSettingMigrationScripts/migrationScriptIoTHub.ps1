@@ -21,7 +21,7 @@ function createDiagnosticSettings([string]$resourceGroupName, [string]$subscript
     }
     }
     Write-Host "Creating Diagnostic Settings"
-    Set-AzDiagnosticSetting -Name $diagnosticSetting -ResourceId $resourceId -Category Connections, DeviceTelemetry, C2DCommands, DeviceIdentityOperations, FileUploadOperations, Routes, D2CTwinOperations, C2DTwinOperations, TwinQueries, JobsOperations, DirectMethods, DistributedTracing, Configurations, DeviceStreams -MetricCategory AllMetrics -Enabled $true -WorkspaceId $workSpaceID   
+    Set-AzDiagnosticSetting -Name $diagnosticSetting -ResourceId $resourceId -Category Connections, DeviceTelemetry, Routes -MetricCategory AllMetrics -Enabled $true -WorkspaceId $workSpaceID   
 }
 
 

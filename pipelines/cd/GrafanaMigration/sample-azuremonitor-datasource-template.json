@@ -1,0 +1,32 @@
+{
+  "name": "Azure Monitor",
+  "type": "grafana-azure-monitor-datasource",
+  "typeLogoUrl": "",
+  "access": "proxy",
+  "url": "",
+  "password": "",
+  "user": "",
+  "database": "",
+  "basicAuth": false,
+  "basicAuthUser": "",
+  "basicAuthPassword": "",
+  "withCredentials": false,
+  "isDefault": false,
+  "jsonData": {
+    "azureAuthType": "clientsecret",
+    "cloudName": "azuremonitor",
+    "tenantId": "{1}",
+    "clientId": "{0}",
+    "logAnalyticsTenantId": "{1}",
+    "logAnalyticsClientId": "{0}"
+  },
+  "secureJsonFields": {
+    "clientSecret": true,
+    "logAnalyticsClientSecret": true
+  },
+  "readOnly": false,
+  "secureJsonData": {
+    "clientSecret": "{2}",
+    "logAnalyticsClientSecret": "{2}"
+  }
+}

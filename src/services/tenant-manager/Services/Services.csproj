@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>Mmm.Iot.TenantManager.Services</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
@@ -25,5 +25,28 @@
       <Link>Tasks\ARMTemplates\sajob.json</Link>
       <LogicalName>sajob.json</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tasks\ARMTemplates\sajob_ADX.json">
+      <Link>Tasks\ARMTemplates\sajob_ADX.json</Link>
+      <LogicalName>sajob_ADX.json</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tasks\GrafanaTemplates\grafana-admin-dashboard.json">
+      <Link>Tasks\GrafanaTemplates\grafana-admin-dashboard.json</Link>
+      <LogicalName>grafana-admin-dashboard.json</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tasks\GrafanaTemplates\grafana-main-dashboard.json">
+      <Link>Tasks\GrafanaTemplates\grafana-main-dashboard.json</Link>
+      <LogicalName>grafana-main-dashboard.json</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tasks\GrafanaTemplates\sample-azuremonitor-datasource-template.json">
+      <Link>Tasks\GrafanaTemplates\sample-azuremonitor-datasource-template.json</Link>
+      <LogicalName>sample-azuremonitor-datasource-template.json</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tasks\GrafanaTemplates\sample-dataexplorer-datasource-template.json">
+      <Link>Tasks\GrafanaTemplates\sample-dataexplorer-datasource-template.json</Link>
+      <LogicalName>sample-dataexplorer-datasource-template.json</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tasks\GrafanaTemplates\" />
   </ItemGroup>
 </Project>

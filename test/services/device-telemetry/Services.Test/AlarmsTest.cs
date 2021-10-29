@@ -12,6 +12,7 @@ using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.External.AppConfiguration;
 using Mmm.Iot.Common.Services.External.CosmosDb;
+using Mmm.Iot.Common.Services.External.KustoStorage;
 using Mmm.Iot.Common.TestHelpers;
 using Moq;
 using Xunit;
@@ -28,6 +29,7 @@ namespace Mmm.Iot.DeviceTelemetry.Services.Test
         private readonly IAlarms alarms;
         private readonly Mock<IHttpContextAccessor> httpContextAccessor;
         private readonly Mock<IAppConfigurationClient> appConfigHelper;
+        private readonly Mock<IKustoQueryClient> kustoQuery;
 
         public AlarmsTest()
         {
@@ -40,6 +42,10 @@ namespace Mmm.Iot.DeviceTelemetry.Services.Test
                         Database = "database",
                         MaxDeleteRetries = 3,
                     },
+                    Messages = new MessagesConfig
+                    {
+                        TelemetryStorageType = "cosmosdb",
+                    },
                 },
             };
             this.storageClient = new Mock<IStorageClient>();
@@ -49,7 +55,8 @@ namespace Mmm.Iot.DeviceTelemetry.Services.Test
                 { { "TenantID", TenantId } });
             this.appConfigHelper.Setup(t => t.GetValue($"{TenantInfoKey}:{TenantId}:{AlarmsCollectionKey}")).Returns("collection");
             this.logger = new Mock<ILogger<Alarms>>();
-            this.alarms = new Alarms(servicesConfig, this.storageClient.Object, this.logger.Object, this.httpContextAccessor.Object, this.appConfigHelper.Object);
+            this.kustoQuery = new Mock<IKustoQueryClient>();
+            this.alarms = new Alarms(servicesConfig, this.storageClient.Object, this.logger.Object, this.httpContextAccessor.Object, this.appConfigHelper.Object, this.kustoQuery.Object);
         }
 
         /**

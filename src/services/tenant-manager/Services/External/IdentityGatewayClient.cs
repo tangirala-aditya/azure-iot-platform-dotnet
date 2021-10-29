@@ -103,5 +103,11 @@ namespace Mmm.Iot.TenantManager.Services.External
             string url = this.RequestUrl($"systemAdmin/getAllSystemAdmins");
             return await this.requestHelper.ProcessRequestAsync<IdentityGatewayApiListModel>(HttpMethod.Get, url);
         }
+
+        public async Task<IdentityGatewayApiListModel> GetAllUsersForTenant(string tenantId)
+        {
+            string url = this.RequestUrl($"tenants/users");
+            return await this.requestHelper.ProcessRequestAsync<IdentityGatewayApiListModel>(HttpMethod.Get, url, tenantId);
+        }
     }
 }

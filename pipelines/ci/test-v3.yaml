@@ -63,6 +63,8 @@ variables:
     value: mmm-iot-platform-ingress-v3
   - name: helmInstallTimeoutInSeconds
     value: 1000s    
+  - name: grafanaImage
+    value: docker.io/azureiot3m/grafana-custom:latest  
   - name: publishedFilesArtifactName
     value: publishFiles
   - name: functionsArtifactName
@@ -112,7 +114,7 @@ variables:
   - name: usersTableName
     value: user
   - name: sysAdminTableName
-    value: SystemAdmin    
+    value: SystemAdmin         
 resources:
   repositories:
     - repository: azure-iot-functional-tests
@@ -601,6 +603,7 @@ stages:
                 if (!$namespaceAlreadyExists) {
                   kubectl create namespace $(kubernetesNamespace) --output json
                 }
+
                 az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(kubernetesNamespaceWasCreatedRowKey) Content="true" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
           - template: ../templates/steps-install-helm-v3.yaml
@@ -711,6 +714,18 @@ stages:
               cd charts/$(mmmIotPlatformServicesHelmChartName)
               helm dependency update 
             displayName: Update helm local dependencies
+
+          - task: AzureCLI@2
+            displayName: Install Grafana Deployment and Service
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |-
+                set -Eeuxo pipefail
+                az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+                kubectl create deployment grafana --image=$(grafanaImage) -n $(kubernetesNamespace)
+                kubectl expose deployment grafana -n $(kubernetesNamespace) --port=80 --target-port=3000 --protocol=TCP
 
           - task: HelmDeploy@0
             displayName: Install services Helm chart V3
@@ -950,7 +965,7 @@ stages:
       - functionalTest
       - deployServicesV3
       - enumerateDependencies
-    condition: and(succeededOrFailed(), eq(variables['runCleanupStage'], 'true'))
+    condition: and(always(), eq(variables['runCleanupStage'], 'true'))
     jobs:
       - job: getPipelineVariables
         displayName: Get pipeline variables
@@ -1015,6 +1030,18 @@ stages:
               command: uninstall
               arguments: --namespace $(kubernetesNamespace) $(mmmIotPlatformServicesHelmChartReleaseName)
 
+          - task: AzureCLI@2
+            displayName: Delete Grafana Deployment and Service
+            inputs:
+              azureSubscription: $(subscriptionName)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |-
+                set -Eeuxo pipefail
+                az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+                kubectl delete deployment grafana -n $(kubernetesNamespace)
+                kubectl delete service grafana -n $(kubernetesNamespace)
+
       - job: uninstallIngressChart
         displayName: Uninstall ingress Helm chart
         dependsOn:
@@ -1042,7 +1069,9 @@ stages:
         displayName: Delete namespace
         dependsOn:
           - getPipelineVariables
-        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesNamespaceWasCreated'], 'true'), not(failed()))
+          - uninstallIngressChart
+          - uninstallIngressChart
+        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesNamespaceWasCreated'], 'true'), always())
         steps:
           - checkout: none
 
@@ -1055,3 +1084,31 @@ stages:
               kubernetesCluster: $(aksName)
               command: delete
               arguments: namespace $(kubernetesNamespace) --now=true --ignore-not-found=true
+
+      - job: removeAuthenticationCallbackUrl
+        displayName: Remove auth callback URL
+        pool:
+          vmImage: windows-latest
+        steps:
+          - checkout: none
+
+          - task: PowerShell@2
+            displayName: Remove auth callback URL
+            inputs:
+              targetType: inline
+              script: |-
+                Install-Module AzureAD -Force
+                $password = ConvertTo-SecureString -String '$(azureAdB2cTenantPassword)' -AsPlainText -Force
+                $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList '$(azureAdB2cTenantUsername)', $password
+                $azContext = Connect-AzureAD -TenantId $(azureAdB2cAppRegistrationTenantId) -Credential $credential
+                if ($azContext.TenantId -ne '$(azureAdB2cAppRegistrationTenantId)') {
+                  throw 'You are not connected to the right tenant'
+                }
+                $app = Get-AzureADMSApplication -Filter "DisplayName eq '$(azureAdB2cAppRegistrationNameTest)'"
+                $replyUrls = $app.web.RedirectUris
+                Write-Host $replyUrls
+                if ($replyUrls.Contains('$(authenticationCallbackUrl)'))
+                {
+                  $replyUrls.Remove('$(authenticationCallbackUrl)')
+                  Set-AzureADMSApplication -ObjectId $app.Id -Web @{ RedirectUris = $replyUrls }
+                }

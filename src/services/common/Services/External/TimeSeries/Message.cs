@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Mmm.Iot.Common.Services.External.TimeSeries
@@ -30,6 +31,7 @@ namespace Mmm.Iot.Common.Services.External.TimeSeries
 
         public DateTimeOffset Time { get; set; }
 
+        [JsonProperty(PropertyName = "Data")]
         public JObject Data { get; set; }
     }
 }

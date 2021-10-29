@@ -9,6 +9,10 @@ namespace Mmm.Iot.DeviceTelemetry.Services.Models
 {
     public class Alarm
     {
+        public Alarm()
+        {
+        }
+
         public Alarm(
             string etag,
             string id,
@@ -74,5 +78,11 @@ namespace Mmm.Iot.DeviceTelemetry.Services.Models
         public string RuleSeverity { get; set; }
 
         public string RuleDescription { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether alarm is deleted.
+        /// This is alerts ADX table property.
+        /// </summary>
+        public bool IsDeleted { get; set; }
     }
 }

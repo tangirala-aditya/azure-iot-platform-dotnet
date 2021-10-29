@@ -12,8 +12,10 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Mvc;
 using Mmm.Iot.Common.Services;
+using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.Common.Services.Filters;
 using Mmm.Iot.Common.Services.Helpers;
+using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.IoTHubManager.Services;
 using Mmm.Iot.IoTHubManager.Services.Models;
 using Mmm.Iot.IoTHubManager.WebService.Models;
@@ -48,6 +50,19 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             }
 
             return new DeviceListApiModel(await this.devices.GetListAsync(query, continuationToken));
+        }
+
+        [HttpGet("iothub")]
+        [Authorize("ReadAll")]
+        public async Task<DeviceListApiModel> GetIoTHubDevicesAsync([FromQuery] string query)
+        {
+            string continuationToken = string.Empty;
+            if (this.Request.Headers.ContainsKey(ContinuationTokenName))
+            {
+                continuationToken = this.Request.Headers[ContinuationTokenName].FirstOrDefault();
+            }
+
+            return new DeviceListApiModel(await this.devices.GetListFromIoTHubAsync(query, continuationToken));
         }
 
         [HttpGet("statistics")]

@@ -95,4 +95,11 @@ export class IdentityGatewayService {
                 }
             });
     }
+
+    /* Method that returns the mode of the dashboard*/
+    static getDashboardMode() {
+        return HttpClient.get(`${ENDPOINT}settings/DashboardMode`).pipe(
+            map((setting) => setting && setting.value)
+        );
+    }
 }

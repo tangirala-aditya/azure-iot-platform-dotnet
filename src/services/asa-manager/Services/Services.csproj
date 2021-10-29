@@ -4,6 +4,9 @@
         <RootNamespace>$(AssemblyName)</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
+      <PackageReference Include="Azure.Messaging.EventHubs" Version="5.5.0" />
+    </ItemGroup>
+    <ItemGroup>
         <ProjectReference Include="..\..\common\Services\Services.csproj" />
     </ItemGroup>
 </Project>

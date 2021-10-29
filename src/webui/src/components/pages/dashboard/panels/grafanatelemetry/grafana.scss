@@ -1,0 +1,9 @@
+.grafana-app {
+    .sidemenu{
+        display: none !important;
+    }
+
+    [aria-label="Dashboard navigation"]{
+        display: none !important;
+    }
+} 

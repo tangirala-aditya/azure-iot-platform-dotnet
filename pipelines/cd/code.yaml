@@ -180,7 +180,7 @@ stages:
           environmentCategory: $(environmentCategory-chimQa)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: false
+          isHelmVersion3: true
           subscriptionId: $(subscriptionId-chimQa)
 
   - stage: chimProd
@@ -237,7 +237,7 @@ stages:
           environmentCategory: $(environmentCategory-psdTest)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: false
+          isHelmVersion3: true
           subscriptionId: $(subscriptionId-psdTest)
 
   - stage: psdQa
@@ -256,7 +256,7 @@ stages:
           environmentCategory: $(environmentCategory-psdQa)
           imageTag: $(_imageTag)
           blueGreen: true
-          isHelmVersion3: false
+          isHelmVersion3: true
           subscriptionId: $(subscriptionId-psdQa)
 
   - stage: psdEu
@@ -351,7 +351,7 @@ stages:
           environmentCategory: $(environmentCategory-emdQa)
           imageTag: $(_imageTag)
           blueGreen: false
-          isHelmVersion3: false
+          isHelmVersion3: true
           subscriptionId: $(subscriptionId-emdQa)
 
   - stage: emdCt

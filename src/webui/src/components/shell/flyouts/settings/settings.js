@@ -37,6 +37,14 @@ const alertingIsPending = (jobState) => {
     );
 };
 
+const isAdmin = (roles) => {
+    if (Array.from(roles).indexOf("admin") !== -1) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 const firmwareSettingErrorTypes = {
     noVersion: "settingsFlyout.firmware.error.noVersion",
     upload: "settingsFlyout.firmware.error.upload",
@@ -71,6 +79,7 @@ export class Settings extends LinkedComponent {
             firmwareSettingPending: false,
             firmwareSettingError: "",
             expandedValue: false,
+            isGrafana: false,
         };
 
         const { t } = this.props;
@@ -99,6 +108,11 @@ export class Settings extends LinkedComponent {
 
     UNSAFE_componentWillMount() {
         IdentityGatewayService.VerifyAndRefreshCache();
+        IdentityGatewayService.getDashboardMode().subscribe((value) => {
+            this.setState({
+                isGrafana: (value && value.toUpperCase()) === "TRUE",
+            });
+        });
     }
 
     UNSAFE_componentWillReceiveProps({
@@ -460,6 +474,9 @@ export class Settings extends LinkedComponent {
                 getSimulationError,
                 getDiagnosticsPending,
                 getDiagnosticsError,
+                grafanaUrl,
+                grafanaOrgId,
+                user,
             } = this.props,
             {
                 desiredSimulationState,
@@ -474,6 +491,7 @@ export class Settings extends LinkedComponent {
                 firmwareEdit,
                 firmwareSettingPending,
                 firmwareSettingError,
+                isGrafana,
             } = this.state;
         this.applicationNameLink = this.linkTo("applicationName");
         this.firmwareJsonLink = this.linkTo("firmwareJson").check(
@@ -817,6 +835,31 @@ export class Settings extends LinkedComponent {
                                 </button>
                             </Section.Content>
                         </Section.Container>
+                        {isGrafana && isAdmin(user.roles) && (
+                            <Section.Container
+                                collapsable={false}
+                                className={css("edit-grafana")}
+                            >
+                                <Section.Header>
+                                    {t(
+                                        "settingsFlyout.editGrafanaDashboardHeader"
+                                    )}
+                                </Section.Header>
+                                <Section.Content
+                                    className={css("release-and-privacy-notes")}
+                                >
+                                    <a
+                                        href={`${Config.serviceUrls.grafana}d/${grafanaUrl}?orgId=${grafanaOrgId}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {t(
+                                            "settingsFlyout.editGrafanaDashboard"
+                                        )}
+                                    </a>
+                                </Section.Content>
+                            </Section.Container>
+                        )}
                         <ApplicationSettingsContainer
                             onUpload={this.onUpload}
                             applicationNameLink={this.applicationNameLink}

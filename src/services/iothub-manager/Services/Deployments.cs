@@ -532,13 +532,13 @@ namespace Mmm.Iot.IoTHubManager.Services
 
                     query = $" deviceId IN [{deviceListValue}]";
 
-                    var devices = await this.devices.GetListAsync(query, null);
+                    var devices = await this.devices.GetListFromIoTHubAsync(query, null);
 
                     allDevices.Items.AddRange(devices.Items);
 
                     while (!string.IsNullOrWhiteSpace(devices.ContinuationToken))
                     {
-                        devices = await this.devices.GetListAsync(query, null);
+                        devices = await this.devices.GetListFromIoTHubAsync(query, null);
                         allDevices.Items.AddRange(devices.Items);
                     }
                 }

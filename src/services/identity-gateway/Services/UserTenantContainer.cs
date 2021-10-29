@@ -8,24 +8,38 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Logging;
+using Mmm.Iot.Common.Services.Config;
+using Mmm.Iot.Common.Services.External.Grafana;
+using Mmm.Iot.Common.Services.External.KeyVault;
 using Mmm.Iot.Common.Services.External.TableStorage;
+using Mmm.Iot.Common.Services.Models;
 using Mmm.Iot.IdentityGateway.Services.Models;
+using Newtonsoft.Json;
 
 namespace Mmm.Iot.IdentityGateway.Services
 {
     public class UserTenantContainer : UserContainer, IUserContainer<UserTenantModel, UserTenantInput>
     {
         private readonly ILogger logger;
+        private AppConfig config;
+        private IGrafanaClient grafanaClient;
+        private IKeyVaultClient keyVaultClient;
 
-        public UserTenantContainer(ILogger<UserTenantContainer> logger)
+        public UserTenantContainer(ILogger<UserTenantContainer> logger, AppConfig config, IGrafanaClient grafanaClient, IKeyVaultClient keyVaultClient)
         {
             this.logger = logger;
+            this.config = config;
+            this.grafanaClient = grafanaClient;
+            this.keyVaultClient = keyVaultClient;
         }
 
-        public UserTenantContainer(ITableStorageClient tableStorageClient, ILogger<UserTenantContainer> logger)
+        public UserTenantContainer(ITableStorageClient tableStorageClient, ILogger<UserTenantContainer> logger, AppConfig config, IGrafanaClient grafanaClient, IKeyVaultClient keyVaultClient)
             : base(tableStorageClient)
         {
             this.logger = logger;
+            this.config = config;
+            this.grafanaClient = grafanaClient;
+            this.keyVaultClient = keyVaultClient;
         }
 
         public override string TableName => "user";
@@ -167,6 +181,39 @@ namespace Mmm.Iot.IdentityGateway.Services
             catch (Exception e)
             {
                 throw new Exception("Unable to retrieve the active tenants from table storage", e);
+            }
+        }
+
+        public virtual async Task AddUserToGrafana(UserTenantInput input)
+        {
+            if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
+            {
+                string apiKey = this.keyVaultClient.GetValue($"Grafana--{input.Tenant}--APIKey");
+
+                GrafanaGlobalUserRequestModel user = new GrafanaGlobalUserRequestModel(input.Name, input.Name, input.UserId, "admin");
+                await this.grafanaClient.AddGlobalUser(user);
+
+                string role = JsonConvert.DeserializeObject<List<string>>(input.Roles).FirstOrDefault();
+
+                GrafanaRoleType grafanaRole = role switch
+                {
+                    "admin" => GrafanaRoleType.Admin,
+                    "contributor" => GrafanaRoleType.Editor,
+                    "readonly" => GrafanaRoleType.Viewer,
+                    _ => GrafanaRoleType.Viewer,
+                };
+
+                await this.grafanaClient.AddUserToOrg(input.UserId, grafanaRole, apiKey);
+            }
+        }
+
+        public virtual async Task DeleteUserToGrafanaAsync(UserTenantInput input)
+        {
+            if (string.Equals(this.config.DeviceTelemetryService.Messages.TelemetryStorageType, TelemetryStorageTypeConstants.Ade, StringComparison.OrdinalIgnoreCase))
+            {
+                string apiKey = this.keyVaultClient.GetValue($"Grafana--{input.Tenant}--APIKey");
+
+                await this.grafanaClient.DeleteUser(input.UserId, apiKey);
             }
         }
     }

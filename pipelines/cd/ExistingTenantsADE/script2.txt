@@ -1,0 +1,3 @@
+.create table DeviceTwin (DeviceId:string, Twin:dynamic, TimeStamp:datetime, DeviceCreatedDate:datetime, IsDeleted:bool)
+.create table DeviceTwin ingestion json mapping MAPPINGNAME '[{"column":"DeviceId","path":"$.deviceId","datatype":"string"},{"column":"Twin","path":"$.data","datatype":"dynamic"},{"column":"TimeStamp","path":"$.timeStamp","datatype":"datetime"},{"column":"DeviceCreatedDate","path":"$.deviceCreatedDate","datatype":"datetime"},{"column":"IsDeleted","path":"$.isDeleted","datatype":"bool"}]'
+.alter table DeviceTwin policy streamingingestion enable

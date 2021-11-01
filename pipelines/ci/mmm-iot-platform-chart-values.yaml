@@ -8,7 +8,7 @@ asa-manager:
   nameOverride: asa-manager
   appVersion: *appVersion
   service:
-    port: 8084  
+    port: 80  
   deployment:
     image:
       tag: *imageTag
@@ -19,7 +19,7 @@ config:
   nameOverride: config
   appVersion: *appVersion
   service:
-    port: 8084  
+    port: 80
   deployment:
     image:
       tag: *imageTag
@@ -30,7 +30,7 @@ device-telemetry:
   nameOverride: device-telemetry
   appVersion: *appVersion
   service:
-    port: 8084  
+    port: 80
   deployment:
     image:
       tag: *imageTag
@@ -41,7 +41,7 @@ diagnostics:
   nameOverride: diagnostics
   appVersion: *appVersion
   service:
-    port: 8084  
+    port: 80
   deployment:
     image:
       tag: *imageTag
@@ -52,7 +52,7 @@ identity-gateway:
   nameOverride: identity-gateway
   appVersion: *appVersion
   service:
-    port: 8084  
+    port: 80 
   deployment:
     image:
       tag: *imageTag
@@ -63,7 +63,7 @@ iothub-manager:
   nameOverride: iothub-manager
   appVersion: *appVersion
   service:
-    port: 8084  
+    port: 80
   deployment:
     image:
       tag: *imageTag
@@ -87,7 +87,7 @@ storage-adapter:
   nameOverride: storage-adapter
   appVersion: *appVersion
   service:
-    port: 8084
+    port: 80
   deployment:
     image:
       tag: *imageTag
@@ -98,7 +98,7 @@ tenant-manager:
   nameOverride: tenant-manager
   appVersion: *appVersion
   service:
-    port: 8084
+    port: 80
   deployment:
     image:
       tag: *imageTag

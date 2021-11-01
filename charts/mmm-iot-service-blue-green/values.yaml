@@ -13,7 +13,7 @@ deployment:
     livenessPath: /v1/status/ping
     readinessPath: /v1/status
   port:
-    http: 80
+    http: 8084
     https: 443
   imagePullSecrets: []
   replicaCount: 1

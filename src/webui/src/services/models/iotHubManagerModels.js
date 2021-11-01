@@ -189,7 +189,21 @@ export const toJobsModel = (response = []) =>
             type: "type",
         })
     );
-
+export const toLinkingJobsModel = (response = []) =>
+    response.items.map((job) =>
+        camelCaseReshape(job, {
+            jobId: "jobId",
+            category: "category",
+            parentDeviceId: "parentDeviceId",
+            deviceGroupId: "deviceGroupId",
+            deviceIds: "deviceIds",
+            jobStatus: "jobStatus",
+            createdDate: "createdDate",
+            createdBy: "createdBy",
+            modifiedBy: "modifiedBy",
+            modifiedDate: "modifiedDate",
+        })
+    );
 export const toSubmitTagsJobRequestModel = (
     devices,
     { jobName, updatedTags, deletedTags }

@@ -21,6 +21,7 @@ import {
     toEdgeDevicesModel,
     toDeviceLinkModel,
     toDeviceLinkResponseModel,
+    toLinkingJobsModel,
 } from "./models";
 import { map } from "rxjs/operators";
 
@@ -201,6 +202,18 @@ export class IoTHubManagerService {
         return HttpClient.get(
             `https://localhost:5001/v1/devices/GetLinkedDevices/${deviceId}`
         ).pipe(map(toEdgeDevicesModel));
+    }
+
+    static getDeviceLikingJobs(params) {
+        return HttpClient.get(
+            `https://localhost:5001/v1/devices/GetDeviceLinkingJobs`
+        ).pipe(map(toLinkingJobsModel));
+    }
+
+    static getDeviceLikingJobsByJobId(jobId, params) {
+        return HttpClient.get(
+            `https://localhost:5001/v1/devices/GetDeviceLinkingJobs/${jobId}`
+        ).pipe(map(toLinkingJobsModel));
     }
 
     /** Returns a device statistics */

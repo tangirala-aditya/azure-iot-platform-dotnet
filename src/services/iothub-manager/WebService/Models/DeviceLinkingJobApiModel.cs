@@ -20,7 +20,7 @@ namespace Mmm.Iot.IoTHubManager.WebService.Models
         public DeviceLinkingJobApiModel(DeviceLinkingJobServiceModel deviceLinkingJobServiceModel)
         {
             this.JobId = deviceLinkingJobServiceModel.JobId;
-            this.Category = deviceLinkingJobServiceModel.Category;
+            this.Category = deviceLinkingJobServiceModel.Category.ToString();
             this.ParentDeviceId = deviceLinkingJobServiceModel.ParentDeviceId;
             this.DeviceGroupId = deviceLinkingJobServiceModel.DeviceGroupId;
             this.DeviceIds = deviceLinkingJobServiceModel.DeviceIds;
@@ -33,7 +33,7 @@ namespace Mmm.Iot.IoTHubManager.WebService.Models
 
         public string JobId { get; set; }
 
-        public SourceCategory Category { get; set; }
+        public string Category { get; set; }
 
         public string ParentDeviceId { get; set; }
 

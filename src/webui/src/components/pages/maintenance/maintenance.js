@@ -19,6 +19,7 @@ import {
 } from "services";
 import { toDiagnosticsModel } from "services/models";
 import { map, mergeMap, toArray } from "rxjs/operators";
+import { DeviceJobDetailsContainer } from "./deviceJobDetails/deviceJobDetail.container";
 
 const alertSchema = new schema.Entity("alerts"),
     alertListSchema = new schema.Array(alertSchema);
@@ -44,6 +45,9 @@ export class Maintenance extends Component {
             failedJobsCount: undefined,
             succeededJobsCount: undefined,
 
+            linkedJobsIsPending: true,
+            linkedJobs: [],
+            linkedJobsError: undefined,
             lastUpdated: undefined,
         };
 
@@ -180,6 +184,22 @@ export class Maintenance extends Component {
                     this.setState({ jobsError, jobsIsPending: false })
             )
         );
+        this.subscriptions.push(
+            IoTHubManagerService.getDeviceLikingJobs(jobParams).subscribe(
+                (deviceJobs) => {
+                    this.setState({
+                        linkedJobs: deviceJobs,
+                        linkedJobsIsPending: false,
+                        lastUpdated: moment(),
+                    });
+                },
+                (deviceJobsError) =>
+                    this.setState({
+                        linkedJobsError: deviceJobsError,
+                        linkedJobsIsPending: false,
+                    })
+            )
+        );
     };
 
     UNSAFE_componentWillMount() {
@@ -270,6 +290,9 @@ export class Maintenance extends Component {
                 failedJobsCount,
                 succeededJobsCount,
                 jobsCount,
+                linkedJobs,
+                linkedJobsIsPending,
+                linkedJobsError,
             } = this.state,
             // Add the rule name to the rules data by merging from the redux store
             alertsWithRulename = alerts.map((alert) => {
@@ -316,13 +339,22 @@ export class Maintenance extends Component {
                     this,
                     "Jobs_ColumnArranged"
                 ),
+            },
+            linkingJobProps = {
+                isPending: linkedJobsIsPending,
+                linkedJobs,
+                error: linkedJobsError,
+                onColumnMoved: this.onColumnMoved.bind(
+                    this,
+                    "LinkedJobs_ColumnArranged"
+                ),
             };
 
         return (
             <Switch>
                 <Route
                     exact
-                    path={"/maintenance/:path(notifications|jobs)"}
+                    path={"/maintenance/:path(notifications|jobs|deviceJobs)"}
                     render={(routeProps) => (
                         <SummaryContainer
                             {...generalProps}
@@ -335,6 +367,7 @@ export class Maintenance extends Component {
                             jobsCount={jobsCount}
                             alertProps={alertProps}
                             jobProps={jobProps}
+                            linkingJobProps={linkingJobProps}
                         />
                     )}
                 />
@@ -364,6 +397,17 @@ export class Maintenance extends Component {
                             {...jobProps}
                             {...routeProps}
                             deviceEntities={deviceEntities}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={"/maintenance/deviceJob/:id"}
+                    render={(routeProps) => (
+                        <DeviceJobDetailsContainer
+                            {...generalProps}
+                            {...linkingJobProps}
+                            {...routeProps}
                         />
                     )}
                 />

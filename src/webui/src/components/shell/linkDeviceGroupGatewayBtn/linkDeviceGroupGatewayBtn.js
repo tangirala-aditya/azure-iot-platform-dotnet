@@ -8,7 +8,6 @@ import { toDiagnosticsModel } from "services/models";
 
 export class LinkDeviceGroupGatewayBtn extends Component {
     onClick = () => {
-        console.log(this.props);
         this.props.logEvent(
             toDiagnosticsModel("LinkDeviceGroupGateway_Click", {})
         );

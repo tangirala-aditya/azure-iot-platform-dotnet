@@ -31,6 +31,7 @@ import {
     getTenantIdParam,
 } from "utilities";
 import { CreateDeviceQueryBtnContainer as CreateDeviceQueryBtn } from "components/shell/createDeviceQueryBtn";
+import { DeviceJobs } from "./deviceJobs";
 
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./summary.module.scss"));
@@ -193,6 +194,17 @@ export class Summary extends Component {
                         >
                             {this.props.t("maintenance.jobs")}
                         </NavLink>
+                        <NavLink
+                            to={"/maintenance/deviceJobs"}
+                            className={maintenanceCss("tab")}
+                            activeClassName={maintenanceCss("active")}
+                            onClick={this.tabClickHandler.bind(
+                                this,
+                                "DeviceJobsTab"
+                            )}
+                        >
+                            {this.props.t("maintenance.deviceJobs")}
+                        </NavLink>
                     </div>
                     <div className={css("grid-container")}>
                         <Switch>
@@ -215,6 +227,16 @@ export class Summary extends Component {
                                     <Jobs
                                         {...this.props}
                                         {...this.props.jobProps}
+                                    />
+                                )}
+                            />
+                            <Route
+                                exact
+                                path={"/maintenance/deviceJobs"}
+                                render={() => (
+                                    <DeviceJobs
+                                        {...this.props}
+                                        {...this.props.linkingJobProps}
                                     />
                                 )}
                             />

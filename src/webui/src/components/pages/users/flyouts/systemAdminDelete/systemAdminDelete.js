@@ -73,8 +73,6 @@ export class SystemAdminDelete extends LinkedComponent {
     deleteUsers = (event) => {
         event.preventDefault();
         this.setState({ isPending: true, error: null });
-        console.log(event);
-        console.log(this.state.formData.userId);
         IdentityGatewayService.deleteSystemAdmin(
             this.state.formData.userId
         ).subscribe(

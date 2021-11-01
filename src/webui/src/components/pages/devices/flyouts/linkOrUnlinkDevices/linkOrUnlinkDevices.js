@@ -55,7 +55,6 @@ export class LinkOrUnlinkDevice extends LinkedComponent {
             .forkTo("isLinkSelected")
             .map(stringToBoolean);
         this.expandFlyout = this.expandFlyout.bind(this);
-        console.log(this.state.formData.isLinkSelected);
     }
 
     componentWillMount() {

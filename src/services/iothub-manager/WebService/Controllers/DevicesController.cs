@@ -197,10 +197,16 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             return new DeviceListApiModel(await this.devices.GetChildDevices(edgeDeviceId));
         }
 
-        [HttpGet("GetDeviceLinkingJobs/{edgeDeviceId}")]
-        public async Task<DeviceLinkingJobApiListModel> GetDeviceLinkingJobs(string edgeDeviceId)
+        [HttpGet("GetDeviceLinkingJobs")]
+        public async Task<DeviceLinkingJobApiListModel> GetDeviceLinkingJobs()
         {
-            return new DeviceLinkingJobApiListModel(await this.devices.GetDeviceLinkingJobs(edgeDeviceId, this.GetTenantId()));
+            return new DeviceLinkingJobApiListModel(await this.devices.GetDeviceLinkingJobs(this.GetTenantId()));
+        }
+
+        [HttpGet("GetDeviceLinkingJob/{jobId}")]
+        public async Task<DeviceLinkingJobApiListModel> GetDeviceLinkingJobsByJobId(string jobId)
+        {
+            return new DeviceLinkingJobApiListModel(await this.devices.GetDeviceLinkingJobsByJobId(jobId, this.GetTenantId()));
         }
 
         [HttpGet("GetModuleLogs")]

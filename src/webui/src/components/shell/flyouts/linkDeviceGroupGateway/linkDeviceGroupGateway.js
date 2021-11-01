@@ -14,6 +14,7 @@ import {
     Protected,
 } from "components/shared";
 import { IoTHubManagerService } from "services";
+import { Link } from "react-router-dom";
 
 export class LinkDeviceGroupGateway extends LinkedComponent {
     constructor(props) {
@@ -37,7 +38,6 @@ export class LinkDeviceGroupGateway extends LinkedComponent {
             .forkTo("selectedEdgeDeviceId")
             .map(({ value }) => value);
         this.expandFlyout = this.expandFlyout.bind(this);
-        console.log(this.props.devices);
     }
 
     formIsValid() {
@@ -100,9 +100,7 @@ export class LinkDeviceGroupGateway extends LinkedComponent {
                 ).subscribe(
                     function (response) {
                         this.setState({
-                            message:
-                                "Selected device group will be linked to the edge device after successful completion of JobId : " +
-                                response.jobId,
+                            message: response.jobId,
                         });
                         this.props.fetchDevices();
                     }.bind(this),
@@ -217,7 +215,12 @@ export class LinkDeviceGroupGateway extends LinkedComponent {
                         {!!changesApplied && (
                             <>
                                 <br />
-                                {<div>{this.state.message}</div>}
+                                <Link
+                                    to={`/maintenance/deviceJob/${this.state.message}`}
+                                    className="btn btn-primary"
+                                >
+                                    {t("devices.flyouts.jobs.viewStatus")}
+                                </Link>
                                 <BtnToolbar>
                                     <Btn
                                         svg={svgs.cancelX}

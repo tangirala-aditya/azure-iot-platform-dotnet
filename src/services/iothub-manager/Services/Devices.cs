@@ -648,9 +648,20 @@ namespace Mmm.Iot.IoTHubManager.Services
             return new DeviceServiceListModel(devices);
         }
 
-        public async Task<DeviceLinkingJobServiceListModel> GetDeviceLinkingJobs(string edgeDeviceId, string tenantId)
+        public async Task<DeviceLinkingJobServiceListModel> GetDeviceLinkingJobs(string tenantId)
         {
-            var sql = QueryBuilder.GetDocumentsByProperty("CollectionId", $"devicelinkingjobs-{edgeDeviceId}");
+            var sql = QueryBuilder.GetDeviceDocumentsSqlByKeyLikeSearch("CollectionId", "devicelinkingjobs");
+            return await this.GetDeviceLinkingJobsBasedOnSearchCriteria(sql, tenantId);
+        }
+
+        public async Task<DeviceLinkingJobServiceListModel> GetDeviceLinkingJobsByJobId(string jobId, string tenantId)
+        {
+            var sql = QueryBuilder.GetDeviceDocumentsSqlByKeyLikeSearch("Key", jobId);
+            return await this.GetDeviceLinkingJobsBasedOnSearchCriteria(sql, tenantId);
+        }
+
+        private async Task<DeviceLinkingJobServiceListModel> GetDeviceLinkingJobsBasedOnSearchCriteria(SqlQuerySpec sql, string tenantId)
+        {
             FeedOptions queryOptions = new FeedOptions
             {
                 EnableCrossPartitionQuery = true,

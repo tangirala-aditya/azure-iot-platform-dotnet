@@ -881,6 +881,7 @@
         "critical": "Critical",
         "delete": "Delete",
         "devices": "Devices",
+        "deviceJobs": "Device linking jobs",
         "failedJobs": "Failed jobs",
         "jobs": "Jobs",
         "lastEvent": "Last event",
@@ -914,6 +915,16 @@
             "failed": "Failed",
             "startTime": "Start time",
             "endTime": "End time"
+        },
+        "deviceJobGrid": {
+            "jobName": "Job Name",
+            "status": "Status",
+            "parentDevice": "Parent Device",
+            "deviceGroup": "Device Group",
+            "createdDate": "Created Date",
+            "createdBy": "Created By",
+            "deviceIds": "Device Ids",
+            "category": "Category"
         },
         "jobStatusGrid": {
             "deviceIdAffected": "Device ID affected",

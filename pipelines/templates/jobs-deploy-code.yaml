@@ -25,35 +25,35 @@ jobs:
       matrix:
         asa-manager:
           serviceName: asa-manager
-          servicePort: 8084
+          servicePort: 80
           serviceProbesEnabled: true
         config:
           serviceName: config
-          servicePort: 8084
+          servicePort: 80
           serviceProbesEnabled: true
         device-telemetry:
           serviceName: device-telemetry
-          servicePort: 8084
+          servicePort: 80
           serviceProbesEnabled: true
         diagnostics:
           serviceName: diagnostics
-          servicePort: 8084
+          servicePort: 80
           serviceProbesEnabled: true
         identity-gateway:
           serviceName: identity-gateway
-          servicePort: 8084
+          servicePort: 80
           serviceProbesEnabled: true
         iothub-manager:
           serviceName: iothub-manager
-          servicePort: 8084
+          servicePort: 80
           serviceProbesEnabled: true
         storage-adapter:
           serviceName: storage-adapter
-          servicePort: 8084
+          servicePort: 80
           serviceProbesEnabled: true
         tenant-manager:
           serviceName: tenant-manager
-          servicePort: 8084
+          servicePort: 80
           serviceProbesEnabled: true
         webui:
           serviceName: webui

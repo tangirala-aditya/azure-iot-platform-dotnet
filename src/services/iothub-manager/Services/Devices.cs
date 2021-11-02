@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Shared;
@@ -36,7 +37,7 @@ namespace Mmm.Iot.IoTHubManager.Services
         private const int MaximumGetList = 1000;
         private const string QueryPrefix = "SELECT * FROM devices";
         private const string KustoQueryPrefix = "DeviceTwin | summarize arg_max(TimeStamp, *) by DeviceId | where IsDeleted == false";
-        private const string KustoOrderByQuery = "| order by DeviceCreatedDate desc nulls last";
+        private const string KustoOrderByQuery = "| order by DeviceCreatedDate, TimeStamp, DeviceId desc nulls last";
         private const string ModuleQueryPrefix = "SELECT * FROM devices.modules";
         private const string DeviceConnectionStateCountQueryPrefix = "SELECT COUNT() AS numberOfDevices, connectionState FROM devices";
         private const string DeviceConnectionStateCountKustoQuery = "| summarize numberOfDevices = count() by connectionState = tostring(Twin[\"connectionState\"])";
@@ -52,6 +53,7 @@ namespace Mmm.Iot.IoTHubManager.Services
         private readonly IAppConfigurationClient appConfigurationClient;
         private readonly IKustoQueryClient kustoQueryClient;
         private readonly bool kustoEnabled;
+        private readonly IKustoTableManagementClient kustoTableClient;
 
         public Devices(
             AppConfig config,
@@ -60,7 +62,8 @@ namespace Mmm.Iot.IoTHubManager.Services
             IDeviceQueryCache deviceQueryCache,
             IStorageClient storageClient,
             IAppConfigurationClient appConfigurationClient,
-            IKustoQueryClient kustoQueryClient)
+            IKustoQueryClient kustoQueryClient,
+            IKustoTableManagementClient kustoTableClient)
         {
             if (config == null)
             {
@@ -76,6 +79,7 @@ namespace Mmm.Iot.IoTHubManager.Services
             this.deviceQueryCache = deviceQueryCache;
             this.storageClient = storageClient;
             this.appConfigurationClient = appConfigurationClient;
+            this.kustoTableClient = kustoTableClient;
         }
 
         public Devices(
@@ -137,7 +141,7 @@ namespace Mmm.Iot.IoTHubManager.Services
         {
             if (this.kustoEnabled)
             {
-                return await this.GetListFromADXAsync(inputQuery);
+                return await this.GetListFromADXAsync(inputQuery, continuationToken);
             }
 
             return await this.GetListFromIoTHubAsync(inputQuery, continuationToken);
@@ -273,7 +277,7 @@ namespace Mmm.Iot.IoTHubManager.Services
             return resultModel;
         }
 
-        public async Task<DeviceServiceListModel> GetListFromADXAsync(string inputQuery)
+        public async Task<DeviceServiceListModel> GetListFromADXAsync(string inputQuery, string continuationToken = null)
         {
             string querytoBeCached = inputQuery;
 
@@ -297,7 +301,9 @@ namespace Mmm.Iot.IoTHubManager.Services
             var allTwins = await this.GetTwinDataADXQueryAsync<DeviceTwinMirrorModel>(
                 KustoQueryPrefix,
                 inputQuery,
-                KustoOrderByQuery);
+                KustoOrderByQuery,
+                false,
+                continuationToken);
 
             var connectedEdgeDevices = await this.GetConnectedEdgeDevices(allTwins.Result.Select(x => x.Twin).ToList());
             resultModel = new DeviceServiceListModel(
@@ -669,17 +675,61 @@ namespace Mmm.Iot.IoTHubManager.Services
         private async Task<ResultWithContinuationToken<List<T>>> GetTwinDataADXQueryAsync<T>(
                     string queryPrefix,
                     string conditionQuery,
-                    string extraQuery = null)
+                    string extraQuery = null,
+                    bool doPagination = false,
+                    string continuationToken = null)
         {
-            string database = $"IoT-{this.tenantConnectionHelper.TenantId}";
-
             conditionQuery = string.IsNullOrEmpty(conditionQuery) ? queryPrefix : $"{queryPrefix} | where {conditionQuery}";
 
             conditionQuery = string.IsNullOrEmpty(extraQuery) ? conditionQuery : $"{conditionQuery} {extraQuery}";
 
-            var results = await this.kustoQueryClient.ExecuteQueryAsync<T>(database, conditionQuery, null);
+            if (doPagination)
+            {
+                return await this.GetPaginationDataFromADXAsync<T>(conditionQuery, continuationToken);
+            }
+
+            var results = await this.kustoQueryClient.ExecuteQueryAsync<T>($"IoT-{this.tenantConnectionHelper.TenantId}", conditionQuery, null);
 
             return new ResultWithContinuationToken<List<T>>(results, null);
+        }
+
+        private async Task<ResultWithContinuationToken<List<T>>> GetPaginationDataFromADXAsync<T>(
+            string query, string continuationToken = null)
+        {
+            ContinuationTokenADX token = null;
+            string database = $"IoT-{this.tenantConnectionHelper.TenantId}";
+            string ctoken = null;
+            List<T> results = new List<T>();
+
+            if (string.IsNullOrWhiteSpace(continuationToken))
+            {
+                string takeQuery = $"{query} | take {MaximumGetList}";
+                results = await this.kustoQueryClient.ExecuteQueryAsync<T>(database, takeQuery, null);
+
+                if (results.Count == MaximumGetList)
+                {
+                    string guid = Guid.NewGuid().ToString();
+                    string storedQuery = $"{query} | extend Num = row_number() ";
+                    this.kustoTableClient.CreateStoredQueryResult(database, guid, storedQuery, null, MaximumGetList, null);
+                    token = new ContinuationTokenADX(guid, 0);
+                }
+            }
+            else
+            {
+                token = ContinuationTokenADX.GetContinuationTokenADX(continuationToken);
+                results = await this.kustoQueryClient.ExecuteQueryAsync<T>(
+                    database,
+                    $"stored_query_result(\"{token.StoredQueryResultId}\") | where Num between({token.TotalRecordsFetched + 1} .. {token.TotalRecordsFetched + MaximumGetList})",
+                    null);
+            }
+
+            if (results.Count == MaximumGetList && token != null)
+            {
+                token.TotalRecordsFetched = token.TotalRecordsFetched + results.Count;
+                ctoken = token.ToBase64String();
+            }
+
+            return new ResultWithContinuationToken<List<T>>(results, ctoken);
         }
 
         private class ResultWithContinuationToken<T>
@@ -693,6 +743,31 @@ namespace Mmm.Iot.IoTHubManager.Services
             public T Result { get; private set; }
 
             public string ContinuationToken { get; private set; }
+        }
+
+        private class ContinuationTokenADX
+        {
+            public ContinuationTokenADX(string storedQueryResultId, long totalRecordsFetched)
+            {
+                this.StoredQueryResultId = storedQueryResultId;
+                this.TotalRecordsFetched = totalRecordsFetched;
+            }
+
+            public string StoredQueryResultId { get; set; }
+
+            public long TotalRecordsFetched { get; set; }
+
+            public static ContinuationTokenADX GetContinuationTokenADX(string token)
+            {
+                byte[] byteArray = Convert.FromBase64String(token);
+                return JsonConvert.DeserializeObject<ContinuationTokenADX>(Encoding.UTF8.GetString(byteArray));
+            }
+
+            public string ToBase64String()
+            {
+                string token = JsonConvert.SerializeObject(this);
+                return Convert.ToBase64String(Encoding.UTF8.GetBytes(token));
+            }
         }
     }
 }

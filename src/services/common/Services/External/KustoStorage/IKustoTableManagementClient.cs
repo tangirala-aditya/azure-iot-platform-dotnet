@@ -22,5 +22,7 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
         void AlterTablePolicy(string tableName, string databaseName, IEnumerable<DataUpdatePolicy> dataUpdatePolicies);
 
         void CreateOrAlterFunction(string functionName, IDictionary<string, string> parameters, string body, string databaseName);
+
+        void CreateStoredQueryResult(string databaseName, string name, string innerQuery, TimeSpan? expiresAfter = null, int? previewCount = null, bool? distributed = null);
     }
 }

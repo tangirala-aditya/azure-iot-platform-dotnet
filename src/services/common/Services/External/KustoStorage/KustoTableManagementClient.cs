@@ -122,6 +122,20 @@ namespace Mmm.Iot.Common.Services.External.KustoStorage
             }
         }
 
+        public void CreateStoredQueryResult(string databaseName, string name, string innerQuery, TimeSpan? expiresAfter = null, int? previewCount = null, bool? distributed = null)
+        {
+            try
+            {
+                var command = CslCommandGenerator.GenerateStoredQueryResultSetCommand(name, innerQuery, expiresAfter, previewCount, distributed);
+
+                this.client.ExecuteControlCommand(databaseName, command);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public void Dispose()
         {
             this.Dispose(true);

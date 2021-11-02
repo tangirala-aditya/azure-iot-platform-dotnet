@@ -368,15 +368,6 @@ stages:
               scriptType: bash
               inlineScript: |-
                set -Eeuxo pipefail
-                az appconfig kv set --key "ExternalDependencies:AsaManagerServiceUrl"  --value "http://asa-manager:8084/v1" --name $(appConfigurationName) --yes
-                az appconfig kv set --key "ExternalDependencies:AuthServiceUrl"  --value "http://identity-gateway:8084/v1" --name $(appConfigurationName) --yes
-                az appconfig kv set --key "ExternalDependencies:ConfigServiceUrl"  --value "http://config:8084/v1" --name $(appConfigurationName) --yes
-                az appconfig kv set --key "ExternalDependencies:DeviceSimulationServiceUrl"  --value "http://device-simulation:8084/v1" --name $(appConfigurationName) --yes
-                az appconfig kv set --key "ExternalDependencies:DiagnosticsServiceUrl"  --value "http://diagnostics:8084/v1" --name $(appConfigurationName) --yes
-                az appconfig kv set --key "ExternalDependencies:IdentityGatewayServiceUrl"  --value "http://identity-gateway:8084/v1" --name $(appConfigurationName) --yes
-                az appconfig kv set --key "ExternalDependencies:IotHubManagerServiceUrl"  --value "http://iothub-manager:8084/v1" --name $(appConfigurationName) --yes
-                az appconfig kv set --key "ExternalDependencies:StorageAdapterServiceUrl"  --value "http://storage-adapter:8084/v1" --name $(appConfigurationName) --yes
-                az appconfig kv set --key "ExternalDependencies:TelemetryServiceUrl"  --value "http://device-telemetry:8084/v1" --name $(appConfigurationName) --yes
 
       - job: upgradeCertManager
         displayName: Upgrade cert-manager with Non-Root User

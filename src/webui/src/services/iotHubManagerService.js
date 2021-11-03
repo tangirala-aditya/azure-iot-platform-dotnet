@@ -255,4 +255,10 @@ export class IoTHubManagerService {
             toDeviceLinkModel(selectedIds, null, null)
         );
     }
+
+    static getEdgeModules(deviceId) {
+        return HttpClient.get(
+            `https://localhost:5001/v1/devices/getEdgeModules/${deviceId}`
+        ).pipe(map(toEdgeDevicesModel));
+    }
 }

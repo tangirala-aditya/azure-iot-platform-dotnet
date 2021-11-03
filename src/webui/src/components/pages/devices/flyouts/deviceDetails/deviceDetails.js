@@ -91,6 +91,7 @@ export class DeviceDetails extends Component {
             expandedValue: false,
             isEdgeDevice: false,
             linkedDevices: undefined,
+            edgeModules: undefined,
         };
         this.baseState = this.state;
         this.columnDefs = [
@@ -133,6 +134,7 @@ export class DeviceDetails extends Component {
         this.fetchDeviceDeployments(deviceId);
         if (isEdgeDevice) {
             this.fetchLinkedDevices(deviceId);
+            this.fetchEdgeModules(deviceId);
         }
 
         const [hours = 0, minutes = 0, seconds = 0] = interval
@@ -323,6 +325,7 @@ export class DeviceDetails extends Component {
             });
         });
     };
+
     fetchLinkedDevices = (deviceId) => {
         IoTHubManagerService.getLinkedDevices(deviceId).subscribe(
             (childDevices) => {
@@ -337,6 +340,20 @@ export class DeviceDetails extends Component {
                 });
             }
         );
+    };
+
+    fetchEdgeModules = (deviceId) => {
+        IoTHubManagerService.getEdgeModules(deviceId).subscribe((modules) => {
+            var edgeModules = [];
+            modules.items.forEach((module) => {
+                if (module) {
+                    edgeModules.push(module);
+                }
+            });
+            this.setState({
+                edgeModules: edgeModules,
+            });
+        });
     };
 
     downloadFile = (relativePath, fileName) => {
@@ -403,6 +420,7 @@ export class DeviceDetails extends Component {
             deviceUploads = this.state.deviceUploads || [],
             deviceDeployments = this.state.deviceDeployments || [],
             linkedDevices = this.state.linkedDevices || [],
+            edgeModules = this.state.edgeModules || [],
             moduleQuerySuccessful =
                 currentModuleStatus &&
                 currentModuleStatus !== {} &&
@@ -1205,6 +1223,74 @@ export class DeviceDetails extends Component {
                                                                     <Cell className="col-4">
                                                                         {
                                                                             device.id
+                                                                        }
+                                                                    </Cell>
+                                                                </Row>
+                                                            )
+                                                        )}
+                                                    </GridBody>
+                                                </Grid>
+                                            )}
+                                        </div>
+                                    </Section.Content>
+                                </Section.Container>
+                            )}
+                            {this.state.isEdgeDevice && (
+                                <Section.Container>
+                                    <Section.Header>
+                                        {t(
+                                            "devices.flyouts.details.edgeModules.title"
+                                        )}
+                                    </Section.Header>
+                                    <Section.Content>
+                                        <SectionDesc>
+                                            {t(
+                                                "devices.flyouts.details.edgeModules.description"
+                                            )}
+                                        </SectionDesc>
+                                        <div className="device-details-deviceDeployments-contentbox">
+                                            {edgeModules.length === 0 &&
+                                                t(
+                                                    "devices.flyouts.details.edgeModules.noneExist"
+                                                )}
+                                            {edgeModules.length >= 0 && (
+                                                <Grid className="device-details-deviceDeployments">
+                                                    <GridHeader>
+                                                        <Row>
+                                                            <Cell className="col-4">
+                                                                {t(
+                                                                    "devices.flyouts.details.edgeModules.module"
+                                                                )}
+                                                            </Cell>
+                                                            <Cell className="col-4">
+                                                                {t(
+                                                                    "devices.flyouts.details.edgeModules.logs"
+                                                                )}
+                                                            </Cell>
+                                                            <Cell className="col-4">
+                                                                {t(
+                                                                    "devices.flyouts.details.edgeModules.restart"
+                                                                )}
+                                                            </Cell>
+                                                        </Row>
+                                                    </GridHeader>
+                                                    <GridBody>
+                                                        {edgeModules.map(
+                                                            (module, idx) => (
+                                                                <Row key={idx}>
+                                                                    <Cell className="col-4">
+                                                                        {
+                                                                            module.id
+                                                                        }
+                                                                    </Cell>
+                                                                    <Cell className="col-4">
+                                                                        {
+                                                                            module.id
+                                                                        }
+                                                                    </Cell>
+                                                                    <Cell className="col-4">
+                                                                        {
+                                                                            module.id
                                                                         }
                                                                     </Cell>
                                                                 </Row>

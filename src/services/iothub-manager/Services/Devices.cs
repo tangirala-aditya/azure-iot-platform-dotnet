@@ -575,7 +575,19 @@ namespace Mmm.Iot.IoTHubManager.Services
                     leafDevices.Add(leafDevice);
                 }
 
-                bool isLinkedToOtherEdgeDevices = leafDevices.Any(l => !string.IsNullOrWhiteSpace(l.Scope) && l.Scope != parentDevice.Scope);
+                bool isLinkedToOtherEdgeDevices = false;
+
+                foreach (var leafDevice in leafDevices)
+                {
+                    if (!leafDevice.Capabilities.IotEdge)
+                    {
+                        isLinkedToOtherEdgeDevices = !string.IsNullOrWhiteSpace(leafDevice.Scope) && leafDevice.Scope != parentDevice.Scope;
+                    }
+                    else
+                    {
+                        isLinkedToOtherEdgeDevices = leafDevice.ParentScopes.Count > 0;
+                    }
+                }
 
                 if (isLinkedToOtherEdgeDevices)
                 {
@@ -585,7 +597,14 @@ namespace Mmm.Iot.IoTHubManager.Services
                 bool isSuccess = true;
                 foreach (var leafDevice in leafDevices)
                 {
-                    leafDevice.Scope = parentDevice.Scope;
+                    if (leafDevice.Capabilities.IotEdge)
+                    {
+                        leafDevice.ParentScopes.Add(parentDevice.Scope);
+                    }
+                    else
+                    {
+                        leafDevice.Scope = parentDevice.Scope;
+                    }
 
                     // var result = await this.tenantConnectionHelper.GetRegistry().UpdateDevices2Async(leafDevices);
                     var result = await this.tenantConnectionHelper.GetRegistry().UpdateDeviceAsync(leafDevice);

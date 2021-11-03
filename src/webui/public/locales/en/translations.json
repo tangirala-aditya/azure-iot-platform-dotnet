@@ -538,6 +538,14 @@
                     "description": "Linked Devices to the edge device",
                     "noneExist": "No devices linked to the selected edge device",
                     "deviceName": "Device name"
+                },
+                "edgeModules": {
+                    "title": "Modules",
+                    "description": "Modules linked to the selected edge device",
+                    "noneExist": "No modules defined to the selected edge device",
+                    "module": "Module",
+                    "logs": "Logs",
+                    "restart": "Restart"
                 }
             },
             "delete": {

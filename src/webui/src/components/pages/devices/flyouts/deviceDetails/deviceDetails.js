@@ -371,6 +371,26 @@ export class DeviceDetails extends Component {
         );
     };
 
+    downloadModuleLogs = (deviceId, moduleId) => {
+        IoTHubManagerService.getModuleLogs(deviceId, moduleId).subscribe(
+            (response) => {
+                console.log(response);
+                var data =
+                    "text/json;charset=utf-8," +
+                    encodeURIComponent(JSON.stringify(response.response));
+                //var blob = new Blob([response.response], {
+                //    type: response.response.contentType,
+                //});
+                //let url = window.URL.createObjectURL(blob);
+                debugger;
+                let a = document.createElement("a");
+                a.href = "data:" + data;
+                a.download = moduleId + "DeviceLogs.json";
+                a.click();
+            }
+        );
+    };
+
     updateTimeInterval = (timeInterval) => {
         this.props.updateTimeInterval(timeInterval);
         this.resetTelemetry$.next(this.props.device.id);
@@ -467,6 +487,12 @@ export class DeviceDetails extends Component {
                                         <div className={css("device-name")}>
                                             {device.id}
                                         </div>
+                                        {device.parentDeviceId && (
+                                            <div className={css("device-name")}>
+                                                ParentDevice:
+                                                {device.parentDeviceId}
+                                            </div>
+                                        )}
                                         <div
                                             className={css("device-simulated")}
                                         >
@@ -1280,13 +1306,24 @@ export class DeviceDetails extends Component {
                                                                 <Row key={idx}>
                                                                     <Cell className="col-4">
                                                                         {
-                                                                            module.id
+                                                                            module.moduleId
                                                                         }
                                                                     </Cell>
                                                                     <Cell className="col-4">
-                                                                        {
-                                                                            module.id
-                                                                        }
+                                                                        <Btn
+                                                                            svg={
+                                                                                svgs.upload
+                                                                            }
+                                                                            className={css(
+                                                                                "download-deviceupload"
+                                                                            )}
+                                                                            onClick={() =>
+                                                                                this.downloadModuleLogs(
+                                                                                    module.deviceId,
+                                                                                    module.moduleId
+                                                                                )
+                                                                            }
+                                                                        ></Btn>
                                                                     </Cell>
                                                                     <Cell className="col-4">
                                                                         {

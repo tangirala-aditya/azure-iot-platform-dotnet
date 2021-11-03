@@ -33,6 +33,7 @@ const defaultMappingObject = {
     modifiedDate: "modifiedDate",
     deviceCreatedDate: "deviceCreatedDate",
     isEdgeDevice: "isEdgeDevice",
+    parentDeviceId: "parentDeviceId",
 };
 
 const transformObject = (obj = []) => {
@@ -127,6 +128,26 @@ export const toEdgeDeviceModel = (device = {}) => {
         enabled: "enabled",
         lastStatusUpdated: "lastStatusUpdated",
         ioTHubHostName: "iotHubHostName",
+        eTag: "eTag",
+        authentication: "authentication",
+    });
+    return modelData;
+};
+
+export const toEdgeModulesModel = (response = {}) => {
+    var items = getItems(response).map(toEdgeModuleModel);
+    return { items, continuationToken: response.ContinuationToken };
+};
+
+export const toEdgeModuleModel = (module = {}) => {
+    const modelData = camelCaseReshape(module, {
+        deviceId: "deviceId",
+        moduleId: "moduleId",
+        lastActivity: "lastActivity",
+        connected: "connected",
+        c2DMessageCount: "c2DMessageCount",
+        enabled: "enabled",
+        lastStatusUpdated: "lastStatusUpdated",
         eTag: "eTag",
         authentication: "authentication",
     });

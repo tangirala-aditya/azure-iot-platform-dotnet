@@ -22,6 +22,7 @@ import {
     toDeviceLinkModel,
     toDeviceLinkResponseModel,
     toLinkingJobsModel,
+    toEdgeModulesModel,
 } from "./models";
 import { map } from "rxjs/operators";
 
@@ -40,7 +41,7 @@ export class IoTHubManagerService {
         options.timeout = 120000;
         const query = encodeURIComponent(JSON.stringify(conditions));
         return HttpClient.get(
-            `${ENDPOINT}devices?query=${query}`,
+            `https://localhost:6001/v1/Devices?query=${query}`,
             options
         ).pipe(map((response) => toDevicesModel(response, mappings)));
     }
@@ -200,19 +201,19 @@ export class IoTHubManagerService {
 
     static getLinkedDevices(deviceId) {
         return HttpClient.get(
-            `https://localhost:5001/v1/devices/GetLinkedDevices/${deviceId}`
+            `https://localhost:6001/v1/Devices/GetLinkedDevices/${deviceId}`
         ).pipe(map(toEdgeDevicesModel));
     }
 
     static getDeviceLikingJobs(params) {
         return HttpClient.get(
-            `https://localhost:5001/v1/devices/GetDeviceLinkingJobs`
+            `https://localhost:6001/v1/devices/GetDeviceLinkingJobs`
         ).pipe(map(toLinkingJobsModel));
     }
 
     static getDeviceLikingJobsByJobId(jobId, params) {
         return HttpClient.get(
-            `https://localhost:5001/v1/devices/GetDeviceLinkingJobs/${jobId}`
+            `https://localhost:6001/v1/devices/GetDeviceLinkingJobs/${jobId}`
         ).pipe(map(toLinkingJobsModel));
     }
 
@@ -258,7 +259,15 @@ export class IoTHubManagerService {
 
     static getEdgeModules(deviceId) {
         return HttpClient.get(
-            `https://localhost:5001/v1/devices/getEdgeModules/${deviceId}`
-        ).pipe(map(toEdgeDevicesModel));
+            `https://localhost:5001/v1/modules/${deviceId}`
+        ).pipe(map(toEdgeModulesModel));
+    }
+
+    static getModuleLogs(deviceId, moduleId) {
+        var response = HttpClient.get(
+            `https://localhost:5001/v1/devices/getmodulelogs`,
+            { responseType: "blob", timeout: 120000 }
+        );
+        return response;
     }
 }

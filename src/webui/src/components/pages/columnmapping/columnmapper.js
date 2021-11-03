@@ -96,6 +96,10 @@ export class ColumnMapper extends LinkedComponent {
                     label: "isEdgeDevice",
                     value: "isEdgeDevice",
                 },
+                {
+                    label: "parentDeviceId",
+                    value: "parentDeviceId",
+                },
             ],
             rendererOptions: [
                 { label: "SimulatedRenderer", value: "IsSimulatedRenderer" },

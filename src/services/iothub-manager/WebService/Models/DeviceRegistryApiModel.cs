@@ -49,6 +49,8 @@ namespace Mmm.Iot.IoTHubManager.WebService.Models
             {
                 this.PreviousProperties = new TwinPropertiesApiModel(device.PreviousTwin.DesiredProperties, device.PreviousTwin.ReportedProperties);
             }
+
+            this.ParentDeviceId = device.ParentDevice;
         }
 
         [JsonProperty(PropertyName = "ETag")]
@@ -106,6 +108,9 @@ namespace Mmm.Iot.IoTHubManager.WebService.Models
 
         [JsonProperty(PropertyName = "Authentication")]
         public AuthenticationMechanismApiModel Authentication { get; set; }
+
+        [JsonProperty(PropertyName = "ParentDeviceId")]
+        public string ParentDeviceId { get; set; }
 
         internal string DeviceRegistryEtag
         {

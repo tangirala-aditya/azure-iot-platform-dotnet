@@ -262,11 +262,14 @@ namespace Mmm.Iot.IoTHubManager.Services
 
             var connectedEdgeDevices = await this.GetConnectedEdgeDevices(allTwins.Result);
 
+            var parentDevices = await this.GetParentDevices(allTwins.Result);
+
             resultModel = new DeviceServiceListModel(
                 allTwins.Result.Select(azureTwin => new DeviceServiceModel(
                     azureTwin,
                     this.tenantConnectionHelper.GetIotHubName(),
-                    connectedEdgeDevices.ContainsKey(azureTwin.DeviceId))),
+                    connectedEdgeDevices.ContainsKey(azureTwin.DeviceId),
+                    this.GetParentDevice(azureTwin, parentDevices))),
                 allTwins.ContinuationToken);
 
             if (string.IsNullOrWhiteSpace(continuationToken))
@@ -348,11 +351,14 @@ namespace Mmm.Iot.IoTHubManager.Services
 
             var connectedEdgeDevices = await this.GetConnectedEdgeDevices(twins.Result);
 
+            var parentDevices = await this.GetParentDevices(twins.Result);
+
             var resultModel = new DeviceServiceListModel(
                 twins.Result.Select(azureTwin => new DeviceServiceModel(
                     azureTwin,
                     this.tenantConnectionHelper.GetIotHubName(),
-                    connectedEdgeDevices.ContainsKey(azureTwin.DeviceId))),
+                    connectedEdgeDevices.ContainsKey(azureTwin.DeviceId),
+                    this.GetParentDevice(azureTwin, parentDevices))),
                 twins.ContinuationToken);
 
             return resultModel;
@@ -484,6 +490,43 @@ namespace Mmm.Iot.IoTHubManager.Services
             var result = twins.Result.Select(twin => new TwinServiceModel(twin)).ToList();
 
             return new TwinServiceListModel(result, twins.ContinuationToken);
+        }
+
+        /*
+        public async Task<List<ModuleServiceModel>> GetModuleTwinsByDeviceIdAsync(string deviceId)
+        {
+            var modules = new List<ModuleServiceModel>();
+
+            modules.AddRange(await this.GetModuleTwinsByDeviceIdAsync(deviceId));
+
+            return modules;
+        }
+        */
+        public async Task<ModuleServiceListModel> GetModuleTwinsByDeviceIdAsync(string deviceId, string continuationToken = null)
+        {
+            var modules = new List<ModuleServiceModel>();
+
+            string query = $"deviceId = '{deviceId}'";
+
+            var twins = await this.GetTwinByQueryAsync(
+                ModuleQueryPrefix,
+                query,
+                continuationToken,
+                MaximumGetList);
+
+            if (twins != null && twins.Result.Count > 0)
+            {
+                modules.AddRange(twins.Result.Select(x => new ModuleServiceModel(x)));
+
+                if (!string.IsNullOrWhiteSpace(twins.ContinuationToken))
+                {
+                    var modulesFromQuery = await this.GetModuleTwinsByDeviceIdAsync(deviceId, twins.ContinuationToken);
+
+                    modules.AddRange(modulesFromQuery.Items);
+                }
+            }
+
+            return new ModuleServiceListModel(modules);
         }
 
         public async Task<DeploymentHistoryListModel> GetDeploymentHistoryAsync(string deviceId, string tenantId)
@@ -652,7 +695,7 @@ namespace Mmm.Iot.IoTHubManager.Services
         public async Task<DeviceServiceListModel> GetChildDevices(string edgeDeviceId)
         {
             var edgeDevice = await this.tenantConnectionHelper.GetRegistry().GetDeviceAsync(edgeDeviceId);
-            var deviceScopeQuery = $"deviceScope ='{edgeDevice.Scope}' AND deviceId <> '{edgeDeviceId}'";
+            var deviceScopeQuery = $"(deviceScope ='{edgeDevice.Scope}' OR ARRAY_CONTAINS(parentScopes,'{edgeDevice.Scope}')) AND deviceId <> '{edgeDeviceId}'";
             var data = await this.GetIotDataQueryAsync<Device>(QueryPrefix, deviceScopeQuery, null, string.Empty, 100);
 
             // List<string> deviceIds = new List<string>();
@@ -754,6 +797,77 @@ namespace Mmm.Iot.IoTHubManager.Services
                 .Where(edgeDvc => devicesWithConnectedModules.Contains(edgeDvc.DeviceId))
                 .ToDictionary(edgeDevice => edgeDevice.DeviceId, edgeDevice => edgeDevice);
             return edgeTwins;
+        }
+
+        private async Task<Dictionary<string, string>> GetParentDevices(List<Twin> twins)
+        {
+            var parentScopes = this.GetParentDeviceScopes(twins);
+            string deviceListValue = string.Join(",", parentScopes.Select(p => $"'{p}'"));
+
+            var parentTwins = this.tenantConnectionHelper.GetRegistry().CreateQuery($"SELECT * FROM Devices WHERE deviceScope IN [{deviceListValue}]");
+
+            QueryOptions options = new QueryOptions();
+            options.ContinuationToken = null;
+
+            var deviceIdScopes = new Dictionary<string, string>();
+            while (parentTwins.HasMoreResults)
+            {
+                var resultSet = await parentTwins.GetNextAsJsonAsync(options);
+                foreach (var result in resultSet)
+                {
+                    var deviceTwin = JsonConvert.DeserializeObject<Device>(result);
+                    if (deviceTwin.Capabilities.IotEdge)
+                    {
+                        deviceIdScopes.Add(deviceTwin.Scope, deviceTwin.Id);
+                    }
+                }
+            }
+
+            return deviceIdScopes;
+        }
+
+        private List<string> GetParentDeviceScopes(List<Twin> twins)
+        {
+            List<string> parentScopes = new List<string>();
+            if (twins != null && twins.Count > 0)
+            {
+                foreach (var item in twins)
+                {
+                    if (item.Capabilities.IotEdge)
+                    {
+                        parentScopes.AddRange(item.ParentScopes);
+                    }
+                    else
+                    {
+                        parentScopes.Add(item.DeviceScope);
+                    }
+                }
+            }
+
+            return parentScopes;
+        }
+
+        private string GetParentDevice(Twin twin, Dictionary<string, string> parentDevices)
+        {
+            if (twin.Capabilities.IotEdge)
+            {
+                if (twin.ParentScopes.Count > 0 && parentDevices.ContainsKey(twin.ParentScopes[0]))
+                {
+                    return parentDevices[twin.ParentScopes[0]];
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(twin.DeviceScope))
+                {
+                    if (parentDevices.ContainsKey(twin.DeviceScope))
+                    {
+                        return parentDevices[twin.DeviceScope];
+                    }
+                }
+            }
+
+            return string.Empty;
         }
 
         private async Task<HashSet<string>> GetDevicesWithConnectedModules()

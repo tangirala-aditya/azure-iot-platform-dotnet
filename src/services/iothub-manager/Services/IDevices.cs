@@ -52,5 +52,7 @@ namespace Mmm.Iot.IoTHubManager.Services
         Task<DeviceLinkingJobServiceListModel> GetDeviceLinkingJobsByJobId(string jobId, string tenantId);
 
         Task<BulkOperationResult> UnlinkFromGateway(List<string> deviceIds);
+
+        Task<ModuleServiceListModel> GetModuleTwinsByDeviceIdAsync(string deviceId, string continuationToken = null);
     }
 }

@@ -22,6 +22,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
             TwinServiceModel twin,
             AuthenticationMechanismServiceModel authentication,
             string ioTHubHostName,
+            string parentDevice = null,
             DateTime? deviceCreatedDate = null,
             DateTime? modifiedDate = null)
         {
@@ -38,6 +39,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
             this.Authentication = authentication;
             this.DeviceCreatedDate = deviceCreatedDate;
             this.ModifiedDate = modifiedDate;
+            this.ParentDevice = parentDevice;
         }
 
         public DeviceServiceModel(Device azureDevice, Twin azureTwin, string ioTHubHostName, bool isConnected)
@@ -65,7 +67,7 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
         {
         }
 
-        public DeviceServiceModel(Twin azureTwin, string ioTHubHostName, bool isConnected)
+        public DeviceServiceModel(Twin azureTwin, string ioTHubHostName, bool isConnected, string parentDevice)
             : this(
                 etag: azureTwin.ETag,
                 id: azureTwin.DeviceId,
@@ -77,7 +79,8 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
                 lastStatusUpdated: azureTwin.StatusUpdatedTime ?? azureTwin.StatusUpdatedTime ?? default,
                 twin: new TwinServiceModel(azureTwin),
                 ioTHubHostName: ioTHubHostName,
-                authentication: null)
+                authentication: null,
+                parentDevice: parentDevice)
         {
         }
 
@@ -131,6 +134,8 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
         public string IoTHubHostName { get; set; }
 
         public AuthenticationMechanismServiceModel Authentication { get; set; }
+
+        public string ParentDevice { get; set; }
 
         public Device ToAzureModel(bool ignoreEtag = true)
         {

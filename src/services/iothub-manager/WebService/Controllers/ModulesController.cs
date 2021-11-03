@@ -45,6 +45,13 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             return await this.GetModuleTwinsAsync(query);
         }
 
+        [HttpGet("{deviceId}")]
+        [Authorize("ReadAll")]
+        public async Task<ModuleListApiModel> GetModuleTwinsByDeviceIdAsync(string deviceId)
+        {
+            return new ModuleListApiModel(await this.devices.GetModuleTwinsByDeviceIdAsync(deviceId));
+        }
+
         [HttpGet("{deviceId}/{moduleId}")]
         [Authorize("ReadAll")]
         public async Task<TwinPropertiesApiModel> GetModuleTwinAsync(string deviceId, string moduleId)

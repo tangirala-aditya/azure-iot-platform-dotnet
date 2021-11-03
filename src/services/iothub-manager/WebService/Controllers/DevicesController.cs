@@ -215,6 +215,14 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             return new MethodResultApiModel(await this.deviceService.InvokeDeviceMethodAsync("edge-device-2", "$edgeAgent", new MethodParameterServiceModel()));
         }
 
+        [HttpGet("GetModuleLogs/{deviceId}/{moduleId}")]
+        public async Task<string> GetModuleLogs(string deviceId, string moduleId)
+        {
+            var result = await this.deviceService.InvokeDeviceMethodAsync(deviceId, moduleId, new MethodParameterServiceModel());
+
+            return result.JsonPayload;
+        }
+
         [HttpGet("RestartModule")]
         public async Task<MethodResultApiModel> RestartModule()
         {

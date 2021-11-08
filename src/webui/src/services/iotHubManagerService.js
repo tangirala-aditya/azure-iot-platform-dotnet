@@ -23,6 +23,7 @@ import {
     toDeviceLinkResponseModel,
     toLinkingJobsModel,
     toEdgeModulesModel,
+    toEdgeModuleLogsModel,
 } from "./models";
 import { map } from "rxjs/operators";
 
@@ -266,8 +267,8 @@ export class IoTHubManagerService {
     static getModuleLogs(deviceId, moduleId) {
         var response = HttpClient.get(
             `https://localhost:5001/v1/devices/getmodulelogs`,
-            { responseType: "blob", timeout: 120000 }
-        );
+            { timeout: 120000 }
+        ).pipe(map(toEdgeModuleLogsModel));
         return response;
     }
 }

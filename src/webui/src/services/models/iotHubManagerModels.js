@@ -154,6 +154,20 @@ export const toEdgeModuleModel = (module = {}) => {
     return modelData;
 };
 
+export const toEdgeModuleLogsModel = (moduleLogs = {}) => {
+    var items = moduleLogs.jsonPayload.map(toEdgeModuleLogModel);
+    return items;
+};
+
+export const toEdgeModuleLogModel = (jsonPayload = {}) => {
+    const modelData = camelCaseReshape(jsonPayload, {
+        text: "text",
+        loglevel: "loglevel",
+        timestamp: "timestamp",
+    });
+    return modelData;
+};
+
 export const toDeviceLinkResponseModel = (response = {}) => {
     const modelData = camelCaseReshape(response, {
         validationMessages: "validationMessages",

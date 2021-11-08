@@ -22,7 +22,6 @@ const css = classnames.bind(require("../maintenance.module.scss"));
 export class DeviceJobDetail extends Component {
     constructor(props) {
         super(props);
-        debugger;
         this.state = {
             selectedDeviceJob: undefined,
             selectedDevices: undefined,
@@ -32,7 +31,6 @@ export class DeviceJobDetail extends Component {
     }
 
     componentDidMount() {
-        debugger;
         this.handleNewProps(this.props);
         this.clearSubscription();
         this.props.logEvent(toDiagnosticsModel("JobDetails_Click", {}));

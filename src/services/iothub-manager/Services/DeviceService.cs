@@ -66,7 +66,7 @@ namespace Mmm.Iot.IoTHubManager.Services
                         }
                         ],
                         'encoding': 'none',
-                        'contentType': 'text'
+                        'contentType': 'json'
                         }
                     ");
             cloudToDeviceMethod.SetPayloadJson(jobject.ToString());

@@ -302,7 +302,7 @@ namespace Mmm.Iot.IoTHubManager.Services
                 KustoQueryPrefix,
                 inputQuery,
                 KustoOrderByQuery,
-                false,
+                true,
                 continuationToken);
 
             var connectedEdgeDevices = await this.GetConnectedEdgeDevices(allTwins.Result.Select(x => x.Twin).ToList());

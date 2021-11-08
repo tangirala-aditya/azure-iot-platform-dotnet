@@ -546,6 +546,10 @@
                     "module": "Module",
                     "logs": "Logs",
                     "restart": "Restart"
+                },
+                "moduleDetails":{
+                    "restart": "Restart",
+                    "download": "Download Logs"
                 }
             },
             "delete": {

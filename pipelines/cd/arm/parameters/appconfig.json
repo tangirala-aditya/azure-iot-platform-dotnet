@@ -3,6 +3,11 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "appConfigName": { "value": "" },
-        "location": { "value": "eastus" }
+        "location": { "value": "eastus" },
+        "principalId": {"value": ""},
+        "builtInRoleType":{"value": "AppConfigurationDataReader"},
+        "roleNameGuid":{"value":""},
+        "funcappName":{"value":""}
+
     }
 }

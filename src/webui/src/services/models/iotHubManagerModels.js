@@ -155,7 +155,7 @@ export const toEdgeModuleModel = (module = {}) => {
 };
 
 export const toEdgeModuleLogsModel = (moduleLogs = {}) => {
-    var items = moduleLogs.jsonPayload.map(toEdgeModuleLogModel);
+    var items = moduleLogs.jsonPayload?.map(toEdgeModuleLogModel);
     return items;
 };
 

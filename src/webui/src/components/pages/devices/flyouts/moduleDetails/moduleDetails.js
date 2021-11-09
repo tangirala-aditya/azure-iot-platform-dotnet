@@ -4,30 +4,44 @@ import React from "react";
 import { IoTHubManagerService } from "services";
 import { LinkedComponent, copyToClipboard, svgs } from "utilities";
 import {
+    ComponentArray,
     Btn,
+    ContextMenu,
+    ContextMenuAlign,
     PropertyGrid as Grid,
+    PropertyGridBody as GridBody,
+    PropertyGridHeader as GridHeader,
     PropertyRow as Row,
     PropertyCell as Cell,
-    FormControl,
+    // FormControl,
+    AjaxError,
+    SectionDesc,
 } from "components/shared";
 import Flyout from "components/shared/flyout";
+const classnames = require("classnames/bind");
+const css = classnames.bind(
+    require("../deviceDetails/deviceDetails.module.scss")
+);
+
+const Section = Flyout.Section;
 
 export class ModuleDetails extends LinkedComponent {
     constructor(props) {
         super(props);
-
         this.state = {
             edgeModuleLogs: undefined,
             edgeModuleLogsJson: {
                 jsObject: {},
             },
+            error: undefined,
+            deviceId: props.match.params.deviceId,
+            moduleId: props.match.params.moduleId,
         };
         this.baseState = this.state;
-        this.expandFlyout = this.expandFlyout.bind(this);
     }
 
     componentDidMount() {
-        this.fetchModuleLogs();
+        this.fetchModuleLogs(this.state.deviceId, this.state.moduleId);
     }
 
     componentWillUnmount() {}
@@ -38,41 +52,22 @@ export class ModuleDetails extends LinkedComponent {
         }
     };
 
-    toggleRawDiagnosticsMessage = () => {
-        this.setState({ showRawMessage: !this.state.showRawMessage });
-    };
-
-    applyRuleNames = (alerts, rules) =>
-        alerts.map((alert) => ({
-            ...alert,
-            name: (rules[alert.ruleId] || {}).name,
-        }));
-
-    fetchEdgeModules = (deviceId) => {
-        IoTHubManagerService.getEdgeModules(deviceId).subscribe((modules) => {
-            var edgeModules = [];
-            modules.items.forEach((module) => {
-                if (module) {
-                    edgeModules.push(module);
-                }
-            });
-            this.setState({
-                edgeModules: edgeModules,
-            });
-        });
-    };
-
     fetchModuleLogs = (deviceId, moduleId) => {
         IoTHubManagerService.getModuleLogs(deviceId, moduleId).subscribe(
             (response) => {
-                debugger;
-                console.log(response);
-                this.setState({
-                    edgeModuleLogs: response,
-                    edgeModuleLogsJson: {
-                        jsObject: response,
+                this.setState(
+                    {
+                        edgeModuleLogs: response,
+                        edgeModuleLogsJson: {
+                            jsObject: response,
+                        },
                     },
-                });
+                    (error) => {
+                        this.setState({
+                            error: error,
+                        });
+                    }
+                );
                 // var data =
                 //     "text/json;charset=utf-8," +
                 //     encodeURIComponent(JSON.stringify(response.response));
@@ -89,70 +84,155 @@ export class ModuleDetails extends LinkedComponent {
         );
     };
 
-    expandFlyout() {
-        if (this.state.expandedValue) {
-            this.setState({
-                expandedValue: false,
-            });
-        } else {
-            this.setState({
-                expandedValue: true,
-            });
-        }
-    }
+    navigateToDevices = () => {
+        this.props.history.push("/devices");
+    };
+
+    downloadModuleLogs = () => {
+        debugger;
+        console.log(this.state.edgeModuleLogs);
+        // var data =
+        //     "text/json;charset=utf-8," +
+        //     encodeURIComponent(JSON.stringify(edgeModuleLogs));
+        var blob = new Blob(this.state.edgeModuleLogs, {
+            type: "application/json",
+        });
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        // a.href = "data:" + data;
+        a.href = url;
+        a.download = "DeviceLogs.json";
+        a.click();
+    };
 
     render() {
-        const { t, onClose, flyoutLink, moduleId, theme } = this.props;
-        //const { edgeModuleLogs } = this.state;
+        const { t, moduleId } = this.props;
+        const { error } = this.state,
+            edgeModuleLogs = this.state.edgeModuleLogs || [];
         this.logJsonLink = this.linkTo("edgeModuleLogsJson");
 
         return (
-            <Flyout.Container
-                header={t("devices.flyouts.details.title")}
-                t={t}
-                onClose={onClose}
-                expanded={this.state.expandedValue}
-                onExpand={() => {
-                    this.expandFlyout();
-                }}
-                flyoutLink={flyoutLink}
-            >
-                <Grid>
-                    <Row>
-                        <Cell className="col-8">
-                            <Btn
-                                svg={svgs.refresh}
-                                onClick={this.copyDevicePropertiesToClipboard}
-                            >
-                                {t(
-                                    "devices.flyouts.details.moduleDetails.restart"
-                                )}
-                                {moduleId}
-                            </Btn>
-                        </Cell>
-                        <Cell className="col-2">
-                            <Btn
-                                svg={svgs.upload}
-                                onClick={this.copyDevicePropertiesToClipboard}
-                            >
-                                {t(
-                                    "devices.flyouts.details.moduleDetails.download"
-                                )}
-                            </Btn>
-                        </Cell>
-                    </Row>
-                </Grid>
-                <div>
-                    <form>
-                        <FormControl
-                            link={this.logJsonLink}
-                            type="jsoninput"
-                            height="100%"
-                            theme={theme}
+            <ComponentArray>
+                <ContextMenu>
+                    <ContextMenuAlign left={true}>
+                        <Btn svg={svgs.return} onClick={this.navigateToDevices}>
+                            {t("devices.returnToDevices")}
+                        </Btn>
+                    </ContextMenuAlign>
+                    {/* <ContextMenuAlign right={true}>
+                        <TimeIntervalDropdown
+                            onChange={this.updateTimeInterval}
+                            value={this.props.timeInterval}
+                            t={t}
                         />
-                    </form>
+                        <RefreshBar
+                            refresh={this.refreshTelemetry}
+                            time={lastRefreshed}
+                            t={t}
+                            isShowIconOnly={true}
+                        />
+                    </ContextMenuAlign> */}
+                </ContextMenu>
+                <div>
+                    <Section.Container>
+                        <Section.Header>
+                            {t("devices.flyouts.details.moduleDetails.title")}
+                        </Section.Header>
+                        <Section.Content>
+                            <SectionDesc></SectionDesc>
+                            <div
+                                className={css(
+                                    "device-details-deviceDeployments-contentbox"
+                                )}
+                            >
+                                <Grid>
+                                    <Row>
+                                        <Cell className="col-8"></Cell>
+                                        <Cell className="col-2">
+                                            <Btn
+                                                svg={svgs.refresh}
+                                                onClick={
+                                                    this
+                                                        .copyDevicePropertiesToClipboard
+                                                }
+                                            >
+                                                {t(
+                                                    "devices.flyouts.details.moduleDetails.restart"
+                                                )}
+                                                {moduleId}
+                                            </Btn>
+                                        </Cell>
+                                        <Cell className="col-2">
+                                            <Btn
+                                                svg={svgs.upload}
+                                                className={css(
+                                                    "download-deviceupload"
+                                                )}
+                                                onClick={
+                                                    this.downloadModuleLogs
+                                                }
+                                            >
+                                                {t(
+                                                    "devices.flyouts.details.moduleDetails.download"
+                                                )}
+                                            </Btn>
+                                        </Cell>
+                                    </Row>
+                                </Grid>
+                                {edgeModuleLogs.length === 0 &&
+                                    t(
+                                        "devices.flyouts.details.moduleDetails.noneExist"
+                                    )}
+                                {edgeModuleLogs.length > 0 && (
+                                    <Grid
+                                        className={css(
+                                            "device-details-deviceDeployments"
+                                        )}
+                                    >
+                                        <GridHeader>
+                                            <Row>
+                                                <Cell className="col-9">
+                                                    {t(
+                                                        "devices.flyouts.details.moduleDetails.log"
+                                                    )}
+                                                </Cell>
+                                                <Cell className="col-3">
+                                                    {t(
+                                                        "devices.flyouts.details.moduleDetails.timeStamp"
+                                                    )}
+                                                </Cell>
+                                            </Row>
+                                        </GridHeader>
+                                        <GridBody>
+                                            {edgeModuleLogs.map(
+                                                (edgeModuleLog, idx) => (
+                                                    <Row key={idx}>
+                                                        <Cell className="col-9">
+                                                            {edgeModuleLog.text}
+                                                        </Cell>
+                                                        <Cell className="col-3">
+                                                            {
+                                                                edgeModuleLog.timestamp
+                                                            }
+                                                        </Cell>
+                                                    </Row>
+                                                )
+                                            )}
+                                        </GridBody>
+                                    </Grid>
+                                )}
+                            </div>
+                        </Section.Content>
+                    </Section.Container>
+                    {error && (
+                        <AjaxError
+                            className="devices-new-error"
+                            t={t}
+                            error={error}
+                        />
+                    )}
                 </div>
-            </Flyout.Container>
+            </ComponentArray>
         );
     }
 }

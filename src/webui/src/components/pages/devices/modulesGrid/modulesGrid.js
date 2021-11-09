@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
-import { permissions, toDiagnosticsModel } from "services/models";
+import { toDiagnosticsModel } from "services/models";
 import { PcsGrid } from "components/shared";
 import {
     modulesColumnDefs,
@@ -13,7 +13,6 @@ import {
     getFlyoutNameParam,
     getParamByName,
     getFlyoutLink,
-    userHasPermission,
 } from "utilities";
 import { ModuleDetailsContainer } from "components/pages/devices/flyouts/moduleDetails/moduleDetails.container";
 
@@ -54,34 +53,15 @@ export class ModulesGrid extends Component {
     }
 
     getDefaultFlyout(rowData) {
-        const { location, userPermissions } = this.props;
+        const { location } = this.props;
         const flyoutName = getFlyoutNameParam(location);
         var isUserHasPermission = true;
-        if (
-            flyoutName === "jobs" &&
-            !userHasPermission(permissions.createJobs, userPermissions)
-        ) {
-            isUserHasPermission = false;
-        }
         const deviceIds = this.getDeviceIdsArray(
             getParamByName(location, "deviceId")
         );
         let devices = deviceIds
             ? rowData.filter((device) => deviceIds.includes(device.id))
             : undefined;
-
-        if (deviceIds && deviceIds.length > devices.length) {
-            const conditions = this.createCondition(
-                deviceIds,
-                "deviceId",
-                deviceIds.length > 1 ? "LK" : "EQ"
-            );
-            this.props.fetchDevicesByCondition({
-                data: conditions,
-                insertIntoGrid: true,
-            });
-            this.setState({ flyoutOpened: false });
-        }
         if (
             location &&
             location.search &&
@@ -98,18 +78,6 @@ export class ModulesGrid extends Component {
             });
             this.selectRows(deviceIds);
         }
-    }
-
-    createCondition(deviceIDs, key, operator) {
-        let data = [];
-        deviceIDs.forEach((element) => {
-            data.push({
-                key: key,
-                operator: operator,
-                value: element,
-            });
-        });
-        return data;
     }
 
     getDeviceIdsArray(deviceIdString) {
@@ -143,14 +111,13 @@ export class ModulesGrid extends Component {
         });
 
     getOpenFlyout = () => {
-        console.log(this.state.openFlyoutName);
         var flyoutLink = undefined;
         switch (this.state.openFlyoutName) {
             case "details":
                 flyoutLink = getFlyoutLink(
                     this.props.currentTenantId,
                     this.props.activeDeviceGroupId,
-                    "deviceId",
+                    this.props.deviceId,
                     this.state.softSelectedModuleId,
                     "details"
                 );
@@ -159,6 +126,7 @@ export class ModulesGrid extends Component {
                         key="details-module-key"
                         onClose={this.closeFlyout}
                         moduleId={this.state.softSelectedModuleId}
+                        deviceId={this.props.device.id}
                         flyoutLink={flyoutLink}
                     />
                 );
@@ -179,19 +147,13 @@ export class ModulesGrid extends Component {
      *
      * @param deviceId The ID of the currently soft selected device
      */
-    onSoftSelectChange = (deviceId) => {
-        const { onSoftSelectChange } = this.props;
-        if (deviceId) {
-            this.setState({
-                openFlyoutName: "details",
-                softSelectedModuleId: deviceId,
+    onSoftSelectChange = (moduleId) => {
+        this.props &&
+            this.props.history &&
+            this.props.history.push("/devices/modulesLogs", {
+                moduleId: moduleId,
+                deviceId: this.props.device.id,
             });
-        } else {
-            this.closeFlyout();
-        }
-        if (isFunc(onSoftSelectChange)) {
-            onSoftSelectChange(deviceId);
-        }
     };
 
     /**

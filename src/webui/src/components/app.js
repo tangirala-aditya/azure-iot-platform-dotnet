@@ -156,6 +156,16 @@ class App extends Component {
                     ],
                 },
                 {
+                    path: "/devices/modulesLogs",
+                    crumbs: [
+                        { to: "/devices", labelId: "tabs.devices" },
+                        {
+                            to: "/devices/modulesLogs",
+                            labelId: "devices.modulesLogs",
+                        },
+                    ],
+                },
+                {
                     path: "/deviceSearch",
                     crumbs: [{ to: "/deviceSearch", labelId: "Device Search" }],
                 },

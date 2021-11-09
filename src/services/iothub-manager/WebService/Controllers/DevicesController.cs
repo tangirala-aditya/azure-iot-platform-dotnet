@@ -216,11 +216,11 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
         }
 
         [HttpGet("GetModuleLogs/{deviceId}/{moduleId}")]
-        public async Task<string> GetModuleLogs(string deviceId, string moduleId)
+        public async Task<MethodResultApiModel> GetModuleLogs(string deviceId, string moduleId)
         {
-            var result = await this.deviceService.InvokeDeviceMethodAsync(deviceId, moduleId, new MethodParameterServiceModel());
+            var result = new MethodResultApiModel(await this.deviceService.InvokeDeviceMethodAsync(deviceId, moduleId, new MethodParameterServiceModel()));
 
-            return result.JsonPayload;
+            return result;
         }
 
         [HttpGet("RestartModule")]

@@ -13,7 +13,6 @@ import Config from "app.config";
 import { TelemetryService, IoTHubManagerService } from "services";
 import { DeviceIcon } from "./deviceIcon";
 import { RulesGrid, rulesColumnDefs } from "components/pages/rules/rulesGrid";
-import { ModulesGridContainer } from "components/pages/devices/modulesGrid";
 import {
     copyToClipboard,
     int,
@@ -433,13 +432,6 @@ export class DeviceDetails extends Component {
                 deviceGroups: this.props.deviceGroups,
                 domLayout: "autoHeight",
                 columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
-                suppressFlyouts: true,
-            },
-            modulesGridProps = {
-                rowData: this.state.edgeModules || [],
-                t: this.props.t,
-                domLayout: "autoHeight",
-                //columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
                 suppressFlyouts: true,
             },
             tags = Object.entries(device.tags || {}),
@@ -1312,9 +1304,13 @@ export class DeviceDetails extends Component {
                                                             (module, idx) => (
                                                                 <Row key={idx}>
                                                                     <Cell className="col-4">
-                                                                        {
-                                                                            module.moduleId
-                                                                        }
+                                                                        <Hyperlink
+                                                                            href={`/devices/moduleslogs/${module.deviceId}/${module.moduleId}`}
+                                                                        >
+                                                                            {
+                                                                                module.moduleId
+                                                                            }
+                                                                        </Hyperlink>
                                                                     </Cell>
                                                                     <Cell className="col-4">
                                                                         <Btn
@@ -1344,9 +1340,6 @@ export class DeviceDetails extends Component {
                                                 </Grid>
                                             )}
                                         </div>
-                                        <ModulesGridContainer
-                                            {...modulesGridProps}
-                                        />
                                     </Section.Content>
                                 </Section.Container>
                             )}

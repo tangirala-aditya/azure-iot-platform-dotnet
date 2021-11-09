@@ -42,7 +42,7 @@ export class IoTHubManagerService {
         options.timeout = 120000;
         const query = encodeURIComponent(JSON.stringify(conditions));
         return HttpClient.get(
-            `https://localhost:6001/v1/Devices?query=${query}`,
+            `https://localhost:5001/v1/Devices?query=${query}`,
             options
         ).pipe(map((response) => toDevicesModel(response, mappings)));
     }
@@ -202,19 +202,19 @@ export class IoTHubManagerService {
 
     static getLinkedDevices(deviceId) {
         return HttpClient.get(
-            `https://localhost:6001/v1/Devices/GetLinkedDevices/${deviceId}`
+            `https://localhost:5001/v1/Devices/GetLinkedDevices/${deviceId}`
         ).pipe(map(toEdgeDevicesModel));
     }
 
     static getDeviceLikingJobs(params) {
         return HttpClient.get(
-            `https://localhost:6001/v1/devices/GetDeviceLinkingJobs`
+            `https://localhost:5001/v1/devices/GetDeviceLinkingJobs`
         ).pipe(map(toLinkingJobsModel));
     }
 
     static getDeviceLikingJobsByJobId(jobId, params) {
         return HttpClient.get(
-            `https://localhost:6001/v1/devices/GetDeviceLinkingJobs/${jobId}`
+            `https://localhost:5001/v1/devices/GetDeviceLinkingJobs/${jobId}`
         ).pipe(map(toLinkingJobsModel));
     }
 
@@ -266,7 +266,7 @@ export class IoTHubManagerService {
 
     static getModuleLogs(deviceId, moduleId) {
         var response = HttpClient.get(
-            `https://localhost:5001/v1/devices/getmodulelogs`,
+            `https://localhost:5001/v1/devices/getmodulelogs/${deviceId}/${moduleId}`,
             { timeout: 120000 }
         ).pipe(map(toEdgeModuleLogsModel));
         return response;

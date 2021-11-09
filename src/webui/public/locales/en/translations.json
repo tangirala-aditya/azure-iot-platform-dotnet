@@ -548,8 +548,13 @@
                     "restart": "Restart"
                 },
                 "moduleDetails":{
-                    "restart": "Restart",
-                    "download": "Download Logs"
+                    "restart": "Restart  ",
+                    "download": "Download Logs",
+                    "title": "Module Details",
+                    "description": "Displays the logs of selected module",
+                    "noneExist": "No logs for the selected module",
+                    "log":"Log",
+                    "timeStamp":"Timestamp"
                 }
             },
             "delete": {

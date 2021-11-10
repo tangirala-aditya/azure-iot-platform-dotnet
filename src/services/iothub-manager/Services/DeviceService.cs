@@ -52,7 +52,30 @@ namespace Mmm.Iot.IoTHubManager.Services
             await this.serviceClient.SendAsync(deviceId, new Message(Encoding.ASCII.GetBytes(message)));
         }
 
-        public async Task<MethodResultServiceModel> InvokeDeviceMethodAsync(string deviceId, string moduleId, MethodParameterServiceModel parameterServiceModel)
+        public async Task<MethodResultServiceModel> InvokeDeviceMethodAsync(string deviceId, string moduleId, MethodParameterServiceModel parameterServiceModel, bool tobeRestarted = false)
+        {
+            CloudToDeviceMethod cloudToDeviceMethod = tobeRestarted ? this.GetRestartModuleObject(moduleId) : this.GetModuleLogsObject(moduleId);
+            var result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, "$edgeAgent", cloudToDeviceMethod);
+
+            // var result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, moduleId, parameterServiceModel.ToAzureModel());
+            return new MethodResultServiceModel(result);
+        }
+
+        private CloudToDeviceMethod GetRestartModuleObject(string moduleId)
+        {
+            CloudToDeviceMethod cloudToDeviceMethod = new CloudToDeviceMethod("RestartModule");
+
+            string formattedModuleId = (moduleId == "$edgeAgent" || moduleId == "$edgeHub") ? moduleId.Substring(1) : moduleId;
+            JObject jobject = new JObject
+            {
+                ["schemaVersion"] = "1.0",
+                ["id"] = formattedModuleId,
+            };
+
+            return cloudToDeviceMethod.SetPayloadJson(jobject.ToString());
+        }
+
+        private CloudToDeviceMethod GetModuleLogsObject(string moduleId)
         {
             CloudToDeviceMethod cloudToDeviceMethod = new CloudToDeviceMethod("GetModuleLogs");
 
@@ -73,11 +96,7 @@ namespace Mmm.Iot.IoTHubManager.Services
                 ["encoding"] = "none",
                 ["contentType"] = "json",
             };
-            cloudToDeviceMethod.SetPayloadJson(jobject1.ToString());
-            var result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, "$edgeAgent", cloudToDeviceMethod);
-
-            // var result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, moduleId, parameterServiceModel.ToAzureModel());
-            return new MethodResultServiceModel(result);
+            return cloudToDeviceMethod.SetPayloadJson(jobject1.ToString());
         }
     }
 }

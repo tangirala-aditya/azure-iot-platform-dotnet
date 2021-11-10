@@ -36,6 +36,9 @@ export class ModuleDetails extends LinkedComponent {
             error: undefined,
             deviceId: props.match.params.deviceId,
             moduleId: props.match.params.moduleId,
+            logsIsPending: true,
+            downloadLogsIsPending: true,
+            restartModulesIsPending: true,
         };
         this.baseState = this.state;
     }
@@ -52,6 +55,17 @@ export class ModuleDetails extends LinkedComponent {
         }
     };
 
+    restartEdgeModule = () => {
+        IoTHubManagerService.restartSelectedEdgeModule(
+            this.state.deviceId,
+            this.state.moduleId
+        ).subscribe((response) => {
+            this.setState({
+                restartModulesIsPending: false,
+            });
+        });
+    };
+
     fetchModuleLogs = (deviceId, moduleId) => {
         IoTHubManagerService.getModuleLogs(deviceId, moduleId).subscribe(
             (response) => {
@@ -61,10 +75,12 @@ export class ModuleDetails extends LinkedComponent {
                         edgeModuleLogsJson: {
                             jsObject: response,
                         },
+                        logsIsPending: false,
                     },
                     (error) => {
                         this.setState({
                             error: error,
+                            logsIsPending: false,
                         });
                     }
                 );
@@ -151,10 +167,7 @@ export class ModuleDetails extends LinkedComponent {
                                         <Cell className="col-2">
                                             <Btn
                                                 svg={svgs.refresh}
-                                                onClick={
-                                                    this
-                                                        .copyDevicePropertiesToClipboard
-                                                }
+                                                onClick={this.restartEdgeModule}
                                             >
                                                 {t(
                                                     "devices.flyouts.details.moduleDetails.restart"

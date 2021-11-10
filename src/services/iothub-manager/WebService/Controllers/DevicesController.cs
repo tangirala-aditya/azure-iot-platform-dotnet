@@ -223,10 +223,11 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             return result;
         }
 
-        [HttpGet("RestartModule")]
-        public async Task<MethodResultApiModel> RestartModule()
+        [HttpGet("RestartModule/{deviceId}/{moduleId}")]
+        public async Task<MethodResultApiModel> RestartModule(string deviceId, string moduleId)
         {
-            return new MethodResultApiModel(await this.deviceService.InvokeDeviceMethodAsync("edge-device-2", "$edgeAgent", new MethodParameterServiceModel()));
+            var result = await this.deviceService.InvokeDeviceMethodAsync(deviceId, moduleId, new MethodParameterServiceModel(), true);
+            return new MethodResultApiModel(result);
         }
 
         private void CreatePartsForExcel(SpreadsheetDocument document, List<DeviceRegistryApiModel> data, List<ColumnMappingModel> columnMapping)

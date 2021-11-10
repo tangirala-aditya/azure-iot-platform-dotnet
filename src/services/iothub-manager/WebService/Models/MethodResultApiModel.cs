@@ -13,7 +13,10 @@ namespace Mmm.Iot.IoTHubManager.WebService.Models
         public MethodResultApiModel(MethodResultServiceModel model)
         {
             this.Status = model.Status;
-            this.JsonPayload = this.GetJsonData(model.JsonPayload);
+            if (!string.IsNullOrEmpty(model.JsonPayload) && model.JsonPayload != "null")
+            {
+                this.JsonPayload = this.GetJsonData(model.JsonPayload);
+            }
         }
 
         public int Status { get; set; }

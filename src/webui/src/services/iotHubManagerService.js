@@ -271,4 +271,12 @@ export class IoTHubManagerService {
         ).pipe(map(toEdgeModuleLogsModel));
         return response;
     }
+
+    static restartSelectedEdgeModule(deviceId, moduleId) {
+        var response = HttpClient.get(
+            `https://localhost:5001/v1/devices/restartmodule/${deviceId}/${moduleId}`,
+            { timeout: 120000 }
+        ).pipe(map(toEdgeModuleLogsModel));
+        return response;
+    }
 }

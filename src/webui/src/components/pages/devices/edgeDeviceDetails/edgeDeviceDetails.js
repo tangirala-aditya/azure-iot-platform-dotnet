@@ -27,24 +27,12 @@ export class EdgeDeviceDetails extends LinkedComponent {
         super(props);
         this.state = {
             edgeModules: undefined,
-            edgeModuleLogsFetchPending: true,
-            edgeModuleLogs: undefined,
-            edgeModuleLogsJson: {
-                jsObject: {},
-            },
             edgeDeviceStatus: 404,
             edgeDeviceStatusPending: true,
             error: undefined,
             deviceId: props.match.params.deviceId,
             moduleId: props.match.params.moduleId,
-            formData: {
-                selectedModuleId: "",
-            },
         };
-        this.baseState = this.state;
-
-        this.formDataLink = this.linkTo("formData");
-        this.moduleIdLink = this.formDataLink.forkTo("selectedModuleId");
     }
 
     componentDidMount() {
@@ -57,43 +45,9 @@ export class EdgeDeviceDetails extends LinkedComponent {
         }
     };
 
-    // fetchModuleLogs = (deviceId, moduleId) => {
-    //     IoTHubManagerService.getModuleLogs(deviceId, moduleId).subscribe(
-    //         (response) => {
-    //             this.setState(
-    //                 {
-    //                     edgeModuleLogs: response,
-    //                     edgeModuleLogsJson: {
-    //                         jsObject: response,
-    //                     },
-    //                     edgeModuleLogsFetchPending: false,
-    //                 },
-    //                 (error) => {
-    //                     this.setState({
-    //                         error: error,
-    //                     });
-    //                 }
-    //             );
-    //             // var data =
-    //             //     "text/json;charset=utf-8," +
-    //             //     encodeURIComponent(JSON.stringify(response.response));
-    //             // //var blob = new Blob([response.response], {
-    //             // //    type: response.response.contentType,
-    //             // //});
-    //             // //let url = window.URL.createObjectURL(blob);
-    //             // debugger;
-    //             // let a = document.createElement("a");
-    //             // a.href = "data:" + data;
-    //             // a.download = moduleId + "DeviceLogs.json";
-    //             // a.click();
-    //         }
-    //     );
-    // };
-
     fetchEdgeDeviceStatus = (deviceId) => {
         IoTHubManagerService.getEdgeDeviceStatus(deviceId).subscribe(
             (response) => {
-                console.log(response);
                 this.setState(
                     {
                         edgeDeviceStatus: response.status,
@@ -123,7 +77,6 @@ export class EdgeDeviceDetails extends LinkedComponent {
                     edgeModules.push(module);
                 }
             });
-            console.log(edgeModules);
             this.setState({
                 edgeModules: edgeModules,
             });
@@ -134,41 +87,12 @@ export class EdgeDeviceDetails extends LinkedComponent {
         this.props.history.push("/devices");
     };
 
-    downloadModuleLogs = () => {
-        debugger;
-        console.log(this.state.edgeModuleLogs);
-        // var data =
-        //     "text/json;charset=utf-8," +
-        //     encodeURIComponent(JSON.stringify(edgeModuleLogs));
-        var blob = new Blob([JSON.stringify(this.state.edgeModuleLogs)], {
-            type: "application/json",
-        });
-        let url = window.URL.createObjectURL(blob);
-        let a = document.createElement("a");
-        a.href = url;
-        a.download = "DeviceLogs.json";
-        a.click();
-    };
-
-    onSystemAdminSelected = (e) => {
-        console.log(this.state.formData.selectedModuleId);
-        this.setState({
-            moduleId: e.target.value.value,
-            formData: {
-                selectedModuleId: e.target.value.value,
-            },
-        });
-    };
-
     render() {
         const { t } = this.props;
         const { error } = this.state;
         const isEdgeDeviceActive =
                 this.state.edgeDeviceStatus === 200 ? true : false,
             edgeDeviceStatusPending = this.state.edgeDeviceStatusPending;
-        // const isEdgeDeviceActive = true;
-        // const edgeDeviceStatusPending = false;
-        this.logJsonLink = this.linkTo("edgeModuleLogsJson");
 
         return (
             <ComponentArray>

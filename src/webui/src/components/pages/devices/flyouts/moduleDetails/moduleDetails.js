@@ -132,9 +132,6 @@ export class ModuleDetails extends LinkedComponent {
     };
 
     downloadModuleLogs = () => {
-        // var data =
-        //     "text/json;charset=utf-8," +
-        //     encodeURIComponent(JSON.stringify(edgeModuleLogs));
         var blob = new Blob([JSON.stringify(this.state.edgeModuleLogs)], {
             type: "application/json",
         });
@@ -164,7 +161,6 @@ export class ModuleDetails extends LinkedComponent {
         const isEdgeDeviceActive =
             this.state.edgeDeviceStatus === 200 ? true : false;
         const edgeDeviceStatusPending = this.state.edgeDeviceStatusPending;
-        this.logJsonLink = this.linkTo("edgeModuleLogsJson");
         const moduleOptions = this.state.edgeModules
             ? this.state.edgeModules.map((module) => ({
                   label: module.moduleId,

@@ -1287,14 +1287,14 @@ export class DeviceDetails extends Component {
                                                                     "devices.flyouts.details.edgeModules.module"
                                                                 )}
                                                             </Cell>
-                                                            <Cell className="col-4">
+                                                            {/* <Cell className="col-4">
                                                                 {t(
                                                                     "devices.flyouts.details.edgeModules.logs"
                                                                 )}
-                                                            </Cell>
+                                                            </Cell> */}
                                                             <Cell className="col-4">
                                                                 {t(
-                                                                    "devices.flyouts.details.edgeModules.restart"
+                                                                    "devices.flyouts.details.edgeModules.status"
                                                                 )}
                                                             </Cell>
                                                         </Row>
@@ -1305,14 +1305,14 @@ export class DeviceDetails extends Component {
                                                                 <Row key={idx}>
                                                                     <Cell className="col-4">
                                                                         <Hyperlink
-                                                                            href={`/devices/moduleslogs/${module.deviceId}/${module.moduleId}`}
+                                                                            href={`/devices/modulelogs/${module.deviceId}`}
                                                                         >
                                                                             {
                                                                                 module.moduleId
                                                                             }
                                                                         </Hyperlink>
                                                                     </Cell>
-                                                                    <Cell className="col-4">
+                                                                    {/* <Cell className="col-4">
                                                                         <Btn
                                                                             svg={
                                                                                 svgs.upload
@@ -1327,10 +1327,10 @@ export class DeviceDetails extends Component {
                                                                                 )
                                                                             }
                                                                         ></Btn>
-                                                                    </Cell>
+                                                                    </Cell> */}
                                                                     <Cell className="col-4">
                                                                         {
-                                                                            module.id
+                                                                            module.status
                                                                         }
                                                                     </Cell>
                                                                 </Row>

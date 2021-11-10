@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Devices;
+using Microsoft.Azure.Devices.Common.Exceptions;
 using Mmm.Iot.Common.Services.Config;
 using Mmm.Iot.IoTHubManager.Services.Helpers;
 using Mmm.Iot.IoTHubManager.Services.Models;
@@ -75,6 +76,25 @@ namespace Mmm.Iot.IoTHubManager.Services
             };
             cloudToDeviceMethod.SetPayloadJson(jobject1.ToString());
             var result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, "$edgeAgent", cloudToDeviceMethod);
+
+            // var result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, moduleId, parameterServiceModel.ToAzureModel());
+            return new MethodResultServiceModel(result);
+        }
+
+        public async Task<MethodResultServiceModel> PingModuleAsync(string deviceId)
+        {
+            CloudToDeviceMethod cloudToDeviceMethod = new CloudToDeviceMethod("Ping");
+            JObject jobject = JObject.Parse(@"{}");
+            cloudToDeviceMethod.SetPayloadJson(jobject.ToString());
+            CloudToDeviceMethodResult result = null;
+            try
+            {
+                result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, "$edgeAgent", cloudToDeviceMethod);
+            }
+            catch (DeviceNotFoundException)
+            {
+                return new MethodResultServiceModel() { Status = 404 };
+            }
 
             // var result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, moduleId, parameterServiceModel.ToAzureModel());
             return new MethodResultServiceModel(result);

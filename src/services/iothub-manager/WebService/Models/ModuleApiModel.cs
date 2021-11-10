@@ -37,6 +37,7 @@ namespace Mmm.Iot.IoTHubManager.WebService.Models
             this.IoTHubHostName = module.IoTHubHostName;
             this.Authentication = new AuthenticationMechanismApiModel(
                 module.Authentication ?? new AuthenticationMechanismServiceModel());
+            this.Status = module.Status;
 
             if (module.Twin != null)
             {
@@ -90,6 +91,9 @@ namespace Mmm.Iot.IoTHubManager.WebService.Models
 
         [JsonProperty(PropertyName = "Authentication")]
         public AuthenticationMechanismApiModel Authentication { get; set; }
+
+        [JsonProperty(PropertyName = "Status")]
+        public string Status { get; set; }
 
         internal string ModuleEtag
         {

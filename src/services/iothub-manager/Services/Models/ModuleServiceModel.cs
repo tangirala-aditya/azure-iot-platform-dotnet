@@ -76,6 +76,8 @@ namespace Mmm.Iot.IoTHubManager.Services.Models
 
         public string IoTHubHostName { get; set; }
 
+        public string Status { get; set; }
+
         public AuthenticationMechanismServiceModel Authentication { get; set; }
     }
 }

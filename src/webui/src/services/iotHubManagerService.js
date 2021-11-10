@@ -24,6 +24,7 @@ import {
     toLinkingJobsModel,
     toEdgeModulesModel,
     toEdgeModuleLogsModel,
+    toEdgeDeviceStatusModel,
 } from "./models";
 import { map } from "rxjs/operators";
 
@@ -270,5 +271,11 @@ export class IoTHubManagerService {
             { timeout: 120000 }
         ).pipe(map(toEdgeModuleLogsModel));
         return response;
+    }
+
+    static getEdgeDeviceStatus(deviceId) {
+        return HttpClient.get(
+            `https://localhost:5001/v1/devices/PingEdgeDevice/${deviceId}`
+        ).pipe(map(toEdgeDeviceStatusModel));
     }
 }

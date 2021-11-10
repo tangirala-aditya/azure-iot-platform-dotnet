@@ -526,6 +526,48 @@ namespace Mmm.Iot.IoTHubManager.Services
                 }
             }
 
+            var edgeAgent = modules.FirstOrDefault(x => x.ModuleId == "$edgeAgent");
+            Dictionary<string, string> moduleStatuses = new Dictionary<string, string>();
+            if (edgeAgent != null && edgeAgent.Twin != null && edgeAgent.Twin.ReportedProperties.Count > 0)
+            {
+                var systemModules = edgeAgent.Twin.ReportedProperties["systemModules"];
+                foreach (var item in systemModules.Children())
+                {
+                    var property = item as Newtonsoft.Json.Linq.JProperty;
+                    moduleStatuses.Add(property.Name, property.Value["runtimeStatus"].ToString());
+                }
+
+                if (edgeAgent.Twin.ReportedProperties.ContainsKey("modules"))
+                {
+                    var customModules = edgeAgent.Twin.ReportedProperties["modules"];
+                    foreach (var item in customModules.Children())
+                    {
+                        var property = item as Newtonsoft.Json.Linq.JProperty;
+                        moduleStatuses.Add(property.Name, property.Value["runtimeStatus"].ToString());
+                    }
+                }
+            }
+
+            foreach (var moduleId in moduleStatuses.Keys)
+            {
+                if (moduleId == "edgeAgent" || moduleId == "edgeHub")
+                {
+                    var module = modules.FirstOrDefault(x => x.ModuleId == $"${moduleId}");
+                    if (module != null)
+                    {
+                        module.Status = moduleStatuses[moduleId];
+                    }
+                }
+                else
+                {
+                    var module = modules.FirstOrDefault(x => x.ModuleId == moduleId);
+                    if (module != null)
+                    {
+                        module.Status = moduleStatuses[moduleId];
+                    }
+                }
+            }
+
             return new ModuleServiceListModel(modules);
         }
 

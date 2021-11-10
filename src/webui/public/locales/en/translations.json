@@ -545,7 +545,8 @@
                     "noneExist": "No modules defined to the selected edge device",
                     "module": "Module",
                     "logs": "Logs",
-                    "restart": "Restart"
+                    "restart": "Restart",
+                    "status": "Status"
                 },
                 "moduleDetails":{
                     "restart": "Restart  ",
@@ -554,7 +555,8 @@
                     "description": "Displays the logs of selected module",
                     "noneExist": "No logs for the selected module",
                     "log":"Log",
-                    "timeStamp":"Timestamp"
+                    "timeStamp":"Timestamp",
+                    "modulePlaceHolder": "Select a Module"
                 }
             },
             "delete": {
@@ -961,6 +963,10 @@
             "6": "Scheduled",
             "queued": "Queued"
         }
+    },
+    "edgeDeviceDetails":{
+        "moduleInfo": "Module Information",
+        "deviceInfo": "Device Information"
     },
     "timeInterval": {
         "PT15M": "Last 15 minutes",

@@ -53,6 +53,25 @@ namespace Mmm.Iot.IoTHubManager.Services
             await this.serviceClient.SendAsync(deviceId, new Message(Encoding.ASCII.GetBytes(message)));
         }
 
+        public async Task<MethodResultServiceModel> PingModuleAsync(string deviceId)
+        {
+            CloudToDeviceMethod cloudToDeviceMethod = new CloudToDeviceMethod("Ping");
+            JObject jobject = JObject.Parse(@"{}");
+            cloudToDeviceMethod.SetPayloadJson(jobject.ToString());
+            CloudToDeviceMethodResult result = null;
+            try
+            {
+                result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, "$edgeAgent", cloudToDeviceMethod);
+            }
+            catch (DeviceNotFoundException)
+            {
+                return new MethodResultServiceModel() { Status = 404 };
+            }
+
+            // var result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, moduleId, parameterServiceModel.ToAzureModel());
+            return new MethodResultServiceModel(result);
+        }
+
         public async Task<MethodResultServiceModel> InvokeDeviceMethodAsync(string deviceId, string moduleId, MethodParameterServiceModel parameterServiceModel, bool tobeRestarted = false)
         {
             CloudToDeviceMethod cloudToDeviceMethod = tobeRestarted ? this.GetRestartModuleObject(moduleId) : this.GetModuleLogsObject(moduleId);
@@ -98,25 +117,6 @@ namespace Mmm.Iot.IoTHubManager.Services
                 ["contentType"] = "json",
             };
             return cloudToDeviceMethod.SetPayloadJson(jobject1.ToString());
-        }
-
-        public async Task<MethodResultServiceModel> PingModuleAsync(string deviceId)
-        {
-            CloudToDeviceMethod cloudToDeviceMethod = new CloudToDeviceMethod("Ping");
-            JObject jobject = JObject.Parse(@"{}");
-            cloudToDeviceMethod.SetPayloadJson(jobject.ToString());
-            CloudToDeviceMethodResult result = null;
-            try
-            {
-                result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, "$edgeAgent", cloudToDeviceMethod);
-            }
-            catch (DeviceNotFoundException)
-            {
-                return new MethodResultServiceModel() { Status = 404 };
-            }
-
-            // var result = await this.serviceClient.InvokeDeviceMethodAsync(deviceId, moduleId, parameterServiceModel.ToAzureModel());
-            return new MethodResultServiceModel(result);
         }
     }
 }

@@ -150,6 +150,15 @@ export const toEdgeModuleModel = (module = {}) => {
         lastStatusUpdated: "lastStatusUpdated",
         eTag: "eTag",
         authentication: "authentication",
+        status: "status",
+    });
+    return modelData;
+};
+
+export const toEdgeDeviceStatusModel = (response = {}) => {
+    const modelData = camelCaseReshape(response, {
+        status: "status",
+        payload: "payload",
     });
     return modelData;
 };

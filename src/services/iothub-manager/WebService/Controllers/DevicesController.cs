@@ -230,6 +230,12 @@ namespace Mmm.Iot.IoTHubManager.WebService.Controllers
             return new MethodResultApiModel(result);
         }
 
+        [HttpGet("PingEdgeDevice/{deviceId}")]
+        public async Task<PingResultApiModel> PingEdgeDeviceAsync(string deviceId)
+        {
+            return new PingResultApiModel(await this.deviceService.PingModuleAsync(deviceId));
+        }
+
         private void CreatePartsForExcel(SpreadsheetDocument document, List<DeviceRegistryApiModel> data, List<ColumnMappingModel> columnMapping)
         {
             SheetData partSheetData = this.GenerateSheetdataForDetails(data, columnMapping);

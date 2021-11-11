@@ -4,13 +4,12 @@ import React, { Fragment } from "react";
 import { IoTHubManagerService } from "services";
 import { NavLink } from "react-router-dom";
 import { Route, Switch } from "react-router-dom";
-import { LinkedComponent, copyToClipboard, svgs } from "utilities";
+import { LinkedComponent, svgs } from "utilities";
 import {
     ComponentArray,
     Btn,
     ContextMenu,
     ContextMenuAlign,
-    // FormControl,
     AjaxError,
     PageContent,
 } from "components/shared";
@@ -38,12 +37,6 @@ export class EdgeDeviceDetails extends LinkedComponent {
     componentDidMount() {
         this.fetchEdgeDeviceStatus(this.state.deviceId);
     }
-
-    copyDevicePropertiesToClipboard = () => {
-        if (this.props.device) {
-            copyToClipboard(JSON.stringify(this.props.device.properties || {}));
-        }
-    };
 
     fetchEdgeDeviceStatus = (deviceId) => {
         IoTHubManagerService.getEdgeDeviceStatus(deviceId).subscribe(

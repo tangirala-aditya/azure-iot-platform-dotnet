@@ -78,13 +78,6 @@ class App extends Component {
                     labelId: "tabs.devices",
                     component: DevicesRouter,
                 },
-                // {
-                //     to: "/edge-devices",
-                //     exact: false,
-                //     svg: svgs.tabs.devices,
-                //     labelId: "Edge Devices Explorer",
-                //     component: DevicesRouter,
-                // },
                 {
                     to: "/deviceSearch",
                     exact: false,

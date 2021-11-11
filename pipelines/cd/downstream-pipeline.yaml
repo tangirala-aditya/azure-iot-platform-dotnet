@@ -1,0 +1,29 @@
+trigger: none
+pr: none
+resources:
+  pipelines:
+    - pipeline: testV3
+      source: azure-iot-platform-dotnet.ci.test-v3
+      project: AzurePlatform
+      trigger:
+        branches:
+          - master
+stages:
+  - stage: Stage1
+    displayName: Print
+    dependsOn: []
+    jobs:
+      - job: Print
+        displayName: Print
+        steps:
+          - checkout: none
+
+          - script: |-
+              set -Eeuxo pipefail
+              echo "Image tag: '$(var)'"
+              if [ -z "$(var)" ]
+              then
+                echo "A value for the 'var' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+            displayName: Print

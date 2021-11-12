@@ -68,7 +68,7 @@ export class DevicesGrid extends Component {
                 {this.props.t("devices.showTelemetry")}
             </Btn>
             <Btn
-                icon="copyLink"
+                svg={svgs.copyLink}
                 onClick={this.openFlyout("linkOrUnlinkDevice")}
             >
                 {this.props.t("devices.LinkOrUnLink")}

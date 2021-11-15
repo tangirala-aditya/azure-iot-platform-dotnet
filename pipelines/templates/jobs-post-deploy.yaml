@@ -34,7 +34,7 @@ jobs:
           $user="${{parameters.user}}"
           $token="${{parameters.PATToken}}"
           $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $user,$token)))
-          $Uri = "https://dev.azure.com/$orgName/$projectName/_apis/build/builds?api-version=5.1"
+          $Uri = "https://dev.azure.com/${{parameters.orgName}}/${{parameters.projectName}}/_apis/build/builds?api-version=5.1"
           $buildresponse = Invoke-RestMethod -Method Post -UseDefaultCredentials -ContentType application/json -Uri $Uri -Body $bodyString -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)}
           write-host $buildresponse
 

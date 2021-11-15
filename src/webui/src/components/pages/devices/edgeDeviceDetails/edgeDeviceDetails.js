@@ -30,7 +30,7 @@ export class EdgeDeviceDetails extends LinkedComponent {
             edgeDeviceStatusPending: true,
             error: undefined,
             deviceId: props.match.params.deviceId,
-            moduleId: props.match.params.moduleId,
+            moduleId: props.location.state.moduleId,
         };
     }
 
@@ -52,30 +52,9 @@ export class EdgeDeviceDetails extends LinkedComponent {
                         });
                     }
                 );
-                if (
-                    !this.state.edgeDeviceStatusPending &&
-                    this.state.edgeDeviceStatus === 200
-                ) {
-                    this.fetchEdgeModules(this.state.deviceId);
-                }
             }
         );
     };
-
-    fetchEdgeModules = (deviceId) => {
-        IoTHubManagerService.getEdgeModules(deviceId).subscribe((modules) => {
-            var edgeModules = [];
-            modules.items.forEach((module) => {
-                if (module) {
-                    edgeModules.push(module);
-                }
-            });
-            this.setState({
-                edgeModules: edgeModules,
-            });
-        });
-    };
-
     navigateToDevices = () => {
         this.props.history.push("/devices");
     };
@@ -98,8 +77,8 @@ export class EdgeDeviceDetails extends LinkedComponent {
                 </ContextMenu>
                 {!isEdgeDeviceActive && !edgeDeviceStatusPending && (
                     <center>
-                        <h1>Device is Offline</h1>
-                        <h2>Please try after sometime.</h2>
+                        <h1>Device is Offline</h1>
+                        <h2>Please try after sometime.</h2>
                     </center>
                 )}
                 {isEdgeDeviceActive && (

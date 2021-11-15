@@ -247,6 +247,8 @@ export class DevicesGrid extends Component {
                         deviceId={this.state.softSelectedDeviceId}
                         flyoutLink={flyoutLink}
                         isDeviceSearch={this.state.isDeviceSearch}
+                        location={this.props.location}
+                        history={this.props.history}
                     />
                 );
             case "c2dmessage":

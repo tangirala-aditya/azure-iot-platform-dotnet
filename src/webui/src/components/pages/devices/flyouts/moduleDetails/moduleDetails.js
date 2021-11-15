@@ -11,20 +11,22 @@ import {
     PropertyGridHeader as GridHeader,
     PropertyRow as Row,
     PropertyCell as Cell,
-    // FormControl,
     AjaxError,
-    SectionDesc,
     FormGroup,
     FormControl,
+    Modal,
+    BtnToolbar,
 } from "components/shared";
-import Flyout from "components/shared/flyout";
 const classnames = require("classnames/bind");
 const css = classnames.bind(
     require("../deviceDetails/deviceDetails.module.scss")
 );
 const modulecss = classnames.bind(require("./moduleDetails.module.scss"));
 
-const Section = Flyout.Section;
+const closedModalState = {
+    openModalName: undefined,
+    flyoutLink: undefined,
+};
 
 export class ModuleDetails extends LinkedComponent {
     constructor(props) {
@@ -42,8 +44,10 @@ export class ModuleDetails extends LinkedComponent {
             deviceId: props.deviceId,
             moduleId: props.moduleId,
             formData: {
-                selectedModuleId: "",
+                selectedModuleId: props.moduleId,
             },
+            openModalName: "",
+            flyoutLink: "",
         };
         this.baseState = this.state;
         this.formDataLink = this.linkTo("formData");
@@ -60,7 +64,8 @@ export class ModuleDetails extends LinkedComponent {
             this.state.moduleId
         ).subscribe((response) => {
             this.setState({
-                restartModulesIsPending: false,
+                openModalName: "restart-message",
+                flyoutLink: "restarted successfully",
             });
         });
     };
@@ -76,6 +81,7 @@ export class ModuleDetails extends LinkedComponent {
             this.setState({
                 edgeModules: edgeModules,
             });
+            this.fetchModuleLogs(this.state.deviceId, this.state.moduleId);
         });
     };
 
@@ -96,33 +102,6 @@ export class ModuleDetails extends LinkedComponent {
                         });
                     }
                 );
-            }
-        );
-    };
-
-    fetchEdgeDeviceStatus = (deviceId) => {
-        IoTHubManagerService.getEdgeDeviceStatus(deviceId).subscribe(
-            (response) => {
-                this.setState(
-                    {
-                        edgeDeviceStatus: response.status,
-                        edgeDeviceStatusPending: false,
-                    },
-                    (error) => {
-                        this.setState({
-                            error: error,
-                        });
-                    }
-                );
-                if (
-                    !this.state.edgeDeviceStatusPending &&
-                    this.state.edgeDeviceStatus === 200
-                ) {
-                    this.fetchModuleLogs(
-                        this.state.deviceId,
-                        this.state.moduleId
-                    );
-                }
             }
         );
     };
@@ -152,15 +131,53 @@ export class ModuleDetails extends LinkedComponent {
         });
     };
 
+    openModal = (message) => () => {
+        debugger;
+        this.setState({
+            openModalName: "restart-message",
+            flyoutLink: message,
+        });
+    };
+    closeModal = () => this.setState(closedModalState);
+
+    getOpenModal = () => {
+        const { t } = this.props;
+        if (this.state.openModalName === "restart-message") {
+            return (
+                <Modal
+                    className={modulecss("copy-modal-container")}
+                    onClose={() => this.closeModal()}
+                >
+                    <div className={modulecss("copy-header-container")}>
+                        <div className={modulecss("copy-title")}>
+                            {"Message"}
+                        </div>
+                    </div>
+                    <div className={modulecss("copy-info")}>
+                        {this.state.flyoutLink}
+                    </div>
+                    <div className={modulecss("copy-summary")}>
+                        <BtnToolbar>
+                            <Btn
+                                svg={svgs.cancelX}
+                                onClick={() => this.closeModal()}
+                            >
+                                {t("modal.cancel")}
+                            </Btn>
+                        </BtnToolbar>
+                    </div>
+                </Modal>
+            );
+        }
+        return null;
+    };
+
     render() {
         const { t } = this.props;
         const { moduleId } = this.state;
         const { error } = this.state,
             edgeModuleLogs = this.state.edgeModuleLogs || [],
             edgeModuleLogsFetchPending = this.state.edgeModuleLogsFetchPending;
-        const isEdgeDeviceActive =
-            this.state.edgeDeviceStatus === 200 ? true : false;
-        const edgeDeviceStatusPending = this.state.edgeDeviceStatusPending;
         const moduleOptions = this.state.edgeModules
             ? this.state.edgeModules.map((module) => ({
                   label: module.moduleId,
@@ -170,151 +187,112 @@ export class ModuleDetails extends LinkedComponent {
 
         return (
             <ComponentArray>
-                {!isEdgeDeviceActive && !edgeDeviceStatusPending && (
-                    <center>
-                        <h1>Alerting must be turned on to use Rules</h1>
-                        <h2>
-                            You may turn this feature on by clicking the
-                            settings menu (gear icon) at the top right of the
-                            screen
-                        </h2>
-                    </center>
-                )}
-                {isEdgeDeviceActive && (
-                    <Fragment>
-                        <FormGroup className={modulecss("moduledropdown")}>
-                            <FormControl
-                                name="selectedModuleId"
-                                link={this.moduleIdLink}
-                                ariaLabel={t(
-                                    "users.flyouts.new.systemAdmin.label"
+                <Fragment>
+                    <FormGroup className={modulecss("moduledropdown")}>
+                        <FormControl
+                            name="selectedModuleId"
+                            link={this.moduleIdLink}
+                            ariaLabel={t("users.flyouts.new.systemAdmin.label")}
+                            type="select"
+                            options={moduleOptions}
+                            placeholder={t(
+                                "devices.flyouts.details.moduleDetails.modulePlaceHolder"
+                            )}
+                            onChange={(e) => this.onModuleSelected(e)}
+                        />
+                    </FormGroup>
+                    {this.state.moduleId && (
+                        <div
+                            className={css(
+                                "device-details-deviceDeployments-contentbox"
+                            )}
+                        >
+                            <Grid>
+                                <Row>
+                                    <Cell className="col-8"></Cell>
+                                    <Cell className="col-2">
+                                        <Btn
+                                            svg={svgs.refresh}
+                                            onClick={this.restartEdgeModule}
+                                        >
+                                            {t(
+                                                "devices.flyouts.details.moduleDetails.restart"
+                                            )}
+                                            {moduleId}
+                                        </Btn>
+                                    </Cell>
+                                    <Cell className="col-2">
+                                        <Btn
+                                            icon={"download"}
+                                            className={css(
+                                                "download-deviceupload"
+                                            )}
+                                            onClick={this.downloadModuleLogs}
+                                        >
+                                            {t(
+                                                "devices.flyouts.details.moduleDetails.download"
+                                            )}
+                                        </Btn>
+                                    </Cell>
+                                </Row>
+                            </Grid>
+                            {edgeModuleLogsFetchPending &&
+                                t("Fetching Module Logs")}
+                            {!edgeModuleLogsFetchPending &&
+                                edgeModuleLogs.length === 0 &&
+                                t(
+                                    "devices.flyouts.details.moduleDetails.noneExist"
                                 )}
-                                type="select"
-                                options={moduleOptions}
-                                placeholder={t(
-                                    "devices.flyouts.details.moduleDetails.modulePlaceHolder"
-                                )}
-                                onChange={(e) => this.onModuleSelected(e)}
-                            />
-                        </FormGroup>
-                        {this.state.moduleId && (
-                            <Section.Container>
-                                <Section.Header>
-                                    {t(
-                                        "devices.flyouts.details.moduleDetails.title"
-                                    )}
-                                </Section.Header>
-                                <Section.Content>
-                                    <SectionDesc></SectionDesc>
-                                    <div
+                            {!edgeModuleLogsFetchPending &&
+                                edgeModuleLogs.length > 0 && (
+                                    <Grid
                                         className={css(
-                                            "device-details-deviceDeployments-contentbox"
+                                            "device-details-deviceDeployments"
                                         )}
                                     >
-                                        <Grid>
+                                        <GridHeader>
                                             <Row>
-                                                <Cell className="col-8"></Cell>
-                                                <Cell className="col-2">
-                                                    <Btn
-                                                        svg={svgs.refresh}
-                                                        onClick={
-                                                            this
-                                                                .restartEdgeModule
-                                                        }
-                                                    >
-                                                        {t(
-                                                            "devices.flyouts.details.moduleDetails.restart"
-                                                        )}
-                                                        {moduleId}
-                                                    </Btn>
+                                                <Cell className="col-9">
+                                                    {t(
+                                                        "devices.flyouts.details.moduleDetails.log"
+                                                    )}
                                                 </Cell>
-                                                <Cell className="col-2">
-                                                    <Btn
-                                                        svg={svgs.upload}
-                                                        className={css(
-                                                            "download-deviceupload"
-                                                        )}
-                                                        onClick={
-                                                            this
-                                                                .downloadModuleLogs
-                                                        }
-                                                    >
-                                                        {t(
-                                                            "devices.flyouts.details.moduleDetails.download"
-                                                        )}
-                                                    </Btn>
+                                                <Cell className="col-3">
+                                                    {t(
+                                                        "devices.flyouts.details.moduleDetails.timeStamp"
+                                                    )}
                                                 </Cell>
                                             </Row>
-                                        </Grid>
-                                        {edgeModuleLogs.length === 0 &&
-                                            t(
-                                                "devices.flyouts.details.moduleDetails.noneExist"
+                                        </GridHeader>
+                                        <GridBody>
+                                            {edgeModuleLogs.map(
+                                                (edgeModuleLog, idx) => (
+                                                    <Row key={idx}>
+                                                        <Cell className="col-9">
+                                                            {edgeModuleLog.text}
+                                                        </Cell>
+                                                        <Cell className="col-3">
+                                                            {
+                                                                edgeModuleLog.timestamp
+                                                            }
+                                                        </Cell>
+                                                    </Row>
+                                                )
                                             )}
-
-                                        {edgeModuleLogsFetchPending &&
-                                            t("Fetching Module Logs")}
-                                        {!edgeModuleLogsFetchPending &&
-                                            edgeModuleLogs.length === 0 &&
-                                            t(
-                                                "devices.flyouts.details.moduleDetails.noneExist"
-                                            )}
-                                        {!edgeModuleLogsFetchPending &&
-                                            edgeModuleLogs.length > 0 && (
-                                                <Grid
-                                                    className={css(
-                                                        "device-details-deviceDeployments"
-                                                    )}
-                                                >
-                                                    <GridHeader>
-                                                        <Row>
-                                                            <Cell className="col-9">
-                                                                {t(
-                                                                    "devices.flyouts.details.moduleDetails.log"
-                                                                )}
-                                                            </Cell>
-                                                            <Cell className="col-3">
-                                                                {t(
-                                                                    "devices.flyouts.details.moduleDetails.timeStamp"
-                                                                )}
-                                                            </Cell>
-                                                        </Row>
-                                                    </GridHeader>
-                                                    <GridBody>
-                                                        {edgeModuleLogs.map(
-                                                            (
-                                                                edgeModuleLog,
-                                                                idx
-                                                            ) => (
-                                                                <Row key={idx}>
-                                                                    <Cell className="col-9">
-                                                                        {
-                                                                            edgeModuleLog.text
-                                                                        }
-                                                                    </Cell>
-                                                                    <Cell className="col-3">
-                                                                        {
-                                                                            edgeModuleLog.timestamp
-                                                                        }
-                                                                    </Cell>
-                                                                </Row>
-                                                            )
-                                                        )}
-                                                    </GridBody>
-                                                </Grid>
-                                            )}
-                                    </div>
-                                </Section.Content>
-                            </Section.Container>
-                        )}
-                        {error && (
-                            <AjaxError
-                                className="devices-new-error"
-                                t={t}
-                                error={error}
-                            />
-                        )}
-                    </Fragment>
-                )}
+                                        </GridBody>
+                                    </Grid>
+                                )}
+                        </div>
+                    )}
+                    {error && (
+                        <AjaxError
+                            className="devices-new-error"
+                            t={t}
+                            error={error}
+                        />
+                    )}
+                </Fragment>
+                {this.getOpenModal()}
             </ComponentArray>
         );
     }

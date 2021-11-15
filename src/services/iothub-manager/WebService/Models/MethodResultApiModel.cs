@@ -10,6 +10,10 @@ namespace Mmm.Iot.IoTHubManager.WebService.Models
 {
     public class MethodResultApiModel
     {
+        public MethodResultApiModel()
+        {
+        }
+
         public MethodResultApiModel(MethodResultServiceModel model)
         {
             this.Status = model.Status;

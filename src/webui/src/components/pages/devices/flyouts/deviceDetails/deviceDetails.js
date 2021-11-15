@@ -388,6 +388,13 @@ export class DeviceDetails extends Component {
         }
     }
 
+    goToEdgeModuleDiagnostics = (deviceId, moduleId) => {
+        this.props.history.push(`/devices/modulelogs/${deviceId}`, {
+            deviceId: deviceId,
+            moduleId: moduleId,
+        });
+    };
+
     render() {
         const {
                 t,
@@ -468,8 +475,12 @@ export class DeviceDetails extends Component {
                                             {device.id}
                                         </div>
                                         {device.parentDeviceId && (
-                                            <div className={css("device-name")}>
-                                                ParentDevice:
+                                            <div
+                                                className={css(
+                                                    "device-simulated"
+                                                )}
+                                            >
+                                                Linked To:
                                                 {device.parentDeviceId}
                                             </div>
                                         )}
@@ -1285,13 +1296,21 @@ export class DeviceDetails extends Component {
                                                             (module, idx) => (
                                                                 <Row key={idx}>
                                                                     <Cell className="col-4">
-                                                                        <Hyperlink
-                                                                            href={`/devices/modulelogs/${module.deviceId}`}
+                                                                        <Btn
+                                                                            onClick={() =>
+                                                                                this.goToEdgeModuleDiagnostics(
+                                                                                    module.deviceId,
+                                                                                    module.moduleId
+                                                                                )
+                                                                            }
+                                                                            className={css(
+                                                                                "link"
+                                                                            )}
                                                                         >
                                                                             {
                                                                                 module.moduleId
                                                                             }
-                                                                        </Hyperlink>
+                                                                        </Btn>
                                                                     </Cell>
                                                                     <Cell className="col-4">
                                                                         {

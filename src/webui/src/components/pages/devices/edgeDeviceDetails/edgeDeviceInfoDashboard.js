@@ -1,14 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component, Fragment } from "react";
-// import {
-//     Panel,
-//     PanelContent,
-//     PanelHeader,
-//     PanelHeaderLabel,
-// } from "components/pages/dashboard/panel";
-// const classnames = require("classnames/bind");
-// const css = classnames.bind(require("./edgeDeviceDetails.module.scss"));
 export const getIntervalParams = (timeInterval) => {
     switch (timeInterval) {
         case "PT15M":
@@ -37,32 +29,22 @@ export class EdgeDeviceInfoDashboard extends Component {
 
     prepareUrl(props) {
         this.setState({ from: getIntervalParams(props.timeInterval) });
-        this.setState({ deviceGroupId: (props.deviceId || {}).id });
+        this.setState({ deviceId: (props.deviceId || {}).id });
     }
 
     render() {
         // const { t } = this.props;
+        const { deviceId } = this.state;
         return (
-            // <Panel>
-            //     <PanelHeader>
-            //         <PanelHeaderLabel>
-            //             {t("dashboard.panels.dashboard.header")}
-            //         </PanelHeaderLabel>
-            //     </PanelHeader>
-            //     <PanelContent className={css("telemetry-panel-container")}>
             <Fragment>
                 <iframe
                     title="Dashboard"
-                    src={
-                        "http://localhost:3000/grafana/d/SsCPi9v7z/edgedashboard?orgId=50&theme=light&refresh=10s&kiosk"
-                    }
+                    src={`http://localhost:3000/grafana/d/SsCPi9v7z/edgedashboard?orgId=50&from=now-1h&to=now&var-deviceId=${deviceId}&theme=light&refresh=10s&kiosk`}
                     width="100%"
                     height="100%"
                     frameborder="0"
                 ></iframe>
             </Fragment>
-            //     </PanelContent>
-            // </Panel>
         );
     }
 }

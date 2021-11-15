@@ -106,6 +106,18 @@ stages:
           blueGreen: false
           isHelmVersion3: false          
           subscriptionId: $(subscriptionId-acsDev)
+      - template: ../templates/jobs-post-deploy.yaml
+        parameters:
+          environmentName: $(environmentName-acsDev)
+          subscriptionName: $(subscriptionName-acsDev)
+          applicationCode: $(applicationCode-acsDev)
+          applicationShortCode: $(applicationShortCode-acsDev)
+          user: $(user-acsDev)
+          orgName: $(orgname-acsDev)
+          PATToken: $(PATToken-acsDev)
+          projectName: $(projectName-acsDev)
+          postBuildId: $(postBuildId-acsDev)
+
 
   - stage: crslQa
     displayName: CRSL QA

@@ -1,0 +1,42 @@
+parameters:
+  environmentName:
+  environmentCategory:
+  applicationCode:
+  applicationShortCode:
+  postBuildId: 
+  user:
+  PATtoken:
+  projectName:
+  orgName:
+
+jobs:
+      
+  - job: triggerAnotherPipeline
+    displayName: Trigger customer pipeline
+    steps:
+
+      - pwsh: |-
+          echo "environmentName: ${{parameters.environmentName}}"
+          echo "environmentCategory: ${{parameters.environmentCategory}}"
+          echo "applicationCode: ${{parameters.applicationCode}}"
+          echo "applicationShortCode: ${{parameters.applicationShortCode}}"
+          $body = '
+          { 
+                 "definition": {
+                      "id": ${{parameters.postBuildId}}
+                 },
+		            "parameters": "{\"environmentName\":\"${{parameters.environmentName}}\", \"environmentCategory\":\"${{parameters.environmentCategory}}\", \"applicationCode\":\"${{parameters.applicationCode}}\", \"applicationShortCode\":\"${{parameters.applicationShortCode}}\" }"
+          }
+          '
+          $bodyJson=$body | ConvertFrom-Json
+          Write-Output $bodyJson
+          $bodyString=$bodyJson | ConvertTo-Json -Depth 100
+          Write-Output $bodyString
+          $user= ${{parameters.user}}
+          $token= ${{parameters.PATToken}}
+          $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $user,$token)))
+          $Uri = "https://dev.azure.com/$orgName/$projectName/_apis/build/builds?api-version=5.1"
+          $buildresponse = Invoke-RestMethod -Method Post -UseDefaultCredentials -ContentType application/json -Uri $Uri -Body $bodyString -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)}
+          write-host $buildresponse
+
+        displayName: triggerpipeline

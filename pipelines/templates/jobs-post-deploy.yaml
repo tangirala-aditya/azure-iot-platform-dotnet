@@ -13,7 +13,8 @@ jobs:
       
   - job: triggerAnotherPipeline
     displayName: Trigger customer pipeline
-    condition: succeeded()
+    dependsOn:
+     - deploy
     steps:
       - pwsh: |-
           echo "environmentName: ${{parameters.environmentName}}"

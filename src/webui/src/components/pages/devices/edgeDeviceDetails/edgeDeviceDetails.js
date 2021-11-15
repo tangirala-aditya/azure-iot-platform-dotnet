@@ -17,9 +17,6 @@ import { ModuleDetailsContainer } from "../flyouts/moduleDetails/moduleDetails.c
 import { EdgeDeviceInfoDashboard } from "./edgeDeviceInfoDashboard";
 const classnames = require("classnames/bind");
 const css = classnames.bind(require("./edgeDeviceDetails.module.scss"));
-const maintenanceCss = classnames.bind(
-    require("./edgeDeviceDetails.module.scss")
-);
 
 export class EdgeDeviceDetails extends LinkedComponent {
     constructor(props) {
@@ -84,15 +81,15 @@ export class EdgeDeviceDetails extends LinkedComponent {
                 {isEdgeDeviceActive && (
                     <Fragment>
                         <PageContent
-                            className={`${maintenanceCss(
-                                "maintenance-container"
-                            )}  ${css("summary-container")}`}
+                            className={`${css("maintenance-container")}  ${css(
+                                "summary-container"
+                            )}`}
                         >
-                            <div className={maintenanceCss("tab-container")}>
+                            <div className={css("tab-container")}>
                                 <NavLink
                                     to={`/devices/modulelogs/${this.state.deviceId}`}
-                                    className={maintenanceCss("tab")}
-                                    activeClassName={maintenanceCss("active")}
+                                    className={css("tab")}
+                                    activeClassName={css("active")}
                                 >
                                     {this.props.t(
                                         "edgeDeviceDetails.moduleInfo"
@@ -100,8 +97,8 @@ export class EdgeDeviceDetails extends LinkedComponent {
                                 </NavLink>
                                 <NavLink
                                     to={`/devices/deviceinfo/${this.state.deviceId}`}
-                                    className={maintenanceCss("tab")}
-                                    activeClassName={maintenanceCss("active")}
+                                    className={css("tab")}
+                                    activeClassName={css("active")}
                                 >
                                     {this.props.t(
                                         "edgeDeviceDetails.deviceInfo"

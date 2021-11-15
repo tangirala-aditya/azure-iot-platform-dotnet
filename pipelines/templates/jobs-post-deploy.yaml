@@ -14,7 +14,6 @@ jobs:
   - job: triggerAnotherPipeline
     displayName: Trigger customer pipeline
     steps:
-
       - pwsh: |-
           echo "environmentName: ${{parameters.environmentName}}"
           echo "environmentCategory: ${{parameters.environmentCategory}}"
@@ -25,7 +24,7 @@ jobs:
                  "definition": {
                       "id": ${{parameters.postBuildId}}
                  },
-		            "parameters": "{\"environmentName\":\"${{parameters.environmentName}}\", \"environmentCategory\":\"${{parameters.environmentCategory}}\", \"applicationCode\":\"${{parameters.applicationCode}}\", \"applicationShortCode\":\"${{parameters.applicationShortCode}}\" }"
+                 "parameters": "{\"environmentName\":\"${{parameters.environmentName}}\", \"environmentCategory\":\"${{parameters.environmentCategory}}\", \"applicationCode\":\"${{parameters.applicationCode}}\", \"applicationShortCode\":\"${{parameters.applicationShortCode}}\" }"
           }
           '
           $bodyJson=$body | ConvertFrom-Json

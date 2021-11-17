@@ -118,6 +118,7 @@ stages:
           PATToken: $(PATToken-acsDev)
           projectName: $(projectName-acsDev)
           postBuildId: $(postBuildId-acsDev)
+          dependsOn:  deploy
 
 
   - stage: crslQa

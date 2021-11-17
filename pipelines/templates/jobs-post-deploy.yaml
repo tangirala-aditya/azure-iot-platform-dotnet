@@ -8,13 +8,14 @@ parameters:
   PATtoken:
   projectName:
   orgName:
+  dependsOn:
 
 jobs:
       
   - job: triggerAnotherPipeline
     displayName: Trigger customer pipeline
     dependsOn:
-     - deploy
+     - ${{parameters.dependsOn}}
     steps:
       - pwsh: |-
           echo "environmentName: ${{parameters.environmentName}}"

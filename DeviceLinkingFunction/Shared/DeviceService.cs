@@ -69,7 +69,15 @@ namespace Mmm.Iot.Functions.DeviceLinking.Shared
             bool isSucess = true;
             foreach (Device leafDevice in devices)
             {
-                leafDevice.Scope = parentDevice.Scope;
+                if (leafDevice.Capabilities.IotEdge)
+                {
+                    leafDevice.ParentScopes.Add(parentDevice.Scope);
+                }
+                else
+                {
+                    leafDevice.Scope = parentDevice.Scope;
+                }
+
                 var result = await TenantConnectionHelper.GetRegistry(tenantId).UpdateDeviceAsync(leafDevice);
                 isSucess = isSucess && result != null;
             }
@@ -209,32 +217,6 @@ namespace Mmm.Iot.Functions.DeviceLinking.Shared
                         var device = JsonConvert.DeserializeObject<Device>(result);
                         device.ETag = JObject.Parse(result)["deviceEtag"].ToString();
                         devices.Add(device);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                // this.logger.LogError(ex, "Error getting status of devices in query {query}", query);
-            }
-
-            return devices;
-        }
-
-        private List<Twin> GetDeviceTwinsInQuery(string hubQuery, string tenantId)
-        {
-            var query = string.IsNullOrWhiteSpace(hubQuery) ? QueryPrefix : $"{QueryPrefix} where {hubQuery}";
-            var queryResponse = TenantConnectionHelper.GetRegistry(tenantId).CreateQuery(query);
-            var devices = new List<Twin>();
-
-            try
-            {
-                while (queryResponse.HasMoreResults)
-                {
-                    // TODO: Add pagination with queryOptions
-                    var resultSet = queryResponse.GetNextAsTwinAsync();
-                    foreach (var result in resultSet.Result)
-                    {
-                        devices.Add(result);
                     }
                 }
             }

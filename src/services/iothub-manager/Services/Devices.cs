@@ -639,15 +639,6 @@ namespace Mmm.Iot.IoTHubManager.Services
             return devices;
         }
 
-        public async Task<bool> LinkToGateway(string deviceId, string edgeDeviceId)
-        {
-            var edgeDevice = await this.tenantConnectionHelper.GetRegistry().GetDeviceAsync(edgeDeviceId);
-            var leafDevice = await this.tenantConnectionHelper.GetRegistry().GetDeviceAsync(deviceId);
-            leafDevice.Scope = edgeDevice.Scope;
-            var updatedDevice = await this.tenantConnectionHelper.GetRegistry().UpdateDeviceAsync(leafDevice);
-            return updatedDevice != null;
-        }
-
         public async Task<BulkOperationResult> LinkDevicesToGateway(IEnumerable<string> deviceIds, string parentDeviceId, string tenantId, string userId)
         {
             if (deviceIds != null && deviceIds.Count() <= 5)

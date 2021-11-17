@@ -39,8 +39,6 @@ namespace Mmm.Iot.IoTHubManager.Services
 
         Task<List<DeviceReportServiceModel>> GetDeviceListForReport(string query);
 
-        Task<bool> LinkToGateway(string deviceId, string edgeDeviceId);
-
         Task<DeviceServiceListModel> GetChildDevices(string edgeDeviceId);
 
         Task<BulkOperationResult> LinkDevicesToGateway(IEnumerable<string> deviceIds, string parentDeviceId, string tenantId, string userId);

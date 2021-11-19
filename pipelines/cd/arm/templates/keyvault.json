@@ -92,7 +92,7 @@
             {
               "condition": "[not(empty(parameters('userObjId')))]",
               "objectId": "[parameters('userObjId')]",
-              "tenantId": "facac3c4-e2a5-4257-af76-205c8a821ddb",
+              "tenantId": "8ecf0be8-8c7c-4ef8-b34c-111ee2289099",
               "permissions": {
                 "keys": [],
                 "secrets": [

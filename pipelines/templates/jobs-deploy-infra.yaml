@@ -944,7 +944,6 @@ jobs:
             az appconfig kv set --key Global:DiagnosticSetting:Name               --value $(diagnosticSettingName) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:EventHubNamespaceName  --value $(eventHubName) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:AutomationAccountName  --value $(automationName) --name $(appConfigurationName) --yes
-#           az appconfig kv set --key DeviceTelemetryService:Messages:TelemetryStorageType  --value ${telemetryStorageType,,} --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:LogAnalytics:Name                    --value $(omsWorkspaceName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:LoadGrafanaDashboard                 --value $(loadGrafanaDashboard) --name $(appConfigurationName) --yes
             

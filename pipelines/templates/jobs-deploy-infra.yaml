@@ -1539,32 +1539,32 @@ jobs:
           deploymentPartialName: $(automationPartialName)
           resourceGroupName: $(resourceGroupName)
 
-      - task: AzurePowerShell@3
-        displayName: Create certificate and connections on Azure Automation Account
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/automationAcctCert.ps1
-          ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}} -tenantId $(tenantId) -keyvaultName $(keyVaultName)
-          azurePowerShellVersion: LatestVersion
+#       - task: AzurePowerShell@3
+#         displayName: Create certificate and connections on Azure Automation Account
+#         inputs:
+#           azureSubscription: ${{parameters.subscriptionName}}
+#           ScriptType: FilePath
+#           ScriptPath: pipelines/cd/automationAcctCert.ps1
+#           ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}} -tenantId $(tenantId) -keyvaultName $(keyVaultName)
+#           azurePowerShellVersion: LatestVersion
 
-      - task: AzurePowerShell@3
-        displayName: Import runbook code and create webhook
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/automationAcct.ps1
-          ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -scriptFolder $(System.DefaultWorkingDirectory)/src/services/tenant-manager/RunBookCode -keyvaultName $(keyVaultName)
-          azurePowerShellVersion: LatestVersion
+#       - task: AzurePowerShell@3
+#         displayName: Import runbook code and create webhook
+#         inputs:
+#           azureSubscription: ${{parameters.subscriptionName}}
+#           ScriptType: FilePath
+#           ScriptPath: pipelines/cd/automationAcct.ps1
+#           ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -scriptFolder $(System.DefaultWorkingDirectory)/src/services/tenant-manager/RunBookCode -keyvaultName $(keyVaultName)
+#           azurePowerShellVersion: LatestVersion
 
-      - task: AzurePowerShell@3
-        displayName: Create SendGrid Acct and API Key
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/sendgridAcct.ps1
-          ScriptArguments: -location ${{parameters.locationName}} -resourceGroup $(resourceGroupName) -resourceName $(sendgridAccountName) -keyvaultName $(keyVaultName) -email ${{parameters.sendgridEmail}}
-          azurePowerShellVersion: LatestVersion
+#       - task: AzurePowerShell@3
+#         displayName: Create SendGrid Acct and API Key
+#         inputs:
+#           azureSubscription: ${{parameters.subscriptionName}}
+#           ScriptType: FilePath
+#           ScriptPath: pipelines/cd/sendgridAcct.ps1
+#           ScriptArguments: -location ${{parameters.locationName}} -resourceGroup $(resourceGroupName) -resourceName $(sendgridAccountName) -keyvaultName $(keyVaultName) -email ${{parameters.sendgridEmail}}
+#           azurePowerShellVersion: LatestVersion
 
   - job: automationAccountV3
     displayName: Provision Azure Automation and Sendgrid accounts

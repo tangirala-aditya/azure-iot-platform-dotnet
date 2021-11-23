@@ -44,7 +44,17 @@
             "metadata": {
                 "description": "The size of the Virtual Machine."
             }
-        },                
+        },
+        "osType": {
+          "type": "string",
+          "defaultValue": "Linux",
+          "allowedValues": [
+                "Linux"
+           ],
+          "metadata": {
+                "description": "The type of operating system."
+            }
+        },
         "kubernetesVersion": {
             "type": "string",
             "defaultValue": "1.7.7",

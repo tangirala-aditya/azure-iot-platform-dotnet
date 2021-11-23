@@ -15,7 +15,7 @@
 app.kubernetes.io/name: {{ include "service.name" . }}
 helm.sh/chart: {{ include "service.chart" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-aadpodidbinding: {{ .Values.aadpodidbinding }}
+aadpodidbinding: azureiot3m-identity
 {{- if .Values.appVersion }}
 app.kubernetes.io/version: {{ .Values.appVersion | quote }}
 {{- end }}

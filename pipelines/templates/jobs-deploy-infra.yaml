@@ -221,8 +221,6 @@ jobs:
             -resourceName $(aksName)
             -location ${{parameters.locationName}}
             -dnsPrefix $(aksName)-dns
-            -servicePrincipalClientId $servicePrincipalId
-            -servicePrincipalClientSecret $servicePrincipalKey
             -omsWorkspaceName $(omsWorkspaceName)
             -kubernetesVersion ${{parameters.kubernetesVersion}}
             -agentVMSize ${{parameters.aksAgentVmSize}}

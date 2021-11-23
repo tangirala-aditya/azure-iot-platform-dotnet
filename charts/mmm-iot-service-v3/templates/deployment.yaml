@@ -77,14 +77,11 @@ spec:
             failureThreshold: 3
           {{- end }}
           env:
-            {{- $root := . }}
-            {{- range $ref := .Values.deployment.secretsRef }}
-            - name: {{ $ref }}
-              valueFrom:
-                secretKeyRef:
-                  name: globalsecrets
-                  key: {{ $ref }}
-            {{- end }}
+            - name: AppConfigEndpoint
+              value: https://ggktech-appconfig-dev.azconfig.io
+            - name: ManagedIdentityClientId
+              value: c5c770a8-a659-46a6-82bc-1ffd3bbccd94
+              
           resources: {{ toYaml .Values.deployment.resources | nindent 12 }}
       {{- with .Values.deployment.nodeSelector }}
       nodeSelector: {{ toYaml . | nindent 8 }}

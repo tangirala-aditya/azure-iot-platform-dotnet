@@ -102,7 +102,14 @@
             "metadata": {
                 "description": "Maximum number of pods that can run on a node."
             }
-        },        
+        },
+        "enableOmsAgent": {
+		    "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Boolean flag to turn on and off of RBAC."
+            }
+        },
         "enableAzurePolicy": {
             "type": "bool",
             "defaultValue": false,

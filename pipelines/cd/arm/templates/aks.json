@@ -44,32 +44,10 @@
             "metadata": {
                 "description": "The size of the Virtual Machine."
             }
-        },
-        "servicePrincipalClientId": {
-            "metadata": {
-                "description": "Client ID (used by cloudprovider)."
-            },
-            "type": "securestring"
-        },
-        "servicePrincipalClientSecret": {
-            "metadata": {
-                "description": "The Service Principal Client Secret."
-            },
-            "type": "securestring"
-        },
-        "osType": {
-            "type": "string",
-            "defaultValue": "Linux",
-            "allowedValues": [
-                "Linux"
-            ],
-            "metadata": {
-                "description": "The type of operating system."
-            }
-        },
+        },                
         "kubernetesVersion": {
             "type": "string",
-            "defaultValue": "1.16.7",
+            "defaultValue": "1.7.7",
             "metadata": {
                 "description": "The version of Kubernetes."
             }
@@ -84,26 +62,6 @@
                 "description": "Network plugin used for building Kubernetes network."
             }
         },
-        "omsWorkspaceName": {
-            "type": "string",
-            "metadata": {
-                "description": "OMS log analytics workspace name"
-            }
-        },
-        "enableOmsAgent": {
-		    "type": "bool",
-            "defaultValue": true,
-            "metadata": {
-                "description": "Boolean flag to turn on and off of RBAC."
-            }
-        },
-        "maxPods": {
-            "type": "int",
-            "defaultValue": 30,
-            "metadata": {
-                "description": "Maximum number of pods that can run on a node."
-            }
-        },
         "enableRBAC": {
             "type": "bool",
             "defaultValue": true,
@@ -115,28 +73,41 @@
             "type": "bool",
             "defaultValue": false,
             "metadata": {
-                "description": "Boolean flag to turn on and off of VM scale sets"
+                "description": "Boolean flag to turn on and off of virtual machine scale sets"
             }
         },
         "windowsProfile": {
             "type": "bool",
             "defaultValue": false,
             "metadata": {
-                "description": "Boolean flag to turn on and off of VM scale sets"
+                "description": "Boolean flag to turn on and off of virtual machine scale sets"
             }
         },
         "enableHttpApplicationRouting": {
             "type": "bool",
             "defaultValue": true,
             "metadata": {
-                "description": "Boolean flag to turn on and off of http application routing."
+                "description": "Boolean flag to turn on and off http application routing."
             }
         },
+        "omsWorkspaceName": {
+            "type": "string",
+            "metadata": {
+                "description": "OMS log analytics workspace name"
+            }
+        },
+        "maxPods": {
+            "type": "int",
+            "defaultValue": 30,
+            "metadata": {
+                "description": "Maximum number of pods that can run on a node."
+            }
+        },        
         "enableAzurePolicy": {
             "type": "bool",
-            "defaultValue": true,
+            "defaultValue": false,
             "metadata": {
-                "description": "Boolean flag to turn on and off of azure policy"
+                "description": "Boolean flag to turn on and off Azure Policy addon."
             }
         }
     },
@@ -156,38 +127,41 @@
                         "name": "agentpool",
                         "osDiskSizeGB": "[parameters('osDiskSizeGB')]",
                         "count": "[parameters('agentCount')]",
+                        "enableAutoScaling": false,
                         "vmSize": "[parameters('agentVMSize')]",
                         "osType": "[parameters('osType')]",
-                        "storageProfile": "ManagedDisks"
+                        "storageProfile": "ManagedDisks",
+                        "type": "VirtualMachineScaleSets",
+                        "mode": "System"
                     }
                 ],
-                "servicePrincipalProfile": {
-                    "clientId": "[parameters('servicePrincipalClientId')]",
-                    "secret": "[parameters('servicePrincipalClientSecret')]"
-                },
                 "networkProfile": {
                     "networkPlugin": "[parameters('networkPlugin')]"
                 },
+
                 "addonProfiles": {
-                    "azurepolicy": {
-                        "enabled": "[parameters('enableAzurePolicy')]"
-                    },
                     "httpApplicationRouting": {
                         "enabled": "[parameters('enableHttpApplicationRouting')]"
+                    },
+                    "azurepolicy": {
+                        "enabled": "[parameters('enableAzurePolicy')]"
                     },
                     "omsagent": {
                         "enabled": "[parameters('enableOmsAgent')]",
                         "config": {
                             "logAnalyticsWorkspaceResourceID": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('omsWorkspaceName'))]"
                         }
-                    }
+                    }                    
                 }
             },
             "tags": {
                 "[concat('hidden-related:', resourceId('Microsoft.ContainerService/managedClusters', parameters('resourceName')))]": "Resource",
                 "displayName": "kubernetesCluster",
                 "ResourceCategory": "managedClusters"
-              }
+              },
+            "identity": {
+                "type": "SystemAssigned"
+            }
         }
     ],
     "outputs": {

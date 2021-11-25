@@ -81,7 +81,31 @@ spec:
               value: https://ggktech-appconfig-dev.azconfig.io
             - name: ManagedIdentityClientId
               value: c5c770a8-a659-46a6-82bc-1ffd3bbccd94
-              
+            - name: globalClientAuthJwtAuthIssuer
+              valueFrom:
+                configMapKeyRef:
+                  name: globalconfigs
+                  key: globalClientAuthJwtAuthIssuer
+            - name: globalClientAuthRoles
+              valueFrom:
+                configMapKeyRef:
+                  name: globalconfigs
+                  key: globalClientAuthRoles
+            - name: globalClientCorsWhiteList
+              valueFrom:
+                configMapKeyRef:
+                  name: globalconfigs
+                  key: globalClientCorsWhiteList
+            - name: globalAuthRequired
+              valueFrom:
+                configMapKeyRef:
+                  name: globalconfigs
+                  key: globalAuthRequired
+            - name: globalDevelopmentMode
+              valueFrom:
+                configMapKeyRef:
+                  name: globalconfigs
+                  key: globalDevelopmentMode  
           resources: {{ toYaml .Values.deployment.resources | nindent 12 }}
       {{- with .Values.deployment.nodeSelector }}
       nodeSelector: {{ toYaml . | nindent 8 }}

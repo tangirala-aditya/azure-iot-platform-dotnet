@@ -16,7 +16,7 @@
 # }
 modify_cors() {
   
-  value=($globalClientCorsWhiteList | sed 's/"//g' )
+  value=($(globalClientCorsWhiteList) | sed 's/"//g' )
   echo $value
   if [ -z "$value" ]
   then

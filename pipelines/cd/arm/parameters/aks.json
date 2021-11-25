@@ -5,7 +5,7 @@
         "resourceName": { "value": "aks-test-deploy" },
         "location": {"value": "centralus" },
         "dnsPrefix": { "value": "aks-test-deploy-dns" },
-        "agentCount": { "value": 3 },
+        "agentCount": { "value": 1 },
         "agentVMSize": { "value": "Standard_DS2_v2" },
         "kubernetesVersion": { "value": "1.16.7" },
         "networkPlugin": { "value": "kubenet" },

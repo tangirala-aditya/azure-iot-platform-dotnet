@@ -78,7 +78,7 @@ spec:
           {{- end }}
           env:
             - name: AppConfigEndpoint
-              value: https://ggktech-appconfig-dev.azconfig.io
+              value: https://ggkacs-appconfig-dev.azconfig.io
             - name: ManagedIdentityClientId
               value: e7dab800-07d2-4195-afef-2fdafbe0ddae
             - name: globalClientAuthJwtAuthIssuer

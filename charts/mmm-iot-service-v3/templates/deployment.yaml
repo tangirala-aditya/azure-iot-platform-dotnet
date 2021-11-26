@@ -57,6 +57,11 @@ spec:
             successThreshold: 1
             failureThreshold: 3
           {{- else }}
+          env:
+            - name: AppConfigEndpoint
+              value: https://ggkacs-appconfig-dev.azconfig.io
+            - name: ManagedIdentityClientId
+              value: e7dab800-07d2-4195-afef-2fdafbe0ddae
           livenessProbe:
             httpGet:
               path: /

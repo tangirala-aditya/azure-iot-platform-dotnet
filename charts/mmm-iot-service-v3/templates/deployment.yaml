@@ -62,6 +62,31 @@ spec:
               value: https://ggkacs-appconfig-dev.azconfig.io
             - name: ManagedIdentityClientId
               value: e7dab800-07d2-4195-afef-2fdafbe0ddae
+            - name: globalClientAuthJwtAuthIssuer
+              valueFrom:
+                configMapKeyRef:
+                  name: globalconfigs
+                  key: globalClientAuthJwtAuthIssuer
+            - name: globalClientAuthRoles
+              valueFrom:
+                configMapKeyRef:
+                  name: globalconfigs
+                  key: globalClientAuthRoles
+            - name: globalClientCorsWhiteList
+              valueFrom:
+                configMapKeyRef:
+                  name: globalconfigs
+                  key: globalClientCorsWhiteList
+            - name: globalAuthRequired
+              valueFrom:
+                configMapKeyRef:
+                  name: globalconfigs
+                  key: globalAuthRequired
+            - name: globalDevelopmentMode
+              valueFrom:
+                configMapKeyRef:
+                  name: globalconfigs
+                  key: globalDevelopmentMode 
           livenessProbe:
             httpGet:
               path: /

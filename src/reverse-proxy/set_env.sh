@@ -2,21 +2,21 @@
 # Copyright (c) 3M. All rights reserved. 
 
 # Fetch App configuration
-_get_configuration() {
+# _get_configuration() {
 
-  if value=$(az appconfig kv show --key $1  --connection-string $AppConfigurationConnectionString | jq .value); then
-    echo $value
-  else
-    echo "Failed to ping Application Configuration: $1"
-    echo
-    echo "Exiting set_env.sh"
-    exit 1
-  fi
+#   if value=$(az appconfig kv show --key $1  --connection-string $AppConfigurationConnectionString | jq .value); then
+#     echo $value
+#   else
+#     echo "Failed to ping Application Configuration: $1"
+#     echo
+#     echo "Exiting set_env.sh"
+#     exit 1
+#   fi
 
-}
+# }
 modify_cors() {
   
-  value=$(_get_configuration "Global:ClientAuth:CorsWhitelist" | sed 's/"//g' )
+  value=($(globalClientCorsWhiteList) | sed 's/"//g' )
   echo $value
   if [ -z "$value" ]
   then
@@ -32,24 +32,24 @@ modify_cors() {
 main() {
   # For the script to fetch the secrets from key-vault foll. variable
   # AppConfigurationConnectionString must be available as "environment" variables.
-  if [[ "$AppConfigurationConnectionString" != ""  ]]; then
-    if az appconfig kv list  --connection-string $AppConfigurationConnectionString > /dev/null; then
-        echo "Pinged Application Configuration Successfully"
+  # if [[ "$AppConfigurationConnectionString" != ""  ]]; then
+  #   if az appconfig kv list  --connection-string $AppConfigurationConnectionString > /dev/null; then
+  #       echo "Pinged Application Configuration Successfully"
         modify_cors
-    else
-        echo "Failed to ping Application Configuration"
-        echo
-        echo "Exiting set_env.sh"
-        exit 1
-    fi
+    # else
+    #     echo "Failed to ping Application Configuration"
+    #     echo
+    #     echo "Exiting set_env.sh"
+    #     exit 1
+    # fi
 
-  else
-    echo "Required AppConfiguration Connection String Infomation does not exist in Environment Variables, the following environment variables must be set to run this script:"
-    echo "AppConfigurationConnectionString"
-    echo
-    echo "Exiting set_env.sh"
-    exit 1
-  fi
+  # else
+  #   echo "Required AppConfiguration Connection String Infomation does not exist in Environment Variables, the following environment variables must be set to run this script:"
+  #   echo "AppConfigurationConnectionString"
+  #   echo
+  #   echo "Exiting set_env.sh"
+  #   exit 1
+  # fi
 }
 
 main

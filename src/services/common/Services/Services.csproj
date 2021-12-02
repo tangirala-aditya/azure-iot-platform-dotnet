@@ -17,6 +17,7 @@
     <PackageReference Include="Azure.Data.AppConfiguration" Version="1.0.0" />
     <PackageReference Include="Azure.Messaging.EventHubs" Version="5.5.0" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.3.0" />
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.1" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.11.3" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.15.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.4" />

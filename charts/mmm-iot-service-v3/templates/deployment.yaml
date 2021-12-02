@@ -81,8 +81,8 @@ spec:
             {{- range $ref := .Values.deployment.secretsRef }}
             - name: {{ $ref }}
               valueFrom:
-                secretKeyRef:
-                  name: globalsecrets
+                configMapKeyRef:
+                  name: globalconfigs
                   key: {{ $ref }}
             {{- end }}
           resources: {{ toYaml .Values.deployment.resources | nindent 12 }}

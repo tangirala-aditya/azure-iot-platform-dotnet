@@ -17,6 +17,7 @@ deployment:
     https: 443
   imagePullSecrets: []
   replicaCount: 1
+  identityBinding: azureiot3m-identity 
   image:
     repository: 
     tag: 

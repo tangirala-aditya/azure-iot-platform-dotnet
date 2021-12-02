@@ -787,7 +787,7 @@ jobs:
             globalAuthRequired=$(az appconfig kv show --key "Global:AuthRequired" --connection-string $appConfigurationConnectionString | jq .value)
             globalDevelopmentMode=$(az appconfig kv show --key "Global:DevelopmentMode" --connection-string $appConfigurationConnectionString | jq .value)            
             kubectl create secret generic --namespace=default azure-secret --from-literal=azurestorageaccountname=$(storageAccountName) --from-literal=azurestorageaccountkey=$storageAccountKey --dry-run=client -o yaml | kubectl apply -f -
-            kubectl create configmap  globalconfigs  --from-literal=AppConfigEndpoint=$appConfigEndpoint  --from-literal=ManagedIdentityClientId=$managedIdentityClientId --from-literal=keyVaultName=$(keyVaultName)  --from-literal=globalClientAuthJwtAuthIssuer=$globalClientAuthJwtAuthIssuer  --from-literal=globalClientAuthRoles="$globalClientAuthRoles" --from-literal=globalClientCorsWhiteList=$globalClientCorsWhiteList --from-literal=globalAuthRequired=$globalAuthRequired --from-literal=globalDevelopmentMode=$globalDevelopmentMode
+            kubectl create configmap  globalconfigs  --from-literal=AppConfigEndpoint=$appConfigEndpoint  --from-literal=ManagedIdentityClientId=$managedIdentityClientId --from-literal=keyVaultName=$(keyVaultName)  --from-literal=globalClientAuthJwtAuthIssuer="$globalClientAuthJwtAuthIssuer"  --from-literal=globalClientAuthRoles="$globalClientAuthRoles" --from-literal=globalClientCorsWhiteList=$globalClientCorsWhiteList --from-literal=globalAuthRequired=$globalAuthRequired --from-literal=globalDevelopmentMode=$globalDevelopmentMode
 
   - job: globalsecretsV3
     displayName: Create K8s secrets
@@ -823,13 +823,14 @@ jobs:
             globalAuthRequired=$(az appconfig kv show --key "Global:AuthRequired" --connection-string $appConfigurationConnectionString | jq .value)
             globalDevelopmentMode=$(az appconfig kv show --key "Global:DevelopmentMode" --connection-string $appConfigurationConnectionString | jq .value)            
             kubectl create secret generic --namespace=default azure-secret --from-literal=azurestorageaccountname=$(storageAccountName) --from-literal=azurestorageaccountkey=$storageAccountKey --dry-run=client -o yaml | kubectl apply -f -
-            kubectl create configmap  globalconfigs  --from-literal=AppConfigEndpoint=$appConfigEndpoint  --from-literal=ManagedIdentityClientId=$managedIdentityClientId --from-literal=keyVaultName=$(keyVaultName)  --from-literal=globalClientAuthJwtAuthIssuer=$globalClientAuthJwtAuthIssuer  --from-literal=globalClientAuthRoles="$globalClientAuthRoles" --from-literal=globalClientCorsWhiteList=$globalClientCorsWhiteList --from-literal=globalAuthRequired=$globalAuthRequired --from-literal=globalDevelopmentMode=$globalDevelopmentMode
+            kubectl create configmap  globalconfigs  --from-literal=AppConfigEndpoint=$appConfigEndpoint  --from-literal=ManagedIdentityClientId=$managedIdentityClientId --from-literal=keyVaultName=$(keyVaultName)  --from-literal=globalClientAuthJwtAuthIssuer="$globalClientAuthJwtAuthIssuer"  --from-literal=globalClientAuthRoles="$globalClientAuthRoles" --from-literal=globalClientCorsWhiteList=$globalClientCorsWhiteList --from-literal=globalAuthRequired=$globalAuthRequired --from-literal=globalDevelopmentMode=$globalDevelopmentMode
 
   - job: deployAADPodIdentity
     displayName: Deploy AAD Pod identity in AKS Cluster
     dependsOn:
       - aks
       - globalsecrets
+      - keyvault
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -900,6 +901,7 @@ jobs:
             az role assignment create --role Reader --assignee $identityPrincipalId --scope /subscriptions/${{parameters.subscriptionId}}/resourcegroups/$(resourceGroupName)
             az role assignment create --role "Managed Identity Operator" --assignee $aksSystemAssignedObjectId --scope 
             az appconfig identity assign -g $(resourceGroupName) -n $(userAssignedIdentityName) --identities "/subscriptions/{{parameters.subscriptionId}}/resourceGroups/$(resourceGroupName)/providers/Microsoft.ManagedIdentity/userAssignedIdentities/$(userAssignedIdentityName)"
+            az keyvault set-policy -n $(keyVaultName) --object-id $identityPrincipalId --secret-permissions get list
 
       - task: AzureCLI@2
         displayName: Deploy AzureIdentity
@@ -1360,8 +1362,6 @@ jobs:
             mapskey=$(az maps account keys list --name $(mapsName) --resource-group $(resourceGroupName) --query primaryKey --output tsv)
             az keyvault secret set --vault-name $(keyVaultName) --name 'ConfigService--AzureMapsKey' --value $mapskey
 
-            identityPrincipalId=$(az identity show -g $(resourceGroupName) -n $(userAssignedIdentityName) --query principalId -o tsv)
-            az keyvault set-policy -n $(keyVaultName) --object-id $identityPrincipalId --secret-permissions get list
 
             key=$(az keyvault secret show --vault-name $(keyVaultName) -n IdentityGatewayService--PrivateKey)
             if [ -z "$key" ]

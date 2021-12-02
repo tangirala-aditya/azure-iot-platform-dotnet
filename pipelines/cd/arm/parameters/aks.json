@@ -7,8 +7,6 @@
         "dnsPrefix": { "value": "aks-test-deploy-dns" },
         "agentCount": { "value": 3 },
         "agentVMSize": { "value": "Standard_DS2_v2" },
-        "servicePrincipalClientId": {  "value": "" },
-        "servicePrincipalClientSecret": { "value": "" },
         "kubernetesVersion": { "value": "1.16.7" },
         "networkPlugin": { "value": "kubenet" },
         "omsWorkspaceName": { "value": "" },

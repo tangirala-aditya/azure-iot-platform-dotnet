@@ -878,8 +878,8 @@ jobs:
           namespace: default
           command: upgrade
           chartType: Name
-          chartName: aad-pod-identity/aad-pod-identity
           releaseName: aad-pod-identity
+          chartName: aad-pod-identity/aad-pod-identity
           overrideValues: --set nmi.allowNetworkPluginKubenet=true --set rbac.enabled=false
           arguments: --install --force
 
@@ -981,8 +981,8 @@ jobs:
           namespace: default
           command: upgrade
           chartType: Name
-          chartName: aad-pod-identity/aad-pod-identity
           releaseName: aad-pod-identity
+          chartName: aad-pod-identity/aad-pod-identity
           overrideValues: --set nmi.allowNetworkPluginKubenet=true --set rbac.enabled=false
           arguments: --install --force
 

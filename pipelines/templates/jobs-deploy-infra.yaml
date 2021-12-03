@@ -847,7 +847,7 @@ jobs:
           inlineScript: |-
             az aks get-credentials -n $(aksName) -g $(resourceGroupName)
             # Use Helm to deploy an NGINX ingress controller
-            helm upgrade ingress-controller stable/nginx-ingress \
+            helm upgrade aad-pod-identity aad-pod-identity/aad-pod-identity \
                   --install \
                   --force \
                   --namespace aadpod-identity \
@@ -951,7 +951,7 @@ jobs:
           inlineScript: |-
             az aks get-credentials -n $(aksName) -g $(resourceGroupName)
             # Use Helm to deploy an NGINX ingress controller
-            helm upgrade ingress-controller stable/nginx-ingress \
+            helm upgrade aad-pod-identity aad-pod-identity/aad-pod-identity \
                   --install \
                   --force \
                   --namespace aadpod-identity \

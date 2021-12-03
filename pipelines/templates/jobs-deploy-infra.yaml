@@ -846,6 +846,7 @@ jobs:
           scriptType: bash
           inlineScript: |-
             az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            kubectl create ns aadpod-identity 
             # Use Helm to deploy an NGINX ingress controller
             helm upgrade aad-pod-identity aad-pod-identity/aad-pod-identity \
                   --install \
@@ -956,7 +957,8 @@ jobs:
                   --force \
                   --namespace aadpod-identity \
                   --set nmi.allowNetworkPluginKubenet=true \
-                  --set rbac.enabled=false
+                  --set rbac.enabled=false \
+                  --create-namespace
 
       - task: AzureCLI@2
         displayName: Perform Role Assignments to services

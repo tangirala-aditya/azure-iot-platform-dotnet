@@ -192,21 +192,6 @@ jobs:
           deploymentPartialName: $(omsWorkspacePartialName)
           resourceGroupName: $(resourceGroupName)
 
-      - task: AzureCLI@2
-        displayName: Update the service principal key for AKS
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-            set -Eeuxo pipefail
-            aksInstanceCount=`az aks list --query "[?name=='$(aksName)'] | length(@)"`
-            if [ "$aksInstanceCount" != "0" ]
-            then
-              az aks update-credentials --resource-group $(resourceGroupName) --name $(aksName) --reset-service-principal --service-principal $servicePrincipalId --client-secret $servicePrincipalKey
-            fi
-          addSpnToEnvironment: true
-
       - task: AzureResourceGroupDeployment@2
         displayName: Provision Azure Kubernetes Service
         inputs:
@@ -320,21 +305,6 @@ jobs:
           subscriptionName: ${{parameters.subscriptionName}}
           deploymentPartialName: $(omsWorkspacePartialName)
           resourceGroupName: $(resourceGroupName)
-
-      - task: AzureCLI@2
-        displayName: Update the service principal key for AKS
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-            set -Eeuxo pipefail
-            aksInstanceCount=`az aks list --query "[?name=='$(aksName)'] | length(@)"`
-            if [ "$aksInstanceCount" != "0" ]
-            then
-              az aks update-credentials --resource-group $(resourceGroupName) --name $(aksName) --reset-service-principal --service-principal $servicePrincipalId --client-secret $servicePrincipalKey
-            fi
-          addSpnToEnvironment: true
 
       - task: AzureResourceGroupDeployment@2
         displayName: Provision Azure Kubernetes Service

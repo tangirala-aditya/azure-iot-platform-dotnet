@@ -838,20 +838,21 @@ jobs:
             # Update your local Helm chart repository cache
             helm repo update
 
-      - task: HelmDeploy@0
-        displayName: Deploy aadpodidentity
+      - task: AzureCLI@2
+        displayName: Install AAD Pod Identity
         inputs:
-          connectionType: Azure Resource Manager
           azureSubscription: ${{parameters.subscriptionName}}
-          azureResourceGroup: $(resourceGroupName)
-          kubernetesCluster: $(aksName)
-          namespace: default
-          command: upgrade
-          chartType: Name
-          releaseName: aad-pod-identity
-          chartName: aad-pod-identity/aad-pod-identity
-          overrideValues: nmi.allowNetworkPluginKubenet=true rbac.enabled=false
-          arguments: --install --force
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            # Use Helm to deploy an NGINX ingress controller
+            helm upgrade ingress-controller stable/nginx-ingress \
+                  --install \
+                  --force \
+                  --namespace aadpod-identity \
+                  --set nmi.allowNetworkPluginKubenet=true \
+                  --set rbac.enabled=false
 
       - task: AzureCLI@2
         displayName: Perform Role Assignments to services
@@ -941,21 +942,22 @@ jobs:
             # Update your local Helm chart repository cache
             helm repo update
 
-      - task: HelmDeploy@0
-        displayName: Deploy aadpodidentity
+      - task: AzureCLI@2
+        displayName: Install AAD Pod Identity
         inputs:
-          connectionType: Azure Resource Manager
           azureSubscription: ${{parameters.subscriptionName}}
-          azureResourceGroup: $(resourceGroupName)
-          kubernetesCluster: $(aksName)
-          namespace: default
-          command: upgrade
-          chartType: Name
-          releaseName: aad-pod-identity
-          chartName: aad-pod-identity/aad-pod-identity
-          overrideValues: nmi.allowNetworkPluginKubenet=true rbac.enabled=false
-          arguments: --install --force
-
+          scriptLocation: inlineScript
+          scriptType: bash
+          inlineScript: |-
+            az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+            # Use Helm to deploy an NGINX ingress controller
+            helm upgrade ingress-controller stable/nginx-ingress \
+                  --install \
+                  --force \
+                  --namespace aadpod-identity \
+                  --set nmi.allowNetworkPluginKubenet=true \
+                  --set rbac.enabled=false
+                  
       - task: AzureCLI@2
         displayName: Perform Role Assignments to services
         inputs:

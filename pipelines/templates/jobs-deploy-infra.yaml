@@ -753,7 +753,7 @@ jobs:
             globalAuthRequired=$(az appconfig kv show --key "Global:AuthRequired" --connection-string $appConfigurationConnectionString | jq .value)
             globalDevelopmentMode=$(az appconfig kv show --key "Global:DevelopmentMode" --connection-string $appConfigurationConnectionString | jq .value)            
             kubectl create secret generic --namespace=default azure-secret --from-literal=azurestorageaccountname=$(storageAccountName) --from-literal=azurestorageaccountkey=$storageAccountKey --dry-run=client -o yaml | kubectl apply -f -
-            kubectl create configmap  globalconfigs  --from-literal=AppConfigEndpoint=$appConfigEndpoint  --from-literal=ManagedIdentityClientId=$managedIdentityClientId --from-literal=keyVaultName=$(keyVaultName)  --from-literal=globalClientAuthJwtAuthIssuer="$globalClientAuthJwtAuthIssuer"  --from-literal=globalClientAuthRoles="$globalClientAuthRoles" --from-literal=globalClientCorsWhiteList=$globalClientCorsWhiteList --from-literal=globalAuthRequired=$globalAuthRequired --from-literal=globalDevelopmentMode=$globalDevelopmentMode
+            kubectl create configmap  globalconfigs  --from-literal=AppConfigEndpoint=$appConfigEndpoint  --from-literal=ManagedIdentityClientId=$managedIdentityClientId --from-literal=keyVaultName=$(keyVaultName)  --from-literal=globalClientAuthJwtAuthIssuer="$globalClientAuthJwtAuthIssuer"  --from-literal=globalClientAuthRoles="$globalClientAuthRoles" --from-literal=globalClientCorsWhiteList=$globalClientCorsWhiteList --from-literal=globalAuthRequired=$globalAuthRequired --from-literal=globalDevelopmentMode=$globalDevelopmentMode -o yaml | kubectl -f apply
 
   - job: globalsecretsV3
     displayName: Create K8s secrets
@@ -957,7 +957,7 @@ jobs:
                   --namespace aadpod-identity \
                   --set nmi.allowNetworkPluginKubenet=true \
                   --set rbac.enabled=false
-                  
+
       - task: AzureCLI@2
         displayName: Perform Role Assignments to services
         inputs:

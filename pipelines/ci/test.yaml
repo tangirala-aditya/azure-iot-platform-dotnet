@@ -83,14 +83,8 @@ stages:
               scriptType: pscore
               scriptLocation: inlineScript
               inlineScript: |-
-                $appConfigurationConnectionString = az appconfig credential list --name $(appConfigurationName) --resource-group $(resourceGroupName) --query "[?name=='Primary'].connectionString | [0]" --output tsv
+                $appConfigurationConnectionString = "Endpoint=https://acshyd-appconfig-dev.azconfig.io;Id=GYCS-l4-s0:MFR+WNIgDpva5VAfDYPP;Secret=hc1mnHRNECprwxNlBi2WwftqQizq19Gi9dyReLf+P6E="
                 echo "##vso[task.setvariable variable=AppConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
-                $tableExists = az storage table exists --name $(tableStorageName) --account-name $(storageAccountName) --output tsv
-                if ($tableExists -eq $False)
-                {
-                  az storage table create --name $(tableStorageName) --account-name $(storageAccountName)
-                }
-                az storage entity insert --entity PartitionKey=$(tableStoragePartition) RowKey=$(tableStorageRowKeyPrefix)$(tableStorageAppConfigurationConnectionStringRowKey) Content="$appConfigurationConnectionString" --table-name $(tableStorageName) --account-name $(storageAccountName)
 
       - job: build
         displayName: Build Services

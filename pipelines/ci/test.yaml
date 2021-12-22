@@ -86,59 +86,6 @@ stages:
                 $appConfigurationConnectionString = "Endpoint=https://acshyd-appconfig-dev.azconfig.io;Id=GYCS-l4-s0:MFR+WNIgDpva5VAfDYPP;Secret=hc1mnHRNECprwxNlBi2WwftqQizq19Gi9dyReLf+P6E="
                 echo "##vso[task.setvariable variable=AppConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
 
-      - job: build
-        displayName: Build Services
-        dependsOn:
-          - preBuild
-        variables:
-          AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
-        steps:
-          - checkout: self
-            displayName: Checkout repository
-
-          - task: UseDotNet@2
-            inputs:
-              packageType: 'sdk'
-              version: '3.1.x'
-              includePreviewVersions: true
-
-          - script: >-
-              dotnet restore
-              --force
-              --no-cache
-              --no-dependencies
-              --packages .nuget
-              --runtime $(dotnetProductionRuntimeId)
-              /p:TargetLatestRuntimePatch=true
-            displayName: Restore dependencies
-          - script: >-
-              dotnet publish
-              --self-contained false
-              --no-restore
-              --no-dependencies
-              --configuration $(dotnetBuildConfiguration)
-              --runtime $(dotnetProductionRuntimeId)
-              /p:TargetLatestRuntimePatch=true
-            displayName: Build assemblies
-          - task: CopyFiles@2
-            displayName: Prepare services artifacts
-            inputs:
-              contents: |
-                *.sln
-                *.props
-                *.ruleset
-                global.json
-                .nuget/**/*
-                src/services/**/*
-                test/services/**/*
-                src/functions/**/*
-              targetFolder: $(publishedFilesArtifactName)
-              cleanTargetFolder: true
-
-          - publish: $(publishedFilesArtifactName)
-            artifact: $(publishedFilesArtifactName)
-            displayName: Publish services artifacts
-
       - job: codeQl
         displayName: Code Scanning using CodeQL
         dependsOn:
@@ -164,15 +111,14 @@ stages:
               ./codeql-runner-linux init \
               --repository tangirala-aditya/azure-iot-platform-dotnet \
               --github-url https://github.com \
-              --github-auth $GITHUB_PAT \
-              --config-file .github/codeql/codeql-config.yml 
+              --github-auth $GITHUB_PAT_TOKEN  
             displayName: 'Initialize CodeQL Executable and create a CodeQL database'
 
           - script: |
               ./codeql-runner-linux analyze \
               --repository tangirala-aditya/azure-iot-platform-dotnet \
               --github-url https://github.com \
-              --github-auth $GITHUB_PAT \
+              --github-auth $GITHUB_PAT_TOKEN \
               --commit $(Build.SourceVersion) \
               --ref $(Build.SourceBranch)
             displayName: 'Populate the CodeQL runner databases, analyze them, and upload the results to GitHub.'

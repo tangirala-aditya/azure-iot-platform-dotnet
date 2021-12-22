@@ -111,14 +111,14 @@ stages:
               ./codeql-runner-linux init \
               --repository tangirala-aditya/azure-iot-platform-dotnet \
               --github-url https://github.com \
-              --github-auth $GITHUB_PAT_TOKEN  
+              --github-auth $(GITHUB_PAT_TOKEN)  
             displayName: 'Initialize CodeQL Executable and create a CodeQL database'
 
           - script: |
               ./codeql-runner-linux analyze \
               --repository tangirala-aditya/azure-iot-platform-dotnet \
               --github-url https://github.com \
-              --github-auth $GITHUB_PAT_TOKEN \
+              --github-auth $(GITHUB_PAT_TOKEN) \
               --commit $(Build.SourceVersion) \
               --ref $(Build.SourceBranch)
             displayName: 'Populate the CodeQL runner databases, analyze them, and upload the results to GitHub.'

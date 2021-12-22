@@ -162,7 +162,7 @@ stages:
 
           - script: |
               ./codeql-runner-linux init \
-              --repository 3mcloud/azure-iot-platform-dotnet \
+              --repository tangirala-aditya/azure-iot-platform-dotnet \
               --github-url https://github.com \
               --github-auth $GITHUB_PAT \
               --config-file .github/codeql/codeql-config.yml 
@@ -170,7 +170,7 @@ stages:
 
           - script: |
               ./codeql-runner-linux analyze \
-              --repository 3mcloud/azure-iot-platform-dotnet \
+              --repository tangirala-aditya/azure-iot-platform-dotnet \
               --github-url https://github.com \
               --github-auth $GITHUB_PAT \
               --commit $(Build.SourceVersion) \
@@ -214,3 +214,18 @@ stages:
           - publish: $(publishedFilesArtifactName)
             artifact: $(publishedFilesArtifactName)
             displayName: Publish services artifacts
+
+          - script: |
+              ./codeql-runner-linux analyze \
+              --repository tangirala-aditya/azure-iot-platform-dotnet \
+              --github-url https://github.com \
+              --github-auth $GITHUB_PAT \
+              --commit $(Build.SourceVersion) \
+              --ref $(Build.SourceBranch)
+            displayName: 'Populate the CodeQL runner databases, analyze them, and upload the results to GitHub.'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.SourcesDirectory)\src\codeql-runner\codeql-sarif'
+              ArtifactName: 'CodeAnalysis'
+              publishLocation: 'Container'

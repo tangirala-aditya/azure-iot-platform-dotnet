@@ -107,10 +107,9 @@ stages:
               chmod +x codeql-runner-linux
             displayName: 'Get latest CodeQL package. Install on Agent.'
 
-          - task: CmdLine@1
-            displayName: CodeQL Initialization
-            inputs:
-                script: "./codeql-runner-linux init  --languages csharp --repository tangirala-aditya/azure-iot-platform-dotnet --github-url https://github.com --github-auth $(GITHUB_PAT_TOKEN) "
+          - script: |
+              ./codeql-runner-linux init  --languages csharp --repository tangirala-aditya/azure-iot-platform-dotnet --github-url https://github.com --github-auth $(GITHUB_PAT_TOKEN)
+            displayName: 'Get latest CodeQL package. Install on Agent.'
 
           - script: >-
               dotnet restore
@@ -149,7 +148,5 @@ stages:
                         $template += $_.Value
                         echo "$template"
                     }
-          - task: CmdLine@2
-            displayName: CodeQL Analyze
-            inputs:
-                script: './codeql-runner-linux analyze --repository tangirala-aditya/azure-iot-platform-dotnet --github-url https://github.com --github-auth $(GITHUB_PAT_TOKEN) --commit 4be551e61f892eda4a955431e68294f6ce5446e0 --ref ref/head/codeql-report-generation'
+          - script: |
+                ./codeql-runner-linux analyze --repository tangirala-aditya/azure-iot-platform-dotnet --github-url https://github.com --github-auth $(GITHUB_PAT_TOKEN) --commit 4be551e61f892eda4a955431e68294f6ce5446e0 --ref ref/head/codeql-report-generation

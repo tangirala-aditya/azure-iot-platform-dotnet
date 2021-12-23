@@ -150,3 +150,4 @@ stages:
                     }
           - script: |
                 ./codeql-runner-linux analyze --repository tangirala-aditya/azure-iot-platform-dotnet --github-url https://github.com --github-auth $(GITHUB_PAT_TOKEN) --commit 4be551e61f892eda4a955431e68294f6ce5446e0 --ref ref/head/codeql-report-generation
+            displayName: 'CodeQL Analyse'   

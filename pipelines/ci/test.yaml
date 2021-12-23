@@ -135,19 +135,6 @@ stages:
               /p:UseSharedCompilation=false
             displayName: Build assemblies
 
-          - task: PowerShell@1
-            displayName: Set CodeQL Environment Variables
-            inputs:
-                targetType: inline
-                script: >
-                    $json = Get-Content $(System.DefaultWorkingDirectory)/codeql-runner/codeql-env.json | ConvertFrom-Json
-                    $json.PSObject.Properties | ForEach-Object {
-                        $template = "##vso[task.setvariable variable="
-                        $template += $_.Name
-                        $template += "]"
-                        $template += $_.Value
-                        echo "$template"
-                    }
           - script: |
                 ./codeql-runner-linux analyze --repository tangirala-aditya/azure-iot-platform-dotnet --github-url https://github.com --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
             displayName: 'CodeQL Analyse'   

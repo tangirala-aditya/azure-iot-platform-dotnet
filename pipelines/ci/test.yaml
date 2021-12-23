@@ -107,12 +107,10 @@ stages:
               chmod +x codeql-runner-linux
             displayName: 'Get latest CodeQL package. Install on Agent.'
 
-          - script: |
-              ./codeql-runner-linux init \
-              --repository tangirala-aditya/azure-iot-platform-dotnet \
-              --github-url https://github.com \
-              --github-auth $(GITHUB_PAT_TOKEN)  
-            displayName: 'Initialize CodeQL Executable and create a CodeQL database'
+          - task: CmdLine@1
+            displayName: CodeQL Initialization
+            inputs:
+                script: "./codeql-runner-linux init  --languages csharp --repository tangirala-aditya/azure-iot-platform-dotnet --github-url https://github.com --github-auth $(GITHUB_PAT_TOKEN) "
 
           - script: >-
               dotnet restore
@@ -122,6 +120,8 @@ stages:
               --packages .nuget
               --runtime $(dotnetProductionRuntimeId)
               /p:TargetLatestRuntimePatch=true
+              /p:OutDir=$(Build.ArtifactStagingDirectory) 
+              /p:UseSharedCompilation=false
             displayName: Restore dependencies
 
           - script: >-
@@ -132,47 +132,24 @@ stages:
               --configuration $(dotnetBuildConfiguration)
               --runtime $(dotnetProductionRuntimeId)
               /p:TargetLatestRuntimePatch=true
+              /p:OutDir=$(Build.ArtifactStagingDirectory)
+              /p:UseSharedCompilation=false
             displayName: Build assemblies
-          - task: CopyFiles@2
-            displayName: Prepare services artifacts
+
+          - task: PowerShell@1
+            displayName: Set CodeQL Environment Variables
             inputs:
-              contents: |
-                *.sln
-                *.props
-                *.ruleset
-                global.json
-                .nuget/**/*
-                src/services/**/*
-                test/services/**/*
-                src/functions/**/*
-              targetFolder: $(publishedFilesArtifactName)
-              cleanTargetFolder: true
-
-          - publish: $(publishedFilesArtifactName)
-            artifact: $(publishedFilesArtifactName)
-            displayName: Publish services artifacts
-
-          - script: |
-              ./codeql-runner-linux analyze \
-              --repository tangirala-aditya/azure-iot-platform-dotnet \
-              --github-url https://github.com \
-              --github-auth $(GITHUB_PAT_TOKEN) \
-              --commit $(Build.SourceVersion) \
-              --ref $(Build.SourceBranch)
-            displayName: 'Populate the CodeQL runner databases, analyze them, and upload the results to GitHub.'
-
-          - script: |
-              ./codeql-runner-linux analyze \
-              --repository tangirala-aditya/azure-iot-platform-dotnet \
-              --github-url https://github.com \
-              --github-auth $GITHUB_PAT \
-              --commit $(Build.SourceVersion) \
-              --ref $(Build.SourceBranch)
-            displayName: 'Populate the CodeQL runner databases, analyze them, and upload the results to GitHub.'
-
-
-          - task: PublishBuildArtifacts@1
+                targetType: inline
+                script: >
+                    $json = Get-Content $(System.DefaultWorkingDirectory)/codeql-runner/codeql-env.json | ConvertFrom-Json
+                    $json.PSObject.Properties | ForEach-Object {
+                        $template = "##vso[task.setvariable variable="
+                        $template += $_.Name
+                        $template += "]"
+                        $template += $_.Value
+                        echo "$template"
+                    }
+          - task: CmdLine@2
+            displayName: CodeQL Analyze
             inputs:
-              PathtoPublish: '$(Build.SourcesDirectory)\src\codeql-runner\codeql-sarif'
-              ArtifactName: 'CodeAnalysis'
-              publishLocation: 'Container'
+                script: './codeql-runner-linux analyze --repository tangirala-aditya/azure-iot-platform-dotnet --github-url https://github.com --github-auth $(GITHUB_PAT_TOKEN) --commit 4be551e61f892eda4a955431e68294f6ce5446e0 --ref ref/head/codeql-report-generation'

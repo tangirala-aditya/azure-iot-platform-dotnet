@@ -114,15 +114,6 @@ stages:
               --github-auth $(GITHUB_PAT_TOKEN)  
             displayName: 'Initialize CodeQL Executable and create a CodeQL database'
 
-          - script: |
-              ./codeql-runner-linux analyze \
-              --repository tangirala-aditya/azure-iot-platform-dotnet \
-              --github-url https://github.com \
-              --github-auth $(GITHUB_PAT_TOKEN) \
-              --commit $(Build.SourceVersion) \
-              --ref $(Build.SourceBranch)
-            displayName: 'Populate the CodeQL runner databases, analyze them, and upload the results to GitHub.'
-
           - script: >-
               dotnet restore
               --force
@@ -165,10 +156,20 @@ stages:
               ./codeql-runner-linux analyze \
               --repository tangirala-aditya/azure-iot-platform-dotnet \
               --github-url https://github.com \
+              --github-auth $(GITHUB_PAT_TOKEN) \
+              --commit $(Build.SourceVersion) \
+              --ref $(Build.SourceBranch)
+            displayName: 'Populate the CodeQL runner databases, analyze them, and upload the results to GitHub.'
+
+          - script: |
+              ./codeql-runner-linux analyze \
+              --repository tangirala-aditya/azure-iot-platform-dotnet \
+              --github-url https://github.com \
               --github-auth $GITHUB_PAT \
               --commit $(Build.SourceVersion) \
               --ref $(Build.SourceBranch)
             displayName: 'Populate the CodeQL runner databases, analyze them, and upload the results to GitHub.'
+
 
           - task: PublishBuildArtifacts@1
             inputs:

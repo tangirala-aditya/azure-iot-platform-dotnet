@@ -104,20 +104,16 @@ stages:
               version: '3.1.x'
               includePreviewVersions: true
 
-          - task: CmdLine@1
+          - task: CmdLine@2
             displayName: Initialize CodeQL database
             inputs:
-                targetType: inline
-                # Assumes the source code is checked out to the current working directory.
-                # Creates a database at `/codeql-dbs/example-repo`.
-                # Running on Windows, so specifies a trace process level.
                 script: "codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing /codeql-dbs/example-repo"
 
           # For CodeQL to trace future build steps without knowing the explicit build commands,
           # it requires certain environment variables to be set during the build.
           # Read these generated environment variables and values, and set them so they are available for subsequent commands
           # in the build pipeline. This is done in PowerShell in this example.
-          - task: PowerShell@1
+          - task: PowerShell@2
             displayName: Set CodeQL environment variables
             inputs:
                 targetType: inline
@@ -144,7 +140,7 @@ stages:
             displayName: Visual Studio Build
 
           # Read and set the generated environment variables to end build tracing. This is done in PowerShell in this example.
-          - task: PowerShell@1
+          - task: PowerShell@2
             displayName: Clear CodeQL environment variables
             inputs:
                 targetType: inline
@@ -162,7 +158,6 @@ stages:
           - task: CmdLine@2
             displayName: Finalize CodeQL database
             inputs:
-                targetType: inline
                 script: 'codeql database finalize /codeql-dbs/example-repo'
 
           # Analyze the database and upload the results.
@@ -174,7 +169,6 @@ stages:
           - task: CmdLine@2
             displayName: Upload CodeQL results
             inputs:
-                targetType: inline
                 script: 'echo "$(GITHUB_PAT_TOKEN)" | codeql github upload-results --repository=tangirala-aditya/azure-iot-platform-dotnet \
               --ref $(Build.SourceVersion) --ref $(Build.SourceBranch) \
               --sarif=/temp/example-repo-csharp.sarif --github-auth-stdin'

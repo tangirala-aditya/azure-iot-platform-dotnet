@@ -224,7 +224,8 @@ stages:
                   cd $(Build.SourcesDirectory)\src
 
                   Write-Host "CodeQL Init Process Starts....."
-                  pwd & ./codeql-runner-win.exe init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(GITHUB_PAT_TOKEN) --languages csharp
+                  pwd & 
+                  ./codeql-runner-win.exe init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(GITHUB_PAT_TOKEN) --languages csharp
                     
                   cat $(Build.SourcesDirectory)\src\codeql-runner\codeql-env.sh | Invoke-Expression
 

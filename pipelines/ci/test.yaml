@@ -104,111 +104,139 @@ stages:
               version: '3.1.x'
               includePreviewVersions: true
 
-          - task: CmdLine@2
-            displayName: Initialize CodeQL Tool
-            inputs:
-              script: |
-                wget https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-win64.tar.gz
-                tar -xvzf ../codeql-bundle-win64.tar.gz
-          - task: CmdLine@2
-            displayName: Initialize CodeQL database
-            inputs:
-                script: "codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing /codeql-dbs/example-repo"
+          # - task: CmdLine@2
+          #   displayName: Initialize CodeQL Tool
+          #   inputs:
+          #     script: |
+          #       wget https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-win64.tar.gz
+          #       tar -xvzf ../codeql-bundle-win64.tar.gz
+          # - task: CmdLine@2
+          #   displayName: Initialize CodeQL database
+          #   inputs:
+          #       script: "codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing /codeql-dbs/example-repo"
 
-          # For CodeQL to trace future build steps without knowing the explicit build commands,
-          # it requires certain environment variables to be set during the build.
-          # Read these generated environment variables and values, and set them so they are available for subsequent commands
-          # in the build pipeline. This is done in PowerShell in this example.
+          # # For CodeQL to trace future build steps without knowing the explicit build commands,
+          # # it requires certain environment variables to be set during the build.
+          # # Read these generated environment variables and values, and set them so they are available for subsequent commands
+          # # in the build pipeline. This is done in PowerShell in this example.
+          # - task: PowerShell@2
+          #   displayName: Set CodeQL environment variables
+          #   inputs:
+          #       targetType: inline
+          #       script: >
+          #         $json = Get-Content /codeql-dbs/example-repo/temp/tracingEnvironment/start-tracing.json | ConvertFrom-Json
+          #         $json.PSObject.Properties | ForEach-Object {
+          #             $template = "##vso[task.setvariable variable="
+          #             $template += $_.Name
+          #             $template += "]"
+          #             $template += $_.Value
+          #             echo "$template"
+          #         }
+
+          # # Execute the pre-defined build step. Note the `msbuildArgs` variable.
+          # - task: VSBuild@1
+          #   inputs:
+          #       solution: '**/*.sln'
+          #       # Disable MSBuild shared compilation for C# builds.
+          #       msbuildArgs: /p:OutDir=$(Build.ArtifactStagingDirectory) /p:UseSharedCompilation=false
+          #       platform: Any CPU
+          #       configuration: Release
+          #       # Execute a clean build, in order to remove any existing build artifacts prior to the build.
+          #       clean: True
+          #   displayName: Visual Studio Build
+
+          # # Read and set the generated environment variables to end build tracing. This is done in PowerShell in this example.
+          # - task: PowerShell@2
+          #   displayName: Clear CodeQL environment variables
+          #   inputs:
+          #       targetType: inline
+          #       script: >
+          #         $json = Get-Content $(System.DefaultWorkingDirectory)/db/temp/tracingEnvironment/end-tracing.json | ConvertFrom-Json
+          #         $json.PSObject.Properties | ForEach-Object {
+          #             $template = "##vso[task.setvariable variable="
+          #             $template += $_.Name
+          #             $template += "]"
+          #             $template += $_.Value
+          #             echo "$template"
+          #         }
+
+          # # Use `codeql database finalize` to complete database creation after the build is done.
+          # - task: CmdLine@2
+          #   displayName: Finalize CodeQL database
+          #   inputs:
+          #       script: 'codeql database finalize /codeql-dbs/example-repo'
+
+          # # Analyze the database and upload the results.
+          # - task: CmdLine@2
+          #   displayName: Analyze CodeQL database
+          #   inputs:
+          #       script: 'codeql database analyze /codeql-dbs/example-repo csharp-code-scanning.qls --sarif-category=csharp --format=sarif-latest --output=/temp/example-repo-csharp.sarif'
+
+          # - task: CmdLine@2
+          #   displayName: Upload CodeQL results
+          #   inputs:
+          #       script: 'echo "$(GITHUB_PAT_TOKEN)" | codeql github upload-results --repository=tangirala-aditya/azure-iot-platform-dotnet \
+          #     --ref $(Build.SourceVersion) --ref $(Build.SourceBranch) \
+          #     --sarif=/temp/example-repo-csharp.sarif --github-auth-stdin'
+
+
+
+          #           # - script: |
+          #           #     ./codeql-runner-linux init  --languages csharp --repository tangirala-aditya/azure-iot-platform-dotnet --github-url https://github.com --github-auth $(GITHUB_PAT_TOKEN)
+          #           #   displayName: 'Get latest CodeQL package. Install on Agent.'
+
+          # - script: >-
+          #     dotnet restore
+          #     --force
+          #     --no-cache
+          #     --no-dependencies
+          #     --packages .nuget
+          #     --runtime $(dotnetProductionRuntimeId)
+          #     /p:TargetLatestRuntimePatch=true
+          #     /p:OutDir=$(Build.ArtifactStagingDirectory) 
+          #     /p:UseSharedCompilation=false
+          #   displayName: Restore dependencies
+
+          # - script: >-
+          #     dotnet publish
+          #     --self-contained false
+          #     --no-restore
+          #     --no-dependencies
+          #     --configuration $(dotnetBuildConfiguration)
+          #     --runtime $(dotnetProductionRuntimeId)
+          #     /p:TargetLatestRuntimePatch=true
+          #     /p:OutDir=$(Build.ArtifactStagingDirectory)
+          #     /p:UseSharedCompilation=false
+          #   displayName: Build assemblies
+
+          # - script: |
+          #       ./codeql-runner-linux analyze --repository tangirala-aditya/azure-iot-platform-dotnet --github-url https://github.com --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
+          #   displayName: 'CodeQL Analyse'
           - task: PowerShell@2
-            displayName: Set CodeQL environment variables
+            displayName: Add auth callback URL
             inputs:
-                targetType: inline
-                script: >
-                  $json = Get-Content /codeql-dbs/example-repo/temp/tracingEnvironment/start-tracing.json | ConvertFrom-Json
-                  $json.PSObject.Properties | ForEach-Object {
-                      $template = "##vso[task.setvariable variable="
-                      $template += $_.Name
-                      $template += "]"
-                      $template += $_.Value
-                      echo "$template"
-                  }
+              targetType: inline
+              script: |-
+                  Write-Host "downloading Code QL analysis for windows"
+                  $ProgressPreference = 'SilentlyContinue'
+                  Invoke-WebRequest -uri https://github.com/github/codeql-action/releases/latest/download/codeql-runner-win.exe -OutFile $(Build.SourcesDirectory)\src\codeql-runner-win.exe
+                  Write-Host "Code QL analysis for windows downloaded, now we init it"
+                  cd $(Build.SourcesDirectory)\src
+                  pwd 
+                  & ./codeql-runner-win.exe init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(ghtoken) --languages csharp
 
-          # Execute the pre-defined build step. Note the `msbuildArgs` variable.
-          - task: VSBuild@1
+                  cat $(Build.SourcesDirectory)\src\codeql-runner\codeql-env.sh | Invoke-Expression
+
+                  #Perform a standard build of your code
+                  dotnet restore
+                  dotnet build
+
+                  #perform CodeQL analysis
+                  Write-Host "Analyzing with CodeQL"
+                  & ./codeql-runner-win.exe analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
+
+          - task: PublishBuildArtifacts@1
             inputs:
-                solution: '**/*.sln'
-                # Disable MSBuild shared compilation for C# builds.
-                msbuildArgs: /p:OutDir=$(Build.ArtifactStagingDirectory) /p:UseSharedCompilation=false
-                platform: Any CPU
-                configuration: Release
-                # Execute a clean build, in order to remove any existing build artifacts prior to the build.
-                clean: True
-            displayName: Visual Studio Build
-
-          # Read and set the generated environment variables to end build tracing. This is done in PowerShell in this example.
-          - task: PowerShell@2
-            displayName: Clear CodeQL environment variables
-            inputs:
-                targetType: inline
-                script: >
-                  $json = Get-Content $(System.DefaultWorkingDirectory)/db/temp/tracingEnvironment/end-tracing.json | ConvertFrom-Json
-                  $json.PSObject.Properties | ForEach-Object {
-                      $template = "##vso[task.setvariable variable="
-                      $template += $_.Name
-                      $template += "]"
-                      $template += $_.Value
-                      echo "$template"
-                  }
-
-          # Use `codeql database finalize` to complete database creation after the build is done.
-          - task: CmdLine@2
-            displayName: Finalize CodeQL database
-            inputs:
-                script: 'codeql database finalize /codeql-dbs/example-repo'
-
-          # Analyze the database and upload the results.
-          - task: CmdLine@2
-            displayName: Analyze CodeQL database
-            inputs:
-                script: 'codeql database analyze /codeql-dbs/example-repo csharp-code-scanning.qls --sarif-category=csharp --format=sarif-latest --output=/temp/example-repo-csharp.sarif'
-
-          - task: CmdLine@2
-            displayName: Upload CodeQL results
-            inputs:
-                script: 'echo "$(GITHUB_PAT_TOKEN)" | codeql github upload-results --repository=tangirala-aditya/azure-iot-platform-dotnet \
-              --ref $(Build.SourceVersion) --ref $(Build.SourceBranch) \
-              --sarif=/temp/example-repo-csharp.sarif --github-auth-stdin'
-
-
-
-                    # - script: |
-                    #     ./codeql-runner-linux init  --languages csharp --repository tangirala-aditya/azure-iot-platform-dotnet --github-url https://github.com --github-auth $(GITHUB_PAT_TOKEN)
-                    #   displayName: 'Get latest CodeQL package. Install on Agent.'
-
-          - script: >-
-              dotnet restore
-              --force
-              --no-cache
-              --no-dependencies
-              --packages .nuget
-              --runtime $(dotnetProductionRuntimeId)
-              /p:TargetLatestRuntimePatch=true
-              /p:OutDir=$(Build.ArtifactStagingDirectory) 
-              /p:UseSharedCompilation=false
-            displayName: Restore dependencies
-
-          - script: >-
-              dotnet publish
-              --self-contained false
-              --no-restore
-              --no-dependencies
-              --configuration $(dotnetBuildConfiguration)
-              --runtime $(dotnetProductionRuntimeId)
-              /p:TargetLatestRuntimePatch=true
-              /p:OutDir=$(Build.ArtifactStagingDirectory)
-              /p:UseSharedCompilation=false
-            displayName: Build assemblies
-
-          - script: |
-                ./codeql-runner-linux analyze --repository tangirala-aditya/azure-iot-platform-dotnet --github-url https://github.com --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
-            displayName: 'CodeQL Analyse'
+              PathtoPublish: '$(Build.SourcesDirectory)\src\codeql-runner\codeql-sarif'
+              ArtifactName: 'CodeAnalysis'
+              publishLocation: 'Container'

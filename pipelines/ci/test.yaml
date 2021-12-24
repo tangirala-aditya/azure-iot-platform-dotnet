@@ -132,7 +132,7 @@ stages:
 
           # Execute the pre-defined build step. Note the `msbuildArgs` variable.
           - task: VSBuild@1
-              inputs:
+            inputs:
                 solution: '**/*.sln'
                 # Disable MSBuild shared compilation for C# builds.
                 msbuildArgs: /p:OutDir=$(Build.ArtifactStagingDirectory) /p:UseSharedCompilation=false

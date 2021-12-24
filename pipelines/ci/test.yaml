@@ -105,6 +105,12 @@ stages:
               includePreviewVersions: true
 
           - task: CmdLine@2
+            displayName: Initialize CodeQL Tool
+            inputs:
+              script: |
+                wget https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-win64.tar.gz
+                tar -xvzf ../codeql-bundle-win64.tar.gz
+          - task: CmdLine@2
             displayName: Initialize CodeQL database
             inputs:
                 script: "codeql database init --language csharp --trace-process-name Agent.Worker.exe --source-root . --begin-tracing /codeql-dbs/example-repo"
@@ -173,10 +179,7 @@ stages:
               --ref $(Build.SourceVersion) --ref $(Build.SourceBranch) \
               --sarif=/temp/example-repo-csharp.sarif --github-auth-stdin'
 
-                    # - script: |
-                    #     wget https://github.com/github/codeql-action/releases/latest/download/codeql-runner-linux
-                    #     chmod +x codeql-runner-linux
-                    #   displayName: 'Get latest CodeQL package. Install on Agent.'
+
 
                     # - script: |
                     #     ./codeql-runner-linux init  --languages csharp --repository tangirala-aditya/azure-iot-platform-dotnet --github-url https://github.com --github-auth $(GITHUB_PAT_TOKEN)

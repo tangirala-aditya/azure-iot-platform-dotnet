@@ -107,6 +107,7 @@ stages:
           - task: CmdLine@1
             displayName: Initialize CodeQL database
             inputs:
+                targetType: inline
                 # Assumes the source code is checked out to the current working directory.
                 # Creates a database at `/codeql-dbs/example-repo`.
                 # Running on Windows, so specifies a trace process level.
@@ -161,6 +162,7 @@ stages:
           - task: CmdLine@2
             displayName: Finalize CodeQL database
             inputs:
+                targetType: inline
                 script: 'codeql database finalize /codeql-dbs/example-repo'
 
           # Analyze the database and upload the results.
@@ -172,6 +174,7 @@ stages:
           - task: CmdLine@2
             displayName: Upload CodeQL results
             inputs:
+                targetType: inline
                 script: 'echo "$(GITHUB_PAT_TOKEN)" | codeql github upload-results --repository=tangirala-aditya/azure-iot-platform-dotnet \
               --ref $(Build.SourceVersion) --ref $(Build.SourceBranch) \
               --sarif=/temp/example-repo-csharp.sarif --github-auth-stdin'

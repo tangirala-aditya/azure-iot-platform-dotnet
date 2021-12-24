@@ -222,14 +222,16 @@ stages:
                   Invoke-WebRequest -uri https://github.com/github/codeql-action/releases/latest/download/codeql-runner-win.exe -OutFile $(Build.SourcesDirectory)\src\codeql-runner-win.exe
                   Write-Host "Code QL analysis for windows downloaded, now we init it"
                   cd $(Build.SourcesDirectory)\src
-                  pwd 
-                  & ./codeql-runner-win.exe init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(GITHUB_PAT_TOKEN) --languages csharp
 
+                  Write-Host "CodeQL Init Process Starts....."
+                  pwd & ./codeql-runner-win.exe init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(GITHUB_PAT_TOKEN) --languages csharp
+                    
                   cat $(Build.SourcesDirectory)\src\codeql-runner\codeql-env.sh | Invoke-Expression
 
                   #Perform a standard build of your code
-                  dotnet restore --force --no-cache --no-dependencies --packages .nuget --runtime $(dotnetProductionRuntimeId) /p:TargetLatestRuntimePatch=true /p:OutDir=$(Build.ArtifactStagingDirectory)  /p:UseSharedCompilation=false
-                  dotnet publish --self-contained false --no-restore --no-dependencies --configuration $(dotnetBuildConfiguration) --runtime $(dotnetProductionRuntimeId) /p:TargetLatestRuntimePatch=true /p:OutDir=$(Build.ArtifactStagingDirectory) /p:UseSharedCompilation=false
+                  Write-Host "Build the solution and publish the artifacts..."
+                  dotnet restore --force --no-cache --no-dependencies --packages .nuget --runtime $(dotnetProductionRuntimeId) /p:TargetLatestRuntimePatch=true
+                  dotnet publish --self-contained false --no-restore --no-dependencies --configuration $(dotnetBuildConfiguration) --runtime $(dotnetProductionRuntimeId) /p:TargetLatestRuntimePatch=true
 
 
                   #perform CodeQL analysis

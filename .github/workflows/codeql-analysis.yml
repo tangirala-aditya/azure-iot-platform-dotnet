@@ -25,7 +25,7 @@ jobs:
     name: Analyze
     runs-on: ubuntu-latest
     env:
-      AppConfigurationConnectionString: "Endpoint=https://acshyd-appconfig-dev.azconfig.io;Id=GYCS-l4-s0:MFR+WNIgDpva5VAfDYPP;Secret=hc1mnHRNECprwxNlBi2WwftqQizq19Gi9dyReLf+P6E="
+      AppConfigurationConnectionString: ${{ secrets.APPCONFIGURATIONCONNECTIONSTRING }}
     permissions:
       actions: read
       contents: read

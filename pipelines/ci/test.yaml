@@ -164,7 +164,7 @@ stages:
                   chmod +x codeql-runner-linux
                   Write-Host "Code QL analysis for linux downloaded, now we init it...."                  
                   ./codeql-runner-linux init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(GITHUB_PAT_TOKEN) --languages csharp 
-
+                  . codeql-runner/codeql-env.sh
                   Write-Host "Build the solution and publish the artifacts..."
 
                   dotnet restore --force --no-cache --no-dependencies --packages .nuget --runtime $(dotnetProductionRuntimeId) /p:TargetLatestRuntimePatch=true

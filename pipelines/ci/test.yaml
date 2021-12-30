@@ -154,7 +154,7 @@ stages:
               version: '3.1.x'
               includePreviewVersions: true
           - task: PowerShell@2
-            displayName: Add auth callback URL
+            displayName: CodeQL Scan
             inputs:
               targetType: inline
               script: |-

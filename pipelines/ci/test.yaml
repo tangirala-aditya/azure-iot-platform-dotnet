@@ -387,8 +387,6 @@ stages:
   - stage: cleanup
     displayName: Cleanup
     condition: false
-    dependsOn:
-      - deployServices
     #condition: and(always(), eq(variables['runCleanupStage'], 'true'))
     jobs:
       - job: getPipelineVariables

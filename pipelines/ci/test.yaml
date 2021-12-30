@@ -167,8 +167,8 @@ stages:
                   cat codeql-runner\codeql-env.sh | Invoke-Expression
                   Write-Host "Build the solution and publish the artifacts..."
 
-                  dotnet restore --force --no-cache --no-dependencies --packages .nuget --runtime $(dotnetProductionRuntimeId) /p:TargetLatestRuntimePatch=true
-                  dotnet publish --self-contained false --no-restore --no-dependencies --configuration $(dotnetBuildConfiguration) --runtime $(dotnetProductionRuntimeId) /p:TargetLatestRuntimePatch=true
+                  dotnet restore
+                  dotnet build
 
                   #perform CodeQL analysis
                   Write-Host "Analyzing with CodeQL"

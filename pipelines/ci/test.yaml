@@ -120,7 +120,9 @@ stages:
                   cat $(Build.SourcesDirectory)\src\codeql-runner\codeql-env.sh | Invoke-Expression
 
                   #Perform a standard build of your code
+                  Tree $(Build.SourcesDirectory)
                   Write-Host "Build the solution and publish the artifacts..."
+
                   dotnet restore --force --no-cache --no-dependencies --packages .nuget --runtime $(dotnetProductionRuntimeId) /p:TargetLatestRuntimePatch=true
                   dotnet publish --self-contained false --no-restore --no-dependencies --configuration $(dotnetBuildConfiguration) --runtime $(dotnetProductionRuntimeId) /p:TargetLatestRuntimePatch=true
 

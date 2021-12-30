@@ -388,7 +388,6 @@ stages:
     displayName: Cleanup
     condition: false
     dependsOn:
-      - enumerateDependencies
       - deployServices
     #condition: and(always(), eq(variables['runCleanupStage'], 'true'))
     jobs:

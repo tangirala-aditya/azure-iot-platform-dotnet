@@ -144,6 +144,7 @@ stages:
         displayName: Build Services
         dependsOn:
           - preBuild
+          - codeQl
         variables:
           AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
         steps:
@@ -241,6 +242,7 @@ stages:
 
   - stage: listCommitsSinceLastRelease
     displayName: List commits since last release
+    condition: false
     dependsOn: []
     jobs:
       - job: listCommitsSinceLastRelease
@@ -276,6 +278,7 @@ stages:
 
   - stage: buildFrontEndContainers
     displayName: Build front-end containers
+    condition: false
     dependsOn: []
     jobs:
       - job: lintWebuiCode
@@ -332,6 +335,7 @@ stages:
 
   - stage: buildServiceContainers
     displayName: Build service containers
+    condition: false
     dependsOn:
       - build
     jobs:
@@ -382,10 +386,11 @@ stages:
 
   - stage: cleanup
     displayName: Cleanup
+    condition: false
     dependsOn:
       - enumerateDependencies
       - deployServices
-    condition: and(always(), eq(variables['runCleanupStage'], 'true'))
+    #condition: and(always(), eq(variables['runCleanupStage'], 'true'))
     jobs:
       - job: getPipelineVariables
         displayName: Get pipeline variables

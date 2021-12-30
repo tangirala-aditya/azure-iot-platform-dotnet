@@ -276,155 +276,155 @@ stages:
             artifact: $(commitsSinceLastReleaseArtifactName)
             displayName: Publish list of commits since last release
 
-  - stage: buildFrontEndContainers
-    displayName: Build front-end containers
-    condition: false
-    dependsOn: []
-    jobs:
-      - job: lintWebuiCode
-        displayName: Lint webui code
-        steps:
-          - checkout: self
-            displayName: Checkout repository
+  # - stage: buildFrontEndContainers
+  #   displayName: Build front-end containers
+  #   condition: false
+  #   dependsOn: []
+  #   jobs:
+  #     - job: lintWebuiCode
+  #       displayName: Lint webui code
+  #       steps:
+  #         - checkout: self
+  #           displayName: Checkout repository
 
-          - task: NodeTool@0
-            inputs:
-              versionSpec: 14.16.0
+  #         - task: NodeTool@0
+  #           inputs:
+  #             versionSpec: 14.16.0
 
-          - pwsh: |-
-              npm install
-              npm run lint
-            displayName: npm run lint
-            workingDirectory: src/webui
-          - task: CopyFiles@2
-            displayName: Prepare services artifacts
-            inputs:
-              contents: |
-                src/webui/**/*
-              targetFolder: $(webuiArtifactName)
-              cleanTargetFolder: true
+  #         - pwsh: |-
+  #             npm install
+  #             npm run lint
+  #           displayName: npm run lint
+  #           workingDirectory: src/webui
+  #         - task: CopyFiles@2
+  #           displayName: Prepare services artifacts
+  #           inputs:
+  #             contents: |
+  #               src/webui/**/*
+  #             targetFolder: $(webuiArtifactName)
+  #             cleanTargetFolder: true
 
-          - publish: $(webuiArtifactName)
-            artifact: $(webuiArtifactName)
-            displayName: Publish services artifacts
+  #         - publish: $(webuiArtifactName)
+  #           artifact: $(webuiArtifactName)
+  #           displayName: Publish services artifacts
 
-      - job: buildFrontEndContainers
-        displayName: Build front-end containers
-        dependsOn: []
-        strategy:
-          matrix:
-            reverse-proxy:
-              serviceName: reverse-proxy
-            webui:
-              serviceName: webui
-        steps:
-          - checkout: self
-            displayName: Checkout repository
+  #     - job: buildFrontEndContainers
+  #       displayName: Build front-end containers
+  #       dependsOn: []
+  #       strategy:
+  #         matrix:
+  #           reverse-proxy:
+  #             serviceName: reverse-proxy
+  #           webui:
+  #             serviceName: webui
+  #       steps:
+  #         - checkout: self
+  #           displayName: Checkout repository
 
-          - task: Docker@2
-            displayName: Build and push container
-            inputs:
-              containerRegistry: $(dockerHubServiceConnectionName)
-              repository: $(dockerHubRepositoryName)/$(serviceName)
-              command: buildAndPush
-              dockerfile: src/$(serviceName)/$(dockerfile)
-              buildContext: src/$(serviceName)
-              tags: |-
-                $(Build.BuildId)
-                $(Build.SourceVersion)
+  #         - task: Docker@2
+  #           displayName: Build and push container
+  #           inputs:
+  #             containerRegistry: $(dockerHubServiceConnectionName)
+  #             repository: $(dockerHubRepositoryName)/$(serviceName)
+  #             command: buildAndPush
+  #             dockerfile: src/$(serviceName)/$(dockerfile)
+  #             buildContext: src/$(serviceName)
+  #             tags: |-
+  #               $(Build.BuildId)
+  #               $(Build.SourceVersion)
 
-  - stage: buildServiceContainers
-    displayName: Build service containers
-    condition: false
-    dependsOn:
-      - build
-    jobs:
-      - job: buildServiceContainers
-        displayName: Build service containers
-        strategy:
-          matrix:
-            asa-manager:
-              serviceName: asa-manager
-            config:
-              serviceName: config
-            device-telemetry:
-              serviceName: device-telemetry
-            diagnostics:
-              serviceName: diagnostics
-            identity-gateway:
-              serviceName: identity-gateway
-            iothub-manager:
-              serviceName: iothub-manager
-            storage-adapter:
-              serviceName: storage-adapter
-            tenant-manager:
-              serviceName: tenant-manager
-        steps:
-          - checkout: none
+  # - stage: buildServiceContainers
+  #   displayName: Build service containers
+  #   condition: false
+  #   dependsOn:
+  #     - build
+  #   jobs:
+  #     - job: buildServiceContainers
+  #       displayName: Build service containers
+  #       strategy:
+  #         matrix:
+  #           asa-manager:
+  #             serviceName: asa-manager
+  #           config:
+  #             serviceName: config
+  #           device-telemetry:
+  #             serviceName: device-telemetry
+  #           diagnostics:
+  #             serviceName: diagnostics
+  #           identity-gateway:
+  #             serviceName: identity-gateway
+  #           iothub-manager:
+  #             serviceName: iothub-manager
+  #           storage-adapter:
+  #             serviceName: storage-adapter
+  #           tenant-manager:
+  #             serviceName: tenant-manager
+  #       steps:
+  #         - checkout: none
 
-          - download: current
-            artifact: $(publishedFilesArtifactName)
-            displayName: Download artifacts
+  #         - download: current
+  #           artifact: $(publishedFilesArtifactName)
+  #           displayName: Download artifacts
 
-          - pwsh: |-
-              $assemblyName = (Get-Content src/services/$(serviceName)/WebService/WebService.csproj | Select-String '(?<=<AssemblyName>).*(?=</AssemblyName>)').Matches[0].Value
-              $dockerfileContents = "FROM mcr.microsoft.com/dotnet/core/aspnet:$(dotnetCoreRuntimeVersion)-alpine AS base`nWORKDIR /app`nEXPOSE 80`nCOPY . .`nENTRYPOINT [`"dotnet`", `"$assemblyName.dll`"]"
-              Set-Content -Value $dockerfileContents -Path $(dockerfile) -NoNewline -Encoding utf8
-            displayName: Generate Dockerfile
-            workingDirectory: $(Pipeline.Workspace)/$(publishedFilesArtifactName)
-          - task: Docker@2
-            displayName: Build and push container
-            inputs:
-              containerRegistry: $(dockerHubServiceConnectionName)
-              repository: $(dockerHubRepositoryName)/$(serviceName)
-              command: buildAndPush
-              dockerfile: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/$(dockerfile)
-              buildContext: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/src/services/$(serviceName)/WebService/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/$(dotnetProductionRuntimeId)/publish
-              tags: |-
-                $(Build.BuildId)
-                $(Build.SourceVersion)
+  #         - pwsh: |-
+  #             $assemblyName = (Get-Content src/services/$(serviceName)/WebService/WebService.csproj | Select-String '(?<=<AssemblyName>).*(?=</AssemblyName>)').Matches[0].Value
+  #             $dockerfileContents = "FROM mcr.microsoft.com/dotnet/core/aspnet:$(dotnetCoreRuntimeVersion)-alpine AS base`nWORKDIR /app`nEXPOSE 80`nCOPY . .`nENTRYPOINT [`"dotnet`", `"$assemblyName.dll`"]"
+  #             Set-Content -Value $dockerfileContents -Path $(dockerfile) -NoNewline -Encoding utf8
+  #           displayName: Generate Dockerfile
+  #           workingDirectory: $(Pipeline.Workspace)/$(publishedFilesArtifactName)
+  #         - task: Docker@2
+  #           displayName: Build and push container
+  #           inputs:
+  #             containerRegistry: $(dockerHubServiceConnectionName)
+  #             repository: $(dockerHubRepositoryName)/$(serviceName)
+  #             command: buildAndPush
+  #             dockerfile: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/$(dockerfile)
+  #             buildContext: $(Pipeline.Workspace)/$(publishedFilesArtifactName)/src/services/$(serviceName)/WebService/bin/$(dotnetBuildConfiguration)/netcoreapp$(dotnetCoreRuntimeVersion)/$(dotnetProductionRuntimeId)/publish
+  #             tags: |-
+  #               $(Build.BuildId)
+  #               $(Build.SourceVersion)
 
-  - stage: cleanup
-    displayName: Cleanup
-    condition: false
-    #condition: and(always(), eq(variables['runCleanupStage'], 'true'))
-    jobs:
-      - job: getPipelineVariables
-        displayName: Get pipeline variables
-        dependsOn: []
-        steps:
-          - checkout: none
+  # - stage: cleanup
+  #   displayName: Cleanup
+  #   condition: false
+  #   #condition: and(always(), eq(variables['runCleanupStage'], 'true'))
+  #   jobs:
+  #     - job: getPipelineVariables
+  #       displayName: Get pipeline variables
+  #       dependsOn: []
+  #       steps:
+  #         - checkout: none
 
-          - task: AzureCLI@2
-            displayName: Get pipeline variables
-            name: getPipelineVariables
-            inputs:
-              azureSubscription: $(subscriptionName)
-              scriptType: bash
-              scriptLocation: inlineScript
-              inlineScript: |-
-                kubernetesNamespaceWasCreated=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(kubernetesNamespaceWasCreatedRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
-                echo "##vso[task.setvariable variable=kubernetesNamespaceWasCreated;isOutput=true]$kubernetesNamespaceWasCreated"
-                mmmIotPlatformServicesHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(mmmIotPlatformServicesHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
-                echo "##vso[task.setvariable variable=mmmIotPlatformServicesHelmChartWasInstalled;isOutput=true]$mmmIotPlatformServicesHelmChartWasInstalled"
-                mmmIotPlatformIngressHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
-                echo "##vso[task.setvariable variable=mmmIotPlatformIngressHelmChartWasInstalled;isOutput=true]$mmmIotPlatformIngressHelmChartWasInstalled"
+  #         - task: AzureCLI@2
+  #           displayName: Get pipeline variables
+  #           name: getPipelineVariables
+  #           inputs:
+  #             azureSubscription: $(subscriptionName)
+  #             scriptType: bash
+  #             scriptLocation: inlineScript
+  #             inlineScript: |-
+  #               kubernetesNamespaceWasCreated=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(kubernetesNamespaceWasCreatedRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+  #               echo "##vso[task.setvariable variable=kubernetesNamespaceWasCreated;isOutput=true]$kubernetesNamespaceWasCreated"
+  #               mmmIotPlatformServicesHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(mmmIotPlatformServicesHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+  #               echo "##vso[task.setvariable variable=mmmIotPlatformServicesHelmChartWasInstalled;isOutput=true]$mmmIotPlatformServicesHelmChartWasInstalled"
+  #               mmmIotPlatformIngressHelmChartWasInstalled=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(mmmIotPlatformIngressHelmChartWasInstalledRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
+  #               echo "##vso[task.setvariable variable=mmmIotPlatformIngressHelmChartWasInstalled;isOutput=true]$mmmIotPlatformIngressHelmChartWasInstalled"
 
-      - job: deleteNamespace
-        displayName: Delete namespace
-        dependsOn:
-          - getPipelineVariables
-        condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesNamespaceWasCreated'], 'true'), always())
-        steps:
-          - checkout: none
+  #     - job: deleteNamespace
+  #       displayName: Delete namespace
+  #       dependsOn:
+  #         - getPipelineVariables
+  #       condition: and(eq(dependencies.getPipelineVariables.outputs['getPipelineVariables.kubernetesNamespaceWasCreated'], 'true'), always())
+  #       steps:
+  #         - checkout: none
 
-          - task: Kubernetes@1
-            displayName: Delete namespace
-            inputs:
-              connectionType: Azure Resource Manager
-              azureSubscriptionEndpoint: $(subscriptionName)
-              azureResourceGroup: $(resourceGroupName)
-              kubernetesCluster: $(aksName)
-              command: delete
-              arguments: namespace $(kubernetesNamespace) --now=true --ignore-not-found=true
+  #         - task: Kubernetes@1
+  #           displayName: Delete namespace
+  #           inputs:
+  #             connectionType: Azure Resource Manager
+  #             azureSubscriptionEndpoint: $(subscriptionName)
+  #             azureResourceGroup: $(resourceGroupName)
+  #             kubernetesCluster: $(aksName)
+  #             command: delete
+  #             arguments: namespace $(kubernetesNamespace) --now=true --ignore-not-found=true
                 

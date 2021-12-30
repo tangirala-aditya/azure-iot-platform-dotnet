@@ -162,17 +162,9 @@ stages:
                   $ProgressPreference = 'SilentlyContinue'
                   wget https://github.com/github/codeql-action/releases/latest/download/codeql-runner-linux
                   chmod +x codeql-runner-linux
-                  Write-Host "Code QL analysis for windows downloaded, now we init it"
-                  cd $(Build.SourcesDirectory)\src
+                  Write-Host "Code QL analysis for linux downloaded, now we init it...."                  
+                  ./codeql-runner-linux init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(GITHUB_PAT_TOKEN) --languages csharp 
 
-                  Write-Host "CodeQL Init Process Starts....."
-                  
-                  ./codeql-runner-linux init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(GITHUB_PAT_TOKEN) --languages csharp
-                    
-                  cat $(Build.SourcesDirectory)\src\codeql-runner\codeql-env.sh | Invoke-Expression
-
-                  #Perform a standard build of your code
-                  Tree $(Build.SourcesDirectory)
                   Write-Host "Build the solution and publish the artifacts..."
 
                   dotnet restore --force --no-cache --no-dependencies --packages .nuget --runtime $(dotnetProductionRuntimeId) /p:TargetLatestRuntimePatch=true

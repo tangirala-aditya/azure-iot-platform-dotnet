@@ -166,6 +166,7 @@ stages:
                   ./codeql-runner-linux init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(GITHUB_PAT_TOKEN) --languages csharp 
 
           - script: >-
+             chmod +x ./codeql-runner/codeql-env.sh
                 ./codeql-runner/codeql-env.sh
             displayName: Export Environment Variables
 

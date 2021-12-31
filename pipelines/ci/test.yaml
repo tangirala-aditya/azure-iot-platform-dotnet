@@ -176,7 +176,7 @@ stages:
               targetType: inline
               script: |-
                   dotnet restore
-                  dotnet build
+                  dotnet build /p:UseSharedCompilation=false
 
                   Write-Host "Analyzing with CodeQL"
                    ./codeql-runner-linux analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)

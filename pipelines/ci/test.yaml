@@ -165,17 +165,20 @@ stages:
                   Write-Host "Code QL analysis for linux downloaded, now we init it...."                  
                   ./codeql-runner-linux init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(GITHUB_PAT_TOKEN) --languages csharp 
 
+          - script: >-
+                ./codeql-runner/codeql-env.sh
+            displayName: Export Environment Variables
+
           - task: PowerShell@2
             displayName: Manual Build and Analyse CodeQL
             inputs:
               targetType: inline
               script: |-
-                  ./codeql-runner/codeql-env.sh | Invoke-Expression
                   dotnet restore
                   dotnet build
 
                   Write-Host "Analyzing with CodeQL"
-                  & ./codeql-runner-linux analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
+                   ./codeql-runner-linux analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
 
           - task: PublishBuildArtifacts@1
             inputs:

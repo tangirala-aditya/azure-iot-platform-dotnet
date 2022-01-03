@@ -171,7 +171,7 @@ stages:
               targetType: inline
               script: |-
                   dotnet restore
-                  dotnet build /p:UseSharedCompilation=false
+                  dotnet build /p:UseSharedCompilation=false /p:OutDir=$(Build.ArtifactStagingDirectory)
 
                   Write-Host "Analyzing with CodeQL"
                    ./codeql-runner-linux analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)

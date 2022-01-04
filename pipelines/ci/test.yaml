@@ -111,7 +111,7 @@ stages:
 
           - script: >-
              chmod +x ./codeql-runner/codeql-env.sh
-                . /codeql-runner/codeql-env.sh
+                . ./codeql-runner/codeql-env.sh
             displayName: Export Environment Variables
 
           - task: PowerShell@2

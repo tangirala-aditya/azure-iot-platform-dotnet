@@ -85,57 +85,6 @@ stages:
                 $appConfigurationConnectionString = "Endpoint=https://acshyd-appconfig-dev.azconfig.io;Id=GYCS-l4-s0:MFR+WNIgDpva5VAfDYPP;Secret=hc1mnHRNECprwxNlBi2WwftqQizq19Gi9dyReLf+P6E="
                 echo "##vso[task.setvariable variable=AppConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
 
-      # - job: codeQl
-      #   displayName: Code Scanning using CodeQL
-      #   pool:
-      #     vmImage: windows-latest
-      #   dependsOn:
-      #     - preBuild
-      #   variables:
-      #     AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
-      #   steps:
-      #     - checkout: self
-      #       displayName: Checkout repository
-
-      #     - task: UseDotNet@2
-      #       inputs:
-      #         packageType: 'sdk'
-      #         version: '3.1.x'
-      #         includePreviewVersions: true
-      #     - task: PowerShell@2
-      #       displayName: Add auth callback URL
-      #       inputs:
-      #         targetType: inline
-      #         script: |-
-      #             Write-Host "downloading Code QL analysis for windows"
-      #             $ProgressPreference = 'SilentlyContinue'
-      #             Invoke-WebRequest -uri https://github.com/github/codeql-action/releases/latest/download/codeql-runner-win.exe -OutFile $(Build.SourcesDirectory)\src\codeql-runner-win.exe
-      #             Write-Host "Code QL analysis for windows downloaded, now we init it"
-      #             cd $(Build.SourcesDirectory)\src
-
-      #             Write-Host "CodeQL Init Process Starts....."
-                  
-      #             ./codeql-runner-win.exe init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(GITHUB_PAT_TOKEN) --languages csharp
-                    
-      #             cat $(Build.SourcesDirectory)\src\codeql-runner\codeql-env.sh | Invoke-Expression
-
-      #             #Perform a standard build of your code
-      #             Tree $(Build.SourcesDirectory)
-      #             Write-Host "Build the solution and publish the artifacts..."
-
-      #             dotnet restore --force --no-cache --no-dependencies --packages .nuget --runtime $(dotnetProductionRuntimeId) /p:TargetLatestRuntimePatch=true
-      #             dotnet publish --self-contained false --no-restore --no-dependencies --configuration $(dotnetBuildConfiguration) --runtime $(dotnetProductionRuntimeId) /p:TargetLatestRuntimePatch=true
-
-      #             #perform CodeQL analysis
-      #             Write-Host "Analyzing with CodeQL"
-      #             & ./codeql-runner-win.exe analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
-
-      #     - task: PublishBuildArtifacts@1
-      #       inputs:
-      #         PathtoPublish: '$(Build.SourcesDirectory)\src\codeql-runner\codeql-sarif'
-      #         ArtifactName: 'CodeAnalysis'
-      #         publishLocation: 'Container'
-
       - job: codeQl
         displayName: Code Scanning using CodeQL
         pool:
@@ -162,7 +111,7 @@ stages:
 
           - script: >-
              chmod +x ./codeql-runner/codeql-env.sh
-                ./codeql-runner/codeql-env.sh
+                . /codeql-runner/codeql-env.sh
             displayName: Export Environment Variables
 
           - task: PowerShell@2
@@ -172,7 +121,6 @@ stages:
               script: |-
                   dotnet restore
                   dotnet build /p:UseSharedCompilation=false /p:OutDir=$(Build.ArtifactStagingDirectory)
-
                   Write-Host "Analyzing with CodeQL"
                    ./codeql-runner-linux analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
 

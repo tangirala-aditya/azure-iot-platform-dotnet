@@ -130,7 +130,7 @@ stages:
 
           - task: PublishBuildArtifacts@1
             inputs:
-              PathtoPublish: '$(Build.SourcesDirectory)/src/codeql-runner/codeql-sarif'
+              PathtoPublish: '$(Build.SourcesDirectory)/codeql-runner/codeql-sarif'
               ArtifactName: 'CodeAnalysis'
               publishLocation: 'Container'
 

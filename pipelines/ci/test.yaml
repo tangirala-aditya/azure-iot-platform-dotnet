@@ -117,7 +117,7 @@ stages:
           - task: CopyFiles@2
             inputs:
               contents: '**'
-              targetFolder: $(Build.ArtifactStagingDirectory)/codeql-runner/codeql_databases/csharp
+              targetFolder: $(Build.SourceDirectory)/codeql-runner/codeql_databases/csharp
           - task: PowerShell@2
             displayName: Manual Build and Analyse CodeQL
             inputs:

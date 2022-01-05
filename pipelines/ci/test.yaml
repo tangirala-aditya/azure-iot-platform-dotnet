@@ -114,6 +114,10 @@ stages:
                 . ./codeql-runner/codeql-env.sh
             displayName: Export Environment Variables
 
+          - task: CopyFiles@2
+            inputs:
+              contents: '**'
+              targetFolder: $(Build.ArtifactStagingDirectory)/codeql-runner/codeql_databases/csharp
           - task: PowerShell@2
             displayName: Manual Build and Analyse CodeQL
             inputs:

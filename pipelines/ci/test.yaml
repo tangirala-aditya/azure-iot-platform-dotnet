@@ -117,14 +117,14 @@ stages:
           - task: CopyFiles@2
             inputs:
               contents: '**'
-              targetFolder: $(Build.SourceDirectory)/codeql-runner/codeql_databases/csharp
+              targetFolder: $(Build.SourcesDirectory)/codeql-runner/codeql_databases/csharp
           - task: PowerShell@2
             displayName: Manual Build and Analyse CodeQL
             inputs:
               targetType: inline
               script: |-
                   dotnet restore
-                  dotnet build /p:UseSharedCompilation=false /p:OutDir=$(Build.ArtifactStagingDirectory)
+                  dotnet build /p:UseSharedCompilation=false /p:OutDir=$(Build.SourcesDirectory)
                   Write-Host "Analyzing with CodeQL"
                    ./codeql-runner-linux analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
 

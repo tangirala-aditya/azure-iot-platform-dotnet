@@ -132,7 +132,7 @@ stages:
 
           - script: >-
                 jq '.runs[].tool.driver.rules[] |= . + {"defaultConfiguration": {"level": "error"}}' $(Build.SourcesDirectory)/codeql-runner/codeql-sarif/csharp.sarif >  $(Build.SourcesDirectory)/codeql-runner/codeql-sarif/final.sarif  
-            displayName: Analyse CodeQL and Upload them to GHR
+            displayName: Configure SARIF File
 
           - script: >-
                 ./codeql-runner-linux upload  --sarif-file $(Build.SourcesDirectory)/codeql-runner/codeql-sarif/final.sarif  --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch) 

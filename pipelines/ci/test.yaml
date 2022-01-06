@@ -121,11 +121,17 @@ stages:
 
           - script: >-
                 dotnet restore 
+            displayName: Restore Dependencies
+
+          - script: >-
                 dotnet build /p:UseSharedCompilation=false /p:OutDir=$(Build.SourcesDirectory)
-                ./codeql-runner-linux analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch) 
-                jq '.runs[].tool.driver.rules[] |= . + {"defaultConfiguration": {"level": "error"}}' $(Build.SourcesDirectory)/codeql-runner/codeql-sarif/csharp.sarif >  $(Build.SourcesDirectory)/codeql-runner/codeql-sarif/final.sarif  
+            displayName: Build Assemblies
+
+          - script: >-
+                ./codeql-runner-linux analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
+                jq '.runs[].tool.driver.rules[] |= . + {"defaultConfiguration": {"level": "error"}}' $(Build.SourcesDirectory)/codeql-runner/codeql-sarif/csharp.sarif >  $(Build.SourcesDirectory)/codeql-runner/codeql-sarif/csharp.sarif  
                 ./codeql-runner-linux upload  --sarif-file $(Build.SourcesDirectory)/codeql-runner/codeql-sarif/final.sarif  --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch) 
-            displayName: Analyse CodeQL 
+            displayName: Analyse CodeQL and Upload them to GHR
 
           - task: PublishBuildArtifacts@1
             inputs:

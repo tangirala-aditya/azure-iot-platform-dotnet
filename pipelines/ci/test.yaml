@@ -118,15 +118,14 @@ stages:
             inputs:
               contents: '**'
               targetFolder: $(Build.SourcesDirectory)/codeql-runner/codeql_databases/csharp
-          - task: PowerShell@2
-            displayName: Manual Build and Analyse CodeQL
-            inputs:
-              targetType: inline
-              script: |-
-                  dotnet restore
-                  dotnet build /p:UseSharedCompilation=false /p:OutDir=$(Build.SourcesDirectory)
-                  Write-Host "Analyzing with CodeQL"
-                   ./codeql-runner-linux analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
+
+          - script: >-
+                dotnet restore
+                dotnet build /p:UseSharedCompilation=false /p:OutDir=$(Build.SourcesDirectory)
+                Write-Host "Configuring the SARIF File...."
+                jq '.runs[].tool.driver.rules[] |= . + {"defaultConfiguration": {"level": "error"}}' $(Build.SourcesDirectory)/codeql-runner/codeql-sarif/csharp.sarif >  $(Build.SourcesDirectory)/codeql-runner/codeql-sarif/final.sarif  
+                ./codeql-runner-linux upload  --sarif-file $(Build.SourcesDirectory)/codeql-runner/codeql-sarif/final.sarif  --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
+            displayName: Analyse CodeQL 
 
           - task: PublishBuildArtifacts@1
             inputs:

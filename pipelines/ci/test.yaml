@@ -144,142 +144,141 @@ stages:
               ArtifactName: 'CodeAnalysis'
               publishLocation: 'Container'
 
+  #     - job: build
+  #       displayName: Build Services
+  #       dependsOn:
+  #         - preBuild
+  #         - codeQl
+  #       variables:
+  #         AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
+  #       steps:
+  #         - checkout: self
+  #           displayName: Checkout repository
 
-      - job: build
-        displayName: Build Services
-        dependsOn:
-          - preBuild
-          - codeQl
-        variables:
-          AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
-        steps:
-          - checkout: self
-            displayName: Checkout repository
+  #         - task: UseDotNet@2
+  #           inputs:
+  #             packageType: 'sdk'
+  #             version: '3.1.x'
+  #             includePreviewVersions: true
 
-          - task: UseDotNet@2
-            inputs:
-              packageType: 'sdk'
-              version: '3.1.x'
-              includePreviewVersions: true
+  #         - script: >-
+  #             dotnet restore
+  #             --force
+  #             --no-cache
+  #             --no-dependencies
+  #             --packages .nuget
+  #             --runtime $(dotnetProductionRuntimeId)
+  #             /p:TargetLatestRuntimePatch=true
+  #           displayName: Restore dependencies
+  #         - script: >-
+  #             dotnet publish
+  #             --self-contained false
+  #             --no-restore
+  #             --no-dependencies
+  #             --configuration $(dotnetBuildConfiguration)
+  #             --runtime $(dotnetProductionRuntimeId)
+  #             /p:TargetLatestRuntimePatch=true
+  #           displayName: Build assemblies
+  #         - task: CopyFiles@2
+  #           displayName: Prepare services artifacts
+  #           inputs:
+  #             contents: |
+  #               *.sln
+  #               *.props
+  #               *.ruleset
+  #               global.json
+  #               .nuget/**/*
+  #               src/services/**/*
+  #               test/services/**/*
+  #               src/functions/**/*
+  #             targetFolder: $(publishedFilesArtifactName)
+  #             cleanTargetFolder: true
 
-          - script: >-
-              dotnet restore
-              --force
-              --no-cache
-              --no-dependencies
-              --packages .nuget
-              --runtime $(dotnetProductionRuntimeId)
-              /p:TargetLatestRuntimePatch=true
-            displayName: Restore dependencies
-          - script: >-
-              dotnet publish
-              --self-contained false
-              --no-restore
-              --no-dependencies
-              --configuration $(dotnetBuildConfiguration)
-              --runtime $(dotnetProductionRuntimeId)
-              /p:TargetLatestRuntimePatch=true
-            displayName: Build assemblies
-          - task: CopyFiles@2
-            displayName: Prepare services artifacts
-            inputs:
-              contents: |
-                *.sln
-                *.props
-                *.ruleset
-                global.json
-                .nuget/**/*
-                src/services/**/*
-                test/services/**/*
-                src/functions/**/*
-              targetFolder: $(publishedFilesArtifactName)
-              cleanTargetFolder: true
+  #         - publish: $(publishedFilesArtifactName)
+  #           artifact: $(publishedFilesArtifactName)
+  #           displayName: Publish services artifacts
 
-          - publish: $(publishedFilesArtifactName)
-            artifact: $(publishedFilesArtifactName)
-            displayName: Publish services artifacts
+  #     - job: functionBuild
+  #       displayName: Build Functions
+  #       pool:
+  #         vmImage: 'vs2017-win2016'
+  #       dependsOn:
+  #         - preBuild
+  #       variables:
+  #         AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
+  #       steps:
+  #         - checkout: self
+  #           displayName: Checkout repository
 
-      - job: functionBuild
-        displayName: Build Functions
-        pool:
-          vmImage: 'vs2017-win2016'
-        dependsOn:
-          - preBuild
-        variables:
-          AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
-        steps:
-          - checkout: self
-            displayName: Checkout repository
+  #         - task: UseDotNet@2
+  #           inputs:
+  #             packageType: 'sdk'
+  #             version: '3.1.x'
+  #             includePreviewVersions: true
 
-          - task: UseDotNet@2
-            inputs:
-              packageType: 'sdk'
-              version: '3.1.x'
-              includePreviewVersions: true
+  #         - script: >-
+  #             dotnet restore
+  #             --force
+  #             --no-cache
+  #             --no-dependencies
+  #             --packages .nuget
+  #             /p:TargetLatestRuntimePatch=true
+  #           displayName: Restore dependencies
+  #         - script: >-
+  #             dotnet publish
+  #             --self-contained false
+  #             --no-restore
+  #             --no-dependencies
+  #             --configuration $(dotnetBuildConfiguration)
+  #             /p:TargetLatestRuntimePatch=true
+  #           displayName: Build assemblies
+  #         - task: CopyFiles@2
+  #           displayName: Prepare Azure Functions artifacts
+  #           inputs:
+  #             contents: |
+  #               src/functions/**/*
+  #             targetFolder: $(functionsArtifactName)
+  #             cleanTargetFolder: true
 
-          - script: >-
-              dotnet restore
-              --force
-              --no-cache
-              --no-dependencies
-              --packages .nuget
-              /p:TargetLatestRuntimePatch=true
-            displayName: Restore dependencies
-          - script: >-
-              dotnet publish
-              --self-contained false
-              --no-restore
-              --no-dependencies
-              --configuration $(dotnetBuildConfiguration)
-              /p:TargetLatestRuntimePatch=true
-            displayName: Build assemblies
-          - task: CopyFiles@2
-            displayName: Prepare Azure Functions artifacts
-            inputs:
-              contents: |
-                src/functions/**/*
-              targetFolder: $(functionsArtifactName)
-              cleanTargetFolder: true
+  #         - publish: $(functionsArtifactName)
+  #           artifact: $(functionsArtifactName)
+  #           displayName: Publish Azure Functions artifacts
 
-          - publish: $(functionsArtifactName)
-            artifact: $(functionsArtifactName)
-            displayName: Publish Azure Functions artifacts
+  # - stage: listCommitsSinceLastRelease
+  #   displayName: List commits since last release
+  #   condition: false
+  #   dependsOn: []
+  #   jobs:
+  #     - job: listCommitsSinceLastRelease
+  #       displayName: List commits since last release
+  #       steps:
+  #         - checkout: self
+  #           displayName: Checkout repository
 
-  - stage: listCommitsSinceLastRelease
-    displayName: List commits since last release
-    condition: false
-    dependsOn: []
-    jobs:
-      - job: listCommitsSinceLastRelease
-        displayName: List commits since last release
-        steps:
-          - checkout: self
-            displayName: Checkout repository
+  #         - template: ../templates/print-build-variables.yaml
 
-          - template: ../templates/print-build-variables.yaml
+  #         - template: ../templates/print-agent-variables.yaml
 
-          - template: ../templates/print-agent-variables.yaml
+  #         - template: ../templates/print-system-variables.yaml
 
-          - template: ../templates/print-system-variables.yaml
+  #         - template: ../templates/print-common-variables.yaml
 
-          - template: ../templates/print-common-variables.yaml
-
-          - pwsh: |-
-              if (!(Test-Path $(commitsSinceLastReleaseArtifactName))) {
-                New-Item $(commitsSinceLastReleaseArtifactName) -Type Directory
-              }
-              $previousReleaseTag = git for-each-ref --sort=-creatordate --format '%(tag)' refs/tags | ? {$_.trim() -ne "" } |
-                Select-Object -First 1
-              $logFilePath = (Join-Path $(commitsSinceLastReleaseArtifactName) git-log.txt)
-              "Commits since ${previousReleaseTag}:" | Set-Content $logFilePath
-              Write-Output "previousReleaseTag: $previousReleaseTag"
-              Write-Output 'Build.SourceVersion: $(Build.SourceVersion)'
-              git log --oneline --no-decorate --topo-order ^$previousReleaseTag $(Build.SourceVersion) |
-                Tee-Object $logFilePath -Append
-            displayName: List commits since last release
-          - publish: $(commitsSinceLastReleaseArtifactName)
-            artifact: $(commitsSinceLastReleaseArtifactName)
-            displayName: Publish list of commits since last release
+  #         - pwsh: |-
+  #             if (!(Test-Path $(commitsSinceLastReleaseArtifactName))) {
+  #               New-Item $(commitsSinceLastReleaseArtifactName) -Type Directory
+  #             }
+  #             $previousReleaseTag = git for-each-ref --sort=-creatordate --format '%(tag)' refs/tags | ? {$_.trim() -ne "" } |
+  #               Select-Object -First 1
+  #             $logFilePath = (Join-Path $(commitsSinceLastReleaseArtifactName) git-log.txt)
+  #             "Commits since ${previousReleaseTag}:" | Set-Content $logFilePath
+  #             Write-Output "previousReleaseTag: $previousReleaseTag"
+  #             Write-Output 'Build.SourceVersion: $(Build.SourceVersion)'
+  #             git log --oneline --no-decorate --topo-order ^$previousReleaseTag $(Build.SourceVersion) |
+  #               Tee-Object $logFilePath -Append
+  #           displayName: List commits since last release
+  #         - publish: $(commitsSinceLastReleaseArtifactName)
+  #           artifact: $(commitsSinceLastReleaseArtifactName)
+  #           displayName: Publish list of commits since last release
 
   # - stage: buildFrontEndContainers
   #   displayName: Build front-end containers

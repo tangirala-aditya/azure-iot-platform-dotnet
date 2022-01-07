@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+
 using System.Collections.Generic;
 using Mmm.Iot.Common.Services.Exceptions;
 using Mmm.Iot.Common.Services.Models;

@@ -252,7 +252,58 @@ stages:
           - publish: $(functionsArtifactName)
             artifact: $(functionsArtifactName)
             displayName: Publish Azure Functions artifacts
+      - job: codeQl
+        displayName: Code Scanning using CodeQL
+        pool:
+          vmImage: ubuntu-latest
+        dependsOn:
+          - preBuild
+        variables:
+          AppConfigurationConnectionString: $[dependencies.preBuild.outputs['getAppConfigurationConnectionString.appConfigurationConnectionString']]
+        steps:
+          - checkout: self
+            displayName: Checkout repository
 
+          - task: PowerShell@2
+            displayName: CodeQL Scan
+            inputs:
+              targetType: inline
+              script: |-
+                  Write-Host "downloading Code QL analysis for windows"
+                  $ProgressPreference = 'SilentlyContinue'
+                  wget https://github.com/github/codeql-action/releases/latest/download/codeql-runner-linux
+                  chmod +x codeql-runner-linux
+                  Write-Host "Code QL analysis for linux downloaded, now we init it...."                  
+                  ./codeql-runner-linux init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(GITHUB_PAT_TOKEN) --languages csharp 
+
+          - script: >-
+             chmod +x ./codeql-runner/codeql-env.sh
+                . ./codeql-runner/codeql-env.sh
+            displayName: Export Environment Variables
+
+          - task: CopyFiles@2
+            inputs:
+              contents: '**'
+              targetFolder: $(Build.SourcesDirectory)/codeql-runner/codeql_databases/csharp
+
+          - script: >-
+                dotnet restore 
+            displayName: Restore Dependencies
+
+          - script: >-
+                dotnet build /p:UseSharedCompilation=false /p:OutDir=$(Build.SourcesDirectory)
+            displayName: Build Assemblies
+
+          - script: >-
+                ./codeql-runner-linux analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
+            displayName: CodeQL Analyse
+            
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.SourcesDirectory)/codeql-runner/codeql-sarif'
+              ArtifactName: 'CodeAnalysis'
+              publishLocation: 'Container'
+              
   # - stage: whiteSourceBolt
   #   displayName: WhiteSource Bolt
   #   dependsOn:

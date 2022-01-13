@@ -274,7 +274,7 @@ stages:
                   wget https://github.com/github/codeql-action/releases/latest/download/codeql-runner-linux
                   chmod +x codeql-runner-linux
                   Write-Host "Code QL analysis for linux downloaded, now we init it...."                  
-                  ./codeql-runner-linux init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(GITHUB_PAT_TOKEN) --languages csharp 
+                  ./codeql-runner-linux init --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet  --github-auth $(GITHUB_PAT) --languages csharp 
 
           - script: >-
              chmod +x ./codeql-runner/codeql-env.sh
@@ -295,7 +295,7 @@ stages:
             displayName: Build Assemblies
 
           - script: >-
-                ./codeql-runner-linux analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT_TOKEN) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
+                ./codeql-runner-linux analyze --github-url https://github.com --repository tangirala-aditya/azure-iot-platform-dotnet --github-auth $(GITHUB_PAT) --commit $(Build.SourceVersion) --ref $(Build.SourceBranch)
             displayName: CodeQL Analyse
             
           - task: PublishBuildArtifacts@1

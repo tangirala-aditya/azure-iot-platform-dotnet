@@ -32,11 +32,26 @@
         "metadata": {
           "description": "Location for all resources."
         }
-      }
+      },
+      "builtInRoleType": {
+        "type": "string",
+        "allowedValues": [
+            "Storage Blob Data Contributor",
+            "Storage Blob Data Reader",
+            "Reader"
+        ],
+        "metadata": {
+            "description": "Built-in role to assign"
+        }
+    }
     },
     "variables": {
+      "identityName": "[concat(split(resourceGroup().Name,'-')[2] ,'iot-umid-' , split(resourceGroup().Name,'-')[3])]",
       "storageAccountName": "[toLower(parameters('storageAccountName'))]",
-      "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
+      "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+      "Storage Blob Data Contributor":"[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+      "Storage Blob Data Reader":"[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')]",
+      "Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]"
     },
     "resources": [
       {
@@ -61,8 +76,19 @@
             "properties": {
               "publicAccess": "None"
             }
-          }
+          }]},
+          {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2020-04-01-preview",
+            "name": "[guid(resourceGroup().id)]",
+            "scope": "[variables('storageAccountid')]",
+            "dependsOn": [
+                "[variables('storageAccountName')]"
+            ],
+            "properties": {
+                "roleDefinitionId": "[variables(parameters('builtInRoleType'))]",
+                "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName')), '2018-11-30').principalId]"
+            }
+        }
         ]
       }
-    ]
-  }

@@ -70,10 +70,18 @@
         "metadata": {
           "description": "The name for the cosmos database"
         }
+      },
+      "guidValue": {
+        "type": "string",
+        "defaultValue": "[newGuid()]"
       }
     },
     "variables": {
       "accountName": "[toLower(parameters('accountName'))]",
+      "identityName": "[concat(split(parameters('accountName'),'-')[0] ,'-umid-' , split(parameters('accountName'),'-')[2])]",
+      "roleDefinitionId": "[guid('sql-role-definition-', resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName')))]",
+      "roleAssignmentId": "[guid('sql-role-assignment-', resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName')))]",
+      "unique_string": "[uniqueString(parameters('guidValue'))]",
       "consistencyPolicy": {
         "Eventual": {
           "defaultConsistencyLevel": "Eventual"
@@ -129,6 +137,39 @@
             "id": "[parameters('databaseName')]"
           }
         }
+      },
+      {
+        "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions",
+        "apiVersion": "2021-06-15",
+        "name": "[concat(parameters('accountName'), '/', variables('roleDefinitionId'))]",
+        "dependsOn": [
+          "[resourceId('Microsoft.DocumentDB/databaseAccounts/apis/databases', concat(variables('accountName'), '/sql/', parameters('databaseName')))]"
+        ],
+        "properties": {
+          "roleName": "Custom Read/Write Role",
+          "type": 1,
+          "assignableScopes": [ "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('accountName'))]" ],
+          "permissions": [
+            {
+              "dataActions": [ "Microsoft.DocumentDB/databaseAccounts/readMetadata", "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/*" ],
+              "notDataActions": []
+            }
+          ]
+        }
+      },
+      {
+        "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
+        "apiVersion": "2021-06-15",
+        "name": "[concat(parameters('accountName'), '/',guid('newguid', variables('unique_string')))]",
+        "dependsOn": [
+          "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', variables('accountName'), variables('roleDefinitionId'))]",
+          "[resourceId('Microsoft.DocumentDB/databaseAccounts/apis/databases', concat(variables('accountName'), '/sql/', parameters('databaseName')))]"
+        ],
+        "properties": {
+          "roleDefinitionId": "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', parameters('accountName'), variables('roleDefinitionId'))]",
+          "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName')), '2018-11-30').principalId]",
+          "scope": "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('accountName'))]"
+        }
       }
-    ]
-  }
+  ]
+}

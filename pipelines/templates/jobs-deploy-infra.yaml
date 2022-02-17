@@ -154,6 +154,7 @@ jobs:
     condition: and(true,eq('${{parameters.isHelmVersion3}}',false))
     dependsOn:
       - resourceGroup
+      - storageAccount
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -282,6 +283,7 @@ jobs:
     displayName: Provision AKS V3
     dependsOn:
       - resourceGroup
+      - storageAccount
     condition: and(true,eq('${{parameters.isHelmVersion3}}',true))
     variables:
       - template: variables-deploy-infra.yaml
@@ -614,6 +616,7 @@ jobs:
     displayName: Provision Key Vault
     dependsOn:
       - resourceGroup
+      - storageAccount
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -709,6 +712,7 @@ jobs:
     displayName: Provision App Configuration
     dependsOn:
       - resourceGroup
+      - storageAccount
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -775,7 +779,7 @@ jobs:
             az aks get-credentials -n $(aksName) -g $(resourceGroupName)
             storageAccountKey=$(az storage account keys list --account-name $(storageAccountName) | jq -r .[0].value)
             appconfigEndpoint="https://$(appConfigurationName).azconfig.io"
-            managedIdentityClient=$(az identity show -g $(resourceGroupName) -n $(userAssignedIdentityName) --query clientId -otsv)
+            managedIdentityClient=$(az identity show -g $(resourceGroupName) -n $(userAssignedManagedIdentityName) --query clientId -otsv)
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             globalClientAuthJwtAuthIssuer=$(az appconfig kv show --key "Global:ClientAuth:Jwt:AuthIssuer" --connection-string $appConfigurationConnectionString | jq .value)
             globalClientAuthRoles=$(az appconfig kv list --connection-string $appConfigurationConnectionString --key "Global:ClientAuth:Roles:*" | jq -c '.[] | .value')
@@ -812,6 +816,8 @@ jobs:
           inlineScript: |-
             az aks get-credentials -n $(aksName) -g $(resourceGroupName)
             storageAccountKey=$(az storage account keys list --account-name $(storageAccountName) | jq -r .[0].value)
+            appconfigEndpoint="https://$(appConfigurationName).azconfig.io"
+            managedIdentityClient=$(az identity show -g $(resourceGroupName) -n $(userAssignedManagedIdentityName) --query clientId -otsv)
             appConfigurationConnectionString=$(az appconfig credential list --name $(appConfigurationName) -g $(resourceGroupName) | jq -r .[0].connectionString)
             globalClientAuthJwtAuthIssuer=$(az appconfig kv show --key "Global:ClientAuth:Jwt:AuthIssuer" --connection-string $appConfigurationConnectionString | jq .value)
             globalClientAuthRoles=$(az appconfig kv list --connection-string $appConfigurationConnectionString --key "Global:ClientAuth:Roles:*" | jq -c '.[] | .value')
@@ -857,85 +863,28 @@ jobs:
           command: init
           arguments: --force-upgrade --tiller-image=ghcr.io/helm/tiller:v$(helmVersion2)
 
-
       - task: Bash@3
-        displayName: Install aadpodidentity Helm repository
+        displayName: Register and Enable Pod Identity add-on
         inputs:
           targetType: inline
           script: |-
-            # Add the Jetstack Helm repository
-            helm repo add aad-pod-identity https://raw.githubusercontent.com/Azure/aad-pod-identity/master/charts
-            # Update your local Helm chart repository cache
-            helm repo update
+                az feature register --name EnablePodIdentityPreview --namespace Microsoft.ContainerService
+                az extension add --name aks-preview
+                sleep 5m
+                az feature show --name EnablePodIdentityPreview --namespace Microsoft.ContainerService -o table
 
-      - task: HelmDeploy@0
-        displayName: Deploy aadpodidentity
-        inputs:
-          connectionType: Azure Resource Manager
-          azureSubscription: ${{parameters.subscriptionName}}
-          azureResourceGroup: $(resourceGroupName)
-          kubernetesCluster: $(aksName)
-          namespace: default
-          command: upgrade
-          chartType: Name
-          chartName: aad-pod-identity/aad-pod-identity
-          releaseName: aad-pod-identity
-          overrideValues: --set nmi.allowNetworkPluginKubenet=true --set rbac.enabled=false
-          arguments: --install --force
 
       - task: AzureCLI@2
-        displayName: Perform Role Assignments to services
+        displayName: Install AAD Pod Identity
         inputs:
           azureSubscription: ${{parameters.subscriptionName}}
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-            az identity create -g $(resourceGroupName) -n $(userAssignedIdentityName)
-            identityPrincipalId=$(az identity show -g $(resourceGroupName) -n $(userAssignedIdentityName) --query principalId -o tsv)
-            identityResourceId="/subscriptions/${{parameters.subscriptionId}}/resourceGroups/$(resourceGroupName)/providers/Microsoft.ManagedIdentity/userAssignedIdentities/$(userAssignedIdentityName)"
-            aksSystemAssignedObjectId=$(az aks show -n $(aksName)  -g $(resourceGroupName) --query identity.principalId)
-            az role assignment create --role Reader --assignee $identityPrincipalId --scope /subscriptions/${{parameters.subscriptionId}}/resourcegroups/$(resourceGroupName)
-            az role assignment create --role "Managed Identity Operator" --assignee $aksSystemAssignedObjectId --scope 
-            az appconfig identity assign -g $(resourceGroupName) -n $(userAssignedIdentityName) --identities "/subscriptions/{{parameters.subscriptionId}}/resourceGroups/$(resourceGroupName)/providers/Microsoft.ManagedIdentity/userAssignedIdentities/$(userAssignedIdentityName)"
-            az keyvault set-policy -n $(keyVaultName) --object-id $identityPrincipalId --secret-permissions get list
-
-      - task: AzureCLI@2
-        displayName: Deploy AzureIdentity
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName)
-              identityClientId=$(az identity show -g $(resourceGroupName) -n $(userAssignedIdentityName) --query clientId -o tsv) 
-              cat <<EOF | kubectl apply -f -
-              apiVersion: "aadpodidentity.k8s.io/v1"
-              kind: AzureIdentity
-              metadata:
-                name: $(managedIdentityName)
-              spec:
-                type: 0
-                resourceID: /subscriptions/${{parameters.subscriptionID}}/resourcegroups/$(resourceGroupName)/providers/Microsoft.ManagedIdentity/userAssignedIdentities/$(userAssignedIdentityName)
-                clientID: $(identityClientId)
-              EOF  
-
-      - task: AzureCLI@2
-        displayName: Deploy AzureIdentityBinding
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-            az aks get-credentials -n $(aksName) -g $(resourceGroupName) 
-            cat <<EOF | kubectl apply -f -
-            apiVersion: "aadpodidentity.k8s.io/v1"
-            kind: AzureIdentityBinding
-            metadata:
-              name: $(managedIdentityName)-binding
-            spec:
-              azureIdentity: $(managedIdentityName)
-              selector: $(managedIdentityName)
-            EOF  
+                az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+                userManagedIdentityID=$(az identity show -n $(userAssignedManagedIdentityName) -g $(resourceGroupName) --query "id" -o tsv)
+                az aks update -g $(resourceGroupName) -n $(aksName) --enable-pod-identity --enable-pod-identity-with-kubenet
+                az aks pod-identity add --resource-group $(resourceGroupName) --cluster-name $(aksName) --namespace default  --name $(userAssignedManagedIdentityName) --identity-resource-id $userManagedIdentityID
 
   - job: deployAADPodIdentityV3
     displayName: Deploy AAD Pod identity in AKS Cluster
@@ -962,84 +911,26 @@ jobs:
           helmVersionToInstall: $(helmVersion3)
 
       - task: Bash@3
-        displayName: Install aadpodidentity Helm repository
+        displayName: Register and Enable Pod Identity add-on
         inputs:
           targetType: inline
           script: |-
-            # Add the Jetstack Helm repository
-            helm repo add aad-pod-identity https://raw.githubusercontent.com/Azure/aad-pod-identity/master/charts
-            # Update your local Helm chart repository cache
-            helm repo update
-
-      - task: HelmDeploy@0
-        displayName: Deploy aadpodidentity
-        inputs:
-          connectionType: Azure Resource Manager
-          azureSubscription: ${{parameters.subscriptionName}}
-          azureResourceGroup: $(resourceGroupName)
-          kubernetesCluster: $(aksName)
-          namespace: default
-          command: upgrade
-          chartType: Name
-          chartName: aad-pod-identity/aad-pod-identity
-          releaseName: aad-pod-identity
-          overrideValues: --set nmi.allowNetworkPluginKubenet=true --set rbac.enabled=false
-          arguments: --install --force
+                az feature register --name EnablePodIdentityPreview --namespace Microsoft.ContainerService
+                az extension add --name aks-preview
+                sleep 5m
+                az feature show --name EnablePodIdentityPreview --namespace Microsoft.ContainerService -o table
 
       - task: AzureCLI@2
-        displayName: Perform Role Assignments to services
+        displayName: Install AAD Pod Identity
         inputs:
           azureSubscription: ${{parameters.subscriptionName}}
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |-
-            az identity create -g $(resourceGroupName) -n $(userAssignedIdentityName)
-            identityPrincipalId=$(az identity show -g $(resourceGroupName) -n $(userAssignedIdentityName) --query principalId -o tsv)
-            identityResourceId="/subscriptions/${{parameters.subscriptionId}}/resourceGroups/$(resourceGroupName)/providers/Microsoft.ManagedIdentity/userAssignedIdentities/$(userAssignedIdentityName)"
-            aksSystemAssignedObjectId=$(az aks show -n $(aksName)  -g $(resourceGroupName) --query identity.principalId)
-            az role assignment create --role Reader --assignee $identityPrincipalId --scope /subscriptions/${{parameters.subscriptionId}}/resourcegroups/$(resourceGroupName)
-            az role assignment create --role "Managed Identity Operator" --assignee $aksSystemAssignedObjectId --scope 
-            az appconfig identity assign -g $(resourceGroupName) -n $(userAssignedIdentityName) --identities "/subscriptions/{{parameters.subscriptionId}}/resourceGroups/$(resourceGroupName)/providers/Microsoft.ManagedIdentity/userAssignedIdentities/$(userAssignedIdentityName)"
-
-      - task: AzureCLI@2
-        displayName: Deploy AzureIdentity
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-              az aks get-credentials -n $(aksName) -g $(resourceGroupName)
-              identityClientId=$(az identity show -g $(resourceGroupName) -n $(userAssignedIdentityName) --query clientId -o tsv) 
-              cat <<EOF | kubectl apply -f -
-              apiVersion: "aadpodidentity.k8s.io/v1"
-              kind: AzureIdentity
-              metadata:
-                name: $(managedIdentityName)
-              spec:
-                type: 0
-                resourceID: /subscriptions/${{parameters.subscriptionID}}/resourcegroups/$(resourceGroupName)/providers/Microsoft.ManagedIdentity/userAssignedIdentities/$(userAssignedIdentityName)
-                clientID: $(identityClientId)
-              EOF  
-
-      - task: AzureCLI@2
-        displayName: Deploy AzureIdentityBinding
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-            az aks get-credentials -n $(aksName) -g $(resourceGroupName) 
-            cat <<EOF | kubectl apply -f -
-            apiVersion: "aadpodidentity.k8s.io/v1"
-            kind: AzureIdentityBinding
-            metadata:
-              name: $(managedIdentityName)-binding
-            spec:
-              azureIdentity: $(managedIdentityName)
-              selector: $(managedIdentityName)
-            EOF
-
-
+                az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+                az aks update -g $(resourceGroupName) -n $(aksName) --enable-pod-identity --enable-pod-identity-with-kubenet
+                userManagedIdentityID=$(az identity show -n $(userAssignedManagedIdentityName) -g $(resourceGroupName) --query "id" -o tsv)
+                az aks pod-identity add --resource-group $(resourceGroupName) --cluster-name $(aksName) --namespace default  --name $(userAssignedManagedIdentityName) --identity-resource-id $userManagedIdentityID
 
   - job: appInsights
     displayName: Provision Application Insights
@@ -1455,17 +1346,6 @@ jobs:
                 --settings AzureWebJobs.DeviceTelemetry.Disabled=false
             fi
 
-      - task: AzureCLI@2
-        displayName: Set FunctionApp Identity to keyvault Access Policy
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-           objectId=$(az functionapp identity show --name $(functionApp1Name) --resource-group $(resourceGroupName) | jq -r .principalId)
-           az keyvault set-policy --name $(keyVaultName) --object-id $objectId --secret-permissions get list --key-permissions get list
-           az role assignment create --role "App Configuration Data Reader" --assignee $objectId
-
   - job: function2
     displayName: Create App Config Function
     dependsOn:
@@ -1572,16 +1452,6 @@ jobs:
                 "ActionsEventHubConsumerGroup"="alertingactions" \
               --resource-group $(resourceGroupName)
 
-      - task: AzureCLI@2
-        displayName: Set FunctionApp Identity to keyvault Access Policy
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-           objectId=$(az functionapp identity show --name $(functionApp3Name) --resource-group $(resourceGroupName) | jq -r .principalId)
-           az keyvault set-policy --name $(keyVaultName) --object-id $objectId --secret-permissions get list --key-permissions get list
-
 
   - job: function4
     displayName: Create azure iot Deployment Function
@@ -1648,17 +1518,6 @@ jobs:
                 "DeviceDeploymentHistoryConsumerGroup"="devicedeploymenthistory" \
                 "DeploymentsDatabaseId"="pcs-storage" \
               --resource-group $(resourceGroupName)
-
-      - task: AzureCLI@2
-        displayName: Set FunctionApp Identity to keyvault Access Policy
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-           objectId=$(az functionapp identity show --name $(functionApp4Name) --resource-group $(resourceGroupName) | jq -r .principalId)
-           az keyvault set-policy --name $(keyVaultName) --object-id $objectId --secret-permissions get list --key-permissions get list
-           az role assignment create --role "App Configuration Data Reader" --assignee $objectId
 
   - job: function5
     displayName: Create Batch Telemetry Function
@@ -1734,17 +1593,6 @@ jobs:
                 --resource-group $(resourceGroupName) \
                 --settings AzureWebJobs.BatchTelemetryProcessor.Disabled=true
             fi
-
-      - task: AzureCLI@2
-        displayName: Set FunctionApp Identity to keyvault Access Policy
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          scriptLocation: inlineScript
-          scriptType: bash
-          inlineScript: |-
-           objectId=$(az functionapp identity show --name $(functionApp6Name) --resource-group $(resourceGroupName) | jq -r .principalId)
-           az keyvault set-policy --name $(keyVaultName) --object-id $objectId --secret-permissions get list --key-permissions get list
-           az role assignment create --role "App Configuration Data Reader" --assignee $objectId
 
   - job: deployFunctions
     displayName: Deploy functions

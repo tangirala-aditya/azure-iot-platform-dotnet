@@ -7,7 +7,7 @@
             "metadata": {
                 "description": "The name of the Managed Cluster resource."
             }
-        },
+        },        
         "location": {
             "type": "string",
             "metadata": {
@@ -128,7 +128,17 @@
             }
         }
     },
+    "variables": {
+        "identityName": "[concat(split(parameters('resourceName'),'-')[0] ,'-umid-' , split(parameters('resourceName'),'-')[2])]",
+        "identityId":"[concat(resourceGroup().id,'/providers/Microsoft.ManagedIdentity/userAssignedIdentities/',variables('identityName'))]"
+    },
     "resources": [
+        {
+            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+            "name": "[variables('identityName')]",
+            "apiVersion": "2018-11-30",
+            "location": "[resourceGroup().location]"
+        },                
         {
             "apiVersion": "2019-06-01",
             "dependsOn": [],
@@ -155,7 +165,6 @@
                 "networkProfile": {
                     "networkPlugin": "[parameters('networkPlugin')]"
                 },
-
                 "addonProfiles": {
                     "httpApplicationRouting": {
                         "enabled": "[parameters('enableHttpApplicationRouting')]"

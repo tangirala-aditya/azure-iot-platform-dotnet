@@ -165,6 +165,7 @@
                 "networkProfile": {
                     "networkPlugin": "[parameters('networkPlugin')]"
                 },
+
                 "addonProfiles": {
                     "httpApplicationRouting": {
                         "enabled": "[parameters('enableHttpApplicationRouting')]"

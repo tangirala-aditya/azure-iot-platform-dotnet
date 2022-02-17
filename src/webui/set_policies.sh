@@ -56,7 +56,6 @@ if $(globalClientAuthRoles) > appconfig.txt; then
      echo "Removing the appconfig.txt which was generated in the script"
      rm -f appconfig.txt
    fi
-
   
 # else
 #      echo "Failed to ping Application Configuration"
@@ -68,25 +67,25 @@ if $(globalClientAuthRoles) > appconfig.txt; then
 main() {
   # For the script to fetch the secrets from key-vault foll. variable
   # AppConfigurationConnectionString must be available as "environment" variables.
-  # if [[ "$AppConfigurationConnectionString" != ""  ]]; then
-  #   if az appconfig kv list  --connection-string $AppConfigurationConnectionString > /dev/null; then
-  #       echo "Pinged Application Configuration Successfully"
-  #   else
-  #       echo "Failed to ping Application Configuration"
-  #       echo
-  #       echo "Exiting set_env.sh"
-  #       exit 1
-  #   fi
+#   if [[ "$AppConfigurationConnectionString" != ""  ]]; then
+#     if az appconfig kv list  --connection-string $AppConfigurationConnectionString > /dev/null; then
+#         echo "Pinged Application Configuration Successfully"
+#     else
+#         echo "Failed to ping Application Configuration"
+#         echo
+#         echo "Exiting set_env.sh"
+#         exit 1
+#     fi
 
     modify_webui_policies
     cat /app/src/utilities/policies.js
-  # else
-  #   echo "Required AppConfiguration Connection String Infomation does not exist in Environment Variables, the following environment variables must be set to run this script:"
-  #   echo "AppConfigurationConnectionString"
-  #   echo
-  #   echo "Exiting set_env.sh"
-  #   exit 1
-  # fi
+#   else
+#     echo "Required AppConfiguration Connection String Infomation does not exist in Environment Variables, the following environment variables must be set to run this script:"
+#     echo "AppConfigurationConnectionString"
+#     echo
+#     echo "Exiting set_env.sh"
+#     exit 1
+#   fi
 }
 
 main

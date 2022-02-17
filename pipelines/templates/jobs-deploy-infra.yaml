@@ -522,54 +522,6 @@ jobs:
           deploymentPartialName: $(storageAccountPartialName)
           resourceGroupName: $(resourceGroupName)
 
-  - job: addSysAdmins
-    displayName: Add System Administrators
-    dependsOn:
-      - storageAccount
-    variables:
-      - template: variables-deploy-infra.yaml
-        parameters:
-          subscriptionName: ${{parameters.subscriptionName}}
-          locationName: ${{parameters.locationName}}
-          environmentName: ${{parameters.environmentName}}
-          subscriptionId: ${{parameters.subscriptionId}}
-          applicationCode: ${{parameters.applicationCode}}
-          applicationShortCode: ${{parameters.applicationShortCode}}
-          environmentCategory: ${{parameters.environmentCategory}}
-    steps:
-      - checkout: self
-        displayName: Checkout repository
-
-      - task: AzurePowerShell@5
-        displayName: Add System Administrators
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          azurePowerShellVersion: latestVersion
-          scriptType: inlineScript
-          inline: |-
-            $storageAccountContext = (Get-AzStorageAccount -ResourceGroupName $(resourceGroupName) -Name $(storageAccountName)).Context
-            $tableExists = (Get-AzStorageTable -Context $storageAccountContext | Select-Object -ExpandProperty Name) -Contains '$(tableStorageName)'
-            if (!$tableExists) {
-              New-AzStorageTable -Name $(tableStorageName) -Context $storageAccountContext
-              $cloudTable = (Get-AzStorageTable -Name $(tableStorageName) -Context $storageAccountContext).CloudTable
-              Install-Module -Name AzTable -Force
-              '${{parameters.sysAdmins}}' | ConvertFrom-Json -Depth 100 | Write-Output | ForEach-Object {
-                Add-AzTableRow -Table $cloudTable -PartitionKey $_.UserId -RowKey $_.UserId -Property @{ "Name" = $_.Name }
-                Get-AzTableRow -Table $cloudTable | Format-Table
-              }
-            }
-            else{
-              $cloudTable = (Get-AzStorageTable -Name $(tableStorageName) -Context $storageAccountContext).CloudTable
-              Install-Module -Name AzTable -Force
-              '${{parameters.sysAdmins}}' | ConvertFrom-Json -Depth 100 | Write-Output | ForEach-Object {
-                $userPresent= Get-AzTableRow -table $cloudTable –partitionKey $_.UserId | ft
-                if(!$userPresent){
-                  Add-AzTableRow -Table $cloudTable -PartitionKey $_.UserId -RowKey $_.UserId -Property @{ "Name" = $_.Name }
-                  Get-AzTableRow -Table $cloudTable | Format-Table
-                }
-              }
-            }
-
   - job: eventHub
     displayName: Provision Event Hub
     dependsOn:
@@ -787,7 +739,11 @@ jobs:
             globalAuthRequired=$(az appconfig kv show --key "Global:AuthRequired" --connection-string $appConfigurationConnectionString | jq .value)
             globalDevelopmentMode=$(az appconfig kv show --key "Global:DevelopmentMode" --connection-string $appConfigurationConnectionString | jq .value)            
             kubectl create secret generic --namespace=default azure-secret --from-literal=azurestorageaccountname=$(storageAccountName) --from-literal=azurestorageaccountkey=$storageAccountKey --dry-run=client -o yaml | kubectl apply -f -
-            kubectl create configmap  globalconfigs  --from-literal=AppConfigEndpoint=$appConfigEndpoint  --from-literal=ManagedIdentityClientId=$managedIdentityClientId --from-literal=keyVaultName=$(keyVaultName)  --from-literal=globalClientAuthJwtAuthIssuer="$globalClientAuthJwtAuthIssuer"  --from-literal=globalClientAuthRoles="$globalClientAuthRoles" --from-literal=globalClientCorsWhiteList=$globalClientCorsWhiteList --from-literal=globalAuthRequired=$globalAuthRequired --from-literal=globalDevelopmentMode=$globalDevelopmentMode
+            kubectl create configmap  globalconfigs --from-literal=globalClientAuthJwtAuthIssuer=$globalClientAuthJwtAuthIssuer \ 
+                                                   --from-literal=globalClientAuthRoles="$globalClientAuthRoles" \
+                                                   --from-literal=globalClientCorsWhiteList=$globalClientCorsWhiteList \
+                                                   --from-literal=globalAuthRequired=$globalAuthRequired \
+                                                   --from-literal=globalDevelopmentMode=$globalDevelopmentMode
 
   - job: globalsecretsV3
     displayName: Create K8s secrets
@@ -973,47 +929,6 @@ jobs:
           deploymentPartialName: $(appInsightsPartialName)
           resourceGroupName: $(resourceGroupName)
 
-  - job: cosmosDb
-    displayName: Provision CosmosDB
-    dependsOn:
-      - resourceGroup
-    variables:
-      - template: variables-deploy-infra.yaml
-        parameters:
-          subscriptionName: ${{parameters.subscriptionName}}
-          locationName: ${{parameters.locationName}}
-          environmentName: ${{parameters.environmentName}}
-          subscriptionId: ${{parameters.subscriptionId}}
-          applicationCode: ${{parameters.applicationCode}}
-          applicationShortCode: ${{parameters.applicationShortCode}}
-          environmentCategory: ${{parameters.environmentCategory}}
-    steps:
-      - checkout: self
-        displayName: Checkout repository
-
-      - template: apply-arm-tags.yaml
-        parameters:
-          environment: ${{parameters.environmentName}}
-
-      - task: AzureResourceGroupDeployment@2
-        displayName: Provision Azure Cosmos DB
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          action: Create Or Update Resource Group
-          resourceGroupName: $(resourceGroupName)
-          location: ${{parameters.locationName}}
-          templateLocation: Linked artifact
-          csmFile: $(armTemplatesDirectory)/cosmosdb.json
-          csmParametersFile: $(armParametersDirectory)/cosmosdb.json
-          overrideParameters: -accountName $(cosmosDbAccountName) -location ${{parameters.locationName}} -primaryRegion ${{parameters.locationName}} -databaseName $(cosmosDbName)
-          deploymentMode: Incremental
-
-      - template: steps-delete-oldest-deployment.yaml
-        parameters:
-          subscriptionName: ${{parameters.subscriptionName}}
-          deploymentPartialName: $(cosmosDbAccountPartialName)
-          resourceGroupName: $(resourceGroupName)
-
   - job: dataExplorer
     displayName: Provision Azure Data Explorer Cluster
     condition: and(succeeded(), eq(dependencies.toggleTelemetryStorage.outputs['toggleTelemetryStorageName.toggleTelemetryStorageValue'], 'ade'))
@@ -1144,7 +1059,6 @@ jobs:
             az appconfig kv set --key Global:ResourceGroup                        --value $(resourceGroupName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:SubscriptionId                       --value ${{parameters.subscriptionId}} --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:StorageAccount:Name                  --value $(storageAccountName) --name $(appConfigurationName) --yes
-            az appconfig kv set --key Global:CosmosDb:AccountName                 --value $(cosmosDbAccountName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:DataExplorer:Name                    --value $(dataExplorerClusterName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:EventHub:Name                        --value $(eventHubName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:EventHub:RootKey                     --value $(az eventhubs namespace authorization-rule keys list --resource-group $(resourceGroupName) --namespace-name $(eventHubName) --name RootManageSharedAccessKey --query primaryKey --output tsv) --name $(appConfigurationName) --yes
@@ -1153,7 +1067,6 @@ jobs:
             az appconfig kv set --key Global:DiagnosticSetting:Name               --value $(diagnosticSettingName) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:EventHubNamespaceName  --value $(eventHubName) --name $(appConfigurationName) --yes
             az appconfig kv set --key TenantManagerService:AutomationAccountName  --value $(automationName) --name $(appConfigurationName) --yes
-            az appconfig kv set --key DeviceTelemetryService:Messages:TelemetryStorageType  --value ${telemetryStorageType,,} --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:LogAnalytics:Name                    --value $(omsWorkspaceName) --name $(appConfigurationName) --yes
             az appconfig kv set --key Global:LoadGrafanaDashboard                 --value $(loadGrafanaDashboard) --name $(appConfigurationName) --yes
             
@@ -1185,7 +1098,6 @@ jobs:
       - storageAccount
       - eventHub
       - maps
-      - cosmosDb
     variables:
       - template: variables-deploy-infra.yaml
         parameters:
@@ -1214,12 +1126,6 @@ jobs:
             blobStorageConnString="DefaultEndpointsProtocol=https;AccountName=$(storageAccountName);AccountKey=$blobStorageKey;EndpointSuffix=core.windows.net"
             az keyvault secret set --vault-name $(keyVaultName) --name 'Global--StorageAccountConnectionString' --value $blobStorageConnString
 
-            cosmosDBUri=$(az cosmosdb show -g $(resourceGroupName) -n $(cosmosDbAccountName) | jq -r ".documentEndpoint")
-            cosmosDBAuthKey=$(az cosmosdb keys list --resource-group $(resourceGroupName) --name $(cosmosDbAccountName) --query primaryMasterKey --output tsv)
-            cosmosDBConnection="AccountEndpoint=$cosmosDBUri;AccountKey=$cosmosDBAuthKey;"
-            az keyvault secret set --vault-name $(keyVaultName) --name 'Global--CosmosDb--DocumentDbEndpoint' --value $cosmosDBUri
-            az keyvault secret set --vault-name $(keyVaultName) --name 'Global--CosmosDb--DocumentDbAuthKey' --value $cosmosDBAuthKey
-            az keyvault secret set --vault-name $(keyVaultName) --name 'Global--CosmosDb--DocumentDbConnectionString' --value $cosmosDBConnection
 
             evAccessPolicyKey=$(az eventhubs namespace authorization-rule keys list -n $(defaultSasKeyName) -g $(resourceGroupName) --namespace-name $(eventHubName) --query primaryKey -o tsv)
             az keyvault secret set --vault-name $(keyVaultName) --name 'TenantManagerService--EventHubAccessPolicyKey' --value $evAccessPolicyKey
@@ -1451,7 +1357,6 @@ jobs:
                 "SendGridApiKey"="@Microsoft.KeyVault(SecretUri=$keyVaultSecretUri/secrets/IdentityGatewayService--SendGridApiKey/)" \
                 "ActionsEventHubConsumerGroup"="alertingactions" \
               --resource-group $(resourceGroupName)
-
 
   - job: function4
     displayName: Create azure iot Deployment Function
@@ -1712,32 +1617,32 @@ jobs:
           deploymentPartialName: $(automationPartialName)
           resourceGroupName: $(resourceGroupName)
 
-      - task: AzurePowerShell@3
-        displayName: Create certificate and connections on Azure Automation Account
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/automationAcctCert.ps1
-          ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}} -tenantId $(tenantId) -keyvaultName $(keyVaultName)
-          azurePowerShellVersion: LatestVersion
+#       - task: AzurePowerShell@3
+#         displayName: Create certificate and connections on Azure Automation Account
+#         inputs:
+#           azureSubscription: ${{parameters.subscriptionName}}
+#           ScriptType: FilePath
+#           ScriptPath: pipelines/cd/automationAcctCert.ps1
+#           ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -subscriptionId ${{parameters.subscriptionId}} -tenantId $(tenantId) -keyvaultName $(keyVaultName)
+#           azurePowerShellVersion: LatestVersion
 
-      - task: AzurePowerShell@3
-        displayName: Import runbook code and create webhook
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/automationAcct.ps1
-          ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -scriptFolder $(System.DefaultWorkingDirectory)/src/services/tenant-manager/RunBookCode -keyvaultName $(keyVaultName)
-          azurePowerShellVersion: LatestVersion
+#       - task: AzurePowerShell@3
+#         displayName: Import runbook code and create webhook
+#         inputs:
+#           azureSubscription: ${{parameters.subscriptionName}}
+#           ScriptType: FilePath
+#           ScriptPath: pipelines/cd/automationAcct.ps1
+#           ScriptArguments: -accountName $(automationName) -resourceGroup $(resourceGroupName) -scriptFolder $(System.DefaultWorkingDirectory)/src/services/tenant-manager/RunBookCode -keyvaultName $(keyVaultName)
+#           azurePowerShellVersion: LatestVersion
 
-      - task: AzurePowerShell@3
-        displayName: Create SendGrid Acct and API Key
-        inputs:
-          azureSubscription: ${{parameters.subscriptionName}}
-          ScriptType: FilePath
-          ScriptPath: pipelines/cd/sendgridAcct.ps1
-          ScriptArguments: -location ${{parameters.locationName}} -resourceGroup $(resourceGroupName) -resourceName $(sendgridAccountName) -keyvaultName $(keyVaultName) -email ${{parameters.sendgridEmail}}
-          azurePowerShellVersion: LatestVersion
+#       - task: AzurePowerShell@3
+#         displayName: Create SendGrid Acct and API Key
+#         inputs:
+#           azureSubscription: ${{parameters.subscriptionName}}
+#           ScriptType: FilePath
+#           ScriptPath: pipelines/cd/sendgridAcct.ps1
+#           ScriptArguments: -location ${{parameters.locationName}} -resourceGroup $(resourceGroupName) -resourceName $(sendgridAccountName) -keyvaultName $(keyVaultName) -email ${{parameters.sendgridEmail}}
+#           azurePowerShellVersion: LatestVersion
 
   - job: automationAccountV3
     displayName: Provision Azure Automation and Sendgrid accounts

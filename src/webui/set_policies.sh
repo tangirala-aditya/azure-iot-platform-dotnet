@@ -56,7 +56,7 @@ if $(globalClientAuthRoles) > appconfig.txt; then
      echo "Removing the appconfig.txt which was generated in the script"
      rm -f appconfig.txt
    fi
-
+  
 # else
 #      echo "Failed to ping Application Configuration"
 #      echo

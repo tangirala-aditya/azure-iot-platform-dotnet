@@ -77,6 +77,8 @@ variables:
     value: ${{parameters.applicationCode}}-diagsetting-${{parameters.environmentCategory}}     
   - name: processIOTHubBeyondLimit
     value: false
+  - name: userManagedIdentityName
+    value: ${{parameters.applicationCode}}-umid-${{parameters.environmentCategory}}   
   - name: loadGrafanaDashboard
     value: true
   - name: azureFileShareName

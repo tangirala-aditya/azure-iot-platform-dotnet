@@ -26,6 +26,7 @@ app.kubernetes.io/name: {{ include "service.name" . }}
 helm.sh/chart: {{ include "service.chart" . }}
 type: {{include "service.type" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+aadpodidbinding: {{ .Values.deployment.identityBinding | quote }}
 {{- if .Values.appVersion }}
 app.kubernetes.io/version: {{ .Values.appVersion | quote }}
 {{- end }}

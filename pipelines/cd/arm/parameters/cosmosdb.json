@@ -10,6 +10,8 @@
         "maxIntervalInSeconds": { "value": 5 },
         "multipleWriteLocations": { "value": false },
         "automaticFailover": { "value": false },
-        "databaseName": { "value": "" }
+        "databaseName": { "value": "" },
+        "principalId": { "value": "" },
+        "guidValue": { "value": "" }
     }
 }

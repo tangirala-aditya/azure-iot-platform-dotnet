@@ -17,7 +17,9 @@
             }
         }
     },
-    "variables": {},
+    "variables": {
+        "identityName": "[concat(split(parameters('appConfigName'),'-')[0] ,'-umid-' , split(parameters('appConfigName'),'-')[2])]"   
+    },
     "resources": [
         {
             "name": "[parameters('appConfigName')]",
@@ -25,6 +27,12 @@
             "apiVersion": "2019-10-01",
             "location": "[parameters('location')]",
             "tags": {},
+            "identity": {
+                "type":"userAssigned",
+                "userAssignedIdentities":{
+                    "[resourceID('Microsoft.ManagedIdentity/userAssignedIdentities/',variables('identityName'))]": {}
+                }
+            },
             "properties": {
                 "endpoint": "[concat('https://', parameters('appConfigName'), '.azconfig.io')]"
             },
